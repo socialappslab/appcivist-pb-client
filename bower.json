@@ -1,0 +1,19 @@
+{
+  "name": "appCivistApp",
+  "description": "A mockup of AppCivist for Participatory",
+  "version": "0.0.0",
+  "homepage": "https://github.com/socialappslab/appcivist-pb-client",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.3.x",
+    "angular-mocks": "1.3.x",
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.x.x",
+    "angular-route": "1.3.x",
+    "angular-resource": "1.3.x",
+    "textAngular" : "x",
+    "angular-bootstrap" : "x", 
+    "angular-local-storage" : "x"
+  }
+}

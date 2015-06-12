@@ -60,8 +60,11 @@ local.properties
 .idea/workspace.xml
 .idea/libraries/appcivist_pb_client_node_modules.xml
 
+app/css/app.css.map
 bower_components/
 node_modules/
+stylesheets/.sass-cache
+stylesheets/main.css.map
 lib/angular-local-storage.min.js
 lib/bootstrap/css/bootstrap-theme.css
 lib/bootstrap/css/bootstrap-theme.css.map

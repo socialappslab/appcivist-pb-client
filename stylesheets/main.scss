@@ -1,0 +1,12 @@
+@import "../app/partials/landing/landing";
+@import "../app/partials/assembly/assembly";
+
+.bubbleChart {
+  min-width: 100px;
+  max-width: 700px;
+  height: 700px;
+  margin: 0 auto;
+}
+.bubbleChart svg{
+  background: #000000;
+}

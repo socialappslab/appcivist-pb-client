@@ -32,7 +32,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
 		})
 		.when('/assemblies', {
 			controller : 'AssemblyListCtrl',
-			templateUrl : '/app/partials/assemblies.html'
+			templateUrl : '/app/partials/landing/landing.html'
 		})
 		//        //Define a route that has a route parameter in it (:customerID)
 		//        .when('/assembly/:assemblyID/campaign/:campaignId',
@@ -40,7 +40,12 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
 		//                controller: 'AssemblyController',
 		//                templateUrl: '/app/partials/assemblyCampaignView.html'
 		//            })
-		.otherwise({
+        .when('/assembly',{
+            controller: 'AssemblyListCtrl',
+            templateUrl: 'app/partials/assembly/assembly.html'
+
+        })
+        .otherwise({
 			redirectTo : '/'
 		});
 	

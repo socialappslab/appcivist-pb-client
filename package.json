@@ -8,9 +8,6 @@
     "url": "git+https://github.com/joseanmp/deliberation-mockup.git"
   },
   "license": "MIT",
-  "devDependencies": {
-    "bower": "^1.3.1"
-  },
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
@@ -52,5 +49,8 @@
     "angularjs",
     "discussion"
   ],
-  "author": "socialapplab"
+  "author": "socialapplab",
+  "devDependencies": {
+    "grunt-contrib-watch": "^0.6.1"
+  }
 }

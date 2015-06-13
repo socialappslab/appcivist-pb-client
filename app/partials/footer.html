@@ -1,5 +1,5 @@
-<footer ng-if='!userIsAuthenticated()'>
-	<div class="jumbotron jumbotron-index jumbotron-copyright">
+<footer ng-controller="AccountCtrl">
+	<div ng-if='!userIsAuthenticated()' class="jumbotron jumbotron-index jumbotron-copyright">
 		<div class="container">
 			<div class="row">
 				<span><a href="http://socialappslab.org/">Socialapps Lab</a> at UC Berkeley.<br/>In partnership with

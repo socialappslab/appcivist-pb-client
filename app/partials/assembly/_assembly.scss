@@ -1,6 +1,10 @@
 .data-capsule{
   height: 290px;
   overflow: auto;
+  .data-capsule__section{
+    height: 100%;
+    margin-bottom: 5px;
+  }
 }
 
 .row{

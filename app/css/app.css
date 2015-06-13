@@ -308,6 +308,10 @@ button#second-vote {
   height: 290px;
   overflow: auto;
 }
+.data-capsule .data-capsule__section {
+  height: 100%;
+  margin-bottom: 5px;
+}
 
 .row {
   margin-bottom: 10px;
@@ -380,14 +384,12 @@ button#second-vote {
 }
 
 .bubbleChart {
-  min-width: 100px;
-  max-width: 700px;
-  height: 700px;
-  margin: 0 auto;
+  height: 100%;
+  padding-bottom: 15px;
 }
 
 .bubbleChart svg {
-  background: #000000;
+  background: transparent;
 }
 
 /*# sourceMappingURL=app.css.map */

@@ -22,9 +22,13 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 		}
 	}
 
+	$scope.userIsAuthenticated = function(){
+		return loginService.userIsAuthenticated();
+	}
+
 	$scope.login = function() {
 		console.log("Signing in with email = " + $scope.email);
-		loginService.signIn($scope.email, $scope.password);
+		loginService.signIn($scope.user.email, $scope.user.password);
 	}
 
 	$scope.signup = function() {
@@ -103,6 +107,10 @@ appCivistApp
 				function($scope, $routeParams, $resource, appCivistService,
 						loginService) {
 					$scope.currentAssembly = {};
+					$scope.comments = 10;
+					$scope.questions = 2;
+					$scope.issues = 4;
+					$scope.ideas = 3;
 
 					// I like to have an init() for controllers that need to
 					// perform some initialization. Keeps things in

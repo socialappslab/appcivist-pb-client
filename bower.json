@@ -12,8 +12,8 @@
     "bootstrap": "~3.x.x",
     "angular-route": "1.3.x",
     "angular-resource": "1.3.x",
-    "textAngular" : "x",
-    "angular-bootstrap" : "x", 
-    "angular-local-storage" : "x"
+    "textAngular" : null,
+    "angular-bootstrap" : null,
+    "angular-local-storage" : null
   }
 }

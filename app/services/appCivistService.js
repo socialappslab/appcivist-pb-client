@@ -3,7 +3,7 @@
 // each doing the same thing just structuring the functions/data differently.
 appCivistApp.service('appCivistService', function ($resource) {
 
-    var Assemblies = $resource('https://appcivist-pb.herokuapp.com/api/assemblies');
+    var Assemblies = $resource('https://appcivist-pb.herokuapp.com/api/assembly');
     var assemblies = {};
 	
 	this.getAssemblies = function () {

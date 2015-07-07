@@ -1,6 +1,6 @@
 ﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService) {
 
-	var User = $resource('https://appcivist-pb.herokuapp.com/api/user/loggedin/:id', {id: '@id'});
+	var User = $resource('https://appcivist-pb.herokuapp.com/api/user/:id/loggedin', {id: '@id'});
 
 	this.getUser = function() {
 		return user;
@@ -59,7 +59,7 @@
 					user.authenticated = true;
 					user.$save();
 					localStorageService.set('authenticated', true);
-					//$location.url('/assemblies');
+					$location.url('/assemblies');
 				}
 			});
 		}

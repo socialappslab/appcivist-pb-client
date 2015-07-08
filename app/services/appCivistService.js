@@ -4,7 +4,7 @@
 appCivistApp.service('appCivistService', function ($resource) {
 
     var Assemblies = $resource('https://appcivist-pb.herokuapp.com/api/assembly');
-    var assemblies = {};
+    var assemblies = [];
 	
 	this.getAssemblies = function () {
 		return Assemblies.get();

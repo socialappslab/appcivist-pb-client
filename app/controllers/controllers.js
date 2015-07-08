@@ -82,14 +82,14 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
 appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 		$resource, appCivistService, loginService, localStorageService) {
 
-	$scope.assemblies = {};
+	$scope.assemblies = [];
 	// I like to have an init() for controllers that need to perform some
 	// initialization. Keeps things in
 	// one place...not required though especially in the simple example below
 	init();
 
 	function init() {
-		$scope.assemblies = appCivistService.get();
+		$scope.assemblies = appCivistService.query();
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);

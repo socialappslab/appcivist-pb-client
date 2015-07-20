@@ -60,6 +60,7 @@ local.properties
 .idea/workspace.xml
 .idea/libraries/appcivist_pb_client_node_modules.xml
 
+npm-debug.log
 app/css/app.css.map
 bower_components/
 node_modules/

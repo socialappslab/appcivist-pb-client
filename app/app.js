@@ -45,6 +45,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
             templateUrl: 'app/partials/assembly/assembly.html'
 
         })
+        .when('/home',{
+            controller: 'AssemblyListCtrl',
+            templateUrl: 'app/partials/home/home.html'
+        })
         .otherwise({
 			redirectTo : '/'
 		});

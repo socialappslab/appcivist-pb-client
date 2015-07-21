@@ -1,4 +1,4 @@
-﻿<div class="view" ng-controller="AssemblyCtrl">
+﻿<div class="view home">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-6">
@@ -13,16 +13,29 @@
 				</div><!-- /input-group -->
 			</div><!-- /.col-lg-6 -->
 		</div>
-		<div class="row">
-			<div class="col-lg-4 col-md-4 col-sm-4">
-				<h2>hola</h2>
+		<div class="row assemblies">
+			<div ng-if="assemblies.length > 0">
+				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies">
+					<div class="thumbnail assembly">
+						<img data-src="{{assembly.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+						<div class="caption">
+							<h4><strong>{{assembly.name}}</strong></h4>
+							<h5 class="text-muted"><strong><i>{{assembly.location.city}}, {{assembly.location.state}}</i></strong></h5>
+							<p>{{assembly.description}}</p>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4">
-				<h2>hola</h2>
+			<div class="col-sm-6 col-md-4">
+				<div class="thumbnail assembly">
+					<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="cursor: pointer">
+					<div class="caption">
+						<h4><strong>New Assembly</strong></h4>
+						<p>Organize your community and start the discussion</p>
+					</div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4">
-				<h2>hola</h2>
-			</div>
+		</div>
 		</div>
 	</div>
 </div>

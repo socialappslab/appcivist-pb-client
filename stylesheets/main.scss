@@ -2,6 +2,12 @@
 @import "../app/partials/assembly/assembly";
 @import "../app/partials/home/home";
 
+footer{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
 .bubbleChart {
   height: 100%;
   padding-bottom: 15px;

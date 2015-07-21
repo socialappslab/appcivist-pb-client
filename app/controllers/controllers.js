@@ -15,7 +15,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 
 		if ($scope.user != null && $scope.sessionKey != null) {
 			// TODO Validate that the Session Key corresponds to the user
-			$location.url('/assemblies');
+			$location.url('/home');
 		} else {
 			$scope.user = {};
 			$scope.sessionKey = null;
@@ -94,17 +94,14 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);
 			console.log("Assemblies arrived: " + JSON.stringify($scope.assemblies));
-		})
+		});
 	}
 });
 
 // This controller retrieves data from the appCivistService and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp
-		.controller(
-				'AssemblyCtrl',
-				function($scope, $routeParams, $resource, appCivistService,
+appCivistApp.controller('AssemblyCtrl',	function($scope, $routeParams, $resource, appCivistService,
 						loginService) {
 					$scope.currentAssembly = {};
 					$scope.comments = 10;

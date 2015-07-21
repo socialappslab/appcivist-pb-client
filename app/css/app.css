@@ -383,6 +383,50 @@ button#second-vote {
   border-radius: 15px;
 }
 
+.assembliesLanding .row {
+  margin-bottom: 40px;
+}
+.assembliesLanding ul {
+  list-style-type: none;
+}
+.assembliesLanding .assembly {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  display: inline-flex;
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: 0px;
+  height: 150px;
+}
+.assembliesLanding .assembly img {
+  -webkit-box-shadow: 0;
+  box-shadow: 0;
+  height: 100px;
+  display: inline-block;
+}
+.assembliesLanding .assembly .caption {
+  display: inline-block;
+  width: 220px;
+}
+.assembliesLanding .image-circle {
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin: auto;
+  border-radius: 100%;
+}
+.assembliesLanding .image-capsule {
+  cursor: default;
+  margin: 0px 10px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
 .bubbleChart {
   height: 100%;
   padding-bottom: 15px;

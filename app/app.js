@@ -38,13 +38,13 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
 		//            })
         .when('/assembly',{
             controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/assembly/assembly.html'
+            templateUrl: 'app/partials/assembly/assemblyPartOne.html'
 
-        })
+        })/*
         .when('/assemblies',{
             controller: 'AssemblyListCtrl',
             templateUrl: 'app/partials/assemblies/assemblies.html'
-        })
+        })*/
         .otherwise({
 			redirectTo : '/'
 		});

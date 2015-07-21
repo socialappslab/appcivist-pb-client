@@ -383,13 +383,13 @@ button#second-vote {
   border-radius: 15px;
 }
 
-.home .row {
+.assembliesLanding .row {
   margin-bottom: 40px;
 }
-.home ul {
+.assembliesLanding ul {
   list-style-type: none;
 }
-.home .assembly {
+.assembliesLanding .assembly {
   -webkit-box-shadow: none;
   box-shadow: none;
   display: inline-flex;
@@ -399,24 +399,24 @@ button#second-vote {
   border-radius: 0px;
   height: 150px;
 }
-.home .assembly img {
+.assembliesLanding .assembly img {
   -webkit-box-shadow: 0;
   box-shadow: 0;
   height: 100px;
   display: inline-block;
 }
-.home .assembly .caption {
+.assembliesLanding .assembly .caption {
   display: inline-block;
   width: 220px;
 }
-.home .image-circle {
+.assembliesLanding .image-circle {
   height: 100px;
   width: 100px;
   display: block;
   margin: auto;
   border-radius: 100%;
 }
-.home .image-capsule {
+.assembliesLanding .image-capsule {
   cursor: default;
   margin: 0px 10px;
 }

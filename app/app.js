@@ -30,10 +30,6 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
 			controller : 'MainCtrl',
 			templateUrl : '/app/partials/main.html'
 		})
-		.when('/assemblies', {
-			controller : 'AssemblyListCtrl',
-			templateUrl : '/app/partials/landing/landing.html'
-		})
 		//        //Define a route that has a route parameter in it (:customerID)
 		//        .when('/assembly/:assemblyID/campaign/:campaignId',
 		//            {
@@ -45,9 +41,9 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
             templateUrl: 'app/partials/assembly/assembly.html'
 
         })
-        .when('/home',{
+        .when('/assemblies',{
             controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/home/home.html'
+            templateUrl: 'app/partials/assemblies/assemblies.html'
         })
         .otherwise({
 			redirectTo : '/'

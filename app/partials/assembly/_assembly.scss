@@ -1,0 +1,52 @@
+.assemblyCreation{
+  .row{
+    margin: 0 0 10px 0;
+  }
+
+  .image-capsule{
+    margin-right: 30px;
+  }
+
+  .image-circle {
+    height: 60px;
+    width: 60px;
+    display: block;
+    margin: auto;
+    border-radius: 100%;
+    display: inline-block;
+  }
+
+  .image-cover {
+    height: 100px;
+    width: 500px;
+    display: block;
+    margin: auto;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .collection-tags{
+    float:left;
+  }
+
+  .green-tag{
+    color: white;
+    background-color: #5cb85c;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0 5px 0px;
+  }
+
+  h1{
+    vertical-align: sub;
+    display: inline-block;
+  }
+
+  label{
+    font-size: 16px;
+  }
+
+  ul{
+    list-style: none;
+  }
+}

@@ -241,34 +241,39 @@ button#second-vote {
   .navbar > .container .navbar-brand,
   .navbar > .container-fluid .navbar-brand {
     margin-left: 0 !important; } }
-.row {
+.assemblyCreation .row {
   margin: 0 0 10px 0; }
-
-.image-capsule {
+.assemblyCreation .image-capsule {
   margin-right: 30px; }
-
-.image-circle {
+.assemblyCreation .image-circle {
   height: 60px;
   width: 60px;
   display: block;
   margin: auto;
   border-radius: 100%;
   display: inline-block; }
-
-.image-cover {
+.assemblyCreation .image-cover {
   height: 100px;
   width: 500px;
   display: block;
   margin: auto;
   display: inline-block;
   margin-bottom: 10px; }
-
-h1 {
+.assemblyCreation .collection-tags {
+  float: left; }
+.assemblyCreation .green-tag {
+  color: white;
+  background-color: #5cb85c;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0 5px 0px; }
+.assemblyCreation h1 {
   vertical-align: sub;
   display: inline-block; }
-
-label {
+.assemblyCreation label {
   font-size: 16px; }
+.assemblyCreation ul {
+  list-style: none; }
 
 .assembliesLanding .row {
   margin-bottom: 40px; }

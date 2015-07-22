@@ -1,4 +1,4 @@
-<div class="view" ng-controller="AssemblyCtrl">
+<div class="view assemblyCreation" ng-controller="AssemblyCtrl">
     <div class="container">
         <div class="row">
             <img data-src="../assets/images/num1.png" alt="100x100" src="../assets/images/num1.png" data-holder-rendered="true" class="image-circle">
@@ -101,13 +101,13 @@
                                     <div class="col-md-6">
                                         <div class="radio" style="margin-top:30px;">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="noRadio" value="open" checked>
+                                                <input type="radio" name="roleRadios" id="noRadio" value="open" checked>
                                                 No
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="yesRadio" value="registration">
+                                                <input type="radio" name="roleRadios" id="yesRadio" value="registration">
                                                 Yes
                                             </label>
                                         </div>
@@ -137,7 +137,7 @@
             <div class="col-lg-6 col-md-6">
                 <div class="row">
                     <label class="control-label">Pick an Icon to represent your assembly</label>
-                    <div style="overflow-x:auto; white-space: nowrap">
+                    <div style="white-space: nowrap">
                         <div style="display: inline-block;">
                             <div class="image-capsule">
                                 <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/justicia-140.png" data-holder-rendered="true" class="image-circle">
@@ -172,7 +172,7 @@
                 </div>
                 <div class="row">
                     <label class="control-label">Pick a cover for your assembly</label>
-                    <div style="overflow-x:auto; white-space: nowrap">
+                    <div style="white-space: nowrap">
                         <div style="display: inline;">
                             <div class="image-capsule">
                                 <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image77.JPG" data-holder-rendered="true" class="image-cover">
@@ -186,19 +186,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-horizontal">
+                    <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <div>
                                 <label for="inputContactNameAssembly" class="control-label">*Primary contact</label>
                                 <div>
-                                    <input style="width:200px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactNameAssembly" placeholder="Name">
-                                    <input style="width:200px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactPhoneAssembly" placeholder="Phone">
-                                    <input style="width:200px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactEmailAssembly" placeholder="Email">
-                                    <button class="btn btn-primary">Next</button>
+                                    <input style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactNameAssembly" placeholder="Name">
+                                    <input style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactPhoneAssembly" placeholder="Phone">
+                                    <input style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactEmailAssembly" placeholder="Email">
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <button class="col-md-push-8 col-md-4 btn btn-primary"><h3><strong>Next</strong></h3></button>
                 </div>
             </div>
         </div>

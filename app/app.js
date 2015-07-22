@@ -36,9 +36,14 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
 		//                controller: 'AssemblyController',
 		//                templateUrl: '/app/partials/assemblyCampaignView.html'
 		//            })
-        .when('/assembly',{
+        .when('/assembly/create/step1',{
             controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/assembly/assembly.html'
+            templateUrl: 'app/partials/assembly/assemblyPartOne.html'
+
+        })
+        .when('/assembly/create/step2',{
+            controller: 'AssemblyListCtrl',
+            templateUrl: 'app/partials/assembly/assemblyPartTwo.html'
 
         })
         .when('/assemblies',{

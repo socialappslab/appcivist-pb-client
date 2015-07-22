@@ -304,83 +304,47 @@ button#second-vote {
     margin-left: 0 !important;
   }
 }
-.data-capsule {
-  height: 290px;
-  overflow: auto;
+.assemblyCreation .row {
+  margin: 0 0 10px 0;
 }
-.data-capsule .data-capsule__section {
-  height: 100%;
-  margin-bottom: 5px;
+.assemblyCreation .image-capsule {
+  margin-right: 30px;
 }
-
-.row {
-  margin-bottom: 10px;
-}
-
-.image-circle {
-  height: 100px;
-  width: 100px;
+.assemblyCreation .image-circle {
+  height: 60px;
+  width: 60px;
   display: block;
   margin: auto;
   border-radius: 100%;
-}
-
-.image-capsule {
-  cursor: default;
-  margin: 0px 10px;
-}
-
-/*Campaign section*/
-.current-campaigns {
-  background-color: rgba(205, 83, 247, 0.1);
-  border-radius: 15px;
-}
-
-.campaign-elements__campaign h6 {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.campaign-phases {
-  padding-left: 0px;
-}
-.campaign-phases :first-child {
-  margin-left: 0px !important;
-}
-.campaign-phases li {
   display: inline-block;
-  margin-left: -35px;
-  opacity: 0.3;
 }
-.campaign-phases .active {
-  opacity: 1;
+.assemblyCreation .image-cover {
+  height: 100px;
+  width: 500px;
+  display: block;
+  margin: auto;
+  display: inline-block;
+  margin-bottom: 10px;
 }
-
-/*Contributions section*/
-.contributions {
-  background-color: rgba(91, 216, 82, 0.1);
-  border-radius: 15px;
+.assemblyCreation .collection-tags {
+  float: left;
 }
-
-.tag {
-  border-radius: 10px;
-  padding: 5px;
-  text-align: center;
-  background-color: lightgray;
-  cursor: pointer;
+.assemblyCreation .green-tag {
+  color: white;
+  background-color: #5cb85c;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0 5px 0px;
 }
-
-/*WorkingGroups section*/
-.working-groups {
-  background-color: rgba(36, 189, 239, 0.1);
-  border-radius: 15px;
+.assemblyCreation h1 {
+  vertical-align: sub;
+  display: inline-block;
 }
-
-/*Members section*/
-.members {
-  background-color: rgba(252, 163, 76, 0.1);
-  border-radius: 15px;
+.assemblyCreation label {
+  font-size: 16px;
+}
+.assemblyCreation ul {
+  list-style: none;
 }
 
 .assembliesLanding .row {

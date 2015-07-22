@@ -27,6 +27,11 @@
 					<li ng-if='userIsAuthenticated()'><button type="button" class="btn btn-primary">Logout</button></li>
 				</ul>
 			</div>
+			<div class="collapse navbar-collapse navbar-right" id="navbar-menu" ng-if='userIsAuthenticated()'>
+				<form class="navbar-form navbar-left">
+					<button type="button" class="btn btn-danger" ng-click="signout()">Log out</button>
+				</form>
+			</div>
 
 		</div>
 	</nav>

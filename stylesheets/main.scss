@@ -1,6 +1,7 @@
 @import "../app/partials/landing/landing";
 @import "../app/partials/assembly/assembly";
 @import "../app/partials/assemblies/assemblies";
+@import "../app/partials/forum/forum";
 
 footer{
   position: absolute;
@@ -16,4 +17,47 @@ footer{
 .bubbleChart svg{
   background: rgba(0, 0, 0, 0);
 
+}
+
+
+/*Mixin*/
+.assembly{
+  -webkit-box-shadow:none;
+  box-shadow:none;
+  display: inline-flex;
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: 0px;
+  height: 150px;
+
+  img{
+    -webkit-box-shadow:0;
+    box-shadow:0;
+    height: 100px;
+    display: inline-block;
+  }
+
+  .caption{
+    display: inline-block;
+    width: 220px;
+  }
+
+}
+
+.image-circle{
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin:auto;
+  border-radius: 100%;
+}
+
+.image-capsule{
+  cursor: default;
+  margin: 0px 10px;
+}
+
+i{
+  cursor: pointer;
 }

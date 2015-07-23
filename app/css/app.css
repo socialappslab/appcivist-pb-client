@@ -385,6 +385,66 @@ button#second-vote {
   margin: 0px 10px;
 }
 
+.forum h1, .forum h2, .forum h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.forum .header .assembly .caption {
+  width: auto;
+}
+.forum .header button {
+  float: right;
+  margin-top: 100px;
+}
+.forum .info-lateral {
+  margin-top: 30px;
+}
+.forum .info-box {
+  margin-top: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  height: 150px;
+  background-color: #f3f3f3;
+}
+.forum .info-box .row {
+  margin-left: 0px;
+}
+.forum .info-box .list-item {
+  margin-top: 5px;
+}
+.forum .info-box button {
+  float: right;
+}
+.forum .info-box .image-circle {
+  height: 20px;
+  width: 20px;
+}
+.forum .info-box .list-item .row {
+  margin-right: 0px;
+}
+.forum .image-capsule img {
+  display: inline-block;
+}
+.forum .image-capsule .caption {
+  display: inline-block;
+}
+.forum .green-tag {
+  cursor: pointer;
+  float: left;
+  color: white;
+  background-color: #5cb85c;
+  padding: 0 10px;
+  border-radius: 5px;
+  margin: 5px 5px 5px 5px;
+}
+.forum .forum-title h5 {
+  margin: 5px 0;
+}
+.forum .discussion {
+  margin-top: -35px;
+}
+
 footer {
   position: absolute;
   bottom: 0px;
@@ -398,6 +458,45 @@ footer {
 
 .bubbleChart svg {
   background: transparent;
+}
+
+/*Mixin*/
+.assembly {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  display: inline-flex;
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: 0px;
+  height: 150px;
+}
+.assembly img {
+  -webkit-box-shadow: 0;
+  box-shadow: 0;
+  height: 100px;
+  display: inline-block;
+}
+.assembly .caption {
+  display: inline-block;
+  width: 220px;
+}
+
+.image-circle {
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin: auto;
+  border-radius: 100%;
+}
+
+.image-capsule {
+  cursor: default;
+  margin: 0px 10px;
+}
+
+i {
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=app.css.map */

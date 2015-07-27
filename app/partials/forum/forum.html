@@ -1,4 +1,4 @@
-<div class="view forum">
+<div class="view forum" ng-controller="ForumCtrl">
     <div class="container">
         <div class="row header">
             <div class="col-md-8 col-sm-8">
@@ -77,7 +77,58 @@
                         </div>
                     </div>
                 </div>
-                <div class="row"></div>
+                <div class="row">
+                    <div class="row col-md-11 col-sm-11 commentBox">
+                        <textarea name="commentForum" id="comment-forum" class="commentArea" rows="6" placeholder="What's up? ..."></textarea>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <a ng-href="/#/assembly/create/step1" style="display: inline-block; margin-top: 50%; cursor: pointer;"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="cursor: pointer"></a>
+                            </div>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-5">
+                                <div class="dropdown" style="display: inline-block;">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Select Theme:
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li><a href="#">Theme 1</a></li>
+                                        <li><a href="#">Theme 2</a></li>
+                                        <li><a href="#">Theme 3</a></li>
+                                    </ul>
+                                </div>
+                                <h4 class="text-info" style="display: inline-block; vertical-align: middle; cursor:pointer"><strong>Publish</strong></h4>
+                                <h4 style="display: inline-block; vertical-align: middle"><strong>Cancel</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="row comments col-md-11 col-sm-11">
+                        <li ng-class="{true: 'row comment col-md-12 col-sm-12 reply', false: 'row comment col-md-12 col-sm-12'}[comment.reply]" class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: 'date'">
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="image-profile-comment inline">
+                                    <img ng-src="{{comment.picture}}" alt="" />
+                                </div>
+                                <h5 class="user-comment inline">{{comment.user}}. / </h5>
+                                <h5 class="date-comment inline"><time datetime="{{comment.date}}"/>{{comment.date | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
+                                <div class="options-comment inline">
+                                    <ul class="tags" ng-repeat="tag in comment.tags">
+                                        <li class="tag"><strong>{{tag.tag}}</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="counter inline pull-right">
+                                    <i class="fa fa-caret-up"></i>
+                                    <p><strong>0</strong></p>
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="col-md-12 col-sm-12 text-comment">
+                                    <p class="comment-comment"><a>{{comment.comment}}</a></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="col-md-4 col-sm-4 info-lateral">
                 <div class="row info-box">

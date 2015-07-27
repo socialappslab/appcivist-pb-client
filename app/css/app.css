@@ -385,9 +385,16 @@ button#second-vote {
   margin: 0px 10px;
 }
 
+.forum {
+  /**********************COMMENTS********************/
+}
 .forum h1, .forum h2, .forum h3 {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.forum .row {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .forum .header .assembly .caption {
   width: auto;
@@ -444,6 +451,68 @@ button#second-vote {
 .forum .discussion {
   margin-top: -35px;
 }
+.forum .commentBox {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+}
+.forum .commentBox .image-circle {
+  height: 20px;
+  width: 20px;
+  opacity: 0.6;
+}
+.forum .commentArea {
+  border: none;
+  width: 100%;
+  resize: none;
+  outline: 0;
+}
+.forum .comments {
+  list-style-type: none;
+}
+.forum .reply {
+  margin-left: 25px;
+}
+.forum .comment {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 5px;
+}
+.forum .image-profile-comment img {
+  background-size: 100%;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+.forum .text-comment * {
+  display: inline;
+}
+.forum .options-comment {
+  margin-top: 0.5em;
+  display: block;
+}
+.forum .comment-comment a {
+  text-decoration: none;
+  color: black;
+}
+.forum .tags {
+  padding-left: 0;
+  list-style: none;
+  display: inline-block;
+}
+.forum .tag {
+  margin: 0 2px;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  font-size: 0.8em;
+  cursor: pointer;
+  display: inline-block;
+  border: none;
+  background: rgba(0, 0, 0, 0.26);
+}
+.forum .counter p {
+  margin: -8px 0 -8px 0px;
+}
 
 footer {
   position: absolute;
@@ -458,6 +527,10 @@ footer {
 
 .bubbleChart svg {
   background: transparent;
+}
+
+.inline {
+  display: inline-block !important;
 }
 
 /*Mixin*/

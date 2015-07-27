@@ -5,6 +5,11 @@
     margin-bottom:10px;
   }
 
+  .row{
+    margin-top:5px;
+    margin-bottom:5px;
+  }
+
   .header{
     .assembly .caption{
       width: auto;
@@ -81,4 +86,99 @@
   .discussion{
     margin-top: -35px;
   }
+
+  .commentBox{
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 5px;
+
+    .image-circle{
+      height:20px;
+      width:20px;
+      opacity: 0.6;
+    }
+  }
+
+  .commentArea{
+    border:none;
+    width:100%;
+    resize: none;
+    outline: 0;
+  }
+
+
+  /**********************COMMENTS********************/
+
+  .comments{
+    list-style-type: none;
+  }
+
+  .reply{
+    margin-left:25px;
+  }
+
+  .comment{
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  .image-profile-comment img{
+    background-size: 100%;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+  }
+
+  .user-comment{
+    a {
+
+    }
+  }
+
+  .text-comment *{
+    display: inline;
+  }
+
+  .options-comment{
+    margin-top: 0.5em;
+    display: block;
+  }
+
+  .date-comment{
+
+  }
+
+  .comment-comment{
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  .tags{
+    padding-left: 0;
+    list-style: none;
+    display: inline-block;
+  }
+
+  .tag{
+    margin: 0 2px;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    display: inline-block;
+
+    border: none;
+    background: rgba(0, 0, 0, 0.26);
+  }
+
+  .counter{
+    p{
+      margin: -8px 0 -8px 0px;
+    }
+  }
+
+
 }

@@ -1,0 +1,90 @@
+.data-capsule{
+  height: 290px;
+  overflow: auto;
+  .data-capsule__section{
+    height: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+.row{
+  margin-bottom: 10px;
+}
+
+.image-circle{
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin:auto;
+  border-radius: 100%;
+}
+
+.image-capsule{
+  cursor: default;
+  margin: 0px 10px;
+}
+
+/*Campaign section*/
+
+.current-campaigns{
+  background-color: rgba(205, 83, 247, 0.1);
+  border-radius: 15px;
+}
+
+.campaign-elements__campaign{
+  h6{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.campaign-phases{
+  padding-left: 0px;
+
+  :first-child{
+    margin-left: 0px !important;
+  }
+
+  li{
+    display: inline-block;
+    margin-left:-35px;
+    opacity: 0.3;
+  }
+
+  .active{
+    opacity: 1;
+  }
+}
+
+/*Contributions section*/
+
+.contributions{
+  background-color: rgba(91, 216, 82, 0.1);
+  border-radius: 15px;
+}
+
+.tag{
+  border-radius: 10px;
+  padding: 5px;
+  text-align: center;
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+/*WorkingGroups section*/
+
+.working-groups{
+  background-color: rgba(36, 189, 239, 0.1);
+  border-radius: 15px;
+}
+
+/*Members section*/
+
+.members{
+  background-color: rgba(252, 163, 76, 0.1);
+  border-radius: 15px;
+}
+
+
+

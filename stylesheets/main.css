@@ -1,58 +1,456 @@
-/*
-Error: File to import not found or unreadable: ../app/partials/assemblies/assemblies.
-        on line 3 of main.scss
+/**
+ * Original styles in Hypersphere (first demo of AppCivist)
+ */
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  overflow-x: hidden; }
 
-1: @import "../app/partials/landing/landing";
-2: @import "../app/partials/assembly/assembly";
-3: @import "../app/partials/assemblies/assemblies";
-4: 
-5: footer{
-6:   position: absolute;
-7:   bottom: 0px;
-8:   width: 100%;
+.modal-body {
+  max-height: 50vh;
+  overflow-y: scroll; }
 
-Backtrace:
-main.scss:3
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/import_node.rb:67:in `rescue in import'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/import_node.rb:45:in `import'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/import_node.rb:28:in `imported_file'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/import_node.rb:37:in `css_import?'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:311:in `visit_import'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:36:in `visit'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/stack.rb:79:in `block in with_base'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/stack.rb:115:in `with_frame'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/stack.rb:79:in `with_base'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:158:in `visit'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:52:in `map'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:52:in `visit_children'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:36:in `block in visit'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/base.rb:36:in `visit'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:157:in `visit'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/visitors/perform.rb:8:in `visit'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/root_node.rb:36:in `css_tree'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/engine.rb:368:in `_render_with_sourcemap'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/engine.rb:285:in `render_with_sourcemap'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:490:in `update_stylesheet'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:209:in `each'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/plugin.rb:82:in `update_stylesheets'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/exec/sass_scss.rb:361:in `watch_or_update'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/exec/sass_scss.rb:51:in `process_result'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/exec/base.rb:52:in `parse'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/lib/sass/exec/base.rb:19:in `parse!'
-/Library/Ruby/Gems/2.0.0/gems/sass-3.4.14/bin/scss:13:in `<top (required)>'
-/usr/bin/scss:23:in `load'
-/usr/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: File to import not found or unreadable: ../app/partials/assemblies/assemblies.\A         on line 3 of main.scss\A \A 1: @import \"../app/partials/landing/landing\";\A 2: @import \"../app/partials/assembly/assembly\";\A 3: @import \"../app/partials/assemblies/assemblies\";\A 4: \A 5: footer{\A 6:   position: absolute;\A 7:   bottom: 0px;\A 8:   width: 100%;"; }
+.container-fluid {
+  padding: 0; }
+
+.container.marketing {
+  text-align: center;
+  margin-bottom: 30px; }
+
+.container.marketing i {
+  color: #808080;
+  font-size: 90px;
+  line-height: 140px; }
+
+ins {
+  text-decoration: none;
+  background-color: #cfc; }
+
+del {
+  background-color: #fcc;
+  color: #c00; }
+
+.compare button {
+  white-space: normal;
+  width: 100%; }
+
+hr.header {
+  margin-top: 0; }
+
+.tab-content > .tab-pane {
+  padding: 0.5em 0; }
+
+.filters {
+  margin-bottom: 0.5em;
+  display: none;
+  /* Leave them for now */ }
+  .filters .btn {
+    color: #428BCA;
+    border-right: 1px solid #eee; }
+    .filters .btn:last-child {
+      border: none; }
+    .filters .btn:hover {
+      color: #2A6496; }
+    .filters .btn:active, .filters .btn.active {
+      color: #333;
+      box-shadow: none; }
+
+.content-type {
+  background: #eee;
+  text-align: center;
+  padding: 1em 0; }
+
+.new-button {
+  margin: 8px 0 0 10px;
+  font-size: 10px;
+  padding: 4px 8px; }
+
+.new-button-small {
+  margin-left: 8px;
+  font-size: 8px;
+  padding: 4px 6px; }
+
+.affix {
+  top: 20px; }
+
+textarea {
+  max-width: 100%; }
+
+#post-column {
+  margin-bottom: 100%; }
+  #post-column .panel {
+    background: inherit;
+    border: 4px solid transparent;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0; }
+    #post-column .panel.proposal {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 20px; }
+    #post-column .panel.first-vote {
+      border: 4px solid #5bc0de; }
+    #post-column .panel.second-vote {
+      border: 4px solid #f0ad4e; }
+  #post-column .panel-default > .panel-heading {
+    font-size: 0.875em;
+    padding: 0.5em 1.25em;
+    font-weight: bold;
+    border-radius: 0;
+    border-color: #d3d3d3; }
+    #post-column .panel-default > .panel-heading.proposal-change {
+      background: #e6e6e6; }
+      #post-column .panel-default > .panel-heading.proposal-change .compare-button {
+        float: right;
+        padding: 0.125em 0.5em;
+        font-size: 0.75em;
+        font-weight: bold; }
+    #post-column .panel-default > .panel-heading.comment {
+      background: #D2E5FC;
+      border-color: #BAD5F6; }
+    #post-column .panel-default > .panel-heading small {
+      margin-left: 0.5em;
+      font-weight: normal; }
+  #post-column .panel-body {
+    padding: 0.5em 1.125em 1.25em;
+    background: #f9f9f9; }
+
+button#current-vote {
+  border: 2px solid #5bc0de; }
+
+button#second-vote {
+  border: 2px solid #f0ad4e; }
+
+#map-container {
+  margin-left: 0;
+  margin-right: 0; }
+
+#map {
+  border: 1px solid #ccc;
+  height: 90vh; }
+
+.map-column {
+  padding: 0; }
+
+.navbar .logotype {
+  /*height: 100%;*/
+  height: 45px; }
+
+.navbar .navbar-brand {
+  padding: 5px 15px; }
+
+.navbar-map {
+  margin-bottom: 0;
+  border-radius: 0; }
+
+.navbar-unauthenticated {
+  margin: 0;
+  border: 0; }
+
+.reports-panel {
+  background-color: #f8f8f8;
+  height: 90vh;
+  overflow: auto;
+  padding: 0; }
+
+.reports-panel .title {
+  text-align: center; }
+
+.jumbotron-index {
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0 0 15px 0;
+  text-align: center; }
+
+.jumbotron-logotype {
+  height: 48px; }
+
+.jumbotron-index .logotype {
+  width: 300px;
+  position: relative;
+  top: 0px;
+  /*-50px*/ }
+
+.jumbotron-index i {
+  color: #808080;
+  font-size: 48px; }
+
+.jumbotron-groups img {
+  width: 90px; }
+
+.jumbotron-copyright {
+  padding-top: 12px; }
+
+.reports a {
+  color: #000; }
+
+.summary-heading {
+  margin: 30px 0; }
+
+#features-row {
+  background-color: #4A4A4A;
+  margin-right: 0;
+  margin-left: 0;
+  color: #FFF; }
+
+.highlight {
+  color: #62A6E0; }
+
+.feature-icon {
+  height: 55px;
+  width: 55px; }
+
+.media-body h4 {
+  text-align: center; }
+
+#feature-title {
+  text-align: center; }
+
+#availability-text {
+  font-size: 90%;
+  color: #999999;
+  text-align: center;
+  margin-top: -20px; }
+
+#features-row hr {
+  color: #999;
+  background-color: #999;
+  border: 0;
+  height: 2px; }
+
+.footer {
+  background-color: #505050; }
+  .footer a {
+    color: #999999;
+    padding-left: 10px;
+    padding-right: 10px; }
+
+#footer-row {
+  background-color: #505050;
+  margin: 0; }
+
+.features-arrow {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 18px; }
+
+/* Fixes
+
+   TODO: remove these hacks */
+@media (min-width: 768px) {
+  .navbar > .container .navbar-brand,
+  .navbar > .container-fluid .navbar-brand {
+    margin-left: 0 !important; } }
+.assemblyCreation .row {
+  margin: 0 0 10px 0; }
+.assemblyCreation .image-capsule {
+  margin-right: 30px; }
+.assemblyCreation .image-circle {
+  height: 60px;
+  width: 60px;
+  display: block;
+  margin: auto;
+  border-radius: 100%;
+  display: inline-block; }
+.assemblyCreation .image-cover {
+  height: 100px;
+  width: 500px;
+  display: block;
+  margin: auto;
+  display: inline-block;
+  margin-bottom: 10px; }
+.assemblyCreation .collection-tags {
+  float: left; }
+.assemblyCreation .green-tag {
+  color: white;
+  background-color: #5cb85c;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0 5px 0px; }
+.assemblyCreation h1 {
+  vertical-align: sub;
+  display: inline-block; }
+.assemblyCreation label {
+  font-size: 16px; }
+.assemblyCreation ul {
+  list-style: none; }
+
+.assembliesLanding .row {
+  margin-bottom: 40px; }
+.assembliesLanding ul {
+  list-style-type: none; }
+.assembliesLanding .assembly {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  display: inline-flex;
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: 0px;
+  height: 150px; }
+  .assembliesLanding .assembly img {
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
+    height: 100px;
+    display: inline-block; }
+  .assembliesLanding .assembly .caption {
+    display: inline-block;
+    width: 220px; }
+.assembliesLanding .image-circle {
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin: auto;
+  border-radius: 100%; }
+.assembliesLanding .image-capsule {
+  cursor: default;
+  margin: 0px 10px; }
+
+.forum {
+  /**********************COMMENTS********************/ }
+  .forum h1, .forum h2, .forum h3 {
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .forum .row {
+    margin-top: 5px;
+    margin-bottom: 5px; }
+  .forum .header .assembly .caption {
+    width: auto; }
+  .forum .header button {
+    float: right;
+    margin-top: 100px; }
+  .forum .info-lateral {
+    margin-top: 30px; }
+  .forum .info-box {
+    margin-top: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    height: 150px;
+    background-color: #f3f3f3; }
+    .forum .info-box .row {
+      margin-left: 0px; }
+    .forum .info-box .list-item {
+      margin-top: 5px; }
+    .forum .info-box button {
+      float: right; }
+    .forum .info-box .image-circle {
+      height: 20px;
+      width: 20px; }
+    .forum .info-box .list-item .row {
+      margin-right: 0px; }
+  .forum .image-capsule img {
+    display: inline-block; }
+  .forum .image-capsule .caption {
+    display: inline-block; }
+  .forum .green-tag {
+    cursor: pointer;
+    float: left;
+    color: white;
+    background-color: #5cb85c;
+    padding: 0 10px;
+    border-radius: 5px;
+    margin: 5px 5px 5px 5px; }
+  .forum .forum-title h5 {
+    margin: 5px 0; }
+  .forum .discussion {
+    margin-top: -35px; }
+  .forum .commentBox {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 5px; }
+    .forum .commentBox .image-circle {
+      height: 20px;
+      width: 20px;
+      opacity: 0.6; }
+  .forum .commentArea {
+    border: none;
+    width: 100%;
+    resize: none;
+    outline: 0; }
+  .forum .comments {
+    list-style-type: none; }
+  .forum .reply {
+    margin-left: 25px; }
+  .forum .comment {
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 5px; }
+  .forum .image-profile-comment img {
+    background-size: 100%;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px; }
+  .forum .text-comment * {
+    display: inline; }
+  .forum .options-comment {
+    margin-top: 0.5em;
+    display: block; }
+  .forum .comment-comment a {
+    text-decoration: none;
+    color: black; }
+  .forum .tags {
+    padding-left: 0;
+    list-style: none;
+    display: inline-block; }
+  .forum .tag {
+    margin: 0 2px;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    display: inline-block;
+    border: none;
+    background: rgba(0, 0, 0, 0.26); }
+  .forum .counter p {
+    margin: -8px 0 -8px 0px; }
+
+footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%; }
+
+.bubbleChart {
+  height: 100%;
+  padding-bottom: 15px; }
+
+.bubbleChart svg {
+  background: transparent; }
+
+.inline {
+  display: inline-block !important; }
+
+/*Mixin*/
+.assembly {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  display: inline-flex;
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: 0px;
+  height: 150px; }
+  .assembly img {
+    -webkit-box-shadow: 0;
+    box-shadow: 0;
+    height: 100px;
+    display: inline-block; }
+  .assembly .caption {
+    display: inline-block;
+    width: 220px; }
+
+.image-circle {
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin: auto;
+  border-radius: 100%; }
+
+.image-capsule {
+  cursor: default;
+  margin: 0px 10px; }
+
+i {
+  cursor: pointer; }
+
+/*# sourceMappingURL=main.css.map */

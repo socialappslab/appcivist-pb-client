@@ -1,90 +1,52 @@
-.data-capsule{
-  height: 290px;
-  overflow: auto;
-  .data-capsule__section{
-    height: 100%;
-    margin-bottom: 5px;
-  }
-}
-
-.row{
-  margin-bottom: 10px;
-}
-
-.image-circle{
-  height: 100px;
-  width: 100px;
-  display: block;
-  margin:auto;
-  border-radius: 100%;
-}
-
-.image-capsule{
-  cursor: default;
-  margin: 0px 10px;
-}
-
-/*Campaign section*/
-
-.current-campaigns{
-  background-color: rgba(205, 83, 247, 0.1);
-  border-radius: 15px;
-}
-
-.campaign-elements__campaign{
-  h6{
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-}
-
-.campaign-phases{
-  padding-left: 0px;
-
-  :first-child{
-    margin-left: 0px !important;
+.assemblyCreation{
+  .row{
+    margin: 0 0 10px 0;
   }
 
-  li{
+  .image-capsule{
+    margin-right: 30px;
+  }
+
+  .image-circle {
+    height: 60px;
+    width: 60px;
+    display: block;
+    margin: auto;
+    border-radius: 100%;
     display: inline-block;
-    margin-left:-35px;
-    opacity: 0.3;
   }
 
-  .active{
-    opacity: 1;
+  .image-cover {
+    height: 100px;
+    width: 500px;
+    display: block;
+    margin: auto;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .collection-tags{
+    float:left;
+  }
+
+  .green-tag{
+    color: white;
+    background-color: #5cb85c;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0 5px 0px;
+  }
+
+  h1{
+    vertical-align: sub;
+    display: inline-block;
+  }
+
+  label{
+    font-size: 16px;
+  }
+
+  ul{
+    list-style: none;
   }
 }
-
-/*Contributions section*/
-
-.contributions{
-  background-color: rgba(91, 216, 82, 0.1);
-  border-radius: 15px;
-}
-
-.tag{
-  border-radius: 10px;
-  padding: 5px;
-  text-align: center;
-  background-color: lightgray;
-  cursor: pointer;
-}
-
-/*WorkingGroups section*/
-
-.working-groups{
-  background-color: rgba(36, 189, 239, 0.1);
-  border-radius: 15px;
-}
-
-/*Members section*/
-
-.members{
-  background-color: rgba(252, 163, 76, 0.1);
-  border-radius: 15px;
-}
-
-
-

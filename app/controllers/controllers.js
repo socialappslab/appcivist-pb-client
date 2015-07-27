@@ -128,6 +128,14 @@ appCivistApp.controller('AssemblyCtrl',	function($scope, $routeParams, $resource
 					}
 				});
 
+appCivistApp.controller('ForumCtrl', function($scope,$http){
+	$http.get('assets/comments/comments.json').success(function(data){
+		$scope.comments = data;
+	}).error(function(error){
+		console.log('Error loading data' + error);
+	});
+});
+
 //
 ////This controller retrieves data from the appCivistService and associates it with the $scope
 ////The $scope is bound to the orders view

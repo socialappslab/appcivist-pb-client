@@ -36,6 +36,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
 		//                controller: 'AssemblyController',
 		//                templateUrl: '/app/partials/assemblyCampaignView.html'
 		//            })
+        .when('/assemblies',{
+            controller: 'AssemblyListCtrl',
+            templateUrl: 'app/partials/assemblies/assemblies.html'
+        })
         .when('/assembly/create/step1',{
             controller: 'AssemblyListCtrl',
             templateUrl: 'app/partials/assembly/assemblyPartOne.html'
@@ -46,9 +50,8 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
             templateUrl: 'app/partials/assembly/assemblyPartTwo.html'
 
         })
-        .when('/assemblies',{
-            controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/assemblies/assemblies.html'
+        .when('/assembly/forum',{
+            templateUrl: 'app/partials/forum/forum.html'
         })
         .otherwise({
 			redirectTo : '/'

@@ -1,3 +1,55 @@
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 5px; }
+
+.header {
+  display: inline-block; }
+  .header > div {
+    display: inline; }
+
+.clear {
+  clear: both; }
+
+/* Index of phases in a black ball */
+.indexBall {
+  display: inline-block;
+  background-color: black;
+  padding: 20px;
+  border-radius: 50%; }
+  .indexBall * {
+    color: white;
+    display: inline;
+    margin: 0; }
+  .indexBall :first-child {
+    font-weight: bold; }
+  .indexBall :last-child {
+    vertical-align: -5px; }
+
+.box {
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px; }
+  .box.descriptionBox {
+    background-color: #DFEFD6;
+    color: #529053; }
+  .box.selectionBox {
+    background-color: #F4F4F4; }
+  .box.settingsBox {
+    border: 3px solid black;
+    margin: 30px 0px 30px 0px; }
+    .box.settingsBox .checkbox {
+      display: inline-block;
+      margin-right: 10px; }
+
+textarea {
+  resize: none;
+  margin: 5px 0 0 0;
+  height: 50px; }
+
+.form-group {
+  margin-left: 0px !important;
+  margin-right: 0px !important; }
+
 /**
  * Original styles in Hypersphere (first demo of AppCivist)
  */

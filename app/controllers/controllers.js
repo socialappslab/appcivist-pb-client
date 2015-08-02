@@ -136,6 +136,10 @@ appCivistApp.controller('ForumCtrl', function($scope,$http){
 	});
 });
 
+appCivistApp.controller('CampaignCtrl', function($scope,$http){
+
+});
+
 //
 ////This controller retrieves data from the appCivistService and associates it with the $scope
 ////The $scope is bound to the orders view

@@ -1,0 +1,183 @@
+<div class="view campaign" ng-controller="CampaignCtrl">
+    <div class="col-md-6 col-sm-6">
+        <div class="row header col-md-12 col-sm-12">
+            <div class="col-md-2 col-sm-2">
+                <div class="indexBall">
+                    <h1>1</h1>
+                    <h4>/</h4>
+                    <h4>5</h4>
+                </div>
+            </div>
+            <div class="col-md-10 col-sm-10">
+                <h1><strong>Configure Your Campaign</strong></h1>
+                <div class="box descriptionBox">
+                    <p><strong>Campaigns </strong>are initiatives that the assembly undertakes to achieve a specific goal. Each campaign has its own template that structures its components, working groups, and timeline.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12 form-horizontal">
+                <div class="form-group">
+                    <h3><label for="inputDefineCampaignGoals" class="control-label">Define campaign goals</label></h3>
+                    <textarea class="form-control" id="inputDefineCampaignGoals" placeholder="e.g., Develop proposals for PB Vallejo 2015"/>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-8 col-sm-8 form-horizontal">
+                <div class="form-group">
+                    <h3><label for="checkConfirmCampaignGoals" class="control-label">Confirm campaign themes</label></h3>
+                    <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
+                        <div class="col-md-8 col-md-8">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    <span>Urban infrastucture</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    <span>Education</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    <span>Transportation</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    <span>Parks and recreation</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-md-4">
+                            <button class="btn btn-success">Add new</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12 form-horizontal">
+                <div class="form-group">
+                    <h3><label for="selectCampaignTemplate" class="control-label">Select campaign template</label></h3>
+                        <select class="form-control col-md-4 col-sm-4" id="selectCampaignTemplate">
+                            <option selected>Participatory Budgeting</option>
+                            <option>Mobilization</option>
+                            <option>Community Organization</option>
+                            <option>Create your own...</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <div class="row box settingsBox col-md-12 col-sm-12">
+            <div class="row header col-md-12 col-sm-12">
+                <h3><strong>Template Preview: </strong> Participatory Budgeting</h3>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <h4><label for="checkProposalDevelopment" class="control-label">Proposal development components:</label></h4>
+                        <div class="col-md-12 col-sm-12" id="checkProposalDevelopment">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Proposal Making</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Versioning</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Deliberation</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Voting</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <h4><label for="checkSupportingComponents" class="control-label">Supporting commponents:</label></h4>
+                        <div class="col-md-12 col-sm-12" id="checkSupportingComponents">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Working Groups</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Visualization</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Mapping</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Mobilization</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Reporting</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="" checked>
+                                    <span>Implementation</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <h4><label for="timeline" class="control-label">Timeline:</label></h4>
+                        <img src="../assets/images/timeline.png" style="width: 100%" alt=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="">
+                        <span>Enable technical assesment</span>
+                        <i class="fa fa-question-circle"></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12 clear">
+            <a href="/#/campaign/create/step2"><button class="col-md-push-8 col-md-4 btn btn-primary"><h3><strong>Next</strong></h3></button></a>
+        </div>
+    </div>
+</div>

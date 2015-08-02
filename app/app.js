@@ -50,6 +50,11 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
             templateUrl: 'app/partials/assembly/assemblyPartTwo.html'
 
         })
+        .when('/campaign/create/step1',{
+            controller: 'CampaignCtrl',
+            templateUrl: 'app/partials/campaign/campaignPartOne.html'
+
+        })
         .when('/assembly/forum',{
             templateUrl: 'app/partials/forum/forum.html'
         })

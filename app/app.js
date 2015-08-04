@@ -51,7 +51,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
 
         })
         .when('/campaign/create/step1',{
-            controller: 'CampaignCtrl',
+            //controller: 'CampaignCt',
             templateUrl: 'app/partials/campaign/campaignPartOne.html'
 
         })

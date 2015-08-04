@@ -1,0 +1,119 @@
+<div class="box settingsBox">
+    <div class="row header col-md-12 col-sm-12">
+        <h3><strong>Template Preview: </strong> Participatory Budgeting</h3>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <h4><label for="checkProposalDevelopment" class="control-label">Proposal development components:</label></h4>
+                <div class="col-md-12 col-sm-12" id="checkProposalDevelopment">
+                    <div class="checkbox" ng-repeat="proposalComponent in proposalComponentsInputs">
+                        <label>
+                            <input type="checkbox" ng-checked="true" ng-model="proposalComponentModel.val" ng-change="setProposalComponentsOutput(proposalComponent, value)">
+                            <span>Proposal Making</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <h4><label for="checkSupportingComponents" class="control-label">Supporting commponents:</label></h4>
+                <div class="col-md-12 col-sm-12" id="checkSupportingComponents">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>
+                            <span>Working Groups</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>
+                            <span>Visualization</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>
+                            <span>Mapping</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>
+                            <span>Mobilization</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>
+                            <span>Reporting</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="" checked>
+                            <span>Implementation</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <h4><label for="timeline" class="control-label">Timeline:</label></h4>
+                <ul id="timeline" class="row timeline">
+                    <li>
+                        <h4><strong>Proposal Making</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Versioning</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Deliberation</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Voting</strong></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <ul class="row supporting-components">
+                    <li>
+                        <h4><strong>Working Groups</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Visualization</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Mapping</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Mobilization</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Reporting</strong></h4>
+                    </li>
+                    <li>
+                        <h4><strong>Implementation</strong></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="">
+                <span>Enable technical assesment</span>
+                <i class="fa fa-question-circle"></i>
+            </label>
+        </div>
+    </div>
+</div>

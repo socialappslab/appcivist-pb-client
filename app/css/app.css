@@ -581,6 +581,35 @@ button#second-vote {
   margin: -8px 0 -8px 0px;
 }
 
+.template-configuration .supporting-components {
+  list-style: none;
+}
+.template-configuration .supporting-components li {
+  border: 2px dashed black;
+  width: 100%;
+  display: block;
+  text-align: center;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+.timeline {
+  list-style: none;
+  display: inline-block;
+}
+.timeline li {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #F4F4F4;
+  color: black;
+  opacity: 1;
+}
+.timeline li.selected {
+  color: white;
+  background-color: black;
+  opacity: 0.2;
+}
+
 footer {
   position: absolute;
   bottom: 0px;

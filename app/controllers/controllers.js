@@ -136,8 +136,20 @@ appCivistApp.controller('ForumCtrl', function($scope,$http){
 	});
 });
 
-appCivistApp.controller('CampaignCtrl', function($scope,$http){
+appCivistApp.controller('TemplateConfigurationCtrl', function($scope){
 
+	$scope.proposalComponentsOutputs = {};
+	$scope.proposalComponentsInputs = ['Proposal making', 'Versioning', 'Deliberation', 'Voting'];
+
+	$scope.setProposalComponentsOutput = function(proposalComponent,value) {
+		debugger;
+		console.log(proposalComponent);
+	};
+
+
+	$scope.supportingComponents = function() {
+
+	}
 });
 
 //

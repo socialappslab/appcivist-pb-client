@@ -28,3 +28,13 @@ appCivistApp.directive('header', function () {
         }]
     }
 });
+
+appCivistApp.directive('templateConfiguration', function(){
+    return {
+        restrict: 'C',
+        replace: true,
+        scope: {},
+        templateUrl: "/app/partials/campaign/templateConfiguration.html",
+        controller: 'TemplateConfigurationCtrl'
+    }
+});

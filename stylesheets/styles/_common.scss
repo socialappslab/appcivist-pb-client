@@ -1,0 +1,75 @@
+h1,h2,h3,h4,h5,h6{
+    margin-top:0;
+    margin-bottom: 5px;
+}
+
+.header{
+    display: inline-block;
+
+    & > div {
+        display: inline;
+    }
+}
+
+.clear{
+    clear:both;
+}
+
+
+/* Index of phases in a black ball */
+.indexBall{
+    display: inline-block;
+    background-color: black;
+    padding: 20px;
+    border-radius: 50%;
+
+    & * {
+        color:white;
+        display: inline;
+        margin: 0;
+    }
+
+    & :first-child{
+        font-weight: bold;
+    }
+
+    & :last-child{
+        vertical-align: -5px;
+    }
+}
+
+.box{
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+
+    &.descriptionBox{
+        background-color: $description-box;
+        color: $description-box-font;
+    }
+
+    &.selectionBox{
+        background-color: $selection-box;
+    }
+
+    &.settingsBox{
+        border: 3px solid black;
+        margin: 30px 0px 30px 0px;
+
+        & .checkbox{
+            display: inline-block;
+            margin-right: 10px;
+        }
+    }
+}
+
+textarea{
+    resize: none;
+    margin: 5px 0 0 0;
+    height: 50px;
+}
+
+.form-group{
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}

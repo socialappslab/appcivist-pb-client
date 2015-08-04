@@ -13,9 +13,23 @@ http://compass-style.org
 <br/>
 http://sass-lang.com
 
-## Run
+## Directions
 
-If you are using a linux based system, you must place in the directory type ' npm start' on a shell
+First of all you have to install node.
+Then, open a shell and type:
+    $ npm install -g bower
+next we are going to install grunt,
+    $ npm install -g grunt-cli
+in the next step we are going to install compass ( you need to have installed ruby, if not, you have to install before)
+    $ gem update --system
+    $ gem install compass
+
+## Run
+You need to download the dependencies before run the application so,
+$ npm install
+
+Now you can run the app typing,
+$ grunt server
 
 If you have problems maybe you can configure your git with this:
 <br/>

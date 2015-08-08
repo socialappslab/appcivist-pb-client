@@ -138,17 +138,72 @@ appCivistApp.controller('ForumCtrl', function($scope,$http){
 
 appCivistApp.controller('TemplateConfigurationCtrl', function($scope){
 
-	$scope.proposalComponentsOutputs = {};
 	$scope.proposalComponentsInputs = ['Proposal making', 'Versioning', 'Deliberation', 'Voting'];
 
-	$scope.setProposalComponentsOutput = function(proposalComponent,value) {
-		debugger;
-		console.log(proposalComponent);
-	};
+	$scope.proposalMakingState = null;
+	$scope.versioningState = null;
+	$scope.deliberationState = null;
+	$scope.votingState = null;
 
+	$scope.workingGroups = null;
+	$scope.visualization = null;
+	$scope.mapping = null;
+	$scope.mobilization = null;
+	$scope.reporting = null;
+	$scope.implementation = null;
 
-	$scope.supportingComponents = function() {
+	$scope.proposalComponentStatus = function(componentName,state){
+		componentName = componentName.replace(/\s/g, '');
+		switch(componentName){
+			case 'Proposalmaking':
+				this.proposalMakingChangeState(state);
+				break;
+			case 'Versioning':
+				this.versioningChangeState(state);
+				break;
+			case 'Deliberation':
+				this.deliberationChangeState(state);
+				break;
+			case 'Voting':
+				this.votingChangeState(state);
+				break;
+		}
+	}
 
+	$scope.proposalMakingChangeState = function(state) {
+		if(state) {
+			$scope.proposalMakingState = "active";
+		}
+		else{
+			$scope.proposalMakingState = null;
+		}
+	}
+
+	$scope.versioningChangeState = function(state) {
+		if(state) {
+			$scope.versioningState = "active";
+		}
+		else{
+			$scope.versioningState = null;
+		}
+	}
+
+	$scope.deliberationChangeState = function(state) {
+		if(state) {
+			$scope.deliberationState = "active";
+		}
+		else{
+			$scope.deliberationState = null;
+		}
+	}
+
+	$scope.votingChangeState = function(state) {
+		if(state) {
+			$scope.votingState = "active";
+		}
+		else{
+			$scope.votingState = null;
+		}
 	}
 });
 

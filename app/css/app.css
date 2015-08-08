@@ -587,10 +587,13 @@ button#second-vote {
 .template-configuration .supporting-components li {
   border: 2px dashed black;
   width: 100%;
-  display: block;
+  display: none;
   text-align: center;
   padding: 10px 0;
   margin-bottom: 10px;
+}
+.template-configuration .supporting-components li.active {
+  display: block;
 }
 
 .timeline {
@@ -602,12 +605,15 @@ button#second-vote {
   padding: 15px 30px;
   background-color: #F4F4F4;
   color: black;
-  opacity: 1;
+  opacity: 0.2;
 }
 .timeline li.selected {
   color: white;
   background-color: black;
-  opacity: 0.2;
+  opacity: 1;
+}
+.timeline li.active {
+  opacity: 1;
 }
 
 footer {

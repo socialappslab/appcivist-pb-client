@@ -5,10 +5,14 @@
     & li{
       border: 2px dashed black;
       width: 100%;
-      display: block;
+      display: none;
       text-align: center;
       padding: 10px 0;
       margin-bottom: 10px;
+
+      &.active{
+        display: block;
+      }
     }
   }
 }

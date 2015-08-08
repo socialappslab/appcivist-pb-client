@@ -34,7 +34,7 @@ appCivistApp.directive('templateConfiguration', function(){
         restrict: 'C',
         replace: true,
         scope: {},
-        templateUrl: "/app/partials/campaign/templateConfiguration.html",
+        templateUrl: "/app/partials/directives/templateConfiguration/templateConfiguration.html",
         controller: 'TemplateConfigurationCtrl'
     }
 });

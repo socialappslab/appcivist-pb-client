@@ -7,10 +7,10 @@
             <div class="form-group">
                 <h4><label for="checkProposalDevelopment" class="control-label">Proposal development components:</label></h4>
                 <div class="col-md-12 col-sm-12" id="checkProposalDevelopment">
-                    <div class="checkbox" ng-repeat="proposalComponent in proposalComponentsInputs">
-                        <label id="{{proposalComponent}}">
-                            <input type="checkbox" ng-model="state" ng-click="proposalComponentStatus(proposalComponent,state)">
-                            <span>{{proposalComponent}}</span>
+                    <div class="checkbox" ng-repeat="proposalComponent in proposalComponents">
+                        <label id="{{proposalComponent.name}}">
+                            <input type="checkbox" ng-model="state" ng-click="proposalComponentStatus(proposalComponent.name,state)">
+                            <span>{{proposalComponent.name}}</span>
                         </label>
                     </div>
                 </div>

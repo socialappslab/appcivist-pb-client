@@ -63,29 +63,11 @@
                 <div class="form-group">
                     <h3><label for="checkConfirmCampaignGoals" class="control-label">Confirm campaign themes</label></h3>
                     <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
-                        <div class="col-md-9 col-md-9">
+                        <div class="col-md-9 col-md-9" ng-repeat="campaignTheme in campaignThemes">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="">
-                                    <span>Urban infrastucture</span>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="">
-                                    <span>Education</span>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="">
-                                    <span>Transportation</span>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="">
-                                    <span>Parks and recreation</span>
+                                    <span>{{campaignTheme.name}}</span>
                                 </label>
                             </div>
                         </div>

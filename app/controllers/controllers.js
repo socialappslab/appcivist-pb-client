@@ -151,11 +151,34 @@ appCivistApp.controller('CampaignCtrl', function($scope){
 		{name: 'Create your own...'}
 	];
 	$scope.selectedTemplate = $scope.templates[1];
+
+	$scope.campaignThemes = [
+		{name: 'Urban infrastucture'},
+		{name: 'Education'},
+		{name: 'Transportation'},
+		{name: 'Parks and recreation'}
+	]
 });
 
 appCivistApp.controller('TemplateConfigurationCtrl', function($scope){
 
-	$scope.proposalComponentsInputs = ['Proposal making', 'Versioning', 'Deliberation', 'Voting'];
+	$scope.Answers = {};
+
+	$scope.proposalComponents = [
+		{name: 'Proposal making'},
+		{name: 'Versioning'},
+		{name: 'Deliberation'},
+		{name: 'Voting'}
+	];
+
+	$scope.supportingComponents = [
+		{name: 'Working Groups', alias: 'workingGroups'},
+		{name: 'Visualization', alias: 'visualization'},
+		{name: 'Mapping', alias:'mapping'},
+		{name: 'Mobilization', alias:'mobilization'},
+		{name: 'Reporting', alias:'reporting'},
+		{name: 'Implementation', alias:'implementation'}
+	];
 
 	$scope.proposalMakingState = null;
 	$scope.versioningState = null;

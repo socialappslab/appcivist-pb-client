@@ -65,18 +65,18 @@
     <div class="row col-md-12 col-sm-12">
         <div class="form-horizontal">
             <div class="form-group">
-                <h4><label for="timeline" class="control-label">Timeline:</label></h4>
+                <h4><label for="timeline" class="control-label">Timeline: </label><i class="fa fa-question-circle"></i></h4>
                 <ul id="timeline" class="row timeline">
-                    <li class="{{proposalMakingState}}">
+                    <li id="proposalMakingPhase" class="{{proposalMakingState}}">
                         <h4><strong>Proposal Making</strong></h4>
                     </li>
-                    <li class="{{versioningState}}">
+                    <li id="versioningPhase" class="{{versioningState}}">
                         <h4><strong>Versioning</strong></h4>
                     </li>
-                    <li class="{{deliberationState}}">
+                    <li id="deliberationPhase" class="{{deliberationState}}">
                         <h4><strong>Deliberation</strong></h4>
                     </li>
-                    <li class="{{votingState}}">
+                    <li id="votingPhase" class="{{votingState}}">
                         <h4><strong>Voting</strong></h4>
                     </li>
                 </ul>
@@ -105,15 +105,6 @@
                     </li>
                 </ul>
             </div>
-        </div>
-    </div>
-    <div class="row col-md-12 col-sm-12">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="">
-                <span>Enable technical assesment</span>
-                <i class="fa fa-question-circle"></i>
-            </label>
         </div>
     </div>
 </div>

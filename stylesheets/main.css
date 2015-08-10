@@ -2,6 +2,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px; }
 
+i {
+  margin: 0 5px;
+  cursor: default; }
+
 .header {
   display: inline-block; }
   .header > div {
@@ -49,6 +53,21 @@ textarea {
 .form-group {
   margin-left: 0px !important;
   margin-right: 0px !important; }
+
+.vertical-space-little {
+  margin: 5px 0; }
+
+.vertical-space-medium {
+  margin: 10px 0; }
+
+.vertical-space-big {
+  margin: 15px 0; }
+
+.no-padding {
+  padding: 0; }
+
+.no-margin {
+  margin: 0; }
 
 /**
  * Original styles in Hypersphere (first demo of AppCivist)
@@ -456,6 +475,66 @@ button#second-vote {
     background: rgba(0, 0, 0, 0.26); }
   .forum .counter p {
     margin: -8px 0 -8px 0px; }
+
+.campaign .template-configuration {
+  margin-top: -10px; }
+
+.template-configuration .supporting-components {
+  list-style: none; }
+  .template-configuration .supporting-components li {
+    border: 2px dashed black;
+    width: 100%;
+    display: none;
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 10px; }
+    .template-configuration .supporting-components li.active {
+      display: block; }
+
+.timeline {
+  list-style: none;
+  display: inline-block; }
+  .timeline li {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #F4F4F4;
+    color: black;
+    opacity: 0.1; }
+    .timeline li.selected {
+      color: white;
+      background-color: black;
+      opacity: 1; }
+    .timeline li.active {
+      opacity: 1; }
+  .timeline li:before, .timeline li:after {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none; }
+  .timeline li:after {
+    border-color: rgba(136, 183, 213, 0);
+    border-left-color: white;
+    border-width: 30px;
+    margin-top: -30px;
+    z-index: -1; }
+  .timeline li:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-left-color: #F4F4F4;
+    border-width: 27px;
+    margin-top: -27px; }
+  .timeline #proposalMakingPhase {
+    z-index: 4; }
+  .timeline #versioningPhase {
+    z-index: 3; }
+  .timeline #deliberationPhase {
+    z-index: 2; }
+  .timeline #votingPhase {
+    z-index: 1; }
 
 footer {
   position: absolute;

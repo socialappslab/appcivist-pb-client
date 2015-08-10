@@ -1,0 +1,110 @@
+<div class="box settingsBox">
+    <div class="row header col-md-12 col-sm-12">
+        <h3><strong>Template Preview: </strong> Participatory Budgeting</h3>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <h4><label for="checkProposalDevelopment" class="control-label">Proposal development components:</label></h4>
+                <div class="col-md-12 col-sm-12" id="checkProposalDevelopment">
+                    <div class="checkbox" ng-repeat="proposalComponent in proposalComponents">
+                        <label id="{{proposalComponent.name}}">
+                            <input type="checkbox" ng-model="state" ng-click="proposalComponentStatus(proposalComponent.name,state)">
+                            <span>{{proposalComponent.name}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <h4><label for="checkSupportingComponents" class="control-label">Supporting commponents:</label></h4>
+                <div class="col-md-12 col-sm-12" id="checkSupportingComponents">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked ng-model="supportingComponents.workingGroups" ng-true-value="'active'">
+                            <span>Working Groups</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked ng-model="supportingComponents.visualization" ng-true-value="'active'">
+                            <span>Visualization</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked ng-model="supportingComponents.mapping" ng-true-value="'active'">
+                            <span>Mapping</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked ng-model="supportingComponents.mobilization" ng-true-value="'active'">
+                            <span>Mobilization</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked ng-model="supportingComponents.reporting" ng-true-value="'active'">
+                            <span>Reporting</span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" checked ng-model="supportingComponents.implementation" ng-true-value="'active'">
+                            <span>Implementation</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <h4><label for="timeline" class="control-label">Timeline: </label><i class="fa fa-question-circle"></i></h4>
+                <ul id="timeline" class="row timeline">
+                    <li id="proposalMakingPhase" class="{{proposalMakingState}}">
+                        <h4><strong>Proposal Making</strong></h4>
+                    </li>
+                    <li id="versioningPhase" class="{{versioningState}}">
+                        <h4><strong>Versioning</strong></h4>
+                    </li>
+                    <li id="deliberationPhase" class="{{deliberationState}}">
+                        <h4><strong>Deliberation</strong></h4>
+                    </li>
+                    <li id="votingPhase" class="{{votingState}}">
+                        <h4><strong>Voting</strong></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <ul class="row supporting-components">
+                    <li class="{{supportingComponents.workingGroups}}">
+                        <h4><strong>Working Groups</strong></h4>
+                    </li>
+                    <li class="{{supportingComponents.visualization}}">
+                        <h4><strong>Visualization</strong></h4>
+                    </li>
+                    <li class="{{supportingComponents.mapping}}">
+                        <h4><strong>Mapping</strong></h4>
+                    </li>
+                    <li class="{{supportingComponents.mobilization}}">
+                        <h4><strong>Mobilization</strong></h4>
+                    </li>
+                    <li class="{{supportingComponents.reporting}}">
+                        <h4><strong>Reporting</strong></h4>
+                    </li>
+                    <li class="{{supportingComponents.implementation}}">
+                        <h4><strong>Implementation</strong></h4>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

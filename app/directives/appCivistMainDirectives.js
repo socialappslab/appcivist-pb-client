@@ -28,3 +28,13 @@ appCivistApp.directive('header', function () {
         }]
     }
 });
+
+appCivistApp.directive('templateConfiguration', function(){
+    return {
+        restrict: 'C',
+        replace: true,
+        scope: {},
+        templateUrl: "/app/partials/directives/templateConfiguration/templateConfiguration.html",
+        controller: 'TemplateConfigurationCtrl'
+    }
+});

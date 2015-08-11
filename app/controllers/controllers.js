@@ -136,8 +136,115 @@ appCivistApp.controller('ForumCtrl', function($scope,$http){
 	});
 });
 
-appCivistApp.controller('CampaignCtrl', function($scope,$http){
+appCivistApp.controller('CampaignCtrl', function($scope){
+	$scope.assemblies = [
+		{name:'Mairie de Paris', campaign:'PB Paris'},
+		{name:'Fête du Musique 2016', campaign:'PB Paris'},
+		{name:'Anti-Eviction Saint Suplice', campaign:'Assemblèe Droit au Logement'}
+	];
+	$scope.linkedAssembly = $scope.assemblies[1];
 
+	$scope.templates = [
+		{name: 'Participatory Budgeting'},
+		{name: 'Mobilization'},
+		{name: 'Community Organization'},
+		{name: 'Create your own...'}
+	];
+	$scope.selectedTemplate = $scope.templates[1];
+
+	$scope.campaignThemes = [
+		{name: 'Urban infrastucture'},
+		{name: 'Education'},
+		{name: 'Transportation'},
+		{name: 'Parks and recreation'}
+	]
+});
+
+appCivistApp.controller('TemplateConfigurationCtrl', function($scope){
+
+	$scope.Answers = {};
+
+	$scope.proposalComponents = [
+		{name: 'Proposal making'},
+		{name: 'Versioning'},
+		{name: 'Deliberation'},
+		{name: 'Voting'}
+	];
+
+	$scope.supportingComponents = [
+		{name: 'Working Groups', alias: 'workingGroups'},
+		{name: 'Visualization', alias: 'visualization'},
+		{name: 'Mapping', alias:'mapping'},
+		{name: 'Mobilization', alias:'mobilization'},
+		{name: 'Reporting', alias:'reporting'},
+		{name: 'Implementation', alias:'implementation'}
+	];
+
+	$scope.proposalMakingState = null;
+	$scope.versioningState = null;
+	$scope.deliberationState = null;
+	$scope.votingState = null;
+
+	$scope.workingGroups = null;
+	$scope.visualization = null;
+	$scope.mapping = null;
+	$scope.mobilization = null;
+	$scope.reporting = null;
+	$scope.implementation = null;
+
+	$scope.proposalComponentStatus = function(componentName,state){
+		componentName = componentName.replace(/\s/g, '');
+		switch(componentName){
+			case 'Proposalmaking':
+				this.proposalMakingChangeState(state);
+				break;
+			case 'Versioning':
+				this.versioningChangeState(state);
+				break;
+			case 'Deliberation':
+				this.deliberationChangeState(state);
+				break;
+			case 'Voting':
+				this.votingChangeState(state);
+				break;
+		}
+	}
+
+	$scope.proposalMakingChangeState = function(state) {
+		if(state) {
+			$scope.proposalMakingState = "active";
+		}
+		else{
+			$scope.proposalMakingState = null;
+		}
+	}
+
+	$scope.versioningChangeState = function(state) {
+		if(state) {
+			$scope.versioningState = "active";
+		}
+		else{
+			$scope.versioningState = null;
+		}
+	}
+
+	$scope.deliberationChangeState = function(state) {
+		if(state) {
+			$scope.deliberationState = "active";
+		}
+		else{
+			$scope.deliberationState = null;
+		}
+	}
+
+	$scope.votingChangeState = function(state) {
+		if(state) {
+			$scope.votingState = "active";
+		}
+		else{
+			$scope.votingState = null;
+		}
+	}
 });
 
 //

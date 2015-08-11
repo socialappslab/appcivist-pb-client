@@ -3,6 +3,11 @@ h1,h2,h3,h4,h5,h6{
     margin-bottom: 5px;
 }
 
+i{
+  margin: 0 5px;
+  cursor: default;
+}
+
 .header{
     display: inline-block;
 
@@ -72,4 +77,24 @@ textarea{
 .form-group{
     margin-left: 0px !important;
     margin-right: 0px !important;
+}
+
+.vertical-space-little{
+    margin: 5px 0;
+}
+
+.vertical-space-medium{
+    margin: 10px 0;
+}
+
+.vertical-space-big{
+    margin: 15px 0;
+}
+
+.no-padding{
+  padding: 0;
+}
+
+.no-margin{
+  margin: 0;
 }

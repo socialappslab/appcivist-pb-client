@@ -1,30 +1,7 @@
-.forum{
-
-  h1, h2, h3{
-    margin-top:10px;
-    margin-bottom:10px;
+.home{
+  a{
+    color: cornflowerblue;
   }
-
-  .row{
-    margin-top:5px;
-    margin-bottom:5px;
-  }
-
-  .header{
-    .assembly .caption{
-      width: auto;
-    }
-
-    button{
-      float:right;
-      margin-top: 100px;
-    }
-  }
-
-  .info-lateral{
-    margin-top: 30px;
-  }
-
   .infoBox{
     margin-top:10px;
     border: 2px solid black;
@@ -67,22 +44,6 @@
     }
   }
 
-  .green-tag{
-    cursor: pointer;
-    float: left;
-    color: white;
-    background-color: #5cb85c;
-    padding: 0 10px;
-    border-radius: 5px;
-    margin: 5px 5px 5px 5px;
-  }
-
-  .forum-title{
-    h5{
-      margin: 5px 0;
-    }
-  }
-
   .discussion{
     margin-top: -35px;
   }
@@ -111,6 +72,7 @@
 
   .comments{
     list-style-type: none;
+    margin-left: 10px;
   }
 
   .reply{
@@ -121,6 +83,7 @@
     border: 1px solid lightgrey;
     border-radius: 5px;
     padding: 5px;
+    margin-top: 15px;
   }
 
   .image-profile-comment img{
@@ -141,7 +104,6 @@
   }
 
   .options-comment{
-    margin-top: 0.5em;
     display: block;
   }
 
@@ -180,6 +142,8 @@
       padding-left: 5px;
     }
   }
-
-
 }
+
+
+
+

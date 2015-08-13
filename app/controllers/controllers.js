@@ -55,14 +55,14 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
 		// check if there is already a user and a sessionKey in the scope
 		if ($scope.user != null && $scope.sessionKey != null) {
 			// TODO Validate that the Session Key corresponds to the user
-			$location.url('/assemblies');
+			$location.url('/home');
 		} else {
 			// check if there is a user and session key in the local storage
 			$scope.user = localStorageService.get("user");
 			$scope.sessionKey = localStorageService.get("session_key");
 			if ($scope.user != null && $scope.sessionKey != null) {
 				// TODO Validate that the Session Key corresponds to the user
-				$location.url('/assemblies');
+				$location.url('/home');
 			} else {
 				$scope.user = {};
 				$scope.sessionKey = null;

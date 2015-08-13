@@ -48,6 +48,11 @@ i{
     border-radius: 5px;
     margin: 5px;
 
+    &.newsBox{
+        background-color: $news-box;
+        color: $news-box-font;
+    }
+
     &.descriptionBox{
         background-color: $description-box;
         color: $description-box-font;

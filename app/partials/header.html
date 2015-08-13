@@ -13,6 +13,13 @@
 				<a href="#/"><img src="/assets/images/logotype.svg" class="logotype" /></a>
 			</div>
 
+			<div class="collapse navbar-collapse navbar-left" id="navbar-options" ng-if='userIsAuthenticated()'>
+				<ul class="nav navbar-nav navbar-left">
+					<li><a href="#/home">Home</a></li>
+					<li><a href="#/assemblies">Assemblies</a></li>
+				</ul>
+			</div>
+
 			<div class="collapse navbar-collapse navbar-right" id="navbar-menu" ng-if='!userIsAuthenticated()'>
 				<form class="navbar-form navbar-left" role="login" ng-submit="login()">
 					<div class="form-group">

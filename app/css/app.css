@@ -43,6 +43,10 @@ i {
   border-radius: 5px;
   margin: 5px;
 }
+.box.newsBox {
+  background-color: #E1F1F9;
+  color: #9CC7D3;
+}
 .box.descriptionBox {
   background-color: #DFEFD6;
   color: #529053;
@@ -498,7 +502,7 @@ button#second-vote {
 .forum .info-lateral {
   margin-top: 30px;
 }
-.forum .info-box {
+.forum .infoBox {
   margin-top: 10px;
   border: 2px solid black;
   border-radius: 5px;
@@ -506,20 +510,20 @@ button#second-vote {
   height: 150px;
   background-color: #f3f3f3;
 }
-.forum .info-box .row {
+.forum .infoBox .row {
   margin-left: 0px;
 }
-.forum .info-box .list-item {
+.forum .infoBox .list-item {
   margin-top: 5px;
 }
-.forum .info-box button {
+.forum .infoBox button {
   float: right;
 }
-.forum .info-box .image-circle {
+.forum .infoBox .image-circle {
   height: 20px;
   width: 20px;
 }
-.forum .info-box .list-item .row {
+.forum .infoBox .list-item .row {
   margin-right: 0px;
 }
 .forum .image-capsule img {
@@ -604,6 +608,7 @@ button#second-vote {
 }
 .forum .counter p {
   margin: -8px 0 -8px 0px;
+  padding-left: 5px;
 }
 
 .campaign .template-configuration {
@@ -679,6 +684,110 @@ button#second-vote {
 }
 .timeline #votingPhase {
   z-index: 1;
+}
+
+.home {
+  /**********************COMMENTS********************/
+}
+.home a {
+  color: cornflowerblue;
+}
+.home .infoBox {
+  margin-top: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  height: 150px;
+  background-color: #f3f3f3;
+}
+.home .infoBox .row {
+  margin-left: 0px;
+}
+.home .infoBox .list-item {
+  margin-top: 5px;
+}
+.home .infoBox button {
+  float: right;
+}
+.home .infoBox .image-circle {
+  height: 20px;
+  width: 20px;
+}
+.home .infoBox .list-item .row {
+  margin-right: 0px;
+}
+.home .image-capsule img {
+  display: inline-block;
+}
+.home .image-capsule .caption {
+  display: inline-block;
+}
+.home .discussion {
+  margin-top: -35px;
+}
+.home .commentBox {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+}
+.home .commentBox .image-circle {
+  height: 20px;
+  width: 20px;
+  opacity: 0.6;
+}
+.home .commentArea {
+  border: none;
+  width: 100%;
+  resize: none;
+  outline: 0;
+}
+.home .comments {
+  list-style-type: none;
+  margin-left: 10px;
+}
+.home .reply {
+  margin-left: 25px;
+}
+.home .comment {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 15px;
+}
+.home .image-profile-comment img {
+  background-size: 100%;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+.home .text-comment * {
+  display: inline;
+}
+.home .options-comment {
+  display: block;
+}
+.home .comment-comment a {
+  text-decoration: none;
+  color: black;
+}
+.home .tags {
+  padding-left: 0;
+  list-style: none;
+  display: inline-block;
+}
+.home .tag {
+  margin: 0 2px;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  font-size: 0.8em;
+  cursor: pointer;
+  display: inline-block;
+  border: none;
+  background: rgba(0, 0, 0, 0.26);
+}
+.home .counter p {
+  margin: -8px 0 -8px 0px;
+  padding-left: 5px;
 }
 
 footer {

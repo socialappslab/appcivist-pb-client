@@ -14,29 +14,28 @@ console.log("Welcome to AppCivist!");
 
 var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
-var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
-//var appCivistCoreBaseURL = "http://localhost:9000/";
+//var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
+var appCivistCoreBaseURL = "http://localhost:9000/api";
 
 /**
  * AngularJS initial configurations: 
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
-appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
-		localStorageServiceProvider) {
-	
-	$routeProvider
+appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, localStorageServiceProvider) {
+
+    localStorageServiceProvider
+        .setPrefix('appcivist')
+        .setStorageType('sessionStorage')
+        //.set("appcivist_api_base_url",appCivistCoreBaseURL)
+        .setNotify(true,true);
+
+    $routeProvider
 		.when('/', {
 			controller : 'MainCtrl',
 			templateUrl : '/app/partials/main.html'
 		})
-		//        //Define a route that has a route parameter in it (:customerID)
-		//        .when('/assembly/:assemblyID/campaign/:campaignId',
-		//            {
-		//                controller: 'AssemblyController',
-		//                templateUrl: '/app/partials/assemblyCampaignView.html'
-		//            })
-        .when('/home',{
+		.when('/home',{
             //controller: 'AssemblyListCtrl',
             templateUrl: 'app/partials/home/home.html'
         })
@@ -59,23 +58,25 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider,
             templateUrl: 'app/partials/campaign/campaignPartOne.html'
 
         })
-        .when('/assembly/forum',{
+        .when('/assembly/:aid/forum',{
+            controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/forum/forum.html'
         })
+        //Define a route that has a route parameter in it (:customerID)
+        //.when('/assembly/:assemblyID/campaign/:campaignId',
+        //{
+        //  controller: 'AssemblyController',
+        //  templateUrl: '/app/partials/assemblyCampaignView.html'
+        //})
         .otherwise({
 			redirectTo : '/'
 		});
-	
-	localStorageServiceProvider.setPrefix('appcivist');
-	localStorageServiceProvider.setStorageType('sessionStorage');
-	localStorageServiceProvider.setNotify(true,true);
 
-		
-	$httpProvider.interceptors.push(['$q', '$location', 'localStorageService', function($q, $location, localStorageService) {
+    $httpProvider.interceptors.push(['$q', '$location', 'localStorageService', function($q, $location, localStorageService) {
         return {
             'request': function (config) {
                 config.headers = config.headers || {};
-                var sessionKey = localStorageService.get("session_key");
+                var sessionKey = localStorageService.get('sessionKey');
                 if (sessionKey) {
                     config.headers.SESSION_KEY = '' + sessionKey;
                 }

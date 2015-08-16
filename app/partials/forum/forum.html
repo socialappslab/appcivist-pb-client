@@ -1,50 +1,60 @@
-<div class="view forum" ng-controller="ForumCtrl">
+<div class="view forum" ng-controller="AssemblyCtrl">
     <div class="container">
         <div class="row header">
             <div class="col-md-8 col-sm-8">
                 <div class="thumbnail assembly">
-                    <img alt="100x100" src="../assets/images/justicia-140.png" data-holder-rendered="true" class="image-circle">
+                    <img alt="100x100" src="{{currentAssembly.profile.icon}}" data-holder-rendered="true" class="image-circle">
                     <div class="caption">
-                        <h4><strong>Vallejo Citizens for PB</strong></h4>
-                        <h5><strong><i>Vallejo, CA</i></strong></h5>
-                        <p>This assembly organizes citizens of Vallejo, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015</p>
+                        <h4><strong>{{currentAssembly.name}}</strong></h4>
+                        <h5><strong><div ng-show="currentAssembly.location.placeName != null">{{currentAssembly.location.placeName}} -</div> {{currentAssembly.location.city}}, {{currentAssembly.location.country}}</i></strong></h5>
+                        <p>{{currentAssembly.description}}</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-2 col-sm-2 col-md-push-2 col-sm-push-2">
-                <button class="btn btn-success"><h3><strong>Join Assembly</strong></h3></button>
             </div>
         </div>
         <div class="row">
             <div class="col-md-8 col-sm-8 discussion">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12">
+                    <div class="col-md-9 col-sm-9">
                         <h1><strong>Assembly Forum</strong></h1>
+                    </div>
+                    <div class="col-md-3 col-sm-3">
+                        <h1><button class="btn btn-success"><h4 style="float:right;"><strong>Join Assembly</strong></h4></button></h1>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-1 col-sm-1 forum-title">
-                        <h5><strong>Assembly Themes</strong></h5>
+                        <h5><strong>Filter by Themes</strong></h5>
                     </div>
-                    <div class="col-md-10 col-sm-10">
-                        <div class="green-tag">
-                            <h5><strong>All</strong></h5>
+
+                    <div class="col-md-11 col-sm-11">
+                        <div class="green-tag"><h4><span class="label label-success">All</span></h4></div>
+                        <div class="green-tag"><h4><span class="label label-success">Assembly</span></h4></div>
+
+                        <div ng-if="currentAssembly.resources.themes.length > 0">
+                            <div ng-repeat="theme in currentAssembly.resources.themes|limitTo:2">
+                                <div class="green-tag"><h4><span class="label label-success">{{theme.title}}</span></h4></div>
+                            </div>
+
+                            <!--<div class="green-tag">-->
+                            <!--<h5><strong>Urban Infrastucture</strong></h5>-->
+                            <!--</div>-->
+                            <!--<div class="green-tag">-->
+                            <!--<h5><strong>Transportation</strong></h5>-->
+                            <!--</div>-->
+                            <!--<div class="green-tag">-->
+                            <!--<h5><strong>Parks and Recreation</strong></h5>-->
+                            <!--</div>-->
+                            <div class="green-tag" style="float:right;">
+                                <h4><span class="label label-success">More themes<i class="fa fa-sort-desc"></i></span></h4>
+                            </div>
+
+                            <!-- TODO:
+                            <div ng-if="currentAssembly.resources.themes.length > 3">
+                                Place here the remaining themes as a dropbdown
+                            </div>
+                            -->
                         </div>
-                        <div class="green-tag">
-                            <h5><strong>Assembly</strong></h5>
-                        </div>
-                        <div class="green-tag">
-                            <h5><strong>Urban Infrastucture</strong></h5>
-                        </div>
-                        <div class="green-tag">
-                            <h5><strong>Transportation</strong></h5>
-                        </div>
-                        <div class="green-tag">
-                            <h5><strong>Parks and Recreation</strong></h5>
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-sm-1">
-                        <i class="fa fa-sort-desc"></i>
                     </div>
                 </div>
                 <div class="row">

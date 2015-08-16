@@ -16,7 +16,7 @@
                         <div class="form-group">
                             <label for="inputNameAssembly" class="col-sm-3 col-md-3 control-label">*Name</label>
                             <div class="col-sm-9 col-md-9">
-                                <input class="form-control" id="inputNameAssembly" placeholder="e.g., Vallejo Citizens for PB" ng-model="newAssembly.name">
+                                <input class="form-control" id="inputNameAssembly" placeholder="e.g., Assemblèe Belleville" ng-model="newAssembly.name">
                             </div>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                         <div class="form-group">
                             <label for="inputAboutAssembly" class="col-sm-3 col-md-3 control-label">*What's your assembly about</label>
                             <div class="col-sm-9 col-md-9">
-                                <textarea class="form-control" id="inputAboutAssembly" style="height: 100px;" placeholder="e.g., This assembly organizes citizens of Vallejo, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015" ng-model="newAssembly.description"/>
+                                <textarea ng-model="newAssembly.description" class="form-control" id="inputAboutAssembly" style="height: 100px;" placeholder="e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015"/>
                             </div>
                         </div>
                     </div>
@@ -36,11 +36,11 @@
                         <div class="form-group">
                             <label for="inputLocationAssembly" class="col-sm-3 col-md-3 control-label">*Location</label>
                             <div class="col-sm-9 col-md-9">
-                                <input class="form-control" id="inputLocationAssembly" placeholder="Street">
-                                <input style="width:100px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputCityAssembly" placeholder="City">
-                                <input style="width:70px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputStateAssembly" placeholder="State">
-                                <input style="width:70px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputZipAssembly" placeholder="Zip">
-                                <input style="width:90px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputCountryAssembly" placeholder="Country">
+                                <input ng-model="newAssembly.location.street" class="form-control" id="inputLocationAssembly" placeholder="Street">
+                                <input ng-model="newAssembly.location.city" style="width:100px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputCityAssembly" placeholder="City">
+                                <input ng-model="newAssembly.location.state" style="width:70px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputStateAssembly" placeholder="State">
+                                <input ng-model="newAssembly.location.zip" style="width:70px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputZipAssembly" placeholder="Zip">
+                                <input ng-model="newAssembly.location.country" style="width:90px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputCountryAssembly" placeholder="Country">
                                 <i class="fa fa-question-circle"></i>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                         <div class="form-group">
                             <div class="col-sm-9 col-md-9 col-lg-push-3 col-md-push-3">
                                 <h3><label for="inputWhoAssembly" class="control-label">Who can join your assembly?</label></h3>
-                                <textarea class="form-control" id="inputWhoAssembly" placeholder="Describe who you want to participate"/>
+                                <textarea ng-model="newAssembly.profile.targetAudience" class="form-control" id="inputWhoAssembly" placeholder="Describe who you want to participate"/>
                             </div>
                         </div>
                     </div>
@@ -65,13 +65,13 @@
                                     <div class="col-md-6">
                                         <div class="radio" style="margin-top:30px;">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="openRadio" value="open" checked>
+                                                <input ng-model="newAssembly.profile.membership.open" type="radio" name="optionsRadios" id="openRadio" value="open" checked>
                                                 Open
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optionsRadios" id="registrationRadio" value="registration">
+                                                <input ng-model="newAssembly.profile.membership.registration" type="radio" name="optionsRadios" id="registrationRadio" value="registration">
                                                 Registration
                                             </label>
                                         </div>
@@ -80,13 +80,13 @@
                                         <span style="color:dodgerblue">Membership by registration</span>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value="" checked>
+                                                <input ng-model="newAssembly.profile.membership.invitation" type="checkbox" value="" checked>
                                                 By invitation, and/or
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value="" checked>
+                                                <input ng-model="newAssembly.profile.membership.request" type="checkbox" value="" checked>
                                                 By request
                                             </label>
                                         </div>
@@ -105,13 +105,13 @@
                                     <div class="col-md-6">
                                         <div class="radio" style="margin-top:30px;">
                                             <label>
-                                                <input type="radio" name="roleRadios" id="noRadio" value="open" checked>
+                                                <input ng-model="newAssembly.profile.roles.no" type="radio" name="roleRadios" id="noRadio" value="open" checked>
                                                 No
                                             </label>
                                         </div>
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="roleRadios" id="yesRadio" value="registration">
+                                                <input ng-model="newAssembly.profile.roles.yes" type="radio" name="roleRadios" id="yesRadio" value="registration">
                                                 Yes
                                             </label>
                                         </div>
@@ -121,13 +121,13 @@
                                         <i class="fa fa-question-circle"></i>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value="">
+                                                <input ng-model="newAssembly.profile.roles.coordinators" type="checkbox" value="">
                                                 Coordinators
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" value="">
+                                                <input ng-model="newAssembly.profile.roles.moderators" type="checkbox" value="">
                                                 Moderators
                                             </label>
                                         </div>
@@ -174,30 +174,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="control-label">Pick a cover for your assembly</label>
-                    <div style="white-space: nowrap">
-                        <div style="display: inline;">
-                            <div class="image-capsule">
-                                <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image77.JPG" data-holder-rendered="true" class="image-cover">
-                            </div>
-                        </div>
-                        <div style="display: inline;">
-                            <div class="image-capsule">
-                                <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image78.jpg" data-holder-rendered="true" class="image-cover">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="row">-->
+                    <!--<label class="control-label">Pick a cover for your assembly</label>-->
+                    <!--<div style="white-space: nowrap">-->
+                        <!--<div style="display: inline;">-->
+                            <!--<div class="image-capsule">-->
+                                <!--<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image77.JPG" data-holder-rendered="true" class="image-cover">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="display: inline;">-->
+                            <!--<div class="image-capsule">-->
+                                <!--<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image78.jpg" data-holder-rendered="true" class="image-cover">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="row">
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <div>
                                 <label for="inputContactNameAssembly" class="control-label">*Primary contact</label>
                                 <div>
-                                    <input style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactNameAssembly" placeholder="Name">
-                                    <input style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactPhoneAssembly" placeholder="Phone">
-                                    <input style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactEmailAssembly" placeholder="Email">
+                                    <input ng-model="newAssembly.profile.primaryContactName" style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactNameAssembly" placeholder="Name">
+                                    <input ng-model="newAssembly.profile.primaryContactPhone" style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactPhoneAssembly" placeholder="Phone">
+                                    <input ng-model="newAssembly.profile.primaryContactEmail" style="width:250px; display: inline-block; margin: 5px 5px 0 0;" class="form-control" id="inputContactEmailAssembly" placeholder="Email">
                                 </div>
                             </div>
                         </div>

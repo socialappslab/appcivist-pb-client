@@ -33,8 +33,11 @@ appCivistApp.directive('templateConfiguration', function(){
     return {
         restrict: 'C',
         replace: true,
-        scope: {},
+        transclude: true,
         templateUrl: "/app/partials/directives/templateConfiguration/templateConfiguration.html",
+        link: function(scope){
+            scope.isEnabled = true;
+        },
         controller: ['$scope',function($scope){
 
             $scope.proposalComponents = [
@@ -118,6 +121,28 @@ appCivistApp.directive('templateConfiguration', function(){
                     $scope.votingState = null;
                 }
             }
+        }]
+    }
+});
+
+appCivistApp.directive('timeline', function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/timeline/timeline.html",
+        controller: ['$scope' ,function($scope){
+
+        }]
+    }
+});
+
+appCivistApp.directive('progressline', function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/progressline/progressline.html",
+        controller: ['$scope' ,function($scope){
+
         }]
     }
 });

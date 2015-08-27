@@ -1,3 +1,8 @@
+/*****COLORS*********/
+/******COMMON BOXES*******/
+/****TIMELINE*****/
+/*****PROGRESSLINE******/
+/*******SUGGESTIONS*******/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px; }
@@ -422,7 +427,6 @@ button#second-vote {
     float: left;
     color: white;
     background-color: #5cb85c;
-    padding: 0 10px;
     border-radius: 5px;
     margin: 5px 5px 5px 5px; }
   .forum .forum-title h5 {
@@ -480,8 +484,25 @@ button#second-vote {
     margin: -8px 0 -8px 0px;
     padding-left: 5px; }
 
-.campaign .template-configuration {
+.campaign-creation .template-configuration {
   margin-top: -10px; }
+
+.campaign-pmaking .suggestions {
+  list-style: none;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3; }
+  .campaign-pmaking .suggestions .suggestion {
+    border: 0.1rem solid #F4F4F4;
+    margin-bottom: 2rem;
+    margin-left: 2rem;
+    display: inline-flex; }
+    .campaign-pmaking .suggestions .suggestion div {
+      padding: 1.5rem; }
+    .campaign-pmaking .suggestions .suggestion .suggestion-title {
+      display: inline-block; }
+    .campaign-pmaking .suggestions .suggestion .suggestion-description {
+      display: inline; }
 
 .template-configuration .supporting-components {
   list-style: none; }
@@ -497,18 +518,31 @@ button#second-vote {
 
 .timeline {
   list-style: none;
-  display: inline-block; }
+  display: inline-block;
+  width: 100%; }
   .timeline li {
     position: relative;
     display: inline-block;
     padding: 15px 30px;
     background-color: #F4F4F4;
-    color: black;
+    color: #524D4D;
     opacity: 0.1; }
+    .timeline li :only-child {
+      margin-left: 5%; }
+    .timeline li#proposalMakingPhase {
+      width: 30%; }
+    .timeline li#versioningPhase {
+      width: 25%; }
+    .timeline li#deliberationPhase {
+      width: 25%; }
+    .timeline li#votingPhase {
+      width: 15%; }
     .timeline li.selected {
       color: white;
-      background-color: black;
+      background-color: #524D4D;
       opacity: 1; }
+    .timeline li.selected:before {
+      border-left-color: #524D4D; }
     .timeline li.active {
       opacity: 1; }
   .timeline li:before, .timeline li:after {
@@ -539,6 +573,27 @@ button#second-vote {
     z-index: 2; }
   .timeline #votingPhase {
     z-index: 1; }
+
+.progressline .counter-box {
+  list-style: none;
+  background-color: #F4E5E4;
+  padding: 1rem; }
+  .progressline .counter-box li {
+    display: inline-block; }
+  .progressline .counter-box .counter-title {
+    display: inline-block;
+    margin-left: 2rem; }
+  .progressline .counter-box .counter {
+    display: inline-block; }
+    .progressline .counter-box .counter .counter-section {
+      margin-right: 2rem;
+      width: 5rem; }
+      .progressline .counter-box .counter .counter-section div {
+        border: 0.2rem solid grey;
+        padding: 0.5rem;
+        text-align: center;
+        vertical-align: middle;
+        background-color: #FFFFFF; }
 
 .home {
   /**********************COMMENTS********************/ }

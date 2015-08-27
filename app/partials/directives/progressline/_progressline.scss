@@ -1,0 +1,33 @@
+.progressline{
+  & .counter-box{
+    list-style: none;
+    background-color: $progressline-background;
+    padding: 1rem;
+
+    & li{
+      display: inline-block;
+    }
+
+    .counter-title{
+      display: inline-block;
+      margin-left: 2rem;
+    }
+
+    .counter{
+      display: inline-block;
+
+      & .counter-section{
+        margin-right: 2rem;
+        width: 5rem;
+        & div{
+          border: 0.2rem solid grey;
+          padding: 0.5rem;
+          text-align: center;
+          vertical-align: middle;
+          background-color: $progressline-counter-box-background;
+        }
+      }
+
+    }
+  }
+}

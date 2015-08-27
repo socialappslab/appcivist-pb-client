@@ -1,0 +1,28 @@
+.campaign-pmaking{
+  & .suggestions{
+    list-style: none;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+
+    & .suggestion{
+      border: 0.1rem solid $suggestion-border;
+      margin-bottom: 2rem;
+      margin-left: 2rem;
+      display: inline-flex;
+
+      & div{
+        padding: 1.5rem;
+      }
+
+      & .suggestion-title{
+        display: inline-block;
+      }
+
+      & .suggestion-description{
+        display: inline;
+      }
+    }
+
+  }
+}

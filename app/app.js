@@ -54,13 +54,17 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
 
         })
         .when('/campaign/create/step1',{
-            controller: 'CampaignCtrl',
-            templateUrl: 'app/partials/campaign/campaignPartOne.html'
+            controller: 'CreateCampaignCtrl',
+            templateUrl: 'app/partials/campaign/creation/campaignPartOne.html'
 
         })
         .when('/assembly/:aid/forum',{
             controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/forum/forum.html'
+        })
+        .when('/campaign/:aid',{
+            controller: 'CampaignCtrl',
+            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingBrainstorming.html'
         })
         //Define a route that has a route parameter in it (:customerID)
         //.when('/assembly/:assemblyID/campaign/:campaignId',

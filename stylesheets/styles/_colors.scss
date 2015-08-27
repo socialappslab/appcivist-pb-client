@@ -1,14 +1,27 @@
+/*****COLORS*********/
 $light-green: #DFEFD6;
 $dark-green: #529053;
 $light-grey: #F4F4F4;
 $light-blue: #E1F1F9;
 $dark-blue: #9CC7D3;
+$light-black: #524D4D;
+$light-pink: #F4E5E4;
+$white: #FFFFFF;
 
+/******COMMON BOXES*******/
 $description-box: $light-green;
 $description-box-font: $dark-green;
 $selection-box: $light-grey;
 $news-box: $light-blue;
 $news-box-font: $dark-blue;
 
+/****TIMELINE*****/
 $timeline-background: $light-grey;
-$timeline-selected-background: black;
+$timeline-selected-background: $light-black;
+
+/*****PROGRESSLINE******/
+$progressline-background: $light-pink;
+$progressline-counter-box-background: $white;
+
+/*******SUGGESTIONS*******/
+$suggestion-border: $light-grey;

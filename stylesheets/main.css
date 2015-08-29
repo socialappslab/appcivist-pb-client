@@ -3,6 +3,7 @@
 /****TIMELINE*****/
 /*****PROGRESSLINE******/
 /*******SUGGESTIONS*******/
+/*******TAGS**************/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px; }
@@ -18,6 +19,21 @@ i {
 
 .clear {
   clear: both; }
+
+.voffset {
+  margin-top: 0.2rem; }
+
+.voffset1 {
+  margin-top: 0.5rem; }
+
+.voffset2 {
+  margin-top: 1rem; }
+
+.voffset3 {
+  margin-top: 1.5rem; }
+
+.voffset4 {
+  margin-top: 3rem; }
 
 /* Index of phases in a black ball */
 .indexBall {
@@ -53,6 +69,23 @@ i {
       display: inline-block;
       margin-right: 10px; }
 
+.tags {
+  padding-left: 0;
+  list-style: none;
+  display: inline-block; }
+
+.tag {
+  padding: 1rem 1.5rem;
+  border-radius: 0.1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: inline-block;
+  border: none; }
+  .tag.tag-info {
+    background: #F4F4F4; }
+  .tag.tag-green {
+    background: #529053; }
+
 textarea {
   resize: none;
   margin: 5px 0 0 0;
@@ -76,6 +109,12 @@ textarea {
 
 .no-margin {
   margin: 0; }
+
+.info-block {
+  display: inline-block;
+  vertical-align: bottom; }
+  .info-block * {
+    display: block; }
 
 /**
  * Original styles in Hypersphere (first demo of AppCivist)
@@ -467,19 +506,6 @@ button#second-vote {
   .forum .comment-comment a {
     text-decoration: none;
     color: black; }
-  .forum .tags {
-    padding-left: 0;
-    list-style: none;
-    display: inline-block; }
-  .forum .tag {
-    margin: 0 2px;
-    padding: 0.2em 0.6em;
-    border-radius: 4px;
-    font-size: 0.8em;
-    cursor: pointer;
-    display: inline-block;
-    border: none;
-    background: rgba(0, 0, 0, 0.26); }
   .forum .counter p {
     margin: -8px 0 -8px 0px;
     padding-left: 5px; }
@@ -492,17 +518,6 @@ button#second-vote {
   -webkit-column-count: 3;
   -moz-column-count: 3;
   column-count: 3; }
-  .campaign-pmaking .suggestions .suggestion {
-    border: 0.1rem solid #F4F4F4;
-    margin-bottom: 2rem;
-    margin-left: 2rem;
-    display: inline-flex; }
-    .campaign-pmaking .suggestions .suggestion div {
-      padding: 1.5rem; }
-    .campaign-pmaking .suggestions .suggestion .suggestion-title {
-      display: inline-block; }
-    .campaign-pmaking .suggestions .suggestion .suggestion-description {
-      display: inline; }
 
 .template-configuration .supporting-components {
   list-style: none; }
@@ -594,6 +609,42 @@ button#second-vote {
         text-align: center;
         vertical-align: middle;
         background-color: #FFFFFF; }
+
+.votes-counter {
+  width: 2rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0.1rem; }
+  .votes-counter .total-votes {
+    display: block;
+    margin: -0.9rem 0;
+    text-align: center; }
+
+.suggestion {
+  border: 0.1rem solid #F4F4F4;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  display: inline-flex; }
+  .suggestion .row {
+    margin: 0; }
+  .suggestion .suggestion-content {
+    padding: 1.5rem; }
+    .suggestion .suggestion-content .suggestion-info-user {
+      display: inline-block;
+      margin: 0 1rem; }
+      .suggestion .suggestion-content .suggestion-info-user .image-profile-suggestion {
+        display: inline-block; }
+        .suggestion .suggestion-content .suggestion-info-user .image-profile-suggestion img {
+          background-size: 100%;
+          height: 40px;
+          width: 40px;
+          border-radius: 20px; }
+  .suggestion .suggestion-title {
+    display: inline-block;
+    margin: 0; }
+  .suggestion .suggestion-description {
+    display: inline; }
 
 .home {
   /**********************COMMENTS********************/ }

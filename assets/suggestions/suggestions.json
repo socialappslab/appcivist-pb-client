@@ -34,17 +34,17 @@
     "user": "Jane",
     "date": "1425168000000",
     "picture": "assets/images/woman2.jpg",
-    "votes": 0,
+    "votes": 100,
     "type": "Transportation",
     "title" : "Better use to Bart",
     "description": "Dolore ad anim excepteur duis nulla esse velit Lorem culpa. Quis qui dolor irure deserunt.\r\n"
   },
   {
     "_id": "541352af05e0dc9694431367a",
-    "user": "Mark",
+    "user": "Hodges",
     "date": "1425168000000",
-    "picture": "assets/images/man3.jpg",
-    "votes": 3,
+    "picture": "assets/images/man1.jpg",
+    "votes": 30,
     "type": "Education",
     "title" : "Improve schools in Berkeley",
     "description": "Minim ad aliqua pariatur ad labore veniam veniam elit tempor id sint aute commodo. Duis magna eu ex ea qui voluptate tempor. Qui commodo nostrud ipsum labore proident ipsum est aliqua do nulla dolor aute duis duis. Id fugiat enim ipsum voluptate minim. Dolore ad anim excepteur duis nulla esse velit Lorem culpa. Quis qui dolor irure deserunt.\r\n"

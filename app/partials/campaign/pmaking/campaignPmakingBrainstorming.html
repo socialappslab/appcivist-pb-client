@@ -2,14 +2,14 @@
     <div class="col-md-12 col-sm-12">
         <div class="row text-center">
             <span class="h4"><strong>Assembly: </strong></span>
-            <span class="h4">Assemblée Belleville</span>
+            <span class="h4">{{campaign.assembly}}</span>
             <span class="h4"> / </span>
             <span class="h4"><strong>Campaign: </strong></span>
-            <span class="h4">Belleville - Paris PB 2016</span>
+            <span class="h4">{{campaign.name}}</span>
         </div>
         <br/>
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
-            <timeline></timeline>
+            <timeline activephase="proposalMaking"></timeline>
         </div>
         <div class="row col-md-12 col-sm-12">
             <progressline></progressline>
@@ -22,15 +22,8 @@
         </div>
         <div class="row col-md-12 col-sm-12">
             <ul class="row suggestions">
-                <li class="suggestion" ng-repeat="suggestion in suggestions | orderBy: 'date'">
-                    <div>
-                        <div class="row">
-                            <h5 class="suggestion-title"><strong>{{suggestion.title}}. </strong></h5><p class="suggestion-description">{{suggestion.description}}</p>
-                        </div>
-                        <div class="row">
-                            {{suggestion.date}}
-                        </div>
-                    </div>
+                <li class="suggestion" ng-repeat="suggestion in campaign.suggestions | orderBy: 'date'">
+                    <suggestion content="suggestion"></suggestion>
                 </li>
             </ul>
         </div>

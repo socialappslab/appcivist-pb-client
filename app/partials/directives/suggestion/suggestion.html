@@ -1,0 +1,18 @@
+<div class="suggestion-content">
+    <div class="row">
+        <h5 class="suggestion-title"><strong>{{suggestion.title}}. </strong></h5><p class="suggestion-description"> {{suggestion.description}}</p>
+    </div>
+    <div class="row voffset2">
+        <div class="tag tag-info"><strong class="text-muted">{{suggestion.type}}</strong></div>
+        <div class="suggestion-info-user">
+            <div class="image-profile-suggestion">
+                <img ng-src="{{suggestion.picture}}" alt="" src="{{suggestion.picture}}">
+            </div>
+            <div class="info-block">
+                <em>{{suggestion.user}}</em>
+                <time datetime="{{suggestion.date}}"/>{{suggestion.date | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
+            </div>
+        </div>
+        <votes-counter class="pull-right" content="suggestion"></votes-counter>
+    </div>
+</div>

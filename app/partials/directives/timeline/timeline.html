@@ -1,14 +1,14 @@
 <ul id="timeline" class="row timeline">
-    <li id="proposalMakingPhase" ng-class="'{{activePhase}}' === 'proposalMaking' ? '{{proposalMakingState}} selected' : '{{proposalMakingState}}'">
+    <li id="proposalMakingPhase" class="{{proposalMakingState}}" ng-class="'{{activePhase}}' === 'proposalMaking' ? 'selected' : ''">
         <h4><strong>Proposal Making</strong></h4>
     </li>
-    <li id="versioningPhase" ng-class="'{{activePhase}}' === 'versioning' ? '{{versioningState}} selected' : '{{versioningState}}'">
+    <li id="versioningPhase" class="{{versioningState}}" ng-class="'{{activePhase}}' === 'versioning' ? 'selected' : ''">
         <h4><strong>Versioning</strong></h4>
     </li>
-    <li id="deliberationPhase" ng-class="'{{activePhase}}' === 'deliberation' ? '{{deliberationState}} selected' : '{{deliberationState}}'">
+    <li id="deliberationPhase" class="{{deliberationState}}" ng-class="'{{activePhase}}' === 'deliberation' ? 'selected' : ''">
         <h4><strong>Deliberation</strong></h4>
     </li>
-    <li id="votingPhase" ng-class="'{{activePhase}}' === 'voting' ? '{{votingState}} selected' : '{{votingState}}'">
+    <li id="votingPhase" class="{{votingState}}" ng-class="'{{activePhase}}' === 'voting' ? 'selected' : ''">
         <h4><strong>Voting</strong></h4>
     </li>
 </ul>

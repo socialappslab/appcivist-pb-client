@@ -86,8 +86,8 @@ i{
 }
 
 .tag{
-    padding: 1rem 1.5rem;
-    border-radius: 0.1rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.25rem;
     font-size: 1.2rem;
     cursor: pointer;
     display: inline-block;
@@ -97,9 +97,16 @@ i{
         background: $tag-info;
     }
 
-    &.tag-green {
+    &.tag-filter {
+        color: white;
         background: $tag-filter;
     }
+}
+
+.vertical-divider{
+    border-right: 1px solid $vertical-divider;
+    display: inline-block;
+    margin: 0 0.2rem;
 }
 
 textarea{
@@ -133,6 +140,10 @@ textarea{
     margin: 0;
 }
 
+.container-inline{
+    display: inline;
+}
+
 .info-block{
     display: inline-block;
     vertical-align: bottom;
@@ -140,4 +151,18 @@ textarea{
     & * {
         display: block;
     }
+}
+
+/*******Buttons*****/
+
+.btn-group{
+    vertical-align: baseline;
+}
+
+.btn-full-size{
+    width: 100%;
+}
+
+.btn-half-size{
+    width: 49%;
 }

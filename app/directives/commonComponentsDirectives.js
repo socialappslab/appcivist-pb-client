@@ -104,9 +104,9 @@ appCivistApp.directive('timeline', function(){
         restrict: 'E',
         replace: true,
         templateUrl: "/app/partials/directives/timeline/timeline.html",
-        scope: {
+        /*scope: {
             activePhase: '@activephase'
-        },
+        },*/
         controller: ['$scope' ,function($scope){
             /*$scope.promise.then(function(){
                  angular.forEach($scope.phases, function(phase) {

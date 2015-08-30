@@ -4,6 +4,7 @@
 /*****PROGRESSLINE******/
 /*******SUGGESTIONS*******/
 /*******TAGS**************/
+/*****COMMON ELEMENTS***/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px;
@@ -75,7 +76,7 @@ i {
 }
 .box.descriptionBox {
   background-color: #DFEFD6;
-  color: #529053;
+  color: #57965B;
 }
 .box.selectionBox {
   background-color: #F4F4F4;
@@ -96,8 +97,8 @@ i {
 }
 
 .tag {
-  padding: 1rem 1.5rem;
-  border-radius: 0.1rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.25rem;
   font-size: 1.2rem;
   cursor: pointer;
   display: inline-block;
@@ -106,8 +107,15 @@ i {
 .tag.tag-info {
   background: #F4F4F4;
 }
-.tag.tag-green {
-  background: #529053;
+.tag.tag-filter {
+  color: white;
+  background: #57965B;
+}
+
+.vertical-divider {
+  border-right: 1px solid #524D4D;
+  display: inline-block;
+  margin: 0 0.2rem;
 }
 
 textarea {
@@ -141,12 +149,29 @@ textarea {
   margin: 0;
 }
 
+.container-inline {
+  display: inline;
+}
+
 .info-block {
   display: inline-block;
   vertical-align: bottom;
 }
 .info-block * {
   display: block;
+}
+
+/*******Buttons*****/
+.btn-group {
+  vertical-align: baseline;
+}
+
+.btn-full-size {
+  width: 100%;
+}
+
+.btn-half-size {
+  width: 49%;
 }
 
 /**
@@ -660,6 +685,16 @@ button#second-vote {
   -moz-column-count: 3;
   column-count: 3;
 }
+.campaign-pmaking .row {
+  margin-bottom: 0.5rem;
+}
+.campaign-pmaking nav {
+  display: inline-block;
+  float: right;
+}
+.campaign-pmaking nav .pagination {
+  margin: 0 0;
+}
 
 .template-configuration .supporting-components {
   list-style: none;
@@ -751,6 +786,51 @@ button#second-vote {
   z-index: 1;
 }
 
+.progressline .progressline-phases {
+  list-style: none;
+  display: block;
+  vertical-align: bottom;
+  text-align: center;
+  margin: 2rem;
+}
+.progressline .progressline-phases .progressline-phase {
+  display: inline-block;
+  padding: 0.5rem 2.5rem 0rem 2.5rem;
+  vertical-align: bottom;
+}
+.progressline .progressline-phases .progressline-phase .selected {
+  color: #57965B;
+}
+.progressline .progressline-phases .progressline-phase .progressline-phase-line {
+  position: relative;
+  border: 0.4rem solid grey;
+  margin: 0 -2rem;
+}
+.progressline .progressline-phases .progressline-phase .progressline-phase-line:before, .progressline .progressline-phases .progressline-phase .progressline-phase-line:after {
+  top: 50%;
+  border: solid;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-radius: 1rem;
+  border-width: 1rem;
+  margin-top: -1rem;
+  color: grey;
+}
+.progressline .progressline-phases .progressline-phase .progressline-phase-line:before {
+  right: 100%;
+  border-right-color: grey;
+}
+.progressline .progressline-phases .progressline-phase .progressline-phase-line:after {
+  left: 100%;
+  border-left-color: grey;
+}
+.progressline .progressline-phases .progressline-phase:last-child .progressline-phase-line:after {
+  color: transparent;
+  border-radius: 0rem;
+}
 .progressline .counter-box {
   list-style: none;
   background-color: #F4E5E4;

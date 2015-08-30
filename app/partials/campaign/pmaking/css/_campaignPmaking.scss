@@ -5,4 +5,17 @@
     -moz-column-count: 3;
     column-count: 3;
   }
+
+  .row{
+    margin-bottom: 0.5rem;
+  }
+
+  nav{
+    display: inline-block;
+    float: right;
+
+    & .pagination{
+      margin: 0 0;
+    }
+  }
 }

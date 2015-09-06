@@ -1,6 +1,7 @@
 .timeline{
   list-style: none;
   display: inline-block;
+  width: 100%;
 
   & li{
     position: relative;
@@ -10,10 +11,34 @@
     color: $timeline-selected-background;
     opacity: 0.1;
 
+    & :only-child{
+      margin-left: 5%;
+    }
+
+    &#proposalMakingPhase{
+      width: 30%;
+    }
+
+    &#versioningPhase{
+      width: 25%;
+    }
+
+    &#deliberationPhase{
+      width: 25%;
+    }
+
+    &#votingPhase{
+      width: 15%;
+    }
+
     &.selected{
       color: white;
       background-color: $timeline-selected-background;
       opacity: 1;
+    }
+
+    &.selected:before{
+      border-left-color: $timeline-selected-background;
     }
 
     &.active{

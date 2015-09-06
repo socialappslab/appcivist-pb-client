@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "541352af05e0dc964431367a",
+    "user": "Hodges",
+    "date": "1425168000000",
+    "picture": "assets/images/man1.jpg",
+    "votes": 0,
+    "type": "Urban infrastucture",
+    "title" : "Empty lot in Channing",
+    "description": "Minim ad aliqua pariatur ad labore veniam veniam elit tempor id sint aute commodo.\r\n"
+  },
+  {
+    "_id": "541352af05e0dc9614431367a",
+    "user": "Laura",
+    "date": "1425168000000",
+    "picture": "assets/images/woman1.jpg",
+    "votes": 1,
+    "type": "Education",
+    "title" : "Empty lot in Haste",
+    "description": "Minim ad aliqua pariatur ad labore veniam veniam elit tempor id sint aute commodo. Duis magna eu ex ea qui voluptate tempor. Qui commodo nostrud ipsum labore proident ipsum est aliqua do nulla dolor aute duis duis. Id fugiat enim ipsum voluptate minim. Dolore ad anim excepteur duis nulla esse velit Lorem culpa. Quis qui dolor irure deserunt.\r\n"
+  },
+  {
+    "_id": "541352af05e0dc9624431367a",
+    "user": "James",
+    "date": "1425168000000",
+    "picture": "assets/images/man2.jpg",
+    "votes": 2,
+    "type": "Urban infrastucture",
+    "title" : "Unused building in downtown Oakland",
+    "description": "Qui commodo nostrud ipsum labore proident ipsum est aliqua do nulla dolor aute duis duis. Id fugiat enim ipsum voluptate minim. Dolore ad anim excepteur duis nulla esse velit Lorem culpa. Quis qui dolor irure deserunt.\r\n"
+  },
+  {
+    "_id": "541352af05e0d6c964431367a",
+    "user": "Jane",
+    "date": "1425168000000",
+    "picture": "assets/images/woman2.jpg",
+    "votes": 100,
+    "type": "Transportation",
+    "title" : "Better use to Bart",
+    "description": "Dolore ad anim excepteur duis nulla esse velit Lorem culpa. Quis qui dolor irure deserunt.\r\n"
+  },
+  {
+    "_id": "541352af05e0dc9694431367a",
+    "user": "Hodges",
+    "date": "1425168000000",
+    "picture": "assets/images/man1.jpg",
+    "votes": 30,
+    "type": "Education",
+    "title" : "Improve schools in Berkeley",
+    "description": "Minim ad aliqua pariatur ad labore veniam veniam elit tempor id sint aute commodo. Duis magna eu ex ea qui voluptate tempor. Qui commodo nostrud ipsum labore proident ipsum est aliqua do nulla dolor aute duis duis. Id fugiat enim ipsum voluptate minim. Dolore ad anim excepteur duis nulla esse velit Lorem culpa. Quis qui dolor irure deserunt.\r\n"
+  }
+]

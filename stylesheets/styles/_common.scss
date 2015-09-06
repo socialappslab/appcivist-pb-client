@@ -20,6 +20,12 @@ i{
     clear:both;
 }
 
+.voffset  { margin-top: 0.2rem; }
+.voffset1 { margin-top: 0.5rem; }
+.voffset2 { margin-top: 1rem; }
+.voffset3 { margin-top: 1.5rem; }
+.voffset4 { margin-top: 3rem; }
+
 
 /* Index of phases in a black ball */
 .indexBall{
@@ -73,6 +79,36 @@ i{
     }
 }
 
+.tags{
+    padding-left: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+.tag{
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.25rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    border: none;
+
+    &.tag-info {
+        background: $tag-info;
+    }
+
+    &.tag-filter {
+        color: white;
+        background: $tag-filter;
+    }
+}
+
+.vertical-divider{
+    border-right: 1px solid $vertical-divider;
+    display: inline-block;
+    margin: 0 0.2rem;
+}
+
 textarea{
     resize: none;
     margin: 5px 0 0 0;
@@ -97,9 +133,36 @@ textarea{
 }
 
 .no-padding{
-  padding: 0;
+    padding: 0;
 }
 
 .no-margin{
-  margin: 0;
+    margin: 0;
+}
+
+.container-inline{
+    display: inline;
+}
+
+.info-block{
+    display: inline-block;
+    vertical-align: bottom;
+
+    & * {
+        display: block;
+    }
+}
+
+/*******Buttons*****/
+
+.btn-group{
+    vertical-align: baseline;
+}
+
+.btn-full-size{
+    width: 100%;
+}
+
+.btn-half-size{
+    width: 49%;
 }

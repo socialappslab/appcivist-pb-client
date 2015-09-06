@@ -1,0 +1,7 @@
+{
+    "_id" : "campaign1",
+    "name" : "Belleville - Paris PB 2016",
+    "assembly" : "Assemblée Belleville",
+    "phases" : ["proposalMaking", "deliberation", "voting"],
+    "suggestions" : "assets/suggestions/suggestions.json"
+}

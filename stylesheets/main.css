@@ -18,6 +18,10 @@ i {
   .header > div {
     display: inline; }
 
+.title {
+  display: inline-block;
+  vertical-align: middle; }
+
 .clear {
   clear: both; }
 
@@ -39,7 +43,7 @@ i {
 /* Index of phases in a black ball */
 .indexBall {
   display: inline-block;
-  background-color: black;
+  background-color: #524D4D;
   padding: 20px;
   border-radius: 50%; }
   .indexBall * {
@@ -64,7 +68,7 @@ i {
   .box.selectionBox {
     background-color: #F4F4F4; }
   .box.settingsBox {
-    border: 3px solid black;
+    border: 3px solid #524D4D;
     margin: 30px 0px 30px 0px; }
     .box.settingsBox .checkbox {
       display: inline-block;
@@ -73,7 +77,8 @@ i {
 .tags {
   padding-left: 0;
   list-style: none;
-  display: inline-block; }
+  display: inline-block;
+  margin-bottom: 0; }
 
 .tag {
   padding: 0.3rem 0.8rem;
@@ -81,12 +86,16 @@ i {
   font-size: 1.2rem;
   cursor: pointer;
   display: inline-block;
-  border: none; }
+  border: none;
+  margin: 0 0.5rem 0.5rem 0; }
   .tag.tag-info {
     background: #F4F4F4; }
   .tag.tag-filter {
     color: white;
     background: #57965B; }
+  .tag.tag-caution {
+    color: white;
+    background: #FCD49A; }
 
 .vertical-divider {
   border-right: 1px solid #524D4D;
@@ -530,6 +539,9 @@ button#second-vote {
     margin: -8px 0 -8px 0px;
     padding-left: 5px; }
 
+.campaign-creation .row {
+  margin-left: 0;
+  margin-right: 0; }
 .campaign-creation .template-configuration {
   margin-top: -10px; }
 

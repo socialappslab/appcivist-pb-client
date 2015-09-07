@@ -16,6 +16,11 @@ i{
     }
 }
 
+.title{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .clear{
     clear:both;
 }
@@ -30,7 +35,7 @@ i{
 /* Index of phases in a black ball */
 .indexBall{
     display: inline-block;
-    background-color: black;
+    background-color: $indexBall;
     padding: 20px;
     border-radius: 50%;
 
@@ -69,7 +74,7 @@ i{
     }
 
     &.settingsBox{
-        border: 3px solid black;
+        border: 3px solid $settings-box;
         margin: 30px 0px 30px 0px;
 
         & .checkbox{
@@ -83,6 +88,7 @@ i{
     padding-left: 0;
     list-style: none;
     display: inline-block;
+    margin-bottom: 0;
 }
 
 .tag{
@@ -92,6 +98,7 @@ i{
     cursor: pointer;
     display: inline-block;
     border: none;
+    margin: 0 0.5rem 0.5rem 0;
 
     &.tag-info {
         background: $tag-info;
@@ -100,6 +107,11 @@ i{
     &.tag-filter {
         color: white;
         background: $tag-filter;
+    }
+
+    &.tag-caution {
+        color: white;
+        background: $tag-caution;
     }
 }
 

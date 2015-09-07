@@ -40,6 +40,12 @@ i {
 .voffset4 {
   margin-top: 3rem; }
 
+.voffset5 {
+  margin-top: 6rem; }
+
+.voffset6 {
+  margin-top: 9rem; }
+
 /* Index of phases in a black ball */
 .indexBall {
   display: inline-block;
@@ -802,6 +808,18 @@ button#second-vote {
   .home .counter p {
     margin: -8px 0 -8px 0px;
     padding-left: 5px; }
+
+.tooltip.linkedCampaignTooltip {
+  opacity: 1; }
+  .tooltip.linkedCampaignTooltip .tooltip-inner {
+    max-width: 35rem;
+    padding: 2rem 1rem;
+    background: white;
+    color: #000;
+    display: inline-block;
+    text-align: left;
+    border: 0.2rem solid black;
+    border-radius: 0.3rem; }
 
 footer {
   position: absolute;

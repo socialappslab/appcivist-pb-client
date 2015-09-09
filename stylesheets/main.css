@@ -134,6 +134,8 @@ textarea {
 
 .container-inline {
   display: inline; }
+  .container-inline * {
+    display: inline-block; }
 
 .info-block {
   display: inline-block;
@@ -550,6 +552,11 @@ button#second-vote {
   margin-right: 0; }
 .campaign-creation .template-configuration {
   margin-top: -10px; }
+.campaign-creation .short-input {
+  width: 5rem; }
+.campaign-creation .short-input-label {
+  width: 5rem;
+  text-align: center; }
 
 .campaign-pmaking .suggestions {
   list-style: none;

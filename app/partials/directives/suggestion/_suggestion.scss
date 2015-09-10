@@ -1,0 +1,38 @@
+.suggestion{
+  border: 0.1rem solid $suggestion-border;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  display: inline-flex;
+
+  & .row{
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  & .suggestion-content{
+    padding: 1.5rem;
+
+    & .suggestion-info-user{
+      display: inline-block;
+      margin: 0 1rem;
+      & .image-profile-suggestion {
+        display: inline-block;
+        & img {
+          background-size: 100%;
+          height: 40px;
+          width: 40px;
+          border-radius: 20px;
+        }
+      }
+    }
+  }
+
+  & .suggestion-title{
+    display: inline-block;
+    margin: 0;
+  }
+
+  & .suggestion-description{
+    display: inline;
+  }
+}

@@ -1,4 +1,4 @@
-﻿appCivistApp.controller('CampaignCtrl', function($scope){
+﻿appCivistApp.controller('CreateCampaignCtrl', function($scope){
 	$scope.assemblies = [
 		{name:'Mairie de Paris', campaign:'PB Paris'},
 		{name:'Fête du Musique 2016', campaign:'PB Paris'},
@@ -20,4 +20,18 @@
 		{name: 'Transportation'},
 		{name: 'Parks and recreation'}
 	]
+});
+
+appCivistApp.controller('CampaignCtrl', function($scope, $http){
+	$scope.promise = $http.get('assets/campaigns/campaign.json').success(function(data){
+		$scope.campaign = data;
+		$scope.phases = data.phases;
+		$http.get($scope.campaign.suggestions).success(function(data){
+			$scope.campaign.suggestions = data;
+		}).error(function(error){
+			console.log('Error loading data' + error);
+		});
+	}).error(function(error){
+		console.log('Error loading data' + error);
+	});
 });

@@ -561,6 +561,7 @@ button#second-vote {
     padding-left: 5px; }
 
 .campaign-creation {
+  /****ARROW****/
   /******timeline-milestones*******/ }
   .campaign-creation .row {
     margin-left: 0;
@@ -572,6 +573,27 @@ button#second-vote {
   .campaign-creation .short-input-label {
     width: 5rem;
     text-align: center; }
+  .campaign-creation .settingsBox:before {
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-bottom-color: #524D4D;
+    border-width: 36px;
+    margin-left: -36px; }
+  .campaign-creation#pMakingPhase .settingsBox:before {
+    left: 27%; }
+  .campaign-creation#deliberationPhase .settingsBox:before {
+    left: 61%; }
+  .campaign-creation#versioningPhase .settingsBox:before {
+    left: 45%; }
+  .campaign-creation#votingPhase .settingsBox:before {
+    left: 75%; }
   .campaign-creation .timeline-milestones .milestone {
     margin: 1rem 0; }
     .campaign-creation .timeline-milestones .milestone .title-section .title-container .title {

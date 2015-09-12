@@ -17,8 +17,43 @@
   }
 
 
+  /****ARROW****/
 
+  .settingsBox:before {
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-bottom-color: $indexBall;
+    border-width: 36px;
+    margin-left: -36px;
+  }
 
+  &#pMakingPhase{
+    .settingsBox:before {
+      left: 27%;
+    }
+  }
+  &#deliberationPhase{
+    .settingsBox:before {
+      left: 61%;
+    }
+  }
+  &#versioningPhase{
+    .settingsBox:before {
+      left: 45%;
+    }
+  }
+  &#votingPhase{
+    .settingsBox:before {
+      left: 75%;
+    }
+  }
 
 /******timeline-milestones*******/
   .timeline-milestones{

@@ -715,6 +715,7 @@ button#second-vote {
 }
 
 .campaign-creation {
+  /****ARROW****/
   /******timeline-milestones*******/
 }
 .campaign-creation .row {
@@ -730,6 +731,32 @@ button#second-vote {
 .campaign-creation .short-input-label {
   width: 5rem;
   text-align: center;
+}
+.campaign-creation .settingsBox:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: transparent;
+  border-bottom-color: #524D4D;
+  border-width: 36px;
+  margin-left: -36px;
+}
+.campaign-creation#pMakingPhase .settingsBox:before {
+  left: 28%;
+}
+.campaign-creation#deliberationPhase .settingsBox:before {
+  left: 62%;
+}
+.campaign-creation#versioningPhase .settingsBox:before {
+  left: 46%;
+}
+.campaign-creation#votingPhase .settingsBox:before {
+  left: 76%;
 }
 .campaign-creation .timeline-milestones .milestone {
   margin: 1rem 0;

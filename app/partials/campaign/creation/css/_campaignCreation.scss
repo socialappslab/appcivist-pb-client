@@ -15,4 +15,47 @@
     width: 5rem;
     text-align: center;
   }
+
+
+
+
+
+/******timeline-milestones*******/
+  .timeline-milestones{
+    .milestone{
+      margin: 1rem 0;
+      .title-section{
+        .title-container{
+          .title{
+            padding: 1rem 0;
+          }
+        }
+      }
+      .date-section{
+        margin: -1.3rem 0;
+        input{
+          margin: 0 1rem 0 0;
+        }
+      }
+      .days-section{
+        margin: -1.3rem 0;
+      }
+    }
+
+    .milestone:last-child{
+      .downArrow{
+        display: none;
+      }
+    }
+
+    .downArrow{
+      font-size: 5rem;
+      display: inline-block;
+      margin: -1.7rem 0 -2rem 0;
+      color: $indexBall;
+    }
+
+  }
+
+
 }

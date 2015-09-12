@@ -35,11 +35,32 @@ i{
 
 
 /* Index of phases in a black ball */
+
 .indexBall{
     display: inline-block;
     background-color: $indexBall;
     padding: 20px;
     border-radius: 50%;
+
+    & * {
+        color:white;
+        display: inline;
+        margin: 0;
+    }
+
+    & :first-child{
+        font-weight: bold;
+    }
+
+    & :last-child{
+        vertical-align: -5px;
+    }
+}
+
+.indexSquare{
+    display: inline-block;
+    background-color: $indexBall;
+    padding: 1rem;
 
     & * {
         color:white;

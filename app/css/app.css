@@ -22,6 +22,11 @@ i {
   display: inline;
 }
 
+.title {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .clear {
   clear: both;
 }
@@ -46,10 +51,18 @@ i {
   margin-top: 3rem;
 }
 
+.voffset5 {
+  margin-top: 6rem;
+}
+
+.voffset6 {
+  margin-top: 9rem;
+}
+
 /* Index of phases in a black ball */
 .indexBall {
   display: inline-block;
-  background-color: black;
+  background-color: #524D4D;
   padding: 20px;
   border-radius: 50%;
 }
@@ -62,6 +75,23 @@ i {
   font-weight: bold;
 }
 .indexBall :last-child {
+  vertical-align: -5px;
+}
+
+.indexSquare {
+  display: inline-block;
+  background-color: #524D4D;
+  padding: 1rem;
+}
+.indexSquare * {
+  color: white;
+  display: inline;
+  margin: 0;
+}
+.indexSquare :first-child {
+  font-weight: bold;
+}
+.indexSquare :last-child {
   vertical-align: -5px;
 }
 
@@ -82,7 +112,7 @@ i {
   background-color: #F4F4F4;
 }
 .box.settingsBox {
-  border: 3px solid black;
+  border: 3px solid #524D4D;
   margin: 30px 0px 30px 0px;
 }
 .box.settingsBox .checkbox {
@@ -94,6 +124,7 @@ i {
   padding-left: 0;
   list-style: none;
   display: inline-block;
+  margin-bottom: 0;
 }
 
 .tag {
@@ -103,6 +134,7 @@ i {
   cursor: pointer;
   display: inline-block;
   border: none;
+  margin: 0 0.5rem 0.5rem 0;
 }
 .tag.tag-info {
   background: #F4F4F4;
@@ -110,6 +142,10 @@ i {
 .tag.tag-filter {
   color: white;
   background: #57965B;
+}
+.tag.tag-caution {
+  color: white;
+  background: #FCD49A;
 }
 
 .vertical-divider {
@@ -151,6 +187,9 @@ textarea {
 
 .container-inline {
   display: inline;
+}
+.container-inline * {
+  display: inline-block;
 }
 
 .info-block {
@@ -675,8 +714,73 @@ button#second-vote {
   padding-left: 5px;
 }
 
+.campaign-creation {
+  /****ARROW****/
+  /******timeline-milestones*******/
+}
+.campaign-creation .row {
+  margin-left: 0;
+  margin-right: 0;
+}
 .campaign-creation .template-configuration {
   margin-top: -10px;
+}
+.campaign-creation .short-input {
+  width: 5rem;
+}
+.campaign-creation .short-input-label {
+  width: 5rem;
+  text-align: center;
+}
+.campaign-creation .settingsBox:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: transparent;
+  border-bottom-color: #524D4D;
+  border-width: 36px;
+  margin-left: -36px;
+}
+.campaign-creation#pMakingPhase .settingsBox:before {
+  left: 28%;
+}
+.campaign-creation#deliberationPhase .settingsBox:before {
+  left: 62%;
+}
+.campaign-creation#versioningPhase .settingsBox:before {
+  left: 46%;
+}
+.campaign-creation#votingPhase .settingsBox:before {
+  left: 76%;
+}
+.campaign-creation .timeline-milestones .milestone {
+  margin: 1rem 0;
+}
+.campaign-creation .timeline-milestones .milestone .title-section .title-container .title {
+  padding: 1rem 0;
+}
+.campaign-creation .timeline-milestones .milestone .date-section {
+  margin: -1.3rem 0;
+}
+.campaign-creation .timeline-milestones .milestone .date-section input {
+  margin: 0 1rem 0 0;
+}
+.campaign-creation .timeline-milestones .milestone .days-section {
+  margin: -1.3rem 0;
+}
+.campaign-creation .timeline-milestones .milestone:last-child .downArrow {
+  display: none;
+}
+.campaign-creation .timeline-milestones .downArrow {
+  font-size: 5rem;
+  display: inline-block;
+  margin: -1.7rem 0 -2rem 0;
+  color: #524D4D;
 }
 
 .campaign-pmaking .suggestions {
@@ -1007,6 +1111,20 @@ button#second-vote {
 .home .counter p {
   margin: -8px 0 -8px 0px;
   padding-left: 5px;
+}
+
+.tooltip.linkedCampaignTooltip {
+  opacity: 1;
+}
+.tooltip.linkedCampaignTooltip .tooltip-inner {
+  max-width: 35rem;
+  padding: 2rem 1rem;
+  background: white;
+  color: #000;
+  display: inline-block;
+  text-align: left;
+  border: 0.2rem solid black;
+  border-radius: 0.3rem;
 }
 
 footer {

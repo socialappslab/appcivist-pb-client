@@ -16,6 +16,11 @@ i{
     }
 }
 
+.title{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .clear{
     clear:both;
 }
@@ -25,14 +30,37 @@ i{
 .voffset2 { margin-top: 1rem; }
 .voffset3 { margin-top: 1.5rem; }
 .voffset4 { margin-top: 3rem; }
+.voffset5 { margin-top: 6rem; }
+.voffset6 { margin-top: 9rem; }
 
 
 /* Index of phases in a black ball */
+
 .indexBall{
     display: inline-block;
-    background-color: black;
+    background-color: $indexBall;
     padding: 20px;
     border-radius: 50%;
+
+    & * {
+        color:white;
+        display: inline;
+        margin: 0;
+    }
+
+    & :first-child{
+        font-weight: bold;
+    }
+
+    & :last-child{
+        vertical-align: -5px;
+    }
+}
+
+.indexSquare{
+    display: inline-block;
+    background-color: $indexBall;
+    padding: 1rem;
 
     & * {
         color:white;
@@ -69,7 +97,7 @@ i{
     }
 
     &.settingsBox{
-        border: 3px solid black;
+        border: 3px solid $settings-box;
         margin: 30px 0px 30px 0px;
 
         & .checkbox{
@@ -83,6 +111,7 @@ i{
     padding-left: 0;
     list-style: none;
     display: inline-block;
+    margin-bottom: 0;
 }
 
 .tag{
@@ -92,6 +121,7 @@ i{
     cursor: pointer;
     display: inline-block;
     border: none;
+    margin: 0 0.5rem 0.5rem 0;
 
     &.tag-info {
         background: $tag-info;
@@ -100,6 +130,11 @@ i{
     &.tag-filter {
         color: white;
         background: $tag-filter;
+    }
+
+    &.tag-caution {
+        color: white;
+        background: $tag-caution;
     }
 }
 
@@ -142,6 +177,9 @@ textarea{
 
 .container-inline{
     display: inline;
+    * {
+        display: inline-block;
+    }
 }
 
 .info-block{

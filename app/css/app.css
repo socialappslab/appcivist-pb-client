@@ -746,17 +746,20 @@ button#second-vote {
   border-width: 36px;
   margin-left: -36px;
 }
+.campaign-creation#prePhase .settingsBox:before {
+  display: none;
+}
 .campaign-creation#pMakingPhase .settingsBox:before {
-  left: 28%;
+  left: 27%;
 }
 .campaign-creation#deliberationPhase .settingsBox:before {
-  left: 62%;
+  left: 61%;
 }
 .campaign-creation#versioningPhase .settingsBox:before {
-  left: 46%;
+  left: 45%;
 }
 .campaign-creation#votingPhase .settingsBox:before {
-  left: 76%;
+  left: 75%;
 }
 .campaign-creation .timeline-milestones .milestone {
   margin: 1rem 0;

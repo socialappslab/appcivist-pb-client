@@ -586,6 +586,8 @@ button#second-vote {
     border-bottom-color: #524D4D;
     border-width: 36px;
     margin-left: -36px; }
+  .campaign-creation#prePhase .settingsBox:before {
+    display: none; }
   .campaign-creation#pMakingPhase .settingsBox:before {
     left: 27%; }
   .campaign-creation#deliberationPhase .settingsBox:before {

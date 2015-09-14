@@ -10,7 +10,8 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 3
   },
   {
     "_id": "551352af05e0dc164431867a",
@@ -23,7 +24,8 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 2
   },
   {
     "_id": "511352af05e0dc964431367x",
@@ -36,7 +38,8 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 6
   },
   {
     "_id": "551352afa55872c7e93ad0f9",
@@ -55,7 +58,8 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 0
   },
   {
     "_id": "551352af333ad9030de33ff0",
@@ -71,7 +75,8 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 9
   },
   {
     "_id": "551352af974aebeac0b8ac88",
@@ -87,7 +92,8 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 1
   },
   {
     "_id": "551352af49a5cc9bc5ce5b5b",
@@ -103,7 +109,8 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 9
   },
   {
     "_id": "551352af572be985e8e4b20d",
@@ -119,6 +126,7 @@
       {
         "tag": "assembly"
       }
-    ]
+    ],
+    "votes": 2
   }
 ]

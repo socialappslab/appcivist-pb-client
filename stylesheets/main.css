@@ -5,6 +5,7 @@
 /*******SUGGESTIONS*******/
 /*******TAGS**************/
 /*****COMMON ELEMENTS***/
+/******HEADER**********/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px; }
@@ -45,6 +46,11 @@ i {
 
 .voffset6 {
   margin-top: 9rem; }
+
+.vertical-divider {
+  border-right: 1px solid #524D4D;
+  display: inline-block;
+  margin: 0 0.2rem; }
 
 /* Index of phases in a black ball */
 .indexBall {
@@ -116,11 +122,6 @@ i {
     color: white;
     background: #FCD49A; }
 
-.vertical-divider {
-  border-right: 1px solid #524D4D;
-  display: inline-block;
-  margin: 0 0.2rem; }
-
 textarea {
   resize: none;
   margin: 5px 0 0 0;
@@ -165,6 +166,31 @@ textarea {
 
 .btn-half-size {
   width: 49%; }
+
+/******HEADER******/
+#navbar-options ul li {
+  border-right: 0.1rem solid #F4F4F4; }
+#navbar-options ul li:first-child {
+  border-left: 0.1rem solid #F4F4F4; }
+#navbar-options ul li:hover {
+  background-color: rgba(128, 128, 128, 0.05); }
+#navbar-options ul li:active {
+  background-color: rgba(128, 128, 128, 0.05);
+  box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05); }
+
+#user-menu ul.menu-elements {
+  list-style: none;
+  padding: 1.5rem;
+  margin: 0; }
+  #user-menu ul.menu-elements li {
+    display: inline-block;
+    margin: 0 0.5rem;
+    cursor: pointer; }
+  #user-menu ul.menu-elements .dropdown .dropdown-menu li:hover {
+    color: white;
+    background: #9CC7D3; }
+  #user-menu ul.menu-elements .dropdown .dropdown-menu li:last-child {
+    color: #9CC7D3; }
 
 /**
  * Original styles in Hypersphere (first demo of AppCivist)
@@ -871,6 +897,22 @@ button#second-vote {
   .home .counter p {
     margin: -8px 0 -8px 0px;
     padding-left: 5px; }
+  .home .settingsBox .list-item {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 8.5rem;
+    margin-right: 0.5rem;
+    margin-top: 2rem; }
+    .home .settingsBox .list-item .item {
+      display: inline-block;
+      width: 50%; }
+      .home .settingsBox .list-item .item .caption {
+        vertical-align: middle;
+        width: 12rem; }
+        .home .settingsBox .list-item .item .caption .text {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis; }
 
 .tooltip.linkedCampaignTooltip {
   opacity: 1; }

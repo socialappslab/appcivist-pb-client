@@ -24,49 +24,29 @@
                 </div>
                 <div class="row">
                     <div class="col-md-1 col-sm-1 forum-title">
-                        <h5><strong>Filter by Themes</strong></h5>
+                        <h5><strong>Assembly themes</strong></h5>
                     </div>
 
                     <div class="col-md-11 col-sm-11">
-                        <div class="green-tag"><h4><span class="label label-success">All</span></h4></div>
-                        <div class="green-tag"><h4><span class="label label-success">Assembly</span></h4></div>
-
-                        <div ng-if="currentAssembly.resources.themes.length > 0">
-                            <div ng-repeat="theme in currentAssembly.resources.themes|limitTo:2">
-                                <div class="green-tag"><h4><span class="label label-success">{{theme.title}}</span></h4></div>
-                            </div>
-
-                            <!--<div class="green-tag">-->
-                            <!--<h5><strong>Urban Infrastucture</strong></h5>-->
-                            <!--</div>-->
-                            <!--<div class="green-tag">-->
-                            <!--<h5><strong>Transportation</strong></h5>-->
-                            <!--</div>-->
-                            <!--<div class="green-tag">-->
-                            <!--<h5><strong>Parks and Recreation</strong></h5>-->
-                            <!--</div>-->
-                            <div class="green-tag" style="float:right;">
-                                <h4><span class="label label-success">More themes<i class="fa fa-sort-desc"></i></span></h4>
-                            </div>
-
-                            <!-- TODO:
-                            <div ng-if="currentAssembly.resources.themes.length > 3">
-                                Place here the remaining themes as a dropbdown
-                            </div>
-                            -->
-                        </div>
+                        <ul class="tags tags-filter">
+                            <li class="tag tag-filter"><strong>All</strong></li>
+                            <li class="vertical-divider">
+                                &nbsp;
+                            </li>
+                            <li ng-if="currentAssembly.resources.themes.length > 0" ng-repeat="theme in currentAssembly.resources.themes|limitTo:2" class="tag tag-filter">
+                                <strong>{{theme.title}}</strong>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3 col-sm-3">
-                        <button class="btn btn-primary">
-                            <h5><strong>Modify Themes</strong></h5>
-                        </button>
+
                     </div>
                     <div class="col-md-6 col-sm-6 col-md-push-2 col-sm-push-2 col-md-pull-1 col-sm-pull-1">
                         <div class="col-md-8 col-sm-8">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
+                                <input type="text" class="form-control" placeholder="Search for..." ng-model="searchComments"/>
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button">Search</button>
                                 </span>
@@ -102,9 +82,9 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        <li><a href="#">Theme 1</a></li>
-                                        <li><a href="#">Theme 2</a></li>
-                                        <li><a href="#">Theme 3</a></li>
+                                        <li ng-repeat="theme in currentAssembly.resources.themes">
+                                            <a>{{theme.title}}</a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <h4 class="text-info" style="display: inline-block; vertical-align: middle; cursor:pointer"><strong>Publish</strong></h4>
@@ -113,7 +93,7 @@
                         </div>
                     </div>
                     <ul class="row comments col-md-11 col-sm-11">
-                        <li ng-class="{true: 'row comment col-md-12 col-sm-12 reply', false: 'row comment col-md-12 col-sm-12'}[comment.reply]" class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: 'date'">
+                        <li ng-class="{true: 'row comment col-md-12 col-sm-12 reply', false: 'row comment col-md-12 col-sm-12'}[comment.reply]" class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: 'date' | filter: searchComments">
                             <div class="row col-md-12 col-sm-12">
                                 <div class="image-profile-comment inline">
                                     <img ng-src="{{comment.picture}}" alt="" />
@@ -125,11 +105,7 @@
                                         <li class="tag"><strong>{{tag.tag}}</strong></li>
                                     </ul>
                                 </div>
-                                <div class="counter inline pull-right">
-                                    <i class="fa fa-caret-up"></i>
-                                    <p><strong>0</strong></p>
-                                    <i class="fa fa-caret-down"></i>
-                                </div>
+                                <votes-counter class="pull-right" content="comment"></votes-counter>
                             </div>
                             <div class="row col-md-12 col-sm-12">
                                 <div class="col-md-12 col-sm-12 text-comment">

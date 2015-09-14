@@ -1,4 +1,20 @@
-﻿appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateCache){
+﻿appCivistApp.controller('CampaignListCtrl', function($scope, $routeParams,
+													 $resource, $location, Campaigns, loginService, localStorageService) {
+	$scope.campaigns = [];
+	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+
+	init();
+
+	function init() {
+		$scope.campaigns = Campaigns.query();
+		$scope.campaigns.$promise.then(function(data) {
+			$scope.campaigns = data;
+			localStorageService.set("campaigns", $scope.campaigns);
+		});
+	}
+});
+
+appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateCache){
 	$scope.assemblies = [
 		{name:'Mairie de Paris', campaign:'PB Paris'},
 		{name:'Fête du Musique 2016', campaign:'PB Paris'},

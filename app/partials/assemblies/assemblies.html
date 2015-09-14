@@ -6,7 +6,7 @@
 			</div><!-- /.col-lg-6 -->
 			<div class="col-lg-4 col-md-4 col-sm-6 h1">
 				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Search for...">
+					<input type="text" class="form-control" placeholder="Search for..." ng-model="assemblyFilter"/>
       				<span class="input-group-btn">
         				<button class="btn btn-default" type="button">Search</button>
 					</span>
@@ -24,7 +24,7 @@
 		</div>
 		<div class="row assemblies">
 			<div ng-if="assemblies.length > 0">
-				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies">
+				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies | filter:assemblyFilter">
 					<div class="thumbnail assembly">
 						<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
 						<div class="caption">

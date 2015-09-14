@@ -65,3 +65,52 @@ appCivistApp.service('Assemblies', function ($resource, localStorageService) {
     //
     //return Assemblies;
 });
+
+appCivistApp.service('Campaigns', function ($resource, localStorageService) {
+
+    //var Campaigns = $resource('https://appcivist-pb.herokuapp.com/api/user/:uuid/campaign');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return $resource(serverBaseUrl + '/user/'+localStorageService.get('user').uuid+'/campaign');
+
+});
+
+appCivistApp.service('Memberships', function ($resource, localStorageService) {
+
+    //var Membership = $resource('https://appcivist-pb.herokuapp.com/api/membership/user/:uuid');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid);
+
+});
+
+appCivistApp.service('Notifications', function ($resource, localStorageService) {
+
+    //var Notification = $resource('https://appcivist-pb.herokuapp.com/api/notification/user/:uuid');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return $resource(serverBaseUrl + '/notification/user/'+localStorageService.get('user').uuid);
+
+});
+

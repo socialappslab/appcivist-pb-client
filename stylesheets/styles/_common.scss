@@ -33,6 +33,12 @@ i{
 .voffset5 { margin-top: 6rem; }
 .voffset6 { margin-top: 9rem; }
 
+.vertical-divider{
+    border-right: 1px solid $vertical-divider;
+    display: inline-block;
+    margin: 0 0.2rem;
+}
+
 
 /* Index of phases in a black ball */
 
@@ -138,12 +144,6 @@ i{
     }
 }
 
-.vertical-divider{
-    border-right: 1px solid $vertical-divider;
-    display: inline-block;
-    margin: 0 0.2rem;
-}
-
 textarea{
     resize: none;
     margin: 5px 0 0 0;
@@ -203,4 +203,48 @@ textarea{
 
 .btn-half-size{
     width: 49%;
+}
+
+
+/******HEADER******/
+#navbar-options{
+    ul{
+        li{
+            border-right: 0.1rem solid $border-header;
+        }
+        li:first-child{
+            border-left: 0.1rem solid $border-header;
+        }
+        li:hover{
+            background-color: rgba(128, 128, 128, 0.05);
+        }
+        li:active{
+            background-color: rgba(128, 128, 128, 0.05);
+            box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+        }
+    }
+}
+
+#user-menu{
+    ul.menu-elements{
+        list-style: none;
+        //display: inline-block;
+        padding: 1.5rem;
+        margin: 0;
+        li{
+            display: inline-block;
+            margin: 0 0.5rem;
+            cursor: pointer;
+        }
+
+        & .dropdown .dropdown-menu{
+            li:hover{
+                color: white;
+                background: $dropdown-hover;
+            }
+            li:last-child{
+                color: $dropdown-hover;
+            }
+        }
+    }
 }

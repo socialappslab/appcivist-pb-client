@@ -10,7 +10,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 	init();
 
 	function init() {
-		$scope.assemblies = Assemblies.query();
+		$scope.assemblies = Assemblies.assemblies().query();
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);

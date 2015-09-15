@@ -37,11 +37,13 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
 		})
 		.when('/home',{
             //controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/home/home.html'
+            templateUrl: 'app/partials/home/home.html',
+            activetab: 'home'
         })
         .when('/assemblies',{
             controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/assemblies/assemblies.html'
+            templateUrl: 'app/partials/assemblies/assemblies.html',
+            activetab: 'assemblies'
         })
         .when('/assembly/create/step1',{
             controller: 'AssemblyListCtrl',

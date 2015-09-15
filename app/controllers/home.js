@@ -10,24 +10,23 @@
 	init();
 
 	function init() {
-		$scope.memberships = Memberships.query();
-		$scope.campaigns = Campaigns.query();
-		$scope.membership = Memberships.query();
+		$scope.assemblies = Memberships.assemblies().query();
+		$scope.campaigns = Campaigns.campaigns('ongoing').query();
+		$scope.workingGroups = Memberships.workingGroups().query();
 		$scope.notifications = Notifications.query();
 
-		$scope.membership.$promise.then(function(data) {
-			angular.forEach(data, function(obj) {
-				if(obj.membershipType === 'ASSEMBLY') {
-					$scope.assemblies.push(obj.assembly);
-				}
+		$scope.assemblies.$promise.then(function(data) {
+			$scope.assemblies = [];
+			angular.forEach(data, function(obj){
+				$scope.assemblies.push(obj.assembly);
 			});
-			localStorageService.set("assemblies", $scope.assemblies);
 		});
 		$scope.campaigns.$promise.then(function(data) {
 			$scope.campaigns = data;
 			localStorageService.set("campagins", $scope.campaigns);
 		});
-		$scope.memberships.$promise.then(function(data) {
+		$scope.workingGroups.$promise.then(function(data) {
+			$scope.workingGroups = [];
 			angular.forEach(data, function(obj) {
 				if(obj.membershipType === 'GROUP') {
 					$scope.workingGroups.push(obj.workingGroup);

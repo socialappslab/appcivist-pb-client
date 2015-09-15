@@ -7,7 +7,8 @@
  *
  */
 appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
-											 localStorageService, Assemblies, loginService) {
+											 localStorageService, Assemblies, loginService, $route) {
+	$scope.route = $route;
 	init();
 
 	function init() {
@@ -39,6 +40,12 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
 				$scope.sessionKey = null;
 			}
 		}
+
+		$scope.assemblies = Assemblies.assembliesWithoutLogin().query();
+		$scope.assemblies.$promise.then(function(data) {
+			$scope.assemblies = data;
+			localStorageService.set("assemblies", $scope.assemblies);
+		});
 	}
 
 	$scope.login = function(email, password) {

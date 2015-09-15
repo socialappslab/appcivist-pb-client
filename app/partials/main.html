@@ -2,21 +2,27 @@
 
 	<div class="container marketing" ng-if='!userIsAuthenticated()'>
 		<div class="row">
-			<h2 class="summary-heading">AppCivist is a platform for
-				democratic assembly and collective action.</h2>
+			<h3 class="summary-heading">AppCivist is a platform for
+				democratic assembly and collective action.</h3>
 			<div class="col-md-4">
-				<img class="img-circle" src="/assets/images/map-140.png" alt="Map">
-				<h3>Report issues</h3>
+				<div class="thumbnail assembly">
+					<img class="img-circle" src="/assets/images/map-140.png" alt="Map">
+				</div>
+				<h4>Report issues</h4>
 			</div>
 			<div class="col-md-4">
-				<img class="img-circle" src="/assets/images/discuss-140.png"
-					alt="Discuss">
-				<h3>Propose solutions</h3>
+				<div class="thumbnail assembly">
+					<img class="img-circle" src="/assets/images/discuss-140.png"
+						 alt="Discuss">
+				</div>
+				<h4>Propose solutions</h4>
 			</div>
 			<div class="col-md-4">
-				<img class="img-circle" src="/assets/images/visualize-140.png"
-					alt="Visualize">
-				<h3>Evaluate proposals</h3>
+				<div class="thumbnail assembly">
+					<img class="img-circle" src="/assets/images/visualize-140.png"
+						 alt="Visualize">
+				</div>
+				<h4>Evaluate proposals</h4>
 			</div>
 		</div>
 	</div>
@@ -80,25 +86,29 @@
 			</div>
 		</div>
 	</div>
-	<div class="container marketing">
+	<div class="container marketing assembliesLanding">
 		<div class="row">
-			<h2 class="summary-heading">Current Assemblies</h2>
-			<div class="col-md-4">
-				<img class="img-circle" src="/assets/images/tabacalera-140.png"
-					alt="Centro Social Autogestionado La Tabacalera de Lavapiés. Plano Planta Principal.">
-				<h3>Urban Infrastructure</h3>
-			</div>
-			<div class="col-md-4">
-				<img class="img-circle" src="/assets/images/justicia-140.png"
-					alt="Favianna Rodriguez. La Justicia No Tiene Fronteras, 2013.">
-				<h3>Institutional Racism</h3>
-			</div>
-			<div class="col-md-4">
-				<img class="img-circle" src="/assets/images/barefootdoctor-140.png"
-					alt="National Library of Medicine. Go to the country side to serve the 500 million peasants, 1965. Chinese Public Health Posters.">
-				<h3>Public Health</h3>
-				<i class="icon-right-open"
-					style="position: absolute; top: 0; right: -24px; color: #cfc;"></i>
+			<div class="col-lg-5 col-md-5 col-sm-12 h1">
+				<h3><strong>Current Assemblies</strong></h3>
+			</div><!-- /.col-lg-6 -->
+			<div class="col-lg-4 col-md-4 col-sm-6 h1">
+				<input type="text" class="form-control" placeholder="Search for..." ng-model="assemblyFilter"/>
+			</div><!-- /.col-lg-6 -->
+		</div>
+		<div class="row assemblies">
+			<div ng-if="assemblies.length > 0">
+				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies | filter:assemblyFilter">
+					<div class="thumbnail assembly">
+						<img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+						<div class="caption">
+							<h4><strong>{{assembly.name}}</a></strong></h4>
+							<!--
+							<h5 class="text-muted"><strong><i><div ng-show="assembly.location.placeName != null">{{assembly.location.placeName}},</div> {{assembly.location.city}}, {{assembly.location.country}}</i></strong></h5>
+							<p>{{assembly.description}}</p>
+							-->
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

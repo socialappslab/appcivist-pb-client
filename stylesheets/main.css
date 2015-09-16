@@ -411,39 +411,85 @@ button#second-vote {
   .navbar > .container .navbar-brand,
   .navbar > .container-fluid .navbar-brand {
     margin-left: 0 !important; } }
-.assemblyCreation .row {
-  margin: 0 0 10px 0; }
-.assemblyCreation .image-capsule {
-  margin-right: 30px; }
-.assemblyCreation .image-circle {
-  height: 60px;
-  width: 60px;
-  display: block;
-  margin: auto;
-  border-radius: 100%;
-  display: inline-block; }
-.assemblyCreation .image-cover {
-  height: 100px;
-  width: 500px;
-  display: block;
-  margin: auto;
-  display: inline-block;
-  margin-bottom: 10px; }
-.assemblyCreation .collection-tags {
-  float: left; }
-.assemblyCreation .green-tag {
-  color: white;
-  background-color: #5cb85c;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 5px 0 5px 0px; }
-.assemblyCreation h1 {
-  vertical-align: sub;
-  display: inline-block; }
-.assemblyCreation label {
-  font-size: 16px; }
-.assemblyCreation ul {
-  list-style: none; }
+.assemblyCreation {
+  /*******INPUT - TEXTAREA *********/ }
+  .assemblyCreation h1 {
+    vertical-align: sub;
+    display: inline-block; }
+  .assemblyCreation label {
+    font-size: 1.6rem; }
+  .assemblyCreation ul {
+    list-style: none; }
+  .assemblyCreation .row {
+    margin: 0 0 1rem 0; }
+  .assemblyCreation .image-capsule {
+    margin-right: 3rem; }
+  .assemblyCreation .image-circle {
+    height: 6rem;
+    width: 6rem;
+    display: block;
+    margin: auto;
+    border-radius: 100%;
+    display: inline-block; }
+  .assemblyCreation .image-cover {
+    height: 10rem;
+    width: 50rem;
+    display: block;
+    margin: auto;
+    display: inline-block;
+    margin-bottom: 1rem; }
+  .assemblyCreation .collection-tags {
+    float: left; }
+  .assemblyCreation .green-tag {
+    color: white;
+    background-color: #5cb85c;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0 0.5rem 0; }
+  .assemblyCreation .optionsBox {
+    background-color: #F4F4F4;
+    padding: 1rem;
+    border-radius: 0.5rem; }
+    .assemblyCreation .optionsBox .optionsBox-title {
+      color: dodgerblue;
+      display: inline-block; }
+    .assemblyCreation .optionsBox .checkbox {
+      padding-left: 2rem; }
+  .assemblyCreation .optionsBox:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: #F4F4F4;
+    border-width: 1rem;
+    margin-top: -2.3rem; }
+  .assemblyCreation #inputAboutAssembly {
+    height: 10rem; }
+  .assemblyCreation input {
+    display: inline-block;
+    margin: 0.5rem 0.5rem 0 0; }
+    .assemblyCreation input#inputCityAssembly {
+      width: 10rem; }
+    .assemblyCreation input#inputStateAssembly {
+      width: 7rem; }
+    .assemblyCreation input#inputZipAssembly {
+      width: 6rem; }
+    .assemblyCreation input#inputCountryAssembly {
+      width: 9rem; }
+    .assemblyCreation input#inputContactNameAssembly {
+      width: 24.5rem; }
+    .assemblyCreation input#inputContactPhoneAssembly {
+      width: 24.5rem; }
+    .assemblyCreation input#inputContactEmailAssembly {
+      width: 24.5rem; }
+  .assemblyCreation .picsList {
+    white-space: nowrap; }
+    .assemblyCreation .picsList .image-capsule {
+      cursor: pointer; }
 
 .assembliesLanding .row {
   margin-bottom: 40px; }

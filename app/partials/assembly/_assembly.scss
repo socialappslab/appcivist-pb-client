@@ -1,15 +1,25 @@
 .assemblyCreation{
+  h1{
+    vertical-align: sub;
+    display: inline-block;
+  }
+  label{
+    font-size: 1.6rem;
+  }
+  ul{
+    list-style: none;
+  }
   .row{
-    margin: 0 0 10px 0;
+    margin: 0 0 1rem 0;
   }
 
   .image-capsule{
-    margin-right: 30px;
+    margin-right: 3rem;
   }
 
   .image-circle {
-    height: 60px;
-    width: 60px;
+    height: 6rem;
+    width: 6rem;
     display: block;
     margin: auto;
     border-radius: 100%;
@@ -17,12 +27,12 @@
   }
 
   .image-cover {
-    height: 100px;
-    width: 500px;
+    height: 10rem;
+    width: 50rem;
     display: block;
     margin: auto;
     display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
   }
 
   .collection-tags{
@@ -32,21 +42,72 @@
   .green-tag{
     color: white;
     background-color: #5cb85c;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px 0 5px 0px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0 0.5rem 0;
   }
 
-  h1{
-    vertical-align: sub;
+  .optionsBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .optionsBox-title{
+      color: $assembly-optionsBox-title;
+      display: inline-block;
+    }
+    .checkbox{
+      padding-left: 2rem;
+    }
+  }
+  .optionsBox:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: $assembly-optionsBox;
+    border-width: 1rem;
+    margin-top: -2.3rem;
+  }
+
+  /*******INPUT - TEXTAREA *********/
+  #inputAboutAssembly{
+    height: 10rem;
+  }
+
+  input {
     display: inline-block;
+    margin: 0.5rem 0.5rem 0 0;
+    &#inputCityAssembly{
+      width: 10rem;
+    }
+    &#inputStateAssembly{
+      width: 7rem;
+    }
+    &#inputZipAssembly{
+      width: 6rem;
+    }
+    &#inputCountryAssembly{
+      width: 9rem;
+    }
+    &#inputContactNameAssembly{
+      width: 24.5rem;
+    }
+    &#inputContactPhoneAssembly{
+      width: 24.5rem;
+    }
+    &#inputContactEmailAssembly {
+      width: 24.5rem;
+    }
   }
 
-  label{
-    font-size: 16px;
-  }
-
-  ul{
-    list-style: none;
+  .picsList{
+    white-space: nowrap;
+    & .image-capsule{
+      cursor: pointer;
+    }
   }
 }

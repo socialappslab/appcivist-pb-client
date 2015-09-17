@@ -7,6 +7,7 @@
 /*****COMMON ELEMENTS***/
 /******HEADER**********/
 /******MAIN***********/
+/*****UPLOAD********/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px;
@@ -213,6 +214,21 @@ textarea {
 
 .btn-half-size {
   width: 49%;
+}
+
+/******Upload files******/
+.progress-section {
+  height: 4rem;
+}
+.progress-section .progress-line-container {
+  display: inline-block;
+  width: 100%;
+}
+.progress-section .progress-line-container .progress-line {
+  background: #9CC7D3;
+  width: 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
 /**

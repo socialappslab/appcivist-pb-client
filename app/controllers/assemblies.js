@@ -22,7 +22,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyCtrl',	function($scope, $routeParams, $resource, $http, Assemblies,
+appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $routeParams, $resource, $http, Assemblies,
 													loginService, localStorageService) {
 	$scope.currentAssembly = {};
 	$scope.newAssembly = {};
@@ -106,6 +106,30 @@ appCivistApp.controller('AssemblyCtrl',	function($scope, $routeParams, $resource
 				console.log("Created assembly: "+newAssembly);
 				localStorageService.set("currentAssembly",newAssembly);
 				$location.url('/assembly/'+newAssembly.assemblyId+"/forum");
+			});
+		}
+	}
+
+	$scope.uploadFiles = function(file) {
+		$scope.f = file;
+		if (file && !file.$error) {
+			file.upload = Upload.upload({
+				url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+				file: file
+			});
+
+			file.upload.then(function (response) {
+				$timeout(function () {
+					file.result = response.data;
+				});
+			}, function (response) {
+				if (response.status > 0)
+					$scope.errorMsg = response.status + ': ' + response.data;
+			});
+
+			file.upload.progress(function (evt) {
+				file.progress = Math.min(100, parseInt(100.0 *
+					evt.loaded / evt.total));
 			});
 		}
 	}

@@ -12,7 +12,7 @@
 
 console.log("Welcome to AppCivist!");
 
-var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule'];
+var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule', 'ngFileUpload'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 //var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
 var appCivistCoreBaseURL = "http://localhost:9000/api";

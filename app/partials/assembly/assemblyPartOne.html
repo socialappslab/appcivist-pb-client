@@ -169,10 +169,17 @@
                         </div>
                         <div class="inline">
                             <div class="image-capsule">
-                                <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" ng-click="">
+                                <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" type="file" ngf-select="uploadFiles($file)"
+                                     accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row progress-section">
+                    {{f.name}} {{f.$error}} {{f.$errorParam}}
+                    <span class="progress-line-container" ng-show="f.progress >= 0">
+                        <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+                    </span>
                 </div>
                 <div class="row">
                     <div class="col-md-12 form-horizontal">

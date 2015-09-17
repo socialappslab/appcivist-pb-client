@@ -204,3 +204,19 @@ textarea{
 .btn-half-size{
     width: 49%;
 }
+
+
+/******Upload files******/
+.progress-section{
+    height: 4rem;
+    .progress-line-container{
+        display: inline-block;
+        width: 100%;
+        .progress-line{
+            background: $progress-line-bar;
+            width: 0;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+        }
+    }
+}

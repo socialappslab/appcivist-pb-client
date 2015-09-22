@@ -581,8 +581,6 @@ button#second-vote {
     margin: 5px 5px 5px 5px; }
   .forum .forum-title h5 {
     margin: 5px 0; }
-  .forum .discussion {
-    margin-top: -35px; }
   .forum .commentBox {
     border: 1px solid grey;
     border-radius: 5px;
@@ -948,6 +946,10 @@ button#second-vote {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis; }
+  .home .upcoming-milestones-list {
+    margin-top: 1rem;
+    overflow: auto;
+    height: 11rem; }
 
 .tooltip.linkedCampaignTooltip {
   opacity: 1; }

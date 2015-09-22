@@ -4,15 +4,10 @@
 			<h3><strong>Updates</strong></h3>
 			<div class="box newsBox">
 				<strong>Upcoming Milestones</strong>
-				<ul>
-					<li>
-						<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>
-					</li>
-					<li>
-						<p><u><strong>Working Group Passionés du Parc de Belleville: </strong></u>consensus on proposals is due in <strong>5 days.</strong></p>
-					</li>
-					<li>
-						<p><u><strong>Campaign Fundraising for art program at neighborhood school: </strong></u>finishes in <strong>5 days. </strong>Promote it!</p>
+				<ul class="upcoming-milestones-list">
+					<li ng-repeat="milestone in notifications.upcoming_milestones">
+						<!--<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>-->
+						<p><strong>{{milestone.resourceSummary}}</strong></p>
 					</li>
 				</ul>
 			</div>

@@ -22,7 +22,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $routeParams, $resource, $http, Assemblies,
+appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
 													loginService, localStorageService) {
 	$scope.currentAssembly = {};
 	$scope.newAssembly = {};
@@ -42,13 +42,17 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 	function init() {
 
 		// Grab assemblyID off of the route
-		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid)
-			: 0;
+		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		if (assemblyID > 0) {
-			var currentAssembly = Assemblies.get({assemblyId: assemblyID}, function() {
-				$scope.currentAssembly = currentAssembly;
+			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
+			$scope.contributions = Contributions.contributions(assemblyID).query();
+			$scope.currentAssembly.$promise.then(function(data) {
+				$scope.currentAssembly = data;
 				localStorageService.set("currentAssembly", $scope.currentAssembly);
 				console.log("Obtained assembly: " + JSON.stringify($scope.currentAssembly));
+				$scope.contributions.$promise.then(function(data){
+					$scope.contributions = data;
+				});
 			});
 		}
 

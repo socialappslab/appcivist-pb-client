@@ -1,19 +1,19 @@
-<div class="view forum" ng-controller="AssemblyCtrl">
+<div class="view forum">
     <div class="container">
-        <div class="row header">
-            <div class="col-md-8 col-sm-8">
-                <div class="thumbnail assembly">
-                    <img alt="100x100" src="{{currentAssembly.profile.icon}}" data-holder-rendered="true" class="image-circle">
-                    <div class="caption">
-                        <h4><strong>{{currentAssembly.name}}</strong></h4>
-                        <h5><strong><div ng-show="currentAssembly.location.placeName != null">{{currentAssembly.location.placeName}} -</div> {{currentAssembly.location.city}}, {{currentAssembly.location.country}}</i></strong></h5>
-                        <p>{{currentAssembly.description}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-md-8 col-sm-8 discussion">
+                <div class="row header col-md-12 col-sm-12">
+                    <div class="col-md-8 col-sm-8">
+                        <div class="thumbnail assembly">
+                            <img alt="100x100" src="{{currentAssembly.profile.icon}}" data-holder-rendered="true" class="image-circle">
+                            <div class="caption">
+                                <h4><strong>{{currentAssembly.name}}</strong></h4>
+                                <h5><strong><div ng-show="currentAssembly.location.placeName != null">{{currentAssembly.location.placeName}} -</div> {{currentAssembly.location.city}}, {{currentAssembly.location.country}}</i></strong></h5>
+                                <p>{{currentAssembly.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-9 col-sm-9">
                         <h1><strong>Assembly Forum</strong></h1>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-1 col-sm-1 forum-title">
-                        <h5><strong>Assembly themes</strong></h5>
+                        <h5><strong>Themes</strong></h5>
                     </div>
 
                     <div class="col-md-11 col-sm-11">
@@ -93,6 +93,7 @@
                         </div>
                     </div>
                     <ul class="row comments col-md-11 col-sm-11">
+                        <!--
                         <li ng-class="{true: 'row comment col-md-12 col-sm-12 reply', false: 'row comment col-md-12 col-sm-12'}[comment.reply]" class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: 'date' | filter: searchComments">
                             <div class="row col-md-12 col-sm-12">
                                 <div class="image-profile-comment inline">
@@ -112,6 +113,50 @@
                                     <p class="comment-comment"><a>{{comment.comment}}</a></p>
                                 </div>
                             </div>
+                        </li>
+                        -->
+
+                        <li class="row comment col-md-12 col-sm-12" ng-repeat="comment in currentAssembly.forum.contributions | orderBy: 'date' | filter: searchComments">
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="image-profile-comment inline">
+                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
+                                </div>
+                                <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
+                                <h5 class="date-comment inline"><time datetime="{{comment.lastUpdate}}"/>{{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
+                                <div class="options-comment inline">
+                                    <ul class="tags" ng-repeat="theme in comment.resourceSpace.themes">
+                                        <li class="tag"><strong>{{theme.title}}</strong></li>
+                                    </ul>
+                                </div>
+                                <votes-counter class="pull-right" content="comment"></votes-counter>
+                            </div>
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="col-md-12 col-sm-12 text-comment">
+                                    <p class="comment-comment"><a>{{comment.text}}</a></p>
+                                </div>
+                            </div>
+                            <ul class="row comments col-md-11 col-sm-11">
+                                <li class="row comment col-md-12 col-sm-12 reply" ng-repeat="commentReply in comment.resourceSpace.contributions | orderBy: 'date' | filter: searchComments">
+                                    <div class="row col-md-12 col-sm-12">
+                                        <div class="image-profile-comment inline">
+                                            <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
+                                        </div>
+                                        <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
+                                        <h5 class="date-comment inline"><time datetime="{{commentReply.lastUpdate}}"/>{{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
+                                        <div class="options-comment inline">
+                                            <ul class="tags" ng-repeat="theme in comment.resourceSpace.themes">
+                                                <li class="tag"><strong>{{theme.title}}</strong></li>
+                                            </ul>
+                                        </div>
+                                        <votes-counter class="pull-right" content="comment"></votes-counter>
+                                    </div>
+                                    <div class="row col-md-12 col-sm-12">
+                                        <div class="col-md-12 col-sm-12 text-comment">
+                                            <p class="comment-comment"><a>{{commentReply.text}}</a></p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -201,48 +246,16 @@
                             <h4><strong>Campaigns</strong></h4>
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <button class="btn btn-primary"><h5><strong>New campaign</strong></h5></button>
+                            <a href="/#/campaign/create/step1"><button class="btn btn-primary"><h5><strong>New campaign</strong></h5></button></a>
                         </div>
                     </div>
                     <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
                         <div class="row">
-                            <div style="display: inline-block;">
+                            <div style="display: inline-block;" ng-repeat="campaign in currentAssembly.resources.campaigns">
                                 <div class="image-capsule">
                                     <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
                                     <div class="caption" style="text-align: center">
-                                        <h5>Campaign 1</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image75.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Campaign 2</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image74.png" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Campaign 3</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image76.png" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Campaign 4</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image78.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Campaign 5</h5>
+                                        <h5>{{campaign.title}}</h5>
                                     </div>
                                 </div>
                             </div>

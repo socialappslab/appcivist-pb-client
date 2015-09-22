@@ -14,8 +14,11 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
     }
 
     return {
-        assemblies: function() {
-            return $resource(serverBaseUrl + '/assembly/:assemblyId');
+        assemblies: function(assemblyId) {
+            if(assemblyId === undefined){
+                return $resource(serverBaseUrl + '/assembly');
+            }
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'');
         },
         assembliesWithoutLogin: function() {
             return $resource(serverBaseUrl + '/assembly/listed');
@@ -132,6 +135,26 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
     }
 
     return $resource(serverBaseUrl + '/notification/user/'+localStorageService.get('user').uuid);
+
+});
+
+appCivistApp.factory('Contributions', function ($resource, localStorageService) {
+
+    //var Contribution = $resource('https://appcivist-pb.herokuapp.com/api/assembly/:aid/contribution');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return {
+        contributions: function(assemblyId) {
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/contribution?space=forum');
+        }
+    };
 
 });
 

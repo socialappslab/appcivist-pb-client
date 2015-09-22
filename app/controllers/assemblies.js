@@ -56,13 +56,11 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 			});
 		}
 
-		$http.get('assets/comments/comments.json').success(function(data){
-			$scope.comments = data;
-		}).error(function(error){
-			console.log('Error loading data' + error);
-		});
 	}
 
+	$scope.publishComment = function(comment) {
+		//Contributions.contributions($scope.currentAssembly.assemblyId).save();
+	}
 
 	$scope.createNewAssembly = function(step) {
 		if (step === 1) {

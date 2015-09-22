@@ -69,7 +69,7 @@
                 </div>
                 <div class="row">
                     <div class="row col-md-11 col-sm-11 commentBox">
-                        <textarea name="commentForum" id="comment-forum" class="commentArea" rows="6" placeholder="What's up? ..."></textarea>
+                        <textarea name="commentForum" id="comment-forum" class="commentArea" rows="6" placeholder="What's up? ..." ng-model="commentTextarea"></textarea>
                         <div class="row">
                             <div class="col-md-1">
                                 <a ng-href="/#/assembly/create/step1" style="display: inline-block; margin-top: 50%; cursor: pointer;"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="cursor: pointer"></a>
@@ -87,7 +87,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <h4 class="text-info" style="display: inline-block; vertical-align: middle; cursor:pointer"><strong>Publish</strong></h4>
+                                <h4 class="text-info" style="display: inline-block; vertical-align: middle; cursor:pointer" ng-click="publishComment(commentTextarea)"><strong>Publish</strong></h4>
                                 <h4 style="display: inline-block; vertical-align: middle"><strong>Cancel</strong></h4>
                             </div>
                         </div>

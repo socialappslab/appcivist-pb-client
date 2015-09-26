@@ -16,6 +16,11 @@ i{
     }
 }
 
+.title{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .clear{
     clear:both;
 }
@@ -25,14 +30,43 @@ i{
 .voffset2 { margin-top: 1rem; }
 .voffset3 { margin-top: 1.5rem; }
 .voffset4 { margin-top: 3rem; }
+.voffset5 { margin-top: 6rem; }
+.voffset6 { margin-top: 9rem; }
+
+.vertical-divider{
+    border-right: 1px solid $vertical-divider;
+    display: inline-block;
+    margin: 0 0.2rem;
+}
 
 
 /* Index of phases in a black ball */
+
 .indexBall{
     display: inline-block;
-    background-color: black;
+    background-color: $indexBall;
     padding: 20px;
     border-radius: 50%;
+
+    & * {
+        color:white;
+        display: inline;
+        margin: 0;
+    }
+
+    & :first-child{
+        font-weight: bold;
+    }
+
+    & :last-child{
+        vertical-align: -5px;
+    }
+}
+
+.indexSquare{
+    display: inline-block;
+    background-color: $indexBall;
+    padding: 1rem;
 
     & * {
         color:white;
@@ -69,7 +103,7 @@ i{
     }
 
     &.settingsBox{
-        border: 3px solid black;
+        border: 3px solid $settings-box;
         margin: 30px 0px 30px 0px;
 
         & .checkbox{
@@ -83,6 +117,7 @@ i{
     padding-left: 0;
     list-style: none;
     display: inline-block;
+    margin-bottom: 0;
 }
 
 .tag{
@@ -92,6 +127,7 @@ i{
     cursor: pointer;
     display: inline-block;
     border: none;
+    margin: 0 0.5rem 0.5rem 0;
 
     &.tag-info {
         background: $tag-info;
@@ -101,12 +137,11 @@ i{
         color: white;
         background: $tag-filter;
     }
-}
 
-.vertical-divider{
-    border-right: 1px solid $vertical-divider;
-    display: inline-block;
-    margin: 0 0.2rem;
+    &.tag-caution {
+        color: white;
+        background: $tag-caution;
+    }
 }
 
 textarea{
@@ -142,6 +177,9 @@ textarea{
 
 .container-inline{
     display: inline;
+    * {
+        display: inline-block;
+    }
 }
 
 .info-block{
@@ -165,4 +203,20 @@ textarea{
 
 .btn-half-size{
     width: 49%;
+}
+
+
+/******Upload files******/
+.progress-section{
+    height: 4rem;
+    .progress-line-container{
+        display: inline-block;
+        width: 100%;
+        .progress-line{
+            background: $progress-line-bar;
+            width: 0;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+        }
+    }
 }

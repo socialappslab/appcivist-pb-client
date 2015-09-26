@@ -5,6 +5,9 @@
 /*******SUGGESTIONS*******/
 /*******TAGS**************/
 /*****COMMON ELEMENTS***/
+/******HEADER**********/
+/******MAIN***********/
+/*****UPLOAD********/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px;
@@ -20,6 +23,11 @@ i {
 }
 .header > div {
   display: inline;
+}
+
+.title {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .clear {
@@ -46,10 +54,24 @@ i {
   margin-top: 3rem;
 }
 
+.voffset5 {
+  margin-top: 6rem;
+}
+
+.voffset6 {
+  margin-top: 9rem;
+}
+
+.vertical-divider {
+  border-right: 1px solid #524D4D;
+  display: inline-block;
+  margin: 0 0.2rem;
+}
+
 /* Index of phases in a black ball */
 .indexBall {
   display: inline-block;
-  background-color: black;
+  background-color: #524D4D;
   padding: 20px;
   border-radius: 50%;
 }
@@ -62,6 +84,23 @@ i {
   font-weight: bold;
 }
 .indexBall :last-child {
+  vertical-align: -5px;
+}
+
+.indexSquare {
+  display: inline-block;
+  background-color: #524D4D;
+  padding: 1rem;
+}
+.indexSquare * {
+  color: white;
+  display: inline;
+  margin: 0;
+}
+.indexSquare :first-child {
+  font-weight: bold;
+}
+.indexSquare :last-child {
   vertical-align: -5px;
 }
 
@@ -82,7 +121,7 @@ i {
   background-color: #F4F4F4;
 }
 .box.settingsBox {
-  border: 3px solid black;
+  border: 3px solid #524D4D;
   margin: 30px 0px 30px 0px;
 }
 .box.settingsBox .checkbox {
@@ -94,6 +133,7 @@ i {
   padding-left: 0;
   list-style: none;
   display: inline-block;
+  margin-bottom: 0;
 }
 
 .tag {
@@ -103,6 +143,7 @@ i {
   cursor: pointer;
   display: inline-block;
   border: none;
+  margin: 0 0.5rem 0.5rem 0;
 }
 .tag.tag-info {
   background: #F4F4F4;
@@ -111,11 +152,9 @@ i {
   color: white;
   background: #57965B;
 }
-
-.vertical-divider {
-  border-right: 1px solid #524D4D;
-  display: inline-block;
-  margin: 0 0.2rem;
+.tag.tag-caution {
+  color: white;
+  background: #FCD49A;
 }
 
 textarea {
@@ -152,6 +191,9 @@ textarea {
 .container-inline {
   display: inline;
 }
+.container-inline * {
+  display: inline-block;
+}
 
 .info-block {
   display: inline-block;
@@ -172,6 +214,21 @@ textarea {
 
 .btn-half-size {
   width: 49%;
+}
+
+/******Upload files******/
+.progress-section {
+  height: 4rem;
+}
+.progress-section .progress-line-container {
+  display: inline-block;
+  width: 100%;
+}
+.progress-section .progress-line-container .progress-line {
+  background: #9CC7D3;
+  width: 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
 /**
@@ -480,27 +537,40 @@ button#second-vote {
     margin-left: 0 !important;
   }
 }
+.assemblyCreation {
+  /*******INPUT - TEXTAREA *********/
+}
+.assemblyCreation h1 {
+  vertical-align: sub;
+  display: inline-block;
+}
+.assemblyCreation label {
+  font-size: 1.6rem;
+}
+.assemblyCreation ul {
+  list-style: none;
+}
 .assemblyCreation .row {
-  margin: 0 0 10px 0;
+  margin: 0 0 1rem 0;
 }
 .assemblyCreation .image-capsule {
-  margin-right: 30px;
+  margin-right: 3rem;
 }
 .assemblyCreation .image-circle {
-  height: 60px;
-  width: 60px;
+  height: 6rem;
+  width: 6rem;
   display: block;
   margin: auto;
   border-radius: 100%;
   display: inline-block;
 }
 .assemblyCreation .image-cover {
-  height: 100px;
-  width: 500px;
+  height: 10rem;
+  width: 50rem;
   display: block;
   margin: auto;
   display: inline-block;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 .assemblyCreation .collection-tags {
   float: left;
@@ -508,19 +578,68 @@ button#second-vote {
 .assemblyCreation .green-tag {
   color: white;
   background-color: #5cb85c;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 5px 0 5px 0px;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0 0.5rem 0;
 }
-.assemblyCreation h1 {
-  vertical-align: sub;
+.assemblyCreation .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.assemblyCreation .optionsBox .optionsBox-title {
+  color: dodgerblue;
   display: inline-block;
 }
-.assemblyCreation label {
-  font-size: 16px;
+.assemblyCreation .optionsBox .checkbox {
+  padding-left: 2rem;
 }
-.assemblyCreation ul {
-  list-style: none;
+.assemblyCreation .optionsBox:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: #F4F4F4;
+  border-width: 1rem;
+  margin-top: -2.3rem;
+}
+.assemblyCreation #inputAboutAssembly {
+  height: 10rem;
+}
+.assemblyCreation input {
+  display: inline-block;
+  margin: 0.5rem 0.5rem 0 0;
+}
+.assemblyCreation input#inputCityAssembly {
+  width: 10rem;
+}
+.assemblyCreation input#inputStateAssembly {
+  width: 7rem;
+}
+.assemblyCreation input#inputZipAssembly {
+  width: 6rem;
+}
+.assemblyCreation input#inputCountryAssembly {
+  width: 9rem;
+}
+.assemblyCreation input#inputContactNameAssembly {
+  width: 24.5rem;
+}
+.assemblyCreation input#inputContactPhoneAssembly {
+  width: 24.5rem;
+}
+.assemblyCreation input#inputContactEmailAssembly {
+  width: 24.5rem;
+}
+.assemblyCreation .picsList {
+  white-space: nowrap;
+}
+.assemblyCreation .picsList .image-capsule {
+  cursor: pointer;
 }
 
 .assembliesLanding .row {
@@ -623,9 +742,6 @@ button#second-vote {
 .forum .forum-title h5 {
   margin: 5px 0;
 }
-.forum .discussion {
-  margin-top: -35px;
-}
 .forum .commentBox {
   border: 1px solid grey;
   border-radius: 5px;
@@ -675,8 +791,76 @@ button#second-vote {
   padding-left: 5px;
 }
 
+.campaign-creation {
+  /****ARROW****/
+  /******timeline-milestones*******/
+}
+.campaign-creation .row {
+  margin-left: 0;
+  margin-right: 0;
+}
 .campaign-creation .template-configuration {
   margin-top: -10px;
+}
+.campaign-creation .short-input {
+  width: 5rem;
+}
+.campaign-creation .short-input-label {
+  width: 5rem;
+  text-align: center;
+}
+.campaign-creation .settingsBox:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: transparent;
+  border-bottom-color: #524D4D;
+  border-width: 36px;
+  margin-left: -36px;
+}
+.campaign-creation#prePhase .settingsBox:before {
+  display: none;
+}
+.campaign-creation#pMakingPhase .settingsBox:before {
+  left: 27%;
+}
+.campaign-creation#deliberationPhase .settingsBox:before {
+  left: 61%;
+}
+.campaign-creation#versioningPhase .settingsBox:before {
+  left: 45%;
+}
+.campaign-creation#votingPhase .settingsBox:before {
+  left: 75%;
+}
+.campaign-creation .timeline-milestones .milestone {
+  margin: 1rem 0;
+}
+.campaign-creation .timeline-milestones .milestone .title-section .title-container .title {
+  padding: 1rem 0;
+}
+.campaign-creation .timeline-milestones .milestone .date-section {
+  margin: -1.3rem 0;
+}
+.campaign-creation .timeline-milestones .milestone .date-section input {
+  margin: 0 1rem 0 0;
+}
+.campaign-creation .timeline-milestones .milestone .days-section {
+  margin: -1.3rem 0;
+}
+.campaign-creation .timeline-milestones .milestone:last-child .downArrow {
+  display: none;
+}
+.campaign-creation .timeline-milestones .downArrow {
+  font-size: 5rem;
+  display: inline-block;
+  margin: -1.7rem 0 -2rem 0;
+  color: #524D4D;
 }
 
 .campaign-pmaking .suggestions {
@@ -1008,20 +1192,90 @@ button#second-vote {
   margin: -8px 0 -8px 0px;
   padding-left: 5px;
 }
+.home .settingsBox .list-item {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 8.5rem;
+  margin-right: 0.5rem;
+  margin-top: 2rem;
+}
+.home .settingsBox .list-item .item {
+  display: inline-block;
+  width: 50%;
+}
+.home .settingsBox .list-item .item .caption {
+  vertical-align: middle;
+  width: 12rem;
+}
+.home .settingsBox .list-item .item .caption .text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.home .upcoming-milestones-list {
+  margin-top: 1rem;
+  overflow: auto;
+  height: 11rem;
+}
+
+.tooltip.linkedCampaignTooltip {
+  opacity: 1;
+}
+.tooltip.linkedCampaignTooltip .tooltip-inner {
+  max-width: 35rem;
+  padding: 2rem 1rem;
+  background: white;
+  color: #000;
+  display: inline-block;
+  text-align: left;
+  border: 0.2rem solid black;
+  border-radius: 0.3rem;
+}
 
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   width: 100%;
 }
 
-.bubbleChart {
-  height: 100%;
-  padding-bottom: 15px;
+/******HEADER******/
+#navbar-options ul li {
+  border-right: 0.1rem solid #F4F4F4;
+}
+#navbar-options ul li:first-child {
+  border-left: 0.1rem solid #F4F4F4;
+}
+#navbar-options ul li:hover {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+#navbar-options ul li:active {
+  background-color: rgba(128, 128, 128, 0.05);
+  box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+}
+#navbar-options ul li a:focus {
+  color: white;
+  background: grey;
 }
 
-.bubbleChart svg {
+#user-menu ul.menu-elements {
+  list-style: none;
+  padding: 1.5rem;
+  margin: 0;
+}
+#user-menu ul.menu-elements li {
+  display: inline-block;
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+#user-menu ul.menu-elements .dropdown .dropdown-menu li:hover {
+  color: white;
   background: transparent;
+}
+#user-menu ul.menu-elements .dropdown .dropdown-menu li a:hover {
+  background: transparent;
+}
+#user-menu ul.menu-elements .dropdown .dropdown-menu li:last-child a {
+  color: #9CC7D3;
 }
 
 .inline {
@@ -1037,7 +1291,7 @@ footer {
   margin-bottom: 20px;
   border: 0;
   border-radius: 0px;
-  height: 150px;
+  height: auto;
 }
 .assembly img {
   -webkit-box-shadow: 0;
@@ -1065,6 +1319,20 @@ footer {
 
 i {
   cursor: pointer;
+}
+
+.summary-heading {
+  margin: 2rem 0;
+}
+
+.jumbotron-index i {
+  font-size: 2rem !important;
+  color: black !important;
+  cursor: default;
+}
+
+.marketing .caption {
+  margin: auto;
 }
 
 /*# sourceMappingURL=app.css.map */

@@ -1,7 +1,7 @@
 ﻿// This handles retrieving data and is used by controllers. 
 // 3 options (server, factory, provider) with 
 // each doing the same thing just structuring the functions/data differently.
-appCivistApp.service('Assemblies', function ($resource, localStorageService) {
+appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
 
     //var Assemblies = $resource('https://appcivist-pb.herokuapp.com/api/assembly');
 	var serverBaseUrl =localStorageService.get('serverBaseUrl');
@@ -13,7 +13,17 @@ appCivistApp.service('Assemblies', function ($resource, localStorageService) {
         console.log("Using API Server in loginServer: "+serverBaseUrl);
     }
 
-    return $resource(serverBaseUrl + '/assembly/:assemblyId');
+    return {
+        assemblies: function(assemblyId) {
+            if(assemblyId === undefined){
+                return $resource(serverBaseUrl + '/assembly');
+            }
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'');
+        },
+        assembliesWithoutLogin: function() {
+            return $resource(serverBaseUrl + '/assembly/listed');
+        }
+    }
     //var Assembly = $resource(serverBaseUrl + '/assembly/:assemblyId', {assemblyId: '@assemblyId'});
 
 
@@ -65,3 +75,86 @@ appCivistApp.service('Assemblies', function ($resource, localStorageService) {
     //
     //return Assemblies;
 });
+
+appCivistApp.factory('Campaigns', function ($resource, localStorageService) {
+
+    //var Campaigns = $resource('https://appcivist-pb.herokuapp.com/api/user/:uuid/campaign');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return {
+        campaigns: function(state) {
+            return $resource(serverBaseUrl + '/user/'+localStorageService.get('user').uuid+'/campaign?status='+state+'');
+        }
+    };
+
+});
+
+appCivistApp.factory('Memberships', function ($resource, localStorageService) {
+
+    //var Membership = $resource('https://appcivist-pb.herokuapp.com/api/membership/user/:uuid');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return {
+        memberships: function() {
+            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid);
+        },
+        assemblies: function() {
+            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid+'?type=assembly');
+        },
+        workingGroups: function() {
+            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid+'?type=campaign?status=ongoing');
+        }
+    };
+
+});
+
+appCivistApp.factory('Notifications', function ($resource, localStorageService) {
+
+    //var Notification = $resource('https://appcivist-pb.herokuapp.com/api/notification/user/:uuid');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return $resource(serverBaseUrl + '/notification/user/'+localStorageService.get('user').uuid);
+
+});
+
+appCivistApp.factory('Contributions', function ($resource, localStorageService) {
+
+    //var Contribution = $resource('https://appcivist-pb.herokuapp.com/api/assembly/:aid/contribution');
+    var serverBaseUrl =localStorageService.get('serverBaseUrl');
+    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+        serverBaseUrl = appCivistCoreBaseURL;
+        localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+        console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
+    } else {
+        console.log("Using API Server in loginServer: "+serverBaseUrl);
+    }
+
+    return {
+        contributions: function(assemblyId) {
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/contribution?space=forum');
+        }
+    };
+
+});
+

@@ -12,7 +12,7 @@
 
 console.log("Welcome to AppCivist!");
 
-var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule'];
+var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule', 'ngFileUpload'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 //var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
@@ -37,11 +37,13 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
 		})
 		.when('/home',{
             //controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/home/home.html'
+            templateUrl: 'app/partials/home/home.html',
+            activetab: 'home'
         })
         .when('/assemblies',{
             controller: 'AssemblyListCtrl',
-            templateUrl: 'app/partials/assemblies/assemblies.html'
+            templateUrl: 'app/partials/assemblies/assemblies.html',
+            activetab: 'assemblies'
         })
         .when('/assembly/create/step1',{
             controller: 'AssemblyListCtrl',
@@ -56,6 +58,26 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
         .when('/campaign/create/step1',{
             controller: 'CreateCampaignCtrl',
             templateUrl: 'app/partials/campaign/creation/campaignPartOne.html'
+
+        })
+        .when('/campaign/create/step2',{
+            controller: 'CreateCampaignCtrl',
+            templateUrl: 'app/partials/campaign/creation/campaignPartTwo.html'
+
+        })
+        .when('/campaign/create/step3',{
+            controller: 'CreateCampaignCtrl',
+            templateUrl: 'app/partials/campaign/creation/campaignPartThree.html'
+
+        })
+        .when('/campaign/create/step4',{
+            controller: 'CreateCampaignCtrl',
+            templateUrl: 'app/partials/campaign/creation/campaignPartFour.html'
+
+        })
+        .when('/campaign/create/step5',{
+            controller: 'CreateCampaignCtrl',
+            templateUrl: 'app/partials/campaign/creation/campaignPartFive.html'
 
         })
         .when('/assembly/:aid/forum',{

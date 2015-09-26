@@ -36,7 +36,7 @@
 					localStorageService.set('authenticated',true);
 					console.log("User get from API: " + user.userId);
 					localStorageService.set("user",user);
-					$location.url('/assemblies');
+					$location.url('/home');
 				} else { // Not Authenticated
 					$rootScope.message = 'You need to log in.';
 					// $timeout(function(){deferred.reject();}, 0);
@@ -72,7 +72,7 @@
 						localStorageProvider.set('authenticated',true);
 						//user.$save();
 						//localStorageService.set('authenticated', true);
-						$location.url('/assemblies');
+						$location.url('/home');
 					}
 				});
 			}

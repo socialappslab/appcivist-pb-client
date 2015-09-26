@@ -10,7 +10,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 	init();
 
 	function init() {
-		$scope.assemblies = Assemblies.query();
+		$scope.assemblies = Assemblies.assemblies().query();
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);
@@ -22,7 +22,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyCtrl',	function($scope, $routeParams, $resource, $http, Assemblies,
+appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
 													loginService, localStorageService) {
 	$scope.currentAssembly = {};
 	$scope.newAssembly = {};
@@ -42,23 +42,25 @@ appCivistApp.controller('AssemblyCtrl',	function($scope, $routeParams, $resource
 	function init() {
 
 		// Grab assemblyID off of the route
-		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid)
-			: 0;
+		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		if (assemblyID > 0) {
-			var currentAssembly = Assemblies.get({assemblyId: assemblyID}, function() {
-				$scope.currentAssembly = currentAssembly;
+			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
+			$scope.contributions = Contributions.contributions(assemblyID).query();
+			$scope.currentAssembly.$promise.then(function(data) {
+				$scope.currentAssembly = data;
 				localStorageService.set("currentAssembly", $scope.currentAssembly);
 				console.log("Obtained assembly: " + JSON.stringify($scope.currentAssembly));
+				$scope.contributions.$promise.then(function(data){
+					$scope.contributions = data;
+				});
 			});
 		}
 
-		$http.get('assets/comments/comments.json').success(function(data){
-			$scope.comments = data;
-		}).error(function(error){
-			console.log('Error loading data' + error);
-		});
 	}
 
+	$scope.publishComment = function(comment) {
+		//Contributions.contributions($scope.currentAssembly.assemblyId).save();
+	}
 
 	$scope.createNewAssembly = function(step) {
 		if (step === 1) {
@@ -106,6 +108,30 @@ appCivistApp.controller('AssemblyCtrl',	function($scope, $routeParams, $resource
 				console.log("Created assembly: "+newAssembly);
 				localStorageService.set("currentAssembly",newAssembly);
 				$location.url('/assembly/'+newAssembly.assemblyId+"/forum");
+			});
+		}
+	}
+
+	$scope.uploadFiles = function(file) {
+		$scope.f = file;
+		if (file && !file.$error) {
+			file.upload = Upload.upload({
+				url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+				file: file
+			});
+
+			file.upload.then(function (response) {
+				$timeout(function () {
+					file.result = response.data;
+				});
+			}, function (response) {
+				if (response.status > 0)
+					$scope.errorMsg = response.status + ': ' + response.data;
+			});
+
+			file.upload.progress(function (evt) {
+				file.progress = Math.min(100, parseInt(100.0 *
+					evt.loaded / evt.total));
 			});
 		}
 	}

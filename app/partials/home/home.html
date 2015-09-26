@@ -1,18 +1,13 @@
-﻿<div class="view home">
+﻿<div class="view home" ng-controller="homeCtrl">
 	<div class="container">
 		<div class="col-md-8 col-sm-8">
 			<h3><strong>Updates</strong></h3>
 			<div class="box newsBox">
 				<strong>Upcoming Milestones</strong>
-				<ul>
-					<li>
-						<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>
-					</li>
-					<li>
-						<p><u><strong>Working Group Passionés du Parc de Belleville: </strong></u>consensus on proposals is due in <strong>5 days.</strong></p>
-					</li>
-					<li>
-						<p><u><strong>Campaign Fundraising for art program at neighborhood school: </strong></u>finishes in <strong>5 days. </strong>Promote it!</p>
+				<ul class="upcoming-milestones-list">
+					<li ng-repeat="milestone in notifications.upcoming_milestones">
+						<!--<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>-->
+						<p><strong>{{milestone.resourceSummary}}</strong></p>
 					</li>
 				</ul>
 			</div>
@@ -70,7 +65,7 @@
 			</ul>
 		</div>
 		<div class="col-md-4 col-sm-4">
-			<div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+			<div class="row col-md-12 col-sm-12 box settingsBox infoBox assembliesBox" ng-if="assemblies.length > 0">
 				<div class="row">
 					<div class="col-md-6 col-sm-6">
 						<h4><strong>My Assemblies</strong></h4>
@@ -82,99 +77,56 @@
 						<h5 style="display: inline-block;">New Assembly</h5>
 					</div>
 				</div>
-				<div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+				<div class="row list-item assembliesList">
 					<div class="row">
-						<div style="display: inline-block;">
+						<div class="assemblyItem item" ng-repeat="assembly in assemblies">
 							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
+								<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
 								<div class="caption" style="text-align: center">
-									<h5>Assemblèe Belleville</h5>
-								</div>
-							</div>
-						</div>
-						<div style="display: inline-block;">
-							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image75.jpg" data-holder-rendered="true" class="image-circle">
-								<div class="caption" style="text-align: center">
-									<h5>PB Paris - Mairie de Paris</h5>
-								</div>
-							</div>
-						</div>
-						<div style="display: inline-block;">
-							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image74.png" data-holder-rendered="true" class="image-circle">
-								<div class="caption" style="text-align: center">
-									<h5>Assemblèe Droit au Logement</h5>
+									<h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
-			<div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+			<div class="row col-md-12 col-sm-12 box settingsBox infoBox campaignsBox" ng-if="campaigns.length > 0">
 				<div class="row">
 					<div class="col-md-6 col-sm-6">
 						<h4><strong>My Campaigns</strong></h4>
 					</div>
 				</div>
-				<div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+				<div class="row list-item campaignsList">
 					<div class="row">
-						<div style="display: inline-block;">
+						<div class="campaignItem item" ng-repeat="campaign in campaigns">
 							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
+								<a ng-href="#/campaign/{{campaign.campaignId}}/forum"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
 								<div class="caption" style="text-align: center">
-									<h5>Belleville - Paris PB 2016</h5>
-								</div>
-							</div>
-						</div>
-						<div style="display: inline-block;">
-							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image75.jpg" data-holder-rendered="true" class="image-circle">
-								<div class="caption" style="text-align: center">
-									<h5>Fundraising for art program at neighborhood</h5>
-								</div>
-							</div>
-						</div>
-						<div style="display: inline-block;">
-							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image74.png" data-holder-rendered="true" class="image-circle">
-								<div class="caption" style="text-align: center">
-									<h5>Mobilize anti-eviction initiative</h5>
+									<h5 class="text" title="{{campaign.type.name}}">{{campaign.type.name}}</h5>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
-			<div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+			<div class="row col-md-12 col-sm-12 box settingsBox infoBox workingGroupBox" ng-if="workingGroups.length > 0">
 				<div class="row">
 					<div class="col-md-6 col-sm-6">
 						<h4><strong>My Working Groups</strong></h4>
 					</div>
 				</div>
-				<div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+				<div class="row list-item workingGroupsList">
 					<div class="row">
-						<div style="display: inline-block;">
+						<div class="workingGroupItem item" ng-repeat="workingGroup in workingGroups">
 							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
+								<a ng-href="#/campaign/{{workingGroup.groupId}}/forum"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
 								<div class="caption" style="text-align: center">
-									<h5>Conseil Belleville</h5>
-								</div>
-							</div>
-						</div>
-						<div style="display: inline-block;">
-							<div class="image-capsule">
-								<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/image75.jpg" data-holder-rendered="true" class="image-circle">
-								<div class="caption" style="text-align: center">
-									<h5>Passionés du Parc de Belleville</h5>
+									<h5 class="text" title="{{workingGroup.name}}">{{workingGroup.name}}</h5>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

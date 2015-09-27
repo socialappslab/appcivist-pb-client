@@ -14,6 +14,9 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
     }
 
     return {
+        assembly: function() {
+            return $resource(serverBaseUrl + '/assembly/:id');
+        },
         assemblies: function(assemblyId) {
             if(assemblyId === undefined){
                 return $resource(serverBaseUrl + '/assembly');

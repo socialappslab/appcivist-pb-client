@@ -35,6 +35,7 @@
       color: white;
       background-color: $timeline-selected-background;
       opacity: 1;
+      z-index: 5 !important;
     }
 
     &.selected:before{

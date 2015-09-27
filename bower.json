@@ -10,6 +10,7 @@
     "angular-bootstrap": null,
     "angular-local-storage": "~0.2.2",
     "angular-mocks": "1.3.x",
+    "angular-moment": "~0.10.3",
     "angular-resource": "1.3.x",
     "angular-route": "1.3.x",
     "bootstrap": "~3.x.x",

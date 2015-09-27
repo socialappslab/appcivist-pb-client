@@ -13,6 +13,10 @@
         color: $progressline-phase-selected;
       }
 
+      &:first-child{
+        color: $progressline-phase-selected;
+      }
+
       & .progressline-phase-line {
         position: relative;
         border: 0.4rem solid $dark-grey;

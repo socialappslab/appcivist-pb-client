@@ -230,8 +230,9 @@ button#second-vote {
 }
 
 .jumbotron-index i {
-  color: #808080;
-  font-size: 48px;
+  font-size: 4rem !important;
+  color: $icon-font !important;
+  cursor: default;
 }
 
 .jumbotron-groups img {

@@ -73,9 +73,30 @@
     margin-top: -2.3rem;
   }
 
+  .assembly .assemblySelected:before{
+    content: '';
+    position: absolute;
+    height: 10rem;
+    width: 10rem;
+    background-color: black;
+    border-radius: 5rem;
+    opacity: 0.5;
+    background-size: 80%;
+    background-image: url("/assets/images/white_tick.png");
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+
+
   /*******INPUT - TEXTAREA *********/
   #inputAboutAssembly{
     height: 10rem;
+  }
+  #inputJoinAssembly{
+    height: 10rem;
+  }
+  #inputInvitationByEmailAssembly{
+    height: 20rem;
   }
 
   input {
@@ -109,5 +130,16 @@
     & .image-capsule{
       cursor: pointer;
     }
+  }
+
+  /******STEP 3****/
+  .assembly-tags-container-title{
+    color: $assembly-tags-container-title;
+    padding: 1rem 1rem 0rem 1rem;
+  }
+  .assembly-tags-container-content{
+    height: 15rem;
+    overflow: auto;
+    border-top: 0.1rem solid $assembly-tags-container-content-border;
   }
 }

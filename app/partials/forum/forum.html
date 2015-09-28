@@ -93,29 +93,6 @@
                         </div>
                     </div>
                     <ul class="row comments col-md-11 col-sm-11">
-                        <!--
-                        <li ng-class="{true: 'row comment col-md-12 col-sm-12 reply', false: 'row comment col-md-12 col-sm-12'}[comment.reply]" class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: 'date' | filter: searchComments">
-                            <div class="row col-md-12 col-sm-12">
-                                <div class="image-profile-comment inline">
-                                    <img ng-src="{{comment.picture}}" alt="" />
-                                </div>
-                                <h5 class="user-comment inline">{{comment.user}}. / </h5>
-                                <h5 class="date-comment inline"><time datetime="{{comment.date}}"/>{{comment.date | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
-                                <div class="options-comment inline">
-                                    <ul class="tags" ng-repeat="tag in comment.tags">
-                                        <li class="tag"><strong>{{tag.tag}}</strong></li>
-                                    </ul>
-                                </div>
-                                <votes-counter class="pull-right" content="comment"></votes-counter>
-                            </div>
-                            <div class="row col-md-12 col-sm-12">
-                                <div class="col-md-12 col-sm-12 text-comment">
-                                    <p class="comment-comment"><a>{{comment.comment}}</a></p>
-                                </div>
-                            </div>
-                        </li>
-                        -->
-
                         <li class="row comment col-md-12 col-sm-12" ng-repeat="comment in currentAssembly.forum.contributions | orderBy: 'date' | filter: searchComments">
                             <div class="row col-md-12 col-sm-12">
                                 <div class="image-profile-comment inline">
@@ -251,9 +228,9 @@
                     </div>
                     <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
                         <div class="row">
-                            <div style="display: inline-block;" ng-repeat="campaign in currentAssembly.resources.campaigns">
+                            <div style="display: inline-block;" ng-repeat="campaign in campaigns">
                                 <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
+                                    <a ng-click="selectCampaign(campaign)" href="#/campaign/{{campaign.campaignId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle"></a>
                                     <div class="caption" style="text-align: center">
                                         <h5>{{campaign.title}}</h5>
                                     </div>

@@ -7,6 +7,7 @@
 /*****COMMON ELEMENTS***/
 /******HEADER**********/
 /******MAIN***********/
+/*****ASSEMBLY CREATION*****/
 /*****UPLOAD********/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
@@ -15,6 +16,9 @@ h1, h2, h3, h4, h5, h6 {
 i {
   margin: 0 5px;
   cursor: default; }
+
+a {
+  cursor: pointer; }
 
 .header {
   display: inline-block; }
@@ -354,8 +358,9 @@ button#second-vote {
   /*-50px*/ }
 
 .jumbotron-index i {
-  color: #808080;
-  font-size: 48px; }
+  font-size: 4rem !important;
+  color: black !important;
+  cursor: default; }
 
 .jumbotron-groups img {
   width: 90px; }
@@ -425,7 +430,8 @@ button#second-vote {
   .navbar > .container-fluid .navbar-brand {
     margin-left: 0 !important; } }
 .assemblyCreation {
-  /*******INPUT - TEXTAREA *********/ }
+  /*******INPUT - TEXTAREA *********/
+  /******STEP 3****/ }
   .assemblyCreation h1 {
     vertical-align: sub;
     display: inline-block; }
@@ -480,8 +486,24 @@ button#second-vote {
     border-right-color: #F4F4F4;
     border-width: 1rem;
     margin-top: -2.3rem; }
+  .assemblyCreation .assembly .assemblySelected:before {
+    content: '';
+    position: absolute;
+    height: 10rem;
+    width: 10rem;
+    background-color: black;
+    border-radius: 5rem;
+    opacity: 0.5;
+    background-size: 80%;
+    background-image: url("/assets/images/white_tick.png");
+    background-repeat: no-repeat;
+    background-position: 50%; }
   .assemblyCreation #inputAboutAssembly {
     height: 10rem; }
+  .assemblyCreation #inputJoinAssembly {
+    height: 10rem; }
+  .assemblyCreation #inputInvitationByEmailAssembly {
+    height: 20rem; }
   .assemblyCreation input {
     display: inline-block;
     margin: 0.5rem 0.5rem 0 0; }
@@ -503,6 +525,13 @@ button#second-vote {
     white-space: nowrap; }
     .assemblyCreation .picsList .image-capsule {
       cursor: pointer; }
+  .assemblyCreation .assembly-tags-container-title {
+    color: dodgerblue;
+    padding: 1rem 1rem 0rem 1rem; }
+  .assemblyCreation .assembly-tags-container-content {
+    height: 15rem;
+    overflow: auto;
+    border-top: 0.1rem solid #F4F4F4; }
 
 .assembliesLanding .row {
   margin-bottom: 40px; }
@@ -722,7 +751,8 @@ button#second-vote {
     .timeline li.selected {
       color: white;
       background-color: #524D4D;
-      opacity: 1; }
+      opacity: 1;
+      z-index: 5 !important; }
     .timeline li.selected:before {
       border-left-color: #524D4D; }
     .timeline li.active {
@@ -767,6 +797,8 @@ button#second-vote {
     padding: 0.5rem 2.5rem 0rem 2.5rem;
     vertical-align: bottom; }
     .progressline .progressline-phases .progressline-phase .selected {
+      color: #57965B; }
+    .progressline .progressline-phases .progressline-phase:first-child {
       color: #57965B; }
     .progressline .progressline-phases .progressline-phase .progressline-phase-line {
       position: relative;
@@ -1036,11 +1068,6 @@ i {
 
 .summary-heading {
   margin: 2rem 0; }
-
-.jumbotron-index i {
-  font-size: 2rem !important;
-  color: black !important;
-  cursor: default; }
 
 .marketing .caption {
   margin: auto; }

@@ -2,50 +2,53 @@
     <div class="container">
         <div class="row">
             <div class="indexBall">
-                <h1>2</h1>
+                <h1>3</h1>
                 <h4>/</h4>
-                <h4>2</h4>
+                <h4>3</h4>
             </div>
-            <h1><strong>Start your assembly</strong></h1>
+            <h1><strong>Configure your Assembly Resources</strong></h1>
         </div>
 
         <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label for="inputThemeAssembly" class="col-sm-4 col-md-4 control-label">Define Assembly Themes, one at a time</label>
-                            <div class="col-sm-8 col-md-8" style="background-color: lightgrey; padding: 10px; border-radius: 5px;">
+                            <div class="col-sm-8 col-md-8 optionsBox">
                                 <input class="form-control" id="inputThemeAssembly" placeholder="e.g., Education">
-                                <button class="btn btn-success pull-right" style="margin-top: 10px">Add</button>
+                                <div class="voffset2"></div>
+                                <button class="btn btn-success pull-right">Add</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label for="inputImportThemeAssembly" class="col-sm-4 col-md-4 control-label">...Or import them from another assembly</label>
-                            <div class="col-sm-8 col-md-8" style="background-color: lightgrey; padding: 10px; border-radius: 5px;">
+                            <div class="col-sm-8 col-md-8 optionsBox">
                                 <input class="form-control" id="inputImportThemeAssembly" placeholder="e.g., PB">
-                                <button class="btn btn-success pull-right" style="margin-top: 10px">Import</button>
+                                <div class="voffset2"></div>
+                                <button class="btn btn-success pull-right">Import</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="thumbnail col-sm-10 col-md-10 col-md-push-1 col-sm-push-1 col-md-pull-1 col-sm-pull-1">
-                    <div style="border-bottom: 1px solid lightgrey; color:dodgerblue">
-                        <h4>Added/Imported Themes</h4>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="thumbnail col-sm-10 col-md-10 col-md-push-2 col-sm-push-2 col-md-pull-2 col-sm-pull-2">
+                    <div class="assembly-tags-container-title">
+                        <h4><strong>Added/Imported Themes</strong></h4>
                     </div>
-                    <div class="caption" style="height: 150px; overflow: auto;">
-                        <ul class="collection-tags">
-                            <li class="green-tag">
+                    <div class="caption assembly-tags-container-content">
+                        <ul class="tags">
+                            <li class="tag tag-filter">
                                 Urban Infrastucture
                             </li>
-                            <li class="green-tag">
+                            <li class="tag tag-filter">
                                 Streets and Transportation
                             </li>
                         </ul>
@@ -54,34 +57,43 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label for="inputJoinAssembly" class="col-sm-2 col-md-2 control-label">Invite people to join</label>
-                    <div class="col-sm-10 col-md-10" style="background-color: lightgrey; padding: 10px; border-radius: 5px;">
-                        <div class="col-sm-6 col-md-6">
-                            <textarea class="form-control" id="inputJoinAssembly" style="height: 100px;" placeholder="Invitation to join Assembly"/>
+            <div class="col-md-12 col-sm-12">
+                <div class="col-md-6 col-sm-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputJoinAssembly" class="col-sm-4 col-md-4 control-label">Invite people to join</label>
+                            <div class="col-sm-8 col-md-8 optionsBox">
+                                <div class="row col-sm-12 col-md-12">
+                                    <textarea class="form-control" id="inputJoinAssembly" placeholder="Invitation to join Assembly"/>
+                                </div>
+                                <div class="row col-sm-12 col-md-12">
+                                    <textarea class="form-control" id="inputInvitationByEmailAssembly" placeholder="Emails of invitees separated by comma"/>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-6 col-md-6">
-                            <textarea class="form-control" id="inputJoinAssembly" style="height: 100px;" placeholder="Emails of invitees separated by comma"/>
-                        </div>
-                        <button class="btn btn-success pull-right" style="margin-top: 10px">Send</button>
                     </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class="form-group row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    <strong>Enable face to face scheduling</strong>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    <strong>Configure messaging</strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="voffset5"></div>
+                    <a href="/#/assembly/forum"><button class="row pull-right col-md-4 btn btn-primary" ng-click="createNewAssembly(3)"><h3><strong>Start assembly</strong></h3></button></a>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-sm-4 col-md-4">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" value="">
-                            <strong>Enable face to face scheduling</strong>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <a href="/#/assembly/forum"><button class="col-md-push-4 col-md-4 btn btn-primary" ng-click="createNewAssembly(2)"><h3><strong>Start assembly</strong></h3></button></a>
-        </div>
-
     </div>
 </div>

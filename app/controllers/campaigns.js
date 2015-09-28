@@ -51,7 +51,40 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 
 });
 
-appCivistApp.controller('CampaignCtrl', function($scope, $http){
+appCivistApp.controller('CampaignCtrl', function($scope, $http, localStorageService){
+	$scope.campaign = localStorageService.get('currentCampaign');
+	$scope.assembly = localStorageService.get('currentAssembly');
+
+	$scope.component = $scope.campaign.components[0];
+	$scope.milestones = $scope.component.milestones;
+
+	init();
+
+	function init() {
+		var endDate = moment($scope.component.endDate);
+		var now = moment();
+		var diff = endDate.diff(now, 'minutes');
+		$scope.minutesToDue = diff%60;
+		$scope.hoursToDue = Math.floor(diff/60) % 24;
+		$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
+
+		$scope.themes= [];
+		angular.forEach($scope.component.contributions, function(contribution){
+			angular.forEach(contribution.themes, function(theme) {
+				var isInList = false;
+				angular.forEach($scope.themes, function(actualTheme) {
+					if(theme.title === actualTheme.title){
+						isInList = true;
+					}
+				});
+				if(isInList === false) {
+					$scope.themes.push(theme);
+				}
+			});
+		});
+	}
+
+	/*
 	$scope.promise = $http.get('assets/campaigns/campaign.json').success(function(data){
 		$scope.campaign = data;
 		$scope.phases = data.phases;
@@ -63,4 +96,5 @@ appCivistApp.controller('CampaignCtrl', function($scope, $http){
 	}).error(function(error){
 		console.log('Error loading data' + error);
 	});
+	*/
 });

@@ -12,7 +12,7 @@
 
 console.log("Welcome to AppCivist!");
 
-var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule', 'ngFileUpload'];
+var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule', 'ngFileUpload', 'angularMoment'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 //var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
@@ -46,13 +46,17 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
             activetab: 'assemblies'
         })
         .when('/assembly/create/step1',{
-            controller: 'AssemblyListCtrl',
             templateUrl: 'app/partials/assembly/assemblyPartOne.html'
 
         })
         .when('/assembly/create/step2',{
             controller: 'AssemblyListCtrl',
             templateUrl: 'app/partials/assembly/assemblyPartTwo.html'
+
+        })
+        .when('/assembly/create/step3',{
+            controller: 'AssemblyListCtrl',
+            templateUrl: 'app/partials/assembly/assemblyPartThree.html'
 
         })
         .when('/campaign/create/step1',{

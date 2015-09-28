@@ -2,6 +2,7 @@
 $light-green: #DFEFD6;
 $dark-green: #57965B;
 $light-grey: #F4F4F4;
+$light-pale-grey: rgb(249,249,249);
 $light-blue: #E1F1F9;
 $dark-blue: #9CC7D3;
 $dodger-blue:dodgerblue;
@@ -52,5 +53,8 @@ $header-menu-active: $dark-grey;
 /******MAIN***********/
 $icon-font: $black;
 
+/*****ASSEMBLY CREATION*****/
+$assembly-tags-container-title: $dodger-blue;
+$assembly-tags-container-content-border: $light-grey;
 /*****UPLOAD********/
 $progress-line-bar: $dark-blue;

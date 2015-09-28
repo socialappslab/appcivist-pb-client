@@ -1,39 +1,31 @@
-<div class="view assembliesLanding" ng-controller="AssemblyCtrl">
+<div class="view assemblyCreation" ng-controller="AssemblyCtrl">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 h1">
+        <div class="voffset3"></div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="pull-left">
                 <div class="indexBall">
                     <h1>2</h1>
                     <h4>/</h4>
                     <h4>3</h4>
                 </div>
+            </div><!-- /.col-lg-6 -->
+            <div class="col-md-6 col-sm-6">
                 <h1 class="inline"><strong>Select linked Assemblies</strong></h1>
-            </div><!-- /.col-lg-6 -->
-            <div class="col-lg-3 col-md-3 col-sm-3 h1">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for..." ng-model="assemblyFilter"/>
-      				<span class="input-group-btn">
-        				<button class="btn btn-default" type="button">Search</button>
-					</span>
-                </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-            <div class="col-lg-3 col-md-3 col-sm-3 h1">
-                <a ng-href="/#/assembly/create/step1">
-                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="height: 34px; width:34px; display: inline-block; cursor: pointer;float:left;margin-right:12px;">
-                    <div class="caption" style="align-content: center;vertical-align: middle;">
-                        <h2 style="color:black;"><strong>New Assembly</strong></h2>
-                        <!--<p>Organize your community and start the discussion</p>-->
-                    </div>
-                </a>
+                <div class="box descriptionBox">
+                    <p>Linking Assemblies is a quick way for gaining access to the resources and campaigns of other Assemblies of interest. If you want to link to other Assemblies, click on their icons.</p>
+                </div>
             </div>
+            <div class="col-md-4 col-sm-4">
+                <input type="text" class="form-control" placeholder="Search for..." ng-model="assemblyFilter"/>
+            </div><!-- /.col-lg-6 -->
         </div>
-        <div class="row assemblies">
+        <div class="row assembliesLanding assemblies">
             <div ng-if="assemblies.length > 0">
                 <div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies | filter:assemblyFilter">
-                    <div class="thumbnail assembly">
-                        <a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
+                    <div class="thumbnail assembly" id="assembly{{assembly.assemblyId}}">
+                        <a ng-class="assemblyState" ng-click="selectAssembly(assembly)"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
                         <div class="caption">
-                            <h4><strong><a ng-href="#/assembly/{{assembly.assemblyId}}/forum">{{assembly.name}}</a></strong></h4>
+                            <h4><strong>{{assembly.name}}</strong></h4>
                             <h5 class="text-muted"><strong><i><div ng-show="assembly.location.placeName != null">{{assembly.location.placeName}},</div> {{assembly.location.city}}, {{assembly.location.country}}</i></strong></h5>
                             <p>{{assembly.description}}</p>
                         </div>
@@ -42,7 +34,7 @@
             </div>
         </div>
         <div class="row">
-            <a href="/#/assembly/create/step2"><button class="col-md-push-8 col-md-4 btn btn-primary" ng-click="createNewAssembly(1)"><h3><strong>Next</strong></h3></button></a>
+            <a href="/#/assembly/create/step3"><button class="col-md-push-8 col-md-4 btn btn-primary" ng-click="createNewAssembly(2)"><h3><strong>Next</strong></h3></button></a>
         </div>
     </div>
 </div>

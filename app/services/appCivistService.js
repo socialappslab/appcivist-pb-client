@@ -25,6 +25,12 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
         },
         assembliesWithoutLogin: function() {
             return $resource(serverBaseUrl + '/assembly/listed');
+        },
+        assembliesByQuery: function(query) {
+            return $resource(serverBaseUrl + '/assembly', {query: query});
+        },
+        assemblyMembers: function(assemblyId) {
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/membership/status=ACCEPTED');
         }
     }
     //var Assembly = $resource(serverBaseUrl + '/assembly/:assemblyId', {assemblyId: '@assemblyId'});

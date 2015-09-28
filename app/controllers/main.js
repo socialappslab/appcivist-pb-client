@@ -48,6 +48,14 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
 		});
 	}
 
+	$scope.searchMoreAssemblies = function() {
+		$scope.assemblies = Assemblies.assembliesWithoutLogin().query();
+		$scope.assemblies.$promise.then(function(data) {
+			$scope.assemblies = data;
+			localStorageService.set("assemblies", $scope.assemblies);
+		});
+	}
+
 	$scope.login = function(email, password) {
 		$scope.user = loginService.signIn(email, password);
 	}

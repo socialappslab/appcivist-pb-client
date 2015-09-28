@@ -100,9 +100,9 @@
 					<div class="row">
 						<div class="campaignItem item" ng-repeat="campaign in campaigns">
 							<div class="image-capsule">
-								<a ng-href="#/campaign/{{campaign.campaignId}}/forum"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
+								<a ng-href="#/campaign/{{campaign.campaignId}}" ng-click="selectCampaign(campaign)"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
 								<div class="caption" style="text-align: center">
-									<h5 class="text" title="{{campaign.type.name}}">{{campaign.type.name}}</h5>
+									<h5 class="text" title="{{campaign.title}}">{{campaign.title}}</h5>
 								</div>
 							</div>
 						</div>

@@ -47,4 +47,10 @@
 		});
 	}
 
+
+
+	$scope.selectCampaign = function(campaign){
+		localStorageService.set("currentCampaign", campaign);
+	}
+
 });

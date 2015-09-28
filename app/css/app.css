@@ -1296,9 +1296,17 @@ footer {
   background: grey;
 }
 
+.navBarImage {
+  height: 5rem;
+}
+
+#user-menu .icon {
+  font-size: 2.5rem;
+  vertical-align: middle;
+}
 #user-menu ul.menu-elements {
   list-style: none;
-  padding: 1.5rem;
+  padding: 0;
   margin: 0;
 }
 #user-menu ul.menu-elements li {

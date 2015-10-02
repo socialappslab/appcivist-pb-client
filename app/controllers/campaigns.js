@@ -51,10 +51,19 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 
 });
 
-appCivistApp.controller('CampaignCtrl', function($scope, $http, localStorageService){
-	$scope.campaign = localStorageService.get('currentCampaign');
-	$scope.assembly = localStorageService.get('currentAssembly');
+appCivistApp.controller('CampaignCtrl', function($scope, $http, $routeParams, localStorageService){
+	$scope.campaigns = localStorageService.get('campaigns');
+	$scope.campaignID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+	console.log("Loading campaign: "+$scope.campaignID);
 
+	$scope.campaigns.forEach(function(entry) {
+		if(entry.campaignId === $scope.campaignID) {
+			localStorageService.set("currentCampaign", entry);
+		}
+	});
+
+	$scope.campaign = localStorageService.get("currentCampaign");
+	$scope.assembly = localStorageService.get('currentAssembly');
 	$scope.component = $scope.campaign.components[0];
 	$scope.milestones = $scope.component.milestones;
 

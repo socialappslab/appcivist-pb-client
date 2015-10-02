@@ -7,7 +7,9 @@
 				<ul class="upcoming-milestones-list">
 					<li ng-repeat="milestone in notifications.upcoming_milestones">
 						<!--<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>-->
-						<p><strong>{{milestone.resourceSummary}}</strong></p>
+						<p><strong>{{milestone.resourceSummary}}</strong>.
+							<a  ng-click="selectCampaignById(milestone.containerId)" ng-href="#/campaign/{{milestone.containerId}}">Go to campaign!</a>
+						</p>
 					</li>
 				</ul>
 			</div>
@@ -81,10 +83,11 @@
 					<div class="row">
 						<div class="assemblyItem item" ng-repeat="assembly in assemblies">
 							<div class="image-capsule">
-								<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
-								<div class="caption" style="text-align: center">
-									<h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
-								</div>
+								<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+									<div class="caption" style="text-align: center">
+										<h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
+									</div>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -100,10 +103,11 @@
 					<div class="row">
 						<div class="campaignItem item" ng-repeat="campaign in campaigns">
 							<div class="image-capsule">
-								<a ng-href="#/campaign/{{campaign.campaignId}}/forum"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
-								<div class="caption" style="text-align: center">
-									<h5 class="text" title="{{campaign.type.name}}">{{campaign.type.name}}</h5>
-								</div>
+								<a ng-click="selectCampaign(campaign)" ng-href="#/campaign/{{campaign.campaignId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+									<div class="caption" style="text-align: center">
+										<h5 class="text" title="{{campaign.title}}">{{campaign.title}}</h5>
+									</div>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -119,10 +123,11 @@
 					<div class="row">
 						<div class="workingGroupItem item" ng-repeat="workingGroup in workingGroups">
 							<div class="image-capsule">
-								<a ng-href="#/campaign/{{workingGroup.groupId}}/forum"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
-								<div class="caption" style="text-align: center">
-									<h5 class="text" title="{{workingGroup.name}}">{{workingGroup.name}}</h5>
-								</div>
+								<a ng-href="#/campaign/{{workingGroup.groupId}}/forum"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+									<div class="caption" style="text-align: center">
+										<h5 class="text" title="{{workingGroup.name}}">{{workingGroup.name}}</h5>
+									</div>
+								</a>
 							</div>
 						</div>
 					</div>

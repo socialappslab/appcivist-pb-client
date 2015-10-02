@@ -101,6 +101,18 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 		localStorageService.set("currentCampaign", campaign);
 	}
 
+	$scope.selectCampaignById = function(cId) {
+		$scope.campaigns = localStorageService.get("campaigns");
+
+		campaign = campaigns.forEach(function(entry) {
+			if(entry.campaignId == cId) {
+				return entry;
+			}
+		});
+
+		localStorageService.set("currentCampaign", campaign);
+	}
+
 	$scope.publishComment = function(comment) {
 		//Contributions.contributions($scope.currentAssembly.assemblyId).save();
 	}

@@ -21,6 +21,28 @@
 		return this.userIsAuthenticated();
 	};
 
+	this.signUp = function(email, password, repeat_password) { //valentine written 
+		if (password.localeCompare(repeat_password) != 0) {
+			$rootScope.message = "Your passwords don't match."; 
+			$location.url('/');
+		} else if (user === '0') {
+			$rootScope.message = 'You are already registered.'; 
+			$location.url('/'); 
+		}
+		var user = {}; 
+		user.email = email; 
+		user.password = password; 
+		console.log(user); 
+		$http.post(serverBaseUrl+'/user/signup', user)
+			.success(function(user) {
+				localStorageService.set('sessionKey',user.sessionKey);
+				localStorageService.set('authenticated',true);
+				console.log("User get from API: " + user.userId);
+				localStorageService.set("user",user);
+				$location.url('/assemblies');
+			})
+	}
+
 	this.signIn = function(email, password) {
 		var user = {};
 		user.email = email;

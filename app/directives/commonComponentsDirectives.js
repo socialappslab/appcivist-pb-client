@@ -155,3 +155,15 @@ appCivistApp.directive('suggestion', function(){
         }]
     }
 });
+
+appCivistApp.directive('contribution', function(){
+    return{
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/newContribution/newContribution.html",
+        scope: {
+            content: '='
+        },
+        controller: "NewContributionCtrl"
+    }
+});

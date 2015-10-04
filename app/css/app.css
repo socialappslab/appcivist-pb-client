@@ -1128,6 +1128,48 @@ button#second-vote {
   display: inline;
 }
 
+#newContribution {
+  margin: 1%;
+  /*******INPUT - TEXTAREA *********/
+}
+#newContribution .view {
+  background: white;
+}
+#newContribution #inputTextNewContribution {
+  height: 20rem;
+}
+#newContribution #inputLocationNewContribution {
+  width: 34.3rem;
+  display: block;
+}
+#newContribution input {
+  display: inline-block;
+}
+#newContribution input#inputCityNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 10rem;
+}
+#newContribution input#inputStateNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 7rem;
+}
+#newContribution input#inputZipNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 6rem;
+}
+#newContribution input#inputCountryNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 9rem;
+}
+#newContribution .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#newContribution .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+
 .home {
   /**********************COMMENTS********************/
 }

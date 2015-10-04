@@ -159,6 +159,9 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService) 
     return {
         contributions: function(assemblyId) {
             return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/contribution?space=forum');
+        },
+        contribution: function(assemblyId, campaignId, componentId) {
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/campaign/'+campaignId+'/component/'+componentId+'/contribution');
         }
     };
 

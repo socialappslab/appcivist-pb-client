@@ -6,10 +6,16 @@
 appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 		localStorageService, Assemblies, loginService) {
 	init();
-
 	function init() {
 		// check if there is already a user and a sessionKey in the
 		// $localStorage
+		$scope.newUser = {
+			"name": "",
+			"lang": "en",
+			"repeatPassword": "",
+			"password": "",
+			"email": ""
+		};
 		var user = $scope.user = localStorageService.get("user");
         var sessionKey = $scope.sessionKey = localStorageService.get("sessionKey");
         var serverBaseurl = $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
@@ -44,7 +50,8 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 	}
 
 	$scope.signup = function() {
-		$location.url('/signupform');
+		$scope.newUser.email = $scope.newUser.name;
+		loginService.signUp($scope.newUser.name, $scope.newUser.password, $scope.newUser.repeatPassword);
 	}
 
 	$scope.signout = function() {

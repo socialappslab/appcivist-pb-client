@@ -31,7 +31,10 @@
 		}
 		var user = {}; 
 		user.email = email; 
-		user.password = password; 
+		user.password = password;
+		user.repeatPassword = repeat_password;
+		user.lang = "en";
+		user.name = email;
 		console.log(user); 
 		$http.post(serverBaseUrl+'/user/signup', user)
 			.success(function(user) {
@@ -39,7 +42,7 @@
 				localStorageService.set('authenticated',true);
 				console.log("User get from API: " + user.userId);
 				localStorageService.set("user",user);
-				$location.url('/assemblies');
+				$location.url('/home');
 			})
 	}
 

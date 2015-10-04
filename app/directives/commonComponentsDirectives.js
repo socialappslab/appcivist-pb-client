@@ -137,7 +137,7 @@ appCivistApp.directive('votesCounter', function(){
            content: '='
        },
        controller: ['$scope', function($scope){
-           $scope.votes = $scope.content.votes;
+           $scope.votes = $scope.content.stats.ups-$scope.content.stats.downs;
        }]
    }
 });

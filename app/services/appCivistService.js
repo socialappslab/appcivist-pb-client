@@ -94,6 +94,9 @@ appCivistApp.factory('Campaigns', function ($resource, localStorageService) {
     return {
         campaigns: function(state) {
             return $resource(serverBaseUrl + '/user/'+localStorageService.get('user').uuid+'/campaign?status='+state+'');
+        },
+        campaign: function() {
+            return $resource(serverBaseUrl + '/assembly/:aid/campaign/:cid');
         }
     };
 

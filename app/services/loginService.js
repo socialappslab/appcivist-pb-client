@@ -21,20 +21,14 @@
 		return this.userIsAuthenticated();
 	};
 
-	this.signUp = function(email, password, repeat_password) { //valentine written 
-		if (password.localeCompare(repeat_password) != 0) {
+	this.signUp = function(user) { //valentine written
+		if (user.password.localeCompare(user.repeatPassword) != 0) {
 			$rootScope.message = "Your passwords don't match."; 
 			$location.url('/');
 		} else if (user === '0') {
 			$rootScope.message = 'You are already registered.'; 
 			$location.url('/'); 
 		}
-		var user = {}; 
-		user.email = email; 
-		user.password = password;
-		user.repeatPassword = repeat_password;
-		user.lang = "en";
-		user.name = email;
 		console.log(user); 
 		$http.post(serverBaseUrl+'/user/signup', user)
 			.success(function(user) {

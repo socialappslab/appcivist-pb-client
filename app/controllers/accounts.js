@@ -50,8 +50,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 	}
 
 	$scope.signup = function() {
-		$scope.newUser.email = $scope.newUser.name;
-		loginService.signUp($scope.newUser.name, $scope.newUser.password, $scope.newUser.repeatPassword);
+		loginService.signUp($scope.newUser);
 	}
 
 	$scope.signout = function() {

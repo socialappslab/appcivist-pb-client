@@ -105,12 +105,13 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <ul class="row suggestions">
-                <li class="suggestion" ng-repeat="suggestion in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
-                    <suggestion content="suggestion"></suggestion>
+            <ul class="row contributions">
+                <li class="contribution" ng-repeat="contribution in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
+                    <contribution content="contribution"></contribution>
                 </li>
             </ul>
         </div>
     </div>
-    <contribution></contribution>
+    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+    <ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>
 </div>

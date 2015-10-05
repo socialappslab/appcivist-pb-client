@@ -2,7 +2,7 @@
 /******COMMON BOXES*******/
 /****TIMELINE*****/
 /*****PROGRESSLINE******/
-/*******SUGGESTIONS*******/
+/*******CONTRIBUTIONS*******/
 /*******TAGS**************/
 /*****COMMON ELEMENTS***/
 /******HEADER**********/
@@ -898,7 +898,7 @@ button#second-vote {
   color: #524D4D;
 }
 
-.campaign-pmaking .suggestions {
+.campaign-pmaking .contributions {
   list-style: none;
   -webkit-column-count: 3;
   -moz-column-count: 3;
@@ -1094,80 +1094,39 @@ button#second-vote {
   text-align: center;
 }
 
-.suggestion {
+.contribution {
   border: 0.1rem solid #F4F4F4;
   margin-bottom: 2rem;
   margin-left: 2rem;
   display: inline-flex;
 }
-.suggestion .row {
+.contribution .row {
   margin-left: 0;
   margin-right: 0;
 }
-.suggestion .suggestion-content {
+.contribution .contribution-content {
   padding: 1.5rem;
 }
-.suggestion .suggestion-content .suggestion-info-user {
+.contribution .contribution-content .contribution-info-user {
   display: inline-block;
   margin: 0 1rem;
 }
-.suggestion .suggestion-content .suggestion-info-user .image-profile-suggestion {
+.contribution .contribution-content .contribution-info-user .image-profile-contribution {
   display: inline-block;
 }
-.suggestion .suggestion-content .suggestion-info-user .image-profile-suggestion img {
+.contribution .contribution-content .contribution-info-user .image-profile-contribution img {
   background-size: 100%;
   height: 40px;
   width: 40px;
   border-radius: 20px;
 }
-.suggestion .suggestion-title {
+.contribution .contribution-title {
   display: inline-block;
   margin: 0;
+  cursor: pointer;
 }
-.suggestion .suggestion-description {
+.contribution .contribution-description {
   display: inline;
-}
-
-#newContribution {
-  margin: 1%;
-  /*******INPUT - TEXTAREA *********/
-}
-#newContribution .view {
-  background: white;
-}
-#newContribution #inputTextNewContribution {
-  height: 20rem;
-}
-#newContribution #inputLocationNewContribution {
-  width: 34.3rem;
-  display: block;
-}
-#newContribution input {
-  display: inline-block;
-}
-#newContribution input#inputCityNewContribution {
-  margin: 0.5rem 0.5rem 0 0;
-  width: 10rem;
-}
-#newContribution input#inputStateNewContribution {
-  margin: 0.5rem 0.5rem 0 0;
-  width: 7rem;
-}
-#newContribution input#inputZipNewContribution {
-  margin: 0.5rem 0.5rem 0 0;
-  width: 6rem;
-}
-#newContribution input#inputCountryNewContribution {
-  margin: 0.5rem 0.5rem 0 0;
-  width: 9rem;
-}
-#newContribution .optionsBox {
-  background-color: #F4F4F4;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
-#newContribution .optionsBox .checkbox {
-  padding-left: 2rem;
 }
 
 .home {
@@ -1311,6 +1270,63 @@ button#second-vote {
   text-align: left;
   border: 0.2rem solid black;
   border-radius: 0.3rem;
+}
+
+#contributionView {
+  margin: 1%;
+}
+#contributionView .view {
+  background: white;
+}
+#contributionView .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#contributionView .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+
+#newContribution {
+  margin: 1%;
+  /*******INPUT - TEXTAREA *********/
+}
+#newContribution .view {
+  background: white;
+}
+#newContribution #inputTextNewContribution {
+  height: 20rem;
+}
+#newContribution #inputLocationNewContribution {
+  width: 34.3rem;
+  display: block;
+}
+#newContribution input {
+  display: inline-block;
+}
+#newContribution input#inputCityNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 10rem;
+}
+#newContribution input#inputStateNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 7rem;
+}
+#newContribution input#inputZipNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 6rem;
+}
+#newContribution input#inputCountryNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 9rem;
+}
+#newContribution .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#newContribution .optionsBox .checkbox {
+  padding-left: 2rem;
 }
 
 footer {

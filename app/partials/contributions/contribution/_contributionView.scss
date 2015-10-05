@@ -1,0 +1,15 @@
+#contributionView{
+  margin: 1%;
+  & .view{
+    background: white;
+  }
+
+  .optionsBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .checkbox{
+      padding-left: 2rem;
+    }
+  }
+}

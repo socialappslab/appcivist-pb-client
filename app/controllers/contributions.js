@@ -64,3 +64,9 @@
 		});
 	}
 });
+
+appCivistApp.controller('contributionCtrl', function($scope, $http, $routeParams, localStorageService) {
+	$scope.$root.$on('contribution:selected', function(event, data){
+		$scope.contribution = data;
+	});
+});

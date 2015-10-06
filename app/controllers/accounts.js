@@ -33,7 +33,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 
 		if (user != null && sessionKey != null) {
 			// TODO Validate that the Session Key corresponds to the user
-			$location.url('/home');
+			//$location.url('/home');
 		} else {
 			$scope.user = {};
 			$scope.sessionKey = null;

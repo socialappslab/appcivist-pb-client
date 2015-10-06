@@ -703,6 +703,9 @@ button#second-vote {
   display: inline-block;
   width: 220px;
 }
+.assembliesLanding .assembly .caption i {
+  margin: 0;
+}
 .assembliesLanding .image-circle {
   height: 100px;
   width: 100px;

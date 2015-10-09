@@ -798,6 +798,8 @@ button#second-vote {
 }
 .forum .comments {
   list-style-type: none;
+  margin-left: 0;
+  margin-right: 0;
 }
 .forum .reply {
   margin-left: 25px;
@@ -916,6 +918,35 @@ button#second-vote {
 }
 .campaign-pmaking nav .pagination {
   margin: 0 0;
+}
+
+.campaign-wGroups .row {
+  margin-bottom: 0.5rem;
+}
+.campaign-wGroups .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.campaign-wGroups .optionsBox .optionsBox-title {
+  color: dodgerblue;
+  display: inline-block;
+}
+.campaign-wGroups .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+.campaign-wGroups .optionsBox:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: #F4F4F4;
+  border-width: 1rem;
+  margin-top: -2.3rem;
 }
 
 .template-configuration .supporting-components {
@@ -1289,6 +1320,24 @@ button#second-vote {
 #contributionView .optionsBox .checkbox {
   padding-left: 2rem;
 }
+#contributionView .forum {
+  margin-left: 2rem;
+}
+#contributionView .forum .button {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: -1rem;
+}
+#contributionView .forum .button.cancelButton {
+  margin-left: 1rem;
+}
+#contributionView .forum .button.replyButton {
+  margin-bottom: -3rem;
+}
+#contributionView .infoBox {
+  text-align: center;
+}
 
 #newContribution {
   margin: 1%;
@@ -1330,6 +1379,41 @@ button#second-vote {
 }
 #newContribution .optionsBox .checkbox {
   padding-left: 2rem;
+}
+
+.wGroupsSuggestion {
+  border: 0.1rem solid #F4F4F4;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  display: inline-flex;
+}
+.wGroupsSuggestion .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content {
+  padding: 1.5rem;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content .wGroupsSuggestion-info-user {
+  display: inline-block;
+  margin: 0;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content .wGroupsSuggestion-info-user .image-profile-wGroupsSuggestion {
+  display: inline-block;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content .wGroupsSuggestion-info-user .image-profile-wGroupsSuggestion img {
+  background-size: 100%;
+  height: 7rem;
+  width: 7rem;
+  border-radius: 4rem;
+}
+.wGroupsSuggestion .wGroupsSuggestion-title {
+  display: inline-block;
+  margin: 0;
+  cursor: pointer;
+}
+.wGroupsSuggestion .wGroupsSuggestion-description {
+  display: inline;
 }
 
 footer {

@@ -1,0 +1,117 @@
+<div class="view campaign-pmaking" ng-controller="CampaignCtrl">
+    <div class="col-md-12 col-sm-12">
+        <div class="row text-center">
+            <span class="h4"><strong>Assembly: </strong></span>
+            <span class="h4">{{assembly.name}}</span>
+            <span class="h4"> / </span>
+            <span class="h4"><strong>Campaign: </strong></span>
+            <span class="h4">{{campaign.title}}</span>
+        </div>
+        <br/>
+        <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
+            <ul id="timeline" class="row timeline">
+                <li id="proposalMakingPhase" class="{{proposalMakingState}} selected active">
+                    <h4><strong>Proposal Making</strong></h4>
+                </li>
+                <li id="versioningPhase" class="{{versioningState}} active">
+                    <h4><strong>Versioning</strong></h4>
+                </li>
+                <li id="deliberationPhase" class="{{deliberationState}} active">
+                    <h4><strong>Deliberation</strong></h4>
+                </li>
+                <li id="votingPhase" class="{{votingState}} active">
+                    <h4><strong>Voting</strong></h4>
+                </li>
+            </ul>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="progressline col-md-12 col-sm-12">
+                <div class="col-md-8 col-sm-8">
+                    <ul class="progressline-phases">
+                        <li class="progressline-phase" ng-repeat="milestone in milestones">
+                            <h4 class="progressline-phase-title">
+                                {{milestone.title}}
+                            </h4>
+                            <div class="progressline-phase-line"></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="counter-box">
+                        <h3 class="counter-title"><strong>Final drafts due</strong></h3>
+                        <ul class="counter">
+                            <li class="counter-section">
+                                <h5 class="text-muted"><strong>Days</strong></h5>
+                                <div>{{daysToDue}}</div>
+                            </li>
+                            <li class="counter-section">
+                                <h5 class="text-muted"><strong>Hours</strong></h5>
+                                <div>{{hoursToDue}}</div>
+                            </li>
+                            <li class="counter-section">
+                                <h5 class="text-muted"><strong>Minutes</strong></h5>
+                                <div>{{minutesToDue}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <!--<h1><strong>{{campaign.components[1].component.name}}</strong><strong>: </strong>Join or create a group to develop proposals</h1>-->
+            <h1><strong>Working groups</strong><strong>: </strong>Join or create a group to develop proposals</h1>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-2 col-sm-2">
+                <div class="row container-inline">
+                    <h2><strong class="text-muted">Join Existing Groups</strong></h2>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-7">
+                <div class="row col-md-12 col-sm-12">
+                    <ul class="tags tags-filter">
+                        <li class="tag tag-filter"><strong>All</strong></li>
+                        <li class="vertical-divider">
+                            &nbsp;
+                        </li>
+                        <li class="tag tag-filter" ng-repeat="theme in themes">
+                            <strong>{{theme.title}}</strong>
+                        </li>
+                        <!--<i class="fa fa-sort-desc"></i>-->
+                    </ul>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="col-md-10 col-sm-10 no-padding">
+                        <input type="text" class="form-control" placeholder="Search existing groups..." ng-model="campaignContributionFilter">
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <button class="btn btn-success col-md-12 col-sm-12">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <div class="row">
+                    <div id="organization-buttons" class="btn-group">
+                        <button type="button" class="btn btn-default" aria-label="Show as grid"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-default" aria-label="Show as list"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
+                    </div>
+                    <div id="map-buttons" class="btn-group">
+                        <button id="map-button" type="button" class="btn btn-default" aria-label="Show map"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newContribution">Create New Group</button>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <ul class="row contributions">
+                <li class="wGroupsSuggestion" ng-repeat="wGroupSuggestion in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
+                    <ng-include src="'app/partials/wGroupsSuggestions/wGroupsSuggestion.html'"></ng-include>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+    <ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>
+</div>

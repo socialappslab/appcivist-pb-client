@@ -1,0 +1,33 @@
+.campaign-wGroups{
+
+  .row{
+    margin-bottom: 0.5rem;
+  }
+
+  .optionsBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .optionsBox-title{
+      color: $assembly-optionsBox-title;
+      display: inline-block;
+    }
+    .checkbox{
+      padding-left: 2rem;
+    }
+  }
+  .optionsBox:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: $assembly-optionsBox;
+    border-width: 1rem;
+    margin-top: -2.3rem;
+  }
+
+}

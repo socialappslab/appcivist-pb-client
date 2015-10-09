@@ -12,4 +12,27 @@
       padding-left: 2rem;
     }
   }
+
+  .forum{
+    margin-left: 2rem;
+
+    .button{
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: -1rem;
+
+      &.cancelButton{
+        margin-left: 1rem;
+      }
+
+      &.replyButton{
+        margin-bottom: -3rem;
+      }
+    }
+  }
+
+  .infoBox{
+    text-align: center;
+  }
 }

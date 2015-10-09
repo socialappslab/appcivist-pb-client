@@ -12,7 +12,8 @@
             </div>
             <div class="info-block">
                 <em>{{contribution.authors[0].name}}</em>
-                <time datetime="{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}"/>{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}
+                <!--<time datetime="{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}">{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</time>-->
+                <time datetime="{{contribution.lastUpdate}}">{{contribution.lastUpdate}}</time>
             </div>
         </div>
         <div class="votes-counter pull-right">

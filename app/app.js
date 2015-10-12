@@ -36,7 +36,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
 			templateUrl : '/app/partials/main.html'
 		})
 		.when('/home',{
-            //controller: 'AssemblyListCtrl',
+            controller: 'HomeCtrl',
             templateUrl: 'app/partials/home/home.html',
             activetab: 'home'
         })
@@ -110,6 +110,9 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
                 var sessionKey = localStorageService.get('sessionKey');
                 if (sessionKey) {
                     config.headers.SESSION_KEY = '' + sessionKey;
+                }
+                else{
+                    $location.path('/');
                 }
                 return config;
             },

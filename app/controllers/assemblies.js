@@ -22,7 +22,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
+appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
 													loginService, localStorageService) {
 	$scope.currentAssembly = {};
 	$scope.newAssembly = {
@@ -73,8 +73,8 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 	init();
 
 	function init() {
-
 		// Grab assemblyID off of the route
+		$scope.$root.startSpinner();
 		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		if (assemblyID > 0) {
 			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
@@ -88,6 +88,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 					$scope.contributions = data;
 				});
 				$scope.campaigns = $scope.currentAssembly.campaigns;
+				$scope.$root.stopSpinner();
 			});
 		}
 

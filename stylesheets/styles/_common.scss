@@ -224,3 +224,14 @@ textarea{
         }
     }
 }
+
+/*****SPINNER*****/
+.spinner-container{
+    background-color: rgba(1,1,1,0.3);
+    position: absolute;
+    left: 0%;
+    top: -6%;
+    height: 106%;
+    width: 100%;
+    z-index: 10;
+}

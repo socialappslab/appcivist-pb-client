@@ -17,6 +17,15 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 			//console.log("Assemblies arrived: " + JSON.stringify($scope.assemblies));
 		});
 	}
+
+	$scope.searchAssembly = function(query) {
+		$scope.assemblies = Assemblies.assembliesByQuery(query).query();
+		$scope.assemblies.$promise.then(function(data) {
+			$scope.assemblies = data;
+			localStorageService.set("assemblies", $scope.assemblies);
+			//console.log("Assemblies arrived: " + JSON.stringify($scope.assemblies));
+		});
+	}
 });
 
 // This controller retrieves data from the Assemblies and associates it
@@ -79,6 +88,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 			$scope.$root.startSpinner();
 			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
 			$scope.contributions = Contributions.contributions(assemblyID).query();
+			$scope.assemblyMembers = Assemblies.assemblyMembers(assemblyID).query();
 			$scope.campaigns = null;
 			$scope.currentAssembly.$promise.then(function(data) {
 				$scope.currentAssembly = data;
@@ -90,8 +100,10 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 				$scope.campaigns = $scope.currentAssembly.campaigns;
 				$scope.$root.stopSpinner();
 			});
+			$scope.assemblyMembers.$promise.then(function(data){
+				$scope.assemblyMembers = data;
+			});
 		}
-
 	}
 
 	$scope.selectCampaign = function(campaign) {

@@ -2,7 +2,7 @@
 /******COMMON BOXES*******/
 /****TIMELINE*****/
 /*****PROGRESSLINE******/
-/*******SUGGESTIONS*******/
+/*******CONTRIBUTIONS*******/
 /*******TAGS**************/
 /*****COMMON ELEMENTS***/
 /******HEADER**********/
@@ -234,6 +234,17 @@ textarea {
   width: 0;
   border-radius: 0.5rem;
   padding: 0.5rem;
+}
+
+/*****SPINNER*****/
+.spinner-container {
+  background-color: rgba(1, 1, 1, 0.3);
+  position: absolute;
+  left: 0%;
+  top: -6%;
+  height: 106%;
+  width: 100%;
+  z-index: 10;
 }
 
 /**
@@ -703,6 +714,9 @@ button#second-vote {
   display: inline-block;
   width: 220px;
 }
+.assembliesLanding .assembly .caption i {
+  margin: 0;
+}
 .assembliesLanding .image-circle {
   height: 100px;
   width: 100px;
@@ -795,6 +809,8 @@ button#second-vote {
 }
 .forum .comments {
   list-style-type: none;
+  margin-left: 0;
+  margin-right: 0;
 }
 .forum .reply {
   margin-left: 25px;
@@ -898,7 +914,7 @@ button#second-vote {
   color: #524D4D;
 }
 
-.campaign-pmaking .suggestions {
+.campaign-pmaking .contributions {
   list-style: none;
   -webkit-column-count: 3;
   -moz-column-count: 3;
@@ -913,6 +929,35 @@ button#second-vote {
 }
 .campaign-pmaking nav .pagination {
   margin: 0 0;
+}
+
+.campaign-wGroups .row {
+  margin-bottom: 0.5rem;
+}
+.campaign-wGroups .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.campaign-wGroups .optionsBox .optionsBox-title {
+  color: dodgerblue;
+  display: inline-block;
+}
+.campaign-wGroups .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+.campaign-wGroups .optionsBox:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: #F4F4F4;
+  border-width: 1rem;
+  margin-top: -2.3rem;
 }
 
 .template-configuration .supporting-components {
@@ -1094,37 +1139,38 @@ button#second-vote {
   text-align: center;
 }
 
-.suggestion {
+.contribution {
   border: 0.1rem solid #F4F4F4;
   margin-bottom: 2rem;
   margin-left: 2rem;
   display: inline-flex;
 }
-.suggestion .row {
+.contribution .row {
   margin-left: 0;
   margin-right: 0;
 }
-.suggestion .suggestion-content {
+.contribution .contribution-content {
   padding: 1.5rem;
 }
-.suggestion .suggestion-content .suggestion-info-user {
+.contribution .contribution-content .contribution-info-user {
   display: inline-block;
   margin: 0 1rem;
 }
-.suggestion .suggestion-content .suggestion-info-user .image-profile-suggestion {
+.contribution .contribution-content .contribution-info-user .image-profile-contribution {
   display: inline-block;
 }
-.suggestion .suggestion-content .suggestion-info-user .image-profile-suggestion img {
+.contribution .contribution-content .contribution-info-user .image-profile-contribution img {
   background-size: 100%;
   height: 40px;
   width: 40px;
   border-radius: 20px;
 }
-.suggestion .suggestion-title {
+.contribution .contribution-title {
   display: inline-block;
   margin: 0;
+  cursor: pointer;
 }
-.suggestion .suggestion-description {
+.contribution .contribution-description {
   display: inline;
 }
 
@@ -1269,6 +1315,116 @@ button#second-vote {
   text-align: left;
   border: 0.2rem solid black;
   border-radius: 0.3rem;
+}
+
+#contributionView {
+  margin: 1%;
+}
+#contributionView .view {
+  background: white;
+}
+#contributionView .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#contributionView .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+#contributionView .forum {
+  margin-left: 2rem;
+}
+#contributionView .forum .button {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: -1rem;
+}
+#contributionView .forum .button.cancelButton {
+  margin-left: 1rem;
+}
+#contributionView .forum .button.replyButton {
+  margin-bottom: -3rem;
+}
+#contributionView .infoBox {
+  text-align: center;
+}
+
+#newContribution {
+  margin: 1%;
+  /*******INPUT - TEXTAREA *********/
+}
+#newContribution .view {
+  background: white;
+}
+#newContribution #inputTextNewContribution {
+  height: 20rem;
+}
+#newContribution #inputLocationNewContribution {
+  width: 34.3rem;
+  display: block;
+}
+#newContribution input {
+  display: inline-block;
+}
+#newContribution input#inputCityNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 10rem;
+}
+#newContribution input#inputStateNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 7rem;
+}
+#newContribution input#inputZipNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 6rem;
+}
+#newContribution input#inputCountryNewContribution {
+  margin: 0.5rem 0.5rem 0 0;
+  width: 9rem;
+}
+#newContribution .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#newContribution .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+
+.wGroupsSuggestion {
+  border: 0.1rem solid #F4F4F4;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  display: inline-flex;
+}
+.wGroupsSuggestion .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content {
+  padding: 1.5rem;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content .wGroupsSuggestion-info-user {
+  display: inline-block;
+  margin: 0;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content .wGroupsSuggestion-info-user .image-profile-wGroupsSuggestion {
+  display: inline-block;
+}
+.wGroupsSuggestion .wGroupsSuggestion-content .wGroupsSuggestion-info-user .image-profile-wGroupsSuggestion img {
+  background-size: 100%;
+  height: 7rem;
+  width: 7rem;
+  border-radius: 4rem;
+}
+.wGroupsSuggestion .wGroupsSuggestion-title {
+  display: inline-block;
+  margin: 0;
+  cursor: pointer;
+}
+.wGroupsSuggestion .wGroupsSuggestion-description {
+  display: inline;
 }
 
 footer {

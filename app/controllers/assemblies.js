@@ -31,7 +31,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
+appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
 													loginService, localStorageService) {
 	$scope.currentAssembly = {};
 	$scope.newAssembly = {
@@ -54,26 +54,22 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 								"country": "",
 								"geoJson": "{   'type': 'FeatureCollection',   'features': [     {       'type': 'Feature',       'properties': {},       'geometry': {         'type': 'Polygon',         'coordinates': [           [             [               2.0458602905273438,               48.800305780490156             ],             [               2.0413970947265625,               48.795330416333336             ],             [               2.055816650390625,               48.79125929678568             ],             [               2.0685195922851562,               48.78967599441185             ],             [               2.0757293701171875,               48.796687382771             ],             [               2.0853424072265625,               48.802341014504485             ],             [               2.0801925659179688,               48.80505453139158             ],             [               2.0650863647460938,               48.8118376812941             ],             [               2.0537567138671875,               48.815228912154815             ],             [               2.0496368408203125,               48.80505453139158             ],             [               2.0458602905273438,               48.800305780490156             ]           ]         ]       }     }   ] }"
 							},
-							"resources": {
-								"themes" : [
-									{
-										"themeId" : 1
+							"themes" : [{
+								"title" : "Housing"
+							}
+							],
+							"existingThemes" : [{
+								"themeId" : 1
+							}
+							],
+							"configs": [{
+									"key":"assembly.face-to-face.scheduling",
+									"value":"true"
 									},
 									{
-										"title" : "Housing"
-									}
-								],
-								"configs": [
-									{
-										"key":"assembly.face-to-face.scheduling",
-										"value":"true"
-									},
-									{
-										"key":"assembly.enable.messaging",
-										"value":"true"
-									}
-								]
-							},
+									"key":"assembly.enable.messaging",
+									"value":"true"
+							}],
 							"lang": "en"
 						};
 
@@ -86,10 +82,10 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 	init();
 
 	function init() {
-
 		// Grab assemblyID off of the route
 		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		if (assemblyID > 0) {
+			$scope.$root.startSpinner();
 			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
 			$scope.contributions = Contributions.contributions(assemblyID).query();
 			$scope.assemblyMembers = Assemblies.assemblyMembers(assemblyID).query();
@@ -101,7 +97,8 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 				$scope.contributions.$promise.then(function(data){
 					$scope.contributions = data;
 				});
-				$scope.campaigns = $scope.currentAssembly.resources.campaigns;
+				$scope.campaigns = $scope.currentAssembly.campaigns;
+				$scope.$root.stopSpinner();
 			});
 			$scope.assemblyMembers.$promise.then(function(data){
 				$scope.assemblyMembers = data;
@@ -111,6 +108,22 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 
 	$scope.selectCampaign = function(campaign) {
 		localStorageService.set("currentCampaign", campaign);
+	}
+
+	$scope.selectCampaignById = function(cId) {
+		$scope.campaigns = localStorageService.get("campaigns");
+
+		campaign = campaigns.forEach(function(entry) {
+			if(entry.campaignId == cId) {
+				return entry;
+			}
+		});
+
+		localStorageService.set("currentCampaign", campaign);
+	}
+
+	$scope.selectGroup = function(group) {
+		localStorageService.set("currentGroup", group);
 	}
 
 	$scope.publishComment = function(comment) {

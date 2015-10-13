@@ -1,4 +1,4 @@
-﻿appCivistApp.controller('homeCtrl', function($scope, $routeParams,
+﻿appCivistApp.controller('HomeCtrl', function($scope, $routeParams,
 													 $resource, $location, Campaigns, Memberships, Notifications, loginService, localStorageService) {
 
 	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
@@ -23,7 +23,7 @@
 		});
 		$scope.campaigns.$promise.then(function(data) {
 			$scope.campaigns = data;
-			localStorageService.set("campagins", $scope.campaigns);
+			localStorageService.set("campaigns", $scope.campaigns);
 		});
 		$scope.workingGroups.$promise.then(function(data) {
 			$scope.workingGroups = [];

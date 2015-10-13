@@ -137,21 +137,24 @@ appCivistApp.directive('votesCounter', function(){
            content: '='
        },
        controller: ['$scope', function($scope){
-           $scope.votes = $scope.content.votes;
+           $scope.votes = $scope.content.stats.ups-$scope.content.stats.downs;
        }]
    }
 });
 
-appCivistApp.directive('suggestion', function(){
+appCivistApp.directive('contribution', function(){
     return{
         restrict: 'E',
         replace: true,
-        templateUrl: "/app/partials/directives/suggestion/suggestion.html",
+        templateUrl: "/app/partials/directives/contribution/contribution.html",
         scope: {
             content: '='
         },
         controller: ['$scope', function($scope){
-            $scope.suggestion = $scope.content;
+            $scope.contribution = $scope.content;
+            $scope.selectContribution = function(contribution){
+                $scope.$root.$emit('contribution:selected', contribution);
+            }
         }]
     }
 });

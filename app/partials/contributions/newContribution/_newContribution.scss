@@ -1,0 +1,45 @@
+#newContribution{
+  margin: 1%;
+  & .view{
+    background: white;
+  }
+
+  /*******INPUT - TEXTAREA *********/
+  #inputTextNewContribution{
+    height: 20rem;
+  }
+
+  #inputLocationNewContribution{
+    width: 34.3rem;
+    display: block;
+  }
+
+  input {
+    display: inline-block;
+    &#inputCityNewContribution{
+      margin: 0.5rem 0.5rem 0 0;
+      width: 10rem;
+    }
+    &#inputStateNewContribution{
+      margin: 0.5rem 0.5rem 0 0;
+      width: 7rem;
+    }
+    &#inputZipNewContribution{
+      margin: 0.5rem 0.5rem 0 0;
+      width: 6rem;
+    }
+    &#inputCountryNewContribution{
+      margin: 0.5rem 0.5rem 0 0;
+      width: 9rem;
+    }
+  }
+
+  .optionsBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .checkbox{
+      padding-left: 2rem;
+    }
+  }
+}

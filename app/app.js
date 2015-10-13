@@ -12,7 +12,7 @@
 
 console.log("Welcome to AppCivist!");
 
-var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule', 'ngFileUpload', 'angularMoment'];
+var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule', 'ngFileUpload', 'angularMoment', 'angularSpinner'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 //var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
@@ -36,7 +36,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
 			templateUrl : '/app/partials/main.html'
 		})
 		.when('/home',{
-            //controller: 'AssemblyListCtrl',
+            controller: 'HomeCtrl',
             templateUrl: 'app/partials/home/home.html',
             activetab: 'home'
         })
@@ -60,27 +60,22 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
 
         })
         .when('/campaign/create/step1',{
-            controller: 'CreateCampaignCtrl',
             templateUrl: 'app/partials/campaign/creation/campaignPartOne.html'
 
         })
         .when('/campaign/create/step2',{
-            controller: 'CreateCampaignCtrl',
             templateUrl: 'app/partials/campaign/creation/campaignPartTwo.html'
 
         })
         .when('/campaign/create/step3',{
-            controller: 'CreateCampaignCtrl',
             templateUrl: 'app/partials/campaign/creation/campaignPartThree.html'
 
         })
         .when('/campaign/create/step4',{
-            controller: 'CreateCampaignCtrl',
             templateUrl: 'app/partials/campaign/creation/campaignPartFour.html'
 
         })
         .when('/campaign/create/step5',{
-            controller: 'CreateCampaignCtrl',
             templateUrl: 'app/partials/campaign/creation/campaignPartFive.html'
 
         })
@@ -92,12 +87,18 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
             controller: 'CampaignCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingBrainstorming.html'
         })
-        //Define a route that has a route parameter in it (:customerID)
-        //.when('/assembly/:assemblyID/campaign/:campaignId',
-        //{
-        //  controller: 'AssemblyController',
-        //  templateUrl: '/app/partials/assemblyCampaignView.html'
-        //})
+        .when('/campaign/:aid/pmaking/wgroups',{
+            controller: 'CampaignCtrl',
+            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
+        })
+        .when('/campaign/:aid/pmaking/wgroups/new',{
+            controller: 'CampaignCtrl',
+            templateUrl: 'app/partials/campaign/pmaking/wGroups/campaignWorkingGroups.html'
+        })
+        .when('/campaign/:aid/pmaking/wgroups/forum',{
+            controller: 'CampaignCtrl',
+            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
+        })
         .otherwise({
 			redirectTo : '/'
 		});
@@ -109,6 +110,9 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
                 var sessionKey = localStorageService.get('sessionKey');
                 if (sessionKey) {
                     config.headers.SESSION_KEY = '' + sessionKey;
+                }
+                else{
+                    $location.path('/');
                 }
                 return config;
             },

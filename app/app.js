@@ -99,6 +99,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
             controller: 'CampaignCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
+        .when('/assembly/:aid/campaign/:cid/:ciid/:mid',{
+            controller: 'CampaignComponentCtrl',
+            templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        })
         .otherwise({
 			redirectTo : '/'
 		});

@@ -74,9 +74,9 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 
 	function init() {
 		// Grab assemblyID off of the route
-		$scope.$root.startSpinner();
 		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		if (assemblyID > 0) {
+			$scope.$root.startSpinner();
 			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
 			$scope.contributions = Contributions.contributions(assemblyID).query();
 			$scope.campaigns = null;

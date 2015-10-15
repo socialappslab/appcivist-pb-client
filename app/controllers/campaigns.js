@@ -93,6 +93,10 @@ appCivistApp.controller('CampaignCtrl', function($scope, $http, $routeParams, lo
 		});
 	}
 
+	$scope.selectMilestone = function(milestone) {
+		localStorageService.set("currentCampaign", campaign);
+	}
+
 	/*
 	$scope.promise = $http.get('assets/campaigns/campaign.json').success(function(data){
 		$scope.campaign = data;

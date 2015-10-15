@@ -904,6 +904,12 @@ button#second-vote {
   -moz-column-count: 3;
   column-count: 3;
 }
+.campaign-pmaking .proposals {
+  list-style: none;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+}
 .campaign-pmaking .row {
   margin-bottom: 0.5rem;
 }
@@ -1125,6 +1131,60 @@ button#second-vote {
   margin: 0;
 }
 .suggestion .suggestion-description {
+  display: inline;
+}
+
+.proposal {
+  border: 0.1rem solid #F4F4F4;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  display: inline-flex;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+.proposal .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.proposal .proposal-content {
+  padding: 1.5 rem;
+}
+.proposal .proposal-content .proposal-image {
+  display: block;
+  width: 300px;
+  height: 150px;
+  overflow: hidden;
+}
+.proposal .proposal-content .proposal-image img {
+  top: 0px;
+  clip: rect(0px, 300px, 150px, 0px);
+  z-index: -1;
+}
+.proposal .proposal-content .proposal-image tag {
+  top: 50%;
+  z-index: 10;
+}
+.proposal .proposal-content .proposal-info {
+  display: inline-block;
+}
+.proposal .proposal-content .proposal-info .comments-icon {
+  width: 2rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0.1rem;
+}
+.proposal .proposal-content .proposal-info .comments-icon .total-replies {
+  display: block;
+  margin: -0.9 rem 0;
+  text-align: center;
+}
+.proposal .proposal-title {
+  display: inline-block;
+  margin: 0;
+}
+.proposal .proposal-description {
   display: inline;
 }
 

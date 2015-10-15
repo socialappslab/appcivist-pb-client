@@ -30,7 +30,7 @@
                     <ul class="progressline-phases">
                         <li class="progressline-phase" ng-repeat="milestone in milestones">
                             <h4 class="progressline-phase-title">
-                                <a href="#/campaign/{{campaign.campaignId}}/temp"> {{milestone.title}}</a>
+                                <a href="#/campaign/{{campaign.campaignId}}/temp"> {{milestone.title}} </a>
                             </h4>
                             <div class="progressline-phase-line"></div>
                         </li>
@@ -105,9 +105,9 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <ul class="row suggestions">
-                <li class="suggestion" ng-repeat="suggestion in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
-                    <suggestion content="suggestion"></suggestion>
+            <ul class="row proposals">
+                <li class="proposal" ng-repeat="proposal in component.contributions | orderBy: 'date'">
+                    <proposal content="proposal"></proposal>
                 </li>
             </ul>
         </div>

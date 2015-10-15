@@ -92,6 +92,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
             controller: 'CampaignCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingBrainstorming.html'
         })
+        .when('/campaign/:aid/temp',{
+            controller: 'CampaignCtrl',
+            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingDrafts.html'
+        })
         //Define a route that has a route parameter in it (:customerID)
         //.when('/assembly/:assemblyID/campaign/:campaignId',
         //{

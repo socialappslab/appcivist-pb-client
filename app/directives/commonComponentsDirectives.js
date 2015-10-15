@@ -156,6 +156,20 @@ appCivistApp.directive('suggestion', function(){
     }
 });
 
+appCivistApp.directive('proposal', function(){
+    return{
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/proposal/proposal.html",
+        scope: {
+            content: '='
+        },
+        controller: ['$scope', function($scope){
+            $scope.proposal = $scope.content;
+        }]
+    }
+});
+
 appCivistApp.directive('contribution', function(){
     return{
         restrict: 'E',

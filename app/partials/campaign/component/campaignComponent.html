@@ -30,7 +30,7 @@
                     <ul class="progressline-phases">
                         <li class="progressline-phase" ng-repeat="milestone in milestones">
                             <h4 class="progressline-phase-title">
-                                <a ng-href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/{{componentID}}/{{milestone.componentInstanceMilestoneId}}">
+                                <a ng-class="milestone.componentInstanceMilestoneId === milestoneID ? 'selected' : ''" ng-href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/{{componentID}}/{{milestone.componentInstanceMilestoneId}}">
                                     {{milestone.title}}
                                 </a>
                             </h4>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <h1><strong>{{component.name}}</strong><strong>: </strong>{{component.description}}</h1>
+            <h1><strong>{{component.component.name}}</strong><!--<strong>: </strong>{{component.component.description}}</h1>-->
         </div>
         <div class="row col-md-12 col-sm-12">
             <div class="col-md-2 col-sm-2">

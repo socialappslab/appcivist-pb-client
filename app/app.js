@@ -26,7 +26,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
 
     localStorageServiceProvider
         .setPrefix('appcivist')
-        .setStorageType('sessionStorage')
+            .setStorageType('sessionStorage')
         //.set("appcivist_api_base_url",appCivistCoreBaseURL)
         .setNotify(true,true);
 

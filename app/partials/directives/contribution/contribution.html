@@ -1,11 +1,18 @@
 <div class="contribution-content">
+    <div class="row contribution-background" background-image="{{contribution.attachments[0].url ? contribution.attachments[0].url : '/assets/images/logotype.svg'}}">
+        <div class="tag tag-info" ng-repeat="theme in contribution.themes">
+            <strong class="text-muted">{{theme.title}}</strong>
+        </div>
+    </div>
     <div class="row">
         <h5 class="contribution-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)"><strong>{{contribution.title}}. </strong></h5><p class="contribution-description"> {{contribution.text}}</p>
     </div>
     <div class="row voffset2">
+        <!--
         <div class="tag tag-info" ng-repeat="theme in contribution.themes">
             <strong class="text-muted">{{theme.title}}</strong>
         </div>
+        -->
         <div class="contribution-info-user">
             <div class="image-profile-contribution">
                 <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">

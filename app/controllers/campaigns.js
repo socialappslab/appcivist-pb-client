@@ -165,7 +165,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			console.log("Setting current milestone to: "+entry);
 		}
 	});
-
+	$scope.milestone = localStorageService.get('currentMilestone');
 	$scope.contributions = $scope.component.contributions;
 	$scope.themes = $scope.campaign.themes;
 

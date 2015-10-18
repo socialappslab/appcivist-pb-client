@@ -36,4 +36,16 @@
   & .contribution-description{
     display: inline;
   }
+
+  .contribution-background{
+    background-size: 100%;
+    height: 20rem;
+    background-repeat: no-repeat;
+  }
+
+  .tag-info{
+    position: relative;
+    top: 17rem;
+    left: 0rem;
+  }
 }

@@ -1,4 +1,4 @@
-﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService) {
+﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $modal) {
 
 	var serverBaseUrl = localStorageService.get('serverBaseUrl');
 	if (serverBaseUrl == undefined || serverBaseUrl == null) {
@@ -62,6 +62,16 @@
 					//deferred.reject();
 					$location.url('/');
 				}
+			})
+			.error(function(error) {
+				$modal.open({
+					templateUrl: 'app/partials/landing/loginErrorModal.html',
+					//controller: 'HomeCtrl',
+					size: 'sm'/*,
+					resolve: {
+
+					}*/
+				});
 			});
 
 	};

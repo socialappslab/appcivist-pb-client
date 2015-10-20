@@ -60,7 +60,11 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <h1><strong>{{component.component.name}}</strong><!--<strong>: </strong>{{component.component.description}}</h1>-->
+            <h1><strong>{{milestone.title}}</strong><strong>: </strong>
+                <span ng-if="milestone.title === 'Brainstorming'">Identify problems and make suggestions for proposals</span>
+                <span ng-if="milestone.title === 'Working Group Formation'">Join or create a group to develop proposals</span>
+                <span ng-if="milestone.title === 'Proposal Drafting'">Explore existing proposals or start one with your working group</span>
+            </h1>
         </div>
         <div class="row col-md-12 col-sm-12">
             <div class="col-md-2 col-sm-2">
@@ -101,8 +105,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <button class="btn btn-success btn-half-size" data-toggle="modal" data-target="#newContribution">Contribute</button>
-                    <button class="btn btn-success btn-half-size">Upload batch</button>
+                    <span ng-if="milestone.title === 'Brainstorming'">
+                        <button class="btn btn-success btn-half-size" data-toggle="modal" data-target="#newContribution">Contribute</button>
+                        <button class="btn btn-success btn-half-size">Upload batch</button>
+                    </span>
+                    <span ng-if="milestone.title === 'Working Group Formation'">
+                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newContribution">Create New Group</button>
+                    </span>
+                    <span ng-if="milestone.title === 'Proposal Drafting'">
+                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newContribution">New Proposal Draft</button>
+                    </span>
                 </div>
             </div>
         </div>

@@ -24,6 +24,9 @@ var appCivistCoreBaseURL = "http://localhost:9000/api";
  */
 appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, localStorageServiceProvider) {
 
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common["X-Requested-With"];
+
     localStorageServiceProvider
         .setPrefix('appcivist')
             .setStorageType('sessionStorage')

@@ -10,18 +10,27 @@
         <br/>
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
             <ul id="timeline" class="row timeline">
-                <li id="proposalMakingPhase" class="{{proposalMakingState}} selected active">
-                    <h4><strong>Proposal Making</strong></h4>
+                <!--<li id="proposalMakingPhase" class="{{proposalMakingState}} selected active">-->
+                    <!--<h4><strong>Proposal Making</strong></h4>-->
+                <!--</li>-->
+
+                <li ng-class="component.componentInstanceId === componentID ? 'active selected' : 'active'" ng-repeat="component in components | filter: (component.timeline===1)" ng-class="component.componentInstanceId === componentID ? 'selected active' : ''">
+                    <h4>
+                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentInstanceId}}">
+                            <strong>{{component.title}}</strong>
+                        </a>
+                    </h4>
                 </li>
-                <li id="versioningPhase" class="{{versioningState}} active">
-                    <h4><strong>Versioning</strong></h4>
-                </li>
-                <li id="deliberationPhase" class="{{deliberationState}} active">
-                    <h4><strong>Deliberation</strong></h4>
-                </li>
-                <li id="votingPhase" class="{{votingState}} active">
-                    <h4><strong>Voting</strong></h4>
-                </li>
+
+                <!--<li id="versioningPhase" class="{{versioningState}} active">-->
+                    <!--<h4><strong>Versioning</strong></h4>-->
+                <!--</li>-->
+                <!--<li id="deliberationPhase" class="{{deliberationState}} active">-->
+                    <!--<h4><strong>Deliberation</strong></h4>-->
+                <!--</li>-->
+                <!--<li id="votingPhase" class="{{votingState}} active">-->
+                    <!--<h4><strong>Voting</strong></h4>-->
+                <!--</li>-->
             </ul>
         </div>
         <div class="row col-md-12 col-sm-12">
@@ -30,7 +39,7 @@
                     <ul class="progressline-phases">
                         <li class="progressline-phase" ng-repeat="milestone in milestones">
                             <h4 class="progressline-phase-title">
-                                <a ng-class="milestone.componentInstanceMilestoneId === milestoneID ? 'selected' : ''" ng-href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/{{componentID}}/{{milestone.componentInstanceMilestoneId}}">
+                                <a ng-class="milestone.componentInstanceMilestoneId === milestoneID ? 'selected' : ''" ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{milestone.componentInstanceMilestoneId}}">
                                     {{milestone.title}}
                                 </a>
                             </h4>

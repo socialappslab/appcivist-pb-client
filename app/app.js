@@ -86,10 +86,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
             controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/forum/forum.html'
         })
-        .when('/campaign/:aid',{
-            controller: 'CampaignCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingBrainstorming.html'
-        })
+        //.when('/campaign/:aid',{
+        //    controller: 'CampaignComponentCtrl',
+        //    templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        //})
         .when('/campaign/:aid/pmaking/wgroups',{
             controller: 'CampaignCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
@@ -103,6 +103,14 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid',{
+            controller: 'CampaignComponentCtrl',
+            templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        })
+        .when('/assembly/:aid/campaign/:cid',{
+            controller: 'CampaignComponentCtrl',
+            templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        })
+        .when('/assembly/:aid/campaign/:cid/:ciid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         })

@@ -115,14 +115,14 @@
                 </div>
                 <div class="row">
                     <span ng-if="milestone.title === 'Brainstorming'">
-                        <button class="btn btn-success btn-half-size" data-toggle="modal" data-target="#newContribution">Contribute</button>
+                        <button class="btn btn-success btn-half-size" data-toggle="modal" data-target="#newView">Contribute</button>
                         <button class="btn btn-success btn-half-size">Upload batch</button>
                     </span>
                     <span ng-if="milestone.title === 'Working Group Formation'">
-                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newContribution">Create New Group</button>
+                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">Create New Group</button>
                     </span>
                     <span ng-if="milestone.title === 'Proposal Drafting'">
-                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newContribution">New Proposal Draft</button>
+                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">New Proposal Draft</button>
                     </span>
                 </div>
             </div>
@@ -135,6 +135,6 @@
             </ul>
         </div>
     </div>
-    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+    <ng-include src="'app/partials/contributions/newView/newView.html'"></ng-include>
     <ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>
 </div>

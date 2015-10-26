@@ -987,6 +987,13 @@ button#second-vote {
   background-color: #F4F4F4;
   color: #524D4D;
   opacity: 0.1;
+  width: 25%;
+}
+.timeline li:first-child {
+  width: 30%;
+}
+.timeline li:last-child {
+  width: 15%;
 }
 .timeline li :only-child {
   margin-left: 5%;
@@ -1370,11 +1377,7 @@ button#second-vote {
 }
 
 #newContribution {
-  margin: 1%;
   /*******INPUT - TEXTAREA *********/
-}
-#newContribution .view {
-  background: white;
 }
 #newContribution #inputTextNewContribution {
   height: 20rem;
@@ -1409,6 +1412,44 @@ button#second-vote {
 }
 #newContribution .optionsBox .checkbox {
   padding-left: 2rem;
+}
+
+#newWorkingGroup {
+  /*******INPUT - TEXTAREA *********/
+}
+#newWorkingGroup .form-group label {
+  text-align: left;
+}
+#newWorkingGroup select {
+  display: inline-block;
+}
+#newWorkingGroup #inputDescriptionNewWorkingGroup {
+  height: 10rem;
+}
+#newWorkingGroup .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#newWorkingGroup .optionsBox .optionsBox-title {
+  color: dodgerblue;
+  display: inline-block;
+}
+#newWorkingGroup .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+#newWorkingGroup .optionsBox:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: #F4F4F4;
+  border-width: 1rem;
+  margin-top: -2.3rem;
 }
 
 .wGroupsSuggestion {

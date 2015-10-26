@@ -1,201 +1,137 @@
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="newContribution">
-    <div class="modal-content col-md-12 col-sm-12">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <div class="view col-md-12 col-sm-12">
-            <div class="col-md-12 col-sm-12">
-                <div class="row text-center">
-                    <span class="h4"><strong>Assembly: </strong></span>
-                    <span class="h4">{{assembly.name}}</span>
-                    <span class="h4"> / </span>
-                    <span class="h4"><strong>Campaign: </strong></span>
-                    <span class="h4">{{campaign.title}}</span>
-                </div>
-                <br/>
-                <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
-                    <ul id="timeline" class="row timeline">
-                        <li id="proposalMakingPhase" class="{{proposalMakingState}} selected active">
-                            <h4><strong>Proposal Making</strong></h4>
-                        </li>
-                        <li id="versioningPhase" class="{{versioningState}} active">
-                            <h4><strong>Versioning</strong></h4>
-                        </li>
-                        <li id="deliberationPhase" class="{{deliberationState}} active">
-                            <h4><strong>Deliberation</strong></h4>
-                        </li>
-                        <li id="votingPhase" class="{{votingState}} active">
-                            <h4><strong>Voting</strong></h4>
-                        </li>
-                    </ul>
-                </div>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="progressline col-md-12 col-sm-12">
-                        <div class="col-md-8 col-sm-8">
-                            <ul class="progressline-phases">
-                                <li class="progressline-phase" ng-repeat="milestone in milestones">
-                                    <h4 class="progressline-phase-title">
-                                        {{milestone.title}}
-                                    </h4>
-                                    <div class="progressline-phase-line"></div>
-                                </li>
-                            </ul>
+<div id="newContribution">
+    <div class="row col-md-12 col-sm-12">
+        <h1><strong>New Contribution</strong><strong>: </strong>Identify a problem or make a suggestion</h1>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="col-md-8 col-sm-8">
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputTitleNewContribution" class="col-sm-1 col-md-1 control-label">Title</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input class="form-control" id="inputTitleNewContribution" placeholder="" ng-model="newContribution.title">
                         </div>
-                        <div class="col-md-4 col-sm-4">
-                            <div class="counter-box">
-                                <h3 class="counter-title"><strong>Final drafts due</strong></h3>
-                                <ul class="counter">
-                                    <li class="counter-section">
-                                        <h5 class="text-muted"><strong>Days</strong></h5>
-                                        <div>{{daysToDue}}</div>
-                                    </li>
-                                    <li class="counter-section">
-                                        <h5 class="text-muted"><strong>Hours</strong></h5>
-                                        <div>{{hoursToDue}}</div>
-                                    </li>
-                                    <li class="counter-section">
-                                        <h5 class="text-muted"><strong>Minutes</strong></h5>
-                                        <div>{{minutesToDue}}</div>
-                                    </li>
-                                </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputTextNewContribution" class="col-sm-1 col-md-1 control-label">Text</label>
+                        <div class="col-sm-10 col-md-10">
+                            <textarea class="form-control" id="inputTextNewContribution" maxlength="400" placeholder="Max. 250 words" ng-model="newContribution.text"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputKeywordsNewContribution" class="col-sm-1 col-md-1 control-label">Keywords</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input class="form-control" id="inputKeywordsNewContribution" placeholder="" ng-model="newContribution.keyword">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputLocationNewContribution" class="col-sm-1 col-md-1 control-label">Location</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input ng-model="newContribution.location.street" class="form-control" id="inputLocationNewContribution" placeholder="Street">
+                            <input ng-model="newContribution.location.placeName" class="form-control" id="inputCityNewContribution" placeholder="City">
+                            <input ng-model="newContribution.location.state" class="form-control" id="inputStateNewContribution" placeholder="State">
+                            <input ng-model="newContribution.location.zip" class="form-control" id="inputZipNewContribution" placeholder="Zip">
+                            <input ng-model="newContribution.location.country" class="form-control" id="inputCountryNewContribution" placeholder="Country">
+                            <i class="fa fa-question-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="selectThemeNewContribution" class="col-sm-1 col-md-1 control-label">Select theme(s)</label>
+                        <div class="col-md-3 col-sm-3 optionsBox">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="newContribution.themes.urban"/>
+                                    <p>Urban infrastucture</p>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="newContribution.themes.education"/>
+                                    <p>Education</p>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="newContribution.themes.transportation"/>
+                                    <p>Transportation</p>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="newContribution.themes.parks"/>
+                                    <p>Parks and Recreation</p>
+                                </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row col-md-12 col-sm-12">
-                    <h1><strong>New Contribution</strong><strong>: </strong>Identify a problem or make a suggestion</h1>
-                </div>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="col-md-8 col-sm-8">
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="inputTitleNewContribution" class="col-sm-1 col-md-1 control-label">Title</label>
-                                    <div class="col-sm-10 col-md-10">
-                                        <input class="form-control" id="inputTitleNewContribution" placeholder="" ng-model="newContribution.title">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="inputTextNewContribution" class="col-sm-1 col-md-1 control-label">Text</label>
-                                    <div class="col-sm-10 col-md-10">
-                                        <textarea class="form-control" id="inputTextNewContribution" maxlength="400" placeholder="Max. 250 words" ng-model="newContribution.text"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="inputKeywordsNewContribution" class="col-sm-1 col-md-1 control-label">Keywords</label>
-                                    <div class="col-sm-10 col-md-10">
-                                        <input class="form-control" id="inputKeywordsNewContribution" placeholder="" ng-model="newContribution.keyword">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="inputLocationNewContribution" class="col-sm-1 col-md-1 control-label">Location</label>
-                                    <div class="col-sm-10 col-md-10">
-                                        <input ng-model="newContribution.location.street" class="form-control" id="inputLocationNewContribution" placeholder="Street">
-                                        <input ng-model="newContribution.location.placeName" class="form-control" id="inputCityNewContribution" placeholder="City">
-                                        <input ng-model="newContribution.location.state" class="form-control" id="inputStateNewContribution" placeholder="State">
-                                        <input ng-model="newContribution.location.zip" class="form-control" id="inputZipNewContribution" placeholder="Zip">
-                                        <input ng-model="newContribution.location.country" class="form-control" id="inputCountryNewContribution" placeholder="Country">
-                                        <i class="fa fa-question-circle"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="selectThemeNewContribution" class="col-sm-1 col-md-1 control-label">Select theme(s)</label>
-                                    <div class="col-md-3 col-sm-3 optionsBox">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" ng-model="newContribution.themes.urban"/>
-                                                <p>Urban infrastucture</p>
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" ng-model="newContribution.themes.education"/>
-                                                <p>Education</p>
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" ng-model="newContribution.themes.transportation"/>
-                                                <p>Transportation</p>
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" ng-model="newContribution.themes.parks"/>
-                                                <p>Parks and Recreation</p>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4">
+            <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <h4><strong>Attachments</strong></h4>
                     </div>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <h4><strong>Attachments</strong></h4>
-                                </div>
-                            </div>
-                            <div class="row list-item assembliesList">
-                                <div class="row">
-                                    <!--
-                                    <div class="assemblyItem item" ng-repeat="assembly in assemblies">
-                                        <div class="image-capsule">
-                                            <a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
-                                                <div class="caption" style="text-align: center">
-                                                    <h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
-                                                </div>
-                                            </a>
-                                        </div>
+                </div>
+                <div class="row list-item assembliesList">
+                    <div class="row">
+                        <!--
+                        <div class="assemblyItem item" ng-repeat="assembly in assemblies">
+                            <div class="image-capsule">
+                                <a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+                                    <div class="caption" style="text-align: center">
+                                        <h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
                                     </div>
-                                    -->
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 pull-right">
-                                    <a href="/#/campaign/create/step1"><button class="btn btn-success"><h5><strong>Add attachment</strong></h5></button></a>
-                                </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="row voffset4"></div>
-                        <div class="row col-md-12 col-sm-12">
-                            <h4>Contributor/s</h4>
-                        </div>
-                        <div class="row voffset4"></div>
-                        <div class="row col-md-12 col-sm-12">
+                        -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 pull-right">
+                        <a href="/#/campaign/create/step1"><button class="btn btn-success"><h5><strong>Add attachment</strong></h5></button></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row voffset4"></div>
+            <div class="row col-md-12 col-sm-12">
+                <h4>Contributor/s</h4>
+            </div>
+            <div class="row voffset4"></div>
+            <div class="row col-md-12 col-sm-12">
 
+            </div>
+            <div class="row voffset4"></div>
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-8 col-md-8">
+                            <input class="form-control" id="inputTitleNewContribution" placeholder="" ng-model="newContribution.title">
                         </div>
-                        <div class="row voffset4"></div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="col-sm-8 col-md-8">
-                                        <input class="form-control" id="inputTitleNewContribution" placeholder="" ng-model="newContribution.title">
-                                    </div>
-                                    <a href="/#/campaign/create/step1"><button class="btn btn-success col-sm-4 col-md-4"><h5><strong>Add attachment</strong></h5></button></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <a ng-click="postContribution()"><button class="btn btn-success col-md-6 pull-right"><h5><strong>Post contribution</strong></h5></button></a>
-                        </div>
+                        <a href="/#/campaign/create/step1"><button class="btn btn-success col-sm-4 col-md-4"><h5><strong>Add attachment</strong></h5></button></a>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <a ng-click="postContribution()"><button class="btn btn-success col-md-6 pull-right"><h5><strong>Post contribution</strong></h5></button></a>
             </div>
         </div>
     </div>

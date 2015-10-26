@@ -1,8 +1,4 @@
 #newContribution{
-  margin: 1%;
-  & .view{
-    background: white;
-  }
 
   /*******INPUT - TEXTAREA *********/
   #inputTextNewContribution{
@@ -33,6 +29,7 @@
       width: 9rem;
     }
   }
+
 
   .optionsBox{
     background-color: $assembly-optionsBox;

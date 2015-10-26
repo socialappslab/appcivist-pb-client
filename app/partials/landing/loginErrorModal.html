@@ -1,19 +1,15 @@
-<div class="modal fade" id="modal-unauthorized" tabindex="-1" role="dialog" aria-labelledby="modalUnauthorized">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="modalUnauthorized">Login Error</h4>
-            </div>
-            <div class="modal-body">
-                <p>Something went wrong! Check your email or password.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Forgot your password?</button>
-            </div>
-        </div>
+<div id="modal-unauthorized">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="modalUnauthorized">Login Error</h4>
+    </div>
+    <div class="modal-body">
+        <p>Something went wrong! Check your email or password.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-primary">Forgot your password?</button>
     </div>
 </div>

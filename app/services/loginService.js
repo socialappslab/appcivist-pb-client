@@ -66,11 +66,12 @@
 			.error(function(error) {
 				$modal.open({
 					templateUrl: 'app/partials/landing/loginErrorModal.html',
-					//controller: 'HomeCtrl',
-					size: 'sm'/*,
-					resolve: {
-
-					}*/
+					size: 'sm',
+					controller: ['$scope', function($scope){
+						$scope.close = function(){
+							this.$close();
+						}
+					}]
 				});
 			});
 

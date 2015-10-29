@@ -11,55 +11,6 @@
                     <span class="h4">{{campaign.title}}</span>
                 </div>
                 <br/>
-                <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
-                    <ul id="timeline" class="row timeline">
-                        <li id="proposalMakingPhase" class="{{proposalMakingState}} selected active">
-                            <h4><strong>Proposal Making</strong></h4>
-                        </li>
-                        <li id="versioningPhase" class="{{versioningState}} active">
-                            <h4><strong>Versioning</strong></h4>
-                        </li>
-                        <li id="deliberationPhase" class="{{deliberationState}} active">
-                            <h4><strong>Deliberation</strong></h4>
-                        </li>
-                        <li id="votingPhase" class="{{votingState}} active">
-                            <h4><strong>Voting</strong></h4>
-                        </li>
-                    </ul>
-                </div>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="progressline col-md-12 col-sm-12">
-                        <div class="col-md-8 col-sm-8">
-                            <ul class="progressline-phases">
-                                <li class="progressline-phase" ng-repeat="milestone in milestones">
-                                    <h4 class="progressline-phase-title">
-                                        {{milestone.title}}
-                                    </h4>
-                                    <div class="progressline-phase-line"></div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4 col-sm-4">
-                            <div class="counter-box">
-                                <h3 class="counter-title"><strong>Final drafts due</strong></h3>
-                                <ul class="counter">
-                                    <li class="counter-section">
-                                        <h5 class="text-muted"><strong>Days</strong></h5>
-                                        <div>{{daysToDue}}</div>
-                                    </li>
-                                    <li class="counter-section">
-                                        <h5 class="text-muted"><strong>Hours</strong></h5>
-                                        <div>{{hoursToDue}}</div>
-                                    </li>
-                                    <li class="counter-section">
-                                        <h5 class="text-muted"><strong>Minutes</strong></h5>
-                                        <div>{{minutesToDue}}</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <span ng-if="milestone.title === 'Brainstorming'">
                     <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
                 </span>

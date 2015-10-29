@@ -75,20 +75,17 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 
 	console.log("Loading Assembly: "+$routeParams.aid);
 
-	// I like to have an init() for controllers that need to
-	// perform some initialization. Keeps things in
-	// one place...not required though especially in the simple
-	// example below
 	init();
 
 	function init() {
 		// Grab assemblyID off of the route
-		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-		if (assemblyID > 0) {
+		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+
+		if ($scope.assemblyID > 0) {
 			$scope.$root.startSpinner();
-			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
-			$scope.contributions = Contributions.contributions(assemblyID).query();
-			$scope.assemblyMembers = Assemblies.assemblyMembers(assemblyID).query();
+			$scope.currentAssembly = Assemblies.assemblies($scope.assemblyID).get();
+			$scope.contributions = Contributions.contributions($scope.assemblyID).query();
+			$scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
 			$scope.campaigns = null;
 			$scope.currentAssembly.$promise.then(function(data) {
 				$scope.currentAssembly = data;

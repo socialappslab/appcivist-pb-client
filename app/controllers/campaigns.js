@@ -136,7 +136,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				localStorageService.set("currentAssembly", $scope.assembly);
 			});
 		} else {
-			console.log("Route assembly ID is the same as the current assembly in local storage");
+			console.log("Route assembly ID is the same as the current assembly in local storage: "+$scope.assembly.assemblyId);
 		}
 	}
 
@@ -162,7 +162,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				init();
 			});
 		} else {
-			console.log("Route campaign ID is the same as the current campaign in local storage");
+			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
 			setCurrentComponent($scope,localStorageService);
 			setCurrentMilestone($scope,localStorageService);
 			setContributionsAndGroups($scope,localStorageService);
@@ -197,7 +197,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 					}
 				});
 			} else {
-				console.log("Route component ID is the same as the current component in local storage");
+				console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentInstanceId);
 			}
 		}
 	}

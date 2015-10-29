@@ -117,6 +117,9 @@
                     <span ng-if="milestone.title === 'Proposal Drafting'">
                         <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">New Proposal Draft</button>
                     </span>
+                    <span ng-if="milestone.title === 'Voting period'">
+                        <button class="btn btn-success col-md-12" ng-href="#/ballot/{{component.ballots[0].votingBallotId}}">Open Voting Ballot</button>
+                    </span>
                 </div>
             </div>
         </div>

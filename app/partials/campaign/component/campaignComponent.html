@@ -41,20 +41,20 @@
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <div class="counter-box">
-                        <h3 class="counter-title"><strong>{{component.title}} due</strong></h3>
+                        <h3 class="counter-title"><strong>{{component.title}} ends in </strong></h3>
                         <ul class="counter">
-                            <li class="counter-section">
+                            <li class="counter-section" ng-if="daysToDue > 1">
                                 <h5 class="text-muted"><strong>Days</strong></h5>
                                 <div>{{daysToDue}}</div>
                             </li>
-                            <!--<li class="counter-section">-->
-                                <!--<h5 class="text-muted"><strong>Hours</strong></h5>-->
-                                <!--<div>{{hoursToDue}}</div>-->
-                            <!--</li>-->
-                            <!--<li class="counter-section">-->
-                                <!--<h5 class="text-muted"><strong>Minutes</strong></h5>-->
-                                <!--<div>{{minutesToDue}}</div>-->
-                            <!--</li>-->
+                            <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue > 1">
+                                <h5 class="text-muted"><strong>Hours</strong></h5>
+                                <div>{{hoursToDue}}</div>
+                            </li>
+                            <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue === 1">
+                                <h5 class="text-muted"><strong>Minutes</strong></h5>
+                                <div>{{minutesToDue}}</div>
+                            </li>
                         </ul>
                     </div>
                 </div>

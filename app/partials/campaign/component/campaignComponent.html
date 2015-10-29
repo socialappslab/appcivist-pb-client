@@ -1,4 +1,4 @@
-<div class="view campaign-pmaking" ng-controller="CampaignCtrl">
+<div class="view campaign-pmaking" ng-controller="CampaignComponentCtrl">
     <div class="col-md-12 col-sm-12">
         <div class="row text-center">
             <span class="h4"><strong>Assembly: </strong></span>
@@ -13,7 +13,9 @@
                 <li ng-class="component.componentInstanceId === componentID ? 'active selected' : 'active'" ng-repeat="component in components | filter: (component.timeline===1)" ng-class="component.componentInstanceId === componentID ? 'selected active' : ''">
                     <h4>
                         <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentInstanceId}}">
-                            <strong>{{component.title}}</strong>
+                            <strong>
+                                {{component.title}}
+                            </strong>
                         </a>
                     </h4>
                 </li>
@@ -23,10 +25,14 @@
             <div class="progressline col-md-12 col-sm-12">
                 <div class="col-md-8 col-sm-8">
                     <ul class="progressline-phases">
-                        <li class="progressline-phase" ng-repeat="milestone in milestones">
+                        <li class="progressline-phase" ng-repeat="m in milestones">
                             <h4 class="progressline-phase-title">
-                                <a ng-class="milestone.componentInstanceMilestoneId === milestoneID ? 'selected' : ''" ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{milestone.componentInstanceMilestoneId}}">
-                                    {{milestone.title}}
+                                <a ng-class="m.componentInstanceMilestoneId === milestoneID ? 'selected' : ''" ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{m.componentInstanceMilestoneId}}">
+                                    {{m.title}}
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue > 1">(due in {{mDaysToDue}} days)</span>
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue === 1">(due in {{mDaysToDue}} day)</span>
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && !milestoneStarted && mDaysToDue > 1">(starts in {{mDaysToDue}} days)</span>
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && !milestoneStarted && mDaysToDue === 1">(starts in {{mDaysToDue}} day)</span>
                                 </a>
                             </h4>
                             <div class="progressline-phase-line"></div>
@@ -35,20 +41,20 @@
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <div class="counter-box">
-                        <h3 class="counter-title"><strong>Final drafts due</strong></h3>
+                        <h3 class="counter-title"><strong>{{component.title}} due</strong></h3>
                         <ul class="counter">
                             <li class="counter-section">
                                 <h5 class="text-muted"><strong>Days</strong></h5>
                                 <div>{{daysToDue}}</div>
                             </li>
-                            <li class="counter-section">
-                                <h5 class="text-muted"><strong>Hours</strong></h5>
-                                <div>{{hoursToDue}}</div>
-                            </li>
-                            <li class="counter-section">
-                                <h5 class="text-muted"><strong>Minutes</strong></h5>
-                                <div>{{minutesToDue}}</div>
-                            </li>
+                            <!--<li class="counter-section">-->
+                                <!--<h5 class="text-muted"><strong>Hours</strong></h5>-->
+                                <!--<div>{{hoursToDue}}</div>-->
+                            <!--</li>-->
+                            <!--<li class="counter-section">-->
+                                <!--<h5 class="text-muted"><strong>Minutes</strong></h5>-->
+                                <!--<div>{{minutesToDue}}</div>-->
+                            <!--</li>-->
                         </ul>
                     </div>
                 </div>
@@ -56,9 +62,10 @@
         </div>
         <div class="row col-md-12 col-sm-12">
             <h1><strong>{{milestone.title}}</strong><strong>: </strong>
-                <span ng-if="milestone.title === 'Brainstorming'">Identify problems and make suggestions for proposals</span>
-                <span ng-if="milestone.title === 'Working Group Formation'">Join or create a group to develop proposals</span>
-                <span ng-if="milestone.title === 'Proposal Drafting'">Explore existing proposals or start one with your working group</span>
+                <!--<span ng-if="milestone.title === 'Brainstorming'">Identify problems and make suggestions for proposals</span>-->
+                <!--<span ng-if="milestone.title === 'Working Group Formation'">Join or create a group to develop proposals</span>-->
+                <!--<span ng-if="milestone.title === 'Proposal Drafting'">Explore existing proposals or start one with your working group</span>-->
+                <span> {{milestone.description}}</span>
             </h1>
         </div>
         <div class="row col-md-12 col-sm-12">
@@ -74,8 +81,8 @@
                         <li class="vertical-divider">
                             &nbsp;
                         </li>
-                        <li class="tag tag-filter" ng-repeat="theme in themes">
-                            <strong>{{theme.title}}</strong>
+                        <li class="tag tag-filter" ng-repeat="t in themes">
+                            <strong>{{t.title}}</strong>
                         </li>
                         <!--<i class="fa fa-sort-desc"></i>-->
                     </ul>
@@ -90,19 +97,19 @@
                 </div>
             </div>
             <div class="col-md-3 col-sm-3">
-                <div class="row">
-                    <div id="organization-buttons" class="btn-group">
-                        <button type="button" class="btn btn-default" aria-label="Show as grid"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></button>
-                        <button type="button" class="btn btn-default" aria-label="Show as list"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
-                    </div>
-                    <div id="map-buttons" class="btn-group">
-                        <button id="map-button" type="button" class="btn btn-default" aria-label="Show map"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></button>
-                    </div>
-                </div>
+                <!--<div class="row">-->
+                    <!--<div id="organization-buttons" class="btn-group">-->
+                        <!--<button type="button" class="btn btn-default" aria-label="Show as grid"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></button>-->
+                        <!--<button type="button" class="btn btn-default" aria-label="Show as list"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>-->
+                    <!--</div>-->
+                    <!--<div id="map-buttons" class="btn-group">-->
+                        <!--<button id="map-button" type="button" class="btn btn-default" aria-label="Show map"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></button>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="row">
                     <span ng-if="milestone.title === 'Brainstorming'">
                         <button class="btn btn-success btn-half-size" data-toggle="modal" data-target="#newView">Contribute</button>
-                        <button class="btn btn-success btn-half-size">Upload batch</button>
+                        <!--<button class="btn btn-success btn-half-size">Upload batch</button>-->
                     </span>
                     <span ng-if="milestone.title === 'Working Group Formation'">
                         <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">Create New Group</button>

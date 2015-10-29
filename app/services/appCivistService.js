@@ -14,8 +14,8 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
     }
 
     return {
-        assembly: function() {
-            return $resource(serverBaseUrl + '/assembly/:id');
+        assembly: function(assemblyId) {
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId);
         },
         assemblies: function(assemblyId) {
             if(assemblyId === undefined){
@@ -27,7 +27,7 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
             return $resource(serverBaseUrl + '/assembly/listed');
         },
         assembliesByQuery: function(query) {
-            return $resource(serverBaseUrl + '/assembly', {query: query});
+            return $resource(serverBaseUrl + '/assembly');
         },
         assemblyMembers: function(assemblyId) {
             return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/membership/status=ACCEPTED');
@@ -101,8 +101,8 @@ appCivistApp.factory('Campaigns', function ($resource, localStorageService) {
         campaigns: function(state) {
             return $resource(serverBaseUrl + '/user/'+localStorageService.get('user').uuid+'/campaign?status='+state+'');
         },
-        campaign: function() {
-            return $resource(serverBaseUrl + '/assembly/:aid/campaign/:cid');
+        campaign: function(assemblyId, campaignId) {
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/campaign/'+campaignId);
         }
     };
 

@@ -109,15 +109,6 @@ appCivistApp.controller('CampaignCtrl', function($scope, $http, $routeParams, lo
 });
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, localStorageService, Assemblies, Campaigns){
-	// QUESTION: when is all this executed? Before the partial is loaded?
-
-	// TODO: instead of storing "ALL" the assemblies in the storage, store only the list of assembly profiles
-	// and get the campaign information through API calls
-	// or find a way for both "assemblies" and "campaigns" to store only the information that can be publicly
-	// readable
-	//$scope.assemblies = localStorageService.get('assemblies');
-	//$scope.campaigns = localStorageService.get('campaigns');
-
 	// 1. Setting up scope ID values
 	$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 	$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
@@ -125,11 +116,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
 
 	// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
-
 	setCurrentAssembly($scope, localStorageService);
 	setCurrentCampaign($scope, localStorageService);
-
-	// TODO: move to a service
 
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
@@ -142,18 +130,11 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	function setCurrentAssembly($scope, localStorageService) {
 		$scope.assembly = localStorageService.get('currentAssembly');
 		if($scope.assembly === null || $scope.assembly.assemblyId != $scope.assemblyID) {
-			$scope.assembly = Assemblies.assembly($scope.assemblyID).get();
-			$scope.assembly.$promise.then(function(data) {
+			var res = Assemblies.assembly($scope.assemblyID).get();
+			res.$promise.then(function(data) {
 				$scope.assembly = data;
 				localStorageService.set("currentAssembly", $scope.assembly);
 			});
-			//assemblies.forEach(function(entry) {
-			//	if(entry.assemblyId === aID) {
-			//		localStorageService.set("currentAssembly", entry);
-			//		console.log("Setting current assembly to: " + entry.assemblyId);
-			//	}
-			//});
-			//assembly = localStorageService.get('currentAssembly');
 		} else {
 			console.log("Route assembly ID is the same as the current assembly in local storage");
 		}
@@ -171,8 +152,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	function setCurrentCampaign($scope, localStorageService) {
 		$scope.campaign = localStorageService.get('currentCampaign');
 		if($scope.campaign === null || $scope.campaign.campaignId != $scope.campaignID) {
-			$scope.campaign = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
-			$scope.campaign.$promise.then(function(data) {
+			var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
+			res.$promise.then(function(data) {
 				$scope.campaign = data;
 				localStorageService.set("currentCampaign", $scope.campaign);
 				setCurrentComponent($scope,localStorageService);
@@ -203,7 +184,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.component = $scope.components[0];
 			$scope.componentID = $scope.component.componentInstanceId;
 			localStorageService.set("currentComponent", $scope.component );
-			console.log("Setting current component to: "+$scope.component );
+			console.log("Setting current component to: "+ $scope.component.title );
 
 		} else {
 			$scope.component = localStorageService.get('currentComponent');
@@ -218,7 +199,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			} else {
 				console.log("Route component ID is the same as the current component in local storage");
 			}
-
 		}
 	}
 
@@ -252,7 +232,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				console.log("Route milestone ID is the same as the current milestone in local storage");
 			}
 		}
-
 	}
 
 	function setContributionsAndGroups($scope, localStorageService) {
@@ -261,15 +240,23 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.themes = $scope.campaign.themes;
 		$scope.displayedContributionType = $scope.milestone.mainContributionType;
 
-		console.log("Loading {assembly,campaign,component,milestone): "
-			+$scope.assemblyID+", "
-			+$scope.campaignID+", "
-			+$scope.componentID+", "
-			+$scope.milestoneID
+		console.log("Loading {assembly,campaign,component,milestone}: "
+			+$scope.assembly.assemblyId+", "
+			+$scope.campaign.campaignId+", "
+			+$scope.component.componentInstanceId+", "
+			+$scope.milestone.componentInstanceMilestoneId
 		);
+
+
+		console.log("Loading {# of components, # of components}: "
+			+$scope.components.length+", "
+			+$scope.milestones.length
+		);
+
 	}
 
 	function init() {
+		// Days, hours, minutes to end date of this component phase
 		var endDate = moment($scope.component.endDate);
 		var now = moment();
 		var diff = endDate.diff(now, 'minutes');
@@ -277,6 +264,19 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.hoursToDue = Math.floor(diff/60) % 24;
 		$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
 
+		// Days, hours, minutes to end date of this milestone stage
+		var mStartDate = moment($scope.milestone.start);
+		var mDays = $scope.milestone.days;
+
+		$scope.milestoneStarted = mStartDate.isBefore(now);
+		if($scope.milestoneStarted) {
+			mDiff = now.diff(mStartDate, 'days');
+			$scope.mDaysToDue = $scope.milestone.days - mDiff;
+
+		} else {
+			mDiff = mStartDate.diff(now, 'days');
+			$scope.mDaysToDue = mDiff;
+		}
 		$scope.themes= [];
 		angular.forEach($scope.component.contributions, function(contribution){
 			angular.forEach(contribution.themes, function(theme) {

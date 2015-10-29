@@ -30,7 +30,7 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
             return $resource(serverBaseUrl + '/assembly');
         },
         assemblyMembers: function(assemblyId) {
-            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/membership/status=ACCEPTED');
+            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/membership/ACCEPTED');
         }
     }
     //var Assembly = $resource(serverBaseUrl + '/assembly/:assemblyId', {assemblyId: '@assemblyId'});

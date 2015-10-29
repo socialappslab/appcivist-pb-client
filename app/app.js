@@ -24,9 +24,12 @@ var appCivistCoreBaseURL = "http://localhost:9000/api";
  */
 appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, localStorageServiceProvider) {
 
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common["X-Requested-With"];
+
     localStorageServiceProvider
         .setPrefix('appcivist')
-        .setStorageType('sessionStorage')
+            .setStorageType('sessionStorage')
         //.set("appcivist_api_base_url",appCivistCoreBaseURL)
         .setNotify(true,true);
 
@@ -83,10 +86,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
             controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/forum/forum.html'
         })
-        .when('/campaign/:aid',{
-            controller: 'CampaignCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingBrainstorming.html'
-        })
+        //.when('/campaign/:aid',{
+        //    controller: 'CampaignComponentCtrl',
+        //    templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        //})
         .when('/campaign/:aid/pmaking/wgroups',{
             controller: 'CampaignCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
@@ -98,6 +101,18 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
         .when('/campaign/:aid/pmaking/wgroups/forum',{
             controller: 'CampaignCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
+        })
+        .when('/assembly/:aid/campaign/:cid/:ciid/:mid',{
+            controller: 'CampaignComponentCtrl',
+            templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        })
+        .when('/assembly/:aid/campaign/:cid',{
+            controller: 'CampaignComponentCtrl',
+            templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        })
+        .when('/assembly/:aid/campaign/:cid/:ciid',{
+            controller: 'CampaignComponentCtrl',
+            templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         })
         .otherwise({
 			redirectTo : '/'

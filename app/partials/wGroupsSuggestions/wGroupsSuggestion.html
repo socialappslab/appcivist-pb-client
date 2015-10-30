@@ -1,0 +1,17 @@
+<div class="wGroupsSuggestion-content row col-md-12">
+    <div class="wGroupsSuggestion-info-user col-md-3 col-sm-3">
+        <div class="image-profile-wGroupsSuggestion">
+            <img ng-src="{{wGroupSuggestion.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">
+        </div>
+    </div>
+    <div class="col-md-9 col-sm-9">
+        <div class="row">
+            <h5 class="wGroupsSuggestion-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)">
+                <strong>{{wGroupSuggestion.title}}. </strong>
+            </h5>
+        </div>
+        <div class="row">
+            <p class="wGroupsSuggestion-description"> {{wGroupSuggestion.text}}</p>
+        </div>
+    </div>
+</div>

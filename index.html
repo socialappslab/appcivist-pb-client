@@ -21,6 +21,7 @@
 		</div>
 	</div>
 	<div footer></div>
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
 </body>
 
 <!-- Javascript Libraries -->
@@ -34,6 +35,8 @@
 <script src="bower_components/ng-file-upload/ng-file-upload.js" type="text/javascript"></script>
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/angular-moment/angular-moment.js"></script>
+<script src="bower_components/angular-spinner/angular-spinner.js"></script>
+<script src="bower_components/spin.js/spin.js"></script>
 
 
 
@@ -46,10 +49,14 @@
 <script src='app/controllers/assemblies.js' type="text/javascript"></script>
 <script src='app/controllers/campaigns.js' type="text/javascript"></script>
 <script src='app/controllers/voting.js' type="text/javascript"></script>
+<script src='app/controllers/contributions.js' type="text/javascript"></script>
 
 <!-- AngularJS App Directives -->
 <script src='app/directives/appCivistMainDirectives.js' type="text/javascript"></script>
 <script src='app/directives/commonComponentsDirectives.js' type="text/javascript"></script>
+
+<!-- AngularJS App Filters -->
+<script src='app/filters/filters.js' type="text/javascript"></script>
 
 <!-- AngularJS App Services -->
 <script src='app/services/appCivistService.js' type="text/javascript"></script>

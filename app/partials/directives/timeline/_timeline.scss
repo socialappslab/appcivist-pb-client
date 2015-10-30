@@ -10,6 +10,15 @@
     background-color: $timeline-background;
     color: $timeline-selected-background;
     opacity: 0.1;
+    width: 25%;
+
+    &:first-child{
+      width: 30%;
+    }
+
+    &:last-child{
+      width: 15%;
+    }
 
     & :only-child{
       margin-left: 5%;

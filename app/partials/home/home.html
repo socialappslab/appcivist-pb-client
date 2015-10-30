@@ -1,4 +1,4 @@
-﻿<div class="view home" ng-controller="homeCtrl">
+﻿<div class="view home">
 	<div class="container">
 		<div class="col-md-8 col-sm-8">
 			<h3><strong>Updates</strong></h3>
@@ -103,7 +103,7 @@
 					<div class="row">
 						<div class="campaignItem item" ng-repeat="campaign in campaigns">
 							<div class="image-capsule">
-								<a ng-click="selectCampaign(campaign)" ng-href="#/campaign/{{campaign.campaignId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+								<a ng-click="selectCampaign(campaign)" ng-href="#/assembly/{{campaign.assemblies[0]}}/campaign/{{campaign.campaignId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
 									<div class="caption" style="text-align: center">
 										<h5 class="text" title="{{campaign.title}}">{{campaign.title}}</h5>
 									</div>
@@ -123,7 +123,7 @@
 					<div class="row">
 						<div class="workingGroupItem item" ng-repeat="workingGroup in workingGroups">
 							<div class="image-capsule">
-								<a ng-href="#/campaign/{{workingGroup.groupId}}/forum"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+								<a ng-href="#/assembly/{{workingGroup.assemblies[0]}}/group/{{workingGroup.groupId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
 									<div class="caption" style="text-align: center">
 										<h5 class="text" title="{{workingGroup.name}}">{{workingGroup.name}}</h5>
 									</div>

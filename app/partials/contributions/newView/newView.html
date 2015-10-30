@@ -1,0 +1,26 @@
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="newView">
+    <div class="modal-content col-md-12 col-sm-12">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div class="view col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12">
+                <div class="row text-center">
+                    <span class="h4"><strong>Assembly: </strong></span>
+                    <span class="h4">{{assembly.name}}</span>
+                    <span class="h4"> / </span>
+                    <span class="h4"><strong>Campaign: </strong></span>
+                    <span class="h4">{{campaign.title}}</span>
+                </div>
+                <br/>
+                <span ng-if="milestone.title === 'Brainstorming'">
+                    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+                </span>
+                <span ng-if="milestone.title === 'Working Group Formation'">
+                    <ng-include src="'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'"></ng-include>
+                </span>
+                <span ng-if="milestone.title === 'Proposal Drafting'">
+                    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

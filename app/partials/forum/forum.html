@@ -19,7 +19,7 @@
                         <h1><strong>Assembly Forum</strong></h1>
                     </div>
                     <div class="col-md-3 col-sm-3">
-                        <h1><button class="btn btn-success"><h4 style="float:right;"><strong>Join Assembly</strong></h4></button></h1>
+                        <h1><button class="btn btn-success" ng-click="startSpinner()"><h4 style="float:right;"><strong>Join Assembly</strong></h4></button></h1>
                     </div>
                 </div>
                 <div class="row">
@@ -230,7 +230,7 @@
                         <div class="row">
                             <div style="display: inline-block;" ng-repeat="campaign in campaigns">
                                 <div class="image-capsule">
-                                    <a ng-click="selectCampaign(campaign)" href="#/campaign/{{campaign.campaignId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
+                                    <a href="#/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaign.campaignId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
                                     <div class="caption" style="text-align: center">
                                         <h5>{{campaign.title}}</h5>
                                     </div>

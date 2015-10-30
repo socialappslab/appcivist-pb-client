@@ -1,4 +1,4 @@
-﻿appCivistApp.controller('homeCtrl', function($scope, $routeParams,
+﻿appCivistApp.controller('HomeCtrl', function($scope, $routeParams,
 													 $resource, $location, Campaigns, Memberships, Notifications, loginService, localStorageService) {
 
 	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
@@ -45,6 +45,12 @@
 			});
 			localStorageService.set("notifications", $scope.notifications);
 		});
+	}
+
+
+
+	$scope.selectCampaign = function(campaign){
+		localStorageService.set("currentCampaign", campaign);
 	}
 
 });

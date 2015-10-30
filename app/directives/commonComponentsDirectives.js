@@ -142,16 +142,19 @@ appCivistApp.directive('votesCounter', function(){
    }
 });
 
-appCivistApp.directive('suggestion', function(){
+appCivistApp.directive('contribution', function(){
     return{
         restrict: 'E',
         replace: true,
-        templateUrl: "/app/partials/directives/suggestion/suggestion.html",
+        templateUrl: "/app/partials/directives/contribution/contribution.html",
         scope: {
             content: '='
         },
         controller: ['$scope', function($scope){
-            $scope.suggestion = $scope.content;
+            $scope.contribution = $scope.content;
+            $scope.selectContribution = function(contribution){
+                $scope.$root.$emit('contribution:selected', contribution);
+            }
         }]
     }
 });
@@ -180,4 +183,12 @@ appCivistApp.directive('contribution', function(){
         },
         controller: "NewContributionCtrl"
     }
+    
+appCivistApp.directive('backgroundImage', function(){
+    return function(scope, element, attrs){
+        var url = attrs.backgroundImage;
+        element.css({
+            'background-image': 'url(' + url +')'
+        });
+    };
 });

@@ -4,7 +4,7 @@
  * AccountCtrl - functions to control authentication 
  */
 appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
-		localStorageService, Assemblies, loginService) {
+		localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
 		// check if there is already a user and a sessionKey in the
@@ -33,7 +33,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 
 		if (user != null && sessionKey != null) {
 			// TODO Validate that the Session Key corresponds to the user
-			$location.url('/home');
+			//$location.url('/home');
 		} else {
 			$scope.user = {};
 			$scope.sessionKey = null;
@@ -50,11 +50,20 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 	}
 
 	$scope.signup = function() {
-		$scope.newUser.email = $scope.newUser.name;
-		loginService.signUp($scope.newUser.name, $scope.newUser.password, $scope.newUser.repeatPassword);
+		loginService.signUp($scope.newUser);
 	}
 
 	$scope.signout = function() {
 		loginService.signOut();
+	}
+
+	$scope.startSpinner = function(){
+		$(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+		usSpinnerService.spin('spinner-1');
+	}
+
+	$scope.stopSpinner = function(){
+		usSpinnerService.stop('spinner-1');
+		$(angular.element.find('.spinner-container')).remove();
 	}
 });

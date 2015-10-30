@@ -1,5 +1,5 @@
-.suggestion{
-  border: 0.1rem solid $suggestion-border;
+.wGroupsSuggestion{
+  border: 0.1rem solid $contribution-border;
   margin-bottom: 2rem;
   margin-left: 2rem;
   display: inline-flex;
@@ -9,30 +9,31 @@
     margin-right: 0;
   }
 
-  & .suggestion-content{
+  & .wGroupsSuggestion-content{
     padding: 1.5rem;
 
-    & .suggestion-info-user{
+    & .wGroupsSuggestion-info-user{
       display: inline-block;
-      margin: 0 1rem;
-      & .image-profile-suggestion {
+      margin: 0;
+      & .image-profile-wGroupsSuggestion {
         display: inline-block;
         & img {
           background-size: 100%;
-          height: 40px;
-          width: 40px;
-          border-radius: 20px;
+          height: 7rem;
+          width: 7rem;
+          border-radius: 4rem;
         }
       }
     }
   }
 
-  & .suggestion-title{
+  & .wGroupsSuggestion-title{
     display: inline-block;
     margin: 0;
+    cursor: pointer;
   }
 
-  & .suggestion-description{
+  & .wGroupsSuggestion-description{
     display: inline;
   }
 }

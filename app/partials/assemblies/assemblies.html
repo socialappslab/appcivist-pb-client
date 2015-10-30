@@ -6,9 +6,9 @@
 			</div><!-- /.col-lg-6 -->
 			<div class="col-lg-4 col-md-4 col-sm-6 h1">
 				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Search for..." ng-model="assemblyFilter"/>
+					<input type="text" class="form-control" placeholder="Filter..." ng-model="assemblyFilter"/>
       				<span class="input-group-btn">
-        				<button class="btn btn-default" type="button">Search</button>
+        				<button class="btn btn-default" type="button" ng-click="searchAssembly(assemblyFilter)">Search</button>
 					</span>
 				</div><!-- /input-group -->
 			</div><!-- /.col-lg-6 -->

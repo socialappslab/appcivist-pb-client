@@ -30,7 +30,7 @@
                     <ul class="progressline-phases">
                         <li class="progressline-phase" ng-repeat="milestone in milestones">
                             <h4 class="progressline-phase-title">
-                                <a href="#/campaign/{{campaign.campaignId}}/temp2"> {{milestone.title}}</a>
+                                {{milestone.title}}
                             </h4>
                             <div class="progressline-phase-line"></div>
                         </li>
@@ -58,12 +58,13 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <h1><strong>{{campaign.components[0].component.name}}</strong><strong>: </strong>Identify problems and make suggestions for proposals</h1>
+            <!--<h1><strong>{{campaign.components[1].component.name}}</strong><strong>: </strong>Join or create a group to develop proposals</h1>-->
+            <h1><strong>Working groups</strong><strong>: </strong>Join or create a group to develop proposals</h1>
         </div>
         <div class="row col-md-12 col-sm-12">
             <div class="col-md-2 col-sm-2">
                 <div class="row container-inline">
-                    <h2><strong class="text-muted">Contributions</strong></h2>
+                    <h2><strong class="text-muted">Join Existing Groups</strong></h2>
                 </div>
             </div>
             <div class="col-md-7 col-sm-7">
@@ -81,7 +82,7 @@
                 </div>
                 <div class="row col-md-12 col-sm-12">
                     <div class="col-md-10 col-sm-10 no-padding">
-                        <input type="text" class="form-control" placeholder="Search existing contributions..." ng-model="campaignContributionFilter">
+                        <input type="text" class="form-control" placeholder="Search existing groups..." ng-model="campaignContributionFilter">
                     </div>
                     <div class="col-md-2 col-sm-2">
                         <button class="btn btn-success col-md-12 col-sm-12">Search</button>
@@ -99,15 +100,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <button class="btn btn-success btn-half-size" data-toggle="modal" data-target="#newContribution">Contribute</button>
-                    <button class="btn btn-success btn-half-size">Upload batch</button>
+                    <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newContribution">Create New Group</button>
                 </div>
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
             <ul class="row contributions">
-                <li class="contribution" ng-repeat="contribution in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
-                    <contribution content="contribution"></contribution>
+                <li class="wGroupsSuggestion" ng-repeat="wGroupSuggestion in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
+                    <ng-include src="'app/partials/wGroupsSuggestions/wGroupsSuggestion.html'"></ng-include>
                 </li>
             </ul>
         </div>

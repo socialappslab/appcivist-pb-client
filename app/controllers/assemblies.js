@@ -17,12 +17,21 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 			//console.log("Assemblies arrived: " + JSON.stringify($scope.assemblies));
 		});
 	}
+
+	$scope.searchAssembly = function(query) {
+		$scope.assemblies = Assemblies.assembliesByQuery(query).query();
+		$scope.assemblies.$promise.then(function(data) {
+			$scope.assemblies = data;
+			localStorageService.set("assemblies", $scope.assemblies);
+			//console.log("Assemblies arrived: " + JSON.stringify($scope.assemblies));
+		});
+	}
 });
 
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
+appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
 													loginService, localStorageService) {
 	$scope.currentAssembly = {};
 	$scope.newAssembly = {
@@ -73,12 +82,13 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 	init();
 
 	function init() {
-
 		// Grab assemblyID off of the route
 		var assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		if (assemblyID > 0) {
+			$scope.$root.startSpinner();
 			$scope.currentAssembly = Assemblies.assemblies(assemblyID).get();
 			$scope.contributions = Contributions.contributions(assemblyID).query();
+			$scope.assemblyMembers = Assemblies.assemblyMembers(assemblyID).query();
 			$scope.campaigns = null;
 			$scope.currentAssembly.$promise.then(function(data) {
 				$scope.currentAssembly = data;
@@ -88,9 +98,12 @@ appCivistApp.controller('AssemblyCtrl', function($scope, Upload, $timeout, $rout
 					$scope.contributions = data;
 				});
 				$scope.campaigns = $scope.currentAssembly.campaigns;
+				$scope.$root.stopSpinner();
+			});
+			$scope.assemblyMembers.$promise.then(function(data){
+				$scope.assemblyMembers = data;
 			});
 		}
-
 	}
 
 	$scope.selectCampaign = function(campaign) {

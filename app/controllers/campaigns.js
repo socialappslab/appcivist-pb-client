@@ -2,7 +2,10 @@
 													 $resource, $location, Campaigns, loginService, localStorageService) {
 	$scope.campaigns = [];
 	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+	$scope.etherpadServer = localStorageService.get("etherpadServer");
 
+	console.log("API Server = " + $scope.serverBaseUrl);
+	console.log("Etherpad Server = " + $scope.etherpadServer);
 	init();
 
 	function init() {
@@ -52,6 +55,11 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 });
 
 appCivistApp.controller('CampaignCtrl', function($scope, $http, $routeParams, localStorageService){
+	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+	$scope.etherpadServer = localStorageService.get("etherpadServer");
+	console.log("API Server = " + $scope.serverBaseUrl);
+	console.log("Etherpad Server = " + $scope.etherpadServer);
+
 	$scope.campaigns = localStorageService.get('campaigns');
 	$scope.campaignID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 	console.log("Loading campaign: "+$scope.campaignID);
@@ -70,7 +78,7 @@ appCivistApp.controller('CampaignCtrl', function($scope, $http, $routeParams, lo
 	init();
 
 	function init() {
-		var endDate = moment($scope.component.endDate);
+		var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
 		var now = moment();
 		var diff = endDate.diff(now, 'minutes');
 		$scope.minutesToDue = diff%60;
@@ -114,6 +122,26 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
 	$scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
 	$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
+
+	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+	$scope.etherpadServer = localStorageService.get("etherpadServer");
+
+	console.log("API Server = " + $scope.serverBaseUrl);
+	console.log("Etherpad Server = " + $scope.etherpadServer);
+
+	$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
+		var url = $scope.etherpadServer+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+		console.log("Contribution Read Only Etherpad URL: "+url);
+		return url;
+	}
+
+	$scope.getEtherpadReadWriteUrl = function (c) {
+		return $scope.etherpadServer+"p/";//+ ... +"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+	}
+
+	$scope.userIsNotAuthor = function(c) {
+		return true;
+	}
 
 	// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 	setCurrentAssembly($scope, localStorageService);
@@ -257,7 +285,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 	function init() {
 		// Days, hours, minutes to end date of this component phase
-		var endDate = moment($scope.component.endDate);
+		var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
 		var now = moment();
 		var diff = endDate.diff(now, 'minutes');
 		$scope.minutesToDue = diff%60;
@@ -265,7 +293,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
 
 		// Days, hours, minutes to end date of this milestone stage
-		var mStartDate = moment($scope.milestone.start);
+		var mStartDate = moment($scope.milestone.start, 'YYYY-MM-DD HH:mm:ss');
 		var mDays = $scope.milestone.days;
 
 		$scope.milestoneStarted = mStartDate.isBefore(now);

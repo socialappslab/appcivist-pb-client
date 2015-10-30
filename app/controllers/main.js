@@ -15,13 +15,22 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
 		var user = $scope.user = localStorageService.get("user");
 		var sessionKey = $scope.sessionKey = localStorageService.get("sessionKey");
 		var serverBaseurl = $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+		var etherpadServer = $scope.etherpadServer = localStorageService.get("etherpadServer");
 
-		if ($scope.serverBaseUrl == undefined || $scope.serverBaseUrl == null) {
+		if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
 			$scope.serverBaseUrl = appCivistCoreBaseURL;
 			localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
-			console.log("Setting API Server in MainCtrl to: "+appCivistCoreBaseURL);
+			console.log("Setting API Server in MainCtrl to: " + appCivistCoreBaseURL);
 		} else {
-			console.log("Using API Server: "+$scope.serverBaseUrl);
+			console.log("Using API Server: " + $scope.serverBaseUrl);
+		}
+
+		if ($scope.etherpadServer === undefined || $scope.etherpadServer === null ) {
+			etherpadServer = $scope.etherpadServer = etherpadServerURL;
+			localStorageService.set("etherpadServer", etherpadServerURL);
+			console.log("Setting Etherpad Server in MainCtrl to: " + etherpadServerURL);
+		} else {
+			console.log("Using Etherpad Server: " + $scope.etherpadServer);
 		}
 
 		// does scope already has the user and the sessionKey?

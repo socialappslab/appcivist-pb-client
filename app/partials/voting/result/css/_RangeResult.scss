@@ -1,0 +1,118 @@
+  $white : #ffffff;
+  $grey: #aaaaaa;
+  $light-grey: #cccccc;
+  $black: #000000;
+  $green: #15bf23;
+.winners {
+	& .container {
+		margin-bottom: 20px;
+		margin-top: 20px;
+		& .row {
+			& .project {
+				display: inline-block;
+				style: none;
+
+				& .block {
+					border: 0.2rem solid $grey;
+        			padding: 0.5rem;
+        			text-align: center;
+        			vertical-align: middle;
+        			background-color: $white;
+        			margin-bottom: 3px;
+
+        			& .picture {
+        				& ul{
+        					& .image{
+        						position: relative;
+                                z-index:1;
+        						max-width: 400px;
+        						max-height: 300px;
+        					}
+
+        					& .theme {
+        						position: relative;
+                                z-index:3;
+        						padding: 2px;
+								background-color: $green;
+								color: $white;
+								margin-top: 30px;
+								text-align: right;
+							}
+							& .score {
+								position: relative;
+								z-index:3;
+								border: 2px solid $grey;
+        						padding: 2px;
+        						text-align: right;
+        						vertical-align: middle;
+        						background-color: $white;
+        						margin-bottom: 30px;
+							}
+        				}
+        				
+        			}
+
+        			& .info {
+        				text-align: left;
+        				& ul{
+        					& .proposal-info{
+        						& li{
+        							float: right;
+        							}
+        						}
+        					}
+        				}
+        			
+				}
+
+				& .tail {
+					border: 0.2rem solid $grey;
+        			padding: 0.5rem;
+        			text-align: center;
+        			vertical-align: middle;
+        			background-color: $white;
+
+        			& ul {
+        				& li{
+        					float: left;
+        				}
+
+        				& .icon {
+        					max-width: 5px;
+        					max-height: 5px;
+        				}
+        			}
+        			
+				}
+			}
+			
+		}
+		
+	}
+	
+}
+
+.result {
+	& .container {
+		border: 3px solid $grey;
+		background-color: $light-grey;
+		margin-top:20px;
+		margin-bottom:20px;
+		max-width: 70%;
+
+		& .voting-result {
+			vertical-align: middle;
+			& li {
+				padding: 5px;
+				& .score {
+				border: 0.2rem solid $black;
+        		padding: 2px;
+        		text-align: center;
+        		vertical-align: middle;
+        		background-color: $white;
+				}
+			}
+			
+		}
+	}
+}

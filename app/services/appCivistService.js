@@ -167,3 +167,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService) 
 
 });
 
+appCivistApp.factory('GetRegistrationForm', ['$http', function($http) { 
+  return $http.get('http://appcivist.littlemacondo.com/backend/api/voting/1db111f0-714a-11e5-9d70-feff819cdc9f') 
+            .success(function(data) { 
+              return data; 
+            }) 
+            .error(function(err) { 
+              return err; 
+            }); 
+}]);
+

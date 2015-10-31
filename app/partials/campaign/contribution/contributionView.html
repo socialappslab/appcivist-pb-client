@@ -1,0 +1,156 @@
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="contributionView" ng-controller="contributionCtrl">
+    <div class="modal-content col-md-12 col-sm-12">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div class="view col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12">
+                <div class="row text-center">
+                    <span class="h4"><strong>Assembly: </strong></span>
+                    <span class="h4">{{assembly.name}}</span>
+                    <span class="h4"> / </span>
+                    <span class="h4"><strong>Campaign: </strong></span>
+                    <span class="h4">{{campaign.title}}</span>
+                </div>
+                <br/>
+                <div class="row col-md-12 col-sm-12">
+                    <h1><strong>{{contribution.type | capitalize}} Contribution</strong></h1>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="col-md-8 col-sm-8">
+                        <div class="row contribution">
+                            <div class="contribution-content">
+                                <div class="row">
+                                    <h5 class="contribution-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)"><strong>{{contribution.title}}. </strong></h5><p class="contribution-description"> {{contribution.text}}</p>
+                                </div>
+                                <div class="row voffset2">
+                                    <div class="tag tag-info" ng-repeat="theme in contribution.themes">
+                                        <strong class="text-muted">{{theme.title}}</strong>
+                                    </div>
+                                    <div class="contribution-info-user">
+                                        <div class="image-profile-contribution">
+                                            <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">
+                                        </div>
+                                        <div class="info-block">
+                                            <em>{{contribution.authors[0].name}}</em>
+                                            <!--<time datetime="{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}">{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</time>-->
+                                            <time datetime="{{contribution.lastUpdate}}">{{contribution.lastUpdate}}</time>
+                                        </div>
+                                    </div>
+                                    <div class="votes-counter pull-right">
+                                        <i class="fa fa-caret-up add-vote"></i>
+                                        <div class="total-votes">
+                                            <strong>{{contribution.stats.ups}}</strong>
+                                        </div>
+                                        <i class="fa fa-caret-down substract-vote"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
+                        <iframe ng-if="contribution.type === 'PROPOSAL' && userIsNotAuthor(contribution)" name="embed_readonly" ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}" width=600 height=400></iframe>
+                        <iframe ng-if="contribution.type === 'PROPOSAL' && !userIsNotAuthor(contribution)" name="embed_readwrite" ng-src="{{getEtherpadReadWriteUrl(contribution)}}" width=600 height=400></iframe>
+
+                        <div class="row forum">
+                            <div class="commentBox">
+                                <textarea name="commentForum" id="comment-forum" class="commentArea" rows="6" placeholder="What's up? ..." ng-model="commentTextarea"></textarea>
+                                <div class="row no-margin">
+                                    <a ng-href="/#/assembly/create/step1" class="button addButton">
+                                        <img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle">
+                                    </a>
+                                    <div class="pull-right">
+                                        <h4 class="text-info button aceptButton" ng-click="publishComment(commentTextarea)">Publish</h4>
+                                        <h4 class="button cancelButton">Cancel</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="voffset2"></div>
+                            <div class="row no-margin">
+                                <h4><strong>Comments ({{contribution.comments.length}})</strong></h4>
+                            </div>
+                            <ul class="row comments col-md-11 col-sm-11">
+                                <li class="row no-margin comment col-md-12 col-sm-12" ng-repeat="comment in contribution.comments | orderBy: 'date'">
+                                    <div class="row no-margin col-md-12 col-sm-12">
+                                        <div class="image-profile-comment inline">
+                                            <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
+                                        </div>
+                                        <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
+                                        <h5 class="date-comment inline"><time datetime="{{comment.lastUpdate}}"/>{{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
+                                        <div class="options-comment inline">
+                                            <ul class="tags" ng-repeat="theme in comment.themes">
+                                                <li class="tag"><strong>{{theme.title}}</strong></li>
+                                            </ul>
+                                        </div>
+                                        <votes-counter class="pull-right" content="comment"></votes-counter>
+                                    </div>
+                                    <div class="row no-margin col-md-12 col-sm-12">
+                                        <div class="col-md-12 col-sm-12 text-comment">
+                                            <p class="comment-comment"><a>{{comment.text}}</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="row no-margin">
+                                        <div class="pull-left">
+                                            <h5 class="text-info button replyButton" ng-click="replyComment()">Reply</h5>
+                                        </div>
+                                    </div>
+                                    <ul class="row no-margin comments col-md-11 col-sm-11">
+                                        <li class="row no-margin comment col-md-12 col-sm-12 reply" ng-repeat="commentReply in comment.comments | orderBy: 'date' | filter: searchComments">
+                                            <div class="row no-margin col-md-12 col-sm-12">
+                                                <div class="image-profile-comment inline">
+                                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
+                                                </div>
+                                                <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
+                                                <h5 class="date-comment inline"><time datetime="{{commentReply.lastUpdate}}"/>{{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
+                                                <div class="options-comment inline">
+                                                    <ul class="tags" ng-repeat="theme in comment.themes">
+                                                        <li class="tag"><strong>{{theme.title}}</strong></li>
+                                                    </ul>
+                                                </div>
+                                                <votes-counter class="pull-right" content="comment"></votes-counter>
+                                            </div>
+                                            <div class="row col-md-12 col-sm-12">
+                                                <div class="col-md-12 col-sm-12 text-comment">
+                                                    <p class="comment-comment"><a>{{commentReply.text}}</a></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <h4><strong>Attachments</strong></h4>
+                                </div>
+                            </div>
+                            <div class="row list-item assembliesList">
+                                <div class="row">
+                                    <!--
+                                    <div class="assemblyItem item" ng-repeat="assembly in assemblies">
+                                        <div class="image-capsule">
+                                            <a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+                                                <div class="caption" style="text-align: center">
+                                                    <h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row voffset4"></div>
+                        <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+                            <div class="box descriptionBox">
+                                <p>If you get inspired by this discussion, add a new contribution.</p>
+                            </div>
+                            <button class="btn btn-success btn-half-size" data-toggle="modal" data-dismiss="modal"  data-target="#newContribution">Contribute</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

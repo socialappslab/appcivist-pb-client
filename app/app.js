@@ -16,13 +16,21 @@ var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModu
 var appCivistApp = angular.module('appCivistApp', dependencies);
 //var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
+var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 
 /**
  * AngularJS initial configurations: 
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
-appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, localStorageServiceProvider) {
+appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $sceDelegateProvider, localStorageServiceProvider) {
+    // Added to whilelist the etherpad server
+    $sceDelegateProvider.resourceUrlWhitelist([
+        // Allow same origin resource loads.
+        'self',
+        // Allow loading from our assets domain.  Notice the difference between * and **.
+        etherpadServerURL+'**'
+    ]);
 
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common["X-Requested-With"];
@@ -91,15 +99,15 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
         //    templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         //})
         .when('/campaign/:aid/pmaking/wgroups',{
-            controller: 'CampaignCtrl',
+            controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
         .when('/campaign/:aid/pmaking/wgroups/new',{
-            controller: 'CampaignCtrl',
+            controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/wGroups/campaignWorkingGroups.html'
         })
         .when('/campaign/:aid/pmaking/wgroups/forum',{
-            controller: 'CampaignCtrl',
+            controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid',{
@@ -113,6 +121,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, l
         .when('/assembly/:aid/campaign/:cid/:ciid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        })
+        .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
+            controller: 'ContributionReadEditCtrl',
+            templateUrl: 'app/partials/campaign/contribution/contributionView.html'
         })
         .otherwise({
 			redirectTo : '/'

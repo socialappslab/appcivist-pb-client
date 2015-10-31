@@ -148,69 +148,14 @@
                             <button class="btn btn-primary"><h5><strong>Invite participants</strong></h5></button>
                         </div>
                     </div>
+
                     <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
-                        <div class="row">
+                        <div class="row" ng-repeat="member in assemblyMembers">
                             <div style="display: inline-block;">
                                 <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/woman1.jpg" data-holder-rendered="true" class="image-circle">
+                                    <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
                                     <div class="caption" style="text-align: center">
-                                        <h5>Teresa</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/man1.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>James</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/woman2.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Laura</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/woman3.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Anne</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/man2.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Nick</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/woman1.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Teresa</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/man1.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>James</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/woman1.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>Teresa</h5>
+                                        <h5>{{member.user.name}}</h5>
                                     </div>
                                 </div>
                             </div>

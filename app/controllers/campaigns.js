@@ -1,5 +1,4 @@
-﻿appCivistApp.controller('CampaignListCtrl', function($scope, $routeParams,
-													 $resource, $location, Campaigns, loginService, localStorageService) {
+﻿appCivistApp.controller('CampaignListCtrl', function($scope, $routeParams,$resource, $location, Campaigns, loginService, localStorageService) {
 	$scope.campaigns = [];
 	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 	$scope.etherpadServer = localStorageService.get("etherpadServer");
@@ -54,80 +53,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 
 });
 
-appCivistApp.controller('CampaignCtrl', function($scope, $http, $routeParams, localStorageService){
-	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
-	$scope.etherpadServer = localStorageService.get("etherpadServer");
-	console.log("API Server = " + $scope.serverBaseUrl);
-	console.log("Etherpad Server = " + $scope.etherpadServer);
-
-	$scope.campaigns = localStorageService.get('campaigns');
-	$scope.campaignID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-	console.log("Loading campaign: "+$scope.campaignID);
-
-	$scope.campaigns.forEach(function(entry) {
-		if(entry.campaignId === $scope.campaignID) {
-			localStorageService.set("currentCampaign", entry);
-		}
-	});
-
-	$scope.campaign = localStorageService.get("currentCampaign");
-	$scope.assembly = localStorageService.get('currentAssembly');
-	$scope.component = $scope.campaign.components[0];
-	$scope.milestones = $scope.component.milestones;
+appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, localStorageService, Assemblies, Campaigns){
 
 	init();
-
-	function init() {
-		var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
-		var now = moment();
-		var diff = endDate.diff(now, 'minutes');
-		$scope.minutesToDue = diff%60;
-		$scope.hoursToDue = Math.floor(diff/60) % 24;
-		$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
-
-		$scope.themes= [];
-		angular.forEach($scope.component.contributions, function(contribution){
-			angular.forEach(contribution.themes, function(theme) {
-				var isInList = false;
-				angular.forEach($scope.themes, function(actualTheme) {
-					if(theme.title === actualTheme.title){
-						isInList = true;
-					}
-				});
-				if(isInList === false) {
-					$scope.themes.push(theme);
-				}
-			});
-		});
-	}
-
-	/*
-	$scope.promise = $http.get('assets/campaigns/campaign.json').success(function(data){
-		$scope.campaign = data;
-		$scope.phases = data.phases;
-		$http.get($scope.campaign.suggestions).success(function(data){
-			$scope.campaign.suggestions = data;
-		}).error(function(error){
-			console.log('Error loading data' + error);
-		});
-	}).error(function(error){
-		console.log('Error loading data' + error);
-	});
-	*/
-});
-
-appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, localStorageService, Assemblies, Campaigns){
-	// 1. Setting up scope ID values
-	$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-	$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
-	$scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
-	$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
-
-	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
-	$scope.etherpadServer = localStorageService.get("etherpadServer");
-
-	console.log("API Server = " + $scope.serverBaseUrl);
-	console.log("Etherpad Server = " + $scope.etherpadServer);
 
 	$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
 		var url = $scope.etherpadServer+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
@@ -139,14 +67,26 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		return $scope.etherpadServer+"p/";//+ ... +"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
 	}
 
-	$scope.userIsNotAuthor = function(c) {
-		return true;
+	$scope.openContributionPage = function(cID)  {
+		$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
 	}
-
 	// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 	setCurrentAssembly($scope, localStorageService);
 	setCurrentCampaign($scope, localStorageService);
 
+	function init() {
+		// 1. Setting up scope ID values
+		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+		$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
+		$scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
+		$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
+
+		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+		$scope.etherpadServer = localStorageService.get("etherpadServer");
+
+		console.log("API Server = " + $scope.serverBaseUrl);
+		console.log("Etherpad Server = " + $scope.etherpadServer);
+	}
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
 	 * If the route ID is different, updates the current assembly in local storage
@@ -187,14 +127,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				setCurrentComponent($scope,localStorageService);
 				setCurrentMilestone($scope,localStorageService);
 				setContributionsAndGroups($scope,localStorageService);
-				init();
+				setupDaysToDue();
 			});
 		} else {
 			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
 			setCurrentComponent($scope,localStorageService);
 			setCurrentMilestone($scope,localStorageService);
 			setContributionsAndGroups($scope,localStorageService);
-			init();
+			setupDaysToDue();
 		}
 	}
 
@@ -283,7 +223,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 	}
 
-	function init() {
+	function setupDaysToDue() {
 		// Days, hours, minutes to end date of this component phase
 		var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
 		var now = moment();

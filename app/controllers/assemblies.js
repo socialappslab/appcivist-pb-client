@@ -10,7 +10,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 	init();
 
 	function init() {
-		$scope.assemblies = Assemblies.assemblies().query();
+		$scope.assemblies = Assemblies.assemblies().get();
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);
@@ -83,7 +83,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 
 		if ($scope.assemblyID > 0) {
 			$scope.$root.startSpinner();
-			$scope.currentAssembly = Assemblies.assemblies($scope.assemblyID).get();
+			$scope.currentAssembly = Assemblies.assembly($scope.assemblyID).get();
 			$scope.contributions = Contributions.contributions($scope.assemblyID).query();
 			$scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
 			$scope.campaigns = null;

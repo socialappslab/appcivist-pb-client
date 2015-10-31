@@ -99,15 +99,15 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
         //    templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         //})
         .when('/campaign/:aid/pmaking/wgroups',{
-            controller: 'CampaignCtrl',
+            controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
         .when('/campaign/:aid/pmaking/wgroups/new',{
-            controller: 'CampaignCtrl',
+            controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/wGroups/campaignWorkingGroups.html'
         })
         .when('/campaign/:aid/pmaking/wgroups/forum',{
-            controller: 'CampaignCtrl',
+            controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid',{
@@ -121,6 +121,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
         .when('/assembly/:aid/campaign/:cid/:ciid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
+        })
+        .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
+            controller: 'ContributionReadEditCtrl',
+            templateUrl: 'app/partials/campaign/contribution/contributionView.html'
         })
         .otherwise({
 			redirectTo : '/'

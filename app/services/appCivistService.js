@@ -34,8 +34,8 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
         assembliesWithoutLogin: function() {
             return $resource(serverBaseUrl + '/assembly/listed');
         },
-        assembliesByQuery: function(query) {
-            return $resource(serverBaseUrl + '/assembly');
+        assembliesByQuery: function(q) {
+            return $resource(serverBaseUrl + '/assembly', {query: q});
         },
         assemblyMembers: function(assemblyId) {
             return $resource(serverBaseUrl + '/assembly/:aid/membership/ACCEPTED', {aid: assemblyId});

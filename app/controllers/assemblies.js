@@ -10,11 +10,10 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 	init();
 
 	function init() {
-		$scope.assemblies = Assemblies.assemblies().get();
+		$scope.assemblies = Assemblies.assemblies().query();
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);
-			//console.log("Assemblies arrived: " + JSON.stringify($scope.assemblies));
 		});
 	}
 
@@ -23,7 +22,6 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);
-			//console.log("Assemblies arrived: " + JSON.stringify($scope.assemblies));
 		});
 	}
 });

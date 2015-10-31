@@ -124,7 +124,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
         })
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
             controller: 'ContributionReadEditCtrl',
-            templateUrl: 'app/partials/campaign/contribution/contributionView.html'
+            templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
         })
         .otherwise({
 			redirectTo : '/'

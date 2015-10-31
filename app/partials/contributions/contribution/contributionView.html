@@ -47,8 +47,7 @@
                         </div>
 
                         <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
-                        <iframe ng-if="contribution.type === 'PROPOSAL' && userIsNotAuthor(contribution)" name="embed_readonly" ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}" width=600 height=400></iframe>
-                        <iframe ng-if="contribution.type === 'PROPOSAL' && !userIsNotAuthor(contribution)" name="embed_readwrite" ng-src="{{getEtherpadReadWriteUrl(contribution)}}" width=600 height=400></iframe>
+                        <iframe ng-if="contribution.type === 'PROPOSAL'" name="embed_readonly" ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}" width=600 height=400></iframe>
 
                         <div class="row forum">
                             <div class="commentBox">
@@ -147,6 +146,7 @@
                                 <p>If you get inspired by this discussion, add a new contribution.</p>
                             </div>
                             <button class="btn btn-success btn-half-size" data-toggle="modal" data-dismiss="modal"  data-target="#newContribution">Contribute</button>
+                            <button class="btn btn-success btn-half-size" ng-click="openContributionPage(contribution.contributionId)">Edit</button>
                         </div>
                     </div>
                 </div>

@@ -86,8 +86,6 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
 
 appCivistApp.factory('Contributions', function ($resource, localStorageService, WorkingGroups) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
-    //var userIsAuthor = {};
-    var userIsAuthor = false;
     return {
         contributions: function(assemblyId) {
             return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/contribution?space=forum');
@@ -100,46 +98,20 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             if(user!=null && user != undefined && c!=null && c!=undefined) {
                 var authorList = c.authors;
                 // Check if author is in authorList (if author list is defined)
-                //userIsAuthor[c.contributionId+''] = false;
-
                 if (authorList != null && authorList != undefined && authorList.length > 0) {
-                    authorList.forEach(function (author) {
-                        if(user.userId===author.userId) {
-                            //userIsAuthor[c.contributionId+''] = true;
-                            userIsAuthor = true;
-                        }
-                    });
+                    if (authorList.filter(function(author) { return author.userId === user.userId; }).length > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
         },
-        verifyGroupAuthorship: function(user, c) {
-            if(user!=null && user != undefined && c!=null && c!=undefined) {
-                var groups = c.responsibleWorkingGroups;
-                var contributionId = c.contributionId;
-                if (!userIsAuthor && groups != null && groups != undefined && groups.length > 0) {
-                    groups.forEach(function (group) {
-                        var assemblyId = group.assemblies[0];
-                        var groupId = group.groupId;
-                        var status = 'ACCEPTED';
-                        //if (userIsAuthor[contributionId + ''] === null || userIsAuthor[contributionId + ''] === undefined) {
-                        if (userIsAuthor === false) {
-                            var res = WorkingGroups.verifyMembership(assemblyId, groupId, user.userId).get();
-                            res.$promise.then(function (data) {
-                                if (data.responseStatus === "OK") {
-                                    //userIsAuthor[contributionId + ''] = true;
-                                    userIsAuthor = true;
-                                }
-                            });
-                            //res.$promise.error(function (data){
-                            //    if (data.responseStatus === "NODATA") {
-                            //        //userIsAuthor[contributionId + ''] = false;
-                            //        userIsAuthor = false;
-                            //    }
-                            //});
-                        }
-                    });
-                }
-            }
+        verifyGroupAuthorship: function(user, c, group) {
+            var assemblyId = group.assemblies[0];
+            var groupId = group.groupId;
+            var status = 'ACCEPTED';
+            return WorkingGroups.verifyMembership(assemblyId, groupId, user.userId);
         }
     };
 });
@@ -179,6 +151,7 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
         embedUrl: function(id) {
             var url = etherpadServer+"p/"+id+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
             console.log("Contribution Read Only Etherpad URL: "+url);
+            return url;
         },
         getReadWriteUrl : function(assemblyId, contributionId) {
             return $resource(serverBaseUrl + '/assembly/:aid/contribution/:cid/padid',

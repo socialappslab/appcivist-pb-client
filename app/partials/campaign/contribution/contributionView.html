@@ -8,7 +8,6 @@
             <span class="h4">{{campaign.title}}</span>
         </div>
         <br/>
-
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
             <ul id="timeline" class="row timeline">
                 <li ng-class="component.componentInstanceId === componentID ? 'active selected' : 'active'"
@@ -69,134 +68,106 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <h1><strong>{{contribution.type | capitalize}} Contribution {{userIsAuthor}}</strong></h1>
+            <h1><strong>{{contribution.title}}</strong></h1>
         </div>
         <div class="row col-md-12 col-sm-12">
             <div class="col-md-8 col-sm-8">
                 <div class="row contribution">
                     <div class="contribution-content">
-                        <div class="row">
-                            <h5 class="contribution-title" data-toggle="modal" data-target="#contributionView"
-                                ng-click="selectContribution(contribution)">
-                                <strong>{{contribution.title}}. </strong></h5>
+                        <p class="contribution-description"> {{contribution.text}}</p>
 
-                            <p class="contribution-description"> {{contribution.text}}</p>
-                        </div>
-                        <div class="row voffset2">
-                            <div class="tag tag-info" ng-repeat="t in themes">
-                                <strong class="text-muted">{{t.title}}</strong>
-                            </div>
-                            <div class="contribution-info-user">
-                                <!--<div class="image-profile-contribution">-->
-                                <!--<img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">-->
-                                <!--</div>-->
-                                <!--<div class="info-block">-->
-                                <!--<em>{{contribution.authors[0].name}}</em>-->
-                                <!--&lt;!&ndash;<time datetime="{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}">{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</time>&ndash;&gt;-->
-                                <time datetime="{{contribution.lastUpdate}}">{{contribution.lastUpdate}}</time>
-                            </div>
-                        </div>
-                        <div class="votes-counter pull-right">
-                            <i class="fa fa-caret-up add-vote"></i>
-
-                            <div class="total-votes">
-                                <strong>{{stats.ups}}</strong>
-                            </div>
-                            <i class="fa fa-caret-down substract-vote"></i>
-                        </div>
+                        <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
+                        <iframe ng-if="userIsAuthor === false" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
+                                width=600 height=400>
+                        </iframe>
+                        <iframe ng-if="userIsAuthor === true" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                                width=600 height=400>
+                        </iframe>
                     </div>
                 </div>
-            </div>
 
-            <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
-            <iframe ng-if="contribution.type === 'PROPOSAL' && userIsAuthor" name="embed_readonly"
-                    ng-src="{{etherpadReadOnlyUrl}}" width=600
-                    height=400></iframe>
-            <iframe ng-if="contribution.type === 'PROPOSAL' && userIsAuthor"
-                    name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}" width=600
-                    height=400></iframe>
-
-            <div class="row forum">
-                <div class="commentBox">
+                <div class="row forum">
+                    <div class="commentBox">
                         <textarea name="commentForum" id="comment-forum" class="commentArea" rows="6"
                                   placeholder="What's up? ..." ng-model="commentTextarea"></textarea>
 
-                    <div class="row no-margin">
-                        <a ng-href="/#/assembly/create/step1" class="button addButton">
-                            <img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png"
-                                 data-holder-rendered="true" class="image-circle">
-                        </a>
+                        <div class="row no-margin">
+                            <a ng-href="/#/assembly/create/step1" class="button addButton">
+                                <img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png"
+                                     data-holder-rendered="true" class="image-circle">
+                            </a>
 
-                        <div class="pull-right">
-                            <h4 class="text-info button aceptButton" ng-click="publishComment(commentTextarea)">
-                                Publish</h4>
-                            <h4 class="button cancelButton">Cancel</h4>
+                            <div class="pull-right">
+                                <h4 class="text-info button aceptButton" ng-click="publishComment(commentTextarea)">
+                                    Publish</h4>
+                                <h4 class="button cancelButton">Cancel</h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="voffset2"></div>
-                <div class="row no-margin">
-                    <h4><strong>Comments ({{comments.length}})</strong></h4>
-                </div>
-                <ul class="row comments col-md-11 col-sm-11">
-                    <li class="row no-margin comment col-md-12 col-sm-12"
-                        ng-repeat="comment in comments | orderBy: 'date'">
-                        <div class="row no-margin col-md-12 col-sm-12">
-                            <div class="image-profile-comment inline">
-                                <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg"
-                                     alt=""/>
-                            </div>
-                            <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
-                            <h5 class="date-comment inline">
-                                <time datetime="{{comment.lastUpdate}}"/>
-                                {{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
-                            </h5>
-                            <div class="options-comment inline">
-                                <ul class="tags" ng-repeat="theme in comment.themes">
-                                    <li class="tag"><strong>{{theme.title}}</strong></li>
-                                </ul>
-                            </div>
-                            <votes-counter class="pull-right" content="comment"></votes-counter>
-                        </div>
-                        <div class="row no-margin col-md-12 col-sm-12">
-                            <div class="col-md-12 col-sm-12 text-comment">
-                                <p class="comment-comment"><a>{{comment.text}}</a></p>
-                            </div>
-                        </div>
-                        <div class="row no-margin">
-                            <div class="pull-left">
-                                <h5 class="text-info button replyButton" ng-click="replyComment()">Reply</h5>
-                            </div>
-                        </div>
-                        <ul class="row no-margin comments col-md-11 col-sm-11">
-                            <li class="row no-margin comment col-md-12 col-sm-12 reply"
-                                ng-repeat="commentReply in comment.comments | orderBy: 'date' | filter: searchComments">
-                                <div class="row no-margin col-md-12 col-sm-12">
-                                    <div class="image-profile-comment inline">
-                                        <img data-src="holder.js/100x100" alt="100x100"
-                                             src="../assets/images/unknown.jpg" alt=""/>
-                                    </div>
-                                    <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
-                                    <h5 class="date-comment inline">
-                                        <time datetime="{{commentReply.lastUpdate}}"/>
-                                        {{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
-                                    </h5>
-                                    <div class="options-comment inline">
-                                        <ul class="tags" ng-repeat="theme in comment.themes">
-                                            <li class="tag"><strong>{{theme.title}}</strong></li>
-                                        </ul>
-                                    </div>
-                                    <votes-counter class="pull-right" content="comment"></votes-counter>
+                    <div class="voffset2"></div>
+                    <div class="row no-margin">
+                        <h4><strong>Comments ({{comments.length}})</strong></h4>
+                    </div>
+                    <ul class="row comments col-md-11 col-sm-11">
+                        <li class="row no-margin comment col-md-12 col-sm-12"
+                            ng-repeat="comment in comments | orderBy: 'date'">
+                            <div class="row no-margin col-md-12 col-sm-12">
+                                <div class="image-profile-comment inline">
+                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg"
+                                         alt=""/>
                                 </div>
-                                <div class="row col-md-12 col-sm-12">
-                                    <div class="col-md-12 col-sm-12 text-comment">
-                                        <p class="comment-comment"><a>{{commentReply.text}}</a></p>
-                                    </div>
+                                <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
+                                <h5 class="date-comment inline">
+                                    <time datetime="{{comment.lastUpdate}}"/>
+                                    {{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
+                                </h5>
+                                <div class="options-comment inline">
+                                    <ul class="tags" ng-repeat="theme in comment.themes">
+                                        <li class="tag"><strong>{{theme.title}}</strong></li>
+                                    </ul>
                                 </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                                <votes-counter class="pull-right" content="comment"></votes-counter>
+                            </div>
+                            <div class="row no-margin col-md-12 col-sm-12">
+                                <div class="col-md-12 col-sm-12 text-comment">
+                                    <p class="comment-comment"><a>{{comment.text}}</a></p>
+                                </div>
+                            </div>
+                            <div class="row no-margin">
+                                <div class="pull-left">
+                                    <h5 class="text-info button replyButton" ng-click="replyComment()">Reply</h5>
+                                </div>
+                            </div>
+                            <ul class="row no-margin comments col-md-11 col-sm-11">
+                                <li class="row no-margin comment col-md-12 col-sm-12 reply"
+                                    ng-repeat="commentReply in comment.comments | orderBy: 'date' | filter: searchComments">
+                                    <div class="row no-margin col-md-12 col-sm-12">
+                                        <div class="image-profile-comment inline">
+                                            <img data-src="holder.js/100x100" alt="100x100"
+                                                 src="../assets/images/unknown.jpg" alt=""/>
+                                        </div>
+                                        <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
+                                        <h5 class="date-comment inline">
+                                            <time datetime="{{commentReply.lastUpdate}}"/>
+                                            {{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
+                                        </h5>
+                                        <div class="options-comment inline">
+                                            <ul class="tags" ng-repeat="theme in comment.themes">
+                                                <li class="tag"><strong>{{theme.title}}</strong></li>
+                                            </ul>
+                                        </div>
+                                        <votes-counter class="pull-right" content="comment"></votes-counter>
+                                    </div>
+                                    <div class="row col-md-12 col-sm-12">
+                                        <div class="col-md-12 col-sm-12 text-comment">
+                                            <p class="comment-comment"><a>{{commentReply.text}}</a></p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-4">

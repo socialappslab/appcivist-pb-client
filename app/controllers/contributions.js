@@ -216,15 +216,21 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 			$scope.themes = $scope.contribution.themes;
 			$scope.comments = $scope.contribution.comments;
 			$scope.stats = $scope.contribution.stats;
-			$scope.userIsAuthor = Contributions.userIsAuthor;//	[$scope.contributionID+''];
 			$scope.workingGroup = {};
 			if($scope.contribution.responsibleWorkingGroups!=null && $scope.contribution.responsibleWorkingGroups!=undefined) {
 				$scope.workingGroup = $scope.contribution.responsibleWorkingGroups[0];
 			}
-
-			Contributions.verifyAuthorship($scope.user, $scope.contribution);
+			// Check Authorship
+			// 1. Check if user is in the list of authors
+			$scope.userIsAuthor = Contributions.verifyAuthorship($scope.user, $scope.contribution);
+			// 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
 			if(!$scope.userIsAuthor) {
-				Contributions.verifyGroupAuthorship($scope.user, $scope.contribution);
+				var authorship = Contributions.verifyGroupAuthorship($scope.user, $scope.contribution, $scope.workingGroup).get();
+				authorship.$promise.then(function(response){
+					if (response.responseStatus === "OK") {
+						$scope.userIsAuthor  = true;
+					}
+				});
 			}
 
 			$scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);

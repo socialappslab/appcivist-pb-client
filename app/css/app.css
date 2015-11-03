@@ -600,6 +600,37 @@ button#second-vote {
   border-radius: 0.5rem;
   margin: 0.5rem 0 0.5rem 0;
 }
+.assemblyCreation .grayBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.assemblyCreation .grayBox .grayBox-title {
+  color: dodgerblue;
+  display: inline-block;
+}
+.assemblyCreation .grayBox .checkbox {
+  padding-left: 2rem;
+}
+.assemblyCreation .grayBox .radio {
+  padding-left: 2rem;
+}
+.assemblyCreation th.remove-column, .assemblyCreation td.remove-column {
+  width: 15%;
+}
+.assemblyCreation th.email-column, .assemblyCreation td.email-column {
+  width: 45%;
+  /* Not necessary, since only 70% width remains */
+}
+.assemblyCreation th.coordinator-column, .assemblyCreation th.moderator-column,
+.assemblyCreation td.coordinator-column, .assemblyCreation td.moderator-column {
+  width: 25%;
+  /* Not necessary, since only 70% width remains */
+}
+.assemblyCreation .tooltip.customTooltip .tooltip-inner {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  text-align: left;
+}
 .assemblyCreation .optionsBox {
   background-color: #F4F4F4;
   padding: 1rem;

@@ -33,43 +33,84 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 													loginService, localStorageService) {
 	$scope.currentAssembly = {};
 	$scope.newAssembly = {
-							"name": "",
-							"shortname": "",
-							"description": "",
-							"listed": true,
-							"profile": {
-								"targetAudience": "",
-								"supportedMembership": "",
-								"managementType": "",
-								"icon": "https://appcivist-pb.herokuapp.com/public/images/barefootdoctor-140.png",
-								"primaryContactName": "",
-								"primaryContactPhone": "",
-								"primaryContactEmail": "",
-								"lang": "en"
-							},
-							"location": {
-								"placeName": "",
-								"country": "",
-								"geoJson": "{   'type': 'FeatureCollection',   'features': [     {       'type': 'Feature',       'properties': {},       'geometry': {         'type': 'Polygon',         'coordinates': [           [             [               2.0458602905273438,               48.800305780490156             ],             [               2.0413970947265625,               48.795330416333336             ],             [               2.055816650390625,               48.79125929678568             ],             [               2.0685195922851562,               48.78967599441185             ],             [               2.0757293701171875,               48.796687382771             ],             [               2.0853424072265625,               48.802341014504485             ],             [               2.0801925659179688,               48.80505453139158             ],             [               2.0650863647460938,               48.8118376812941             ],             [               2.0537567138671875,               48.815228912154815             ],             [               2.0496368408203125,               48.80505453139158             ],             [               2.0458602905273438,               48.800305780490156             ]           ]         ]       }     }   ] }"
-							},
-							"themes" : [{
-								"title" : "Housing"
-							}
-							],
-							"existingThemes" : [{
-								"themeId" : 1
-							}
-							],
-							"configs": [{
-									"key":"assembly.face-to-face.scheduling",
-									"value":"true"
-									},
-									{
-									"key":"assembly.enable.messaging",
-									"value":"true"
-							}],
-							"lang": "en"
-						};
+		//"name": "Assemblée Belleville",
+		//"shortname": "assemblee-belleville",
+		//"description": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
+		//"listed": true,
+		"profile": {
+			"targetAudience": "RESIDENTS",
+			"supportedMembership": "REGISTRATION",
+			"registration" : {
+				"invitation" : true,
+				"request" : false
+			},
+			"moderators":"two",
+			"coordinators":"two",
+			"managementType": "COORDINATED_AND_MODERATED",
+			"icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
+			"primaryContactName": "",
+			"primaryContactPhone": "",
+			"primaryContactEmail": ""
+		},
+		//"location": {
+		//	"placeName": "Belleville, Paris, France"
+		//},
+		"themes": [{
+			"title": "Housing"
+		}
+		],
+		"existingThemes": [{
+			"themeId": 1
+		}
+		],
+		"configs": [
+			{
+				"key": "assembly.face-to-face.scheduling",
+				"value": "true"
+			},
+			{
+				"key": "assembly.enable.messaging",
+				"value": "true"
+			}
+		],
+		"lang": "en",
+		"invitations" : [
+			//{
+			//	"email": "abc1@example.com",
+			//	"moderator": true,
+			//	"coordinator": false
+			//},
+			//{
+			//	"email" : "abc2@example.com",
+			//	"moderator" : true,
+			//	"coordinator" : true
+			//},
+			//{
+			//	"email" : "abc3@example.com",
+			//	"moderator" : true,
+			//	"coordinator" : true
+			//}
+		],
+		"linkedAssemblies" : [
+			{
+				"assemblyId": "2"
+			},
+			{
+				"assemblyId": "3"
+			}
+		]
+	};
+
+	$scope.info = {
+		assemblyDefinition : "Assemblies are group of citizens with common interests",
+		locationTooltip : "Can be the name of a specific place, address, city or country associated with your assembly",
+		targetAudienceTooltip : "Describe who you want to participate",
+		supportedMembershipRegistrationTooltip : "Members can be invited or request to join the assembly, or both.",
+		moderatorsTooltip: "Moderators are assembly members empowered to delete inappropriate content. AppCivist recommends that assemblies have at least two. An alternative is to allow all members to be moderators. In both cases at least two moderators must agree.",
+		coordinatorsTooltip: "Coordinators are assembly members empowered to change settings",
+		invitationsTooltip: "Add one or more email addresses of people you want to invite, separated by comma, then click add to list",
+		invitationinvitationsEmailTooltip: "Each invitee will receive the following email"
+	};
 
 	console.log("Loading Assembly: "+$routeParams.aid);
 
@@ -88,15 +129,14 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 			$scope.currentAssembly.$promise.then(function(data) {
 				$scope.currentAssembly = data;
 				localStorageService.set("currentAssembly", $scope.currentAssembly);
-				console.log("Obtained assembly: " + JSON.stringify($scope.currentAssembly));
-				$scope.contributions.$promise.then(function(data){
-					$scope.contributions = data;
-				});
 				$scope.campaigns = $scope.currentAssembly.campaigns;
-				$scope.$root.stopSpinner();
+			});
+			$scope.contributions.$promise.then(function(data){
+				$scope.contributions = data;
 			});
 			$scope.assemblyMembers.$promise.then(function(data){
 				$scope.assemblyMembers = data;
+				$scope.$root.stopSpinner();
 			});
 		}
 	}
@@ -107,13 +147,11 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 
 	$scope.selectCampaignById = function(cId) {
 		$scope.campaigns = localStorageService.get("campaigns");
-
 		campaign = campaigns.forEach(function(entry) {
 			if(entry.campaignId == cId) {
 				return entry;
 			}
 		});
-
 		localStorageService.set("currentCampaign", campaign);
 	}
 
@@ -125,11 +163,30 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 		//Contributions.contributions($scope.currentAssembly.assemblyId).save();
 	}
 
+	$scope.addEmailsToList = function(emailsText) {
+		console.log("Adding emails: " + emailsText);
+		var emails = emailsText.split(',');
+		console.log("Adding emails: " + emails);
+		emails.forEach(function(email){
+			console.log("Adding email: " + email);
+			var invitee = {};
+			invitee.email = email.trim();
+			invitee.moderator = false;
+			invitee.coordinator = false;
+			$scope.newAssembly.invitations.push(invitee);
+
+		});
+		$scope.inviteesEmails = "";
+	}
+
+	$scope.removeInvitee = function(index) {
+		$scope.newAssembly.invitations.splice(index,1);
+	}
+
 	$scope.selectAssembly = function(assembly) {
 		if(this.assemblyState === "assemblySelected"){
 			delete this.assemblyState;
-		}
-		else{
+		} else {
 			this.assemblyState = "assemblySelected";
 		}
 	}

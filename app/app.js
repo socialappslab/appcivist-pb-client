@@ -24,6 +24,7 @@ var etherpadServerURL = "http://etherpad.littlemacondo.com/";
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
 appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $sceDelegateProvider, localStorageServiceProvider) {
+
     // Added to whilelist the etherpad server
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
@@ -57,16 +58,17 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             activetab: 'assemblies'
         })
         .when('/assembly/create/step1',{
+            controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/assembly/assemblyPartOne.html'
 
         })
         .when('/assembly/create/step2',{
-            controller: 'AssemblyListCtrl',
+            controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/assembly/assemblyPartTwo.html'
 
         })
         .when('/assembly/create/step3',{
-            controller: 'AssemblyListCtrl',
+            controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/assembly/assemblyPartThree.html'
 
         })

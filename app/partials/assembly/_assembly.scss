@@ -47,6 +47,38 @@
     margin: 0.5rem 0 0.5rem 0;
   }
 
+  .grayBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .grayBox-title{
+      color: $assembly-optionsBox-title;
+      display: inline-block;
+    }
+    .checkbox{
+      padding-left: 2rem;
+    }
+    .radio{
+      padding-left: 2rem;
+    }
+  }
+
+  th.remove-column, td.remove-column  {
+    width: 15%
+  }
+  th.email-column, td.email-column  {
+    width: 45%; /* Not necessary, since only 70% width remains */
+  }
+  th.coordinator-column, th.moderator-column,
+  td.coordinator-column, td.moderator-column {
+    width: 25%; /* Not necessary, since only 70% width remains */
+  }
+
+  .tooltip.customTooltip .tooltip-inner {
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    text-align: left;
+  }
+
   .optionsBox{
     background-color: $assembly-optionsBox;
     padding: 1rem;

@@ -208,6 +208,34 @@
                         </div>
 
                         <div class="col-md-12 form-group">
+                            <label for="inputTheme" class="control-label">Define Assembly Themes of Interest*</label>
+                            <input class="form-control" id="inputTheme" placeholder="e.g, Housing" ng-model="themes">
+                            <div class="col-md-12 voffset3"></div>
+                            <div class="col-md-8 col-sm-8"></div>
+                            <div class="col-md-4 col-sm-4">
+                                <a ng-click="addTheme(themes)">
+                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
+                                         style="cursor: pointer; height: 25px; width:25px; display: inline-block;" data-holder-rendered="true" class="image-circle">
+                                </a>
+                                <h5 style="display: inline-block;">Add to list</h5>
+                            </div>
+                            <div class="col-md-12 voffset3"></div>
+
+                            <div class="grayBox col-sm-12 col-md-12">
+                                <label class="label-control">Added Themes</label>
+                                <div class="caption assembly-tags-container-content">
+                                    <ul class="tags" ng-repeat="t in newAssembly.themes track by $index">
+                                        <li class="tag tag-filter">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeTheme($index)"></span>
+                                            {{t.title}}
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 form-group">
                             <label class="control-label">
                                 Invite people to join
                                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsTooltip}}"></i>
@@ -267,11 +295,25 @@
                             </label>
                             <textarea class="form-control" id="invitationEmail" rows="6">Hello! You have been invited to be a member of the Assembly {{newAssembly.name}} in AppCivist. If you are interested, follow the link attached to this invitation to accept it. If you are not interested, you can just ignore this message</textarea>
                         </div>
+                        <div class="col-md-12 form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="newAssembly.config.facetoface" checked/>
+                                    <strong>Enable face to face scheduling</strong>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="newAssembly.config.messaging" checked/>
+                                    <strong>Enable messaging</strong>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <a href="/#/assembly/create/step2">
-                        <button class="col-md-push-4 col-md-4 btn btn-primary" ng-click="createNewAssembly(1)">
+                        <button class="col-md-4 col-md-4 btn btn-primary" ng-click="createNewAssembly(1)">
                             <h3><strong>Next</strong></h3>
                         </button>
                     </a>

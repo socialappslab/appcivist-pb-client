@@ -63,6 +63,10 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 			"themeId": 1
 		}
 		],
+		"config" : {
+			"facetoface":true,
+			"messaging":false
+		},
 		"configs": [
 			{
 				"key": "assembly.face-to-face.scheduling",
@@ -92,15 +96,18 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 			//}
 		],
 		"linkedAssemblies" : [
-			{
-				"assemblyId": "2"
-			},
-			{
-				"assemblyId": "3"
-			}
+			//{
+			//	"assemblyId": "2"
+			//},
+			//{
+			//	"assemblyId": "3"
+			//}
 		]
 	};
-
+	$scope.assemblies = Assemblies.assemblies().query();
+	$scope.assemblies.$promise.then(function(data){
+		$scope.assemblies =  data;
+	});
 	$scope.info = {
 		assemblyDefinition : "Assemblies are group of citizens with common interests",
 		locationTooltip : "Can be the name of a specific place, address, city or country associated with your assembly",
@@ -183,11 +190,33 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 		$scope.newAssembly.invitations.splice(index,1);
 	}
 
-	$scope.selectAssembly = function(assembly) {
+	$scope.addTheme = function(ts) {
+		console.log("Adding themes: " + ts);
+		var themes = ts.split(',');
+		console.log("Adding themes: " + themes);
+		themes.forEach(function(theme){
+			console.log("Adding theme: " + theme);
+			var addedTheme = {};
+			addedTheme.title = theme.trim();
+			$scope.newAssembly.themes.push(addedTheme);
+
+		});
+		$scope.themes = "";
+	}
+
+	$scope.removeTheme = function(index) {
+		$scope.newAssembly.themes.splice(index,1);
+	}
+
+	$scope.selectAssembly = function(assembly, index) {
 		if(this.assemblyState === "assemblySelected"){
 			delete this.assemblyState;
+			$scope.newAssembly.linkedAssemblies.splice(index,1);
 		} else {
 			this.assemblyState = "assemblySelected";
+			var linked = {};
+			linked.assemblyId = assembly.assemblyId;
+			$scope.newAssembly.linkedAssemblies.push(linked);
 		}
 	}
 
@@ -196,45 +225,44 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 			console.log("Creating assembly with name = "+$scope.newAssembly.name);
 			console.log("Creating assembly with description = "+$scope.newAssembly.description);
 
-			if($scope.newAssembly.profile.membership === 'open') {
+			if($scope.newAssembly.profile.supportedMembership === 'open') {
 				$scope.newAssembly.profile.supportedMembership="OPEN";
-			} else if ($scope.newAssembly.profile.membership === 'registration') {
-				if($scope.newAssembly.profile.member.invitation &&
-					! $scope.newAssembly.profile.member.request) {
+			} else if ($scope.newAssembly.profile.supportedMembership === 'registration') {
+				if($scope.newAssembly.profile.registration.invitation &&
+					! $scope.newAssembly.profile.registration.request) {
 					$scope.newAssembly.profile.supportedMembership = "INVITATION";
-				} else if(! $scope.newAssembly.profile.member.invitation &&
-					 $scope.newAssembly.profile.member.request) {
+				} else if(! $scope.newAssembly.profile.registration.invitation &&
+					 $scope.newAssembly.profile.registration.request) {
 					$scope.newAssembly.profile.supportedMembership = "REQUEST";
-				} else if($scope.newAssembly.profile.member.invitation &&
-					 $scope.newAssembly.profile.member.request) {
+				} else if($scope.newAssembly.profile.registration.invitation &&
+					 $scope.newAssembly.profile.registration.request) {
 					$scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
 				}
 			}
 
 			console.log("Creating assembly with membership = "+$scope.newAssembly.profile.supportedMembership);
 
-			if($scope.newAssembly.profile.roles === 'no') {
+			if($scope.newAssembly.profile.moderators === 'none' && $scope.newAssembly.profile.coordinators === 'none' ) {
 				$scope.newAssembly.profile.managementType="OPEN";
-			} else if ($scope.newAssembly.profile.roles === 'yes') {
-				if($scope.newAssembly.profile.role.coordinators &&
-					! $scope.newAssembly.profile.role.moderators ) {
-					$scope.newAssembly.profile.managementType = "COORDINATED";
+			} else if ($scope.newAssembly.profile.moderators === 'two' || $scope.newAssembly.profile.moderators === 'all') {
+				if($scope.newAssembly.profile.coordinators === 'two' || $scope.newAssembly.profile.coordinators === 'all') {
+					$scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
 				} else if(! $scope.newAssembly.profile.role.coordinators &&
 					 $scope.newAssembly.profile.role.moderators ) {
 					$scope.newAssembly.profile.managementType = "MODERATED";
-				} else if($scope.newAssembly.profile.role.coordinators &&
-					 $scope.newAssembly.profile.role.moderators ) {
-					$scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
 				}
+			} else {
+				$scope.newAssembly.profile.managementType = "COORDINATED";
 			}
 
 			console.log("Creating assembly with managementType = "+$scope.newAssembly.profile.managementType);
-			delete $scope.newAssembly.profile.membership;
-			delete $scope.newAssembly.profile.member;
-			delete $scope.newAssembly.profile.roles;
-			delete $scope.newAssembly.profile.role;
-			localStorageService.set("temporaryNewAssembly",$scope.newAssembly)
-		} else if (step === 3) {
+			//delete $scope.newAssembly.profile.;
+			//delete $scope.newAssembly.profile.member;
+			//delete $scope.newAssembly.profile.roles;
+			//delete $scope.newAssembly.profile.role;
+			localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
+		} else if (step === 2) {
+			localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
 			$scope.newAssembly = localStorageService.get("temporaryNewAssembly");
 			console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly));
 			var newAssembly = Assemblies.assembly().save($scope.newAssembly, function() {
@@ -242,6 +270,8 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 				localStorageService.set("currentAssembly",newAssembly);
 				$location.url('/assembly/'+newAssembly.assemblyId+"/forum");
 			});
+		} else if (step === 3) {
+
 		}
 	}
 

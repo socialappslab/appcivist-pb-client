@@ -30,8 +30,6 @@
                                     <div ng-show="assembly.location.placeName != null">
                                         {{assembly.location.placeName}}
                                     </div>
-                                    <!--{{assembly.location.city}},-->
-                                    <!--{{assembly.location.country}}-->
                                 </i>
                             </strong>
                         </h5>
@@ -43,6 +41,7 @@
     </div>
 </div>
 <div class="row">
+    <uib-alert ng-repeat="error in errors track by $index" type="danger" close="removeErrors($index)">{{error.statusMessage}} </uib-alert>
     <button class="col-md-push-2 col-md-2 btn btn-primary" ng-click="tabs[0].active=true">
         <h3><strong>Back</strong></h3>
     </button>

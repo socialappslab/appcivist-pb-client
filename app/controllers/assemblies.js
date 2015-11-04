@@ -61,6 +61,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             info = $scope.info = helpInfo;
             localStorageService.set("help",info);
         }
+        $scope.errors = [];
 
         if($scope.newAssembly===null || $scope.newAssembly===undefined){
             $scope.newAssembly = localStorageService.get("temporaryNewAssembly");
@@ -125,6 +126,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             $scope.$root.stopSpinner();
         });
 	}
+
+    $scope.removeErrors = function(index) {
+        $scope.errors.splice(index,1);
+    }
+
 
     $scope.setCurrentStep = function(number) {
         if($scope.setCurrentStep === 1 && number === 2){
@@ -244,11 +250,23 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             $scope.tabs[1].active=true;
 		} else if (step === 2) {
 			console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
-			var newAssembly = Assemblies.assembly().save($scope.newAssembly, function() {
-				console.log("Created assembly: "+newAssembly);
-				localStorageService.set("currentAssembly",newAssembly);
-				$location.url('/assembly/'+newAssembly.assemblyId+"/forum");
-			});
+			var newAssemblyRes = Assemblies.assembly().save($scope.newAssembly);
+
+            newAssemblyRes.$promise.then(
+                // Success
+                function(data) {
+                   console.log("Created assembly: "+data.assemblyId);
+                    localStorageService.set("currentAssembly",data);
+                    $location.url('/assembly/'+data.assemblyId+"/forum");
+                },
+                // Error
+                function(error) {
+                    var e = error.data;
+                    console.log("Couldn't create assembly: "+e.statusMessage);
+                    $scope.errors.push(e);
+                }
+
+            );
 		}
 	}
 

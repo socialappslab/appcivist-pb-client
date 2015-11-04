@@ -107,6 +107,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                         }
                     ],
                     "lang": "en", // TODO: ADD TO FORM
+                    //"invitationEmail"
                     "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
                     "linkedAssemblies" : [ ] // [ { "assemblyId": "2" }, { "assemblyId": "3" }, ... ]
                 };

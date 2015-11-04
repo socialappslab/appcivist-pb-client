@@ -251,7 +251,7 @@
                 Invitation Email
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsEmailTooltip}}"></i>
             </label>
-            <textarea class="form-control" id="invitationEmail" rows="6">Hello! You have been invited to be a member of the Assembly {{newAssembly.name}} in AppCivist. If you are interested, follow the link attached to this invitation to accept it. If you are not interested, you can just ignore this message</textarea>
+            <textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6">Hello! You have been invited to be a member of the Assembly {{newAssembly.name}} in AppCivist. If you are interested, follow the link attached to this invitation to accept it. If you are not interested, you can just ignore this message</textarea>
         </div>
         <div class="col-md-12 form-group">
             <div class="checkbox">

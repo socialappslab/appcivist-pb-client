@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 col-xs-12">
-        <div class="col-md-12 form-group">
+        <div id="assenmblyName" class="col-md-12 form-group">
             <label for="inputNameAssembly" class="control-label">Name*</label>
             <input type="text" class="form-control" id="inputNameAssembly"
                    placeholder="e.g., Assemblée Belleville"
                    ng-model="newAssembly.name">
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemmblyDescription" class="col-md-12 form-group">
             <label for="inputAboutAssembly" class="control-label">
                 What's your assembly about?*
             </label>
@@ -16,7 +16,7 @@
                                       placeholder="e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015">
                             </textarea>
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyLocation" class="col-md-12 form-group">
             <label for="inputLocationAssembly" class="control-label">
                 Where is your assembly located?
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.locationTooltip}}"></i>
@@ -25,7 +25,7 @@
                    placeholder="The name of a Place, an Address, City or Country associated to your assembly"
                    ng-model="newAssembly.location.placeName">
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyTargetAudience" class="col-md-12 form-group">
             <label class="control-label">
                 Who can join your assembly?
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.targetAudienceTooltip}}"></i>
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyMembership" class="col-md-12 form-group">
             <label class="control-label">How do people become members?</label>
             <div class="voffset3"></div>
             <div class="col-md-4">
@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="col-md-12 voffset3"></div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyManagement" class="col-md-12 form-group">
             <label for="inputManagementType" class="control-label">
                 Who will be able to change settings and remove inappropriate comments?
             </label>
@@ -123,7 +123,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyIcon" class="col-md-12 form-group">
             <label class="control-label">Pick an Icon to represent your assembly</label>
             <div class="picsList">
                 <div ng-repeat="icon in defaultIcons">
@@ -134,7 +134,7 @@
                                  src="{{icon.url}}"
                                  data-holder-rendered="true"
                                  class="image-circle"
-                                 ng-click="setNewAssemblyIcon(icon.url)">
+                                 ng-click="setNewAssemblyIcon(icon.url, icon.name)">
                         </div>
                     </div>
                 </div>
@@ -148,11 +148,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 progress-section">
-            {{f.name}} {{f.$error}} {{f.$errorParam}}
-                            <span class="progress-line-container" ng-show="f.progress >= 0">
-                                <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
-                            </span>
+        <div id="assemblyIconProgress" class="col-md-12 progress-section">
+            {{f.name}} ({{f.url}}) {{f.$error}} {{f.$errorParam}}
+            <span class="progress-line-container" ng-show="f.progress >= 0">
+                <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+            </span>
         </div>
         <div class="col-md-12 form-group">
             <label for="inputContactNameAssembly" class="control-label">Primary contact</label>
@@ -246,24 +246,33 @@
             <uib-alert ng-repeat="email in invalidEmails track by $index" type="danger" close="removeInvalidEmail($index)">Invalid email(s): {{email}} </uib-alert>
         </div>
         <div class="col-md-12 voffset3"></div>
-        <div class="col-md-12">
+        <div id="assemblyInvitations" class="col-md-12">
             <label class="control-label">
                 Invitation Email
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsEmailTooltip}}"></i>
             </label>
             <textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6">Hello! You have been invited to be a member of the Assembly {{newAssembly.name}} in AppCivist. If you are interested, follow the link attached to this invitation to accept it. If you are not interested, you can just ignore this message</textarea>
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyConfigs" class="col-md-12 form-group">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" ng-model="newAssembly.config.facetoface" checked/>
+                    <input type="checkbox" ng-model="newAssembly.config.facetoface"/>
                     <strong>Enable face to face scheduling</strong>
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" ng-model="newAssembly.config.messaging" checked/>
+                    <input type="checkbox" ng-model="newAssembly.config.messaging"/>
                     <strong>Enable messaging</strong>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="newAssembly.listed"/>
+                    <strong>
+                        Do you want your assembly to be listed?
+                        <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.listedAssemblyTooltip}}"></i>
+                    </strong>
                 </label>
             </div>
         </div>

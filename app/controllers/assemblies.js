@@ -51,11 +51,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             }
         ];
         $scope.defaultIcons = [
-            {"url":"http://appcivist.littlemacondo.com/assets/images/justicia-140.png"},
-            {"url":"http://appcivist.littlemacondo.com/assets/images/tabacalera-140.png"},
-            {"url":"http://appcivist.littlemacondo.com/assets/images/article19-140.png"},
-            {"url":"http://appcivist.littlemacondo.com/assets/images/image74.png"},
-            {"url":"http://appcivist.littlemacondo.com/assets/images/image75.jpg"}
+            {"name": "Justice Icon", "url":"http://appcivist.littlemacondo.com/assets/images/justicia-140.png"},
+            {"name": "Plan Icon", "url":"http://appcivist.littlemacondo.com/assets/images/tabacalera-140.png"},
+            {"name": "Article 49 Icon", "url":"http://appcivist.littlemacondo.com/assets/images/article19-140.png"},
+            {"name": "Passe Livre Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image74.png"},
+            {"name": "Skyline Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image75.jpg"}
         ];
         if ($scope.info === undefined || $scope.info === null) {
             info = $scope.info = helpInfo;
@@ -95,7 +95,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                     "existingThemes": [],
                     "config" : {
                         "facetoface":true,
-                        "messaging":false
+                        "messaging":true
                     },
                     "configs": [
                         {
@@ -139,8 +139,13 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
         $scope.currentStep=number;
     }
 
-    $scope.setNewAssemblyIcon = function(url) {
+    $scope.setNewAssemblyIcon = function(url, name) {
         $scope.newAssembly.profile.icon = url;
+        var file = {};
+        file.name = name;
+        file.url = url;
+        $sope.f = file;
+
     }
 
 	$scope.addEmailsToList = function(emailsText) {
@@ -283,6 +288,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 				$timeout(function () {
 					file.result = response.data;
                     // TODO SETUP THE RESPONSE URL AND PUT IT IN NEW ASSEMBLY ICON
+                    $scope.f = "";
 
 				});
 			}, function (response) {

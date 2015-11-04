@@ -25,7 +25,8 @@ var helpInfo = {
     moderatorsTooltip: "Moderators are assembly members empowered to delete inappropriate content. AppCivist recommends that assemblies have at least two. An alternative is to allow all members to be moderators. In both cases at least two moderators must agree.",
     coordinatorsTooltip: "Coordinators are assembly members empowered to change settings",
     invitationsTooltip: "Add one or more email addresses of people you want to invite, separated by comma, then click add to list",
-    invitationinvitationsEmailTooltip: "Each invitee will receive the following email"
+    invitationsEmailTooltip: "Each invitee will receive the following email",
+    listedAssemblyTooltip: "If true, the 'profile' of the assembly will be searchable and public"
 };
 
 /**

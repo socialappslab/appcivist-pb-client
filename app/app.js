@@ -17,6 +17,16 @@ var appCivistApp = angular.module('appCivistApp', dependencies);
 //var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
+var helpInfo = {
+    assemblyDefinition : "Assemblies are group of citizens with common interests",
+    locationTooltip : "Can be the name of a specific place, address, city or country associated with your assembly",
+    targetAudienceTooltip : "Describe who you want to participate",
+    supportedMembershipRegistrationTooltip : "Members can be invited or request to join the assembly, or both.",
+    moderatorsTooltip: "Moderators are assembly members empowered to delete inappropriate content. AppCivist recommends that assemblies have at least two. An alternative is to allow all members to be moderators. In both cases at least two moderators must agree.",
+    coordinatorsTooltip: "Coordinators are assembly members empowered to change settings",
+    invitationsTooltip: "Add one or more email addresses of people you want to invite, separated by comma, then click add to list",
+    invitationinvitationsEmailTooltip: "Each invitee will receive the following email"
+};
 
 /**
  * AngularJS initial configurations: 
@@ -57,19 +67,9 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             templateUrl: 'app/partials/assemblies/assemblies.html',
             activetab: 'assemblies'
         })
-        .when('/assembly/create/step1',{
-            controller: 'AssemblyCtrl',
-            templateUrl: 'app/partials/assembly/assemblyPartOne.html'
-
-        })
-        .when('/assembly/create/step2',{
-            controller: 'AssemblyCtrl',
-            templateUrl: 'app/partials/assembly/assemblyPartTwo.html'
-
-        })
-        .when('/assembly/create/step3',{
-            controller: 'AssemblyCtrl',
-            templateUrl: 'app/partials/assembly/assemblyPartThree.html'
+        .when('/assembly/create',{
+            controller: 'NewAssemblyCtrl',
+            templateUrl: 'app/partials/assembly/newAssembly.html'
 
         })
         .when('/campaign/create/step1',{

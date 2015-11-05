@@ -16,41 +16,192 @@
 	}
 });
 
-appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateCache){
-	$scope.assemblies = [
-		{name:'Mairie de Paris', campaign:'PB Paris'},
-		{name:'Fête du Musique 2016', campaign:'PB Paris'},
-		{name:'Anti-Eviction Saint Suplice', campaign:'Assemblèe Droit au Logement'}
-	];
-	$scope.linkedAssembly = $scope.assemblies[1];
+appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateCache, $routeParams,
+													   $resource, $location, localStorageService, Campaigns, Assemblies) {
 
-	$scope.templates = [
-		{name: 'Participatory Budgeting'},
-		{name: 'Mobilization'},
-		{name: 'Community Organization'},
-		{name: 'Create your own...'}
-	];
-	$scope.selectedTemplate = $scope.templates[1];
+	init();
 
-	$scope.campaignThemes = [
-		{name: 'Urban infrastucture'},
-		{name: 'Education'},
-		{name: 'Transportation'},
-		{name: 'Parks and recreation'}
-	]
+	function init() {
+		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+		$scope.currentStep = 1;
+		// Campaign creation steps and templates for each step
+		$scope.steps = [
+			{
+				step: 1,
+				title: "Describe your campaign",
+				template: "app/partials/campaign/creation/newCampaign1.html",
+				info: "",
+				active: true
+			},
+			{
+				step: 2,
+				title: "Setup campaign dates",
+				template: "app/partials/campaign/creation/newCampaign2.html",
+				info: ""
+			},
+			{
+				step: 3,
+				title: "Configure campaign phases",
+				template: "app/partials/campaign/creation/newCampaign3.html",
+				info: ""
+			}
+		];
+		// Setting up help info tooltips
+		if ($scope.info === undefined || $scope.info === null) {
+			info = $scope.info = helpInfo;
+			info.configCommentsInDiscussion = "Enable reply-to comments in discussions";
+			info.configCommentsInDiscussion = "Enable up-votes and down-votes on contributions";
+			localStorageService.set("help", info);
+		}
 
-	$http.get('assets/tags/tags.json').success(function(data){
-		$scope.tags = data;
-	}).error(function(error){
-		console.log('Error loading data' + error);
-	});
+		$scope.errors = [];
+		$scope.templateErrors = [];
+		$scope.campaigns = [];
+		$scope.templateOptions = [
+			{
+				description : "Link to another camplate and use its template",
+				value: "LINKED",
+				subTemplateTitle: "Select a campaign from the list or search by name"
+			},
+			{
+				description : "Select a predefined template",
+				value: "PREDEFINED",
+				subTemplateTitle: "Select a template from the list"
+			}
+		];
 
-	$http.get('/app/partials/tooltips/linkedCampaign/linkedCampaign.html').success(function(data){
-		$scope.linkedCampaignTooltip = data;
-	}).error(function(error){
-		console.log('Error loading data' + error);
-	});
+		$scope.newCampaign = {
+			// title : "PB Belleville 2016",
+			// shortname : "pb-belleville-2016
+			// goal: "Develop proposals for Belleville 2016"
+			// url:
+			listed : true,
+			config: {
+				discussionReplyTo: true,
+				upDownVoting: true,
+				// budget:
+				budgetCurrency: "$"
+			},
+			configs : [
+				{
+					key: "campaign.pb.budget",
+					value: "50.000"
+				},
+				{
+					key: "campaign.pb.budget.currency",
+					value: "$"
+				},
+				{
+					key: "campaign.discussions.reply.to.comments",
+					value: true
+				},
+				{
+					key: "campaign.up-down-voting",
+					value: true
+				}
+			],
+			themes: [], // [ {theme:""}, ... ]
+			existingThemes: [], // [ 1, 89, ... ]
+			components: [], // [{...}]
+			template: $scope.templateOptions[0]
+			//linkedCampaign
+		};
 
+		setListOfLinkedAssemblies();
+
+		$scope.campaignThemes = [
+			{name: 'Urban infrastucture'},
+			{name: 'Education'},
+			{name: 'Transportation'},
+			{name: 'Parks and recreation'}
+		];
+
+		$http.get('assets/tags/tags.json').success(function (data) {
+			$scope.tags = data;
+		}).error(function (error) {
+			console.log('Error loading data' + error);
+		});
+
+		$http.get('/app/partials/tooltips/linkedCampaign/linkedCampaign.html').success(function (data) {
+			$scope.linkedCampaignTooltip = data;
+		}).error(function (error) {
+			console.log('Error loading data' + error);
+		});
+
+	}
+
+	// Scope Functions
+	$scope.addTheme = function(ts) {
+		console.log("Adding themes: " + ts);
+		var themes = ts.split(',');
+		console.log("Adding themes: " + themes);
+		themes.forEach(function(theme){
+			console.log("Adding theme: " + theme);
+			var addedTheme = {title: theme.trim()};
+			$scope.newCampaign.themes.push(addedTheme);
+
+		});
+		$scope.themes = "";
+	}
+
+	$scope.removeTheme = function(index) {
+		$scope.newCampaign.themes.splice(index,1);
+	}
+
+	$scope.setCurrentStep = function (number) {
+		if ($scope.setCurrentStep === 1 && number === 2) {
+			createNewAssembly(1);
+		}
+		$scope.currentStep = number;
+	}
+
+	// Other functions
+	function setListOfLinkedAssemblies() {
+		var assembliesRes = Assemblies.linkedAssemblies($scope.assemblyID).query();
+		assembliesRes.$promise.then(
+				function(assemblies){
+					$scope.linkedAssemblies = assemblies;
+				},
+				function(error){
+					$scope.linkedAssemblies = undefined;
+					$scope.templateErrors.push(error);
+				}
+		);
+
+		var featuredAssembliesRes = Assemblies.featuredAssemblies().query();
+		featuredAssembliesRes.$promise.then(
+				function(assemblies){
+					$scope.assemblies = assemblies;
+					$scope.assemblies.forEach(function(assembly) {
+						var aCampaigns = assembly.campaigns;
+						if(aCampaigns!=undefined && aCampaigns !=null) {
+							aCampaigns.forEach(function(c) {
+								$scope.campaigns.push({
+									assembly: assembly.name,
+									title: c.title,
+									value: c.campaignId
+								});
+							});
+						}
+					});
+					$scope.newCampaign.linkedCampaign = $scope.campaigns[0];
+				},
+				function(error){
+					$scope.templateErrors.push(error);
+				}
+		);
+
+		var templateRes = Campaigns.templates().query();
+		templateRes.$promise.then(
+				function(templates){
+					$scope.templates = templates;
+					$scope.selectedTemplate = $scope.templates[0];
+				},
+				function(error){
+					$scope.templateErrors.push(error);
+				}
+		);
+	}
 });
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, localStorageService, Assemblies, Campaigns){
@@ -61,15 +212,15 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		var url = $scope.etherpadServer+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
 		console.log("Contribution Read Only Etherpad URL: "+url);
 		return url;
-	}
+	};
 
 	$scope.getEtherpadReadWriteUrl = function (c) {
 		return $scope.etherpadServer+"p/";//+ ... +"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
-	}
+	};
 
 	$scope.openContributionPage = function(cID)  {
 		$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
-	}
+	};
 	// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 	setCurrentAssembly($scope, localStorageService);
 	setCurrentCampaign($scope, localStorageService);

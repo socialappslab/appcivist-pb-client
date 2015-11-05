@@ -40,6 +40,12 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
         assemblyMembers: function(assemblyId) {
             return $resource(serverBaseUrl + '/assembly/:aid/membership/ACCEPTED', {aid: assemblyId});
         },
+        linkedAssemblies: function(assemblyId) {
+            return $resource(serverBaseUrl + '/assembly/:aid/linked', {aid: assemblyId});
+        },
+        featuredAssemblies: function() {
+            return $resource(serverBaseUrl + '/assembly', {filter:"featured"});
+        },
         verifyMembership: function(assemblyId, userId) {
             return $resource(serverBaseUrl + '/assembly/:aid/user/:uid',
                 {
@@ -58,6 +64,9 @@ appCivistApp.factory('Campaigns', function ($resource, localStorageService) {
         },
         campaign: function(assemblyId, campaignId) {
             return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/campaign/'+campaignId);
+        },
+        templates: function() {
+            return $resource(serverBaseUrl+'/campaign/template');
         }
     };
 

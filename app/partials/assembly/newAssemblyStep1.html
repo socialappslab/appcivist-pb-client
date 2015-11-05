@@ -2,16 +2,15 @@
     <div class="col-lg-6 col-md-6 col-xs-12">
         <div id="assenmblyName" class="col-md-12 form-group">
             <label for="inputNameAssembly" class="control-label">Name*</label>
-            <input type="text" class="form-control" id="inputNameAssembly"
+            <input id="inputNameAssembly" type="text" class="form-control"
                    placeholder="e.g., Assemblée Belleville"
-                   ng-model="newAssembly.name">
+                   ng-model="newAssembly.name" ng-required="true">
         </div>
         <div id="assemmblyDescription" class="col-md-12 form-group">
             <label for="inputAboutAssembly" class="control-label">
                 What's your assembly about?*
             </label>
-            <!--<textarea ng-model="newAssembly.description" class="form-control" id="inputAboutAssembly" placeholder="e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015"/>-->
-                            <textarea class="form-control" id="inputAboutAssembly"
+            <textarea class="form-control" id="inputAboutAssembly"
                                       ng-model="newAssembly.description"
                                       placeholder="e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015">
                             </textarea>

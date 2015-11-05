@@ -26,7 +26,9 @@ var helpInfo = {
     coordinatorsTooltip: "Coordinators are assembly members empowered to change settings",
     invitationsTooltip: "Add one or more email addresses of people you want to invite, separated by comma, then click add to list",
     invitationsEmailTooltip: "Each invitee will receive the following email",
-    listedAssemblyTooltip: "If true, the 'profile' of the assembly will be searchable and public"
+    listedAssemblyTooltip: "If true, the 'profile' of the assembly will be searchable and public",
+    campaignDefinition: "Campaigns are initiatives that the assembly undertakes to achieve a specific goal. Each campaign has its own template that structures its components, working groups, and timeline.",
+    campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development components. Linking to another campaign will bring that campaign's configuration"
 };
 
 /**
@@ -73,9 +75,9 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             templateUrl: 'app/partials/assembly/newAssembly.html'
 
         })
-        .when('/campaign/create/step1',{
-            templateUrl: 'app/partials/campaign/creation/campaignPartOne.html'
-
+        .when('/assembly/:aid/campaign/create',{
+            controller: "CreateCampaignCtrl",
+            templateUrl: 'app/partials/campaign/creation/newCampaign.html'
         })
         .when('/campaign/create/step2',{
             templateUrl: 'app/partials/campaign/creation/campaignPartTwo.html'

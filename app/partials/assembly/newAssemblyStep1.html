@@ -149,12 +149,13 @@
             </div>
         </div>
         <div id="assemblyIconProgress" class="col-md-12 progress-section">
-            {{f.name}} ({{f.url}}) {{f.$error}} {{f.$errorParam}}
+            {{f.name}} {{f.url}} {{f.$error}} {{f.$errorParam}}
             <span class="progress-line-container" ng-show="f.progress >= 0">
                 <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
             </span>
         </div>
-        <div class="col-md-12 form-group">
+        <div class="col-md-12 voffset3"></div>
+        <div id="assemblyContactInfo" class="col-md-12 form-group">
             <label for="inputContactNameAssembly" class="control-label">Primary contact</label>
             <div>
                 <input ng-model="newAssembly.profile.primaryContactName"
@@ -168,7 +169,7 @@
                        ßplaceholder="Email">
             </div>
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyThemes" class="col-md-12 form-group">
             <label for="inputTheme" class="control-label">Define one or more assembly themes of interest*</label>
             <input class="form-control" id="inputTheme" placeholder="e.g, Housing" ng-model="themes">
             <div class="col-md-12 voffset3"></div>
@@ -194,7 +195,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 form-group">
+        <div id="assemblyInvitations" class="col-md-12 form-group">
             <label class="control-label">
                 Invite people to join
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsTooltip}}"></i>
@@ -246,7 +247,7 @@
             <uib-alert ng-repeat="email in invalidEmails track by $index" type="danger" close="removeInvalidEmail($index)">Invalid email(s): {{email}} </uib-alert>
         </div>
         <div class="col-md-12 voffset3"></div>
-        <div id="assemblyInvitations" class="col-md-12">
+        <div id="assemblyInvitationsEmails" class="col-md-12">
             <label class="control-label">
                 Invitation Email
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsEmailTooltip}}"></i>

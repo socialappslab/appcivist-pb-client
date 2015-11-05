@@ -63,6 +63,8 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
         }
         $scope.errors = [];
 
+        $scope.selectedAssemblies = [];
+
         if($scope.newAssembly===null || $scope.newAssembly===undefined){
             $scope.newAssembly = localStorageService.get("temporaryNewAssembly");
             if($scope.newAssembly===null || $scope.newAssembly===undefined) {
@@ -144,7 +146,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
         var file = {};
         file.name = name;
         file.url = url;
-        $sope.f = file;
+        $scope.f = file;
 
     }
 
@@ -199,17 +201,40 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 		$scope.newAssembly.themes.splice(index,1);
 	}
 
-	$scope.selectAssembly = function(assembly, index) {
-		if(this.assemblyState === "assemblySelected"){
-			delete this.assemblyState;
-			$scope.newAssembly.linkedAssemblies.splice(index,1);
-		} else {
-			this.assemblyState = "assemblySelected";
-			var linked = {};
-			linked.assemblyId = assembly.assemblyId;
-			$scope.newAssembly.linkedAssemblies.push(linked);
-		}
-	}
+    $scope.findWithAttr = function(array, attr, value) {
+        for (var i = 0; i < array.length; i += 1) {
+            if (array[i][attr] === value) {
+                return i;
+            }
+        }
+    }
+
+    $scope.removeByAttr = function(array, attr, value) {
+        for (var i = 0; i < array.length; i += 1) {
+            if (array[i][attr] === value) {
+                array.splice(i,1);
+            }
+        }
+    }
+
+    $scope.getLinkedAssemblyById = function(id) {
+        return $scope.findWithAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
+    }
+
+    $scope.removeLinkedAssemblyById = function(id) {
+        return $scope.removeByAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
+    }
+
+	$scope.selectAssembly = function(assemblyId) {
+        $scope.selectedAssemblies[assemblyId] = !$scope.selectedAssemblies[assemblyId];
+
+        if($scope.selectedAssemblies[assemblyId]){
+            var linked = {"assemblyId":assemblyId};
+            $scope.newAssembly.linkedAssemblies.push(linked);
+        } else {
+            $scope.removeLinkedAssemblyById(assemblyId);
+        }
+    }
 
 	$scope.createNewAssembly = function(step) {
 		if (step === 1) {
@@ -262,6 +287,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 function(data) {
                    console.log("Created assembly: "+data.assemblyId);
                     localStorageService.set("currentAssembly",data);
+                    localStorageService.set("temporaryNewAssembly","");
                     $location.url('/assembly/'+data.assemblyId+"/forum");
                 },
                 // Error
@@ -288,7 +314,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 				$timeout(function () {
 					file.result = response.data;
                     // TODO SETUP THE RESPONSE URL AND PUT IT IN NEW ASSEMBLY ICON
-                    $scope.f = "";
+                    $scope.f.url = "";
 
 				});
 			}, function (response) {

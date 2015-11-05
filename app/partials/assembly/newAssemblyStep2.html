@@ -16,8 +16,8 @@
                  ng-repeat="assembly in assemblies | filter:assemblyFilter">
                 <div class="thumbnail assembly"
                      id="assembly{{assembly.assemblyId}}">
-                    <a ng-class="assemblyState"
-                       ng-click="selectAssembly(assembly, $index)">
+                    <a ng-class="selectedAssemblies[assembly.assemblyId] ? 'assemblySelected' : '' "
+                       ng-click="selectAssembly(assembly.assemblyId)">
                         <img data-src="{{assembly.profile.icon}}"
                              alt="100x100" src="../assets/images/dublin.jpg"
                              data-holder-rendered="true" class="image-circle"/>

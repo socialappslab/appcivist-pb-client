@@ -1,0 +1,211 @@
+<div class="view forum">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8 discussion">
+                <div class="row header col-md-12 col-sm-12">
+                    <div class="col-md-8 col-sm-8">
+                        <div class="thumbnail assembly">
+                            <img alt="100x100" src="{{currentAssembly.profile.icon}}" data-holder-rendered="true" class="image-circle">
+                            <div class="caption">
+                                <h4><strong>{{currentAssembly.name}}</strong></h4>
+                                <h5><strong><div ng-show="currentAssembly.location.placeName != null">{{currentAssembly.location.placeName}} -</div> {{currentAssembly.location.city}}, {{currentAssembly.location.country}}</i></strong></h5>
+                                <p>{{currentAssembly.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 col-sm-9">
+                        <h1><strong>Assembly Forum</strong></h1>
+                    </div>
+                    <div class="col-md-3 col-sm-3">
+                        <h1><button class="btn btn-success" ng-click="startSpinner()"><h4 style="float:right;"><strong>Join Assembly</strong></h4></button></h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 col-sm-1 forum-title">
+                        <h5><strong>Themes</strong></h5>
+                    </div>
+
+                    <div class="col-md-11 col-sm-11">
+                        <ul class="tags tags-filter">
+                            <li class="tag tag-filter"><strong>All</strong></li>
+                            <li class="vertical-divider">
+                                &nbsp;
+                            </li>
+                            <li ng-if="currentAssembly.themes.length > 0" ng-repeat="theme in currentAssembly.themes|limitTo:2" class="tag tag-filter">
+                                <strong>{{theme.title}}</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3">
+
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-md-push-2 col-sm-push-2 col-md-pull-1 col-sm-pull-1">
+                        <div class="col-md-8 col-sm-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for..." ng-model="searchComments"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">Search</button>
+                                </span>
+                            </div><!-- /input-group -->
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Order by:
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a href="#">Most recent</a></li>
+                                    <li><a href="#">Oldest</a></li>
+                                    <li><a href="#">Random</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row col-md-11 col-sm-11 commentBox">
+                        <textarea name="commentForum" id="comment-forum" class="commentArea" rows="6" placeholder="What's up? ..." ng-model="commentTextarea"></textarea>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <a ng-href="/#/assembly/create/step1" style="display: inline-block; margin-top: 50%; cursor: pointer;"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="cursor: pointer"></a>
+                            </div>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-5">
+                                <div class="dropdown" style="display: inline-block;">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Select Theme:
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li ng-repeat="theme in currentAssembly.themes">
+                                            <a>{{theme.title}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <h4 class="text-info" style="display: inline-block; vertical-align: middle; cursor:pointer" ng-click="publishComment(commentTextarea)"><strong>Publish</strong></h4>
+                                <h4 style="display: inline-block; vertical-align: middle"><strong>Cancel</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="row comments col-md-11 col-sm-11">
+                        <li class="row comment col-md-12 col-sm-12" ng-repeat="comment in currentAssembly.forumPosts | orderBy: 'date' | filter: searchComments">
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="image-profile-comment inline">
+                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
+                                </div>
+                                <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
+                                <h5 class="date-comment inline"><time datetime="{{comment.lastUpdate}}"/>{{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
+                                <div class="options-comment inline">
+                                    <ul class="tags" ng-repeat="theme in comment.themes">
+                                        <li class="tag"><strong>{{theme.title}}</strong></li>
+                                    </ul>
+                                </div>
+                                <votes-counter class="pull-right" content="comment"></votes-counter>
+                            </div>
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="col-md-12 col-sm-12 text-comment">
+                                    <p class="comment-comment"><a>{{comment.text}}</a></p>
+                                </div>
+                            </div>
+                            <ul class="row comments col-md-11 col-sm-11">
+                                <li class="row comment col-md-12 col-sm-12 reply" ng-repeat="commentReply in comment.comments | orderBy: 'date' | filter: searchComments">
+                                    <div class="row col-md-12 col-sm-12">
+                                        <div class="image-profile-comment inline">
+                                            <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
+                                        </div>
+                                        <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
+                                        <h5 class="date-comment inline"><time datetime="{{commentReply.lastUpdate}}"/>{{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
+                                        <div class="options-comment inline">
+                                            <ul class="tags" ng-repeat="theme in comment.themes">
+                                                <li class="tag"><strong>{{theme.title}}</strong></li>
+                                            </ul>
+                                        </div>
+                                        <votes-counter class="pull-right" content="comment"></votes-counter>
+                                    </div>
+                                    <div class="row col-md-12 col-sm-12">
+                                        <div class="col-md-12 col-sm-12 text-comment">
+                                            <p class="comment-comment"><a>{{commentReply.text}}</a></p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 info-lateral">
+                <div class="row infoBox">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <h4><strong>Members</strong></h4>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <button class="btn btn-primary"><h5><strong>Invite participants</strong></h5></button>
+                        </div>
+                    </div>
+
+                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+                        <div class="row" ng-repeat="member in assemblyMembers">
+                            <div style="display: inline-block;">
+                                <div class="image-capsule">
+                                    <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
+                                    <div class="caption" style="text-align: center">
+                                        <h5>{{member.user.name}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row infoBox">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <h4><strong>Campaigns</strong></h4>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <a href="/#/campaign/create/step1"><button class="btn btn-primary"><h5><strong>New campaign</strong></h5></button></a>
+                        </div>
+                    </div>
+                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+                        <div class="row">
+                            <div style="display: inline-block;" ng-repeat="campaign in campaigns">
+                                <div class="image-capsule">
+                                    <a href="#/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaign.campaignId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
+                                    <div class="caption" style="text-align: center">
+                                        <h5>{{campaign.title}}</h5>
+                                    </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row infoBox">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <h4><strong>Working Groups</strong></h4>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                        </div>
+                    </div>
+                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+                        <div style="display: inline-block;" ng-repeat="group in currentAssembly.workingGroups">
+                            <div class="image-capsule">
+                                <a ng-click="selectGroup(group)" href="#/group/{{group.groupId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
+                                    <div class="caption" style="text-align: center">
+                                        <h5>{{group.name}}</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

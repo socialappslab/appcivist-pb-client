@@ -117,6 +117,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
+        .when('/campaign/:aid/wgroup/create',{
+            controller: 'CampaignComponentCtrl',
+            templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
+        })
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
@@ -132,6 +136,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
             controller: 'ContributionReadEditCtrl',
             templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
+        })
+        .when('/assembly/:aid/group/:wid',{
+            controller: 'WorkingGroupCtrl',
+            templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
         })
         .otherwise({
 			redirectTo : '/'

@@ -1,0 +1,193 @@
+.wGroupForum{
+
+  h1, h2, h3{
+    margin-top:10px;
+    margin-bottom:10px;
+    vertical-align: middle;
+  }
+
+  .image-circle{
+    height: 7.5rem;
+    width: 7.5rem;
+  }
+
+  .addButton{
+    cursor: pointer;
+  }
+
+  .button-group{
+    display: inline-block;
+    vertical-align: text-bottom;
+    float:right;
+    * {
+      cursor: pointer;
+    }
+    :last-child{
+      margin-left: 2rem;
+    }
+  }
+
+  .text-info{
+    color: $forum-commentBox-action-button
+  }
+
+
+  .row{
+    margin-top:5px;
+    margin-bottom:5px;
+  }
+
+  .header{
+    .assembly .caption{
+      width: auto;
+    }
+
+    button{
+      float:right;
+      margin-top: 100px;
+    }
+  }
+
+  .info-lateral{
+    margin-top: 30px;
+  }
+
+  .infoBox{
+    margin-top:10px;
+    border: 2px solid black;
+    border-radius:5px;
+    padding:5px;
+    height: 150px;
+    background-color: #f3f3f3;
+
+    .row{
+      margin-left:0px;
+    }
+
+    .list-item{
+      margin-top: 5px;
+    }
+
+    button{
+      float:right;
+    }
+
+    .image-circle{
+      height:20px;
+      width:20px;
+    }
+
+    .list-item{
+      .row{
+        margin-right: 0px;
+      }
+    }
+
+  }
+
+  .image-capsule{
+    img{
+      display: inline-block;
+    }
+    .caption{
+      display: inline-block;
+    }
+  }
+
+  .green-tag{
+    cursor: pointer;
+    float: left;
+    color: white;
+    background-color: #5cb85c;
+    border-radius: 5px;
+    margin: 5px 5px 5px 5px;
+  }
+
+  .forum-title{
+    h5{
+      margin: 5px 0;
+    }
+  }
+
+  .commentBox{
+    border: 1px solid $forum-commentBox-border;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    box-shadow: inset 0rem 1.5rem 3rem -2.5rem #000000;
+
+    .image-circle{
+      height:20px;
+      width:20px;
+      opacity: 0.6;
+    }
+  }
+
+  .commentArea{
+    border:none;
+    width:100%;
+    resize: none;
+    outline: 0;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    height: 10rem;
+  }
+
+
+  /**********************COMMENTS********************/
+
+  .comments{
+    list-style-type: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .reply{
+    margin-left:25px;
+  }
+
+  .comment{
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  .image-profile-comment img{
+    background-size: 100%;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+  }
+
+  .user-comment{
+    a {
+
+    }
+  }
+
+  .text-comment *{
+    display: inline;
+  }
+
+  .options-comment{
+    margin-top: 0.5em;
+    display: block;
+  }
+
+  .date-comment{
+
+  }
+
+  .comment-comment{
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  .counter{
+    p{
+      margin: -8px 0 -8px 0px;
+      padding-left: 5px;
+    }
+  }
+}

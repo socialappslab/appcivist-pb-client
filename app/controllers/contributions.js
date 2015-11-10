@@ -293,3 +293,18 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 		});
 	}
 });
+
+appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routeParams, localStorageService) {
+
+});
+
+appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, localStorageService) {
+	init();
+	function init() {
+		angular.forEach(localStorageService.get('workingGroups'), function(wGroup) {
+			if(wGroup.groupId == $routeParams.wid) {
+				$scope.wGroup = wGroup;
+			}
+		});
+	}
+});

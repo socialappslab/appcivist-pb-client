@@ -1,9 +1,36 @@
-.forum{
+.wGroupForum{
 
   h1, h2, h3{
     margin-top:10px;
     margin-bottom:10px;
+    vertical-align: middle;
   }
+
+  .image-circle{
+    height: 7.5rem;
+    width: 7.5rem;
+  }
+
+  .addButton{
+    cursor: pointer;
+  }
+
+  .button-group{
+    display: inline-block;
+    vertical-align: text-bottom;
+    float:right;
+    * {
+      cursor: pointer;
+    }
+    :last-child{
+      margin-left: 2rem;
+    }
+  }
+
+  .text-info{
+    color: $forum-commentBox-action-button
+  }
+
 
   .row{
     margin-top:5px;
@@ -83,9 +110,10 @@
   }
 
   .commentBox{
-    border: 1px solid grey;
-    border-radius: 5px;
-    padding: 5px;
+    border: 1px solid $forum-commentBox-border;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    box-shadow: inset 0rem 1.5rem 3rem -2.5rem #000000;
 
     .image-circle{
       height:20px;
@@ -99,6 +127,9 @@
     width:100%;
     resize: none;
     outline: 0;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    height: 10rem;
   }
 
 

@@ -136,7 +136,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
         })
         .when('/assembly/:aid/group/:wid',{
-            controller: 'ContributionReadEditCtrl',
+            controller: 'WorkingGroupCtrl',
             templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
         })
         .otherwise({

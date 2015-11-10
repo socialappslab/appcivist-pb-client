@@ -4,6 +4,7 @@ $dark-green: #57965B;
 $light-grey: #F4F4F4;
 $light-pale-grey: rgb(249,249,249);
 $light-blue: #E1F1F9;
+$medium-blue: #4DAAD8;
 $dark-blue: #9CC7D3;
 $dodger-blue:dodgerblue;
 $light-black: #524D4D;
@@ -49,6 +50,10 @@ $indexBall: $light-black;
 $border-header: $light-grey;
 $dropdown-hover: $dark-blue;
 $header-menu-active: $dark-grey;
+
+/*****FORUM*********/
+$forum-commentBox-border: $light-grey;
+$forum-commentBox-action-button: $medium-blue;
 
 /******MAIN***********/
 $icon-font: $black;

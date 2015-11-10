@@ -3,6 +3,11 @@
     margin-left: 0;
     margin-right: 0;
   }
+
+  label {
+    font-size: 1.8rem;
+  }
+
   .template-configuration{
     margin-top: -10px;
   }
@@ -98,5 +103,23 @@
 
   }
 
+  .themes-container-title {
+    color: $campaign-tags-container-title;
+    padding: 1rem 1rem 0rem 1rem;
+  }
 
+  .themes-container-content {
+    &.optionThemes {
+      padding: 0rem 1rem 0rem 1rem;
+    }
+    &.optionThemesBox {
+      height: 15rem;
+      overflow: auto;
+      border-top: 0.1rem solid $campaign-tags-container-content-border;
+    }
+  }
+
+  .slider {
+    background: #022;
+  }
 }

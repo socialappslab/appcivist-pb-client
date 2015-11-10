@@ -12,7 +12,7 @@
 
 console.log("Welcome to AppCivist!");
 
-var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource',  'LocalStorageModule', 'ngFileUpload', 'angularMoment', 'angularSpinner'];
+var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload', 'angularMoment', 'angularSpinner', 'angularMultiSlider'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 //var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
@@ -28,7 +28,9 @@ var helpInfo = {
     invitationsEmailTooltip: "Each invitee will receive the following email",
     listedAssemblyTooltip: "If true, the 'profile' of the assembly will be searchable and public",
     campaignDefinition: "Campaigns are initiatives that the assembly undertakes to achieve a specific goal. Each campaign has its own template that structures its components, working groups, and timeline.",
-    campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development components. Linking to another campaign will bring that campaign's configuration"
+    campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development components. Linking to another campaign will bring that campaign's configuration",
+    campaignFastrackTooltip: "Fastrack creation of a campaign will use default values for each phase of the campaign (e.g., default dates and durations for each phase, default values for each phases specific configurations, etc.)",
+    proposalTimeline: "Click on the phase name to activate or deactivate the phases you wish to include in your campaign. Phases shown as disabled take place in the linked campaign."
 };
 
 /**

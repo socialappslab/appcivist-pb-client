@@ -9,6 +9,7 @@
 /******MAIN***********/
 /*****ASSEMBLY CREATION*****/
 /*****UPLOAD********/
+/*****CAMPAIGN CREATION*****/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px;
@@ -563,7 +564,7 @@ button#second-vote {
   display: inline-block;
 }
 .assemblyCreation label {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
 }
 .assemblyCreation ul {
   list-style: none;
@@ -882,6 +883,9 @@ button#second-vote {
   margin-left: 0;
   margin-right: 0;
 }
+.campaign-creation label {
+  font-size: 1.8rem;
+}
 .campaign-creation .template-configuration {
   margin-top: -10px;
 }
@@ -944,6 +948,21 @@ button#second-vote {
   display: inline-block;
   margin: -1.7rem 0 -2rem 0;
   color: #524D4D;
+}
+.campaign-creation .themes-container-title {
+  color: dodgerblue;
+  padding: 1rem 1rem 0rem 1rem;
+}
+.campaign-creation .themes-container-content.optionThemes {
+  padding: 0rem 1rem 0rem 1rem;
+}
+.campaign-creation .themes-container-content.optionThemesBox {
+  height: 15rem;
+  overflow: auto;
+  border-top: 0.1rem solid #F4F4F4;
+}
+.campaign-creation .slider {
+  background: #022;
 }
 
 .campaign-pmaking .contributions {
@@ -1087,6 +1106,101 @@ button#second-vote {
   z-index: 2;
 }
 .timeline #votingPhase {
+  z-index: 1;
+}
+
+.timelineedit {
+  list-style: none;
+  display: inline-block;
+  width: 100%;
+  padding: 0rem 0rem 0rem 0rem;
+}
+.timelineedit li {
+  position: relative;
+  display: inline-block;
+  padding: 15px 15px;
+  background-color: #F4F4F4;
+  color: #524D4D;
+  opacity: 1;
+  width: 25%;
+  border-color: #524D4D;
+}
+.timelineedit li:first-child {
+  width: 25%;
+}
+.timelineedit li:last-child {
+  width: 15%;
+}
+.timelineedit li :only-child {
+  margin-left: 5%;
+}
+.timelineedit li#proposalMakingPhase {
+  width: 30%;
+}
+.timelineedit li#versioningPhase {
+  width: 25%;
+}
+.timelineedit li#deliberationPhase {
+  width: 25%;
+}
+.timelineedit li#votingPhase {
+  width: 15%;
+}
+.timelineedit li.selected {
+  color: white;
+  background-color: #524D4D;
+  opacity: 1;
+  z-index: 5 !important;
+}
+.timelineedit li.selected:before {
+  border-left-color: #524D4D;
+}
+.timelineedit li.disabled {
+  color: white;
+  background-color: #524D4D;
+  opacity: 0.5;
+  z-index: 5 !important;
+}
+.timelineedit li.disabled:before {
+  border-left-color: #524D4D;
+  opacity: 0.5;
+}
+.timelineedit li.active {
+  opacity: 1;
+}
+.timelineedit li:before, .timelineedit li:after {
+  left: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.timelineedit li:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-left-color: white;
+  border-width: 30px;
+  margin-top: -30px;
+  z-index: -1;
+}
+.timelineedit li:before {
+  border-color: rgba(194, 225, 245, 0);
+  border-left-color: #F4F4F4;
+  border-width: 25px;
+  margin-top: -25px;
+}
+.timelineedit #proposalMakingPhase {
+  z-index: 4;
+}
+.timelineedit #versioningPhase {
+  z-index: 3;
+}
+.timelineedit #deliberationPhase {
+  z-index: 2;
+}
+.timelineedit #votingPhase {
   z-index: 1;
 }
 

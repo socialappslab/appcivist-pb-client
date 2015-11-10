@@ -1,0 +1,90 @@
+<div class="row view campaign-creation" id="prePhase">
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <div id="campaignMilestoneDefinition" class="row box descriptionBox row col-md-12 col-sm-12 col-xs-12">
+            <p>
+                <strong>Campaign Milestones</strong> represent the concrete steps the assembly follow to achieve the goal of the campaign.
+                Use the timeline slider below to setup starting dates and durations for each milestone.
+                <ol>
+                    <li>Each circle represents a milestone. Slide them in the timeline to change their starting dates.</li>
+                    <li>The separation between circles represents the duration.</li>
+                    <li>Below the timeline, each circle is described by number, with its corresponding starting date and
+                        duration according to their positions in the timeline. 4. Milestones are organized within each
+                        component used in the campaign, as shown in the summary.</li>
+                </ol>
+            </p>
+        </div>
+        <form name="newCampaignForm2">
+
+            <div id="campaignMilestoneSlider" class="col-md-12 col-sm-12">
+                <multi-slider
+                        floor="0"
+                        step="1"
+                        precision="2"
+                        ceiling="365"
+                        bubbles="false"
+                        ng-model="newCampaign.milestones">
+                </multi-slider>
+            </div>
+
+            <!--<multihandleslider property="position" model="newCampaign.milestones"></multihandleslider>-->
+            <!--<slider step="0.5" class="col-md-12 col-sm-12">-->
+                <!--<slider-range model="milestone.position"-->
+                              <!--ng-repeat="milestone in newCampaign.milestones"-->
+                              <!--class="col-sm-1">-->
+
+                    <!--<div class="slider-handle" ng-bind-html="milestone.symbol"></div>-->
+
+                <!--</slider-range>-->
+            <!--</slider>-->
+
+            <!--<slider step="0.5" class="col-md-12 col-sm-12">-->
+                <!--<slider-range model="newCampaign.milestones[0].position" class="col-md-2 col-sm-2">-->
+                    <!--<div class="slider-handle" ng-bind-html="newCampaign.milestones[0].symbol"></div>-->
+                <!--</slider-range>-->
+
+                <!--<slider-range model="newCampaign.milestones[2].position" class="col-md-2 col-sm-2">-->
+                    <!--<div class="slider-handle" ng-bind-html="newCampaign.milestones[2].symbol"></div>-->
+                <!--</slider-range>-->
+
+                <!--<slider-range model="newCampaign.milestones[4].position" class="col-md-2 col-sm-2">-->
+                    <!--<div class="slider-handle" ng-bind-html="newCampaign.milestones[4].symbol"></div>-->
+                <!--</slider-range>-->
+            <!--</slider>-->
+
+            <!--<multihandleslider></multihandleslider>-->
+
+            <div class="row vertical-space-medium"></div>
+        <div id="campaignMilestonesProposalMaking" class="row col-md-12 col-sm-12 form-horizontal">
+            <div class="form-group" ng-class="{ 'has-error': newCampaignForm2.milestone1.$touched && newCampaignForm2.milestone1.$invalid }">
+                <label for="inputProposalMaking1" class="control-label">Title*</label>
+                <input id="inputProposalMaking1" name="milestone1"
+                       class="form-control" placeholder="Belleville - Paris PB 2016"
+                       ng-model="newCampaign.title" ng-required="true" />
+                <div class="help-block" ng-messages="newCampaignForm2.milestone1.$error" ng-if="newCampaignForm2.milestone1.$touched">
+                    <p ng-message="required">A title is required for the campaign</p>
+                </div>
+            </div>
+        </div>
+        <div id="campaignButtons" class="row col-md-12 col-sm-12">
+            <div class="col-md-6">
+                <button class="btn btn-primary col-md-12"
+                        uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
+                        ng-disabled="!newCampaignForm2.$valid"
+                        ng-click="createCampaign(3, {fastrack:true})">
+                    <h3>
+                        <strong>Fastrack</strong>
+                        <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
+                    </h3>
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary col-md-12"
+                        ng-click="createCampaign(3, {fastrack:false})"
+                        ng-disabled="!newCampaignForm2.$valid">
+                    <h3><strong>Next</strong></h3>
+                </button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

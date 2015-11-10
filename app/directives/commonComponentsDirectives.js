@@ -14,11 +14,12 @@ appCivistApp.directive('templateConfiguration', function(){
         },
         controller: ['$scope',function($scope){
 
+            // TODO: change state by
             $scope.proposalComponents = [
-                {name: 'Proposal making'},
-                {name: 'Versioning'},
-                {name: 'Deliberation'},
-                {name: 'Voting'}
+                {name: 'Proposal making', key: "Proposalmaking", enabled: true, active: false, state: ""},
+                {name: 'Versioning', key: "Versioning", enabled: true, active: false, state: ""},
+                {name: 'Deliberation', key: "Deliberation", enabled: true, active: false, state: ""},
+                {name: 'Voting', key: "Voting", enabled: true, active: false, state: ""}
             ];
 
             $scope.supportingComponents = [
@@ -30,6 +31,30 @@ appCivistApp.directive('templateConfiguration', function(){
                 {name: 'Implementation', alias:'implementation'}
             ];
 
+            $scope.disableComponentsInLinkedCampaign = function() {
+                // TODO: actually check in linked campaign what are the components
+                $scope.proposalComponents[2].enabled = false;
+                $scope.proposalComponents[3].enabled = false;
+            }
+
+            $scope.switchCampaignComponents = function(index) {
+                $scope.proposalComponents[index] = !$scope.proposalComponents[index];
+            }
+
+            $scope.updateLinkedCampaign =  function() {
+                $scope.proposalComponents[2].enabled = !$scope.newCampaign.useLinkedCampaign;
+                $scope.proposalComponents[3].enabled = !$scope.newCampaign.useLinkedCampaign;
+            }
+
+            if ($scope.newCampaign.template.value === 'LINKED' && $scope.newCampaign.useLinkedCampaign) {
+                $scope.disableComponentsInLinkedCampaign();
+            }
+
+            /**
+             * For the sake of compatibility, keep the following until
+             * all views and controllers no longer reference them and instead
+             * and only use the "proposalComponents" array
+             */
             $scope.proposalMakingState = null;
             $scope.versioningState = null;
             $scope.deliberationState = null;
@@ -41,6 +66,24 @@ appCivistApp.directive('templateConfiguration', function(){
             $scope.mobilization = null;
             $scope.reporting = null;
             $scope.implementation = null;
+
+            $scope.makeAllActive = function() {
+                $scope.proposalMakingChangeState(true);
+                $scope.versioningChangeState(true);
+                $scope.deliberationChangeState(true);
+                $scope.votingChangeState(true);
+
+            }
+
+            $scope.changeComponentState = function(index, state) {
+                if($scope.proposalComponents[index].enabled) {
+                    $scope.proposalComponents[index].active = state;
+                    if(state)
+                        $scope.proposalComponents[index].state = "active";
+                    else
+                        $scope.proposalComponents[index].state = "";
+                }
+            }
 
             $scope.proposalComponentStatus = function(componentName,state){
                 componentName = componentName.replace(/\s/g, '');
@@ -61,39 +104,47 @@ appCivistApp.directive('templateConfiguration', function(){
             }
 
             $scope.proposalMakingChangeState = function(state) {
+                $scope.proposalComponents[0].active=state;
                 if(state) {
                     $scope.proposalMakingState = "active";
                 }
                 else{
                     $scope.proposalMakingState = null;
                 }
+                $scope.proposalComponents[0].state=$scope.proposalMakingState;
             }
 
             $scope.versioningChangeState = function(state) {
+                $scope.proposalComponents[1].active=state;
                 if(state) {
                     $scope.versioningState = "active";
                 }
                 else{
                     $scope.versioningState = null;
                 }
+                $scope.proposalComponents[1].state=$scope.versioningState;
             }
 
             $scope.deliberationChangeState = function(state) {
+                $scope.proposalComponents[2].active=state;
                 if(state) {
                     $scope.deliberationState = "active";
                 }
                 else{
                     $scope.deliberationState = null;
                 }
+                $scope.proposalComponents[2].state=$scope.deliberationState;
             }
 
             $scope.votingChangeState = function(state) {
+                $scope.proposalComponents[3].active=state;
                 if(state) {
                     $scope.votingState = "active";
                 }
                 else{
                     $scope.votingState = null;
                 }
+                $scope.proposalComponents[3].state=$scope.votingState;
             }
         }]
     }
@@ -113,6 +164,26 @@ appCivistApp.directive('timeline', function(){
                     console.log('ho');
                  });
             });*/
+        }]
+    }
+});
+
+appCivistApp.directive('timelineedit', function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/timeline/timelineedit.html",
+        /*scope: {
+         activePhase: '@activephase'
+         },*/
+        controller: ['$scope' ,function($scope){
+            $scope.changeState =  function(index,newState) {
+                $scope.proposalComponents[index].active = newState;
+                if(newState)
+                    $scope.proposalComponents[index].state = "active";
+                else
+                    $scope.proposalComponents[index].state = "";
+            }
         }]
     }
 });

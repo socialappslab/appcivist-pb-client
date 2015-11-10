@@ -9,21 +9,22 @@
                 </div>
             </div>
             <div class="col-md-10">
-                <uib-tabset>
-                    <uib-tab ng-repeat="step in steps"
-                             heading="{{step.title}}"
-                             active="step.active"
-                             disable="step.disabled"
-                             ng-click="setCurrentStep(step.step)">
-                        <uib-tab-heading>
-                            <h4>
-                                <strong>{{step.title}}</strong>
-                                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{tab.info}}" ng-show="step.info!=''"></i>
-                            </h4>
-                        </uib-tab-heading>
-                        <div ng-include="step.template"></div>
-                    </uib-tab>
-                </uib-tabset>
+                    <uib-tabset>
+                        <uib-tab ng-repeat="step in steps"
+                                 heading="{{step.title}}"
+                                 active="step.active"
+                                 disable="step.disabled"
+                                 ng-click="setCurrentStep(step.step)">
+                            <uib-tab-heading>
+                                <h4>
+                                    <strong>{{step.title}}</strong>
+                                    <i class="fa fa-question-circle" tooltip-placement="right"
+                                       uib-tooltip="{{tab.info}}" ng-show="step.info!=''"></i>
+                                </h4>
+                            </uib-tab-heading>
+                            <div ng-include="step.template"></div>
+                        </uib-tab>
+                    </uib-tabset>
             </div>
         </div>
     </div>

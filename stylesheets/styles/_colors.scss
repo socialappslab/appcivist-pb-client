@@ -22,6 +22,8 @@ $news-box-font: $dark-blue;
 $settings-box: $light-black;
 $assembly-optionsBox: $light-grey;
 $assembly-optionsBox-title: $dodger-blue;
+$tags-container-title: $dodger-blue;
+$tags-container-content-border: $light-grey;
 
 /****TIMELINE*****/
 $timeline-background: $light-grey;
@@ -54,7 +56,12 @@ $header-menu-active: $dark-grey;
 $icon-font: $black;
 
 /*****ASSEMBLY CREATION*****/
-$assembly-tags-container-title: $dodger-blue;
-$assembly-tags-container-content-border: $light-grey;
+$assembly-tags-container-title: $tags-container-title;
+$assembly-tags-container-content-border: $tags-container-content-border;
+
 /*****UPLOAD********/
 $progress-line-bar: $dark-blue;
+
+/*****CAMPAIGN CREATION*****/
+$campaign-tags-container-title: $tags-container-title;
+$campaign-tags-container-content-border: $tags-container-content-border;

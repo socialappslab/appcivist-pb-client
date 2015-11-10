@@ -16,7 +16,7 @@
 	}
 });
 
-appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateCache, $routeParams,
+appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, localStorageService, Campaigns, Assemblies) {
 
 	init();
@@ -70,51 +70,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 			}
 		];
 
-		$scope.newCampaign = {
-			// title : "PB Belleville 2016",
-			// shortname : "pb-belleville-2016
-			// goal: "Develop proposals for Belleville 2016"
-			// url:
-			listed : true,
-			config: {
-				discussionReplyTo: true,
-				upDownVoting: true,
-				// budget:
-				budgetCurrency: "$"
-			},
-			configs : [
-				{
-					key: "campaign.pb.budget",
-					value: "50.000"
-				},
-				{
-					key: "campaign.pb.budget.currency",
-					value: "$"
-				},
-				{
-					key: "campaign.discussions.reply.to.comments",
-					value: true
-				},
-				{
-					key: "campaign.up-down-voting",
-					value: true
-				}
-			],
-			themes: [], // [ {theme:""}, ... ]
-			existingThemes: [], // [ 1, 89, ... ]
-			components: [], // [{...}]
-			template: $scope.templateOptions[0]
-			//linkedCampaign
-		};
-
+		initializeNewCampaignModel();
 		setListOfLinkedAssemblies();
-
-		$scope.campaignThemes = [
-			{name: 'Urban infrastucture'},
-			{name: 'Education'},
-			{name: 'Transportation'},
-			{name: 'Parks and recreation'}
-		];
 
 		$http.get('assets/tags/tags.json').success(function (data) {
 			$scope.tags = data;
@@ -148,14 +105,112 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 		$scope.newCampaign.themes.splice(index,1);
 	}
 
+	$scope.addExistingTheme = function(ts) {
+		console.log("Adding themes: " + ts);
+		var themes = ts.split(',');
+		console.log("Adding themes: " + themes);
+		themes.forEach(function(theme){
+			console.log("Adding theme: " + theme);
+			var addedTheme = {title: theme.trim()};
+			$scope.newCampaign.existingThemes.push(addedTheme);
+
+		});
+		$scope.themes = "";
+	}
+
+	$scope.removeExistingTheme = function(index) {
+		$scope.newCampaign.existingThemes.splice(index,1);
+	}
+
 	$scope.setCurrentStep = function (number) {
 		if ($scope.setCurrentStep === 1 && number === 2) {
-			createNewAssembly(1);
+			//createNewAssembly(1);
 		}
 		$scope.currentStep = number;
 	}
 
+	$scope.initializeLinkedCampaignOptionThemes = function() {
+		$scope.campaignThemes = [];
+		var linkedCampaignThemes = $scope.newCampaign.linkedCampaign.campaign.themes;
+		if (linkedCampaignThemes != undefined && linkedCampaignThemes != null && linkedCampaignThemes.length > 0) {
+			for (var i = 0; i < linkedCampaignThemes.length; i += 1) {
+				var t = linkedCampaignThemes[i];
+				var themeOption = {
+					title: t.title,
+					selected: true,
+					id: t.themeId
+				}
+				$scope.campaignThemes.push(themeOption);
+			}
+		}
+	}
+
+	$scope.initializeAssemblyOptionThemes = function() {
+		$scope.assemblyThemes = [];
+		var assemblyThemes = $scope.assembly.themes;
+		if (assemblyThemes != undefined && assemblyThemes != null && assemblyThemes.length > 0) {
+			for (var i = 0; i < assemblyThemes.length; i += 1) {
+				var t = assemblyThemes[i];
+				var themeOption = {
+					title: t.title,
+					selected: true,
+					id: t.themeId
+				}
+				$scope.assemblyThemes.push(themeOption);
+			}
+		}
+	}
+
 	// Other functions
+	function initializeNewCampaignModel() {
+		$scope.newCampaign = {
+			// title : "PB Belleville 2016",
+			// shortname : "pb-belleville-2016
+			// goal: "Develop proposals for Belleville 2016"
+			// url:
+			listed : true,
+			config: {
+				discussionReplyTo: true,
+				upDownVoting: true,
+				budget: 50000,
+				budgetCurrency: "$"
+			},
+			configs : [
+				{
+					key: "campaign.pb.budget",
+					value: "50.000"
+				},
+				{
+					key: "campaign.pb.budget.currency",
+					value: "$"
+				},
+				{
+					key: "campaign.discussions.reply.to.comments",
+					value: true
+				},
+				{
+					key: "campaign.up-down-voting",
+					value: true
+				}
+			],
+			themes: [], // [ {theme:""}, ... ]
+			existingThemes: [], // [ 1, 89, ... ]
+			components: [], // [{...}]
+			template: $scope.templateOptions[0],
+			useLinkedCampaign: true,
+			milestones: [
+				{value: 2, title:"Brainstorming", component: "Proposal Making", symbol: $sce.trustAsHtml("1")},
+				{value: 50, title:"Working groups formation", component: "Proposal Making", symbol: $sce.trustAsHtml("2")},
+				{value: 100, title:"Proposal drafting", component: "Proposal Making", symbol: $sce.trustAsHtml("3")},
+				{value: 130, title:"Proposal editing", component: "Versioning", symbol: $sce.trustAsHtml("4")},
+				{value: 160, title:"Proposal selection", component: "Versioning", symbol: $sce.trustAsHtml("5")},
+				{value: 200, title:"Discussion of proposals", component: "Deliberation", symbol: $sce.trustAsHtml("6")},
+				{value: 250, title:"Technical assessment", component: "Deliberation", symbol: $sce.trustAsHtml("7")},
+				{value: 300, title:"Voting on proposals", component: "Voting", symbol: $sce.trustAsHtml("8")}
+			]
+		};
+	}
+
 	function setListOfLinkedAssemblies() {
 		var assembliesRes = Assemblies.linkedAssemblies($scope.assemblyID).query();
 		assembliesRes.$promise.then(
@@ -172,19 +227,40 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 		featuredAssembliesRes.$promise.then(
 				function(assemblies){
 					$scope.assemblies = assemblies;
-					$scope.assemblies.forEach(function(assembly) {
+					for (var i = 0; i < assemblies.length; i += 1) {
+						var assembly = assemblies[i];
 						var aCampaigns = assembly.campaigns;
 						if(aCampaigns!=undefined && aCampaigns !=null) {
-							aCampaigns.forEach(function(c) {
+							for (var i = 0; i < aCampaigns.length; i += 1) {
+								var c = aCampaigns[i];
 								$scope.campaigns.push({
 									assembly: assembly.name,
 									title: c.title,
-									value: c.campaignId
+									value: c.campaignId,
+									campaign: c
 								});
-							});
+							}
 						}
-					});
+					}
 					$scope.newCampaign.linkedCampaign = $scope.campaigns[0];
+					$scope.initializeLinkedCampaignOptionThemes();
+
+					$scope.assembly = localStorageService.get("currentAssembly");
+					if($scope.assembly!=undefined && $scope.assembly!=null && $scope.assembly.assemblyId === $scope.assemblyID) {
+						$scope.initializeAssemblyOptionThemes();
+					} else {
+						var assemblyRes = Assemblies.assembly($scope.assemblyID).get();
+						assemblyRes.$promise.then(
+								function(a) {
+									$scope.assembly = a;
+									$scope.set("currentAssembly",a);
+									$scope.initializeAssemblyOptionThemes();
+								},
+								function (error) {
+									$scope.errors.push(error);
+								}
+						);
+					}
 				},
 				function(error){
 					$scope.templateErrors.push(error);
@@ -195,12 +271,19 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $http, $templateC
 		templateRes.$promise.then(
 				function(templates){
 					$scope.templates = templates;
-					$scope.selectedTemplate = $scope.templates[0];
+					$scope.newCampaign.selectedTemplate = $scope.templates[0];
 				},
 				function(error){
 					$scope.templateErrors.push(error);
 				}
 		);
+	}
+
+	$scope.createCampaign = function (step, options) {
+		if(step === 2 && !options.fastrack) {
+			$scope.steps[0].active = false;
+			$scope.steps[1].active = true;
+		}
 	}
 });
 

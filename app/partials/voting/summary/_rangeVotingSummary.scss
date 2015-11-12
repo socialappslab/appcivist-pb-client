@@ -1,0 +1,113 @@
+.range-voting-content{
+    font-family: "Helvetica Neue";
+    margin-left: 150px; 
+    width: 500px; 
+    position: relative; 
+    left: 5px; 
+}
+.campaign-name{
+    display: inline-block; 
+    font-size: 12px; 
+}
+
+.check-box{
+    height: 20px; 
+    width: 20px;
+}
+
+.voting-summary{
+    margin-bottom: 30px; 
+    clear: both; 
+    font-size: 22px; 
+}
+
+.summary-container{
+    border: 2px solid gray; 
+    border-radius: 5px; 
+    padding: 5px 5px 5px 5px; 
+    background-color: #EEEEEE; 
+    clear: both; 
+    width: 480px; 
+}
+
+.score-box{
+    background-color: white; 
+    display: inline-block; 
+    text-align: center; 
+    font-size: 12px; 
+    padding: 3px 3px 3px 3px; 
+    border-radius: 5px; 
+    border: 2px solid #191919; 
+    width: 50px; 
+    height: 20px; 
+}
+.total-scored-box{
+    display: inline-block; 
+}
+
+.total-scored-text{
+    font-size: 12px; 
+    display: inline-block; 
+}
+
+.back-button{
+    display: inline-block; 
+}
+
+.total-scored-box{
+    border: 2px solid #191919; 
+    text-align: center; 
+    width: 25px; 
+    height: 20px;
+    background-color: white; 
+    border-radius: 5px; 
+    margin: 3px; 
+}
+.submit-button{
+    display: inline-block; 
+}
+
+.scored{
+    display: block; 
+    font-size: 12px; 
+}
+
+.date{
+    font-size: 40px; 
+    position: relative; 
+    left: 17px; 
+    top: -16px; 
+}
+
+.checkmark{
+    display: inline-block; 
+    width: 3.5em; 
+    height: 3em; 
+    position: relative; 
+    margin-bottom: 25px; 
+    margin-left: 30px; 
+}
+
+h1{
+    display: inline-block; 
+    position: relative; 
+    left: 17px; 
+}
+
+h3{
+    position: relative; 
+    left: 17px; 
+}
+
+.assembly-name{
+    position: relative; 
+}
+
+.individual-scores{
+    margin: 20px; 
+}
+
+.buttons{
+    margin-top: 10px; 
+    float: right; 
+}

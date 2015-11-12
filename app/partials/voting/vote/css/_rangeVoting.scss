@@ -1,0 +1,77 @@
+  $white : #ffffff;
+  $grey: #aaaaaa;
+  $green: #15bf23;
+  .points{
+    list-style: none;
+    padding: 1rem;
+
+    & li{
+      display: inline-block;
+    }
+    & .section{
+        margin-right: 2rem;
+        width: 5rem;
+        & div{
+          border: 0.2rem solid $grey;
+          padding: 0.5rem;
+          text-align: center;
+          vertical-align: middle;
+          background-color: $white;
+        }
+      }
+
+  }
+
+  .theme {
+    color: $white;
+    margin: 100 rem;
+  }
+  .names {
+    margin: 30 rems;
+  }
+  .left {
+    max-height: 100%;
+    max-width: 100%;
+    background-color: $grey;
+    &li {
+      padding: 30 rem;
+    }
+
+    &h3 {
+      margin: 100 rems;
+    }
+  }
+
+  .images {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  #icon {
+    max-width: 15%;
+    max-height:15%;
+    float: right;
+  }
+  #save {
+    float: right;
+  }
+  #submit {
+    float: right;
+  }
+  .proposal {
+    overflow: none;
+    display: block;
+    border: 0.2rem solid $grey;
+
+    padding: 0.5rem;
+    vertical-align: middle;
+    background-color: $white;
+
+    &.container {
+      &.description {
+        margin: 10 rem;
+        width: 40%;
+        word-break: break-all;
+      }
+    }
+  }

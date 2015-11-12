@@ -1,7 +1,7 @@
 <div class="view wGroupForum">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-sm-8 discussion">
+            <div class="col-md-7 col-sm-7 discussion">
                 <div class="row col-md-12 col-sm-12">
                     <img alt="100x100" src="{{wGroup.profile.icon}}" ng-src="{{wGroup.profile.icon}}" data-holder-rendered="true" class="image-circle inline">
                     <h2 class="inline"><strong>Working Group: </strong>{{wGroup.name}}</h2>
@@ -70,18 +70,25 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-4 info-lateral">
+            <div class="col-md-5 col-sm-5 info-lateral">
+                <div class="row no-padding no-margin">
+                    <button class="btn btn-success col-md-5 inline">Send message</button>
+                    <button class="btn btn-success col-md-5 col-md-push-2 inline">Organize meeting</button>
+                </div>
                 <div class="row infoBox">
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
                             <h4><strong>Members</strong></h4>
                         </div>
-                        <div class="col-md-6 col-sm-6">
-                            <button class="btn btn-primary"><h5><strong>Invite participants</strong></h5></button>
+                        <div class="col-md-5 col-sm-5 col-md-push-2 add-elements-box-button">
+                            <div class="inline">
+                                <a ng-href="/#/assembly/create/step1" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>
+                            </div>
+                            <h5 class="inline"><strong>Invite participants</strong></h5>
                         </div>
                     </div>
 
-                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+                    <div class="row list-item">
                         <div class="row" ng-repeat="member in assemblyMembers">
                             <div style="display: inline-block;">
                                 <div class="image-capsule">
@@ -94,47 +101,56 @@
                         </div>
                     </div>
                 </div>
-                <div class="row infoBox">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <h4><strong>Campaigns</strong></h4>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                            <a href="/#/campaign/create/step1"><button class="btn btn-primary"><h5><strong>New campaign</strong></h5></button></a>
-                        </div>
+                <div class="row">
+                    <h3><strong>Our Proposals</strong></h3>
+                    <div class="voffset3"></div>
+                    <div class="row col-md-12 col-sm-12">
+                        <ul class="row contributions">
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date'">
+                                <contribution content="contribution"></contribution>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
-                        <div class="row">
-                            <div style="display: inline-block;" ng-repeat="campaign in campaigns">
-                                <div class="image-capsule">
-                                    <a href="#/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaign.campaignId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>{{campaign.title}}</h5>
-                                    </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                    <button class="col-md-12 btn btn-success inline">New Proposal Draft</button>
+                </div>
+                <div class="row">
+                    <h3><strong>Our Contributions</strong></h3>
+                    <div class="voffset3"></div>
+                    <div class="row col-md-12 col-sm-12">
+                        <ul class="row contributions">
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date'">
+                                <contribution content="contribution"></contribution>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <div class="row infoBox">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <h4><strong>Working Groups</strong></h4>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                        </div>
+                <div class="row">
+                    <h3><strong>Other contributions on related themes</strong></h3>
+                    <div class="voffset3"></div>
+                    <div class="row col-md-12 col-sm-12">
+                        <ul class="row contributions">
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date'">
+                                <contribution content="contribution"></contribution>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
-                        <div style="display: inline-block;" ng-repeat="group in currentAssembly.workingGroups">
-                            <div class="image-capsule">
-                                <a ng-click="selectGroup(group)" href="#/group/{{group.groupId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>{{group.name}}</h5>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                </div>
+                <div class="row">
+                    <h3><strong>Collaboration with other groups</strong></h3>
+                    <div class="voffset3"></div>
+                    <div class="row no-margin no-padding title-button">
+                        <h4 class="inline">Find similar proposals</h4>
+                        <button class="btn btn-success inline">Search</button>
+                    </div>
+                    <div class="voffset3"></div>
+                    <div class="row no-margin no-padding title-button">
+                        <h4 class="inline">Find similar contributions</h4>
+                        <button class="btn btn-success inline">Search</button>
+                    </div>
+                    <div class="voffset3"></div>
+                    <div class="row no-margin no-padding title-button">
+                        <h4 class="inline">Invite groups to collaborate</h4>
+                        <button class="btn btn-success inline">Invite</button>
                     </div>
                 </div>
             </div>

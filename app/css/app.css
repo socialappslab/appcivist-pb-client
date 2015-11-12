@@ -1766,6 +1766,12 @@ button#second-vote {
 .wGroupForum .text-info {
   color: #4DAAD8;
 }
+.wGroupForum .title-button {
+  text-align: right;
+}
+.wGroupForum .title-button button {
+  margin-left: 1rem;
+}
 .wGroupForum .row {
   margin-top: 5px;
   margin-bottom: 5px;
@@ -1778,7 +1784,10 @@ button#second-vote {
   margin-top: 100px;
 }
 .wGroupForum .info-lateral {
-  margin-top: 30px;
+  margin-top: 3rem;
+}
+.wGroupForum .add-elements-box-button h5 {
+  vertical-align: super;
 }
 .wGroupForum .infoBox {
   margin-top: 10px;
@@ -1786,13 +1795,17 @@ button#second-vote {
   border-radius: 5px;
   padding: 5px;
   height: 150px;
-  background-color: #f3f3f3;
+  background-color: #f9f9f9;
 }
 .wGroupForum .infoBox .row {
   margin-left: 0px;
 }
 .wGroupForum .infoBox .list-item {
-  margin-top: 5px;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 8.5rem;
 }
 .wGroupForum .infoBox button {
   float: right;

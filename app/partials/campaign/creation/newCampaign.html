@@ -10,11 +10,11 @@
             </div>
             <div class="col-md-10">
                     <uib-tabset>
-                        <uib-tab ng-repeat="step in steps"
+                        <uib-tab ng-repeat="step in steps track by $index"
                                  heading="{{step.title}}"
                                  active="step.active"
                                  disable="step.disabled"
-                                 ng-click="setCurrentStep(step.step)">
+                                 ng-click="setCurrentStep(step.step, currentStep)">
                             <uib-tab-heading>
                                 <h4>
                                     <strong>{{step.title}}</strong>

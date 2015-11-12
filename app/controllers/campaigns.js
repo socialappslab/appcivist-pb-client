@@ -17,13 +17,15 @@
 });
 
 appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $templateCache, $routeParams,
-													   $resource, $location, localStorageService, Campaigns, Assemblies) {
+													   $resource, $location, $timeout, localStorageService,
+													   Campaigns, Assemblies, moment) {
 
 	init();
 
 	function init() {
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.currentStep = 1;
+		$scope.prevStep = 2;
 		// Campaign creation steps and templates for each step
 		$scope.steps = [
 			{
@@ -37,15 +39,18 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				step: 2,
 				title: "Setup campaign dates",
 				template: "app/partials/campaign/creation/newCampaign2.html",
-				info: ""
+				info: "",
+				active: false
 			},
 			{
 				step: 3,
 				title: "Configure campaign phases",
 				template: "app/partials/campaign/creation/newCampaign3.html",
-				info: ""
+				info: "",
+				active: false
 			}
 		];
+
 		// Setting up help info tooltips
 		if ($scope.info === undefined || $scope.info === null) {
 			info = $scope.info = helpInfo;
@@ -122,11 +127,16 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.newCampaign.existingThemes.splice(index,1);
 	}
 
-	$scope.setCurrentStep = function (number) {
-		if ($scope.setCurrentStep === 1 && number === 2) {
+	$scope.setCurrentStep = function (step, prevStep) {
+		if ($scope.setCurrentStep === 1 && step === 2) {
 			//createNewAssembly(1);
 		}
-		$scope.currentStep = number;
+		if (step!=prevStep) {
+			$scope.prevStep = prevStep;
+			$scope.currentStep = step;
+			$scope.steps[step - 1].active = true;
+			$scope.steps[prevStep - 1].active = false;
+		}
 	}
 
 	$scope.initializeLinkedCampaignOptionThemes = function() {
@@ -159,6 +169,20 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				$scope.assemblyThemes.push(themeOption);
 			}
 		}
+	}
+
+	$scope.refreshTimeframe = function(months) {
+		privateRefreshTimeframe(months);
+	}
+
+	function privateRefreshTimeframe(months) {
+		var start = moment($scope.newCampaign.milestones[0].start);
+		var end = moment(start).add(months,'M');
+		var d = duration(start, end);
+		$scope.newCampaign.campaignTimeframeInDays = d.days;
+		$scope.newCampaign.campaignTimeframeEndDate = end.toDate();
+		$scope.newCampaign.triggerTimeframeUpdate = true;
+		console.log("Trigger Timeframe Update: "+$scope.newCampaign.triggerTimeframeUpdate);
 	}
 
 	// Other functions
@@ -199,17 +223,112 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			template: $scope.templateOptions[0],
 			useLinkedCampaign: true,
 			milestones: [
-				{value: 2, title:"Brainstorming", component: "Proposal Making", symbol: $sce.trustAsHtml("1")},
-				{value: 50, title:"Working groups formation", component: "Proposal Making", symbol: $sce.trustAsHtml("2")},
-				{value: 100, title:"Proposal drafting", component: "Proposal Making", symbol: $sce.trustAsHtml("3")},
-				{value: 130, title:"Proposal editing", component: "Versioning", symbol: $sce.trustAsHtml("4")},
-				{value: 160, title:"Proposal selection", component: "Versioning", symbol: $sce.trustAsHtml("5")},
-				{value: 200, title:"Discussion of proposals", component: "Deliberation", symbol: $sce.trustAsHtml("6")},
-				{value: 250, title:"Technical assessment", component: "Deliberation", symbol: $sce.trustAsHtml("7")},
-				{value: 300, title:"Voting on proposals", component: "Voting", symbol: $sce.trustAsHtml("8")}
+				{
+					date: getTodayMoment().toDate(),
+					value: 1,
+					title: "Brainstorming",
+					component: "Proposal Making",
+					symbol: $sce.trustAsHtml("1"),
+					opened:true
+				},
+				{
+					date: getTodayMoment().add(15, 'days').toDate(),
+					value: 15,
+					title: "Working groups formation",
+					component: "Proposal Making",
+					symbol: $sce.trustAsHtml("2"),
+					opened:true
+				},
+				{
+					date: getTodayMoment().add(20, 'days').toDate(),
+					value: 20, title: "Proposal drafting",
+					component: "Proposal Making",
+					symbol: $sce.trustAsHtml("3"),
+					opened:true
+				},
+				{
+					date: getTodayMoment().add(30, 'days').toDate(),
+					value: 30,
+					title: "Proposal editing",
+					component: "Versioning",
+					symbol: $sce.trustAsHtml("4"),
+					opened:true
+				},
+				{
+					date: getTodayMoment().add(45, 'days').toDate(),
+					value: 45,
+					title: "Proposal selection",
+					component: "Versioning",
+					symbol: $sce.trustAsHtml("5"),
+					opened:true
+				},
+				{
+					date: getTodayMoment().add(60, 'days').toDate(),
+					value: 60,
+					title: "Discussion of proposals",
+					component: "Deliberation",
+					symbol: $sce.trustAsHtml("6"),
+					opened:true
+				},
+				{
+					date: getTodayMoment().add(90, 'days').toDate(),
+					value: 90, title: "Technical assessment",
+					component: "Deliberation",
+					symbol: $sce.trustAsHtml("7"),
+					opened:true
+				},
+				{
+					date: getTodayMoment().add(120, 'days').toDate(),
+					value: 120, title: "Voting on proposals",
+					component: "Voting",
+					symbol: $sce.trustAsHtml("8"),
+					opened:true
+				}
 			]
 		};
+
+		$scope.newCampaign.campaignTimeframeInMonths=12;
+		$scope.newCampaign.campaignTimeframeInDays = 365;
+		$scope.newCampaign.campaignTimeframeStartDate = moment().toDate();
+		$scope.newCampaign.triggerTimeframeUpdate = false;
+		$scope.newCampaign.noOverlapping = true;
+
+		privateRefreshTimeframe(12);
 	}
+
+	$scope.updateMilestoneValue =  function(date, index) {
+		var newDate = moment(date);
+		var campaignStartDate = moment($scope.campaignTimeframeStartDate);
+		var d = duration(campaignStartDate,newDate);
+		$scope.newCampaign.milestones[index].date = date;
+		$scope.newCampaign.milestones[index].value = d.days;
+		$scope.newCampaign.triggerTimeframeUpdate = true;
+	}
+
+	$scope.open = function($event,m) {
+		m.calOpened = true;
+	};
+
+	$scope.dateOptions = {
+		formatYear: 'yyyy',
+		startingDay: 1
+	};
+
+	$scope.disabled = function(date, mode) {
+		return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+	};
+
+
+
+	// Disable weekend selection
+	$scope.disabled = function(date, mode) {
+		return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+	};
+
+	function updateMilestoneStartDate(newValue, campaignStartDate){
+		return moment(campaignStartDate).add(newValue,'d');
+	}
+
 
 	function setListOfLinkedAssemblies() {
 		var assembliesRes = Assemblies.linkedAssemblies($scope.assemblyID).query();
@@ -285,6 +404,13 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			$scope.steps[1].active = true;
 		}
 	}
+
+	// Watchers
+	$scope.$watch("newCampaign.milestones", function(){
+		console.log("Changed slider...");
+	});
+
+
 });
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, localStorageService, Assemblies, Campaigns){
@@ -495,3 +621,18 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		});
 	}
 });
+
+
+// General functions
+function getTodayMoment() {
+	return moment();
+}
+
+
+function duration(start, end) {
+	var diff = end.diff(start, 'minutes');
+	var minutesToEnd = diff%60;
+	var hoursToEnd = Math.floor(diff/60) % 24;
+	var daysToEnd = Math.floor(Math.floor(diff/60) / 24);
+	return { days: daysToEnd, minutes: minutesToEnd, hours: hoursToEnd};
+}

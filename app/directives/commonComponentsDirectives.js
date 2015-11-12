@@ -1,5 +1,5 @@
 /**
- * AppCivist Commono Components
+ * AppCivist Common Components
  *
  */
 

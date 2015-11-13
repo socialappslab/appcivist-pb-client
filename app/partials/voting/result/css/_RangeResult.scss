@@ -1,0 +1,46 @@
+  $white : #ffffff;
+  $grey: #aaaaaa;
+  $green: #15bf23;
+.winners {
+	& .container {
+		& .row {
+			& .project {
+				display: inline-block;
+				style: none;
+
+				& .block {
+					border: 0.2rem solid $grey;
+        			padding: 0.5rem;
+        			text-align: center;
+        			vertical-align: middle;
+        			background-color: $white;
+				}
+
+				& .tail {
+					border: 0.2rem solid $grey;
+        			padding: 0.5rem;
+        			text-align: center;
+        			vertical-align: middle;
+        			background-color: $white;
+
+        			& li{
+        				float: left;
+        			}
+				}
+			}
+			& .theme {
+				background-color: $green;
+				color: $white;
+			}
+			& .score {
+				border: 0.2rem solid $grey;
+        		padding: 0.5rem;
+        		text-align: center;
+        		vertical-align: middle;
+        		background-color: $white;
+			}
+		}
+		
+	}
+	
+}

@@ -143,6 +143,27 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             controller: 'WorkingGroupCtrl',
             templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
         })
+        .when('/campaign/:aid/temp',{
+            controller: 'CampaignCtrl',
+            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingDrafts.html'
+        })
+
+        // TEMP FOR TESTING 
+        .when('/ballot/:uuid/summary',{
+            controller: 'RangeSummaryCtrl',
+            templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
+        })
+
+        .when('/campaign/:aid/temp3',{
+            controller: 'RangeResultCtrl',
+            templateUrl: 'app/partials/voting/result/RangeResult.html'
+        })
+        //Define a route that has a route parameter in it (:customerID)
+        //.when('/assembly/:assemblyID/campaign/:campaignId',
+        //{
+        //  controller: 'AssemblyController',
+        //  templateUrl: '/app/partials/assemblyCampaignView.html'
+        //})
         .otherwise({
 			redirectTo : '/'
 		});

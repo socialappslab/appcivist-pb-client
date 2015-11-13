@@ -227,6 +227,31 @@ appCivistApp.directive('contribution', function(){
     }
 });
 
+appCivistApp.directive('proposal', function(){
+    return{
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/proposal/proposal.html",
+        scope: {
+            content: '='
+        },
+        controller: ['$scope', function($scope){
+            $scope.proposal = $scope.content;
+        }]
+    }
+});
+
+appCivistApp.directive('contribution', function(){
+    return{
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/newContribution/newContribution.html",
+        scope: {
+            content: '='
+        },
+        controller: "NewContributionCtrl"
+    }
+    
 appCivistApp.directive('backgroundImage', function(){
     return function(scope, element, attrs){
         var url = attrs.backgroundImage;

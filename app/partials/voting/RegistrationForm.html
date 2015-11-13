@@ -68,9 +68,9 @@
     <div class="fields" ng-repeat="field in fields">
       <div class="form-group">
         <label for="exampleInputEmail1">{{field.fieldName}}</label>
-        <input class="form-control" id="{{field.fieldName}}" placeholder="{{field.fieldDescription}}">
+        <input class="form-control" id="{{field.votingBallotRegistrationFieldId}}" placeholder="{{field.fieldDescription}}">
       </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" ng-click="fillForm($scope)" class="btn btn-default"><a href="#">Submit</a></button>
   </form>
 </div>

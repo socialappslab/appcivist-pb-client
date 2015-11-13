@@ -1343,7 +1343,6 @@ button#second-vote {
   border-radius: 0.3rem;
 }
 
-<<<<<<< HEAD
 .points {
   list-style: none;
   padding: 1rem;
@@ -1433,14 +1432,17 @@ button#second-vote {
   background-color: #ffffff;
   margin-bottom: 3px;
 }
+.winners .container .row .project .block .picture {
+  height: 300px;
+}
 .winners .container .row .project .block .picture ul .image {
-  position: fixed;
+  position: relative;
   z-index: 1;
   max-width: 400px;
   max-height: 300px;
 }
 .winners .container .row .project .block .picture ul .theme {
-  position: fixed;
+  position: relative;
   z-index: 3;
   padding: 2px;
   background-color: #15bf23;
@@ -1449,7 +1451,7 @@ button#second-vote {
   text-align: right;
 }
 .winners .container .row .project .block .picture ul .score {
-  position: fixed;
+  position: relative;
   z-index: 3;
   border: 2px solid #aaaaaa;
   padding: 2px;
@@ -1498,7 +1500,8 @@ button#second-vote {
   text-align: center;
   vertical-align: middle;
   background-color: #ffffff;
-=======
+}
+
 #contributionView {
   margin: 1%;
 }
@@ -1641,7 +1644,6 @@ button#second-vote {
 }
 .wGroupsSuggestion .wGroupsSuggestion-description {
   display: inline;
-
 }
 
 footer {

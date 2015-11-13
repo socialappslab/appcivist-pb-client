@@ -1,20 +1,26 @@
-<div class="row view campaign-creation" id="prePhase">
+<div class="row view campaign-creation" id="prePhase2">
     <div class="col-lg-6 col-md-6 col-xs-12">
         <div id="campaignMilestoneDefinition" class="row box descriptionBox row col-md-12 col-sm-12 col-xs-12">
             <p>
                 <strong>Campaign Milestones</strong> represent the concrete steps the assembly follow to achieve the
-                goal of the campaign.
-                Setup the starting date of each milestone of your campaign by using the slider below.
-            <ol>
-                <li>Each handle in the slider represents a milestone. Slide them in the timeline to change their
-                    starting dates.
-                </li>
-                <li>The separation between circles represents the duration (in days).</li>
-                <li>Below the timeline, each milestones is described by number, with its corresponding starting date and
-                    duration according to their positions in the timeline.
-                </li>
-                <li>Milestones are organized within each component used in the campaign, as shown in the summary.</li>
-            </ol>
+                goal of the campaign. Setup the starting date of each milestone of your campaign by using the
+                slider below.
+                <ol>
+                    <li>
+                        Each handle in the slider represents a milestone. Slide them in the timeline to change their
+                        starting dates.
+                    </li>
+                    <li>
+                        The separation between circles represents the duration (in days).
+                    </li>
+                    <li>
+                        Below the timeline, each milestones is described by number, with its corresponding starting
+                        date and duration according to their positions in the timeline.
+                    </li>
+                    <li>
+                        Milestones are organized within each component used in the campaign, as shown in the summary.
+                    </li>
+                </ol>
             </p>
         </div>
         <form name="newCampaignForm2">
@@ -53,11 +59,9 @@
                         overlapping="false">
                 </multi-slider-dates>
             </section>
-
             <section class="col-sm-12 col-md-12" ng-repeat="milestone in newCampaign.milestones track by $index">
-                <span class="col-md-6">{{milestone.title}}</span>
-
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6"><strong>{{$index+1}}. </strong><span>{{milestone.title}}</span></div>
+                <div class="col-md-6 col-sm-6">
                     <p class="input-group">
                         <input type="text" class="form-control"
                                uib-datepicker-popup="yyyy-MM-dd"
@@ -78,12 +82,10 @@
                     </p>
                 </div>
             </section>
-
             <div class="row vertical-space-medium"></div>
-
-            <div id="campaignButtons" class="row col-md-12 col-sm-12">
-                <div class="col-md-6">
-                    <button class="btn btn-primary col-md-12"
+            <div id="campaignButtons2" class="row col-md-12 col-sm-12">
+                <div class="col-md-4">
+                    <button class="btn btn-success col-md-12"
                             uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
                             ng-disabled="!newCampaignForm2.$valid"
                             ng-click="createCampaign(3, {fastrack:true})">
@@ -93,7 +95,18 @@
                         </h3>
                     </button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <button class="btn btn-primary col-md-12"
+                            uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
+                            ng-disabled="!newCampaignForm2.$valid"
+                            ng-click="createCampaign(1, {fastrack:false})">
+                        <h3>
+                            <strong>Back</strong>
+                            <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
+                        </h3>
+                    </button>
+                </div>
+                <div class="col-md-4">
                     <button class="btn btn-primary col-md-12"
                             ng-click="createCampaign(3, {fastrack:false})"
                             ng-disabled="!newCampaignForm2.$valid">

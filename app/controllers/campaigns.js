@@ -18,7 +18,7 @@
 
 appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, $timeout, localStorageService,
-													   Campaigns, Assemblies, moment) {
+													   Campaigns, Assemblies, Components, moment) {
 
 	init();
 
@@ -30,21 +30,21 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.steps = [
 			{
 				step: 1,
-				title: "Describe your campaign",
+				title: "Campaign description",
 				template: "app/partials/campaign/creation/newCampaign1.html",
 				info: "",
 				active: true
 			},
 			{
 				step: 2,
-				title: "Setup campaign dates",
+				title: "Campaign milestones",
 				template: "app/partials/campaign/creation/newCampaign2.html",
 				info: "",
 				active: false
 			},
 			{
 				step: 3,
-				title: "Configure campaign phases",
+				title: "Campaign phases",
 				template: "app/partials/campaign/creation/newCampaign3.html",
 				info: "",
 				active: false
@@ -74,34 +74,61 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				subTemplateTitle: "Select a template from the list"
 			}
 		];
+		$scope.dateOptions = {
+			formatYear: 'yyyy',
+			startingDay: 1
+		};
+		$scope.oneAtATime = false;
+		$scope.section = {};
 
 		initializeNewCampaignModel();
 		setListOfLinkedAssemblies();
-
-		$http.get('assets/tags/tags.json').success(function (data) {
-			$scope.tags = data;
-		}).error(function (error) {
-			console.log('Error loading data' + error);
-		});
-
-		$http.get('/app/partials/tooltips/linkedCampaign/linkedCampaign.html').success(function (data) {
-			$scope.linkedCampaignTooltip = data;
-		}).error(function (error) {
-			console.log('Error loading data' + error);
-		});
-
 	}
 
-	// Scope Functions
+	// $scope functions
+
+	$scope.changeCampaignTemplate = function(template) {
+		if(template.value==="LINKED") {
+			$scope.newCampaign.proposalComponents[4].enabled=true;
+			$scope.newCampaign.proposalComponents[5].enabled=true;
+		} else {
+			$scope.newCampaign.useLinkedCampaign=false;
+			$scope.newCampaign.proposalComponents[2].enabled=true;
+			$scope.newCampaign.proposalComponents[3].enabled=true;
+			$scope.newCampaign.proposalComponents[4].enabled=false;
+			$scope.newCampaign.proposalComponents[5].enabled=false;
+		}
+	}
+
+	$scope.updateConfigOptionValue = function(config, optionValue) {
+		config.value = optionValue.value;
+	}
+
+	$scope.checkOption = function(config,option) {
+		console.log('Checked: '+option.value+" for config "+config.key);
+	}
+
+	$scope.checkParentValue =  function(parent, child) {
+		return internalCheckParentValue(parent,child);
+	}
+
+	$scope.configIsEnabled = function(config, configs, type) {
+		var typeCondition = config.type === type;
+		var dependsOfIsUndefined = config.dependsOf === undefined || config.dependsOf === 0 || config.dependsOf === null;
+		var dependsOfConfigValueIsSelected = !dependsOfIsUndefined && internalCheckParentValue(configs[config.dependsOf-1],config)
+		var result = ( typeCondition && (dependsOfIsUndefined || dependsOfConfigValueIsSelected ) );
+		return result;
+	}
+
+	/**
+	 * Add/removes themes to the list of themes in the newCampaign Model
+	 * @param ts
+     */
 	$scope.addTheme = function(ts) {
-		console.log("Adding themes: " + ts);
 		var themes = ts.split(',');
-		console.log("Adding themes: " + themes);
 		themes.forEach(function(theme){
-			console.log("Adding theme: " + theme);
 			var addedTheme = {title: theme.trim()};
 			$scope.newCampaign.themes.push(addedTheme);
-
 		});
 		$scope.themes = "";
 	}
@@ -111,11 +138,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	}
 
 	$scope.addExistingTheme = function(ts) {
-		console.log("Adding themes: " + ts);
 		var themes = ts.split(',');
-		console.log("Adding themes: " + themes);
 		themes.forEach(function(theme){
-			console.log("Adding theme: " + theme);
 			var addedTheme = {title: theme.trim()};
 			$scope.newCampaign.existingThemes.push(addedTheme);
 
@@ -127,20 +151,33 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.newCampaign.existingThemes.splice(index,1);
 	}
 
-	$scope.setCurrentStep = function (step, prevStep) {
-		if ($scope.setCurrentStep === 1 && step === 2) {
-			//createNewAssembly(1);
-		}
-		if (step!=prevStep) {
-			$scope.prevStep = prevStep;
-			$scope.currentStep = step;
-			$scope.steps[step - 1].active = true;
-			$scope.steps[prevStep - 1].active = false;
-		}
+	/**
+	 * Add/removes sections to the contributions template of a component
+	 * @param section
+	 */
+	$scope.addContributionTemplateSection = function(section, component) {
+		component.contributionTemplate.push(section);
 	}
 
-	$scope.initializeLinkedCampaignOptionThemes = function() {
+	$scope.removeContributionTemplateSection = function(index, component) {
+		component.contributionTemplate.splice(index,1);
+	}
+
+	/**
+	 * Updates the current and previous step models in the $scope
+	 * @param step
+	 * @param prevStep
+     */
+	$scope.setCurrentStep = function (step, prevStep) {
+		privateSetCurrentStep(step,prevStep);
+	}
+
+	/**
+	 * Populates the list of optional themes according to the linked campaign themes
+	 */
+	$scope.initializeLinkedCampaignOptionThemes = function(campaign) {
 		$scope.campaignThemes = [];
+		$scope.newCampaign.linkedCampaign = campaign;
 		var linkedCampaignThemes = $scope.newCampaign.linkedCampaign.campaign.themes;
 		if (linkedCampaignThemes != undefined && linkedCampaignThemes != null && linkedCampaignThemes.length > 0) {
 			for (var i = 0; i < linkedCampaignThemes.length; i += 1) {
@@ -153,8 +190,17 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				$scope.campaignThemes.push(themeOption);
 			}
 		}
+
+		$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
+		$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
+		$scope.newCampaign.proposalComponents[4].componentInstanceId = $scope.newCampaign.linkedComponents[0].componentInstanceId;
+		$scope.newCampaign.proposalComponents[5].componentInstanceId = $scope.newCampaign.linkedComponents[1].componentInstanceId;
+
 	}
 
+	/**
+	 * Populates the list of optional themes according to the parent assembly
+	 */
 	$scope.initializeAssemblyOptionThemes = function() {
 		$scope.assemblyThemes = [];
 		var assemblyThemes = $scope.assembly.themes;
@@ -171,10 +217,96 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		}
 	}
 
+	/**
+	 * Scope shortcut to refreshing the Timeframe slider models
+	 * for milestones
+	 * @param months
+     */
 	$scope.refreshTimeframe = function(months) {
 		privateRefreshTimeframe(months);
 	}
 
+	/**
+	 * Updates the value of a milestone based on a new date
+	 * @param date
+	 * @param index
+     */
+	$scope.updateMilestoneValue =  function(date, index) {
+		var newDate = moment(date);
+		var campaignStartDate = moment($scope.campaignTimeframeStartDate);
+		var d = duration(campaignStartDate,newDate);
+		$scope.newCampaign.milestones[index].date = date;
+		$scope.newCampaign.milestones[index].value = d.days;
+		$scope.newCampaign.triggerTimeframeUpdate = true;
+	}
+
+	/**
+	 * Opens or closes the date pickers for each milestone
+	 * @param $event
+	 * @param m
+     */
+	$scope.open = function($event,m) {
+		m.calOpened = true;
+	};
+
+	$scope.disabled = function(date, mode) {
+		return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+	};
+
+	/**
+	 * Scope function called to create the campaign
+	 * or move between stages of the creation process
+	 * @param step
+	 * @param options
+     */
+	$scope.createCampaign = function (step, options) {
+		privateCreateCampaign(step,options);
+	}
+
+	// Functions not available in the scope
+
+	/**
+	 * Initialize the model for the New Campaign with default values
+	 */
+	function initializeNewCampaignModel() {
+		$scope.newCampaign = Campaigns.defaultNewCampaign();
+		$scope.newCampaign.template = $scope.templateOptions[0];
+		$scope.newCampaign.proposalComponents = Components.defaultProposalComponents();
+		$scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
+		$scope.newCampaign.linkedComponents = [];
+		initializeMilestonesTimeframe();
+	}
+
+	/**
+	 * Initializes the timeframe models for milestones
+	 */
+	function initializeMilestonesTimeframe() {
+		$scope.newCampaign.campaignTimeframeInMonths=12;
+		$scope.newCampaign.campaignTimeframeInDays = 365;
+		$scope.newCampaign.campaignTimeframeStartDate = moment().toDate();
+		$scope.newCampaign.triggerTimeframeUpdate = false;
+		$scope.newCampaign.noOverlapping = true;
+		privateRefreshTimeframe(12);
+	}
+
+	/**
+	 * Non-scope function to update current/previous step models
+	 * @param step
+	 * @param prevStep
+     */
+	function privateSetCurrentStep(step,prevStep) {
+		if (step!=prevStep) {
+			$scope.prevStep = prevStep;
+			$scope.currentStep = step;
+			$scope.steps[step - 1].active = true;
+			$scope.steps[prevStep - 1].active = false;
+		}
+	}
+
+	/**
+	 * Non-scope function to update the timeframe for milestones
+	 * @param months
+     */
 	function privateRefreshTimeframe(months) {
 		var start = moment($scope.newCampaign.milestones[0].start);
 		var end = moment(start).add(months,'M');
@@ -185,150 +317,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		console.log("Trigger Timeframe Update: "+$scope.newCampaign.triggerTimeframeUpdate);
 	}
 
-	// Other functions
-	function initializeNewCampaignModel() {
-		$scope.newCampaign = {
-			// title : "PB Belleville 2016",
-			// shortname : "pb-belleville-2016
-			// goal: "Develop proposals for Belleville 2016"
-			// url:
-			listed : true,
-			config: {
-				discussionReplyTo: true,
-				upDownVoting: true,
-				budget: 50000,
-				budgetCurrency: "$"
-			},
-			configs : [
-				{
-					key: "campaign.pb.budget",
-					value: "50.000"
-				},
-				{
-					key: "campaign.pb.budget.currency",
-					value: "$"
-				},
-				{
-					key: "campaign.discussions.reply.to.comments",
-					value: true
-				},
-				{
-					key: "campaign.up-down-voting",
-					value: true
-				}
-			],
-			themes: [], // [ {theme:""}, ... ]
-			existingThemes: [], // [ 1, 89, ... ]
-			components: [], // [{...}]
-			template: $scope.templateOptions[0],
-			useLinkedCampaign: true,
-			milestones: [
-				{
-					date: getTodayMoment().toDate(),
-					value: 1,
-					title: "Brainstorming",
-					component: "Proposal Making",
-					symbol: $sce.trustAsHtml("1"),
-					opened:true
-				},
-				{
-					date: getTodayMoment().add(15, 'days').toDate(),
-					value: 15,
-					title: "Working groups formation",
-					component: "Proposal Making",
-					symbol: $sce.trustAsHtml("2"),
-					opened:true
-				},
-				{
-					date: getTodayMoment().add(20, 'days').toDate(),
-					value: 20, title: "Proposal drafting",
-					component: "Proposal Making",
-					symbol: $sce.trustAsHtml("3"),
-					opened:true
-				},
-				{
-					date: getTodayMoment().add(30, 'days').toDate(),
-					value: 30,
-					title: "Proposal editing",
-					component: "Versioning",
-					symbol: $sce.trustAsHtml("4"),
-					opened:true
-				},
-				{
-					date: getTodayMoment().add(45, 'days').toDate(),
-					value: 45,
-					title: "Proposal selection",
-					component: "Versioning",
-					symbol: $sce.trustAsHtml("5"),
-					opened:true
-				},
-				{
-					date: getTodayMoment().add(60, 'days').toDate(),
-					value: 60,
-					title: "Discussion of proposals",
-					component: "Deliberation",
-					symbol: $sce.trustAsHtml("6"),
-					opened:true
-				},
-				{
-					date: getTodayMoment().add(90, 'days').toDate(),
-					value: 90, title: "Technical assessment",
-					component: "Deliberation",
-					symbol: $sce.trustAsHtml("7"),
-					opened:true
-				},
-				{
-					date: getTodayMoment().add(120, 'days').toDate(),
-					value: 120, title: "Voting on proposals",
-					component: "Voting",
-					symbol: $sce.trustAsHtml("8"),
-					opened:true
-				}
-			]
-		};
-
-		$scope.newCampaign.campaignTimeframeInMonths=12;
-		$scope.newCampaign.campaignTimeframeInDays = 365;
-		$scope.newCampaign.campaignTimeframeStartDate = moment().toDate();
-		$scope.newCampaign.triggerTimeframeUpdate = false;
-		$scope.newCampaign.noOverlapping = true;
-
-		privateRefreshTimeframe(12);
-	}
-
-	$scope.updateMilestoneValue =  function(date, index) {
-		var newDate = moment(date);
-		var campaignStartDate = moment($scope.campaignTimeframeStartDate);
-		var d = duration(campaignStartDate,newDate);
-		$scope.newCampaign.milestones[index].date = date;
-		$scope.newCampaign.milestones[index].value = d.days;
-		$scope.newCampaign.triggerTimeframeUpdate = true;
-	}
-
-	$scope.open = function($event,m) {
-		m.calOpened = true;
-	};
-
-	$scope.dateOptions = {
-		formatYear: 'yyyy',
-		startingDay: 1
-	};
-
-	$scope.disabled = function(date, mode) {
-		return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-	};
-
-
-
-	// Disable weekend selection
-	$scope.disabled = function(date, mode) {
-		return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-	};
-
 	function updateMilestoneStartDate(newValue, campaignStartDate){
 		return moment(campaignStartDate).add(newValue,'d');
 	}
-
 
 	function setListOfLinkedAssemblies() {
 		var assembliesRes = Assemblies.linkedAssemblies($scope.assemblyID).query();
@@ -361,8 +352,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 							}
 						}
 					}
-					$scope.newCampaign.linkedCampaign = $scope.campaigns[0];
-					$scope.initializeLinkedCampaignOptionThemes();
+					$scope.initializeLinkedCampaignOptionThemes($scope.campaigns[0]);
 
 					$scope.assembly = localStorageService.get("currentAssembly");
 					if($scope.assembly!=undefined && $scope.assembly!=null && $scope.assembly.assemblyId === $scope.assemblyID) {
@@ -398,19 +388,39 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		);
 	}
 
-	$scope.createCampaign = function (step, options) {
-		if(step === 2 && !options.fastrack) {
-			$scope.steps[0].active = false;
-			$scope.steps[1].active = true;
+	function privateCreateCampaign(step,options){
+		if (step<4) {
+			privateSetCurrentStep(step,$scope.currentStep);
+			if(step === 1 && !options.fastrack) {
+				$scope.steps[0].active = true;
+				$scope.steps[1].active = false;
+			} else if(step === 2 && !options.fastrack) {
+				$scope.steps[0].active = false;
+				$scope.steps[1].active = true;
+			} else {
+				$scope.steps[1].active = false;
+				$scope.steps[2].active = true;
+			}
+		} else {
+			console.log("Creating... "+JSON.stringify($scope.newCampaign));
+			// creates the campaign
+			var campaignRes = Campaigns.newCampaign($scope.assemblyID).save($scope.newCampaign);
+			campaignRes.$promise.then(
+					function(data) {
+						newCampaign = data;
+						$location.url('/#/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
+					},
+					function(error) {
+						console.log("Error in the creation of the Campaign: "+JSON.stringify(error));
+					}
+			);
 		}
+
 	}
 
-	// Watchers
-	$scope.$watch("newCampaign.milestones", function(){
-		console.log("Changed slider...");
-	});
-
-
+	function internalCheckParentValue(parent, child) {
+		return parent.value === child.dependsOfValue;
+	}
 });
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, localStorageService, Assemblies, Campaigns){
@@ -423,16 +433,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		return url;
 	};
 
-	$scope.getEtherpadReadWriteUrl = function (c) {
-		return $scope.etherpadServer+"p/";//+ ... +"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
-	};
-
 	$scope.openContributionPage = function(cID)  {
 		$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
 	};
-	// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
-	setCurrentAssembly($scope, localStorageService);
-	setCurrentCampaign($scope, localStorageService);
 
 	function init() {
 		// 1. Setting up scope ID values
@@ -440,13 +443,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
 		$scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
 		$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
-
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 
-		console.log("API Server = " + $scope.serverBaseUrl);
-		console.log("Etherpad Server = " + $scope.etherpadServer);
+		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
+		setCurrentAssembly($scope, localStorageService);
+		setCurrentCampaign($scope, localStorageService);
 	}
+
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
 	 * If the route ID is different, updates the current assembly in local storage
@@ -467,7 +471,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			console.log("Route assembly ID is the same as the current assembly in local storage: "+$scope.assembly.assemblyId);
 		}
 	}
-
 
 	/**
 	 * Returns the current campaign in local storage if its ID matches with the requested ID on the route
@@ -529,7 +532,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			}
 		}
 	}
-
 
 	/**
 	 * Returns the current milestone in local storage if its ID matches with the requested ID on the route
@@ -624,11 +626,21 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 
 // General functions
-function getTodayMoment() {
+/**
+ * Returns a moment.js object representing Today
+ * @returns {*}
+ */
+function today() {
 	return moment();
 }
 
-
+/**
+ * Calculates the difference in days, minutes and hours between two
+ * moments
+ * @param start
+ * @param end
+ * @returns {{days: number, minutes: number, hours: number}}
+ */
 function duration(start, end) {
 	var diff = end.diff(start, 'minutes');
 	var minutesToEnd = diff%60;

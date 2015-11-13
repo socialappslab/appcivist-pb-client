@@ -49,18 +49,18 @@
                 <select id="selectCampaignTemplate" name="template"
                         class="form-control"
                         ng-model="newCampaign.template"
-                        ng-options="option.description for option in templateOptions track by option.value">
+                        ng-options="option.description for option in templateOptions track by option.value"
+                        ng-change="changeCampaignTemplate(newCampaign.template)">
                 </select>
             </div>
         </div>
         <div id="campaignTemplateLinked" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='LINKED'">
             <div class="form-group">
                 <label for="selectLinkedCampaign" class="control-label">{{newCampaign.template.subTemplateTitle}}</label>
-                <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignTemplateTooltip}}"></i></h3>-->
                 <select id="selectLinkedCampaign" class="form-control"
                         ng-model="newCampaign.linkedCampaign"
                         ng-options="campaign.title group by campaign.assembly for campaign in campaigns track by campaign.value"
-                        ng-change="initializeLinkedCampaignOptionThemes()">
+                        ng-change="initializeLinkedCampaignOptionThemes(campaign)">
                 </select>
             </div>
         </div>
@@ -80,7 +80,7 @@
                 <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
                     <div class="themes-container-title"
                          ng-show="newCampaign.template.value==='LINKED' && campaignThemes.length>0">
-                        <h4><strong> Linked Campaign Themes</strong></h4>
+                        <h4><strong>Themes of the Linked Campaign</strong></h4>
                     </div>
                     <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index"
                          ng-show="newCampaign.template.value==='LINKED'">
@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="themes-container-title">
-                        <h4><strong> Parent Assembly Themes</strong></h4>
+                        <h4><strong>Themes of the Organizing Assembly</strong></h4>
                     </div>
                     <div class="themes-container-content optionThemes" ng-repeat="theme in assemblyThemes track by $index">
                          <input type="checkbox"
@@ -126,15 +126,14 @@
             <div class="row col-md-12 col-sm-12 template-configuration"></div>
         </div>
 
-        <div id="campaignButtons" class="row col-md-12 col-sm-12">
+        <div id="campaignButtons1" class="row col-md-12 col-sm-12">
             <div class="col-md-6">
-                <button class="btn btn-primary col-md-12"
+                <button class="btn btn-success col-md-12"
                         uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
                         ng-disabled="!newCampaignForm1.$valid"
                         ng-click="createCampaign(2, {fastrack:true})">
                     <h3>
                         <strong>Fastrack</strong>
-                        <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
                     </h3>
                 </button>
             </div>

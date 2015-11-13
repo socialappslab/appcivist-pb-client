@@ -12,33 +12,30 @@ appCivistApp.directive('templateConfiguration', function(){
         link: function(scope){
             scope.isEnabled = true;
         },
-        controller: ['$scope',function($scope){
+        controller: ['$scope', 'Components', function($scope){
 
-            // TODO: change state by
-            $scope.proposalComponents = [
-                {name: 'Proposal making', key: "Proposalmaking", enabled: true, active: false, state: ""},
-                {name: 'Versioning', key: "Versioning", enabled: true, active: false, state: ""},
-                {name: 'Deliberation', key: "Deliberation", enabled: true, active: false, state: ""},
-                {name: 'Voting', key: "Voting", enabled: true, active: false, state: ""}
-            ];
 
-            $scope.supportingComponents = [
-                {name: 'Working Groups', alias: 'workingGroups'},
-                {name: 'Visualization', alias: 'visualization'},
-                {name: 'Mapping', alias:'mapping'},
-                {name: 'Mobilization', alias:'mobilization'},
-                {name: 'Reporting', alias:'reporting'},
-                {name: 'Implementation', alias:'implementation'}
-            ];
+            initializeComponents();
+
+            function initializeComponents() {
+                $scope.proposalComponents =
+                    $scope.newCampaign.proposalComponents === undefined ?
+                        Components.defaultProposalComponents() :  $scope.newCampaign.proposalComponents;
+
+                $scope.supportingComponents = $scope.newCampaign.supportingComponents === undefined ?
+                    Copmonents.defaultSupportingComponents() : $scope.supportingComponents;
+            }
 
             $scope.disableComponentsInLinkedCampaign = function() {
                 // TODO: actually check in linked campaign what are the components
                 $scope.proposalComponents[2].enabled = false;
                 $scope.proposalComponents[3].enabled = false;
+                $scope.proposalComponents[4].enabled = true;
+                $scope.proposalComponents[5].enabled = true;
             }
 
             $scope.switchCampaignComponents = function(index) {
-                $scope.proposalComponents[index] = !$scope.proposalComponents[index];
+                $scope.proposalComponents[index].active = !$scope.proposalComponents[index].active;
             }
 
             $scope.updateLinkedCampaign =  function() {
@@ -76,7 +73,7 @@ appCivistApp.directive('templateConfiguration', function(){
             }
 
             $scope.changeComponentState = function(index, state) {
-                if($scope.proposalComponents[index].enabled) {
+                if($scope.proposalComponents[index].enabled && !$scope.proposalComponents[index].linked) {
                     $scope.proposalComponents[index].active = state;
                     if(state)
                         $scope.proposalComponents[index].state = "active";

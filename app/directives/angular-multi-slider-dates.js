@@ -273,7 +273,6 @@ appCivistApp.directive('multiSliderDates', function ($compile, $timeout) {
 
                     bindingsSet = true;
                 };
-                console.log("Triggered update: " + scope.update);
 
                 if (scope.update === true || scope.update === "true") {
                     scope.update = false;

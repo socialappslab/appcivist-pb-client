@@ -2,9 +2,11 @@
     <li id="phase"
         ng-repeat="component in proposalComponents track by $index"
         class="{{component.state}}"
-        ng-class="component.enabled ? component.active ? 'selected' : '' : 'disabled'"
+        ng-class="!component.linked ? component.active ? 'selected' : '' : 'disabled'"
         ng-click="changeComponentState($index,!component.active)"
-        uib-tooltip="{{component.enabled ? component.name : 'Disabled'}}" tooltip-placement="right">
+        ng-if="component.enabled"
+        uib-tooltip="{{!component.linked ? component.name : 'Disabled'}}"
+        tooltip-placement="right">
        {{component.name | limitTo: 8 }}{{component.name.length > 8 ? '...' : ''}}
     </li>
     <!-- TODO: think of a better way of showing linked campaign phases -->

@@ -1,5 +1,5 @@
 .proposal{
-  border: 0.1rem solid $suggestion-border;
+  border: 0.1rem solid #0f0f0f;
   margin-bottom: 1rem;
   margin-left: 1rem;
   display: inline-flex; 
@@ -12,7 +12,7 @@
     margin-right: 0;
   }
   & .proposal-content{
-    padding: 1.5 rem; 
+    padding: 1.5rem;
     & .proposal-image{
         display: block; 
         width: 300px;
@@ -23,7 +23,7 @@
         clip: rect(0px,300px,150px,0px);
         z-index: -1; 
       }
-      & tag{
+      & .tag {
         top: 50%;                                                   
         z-index: 10;
       }

@@ -14,7 +14,7 @@ console.log("Welcome to AppCivist!");
 
 var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload', 'angularMoment', 'angularSpinner', 'angularMultiSlider'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
-//var appCivistCoreBaseURL = "https://appcivist-pb.herokuapp.com/";
+//var appCivistCoreBaseURL = "https://appcivist.littlemacondo.com/backend";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
@@ -83,30 +83,11 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             controller: "CreateCampaignCtrl",
             templateUrl: 'app/partials/campaign/creation/newCampaign.html'
         })
-        .when('/campaign/create/step2',{
-            templateUrl: 'app/partials/campaign/creation/campaignPartTwo.html'
-
-        })
-        .when('/campaign/create/step3',{
-            templateUrl: 'app/partials/campaign/creation/campaignPartThree.html'
-
-        })
-        .when('/campaign/create/step4',{
-            templateUrl: 'app/partials/campaign/creation/campaignPartFour.html'
-
-        })
-        .when('/campaign/create/step5',{
-            templateUrl: 'app/partials/campaign/creation/campaignPartFive.html'
-
-        })
         .when('/assembly/:aid/forum',{
             controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/forum/forum.html'
         })
-        //.when('/campaign/:aid',{
-        //    controller: 'CampaignComponentCtrl',
-        //    templateUrl: 'app/partials/campaign/component/campaignComponent.html'
-        //})
+        // TODO Check the following 3
         .when('/campaign/:aid/pmaking/wgroups',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
@@ -119,6 +100,7 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
         })
+        // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
         .when('/campaign/:aid/wgroup/create',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
@@ -143,12 +125,12 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             controller: 'WorkingGroupCtrl',
             templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
         })
+        // TODO: remove the following
         .when('/campaign/:aid/temp',{
             controller: 'CampaignCtrl',
             templateUrl: 'app/partials/campaign/pmaking/campaignPmakingDrafts.html'
         })
-
-        // TEMP FOR TESTING 
+        // TODO: finalize voting UIs
         .when('/ballot/:uuid/summary',{
             controller: 'RangeSummaryCtrl',
             templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
@@ -158,12 +140,6 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             controller: 'RangeResultCtrl',
             templateUrl: 'app/partials/voting/result/RangeResult.html'
         })
-        //Define a route that has a route parameter in it (:customerID)
-        //.when('/assembly/:assemblyID/campaign/:campaignId',
-        //{
-        //  controller: 'AssemblyController',
-        //  templateUrl: '/app/partials/assemblyCampaignView.html'
-        //})
         .otherwise({
 			redirectTo : '/'
 		});

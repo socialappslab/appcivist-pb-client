@@ -1075,6 +1075,12 @@ button#second-vote {
   -moz-column-count: 3;
   column-count: 3;
 }
+.campaign-pmaking .proposals {
+  list-style: none;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+}
 .campaign-pmaking .row {
   margin-bottom: 0.5rem;
 }
@@ -1396,6 +1402,60 @@ button#second-vote {
   text-align: center;
 }
 
+.proposal {
+  border: 0.1rem solid #0f0f0f;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  display: inline-flex;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+.proposal .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.proposal .proposal-content {
+  padding: 1.5rem;
+}
+.proposal .proposal-content .proposal-image {
+  display: block;
+  width: 300px;
+  height: 150px;
+  overflow: hidden;
+}
+.proposal .proposal-content .proposal-image img {
+  top: 0px;
+  clip: rect(0px, 300px, 150px, 0px);
+  z-index: -1;
+}
+.proposal .proposal-content .proposal-image .tag {
+  top: 50%;
+  z-index: 10;
+}
+.proposal .proposal-content .proposal-info {
+  display: inline-block;
+}
+.proposal .proposal-content .proposal-info .comments-icon {
+  width: 2rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0.1rem;
+}
+.proposal .proposal-content .proposal-info .comments-icon .total-replies {
+  display: block;
+  margin: -0.9 rem 0;
+  text-align: center;
+}
+.proposal .proposal-title {
+  display: inline-block;
+  margin: 0;
+}
+.proposal .proposal-description {
+  display: inline;
+}
+
 .contribution {
   border: 0.1rem solid #F4F4F4;
   margin-bottom: 2rem;
@@ -1591,6 +1651,229 @@ button#second-vote {
   text-align: left;
   border: 0.2rem solid black;
   border-radius: 0.3rem;
+}
+
+.points {
+  list-style: none;
+  padding: 1rem;
+}
+.points li {
+  display: inline-block;
+}
+.points .section {
+  margin-right: 2rem;
+  width: 5rem;
+}
+.points .section div {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+
+.theme {
+  color: #ffffff;
+  margin: 100 rem;
+}
+
+.names {
+  margin: 30 rems;
+}
+
+.left {
+  max-height: 100%;
+  max-width: 100%;
+  background-color: #aaaaaa;
+}
+.leftli {
+  padding: 30 rem;
+}
+.lefth3 {
+  margin: 100 rems;
+}
+
+.images {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#icon {
+  max-width: 15%;
+  max-height: 15%;
+  float: right;
+}
+
+#save {
+  float: right;
+}
+
+#submit {
+  float: right;
+}
+
+.proposal {
+  overflow: none;
+  display: block;
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+.proposal.container.description {
+  margin: 10 rem;
+  width: 40%;
+  word-break: break-all;
+}
+
+.winners .container .row .project {
+  display: inline-block;
+  style: none;
+}
+.winners .container .row .project .block {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+.winners .container .row .project .tail {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+.winners .container .row .project .tail li {
+  float: left;
+}
+.winners .container .row .theme {
+  background-color: #15bf23;
+  color: #ffffff;
+}
+.winners .container .row .score {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+
+.range-voting-content {
+  font-family: "Helvetica Neue";
+  margin-left: 150px;
+  width: 500px;
+  position: relative;
+  left: 5px;
+}
+
+.campaign-name {
+  display: inline-block;
+  font-size: 12px;
+}
+
+.check-box {
+  height: 20px;
+  width: 20px;
+}
+
+.voting-summary {
+  margin-bottom: 30px;
+  clear: both;
+  font-size: 22px;
+}
+
+.summary-container {
+  border: 2px solid gray;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
+  background-color: #EEEEEE;
+  clear: both;
+  width: 480px;
+}
+
+.score-box {
+  background-color: white;
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  padding: 3px 3px 3px 3px;
+  border-radius: 5px;
+  border: 2px solid #191919;
+  width: 50px;
+  height: 20px;
+}
+
+.total-scored-box {
+  display: inline-block;
+}
+
+.total-scored-text {
+  font-size: 12px;
+  display: inline-block;
+}
+
+.back-button {
+  display: inline-block;
+}
+
+.total-scored-box {
+  border: 2px solid #191919;
+  text-align: center;
+  width: 25px;
+  height: 20px;
+  background-color: white;
+  border-radius: 5px;
+  margin: 3px;
+}
+
+.submit-button {
+  display: inline-block;
+}
+
+.scored {
+  display: block;
+  font-size: 12px;
+}
+
+.date {
+  font-size: 40px;
+  position: relative;
+  left: 17px;
+  top: -16px;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 3.5em;
+  height: 3em;
+  position: relative;
+  margin-bottom: 25px;
+  margin-left: 30px;
+}
+
+h1 {
+  display: inline-block;
+  position: relative;
+  left: 17px;
+}
+
+h3 {
+  position: relative;
+  left: 17px;
+}
+
+.assembly-name {
+  position: relative;
+}
+
+.individual-scores {
+  margin: 20px;
+}
+
+.buttons {
+  margin-top: 10px;
+  float: right;
 }
 
 #contributionView {

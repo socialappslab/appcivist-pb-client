@@ -191,11 +191,16 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			}
 		}
 
-		$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
-		$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
+		if($scope.newCampaign.linkedComponents[0]===undefined) {
+			$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[2]);
+			$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[3]);
+
+		} else {
+			$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
+			$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
+		}
 		$scope.newCampaign.proposalComponents[4].componentInstanceId = $scope.newCampaign.linkedComponents[0].componentInstanceId;
 		$scope.newCampaign.proposalComponents[5].componentInstanceId = $scope.newCampaign.linkedComponents[1].componentInstanceId;
-
 	}
 
 	/**
@@ -362,7 +367,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 						assemblyRes.$promise.then(
 								function(a) {
 									$scope.assembly = a;
-									$scope.set("currentAssembly",a);
+									localStorageService.set("currentAssembly",a);
 									$scope.initializeAssemblyOptionThemes();
 								},
 								function (error) {
@@ -388,6 +393,35 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		);
 	}
 
+	function prepareCampaignToCreate() {
+		var requiredFields = $scope.newCampaign.title!=undefined && $scope.newCampaign.goal!=undefined;
+
+		var components = $scope.newCampaign.proposalComponents;
+		var milestones = $scope.newCampaign.milestones;
+
+		// setup milestones in components
+		// TODO: setup milestones already inside components when creation
+		for (var i = 0; i<milestones.length; i+=1) {
+			var m = milestones[i];
+			m.start = m.date;
+			if (i!=(milestones.length-1))
+				m.days = duration(moment(m.date),moment(milestones[i+1])).days;
+			else
+				m.days = 0;
+
+			components[m.componentIndex].milestones.push(m);
+		}
+
+
+		for (var i = 0; i<components.length; i+=1) {
+
+
+		}
+
+
+
+	}
+
 	function privateCreateCampaign(step,options){
 		if (step<4) {
 			privateSetCurrentStep(step,$scope.currentStep);
@@ -402,18 +436,23 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				$scope.steps[2].active = true;
 			}
 		} else {
-			console.log("Creating... "+JSON.stringify($scope.newCampaign));
-			// creates the campaign
-			var campaignRes = Campaigns.newCampaign($scope.assemblyID).save($scope.newCampaign);
-			campaignRes.$promise.then(
-					function(data) {
-						newCampaign = data;
-						$location.url('/#/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
-					},
-					function(error) {
-						console.log("Error in the creation of the Campaign: "+JSON.stringify(error));
-					}
-			);
+			console.log("Creating Campaign: "+$scope.newCampaign.title);
+
+			var postCampaign = prepareCampaignToCreate();
+			if (postCampaign.error === undefined) {
+				var campaignRes = Campaigns.newCampaign($scope.assemblyID).save(postCampaign);
+				campaignRes.$promise.then(
+						function(data) {
+							newCampaign = data;
+							$location.url('/#/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
+						},
+						function(error) {
+							console.log("Error in the creation of the Campaign: "+JSON.stringify(error));
+						}
+				);
+			} else {
+				console.log("Error. Could not create the campaign: "+JSON.stringify(postCampaign.error));
+			}
 		}
 
 	}

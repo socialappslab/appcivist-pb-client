@@ -1,4 +1,4 @@
-<div class="view campaign-pmaking" ng-controller="CampaignComponentCtrl">
+<div class="view campaign-pmaking" ng-controller="CampaignCtrl">
     <div class="col-md-12 col-sm-12">
         <div class="row text-center">
             <span class="h4"><strong>Assembly: </strong></span>
@@ -30,7 +30,7 @@
                     <ul class="progressline-phases">
                         <li class="progressline-phase" ng-repeat="milestone in milestones">
                             <h4 class="progressline-phase-title">
-                                <a href="#/campaign/{{campaign.campaignId}}/temp2"> {{milestone.title}}</a>
+                                <a href="#/campaign/{{campaign.campaignId}}/temp"> {{milestone.title}} </a>
                             </h4>
                             <div class="progressline-phase-line"></div>
                         </li>
@@ -105,13 +105,12 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <ul class="row contributions">
-                <li class="contribution" ng-repeat="contribution in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
-                    <contribution content="contribution"></contribution>
+            <ul class="row proposals">
+                <li class="proposal" ng-repeat="proposal in component.contributions | orderBy: 'date'">
+                    <proposal content="proposal"></proposal>
                 </li>
             </ul>
         </div>
     </div>
-    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
-    <ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>
+    <contribution></contribution>
 </div>

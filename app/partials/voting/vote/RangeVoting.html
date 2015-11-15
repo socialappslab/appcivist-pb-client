@@ -1,0 +1,151 @@
+<div class="container">
+		<div class="row text-center">
+			<h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h2>
+		</div>
+		<br>
+		<div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
+			<ul id="timeline" class="row timeline">
+				<li id="proposalMakingPhase" class=" active">
+					<h4>
+						<strong>Proposal Making</strong>
+					</h4>
+				</li>
+				<li id="proposalMakingPhase" class=" active">
+					<h4>
+						<strong>Versioning</strong>
+					</h4>
+				</li>
+				<li id="proposalMakingPhase" class=" active">
+					<h4>
+						<strong>Deliberation</strong>
+					</h4>
+				</li>
+				<li id="proposalMakingPhase" class=" selected active">
+					<h4>
+						<strong>Voting</strong>
+					</h4>
+				</li>
+			</ul>
+		</div>
+		<div class="progressline col-md-12 col-sm-12">
+	  		<div class="col-md-8 col-sm-8">
+        		<ul class="progressline-phases">
+            		<li class="progressline-phase">
+                		<h4 class="progressline-phase-title selected container-fluid">
+                    		Voting
+                		</h4>
+                		<div class="progressline-phase-line"></div>
+            		</li>
+        		</ul>
+       		</div>
+     		<div class="col-md-4 col-sm-4">
+        		<div class="counter-box">
+            		<h3 class="counter-title"><strong>Final drafts due</strong></h3>
+            		<ul class="counter">
+                		<li class="counter-section">
+                    		<h5 class="text-muted"><strong>Days</strong></h5>
+                    		<div>45</div>
+                		</li>
+                		<li class="counter-section">
+                    		<h5 class="text-muted"><strong>Hours</strong></h5>
+                    		<div>03</div>
+                		</li>
+                		<li class="counter-section">
+                    		<h5 class="text-muted"><strong>Minutes</strong></h5>
+                    		<div>03</div>
+                		</li>
+            		</ul>
+        		</div>
+     		</div>
+    	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-sm-8">
+			<div class = "container">
+				<h4>Paris PB 2016</h4>
+			</div>
+			<div class = "container">
+				<h2><b>Assembly Ballot</b></h2>
+			</div>
+			<div class = "container">
+				<h2 id="small">2015-08</h2>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-4">
+            		<ul class="points">
+            			<li>You have distributed </li>
+                		<li class="section">
+                    		<div>30</div>
+                		</li>
+                		<li>/</li>
+                		<li class="section">
+                    		<div>30</div>
+                		</li>
+                		<li> points.</li>
+            		</ul>
+        		</div>
+     	</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-sm-4">
+			<div class="left">
+				<ul class="list-unstyled">
+					<li><h3><b>Campaign Themes and Proposals</b></h3></li>
+					<li class="theme"><button type="button" class="btn btn-success"><b>Urban Infrastructure</b></button></li>
+					<li>
+						<ul class="list-unstyled" ng-repeat = "proposal in urbanProposals">
+							<li>{{ proposal.name }}</li>
+						</ul>
+					</li>
+					<li class="theme"><button type="button" class="btn btn-success"><b>Streets and Transportation</b></button></li>
+					<li>
+						<ul class="list-unstyled" ng-repeat = "proposal in streetProposals">
+							<li class="names">{{ proposal.name }}</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class = "col-md-8 col-sm-8">
+			<div class="right">
+				<div class = "buttons">
+						<ul class="list-unstyled list-inline">
+							<li><input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"></li>
+							<li><button type="button" class="btn btn-success">Search</button></li>
+							<li><button type="button" class="btn btn-secondary">Voting Instructions</button></li>
+							<li><button type="button" id = "save" class="btn btn-success">Save</button></li>
+							<li><button type="button" id = "submit" class="btn btn-primary">Submit</button></li>
+						</ul>
+				</div>
+				<ul class="list-unstyled" ng-repeat = "proposal in urbanProposals">
+					<li class="proposal">
+						<div>
+							<div class="container">
+								<div class="row">
+									<div class="col-md-2 col-sm-2">
+										<img class = "images" src="{{proposal.image}}">
+									</div>
+									<div class="col-md-6 col-sm-6">
+											<ul class="list-unstyled list-inline">
+												<li><h4><b>{{proposal.name}}</b></h4></li>
+												<li><img  id="icon" class = "img-circle" src="/../assets/images/image71.tiff" class="img-circle"></li>
+											</ul>
+											<ul class="list-unstyled list-inline">
+												<li><h5><b>Estimated Cost:</b>{{proposal.cost|currency}}</h5></li>
+												<li><h5><b>Location:</b>{{proposal.location}}</h5></li>
+											</ul>
+											<br>
+											<p class="description">{{proposal.description}}</p>
+										</div>
+									</div>
+								</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

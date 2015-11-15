@@ -117,7 +117,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         title: "Brainstorming",
                         component: "Proposal Making",
                         symbol: $sce.trustAsHtml("1"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 0
                     },
                     {
                         date: today().add(15, 'days').toDate(),
@@ -125,14 +126,16 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         title: "Working groups formation",
                         component: "Proposal Making",
                         symbol: $sce.trustAsHtml("2"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 0
                     },
                     {
                         date: today().add(20, 'days').toDate(),
                         value: 20, title: "Proposal drafting",
                         component: "Proposal Making",
                         symbol: $sce.trustAsHtml("3"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 0
                     },
                     {
                         date: today().add(30, 'days').toDate(),
@@ -140,7 +143,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         title: "Proposal editing",
                         component: "Versioning",
                         symbol: $sce.trustAsHtml("4"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 1
                     },
                     {
                         date: today().add(45, 'days').toDate(),
@@ -148,7 +152,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         title: "Proposal selection",
                         component: "Versioning",
                         symbol: $sce.trustAsHtml("5"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 1
                     },
                     {
                         date: today().add(60, 'days').toDate(),
@@ -156,21 +161,32 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         title: "Discussion of proposals",
                         component: "Deliberation",
                         symbol: $sce.trustAsHtml("6"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 2
                     },
                     {
                         date: today().add(90, 'days').toDate(),
                         value: 90, title: "Technical assessment",
                         component: "Deliberation",
                         symbol: $sce.trustAsHtml("7"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 2
                     },
                     {
                         date: today().add(120, 'days').toDate(),
                         value: 120, title: "Voting on proposals",
                         component: "Voting",
                         symbol: $sce.trustAsHtml("8"),
-                        opened:true
+                        opened:true,
+                        componentIndex: 3
+                    },
+                    {
+                        date: today().add(130, 'days').toDate(),
+                        value: 130, title: "Voting on proposals",
+                        component: "End of Voting",
+                        symbol: $sce.trustAsHtml("8"),
+                        opened:true,
+                        componentIndex: 3
                     }
                 ]
             };
@@ -556,10 +572,13 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 }
             ];
 
-
+            // TODO: get component definitions from server
             return [
                 {
+                    position: 1,
+                    timeline: true,
                     name: 'Proposal making',
+                    title: 'Proposal making',
                     key: "Proposalmaking",
                     enabled: true,
                     active: true,
@@ -601,10 +620,17 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                             position: 5,
                             defaultSection: true
                         }
-                    ]
+                    ],
+                    component: {
+                        componentId:23
+                    },
+                    milestones: []
                 },
                 {
+                    position: 2,
+                    timeline: true,
                     name: 'Versioning',
+                    title: 'Versioning',
                     key: "Versioning",
                     enabled: true,
                     active: true,
@@ -612,10 +638,17 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     linked: false,
                     configs: configDict['Versioning'],
                     template: "/app/partials/campaign/creation/components/versioning.html",
-                    descriptionTemplate: "/app/partials/campaign/creation/components/versioningDescription.html"
+                    descriptionTemplate: "/app/partials/campaign/creation/components/versioningDescription.html",
+                    component: {
+                        componentId:24
+                    },
+                    milestones: []
                 },
                 {
+                    position: 3,
+                    timeline: true,
                     name: 'Deliberation',
+                    title: 'Deliberation',
                     key: "Deliberation",
                     enabled: true,
                     active: false,
@@ -623,10 +656,17 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     linked: false,
                     configs: configDict['Deliberation'],
                     template: "/app/partials/campaign/creation/components/deliberation.html",
-                    descriptionTemplate: "/app/partials/campaign/creation/components/deliberationDescription.html"
+                    descriptionTemplate: "/app/partials/campaign/creation/components/deliberationDescription.html",
+                    component: {
+                        componentId:25
+                    },
+                    milestones: []
                 },
                 {
+                    position: 4,
+                    timeline: true,
                     name: 'Voting',
+                    title: 'Voting',
                     key: "Voting",
                     enabled: true,
                     active: false,
@@ -634,23 +674,41 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     linked: false,
                     configs: configDict['Voting'],
                     template: "/app/partials/campaign/creation/components/voting.html",
-                    descriptionTemplate: "/app/partials/campaign/creation/components/votingDescription.html"
+                    descriptionTemplate: "/app/partials/campaign/creation/components/votingDescription.html",
+                    component: {
+                        componentId:26
+                    },
+                    milestones: []
                 },
                 {
+                    position: 5,
+                    timeline: true,
                     name: 'Deliberation',
+                    title: 'Deliberation',
                     key: "DeliberationLinked",
                     enabled: true,
                     active: false,
                     state: "",
-                    linked: true
+                    linked: true,
+                    component: {
+                        componentId:25
+                    },
+                    milestones: []
                 },
                 {
+                    position: 6,
+                    timeline: true,
                     name: 'Voting',
+                    title: 'Voting',
                     key: "VotingLinked",
                     enabled: true,
                     active: false,
                     state: "",
-                    linked: true
+                    linked: true,
+                    component: {
+                        componentId:26
+                    },
+                    milestones: []
                 }
             ];
         },

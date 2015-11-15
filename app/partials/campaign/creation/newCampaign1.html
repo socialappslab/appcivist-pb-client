@@ -60,7 +60,7 @@
                 <select id="selectLinkedCampaign" class="form-control"
                         ng-model="newCampaign.linkedCampaign"
                         ng-options="campaign.title group by campaign.assembly for campaign in campaigns track by campaign.value"
-                        ng-change="initializeLinkedCampaignOptionThemes(campaign)">
+                        ng-change="initializeLinkedCampaignOptionThemes(newCampaign.linkedCampaign)">
                 </select>
             </div>
         </div>

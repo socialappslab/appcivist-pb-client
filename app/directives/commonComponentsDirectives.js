@@ -3,7 +3,7 @@
  *
  */
 
-appCivistApp.directive('templateConfiguration', function(){
+appCivistApp.directive('templateConfiguration',  function(){
     return {
         restrict: 'C',
         replace: true,
@@ -23,7 +23,7 @@ appCivistApp.directive('templateConfiguration', function(){
                         Components.defaultProposalComponents() :  $scope.newCampaign.proposalComponents;
 
                 $scope.supportingComponents = $scope.newCampaign.supportingComponents === undefined ?
-                    Copmonents.defaultSupportingComponents() : $scope.supportingComponents;
+                    Components.defaultSupportingComponents() : $scope.supportingComponents;
             }
 
             $scope.disableComponentsInLinkedCampaign = function() {
@@ -227,6 +227,32 @@ appCivistApp.directive('contribution', function(){
     }
 });
 
+appCivistApp.directive('proposal', function(){
+    return{
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/proposal/proposal.html",
+        scope: {
+            content: '='
+        },
+        controller: ['$scope', function($scope){
+            $scope.proposal = $scope.content;
+        }]
+    }
+});
+
+appCivistApp.directive('newContribution', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/newContribution/newContribution.html",
+        scope: {
+            content: '='
+        },
+        controller: "NewContributionCtrl"
+    }
+});
+    
 appCivistApp.directive('backgroundImage', function(){
     return function(scope, element, attrs){
         var url = attrs.backgroundImage;

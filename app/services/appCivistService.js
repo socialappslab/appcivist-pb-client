@@ -227,6 +227,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             return $resource(serverBaseUrl + '/assembly/:aid/contribution/:coid',
                 {aid: assemblyId, coid: contributionId});
         },
+        groupContribution: function(assemblyId, groupId) {
+            return $resource(serverBaseUrl + '/assembly/:aid/group/:gid/contribution',
+                {aid: assemblyId, gid: groupId});
+        },
         verifyAuthorship: function(user, c) {
             if(user!=null && user != undefined && c!=null && c!=undefined) {
                 var authorList = c.authors;

@@ -298,13 +298,24 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 
 });
 
-appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, localStorageService) {
+appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, localStorageService, Contributions, WorkingGroups) {
 	init();
 	function init() {
 		angular.forEach(localStorageService.get('workingGroups'), function(wGroup) {
 			if(wGroup.groupId == $routeParams.wid) {
 				$scope.wGroup = wGroup;
 			}
+			var res = WorkingGroups.workingGroupMembers($routeParams.aid, $routeParams.wid, $scope.wGroup.supportedMembership).get();
+			res.$promise.then(function(data) {
+				$scope.wGroupMembers = data;
+			});
+		});
+	}
+
+	$scope.postContribution = function(content){
+		var newContribution = Contributions.groupContribution($routeParams.aid, $routeParams.wid).save(content, function() {
+			console.log("Created contribution wGroup: "+newContribution);
+			localStorageService.set("currentContributionWGroup", newContribution);
 		});
 	}
 });

@@ -12,27 +12,38 @@
 
 console.log("Welcome to AppCivist!");
 
-var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload', 'angularMoment', 'angularSpinner', 'angularMultiSlider'];
+var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
+    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
-//var appCivistCoreBaseURL = "https://appcivist.littlemacondo.com/backend";
 var appCivistCoreBaseURL = "http://localhost:9000/api";
+// Comment the previous line and uncomment the following to use the API Server available in our public server
+//var appCivistCoreBaseURL = "https://appcivist.littlemacondo.com/backend";
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",
     locationTooltip : "Can be the name of a specific place, address, city or country associated with your assembly",
     targetAudienceTooltip : "Describe who you want to participate",
     supportedMembershipRegistrationTooltip : "Members can be invited or request to join the assembly, or both.",
-    moderatorsTooltip: "Moderators are assembly members empowered to delete inappropriate content. AppCivist recommends that assemblies have at least two. An alternative is to allow all members to be moderators. In both cases at least two moderators must agree.",
+    moderatorsTooltip: "Moderators are assembly members empowered to delete inappropriate content. AppCivist " +
+        "recommends that assemblies have at least two. An alternative is to allow all members to be moderators. In both " +
+        "cases at least two moderators must agree.",
     coordinatorsTooltip: "Coordinators are assembly members empowered to change settings",
-    invitationsTooltip: "Add one or more email addresses of people you want to invite, separated by comma, then click add to list",
+    invitationsTooltip: "Add one or more email addresses of people you want to invite, separated by comma, then click " +
+        "add to list",
     invitationsEmailTooltip: "Each invitee will receive the following email",
     listedAssemblyTooltip: "If true, the 'profile' of the assembly will be searchable and public",
-    campaignDefinition: "Campaigns are initiatives that the assembly undertakes to achieve a specific goal. Each campaign has its own template that structures its components, working groups, and timeline.",
-    campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development components. Linking to another campaign will bring that campaign's configuration",
-    campaignFastrackTooltip: "Fastrack creation of a campaign will use default values for each phase of the campaign (e.g., default dates and durations for each phase, default values for each phases specific configurations, etc.)",
-    proposalTimeline: "Click on the phase name to activate or deactivate the phases you wish to include in your campaign. Phases shown as disabled take place in the linked campaign.",
+    campaignDefinition: "Campaigns are initiatives that the assembly undertakes to achieve a specific goal. Each " +
+        "campaign has its own template that structures its components, working groups, and timeline.",
+    campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development " +
+        "components. Linking to another campaign will bring that campaign's configuration",
+    campaignFastrackTooltip: "Fastrack creation of a campaign will use default values for each phase of the " +
+        "campaign (e.g., default dates and durations for each phase, default values for each phases specific " +
+        "configurations, etc.)",
+    proposalTimeline: "Click on the phase name to activate or deactivate the phases you wish to include in your " +
+        "campaign. Phases shown as disabled take place in the linked campaign.",
     campaignTimeframeTooltip: "Select a period of time to represent in the timeline below.",
-    componentContributionTemplateTooltip: "A proposal template is the list of sections (with its descriptions) that are used to initialized proposal drafts"
+    componentContributionTemplateTooltip: "A proposal template is the list of sections (with its descriptions) that " +
+        "are used to initialized proposal drafts"
 };
 
 /**
@@ -40,7 +51,8 @@ var helpInfo = {
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
-appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $sceDelegateProvider, localStorageServiceProvider) {
+appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
+                             localStorageServiceProvider) {
 
     // Added to whilelist the etherpad server
     $sceDelegateProvider.resourceUrlWhitelist([

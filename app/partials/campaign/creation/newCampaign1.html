@@ -35,7 +35,8 @@
                     <label for="inputBudget" class="control-label">Total Budget*</label>
                     <input id="inputBudget" name="budget" class="form-control"
                            ng-model="newCampaign.config.budget"
-                           placeholder="{{newCampaign.config.budget | currency:'USD$':2}}">
+                           model-format="currency"
+                           placeholder="{{newCampaign.config.budget}}">
                     <div class="help-block" ng-messages="newCampaignForm1.budget.$error" ng-if="newCampaignForm1.budget.$touched">
                         <p ng-message="required">A budget to be allocated is required for the campaign</p>
                     </div>
@@ -131,7 +132,7 @@
                 <button class="btn btn-success col-md-12"
                         uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
                         ng-disabled="!newCampaignForm1.$valid"
-                        ng-click="createCampaign(2, {fastrack:true})">
+                        ng-click="createCampaign({step:4}, {fastrack:true})">
                     <h3>
                         <strong>Fastrack</strong>
                     </h3>
@@ -139,7 +140,7 @@
             </div>
             <div class="col-md-6">
                 <button class="btn btn-primary col-md-12"
-                        ng-click="createCampaign(2, {fastrack:false})"
+                        ng-click="createCampaign({step:2}, {fastrack:false})"
                         ng-disabled="!newCampaignForm1.$valid">
                     <h3><strong>Next</strong></h3>
                 </button>

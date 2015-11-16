@@ -125,6 +125,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         value: 15,
                         title: "Working groups formation",
                         component: "Proposal Making",
+                        componentKey: "Proposalmaking",
                         symbol: $sce.trustAsHtml("2"),
                         opened:true,
                         componentIndex: 0
@@ -133,6 +134,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         date: today().add(20, 'days').toDate(),
                         value: 20, title: "Proposal drafting",
                         component: "Proposal Making",
+                        componentKey: "Proposalmaking",
                         symbol: $sce.trustAsHtml("3"),
                         opened:true,
                         componentIndex: 0
@@ -142,6 +144,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         value: 30,
                         title: "Proposal editing",
                         component: "Versioning",
+                        componentKey: "Versioning",
                         symbol: $sce.trustAsHtml("4"),
                         opened:true,
                         componentIndex: 1
@@ -151,6 +154,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         value: 45,
                         title: "Proposal selection",
                         component: "Versioning",
+                        componentKey: "Versioning",
                         symbol: $sce.trustAsHtml("5"),
                         opened:true,
                         componentIndex: 1
@@ -182,8 +186,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                     },
                     {
                         date: today().add(130, 'days').toDate(),
-                        value: 130, title: "Voting on proposals",
-                        component: "End of Voting",
+                        value: 130, title: "Voting period ending",
+                        component: "Voting",
                         symbol: $sce.trustAsHtml("8"),
                         opened:true,
                         componentIndex: 3
@@ -550,10 +554,10 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 {
                     position: 9,
                     key: "component.voting.system.winners.fixed.number",
-                    description: "Block percentage threshold",
+                    description: "Number of Winners",
                     type: "input",
-                    inputType: "percentage",
-                    value: 0.1,
+                    inputType: "number",
+                    value: 3,
                     dependsOf: 8,
                     dependsOfValue: optionsDict['component.voting.system.winners'][0].value
                 },
@@ -562,7 +566,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     key: "component.voting.system.quorum.enable",
                     description: "Enable Quorum threshold",
                     type: "checkbox",
-                    value: "true"
+                    value: true
                 },
                 {
                     position: 11,
@@ -572,7 +576,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     inputType: "percentage",
                     value: 0.6,
                     dependsOf: 10,
-                    dependsOfValue: "true"
+                    dependsOfValue: true
                 }
             ];
 
@@ -580,7 +584,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
             return [
                 {
                     position: 1,
-                    timeline: true,
+                    timeline: 1,
                     name: 'Proposal making',
                     title: 'Proposal making',
                     key: "Proposalmaking",
@@ -650,7 +654,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 },
                 {
                     position: 3,
-                    timeline: true,
+                    timeline: 1,
                     name: 'Deliberation',
                     title: 'Deliberation',
                     key: "Deliberation",
@@ -668,7 +672,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 },
                 {
                     position: 4,
-                    timeline: true,
+                    timeline: 1,
                     name: 'Voting',
                     title: 'Voting',
                     key: "Voting",
@@ -686,7 +690,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 },
                 {
                     position: 5,
-                    timeline: true,
+                    timeline: 1,
                     name: 'Deliberation',
                     title: 'Deliberation',
                     key: "DeliberationLinked",
@@ -700,8 +704,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     milestones: []
                 },
                 {
-                    position: 6,
-                    timeline: true,
+                    position: 1,
+                    timeline: 1,
                     name: 'Voting',
                     title: 'Voting',
                     key: "VotingLinked",

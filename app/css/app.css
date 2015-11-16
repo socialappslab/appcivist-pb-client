@@ -1766,24 +1766,20 @@ button#second-vote {
   position: relative;
   left: 5px;
 }
-
-.campaign-name {
+.range-voting-content .campaign-name {
   display: inline-block;
   font-size: 12px;
 }
-
-.check-box {
+.range-voting-content .check-box {
   height: 20px;
   width: 20px;
 }
-
-.voting-summary {
+.range-voting-content .voting-summary {
   margin-bottom: 30px;
   clear: both;
   font-size: 22px;
 }
-
-.summary-container {
+.range-voting-content .summary-container {
   border: 2px solid gray;
   border-radius: 5px;
   padding: 5px 5px 5px 5px;
@@ -1791,8 +1787,7 @@ button#second-vote {
   clear: both;
   width: 480px;
 }
-
-.score-box {
+.range-voting-content .score-box {
   background-color: white;
   display: inline-block;
   text-align: center;
@@ -1803,21 +1798,17 @@ button#second-vote {
   width: 50px;
   height: 20px;
 }
-
-.total-scored-box {
+.range-voting-content .total-scored-box {
   display: inline-block;
 }
-
-.total-scored-text {
+.range-voting-content .total-scored-text {
   font-size: 12px;
   display: inline-block;
 }
-
-.back-button {
+.range-voting-content .back-button {
   display: inline-block;
 }
-
-.total-scored-box {
+.range-voting-content .total-scored-box {
   border: 2px solid #191919;
   text-align: center;
   width: 25px;
@@ -1826,24 +1817,20 @@ button#second-vote {
   border-radius: 5px;
   margin: 3px;
 }
-
-.submit-button {
+.range-voting-content .submit-button {
   display: inline-block;
 }
-
-.scored {
+.range-voting-content .scored {
   display: block;
   font-size: 12px;
 }
-
-.date {
+.range-voting-content .date {
   font-size: 40px;
   position: relative;
   left: 17px;
   top: -16px;
 }
-
-.checkmark {
+.range-voting-content .checkmark {
   display: inline-block;
   width: 3.5em;
   height: 3em;
@@ -1851,27 +1838,22 @@ button#second-vote {
   margin-bottom: 25px;
   margin-left: 30px;
 }
-
-h1 {
+.range-voting-content h1 {
   display: inline-block;
   position: relative;
   left: 17px;
 }
-
-h3 {
+.range-voting-content h3 {
   position: relative;
   left: 17px;
 }
-
-.assembly-name {
+.range-voting-content .assembly-name {
   position: relative;
 }
-
-.individual-scores {
+.range-voting-content .individual-scores {
   margin: 20px;
 }
-
-.buttons {
+.range-voting-content .buttons {
   margin-top: 10px;
   float: right;
 }

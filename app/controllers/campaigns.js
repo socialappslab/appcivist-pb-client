@@ -18,11 +18,12 @@
 
 appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, $timeout, localStorageService,
-													   Campaigns, Assemblies, Components, moment) {
+													   Campaigns, Assemblies, Components, moment, modelFormatConfig) {
 
 	init();
 
 	function init() {
+		$scope.forms = {};
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.currentStep = 1;
 		$scope.prevStep = 2;
@@ -33,21 +34,24 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				title: "Campaign description",
 				template: "app/partials/campaign/creation/newCampaign1.html",
 				info: "",
-				active: true
+				active: true,
+				disabled: false
 			},
 			{
 				step: 2,
 				title: "Campaign milestones",
 				template: "app/partials/campaign/creation/newCampaign2.html",
 				info: "",
-				active: false
+				active: false,
+				disabled: false
 			},
 			{
 				step: 3,
 				title: "Campaign phases",
 				template: "app/partials/campaign/creation/newCampaign3.html",
 				info: "",
-				active: false
+				active: false,
+				disabled: false
 			}
 		];
 
@@ -61,6 +65,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 		$scope.errors = [];
 		$scope.templateErrors = [];
+		$scope.componentErrors = [];
 		$scope.campaigns = [];
 		$scope.templateOptions = [
 			{
@@ -80,6 +85,12 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		};
 		$scope.oneAtATime = false;
 		$scope.section = {};
+
+		// TODO: enable additional tabs only when the first form is valid
+		//$scope.$watch("newCampaignForm1.$valid", function(validity) {
+		//	if(validity)
+		//		$scope.steps[1].disabled = $scope.steps[2].disabled = false;
+		//}, true);
 
 		initializeNewCampaignModel();
 		setListOfLinkedAssemblies();
@@ -120,6 +131,14 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		return result;
 	}
 
+	$scope.removeError = function (index) {
+		$scope.errors.splice(index,1)
+	}
+
+	$scope.removeTemplateError = function (index) {
+		$scope.templateErrors.splice(index,1)
+	}
+
 	/**
 	 * Add/removes themes to the list of themes in the newCampaign Model
 	 * @param ts
@@ -156,7 +175,12 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	 * @param section
 	 */
 	$scope.addContributionTemplateSection = function(section, component) {
-		component.contributionTemplate.push(section);
+		var newSection = {
+			title: section.title,
+			description: section.description,
+			length: section.length
+		};
+		component.contributionTemplate.push(newSection);
 	}
 
 	$scope.removeContributionTemplateSection = function(index, component) {
@@ -265,7 +289,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	 * @param options
      */
 	$scope.createCampaign = function (step, options) {
-		privateCreateCampaign(step,options);
+		if (!step.disabled) {
+			privateCreateCampaign(step.step,options);
+		}
 	}
 
 	// Functions not available in the scope
@@ -371,7 +397,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 									$scope.initializeAssemblyOptionThemes();
 								},
 								function (error) {
-									$scope.errors.push(error);
+									$scope.templateErrors.push(error);
 								}
 						);
 					}
@@ -394,31 +420,37 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	}
 
 	function prepareCampaignToCreate() {
-		var requiredFields = $scope.newCampaign.title!=undefined && $scope.newCampaign.goal!=undefined;
+		var newCampaign = $scope.newCampaign;
+		var requiredFields = newCampaign.title!=undefined && newCampaign.goal!=undefined;
 
-		var components = $scope.newCampaign.proposalComponents;
-		var milestones = $scope.newCampaign.milestones;
+		if (requiredFields) {
+			var components = newCampaign.proposalComponents;
+			var milestones = newCampaign.milestones;
 
-		// setup milestones in components
-		// TODO: setup milestones already inside components when creation
-		for (var i = 0; i<milestones.length; i+=1) {
-			var m = milestones[i];
-			m.start = m.date;
-			if (i!=(milestones.length-1))
-				m.days = duration(moment(m.date),moment(milestones[i+1])).days;
-			else
-				m.days = 0;
+			// setup milestones in components
+			// TODO: setup milestones already inside components when creation
+			for (var i = 0; i<milestones.length; i+=1) {
+				var m = milestones[i];
+				m.start = m.date;
+				if (i!=(milestones.length-1))
+					m.days = duration(moment(m.date),moment(milestones[i+1])).days;
+				else
+					m.days = 0;
 
-			components[m.componentIndex].milestones.push(m);
+				components[m.componentIndex].milestones.push(m);
+			}
+
+			for (var i = 0; i<components.length; i+=1) {
+				var component = components[i];
+				if(component.enabled) {
+					newCampaign.components.push(component)
+				}
+			}
+		} else {
+			newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
 		}
 
-
-		for (var i = 0; i<components.length; i+=1) {
-
-
-		}
-
-
+		return newCampaign;
 
 	}
 
@@ -451,7 +483,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 						}
 				);
 			} else {
+				$scope.errors.push(postCampaign.error);
 				console.log("Error. Could not create the campaign: "+JSON.stringify(postCampaign.error));
+				postCampaign.error=undefined;
 			}
 		}
 

@@ -129,18 +129,25 @@
                             </div>
                             <div class="col-md-12 voffset3"></div>
                         </div>
-
                     </section>
-
                 </uib-accordion-group>
             </uib-accordion>
+
+            <section id="errors" class="row col-md-12 col-sm-12" ng-if="errors.length > 0 || templateErrors.length > 0">
+                <uib-alert ng-repeat="error in errors track by $index" type="danger"
+                           close="removeError($index)">An error has occurred while creating the campgaign: {{error}}
+                </uib-alert>
+                <uib-alert ng-repeat="error in templateErrors track by $index" type="danger"
+                           close="removeTemplateError($index)">An error has occurred configuring the template for the campaign: {{error}}
+                </uib-alert>
+            </section>
 
             <section id="campaignButtons3" class="row col-md-12 col-sm-12">
                 <div class="col-md-4">
                     <button class="btn btn-success col-md-12"
                             uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
                             ng-disabled="!newCampaignForm3.$valid"
-                            ng-click="createCampaign(4, {fastrack:true})">
+                            ng-click="createCampaign({step:4}, {fastrack:true})">
                         <h3>
                             <strong>Fastrack</strong>
                             <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
@@ -151,7 +158,7 @@
                     <button class="btn btn-primary col-md-12"
                             uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
                             ng-disabled="!newCampaignForm3.$valid"
-                            ng-click="createCampaign(2, {fastrack:false})">
+                            ng-click="createCampaign({step:2}, {fastrack:false})">
                         <h3>
                             <strong>Back</strong>
                             <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
@@ -160,7 +167,7 @@
                 </div>
                 <div class="col-md-4">
                     <button class="btn btn-primary col-md-12"
-                            ng-click="createCampaign(4, {fastrack:false})"
+                            ng-click="createCampaign({step:4}, {fastrack:false})"
                             ng-disabled="!newCampaignForm3.$valid">
                         <h3><strong>Start</strong></h3>
                     </button>

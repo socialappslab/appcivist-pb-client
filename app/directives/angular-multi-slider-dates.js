@@ -82,7 +82,7 @@ appCivistApp.directive('multiSliderDates', function ($compile, $timeout) {
             // DOM Components
             var sliderStr = '';
             angular.forEach(scope.sliders, function (slider, key) {
-                sliderStr += ('<div class="handle"><strong>' + (key + 1) + '</strong></div><div class="bubble">{{ sliders[' + key.toString() + '].title }} </div>');
+                sliderStr += ('<div class="handle"><strong>' + (key + 1) + '</strong></div><div class="bubble">{{ sliders[' + key.toString() + '].title}}: {{sliders[' + key.toString() + '].date}} </div>');
             });
             var sliderControls = angular.element(sliderStr);
             element.append(sliderControls);

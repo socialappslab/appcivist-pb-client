@@ -455,7 +455,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	}
 
 	function privateCreateCampaign(step,options){
-		if (step<4) {
+		if (step < 4) {
 			privateSetCurrentStep(step,$scope.currentStep);
 			if(step === 1 && !options.fastrack) {
 				$scope.steps[0].active = true;
@@ -469,7 +469,6 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			}
 		} else {
 			console.log("Creating Campaign: "+$scope.newCampaign.title);
-
 			var postCampaign = prepareCampaignToCreate();
 			if (postCampaign.error === undefined) {
 				var campaignRes = Campaigns.newCampaign($scope.assemblyID).save(postCampaign);
@@ -479,12 +478,12 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 							$location.url('/#/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
 						},
 						function(error) {
-							console.log("Error in the creation of the Campaign: "+JSON.stringify(error));
+							console.log("Error in the creation of the Campaign: "+JSON.stringify(error.statusMessage));
 						}
 				);
 			} else {
 				$scope.errors.push(postCampaign.error);
-				console.log("Error. Could not create the campaign: "+JSON.stringify(postCampaign.error));
+				console.log("Error. Could not create the campaign: "+JSON.stringify(postCampaign.error.statusMessage));
 				postCampaign.error=undefined;
 			}
 		}

@@ -684,7 +684,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 },
                 {
                     position: 2,
-                    timeline: true,
+                    timeline: 1,
                     name: 'Versioning',
                     title: 'Versioning',
                     key: "Versioning",

@@ -347,6 +347,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.currentAssembly = Assemblies.assembly($scope.assemblyID).get();
             $scope.contributions = Contributions.contributions($scope.assemblyID).query();
             $scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
+            $scope.verifyAssembly = Assemblies.verifyMembership($scope.assemblyID, $scope.user.userId).get();
             $scope.campaigns = null;
             $scope.currentAssembly.$promise.then(function(data) {
                 $scope.currentAssembly = data;
@@ -359,6 +360,9 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.assemblyMembers.$promise.then(function(data){
                 $scope.assemblyMembers = data;
                 $scope.$root.stopSpinner();
+            });
+            $scope.verifyAssembly.$promise.then(function(data){
+                $scope.verifyAssembly = data;
             });
         }
     }

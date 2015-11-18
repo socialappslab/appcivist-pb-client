@@ -6,8 +6,7 @@
  * user can view
  *
  */
-appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
-											 localStorageService, Assemblies, loginService, $route) {
+appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService, Assemblies, loginService, $route) {
 	$scope.route = $route;
 	init();
 
@@ -18,6 +17,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
 		var etherpadServer = $scope.etherpadServer = localStorageService.get("etherpadServer");
 		var info = $scope.info = localStorageService.get("help");
 
+		$scope.assembliesLoading = false;
 
 
 		if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
@@ -44,36 +44,63 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location,
 		// does scope already has the user and the sessionKey?
 		console.log("User in MainCtrl is: "+user);
 
-		// check if there is already a user and a sessionKey in the scope
-		if (user != null && sessionKey != null) {
-			// TODO Validate that the Session Key corresponds to the user
-			$location.url('/home');
-		} else {
-			if (user != null && sessionKey != null) {
-				// TODO Validate that the Session Key corresponds to the user
-				$location.url('/home');
-			} else {
-				$scope.user = {};
-				$scope.sessionKey = null;
-			}
-		}
-
-		$scope.assemblies = Assemblies.assembliesWithoutLogin().query();
-		$scope.assemblies.$promise.then(function(data) {
-			$scope.assemblies = data;
-			localStorageService.set("assemblies", $scope.assemblies);
-		});
+		authCheck(user,sessionKey);
+		loadListedAssemblies();
 	}
 
-	$scope.searchMoreAssemblies = function() {
-		$scope.assemblies = Assemblies.assembliesWithoutLogin().query();
-		$scope.assemblies.$promise.then(function(data) {
-			$scope.assemblies = data;
-			localStorageService.set("assemblies", $scope.assemblies);
-		});
+	// TODO: Redirect to the real search query
+	$scope.searchMoreAssemblies = function(query) {
+		searchAssemblies(query);
 	}
 
 	$scope.login = function(email, password) {
 		$scope.user = loginService.signIn(email, password);
+	}
+
+	function authCheck(user, sessionKey) {
+		// check if there is already a user and a sessionKey in the scope
+		// TODO: Implement login/session control like this: http://plnkr.co/edit/tg25kr?p=preview
+
+		if (user != null && sessionKey != null) {
+			// TODO Validate that the Session Key corresponds to the user
+			//$location.url('/home');
+		} else {
+			$scope.user = {};
+			$scope.sessionKey = null;
+		}
+	}
+
+	function loadListedAssemblies() {
+		// Load 'listed' assemblies
+		$scope.assembliesLoading = true;
+		$scope.assemblies = Assemblies.assembliesWithoutLogin().query();
+		$scope.assemblies.$promise.then(
+				function(data) {
+					$scope.assemblies = data;
+					localStorageService.set("assemblies", $scope.assemblies);
+					$scope.assembliesLoading = false;
+				},
+				function(error) {
+					$scope.error = error;
+					$scope.assembliesLoading = false;
+				}
+		);
+	}
+
+	function searchAssemblies(query) {
+		// Searching 'listed' assemblies
+		$scope.assembliesLoading = true;
+		$scope.assemblies = Assemblies.assembliesByQuery(query).query();
+		$scope.assemblies.$promise.then(
+				function(data) {
+					$scope.assemblies = data;
+					localStorageService.set("assemblies", $scope.assemblies);
+					$scope.assembliesLoading = false;
+				},
+				function(error) {
+					$scope.error = error;
+					$scope.assembliesLoading = false;
+				}
+		);
 	}
 });

@@ -51,8 +51,13 @@ var helpInfo = {
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
-appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
-                             localStorageServiceProvider) {
+appCivistApp.config(config);
+appCivistApp.run(run);
+
+config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
+    'localStorageServiceProvider'];
+function config($routeProvider, $locationProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
+         localStorageServiceProvider) {
 
     // Added to whilelist the etherpad server
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -62,21 +67,22 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
         etherpadServerURL+'**'
     ]);
 
+    // Setup CORS requests
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common["X-Requested-With"];
 
     localStorageServiceProvider
         .setPrefix('appcivist')
-            .setStorageType('sessionStorage')
+        .setStorageType('sessionStorage')
         //.set("appcivist_api_base_url",appCivistCoreBaseURL)
         .setNotify(true,true);
 
     $routeProvider
-		.when('/', {
-			controller : 'MainCtrl',
-			templateUrl : '/app/partials/main.html'
-		})
-		.when('/home',{
+        .when('/', {
+            controller : 'MainCtrl',
+            templateUrl : '/app/partials/main.html'
+        })
+        .when('/home',{
             controller: 'HomeCtrl',
             templateUrl: 'app/partials/home/home.html',
             activetab: 'home'
@@ -89,7 +95,10 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
         .when('/assembly/create',{
             controller: 'NewAssemblyCtrl',
             templateUrl: 'app/partials/assembly/newAssembly.html'
-
+        })
+        .when('/assembly/create?:userIsNew',{
+            controller: 'NewAssemblyCtrl',
+            templateUrl: 'app/partials/assembly/newAssembly.html'
         })
         .when('/assembly/:aid/campaign/create',{
             controller: "CreateCampaignCtrl",
@@ -147,14 +156,13 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
             controller: 'RangeSummaryCtrl',
             templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
         })
-
         .when('/campaign/:aid/temp3',{
             controller: 'RangeResultCtrl',
             templateUrl: 'app/partials/voting/result/RangeResult.html'
         })
         .otherwise({
-			redirectTo : '/'
-		});
+            redirectTo : '/'
+        });
 
     $httpProvider.interceptors.push(['$q', '$location', 'localStorageService', function($q, $location, localStorageService) {
         return {
@@ -164,17 +172,55 @@ appCivistApp.config(function($routeProvider, $resourceProvider, $httpProvider, $
                 if (sessionKey) {
                     config.headers.SESSION_KEY = '' + sessionKey;
                 }
-                else{
-                    $location.path('/');
-                }
+                //else{
+                //    if (!pathIsNotRestricted($location.path()))
+                //        $location.path('/');
+                //}
                 return config;
             },
             'responseError': function(response) {
-                if(response.status === 401 || response.status === 403) {
-                    $location.path('/');
-                }
+                //if(response.status === 401 || response.status === 403) {
+                //    $location.path('/');
+                //}
                 return $q.reject(response);
             }
         };
     }]);
-});
+
+}
+
+run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'loginService'];
+function run($rootScope, $location, $http, localStorageService) {
+    //// keep user logged in after page refresh
+    //$rootScope.globals = $cookieStore.get('globals') || {};
+    //if ($rootScope.globals.currentUser) {
+    //    $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+    //}
+
+    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        // redirect to login page if not logged in and trying to access a restricted page
+
+        //var nonRestrictedPage = $.inArray($location.path(), ['/assembly', '/register']) === -1;
+        var nonRestrictedPage = pathIsNotRestricted($location.path());
+        var authenticated = localStorageService.get('authenticated');
+        var sessionKey = localStorageService.get('sessionKey');
+        var user = localStorageService.get("user");
+
+        if (!nonRestrictedPage && !authenticated
+            && (sessionKey === null || sessionKey === undefined || sessionKey === "" )
+            && (user === null || user === undefined)) {
+            $location.path('/');
+        }
+    });
+}
+
+function pathIsNotRestricted(path) {
+    //var allowedPaths = /\/assembly\/[0-9]*\/create/g;
+    var allowedPaths = "/assembly/create"
+    var pathMatches = path.match(allowedPaths);
+    var result = pathMatches != undefined && pathMatches.length > 0;
+    if (result) {
+        console.log("Requested path '"+path+"' is not restricted");
+    }
+    return result;
+}

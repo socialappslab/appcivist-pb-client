@@ -52,6 +52,54 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
                     aid: assemblyId,
                     uid: userId
                 });
+        },
+        defaultNewAssembly: function() {
+           return {
+                //"name": "Assemblée Belleville",
+                //"shortname": "assemblee-belleville",
+                //"description": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
+                "listed": true, // TODO: ADD TO FORM
+                "profile": {
+                    "targetAudience": "RESIDENTS",
+                    "membership": "REGISTRATION",
+                    "registration" : {
+                        "invitation" : true,
+                        "request" : true
+                    },
+                    "moderators":"two",
+                    "coordinators":"two",
+                    "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
+                    "primaryContactName": "",
+                    "primaryContactPhone": "",
+                    "primaryContactEmail": ""
+                },
+                //"location": {
+                //	"placeName": "Belleville, Paris, France"
+                //},
+                "themes": [{
+                    "title": "Housing"
+                }
+                ],
+                "existingThemes": [],
+                "config" : {
+                    "facetoface":true,
+                    "messaging":true
+                },
+                "configs": [
+                    {
+                        "key": "assembly.face-to-face.scheduling",
+                        "value": "true"
+                    },
+                    {
+                        "key": "assembly.enable.messaging",
+                        "value": "false"
+                    }
+                ],
+                "lang": "en", // TODO: ADD TO FORM
+                //"invitationEmail"
+                "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
+                "linkedAssemblies" : [ ] // [ { "assemblyId": "2" }, { "assemblyId": "3" }, ... ]
+            };
         }
     }
 });

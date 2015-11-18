@@ -313,11 +313,11 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	 */
 	function initializeMilestonesTimeframe() {
 		$scope.newCampaign.campaignTimeframeInMonths=12;
-		$scope.newCampaign.campaignTimeframeInDays = 365;
+		$scope.newCampaign.campaignTimeframeInDays = 183;
 		$scope.newCampaign.campaignTimeframeStartDate = moment().toDate();
 		$scope.newCampaign.triggerTimeframeUpdate = false;
 		$scope.newCampaign.noOverlapping = true;
-		privateRefreshTimeframe(12);
+		privateRefreshTimeframe(6);
 	}
 
 	/**
@@ -427,6 +427,15 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			var components = newCampaign.proposalComponents;
 			var milestones = newCampaign.milestones;
 
+			// Setup existing themes
+			addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);
+			if (newCampaign.template.value === 'LINKED') {
+				addToExistingThemes(newCampaign.existingThemes, $scope.campaignThemes);
+			}
+
+			// Setup existing components (from linkedCampaigns)
+			addToExistingComponents(newCampaign.existingComponents, newCampaign.proposalComponents, linkedCampaign)
+
 			// setup milestones in components
 			// TODO: setup milestones already inside components when creation
 			for (var i = 0; i<milestones.length; i+=1) {
@@ -436,7 +445,6 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 					m.days = duration(moment(m.date),moment(milestones[i+1])).days;
 				else
 					m.days = 0;
-
 				components[m.componentIndex].milestones.push(m);
 			}
 
@@ -449,9 +457,44 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		} else {
 			newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
 		}
-
 		return newCampaign;
+	}
 
+	function addToExistingThemes(existingThemes, addedThemes) {
+		if(addedThemes != undefined && addedThemes != null && addedThemes.length > 0) {
+			for (var i = 0; i<addedThemes.length; i+=1) {
+				var t = addedThemes[i];
+				if (t.selected) {
+					existingThemes.push(t);
+				}
+			}
+		}
+	}
+
+	function addToExistingComponents(existingComponents, addedComponents, linkedCampaign) {
+		if(addedComponents != undefined && addedComponents != null && addedComponents.length > 0
+			&& linkedCampaign != undefined && linkedCampaign != null) {
+			for (var i = 0; i<addedComponents.length; i+=1) {
+				var c = addedComponents[i];
+				if(c.linked) {
+					c.componentInstanceId = getComponentIdByKey(linkedCampaign.components, c.key);
+					if (c.componentInstanceId > 0) {
+						existingComponents.push(c);
+					}
+				}
+			}
+		}
+
+	}
+
+	function getComponentIdByKey(components, key) {
+		for (var i = 0; i<components.length; i+=1) {
+			var c = components[i];
+			if (c.key === key) {
+				return c.componentInstanceId;
+			}
+		}
+		return -1;
 	}
 
 	function privateCreateCampaign(step,options){

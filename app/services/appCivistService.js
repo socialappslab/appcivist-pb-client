@@ -157,6 +157,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                 themes: [], // [ {theme:""}, ... ]
                 existingThemes: [], // [ 1, 89, ... ]
                 components: [], // [{...}]
+                existingComponents: [],
                 useLinkedCampaign: true,
                 milestones: [
                     {
@@ -166,7 +167,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         component: "Proposal Making",
                         symbol: $sce.trustAsHtml("1"),
                         opened:true,
-                        componentIndex: 0
+                        componentIndex: 0,
+                        position: 1
                     },
                     {
                         date: today().add(15, 'days').toDate(),
@@ -176,7 +178,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         componentKey: "Proposalmaking",
                         symbol: $sce.trustAsHtml("2"),
                         opened:true,
-                        componentIndex: 0
+                        componentIndex: 0,
+                        position: 2
                     },
                     {
                         date: today().add(20, 'days').toDate(),
@@ -185,7 +188,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         componentKey: "Proposalmaking",
                         symbol: $sce.trustAsHtml("3"),
                         opened:true,
-                        componentIndex: 0
+                        componentIndex: 0,
+                        position: 3
                     },
                     {
                         date: today().add(30, 'days').toDate(),
@@ -195,7 +199,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         componentKey: "Versioning",
                         symbol: $sce.trustAsHtml("4"),
                         opened:true,
-                        componentIndex: 1
+                        componentIndex: 1,
+                        position: 4
                     },
                     {
                         date: today().add(45, 'days').toDate(),
@@ -205,7 +210,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         componentKey: "Versioning",
                         symbol: $sce.trustAsHtml("5"),
                         opened:true,
-                        componentIndex: 1
+                        componentIndex: 1,
+                        position: 5
                     },
                     {
                         date: today().add(60, 'days').toDate(),
@@ -214,7 +220,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         component: "Deliberation",
                         symbol: $sce.trustAsHtml("6"),
                         opened:true,
-                        componentIndex: 2
+                        componentIndex: 2,
+                        position: 6
                     },
                     {
                         date: today().add(90, 'days').toDate(),
@@ -222,7 +229,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         component: "Deliberation",
                         symbol: $sce.trustAsHtml("7"),
                         opened:true,
-                        componentIndex: 2
+                        componentIndex: 2,
+                        position: 7
                     },
                     {
                         date: today().add(120, 'days').toDate(),
@@ -230,7 +238,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         component: "Voting",
                         symbol: $sce.trustAsHtml("8"),
                         opened:true,
-                        componentIndex: 3
+                        componentIndex: 3,
+                        position: 8
                     },
                     {
                         date: today().add(130, 'days').toDate(),
@@ -238,7 +247,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         component: "Voting",
                         symbol: $sce.trustAsHtml("8"),
                         opened:true,
-                        componentIndex: 3
+                        componentIndex: 3,
+                        position: 9
                     }
                 ]
             };

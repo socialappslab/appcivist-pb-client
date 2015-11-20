@@ -27,8 +27,6 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
         } else {
             console.log("Using API Server: "+$scope.serverBaseUrl);
         }
-
-        //$scope.$storage = $sessionStorage; // with ngStorage, put back when ngStorage becomes a service provider
         console.log("User in AccountCtrl is: "+user);
 
 		if (user != null && sessionKey != null) {

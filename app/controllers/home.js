@@ -34,17 +34,18 @@
 			});
 			localStorageService.set("workingGroups", $scope.workingGroups);
 		});
-		$scope.notifications.$promise.then(function(data) {
-			$scope.notifications = {
-				'upcoming_milestones' : []
-			};
-			angular.forEach(data, function(obj) {
-				if(obj.type === 'UPCOMING_MILESTONE'){
-					$scope.notifications.upcoming_milestones.push(obj);
-				}
-			});
-			localStorageService.set("notifications", $scope.notifications);
-		});
+		$scope.notifications.$promise.then(
+				function(data) {
+					$scope.notifications = {
+						'upcoming_milestones' : []
+					};
+					angular.forEach(data, function(obj) {
+						if(obj.type === 'UPCOMING_MILESTONE'){
+							$scope.notifications.upcoming_milestones.push(obj);
+						}
+					});
+					localStorageService.set("notifications", $scope.notifications);
+				});
 	}
 
 

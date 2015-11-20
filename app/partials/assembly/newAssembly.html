@@ -14,7 +14,8 @@
                              heading="{{tab.title}}"
                              active="tab.active"
                              disable="tab.disabled"
-                             ng-click="setCurrentStep(tab.step)">
+                             ng-click="setCurrentStep(tab.step)"
+                             ng-if="tab.step<3 || (tab.step===3 && userIsNew)">
                         <uib-tab-heading>
                             <h4>
                                 <strong>{{tab.title}}</strong>

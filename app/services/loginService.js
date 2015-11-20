@@ -86,27 +86,31 @@
 		
 	};
 
+	this.verifyUser = function(userId) {
+		return $resource('/api/user/:uid/loggedin', {uid: UserId});
+	}
+
 	this.userIsAuthenticated = function() {
-
 		var authenticated = localStorageService.get('authenticated');
-
-		// TODO check token expiration
-
-		if (authenticated == undefined || authenticated == false) {
+		if (authenticated === undefined || authenticated === false) {
 			var localUser = localStorageService.get('user');
 			if (localUser != undefined) {
 				var userId = localUser.userId;
-				var user = User.get({id:userId}, function() {
-					if (user != undefined && user.userId > 0 ) {
-						localStorageService.set('user',user);
-						localStorageProvider.set('authenticated',true);
-						//user.$save();
-						//localStorageService.set('authenticated', true);
-						$location.url('/home');
-					}
-				});
+				var user = User.get({id:userId},
+						function(user) {
+							if (user != undefined && user.userId > 0 ) {
+								localStorageService.set('user',user);
+								localStorageProvider.set('authenticated',true);
+								//user.$save();
+								//localStorageService.set('authenticated', true);
+								//$location.url('/home');
+							}
+						});
 			}
 		}
+
+		// TODO: verify session key
+
 		return 	authenticated;
 	};
 });

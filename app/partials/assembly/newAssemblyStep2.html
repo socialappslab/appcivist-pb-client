@@ -46,6 +46,7 @@
         <h3><strong>Back</strong></h3>
     </button>
     <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(2)">
-        <h3><strong>Start the Assembly</strong></h3>
+        <h3 ng-if="userIsNew"><strong>Next</strong></h3>
+        <h3 ng-if="!userIsNew"><strong>Start the Assembly</strong></h3>
     </button>
 </div>

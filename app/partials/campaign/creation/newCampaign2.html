@@ -88,7 +88,7 @@
                     <button class="btn btn-success col-md-12"
                             uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
                             ng-disabled="!newCampaignForm2.$valid"
-                            ng-click="createCampaign(3, {fastrack:true})">
+                            ng-click="createCampaign({step:3}, {fastrack:true})">
                         <h3>
                             <strong>Fastrack</strong>
                             <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
@@ -99,7 +99,7 @@
                     <button class="btn btn-primary col-md-12"
                             uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
                             ng-disabled="!newCampaignForm2.$valid"
-                            ng-click="createCampaign(1, {fastrack:false})">
+                            ng-click="createCampaign({step:2}, {fastrack:false})">
                         <h3>
                             <strong>Back</strong>
                             <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
@@ -108,7 +108,7 @@
                 </div>
                 <div class="col-md-4">
                     <button class="btn btn-primary col-md-12"
-                            ng-click="createCampaign(3, {fastrack:false})"
+                            ng-click="createCampaign({step:3}, {fastrack:false})"
                             ng-disabled="!newCampaignForm2.$valid">
                         <h3><strong>Next</strong></h3>
                     </button>

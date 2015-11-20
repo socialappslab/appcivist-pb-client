@@ -29,10 +29,10 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
 /**
  * This controller facilitates the creation of a new assembly
  */
-appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinnerService, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
+appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinnerService, Upload, $timeout,
+                                                    $routeParams, $resource, $http, Assemblies, Contributions,
 													loginService, localStorageService) {
 	init();
-
 	function init() {
 		$scope.currentStep=1;
         $scope.tabs = [
@@ -48,6 +48,12 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 title:"Select assemblies to follow",
                 template:"app/partials/assembly/newAssemblyStep2.html",
                 info: "Following assemblies is a quick way for gaining access to the resources and campaigns of other assemblies."
+            },
+            {
+                step: 3,
+                title: "Setup your User Account",
+                template: "app/partials/assembly/newAssemblyStep3.html",
+                info: "Introduce and email address and a password to use to sign in into AppCivist"
             }
         ];
         $scope.defaultIcons = [
@@ -62,83 +68,19 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             localStorageService.set("help",info);
         }
         $scope.errors = [];
-
         $scope.selectedAssemblies = [];
+        $scope.userIsNew = $routeParams.userIsNew ? true : false;
 
-        if($scope.newAssembly===null || $scope.newAssembly===undefined){
-            $scope.newAssembly = localStorageService.get("temporaryNewAssembly");
-            if($scope.newAssembly===null || $scope.newAssembly===undefined) {
-                $scope.newAssembly = {
-                    //"name": "Assemblée Belleville",
-                    //"shortname": "assemblee-belleville",
-                    //"description": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
-                    "listed": true, // TODO: ADD TO FORM
-                    "profile": {
-                        "targetAudience": "RESIDENTS",
-                        "membership": "REGISTRATION",
-                        "registration" : {
-                            "invitation" : true,
-                            "request" : true
-                        },
-                        "moderators":"two",
-                        "coordinators":"two",
-                        "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
-                        "primaryContactName": "",
-                        "primaryContactPhone": "",
-                        "primaryContactEmail": ""
-                    },
-                    //"location": {
-                    //	"placeName": "Belleville, Paris, France"
-                    //},
-                    "themes": [{
-                        "title": "Housing"
-                    }
-                    ],
-                    "existingThemes": [],
-                    "config" : {
-                        "facetoface":true,
-                        "messaging":true
-                    },
-                    "configs": [
-                        {
-                            "key": "assembly.face-to-face.scheduling",
-                            "value": "true"
-                        },
-                        {
-                            "key": "assembly.enable.messaging",
-                            "value": "false"
-                        }
-                    ],
-                    "lang": "en", // TODO: ADD TO FORM
-                    //"invitationEmail"
-                    "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
-                    "linkedAssemblies" : [ ] // [ { "assemblyId": "2" }, { "assemblyId": "3" }, ... ]
-                };
-            }
-        } else {
-            console.log("Temporary New Assembly exists in the scope")
-        }
-
-        console.log("Loading Assemblies...");
-        $scope.$root.startSpinner();
-        $scope.assemblies = Assemblies.assemblies().query();
-        $scope.assemblies.$promise.then(function(data){
-            $scope.assemblies =  data;
-            console.log("Assemblies loaded...");
-            $scope.$root.stopSpinner();
-        });
+        initializeNewAssembly();
+        initializeListOfAssembliesToFollow();
 	}
 
     $scope.removeErrors = function(index) {
         $scope.errors.splice(index,1);
     }
 
-
     $scope.setCurrentStep = function(number) {
-        if($scope.setCurrentStep === 1 && number === 2){
-            createNewAssembly(1);
-        }
-        $scope.currentStep=number;
+        step(number);
     }
 
     $scope.setNewAssemblyIcon = function(url, name) {
@@ -179,6 +121,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
     $scope.removeInvalidEmail = function(index) {
         $scope.invalidEmails.splice(index, 1);
     };
+
 	$scope.removeInvitee = function(index) {
 		$scope.newAssembly.invitations.splice(index,1);
 	}
@@ -278,10 +221,9 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 			//delete $scope.newAssembly.profile.role;
 			localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
             $scope.tabs[1].active=true;
-		} else if (step === 2) {
+		} else if ((step === 2 && !$scope.userIsNew) || step === 3) {
 			console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
 			var newAssemblyRes = Assemblies.assembly().save($scope.newAssembly);
-
             newAssemblyRes.$promise.then(
                 // Success
                 function(data) {
@@ -296,9 +238,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                     console.log("Couldn't create assembly: "+e.statusMessage);
                     $scope.errors.push(e);
                 }
-
             );
-		}
+		} else if (step === 2 && $scope.userIsNew) {
+            localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
+            $scope.tabs[2].active=true;
+        }
 	}
 
 	$scope.uploadFiles = function(file) {
@@ -328,6 +272,56 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 			});
 		}
 	}
+
+    function initializeNewAssembly() {
+        if($scope.newAssembly===null || $scope.newAssembly===undefined){
+            $scope.newAssembly = localStorageService.get("temporaryNewAssembly");
+            if($scope.newAssembly===null || $scope.newAssembly===undefined) {
+                $scope.newAssembly = Assemblies.defaultNewAssembly();
+            }
+        } else {
+            console.log("Temporary New Assembly exists in the scope")
+        }
+        if ($scope.userIsNew) {
+            $scope.newAssembly.newUser = {
+                // username: "",
+                // email: "",
+                // password: "",
+                // repeatPassword: "",
+                themes: [] // same as assemblyThemes
+            }
+        }
+    }
+
+    function initializeListOfAssembliesToFollow() {
+        $scope.$root.startSpinner();
+        var sessionKey = localStorageService.get("sessionKey");
+        if(sessionKey === null || sessionKey === undefined || sessionKey === "") {
+            $scope.assemblies = Assemblies.assembliesWithoutLogin().query();
+        } else {
+            $scope.assemblies = Assemblies.assemblies().query();
+        }
+        $scope.assemblies.$promise.then(
+            function(data){
+                $scope.assemblies =  data;
+                console.log("Assemblies loaded...");
+                $scope.$root.stopSpinner();
+            },
+            function (error) {
+                $scope.errors.push(error);
+                $scope.$root.stopSpinner();
+            }
+        );
+    }
+
+    function step(number) {
+        if($scope.setCurrentStep === 1 && number === 2){
+            createNewAssembly(1);
+        } if($scope.setCurrentStep === 2 && number === 3){
+            createNewAssembly(2);
+        }
+        $scope.currentStep=number;
+    }
 });
 
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,

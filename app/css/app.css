@@ -1891,6 +1891,51 @@ button#second-vote {
   text-align: center;
 }
 
+#contributionPage {
+  margin: 1%;
+}
+#contributionPage .view {
+  background: white;
+}
+#contributionPage .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#contributionPage .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+#contributionPage .forum {
+  margin-left: 2rem;
+}
+#contributionPage .forum .button {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: -1rem;
+}
+#contributionPage .forum .button.cancelButton {
+  margin-left: 1rem;
+}
+#contributionPage .forum .button.replyButton {
+  margin-bottom: -3rem;
+}
+#contributionPage .infoBox {
+  text-align: center;
+}
+#contributionPage .contribution-header-list {
+  list-style: none;
+}
+#contributionPage .contribution-header-list .contribution-header-list-element {
+  display: block;
+}
+#contributionPage .contribution-header-list .contribution-header-list-element .title {
+  display: inline-block;
+}
+#contributionPage .contribution-header-list .contribution-header-list-element .description {
+  display: inline-block;
+}
+
 #newContribution {
   /*******INPUT - TEXTAREA *********/
 }

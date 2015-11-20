@@ -1,6 +1,16 @@
-﻿appCivistApp.controller('NewContributionCtrl', function($scope, $http, $routeParams, localStorageService, Contributions){
+﻿/**
+ * The NewContributionCtrl controls how to display and create new contributions to
+ * AppCivist's backend. Contributions can be created in the following spaces:
+ * - On the assembly forum space (type = FORUM_POST)
+ * - On the assembly resources space (type = DISCUSSION)
+ * - On a campaign resources space (type = DISCUSSION)
+ * - On a component (i.e., phase) that is part of a campaign (type = PROPOSAL, BRAINSTORMING
+ * - On a contribution resources space (type = COMMENT)
+ */
+appCivistApp.controller('NewContributionCtrl', function($scope, $http, $routeParams, localStorageService, Contributions){
 	init();
 	function init() {
+		// TODO: remove reading of "campaigns" or "assemblies". Use only parameters from the route
 		$scope.campaigns = localStorageService.get('campaigns');
 		$scope.campaignID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		console.log("Loading campaign: "+$scope.campaignID);

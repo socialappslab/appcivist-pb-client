@@ -245,7 +245,7 @@ appCivistApp.directive('newContribution', function() {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: "/app/partials/directives/newContribution/newContribution.html",
+        templateUrl: "/app/partials/contribution/newContribution/newContribution.html",
         scope: {
             content: '='
         },
@@ -260,4 +260,16 @@ appCivistApp.directive('backgroundImage', function(){
             'background-image': 'url(' + url +')'
         });
     };
+});
+
+appCivistApp.directive('newForumPost', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/contributions/newForumPostBox.html",
+        scope: {
+            content: '='
+        },
+        controller: "NewContributionCtrl"
+    }
 });

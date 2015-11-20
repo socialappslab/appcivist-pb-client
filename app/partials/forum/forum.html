@@ -19,7 +19,7 @@
                         <h1><strong>Assembly Forum</strong></h1>
                     </div>
                     <div class="col-md-3 col-sm-3">
-                        <h1 ng-if="verifyAssembly">
+                        <h1 ng-if="checkShow('joinButton')">
                             <button class="btn btn-success" ng-click="startSpinner()"><h4 style="float:right;"><strong>Join Assembly</strong></h4></button>
                         </h1>
                     </div>
@@ -155,7 +155,7 @@
                             <h4><strong>Members</strong></h4>
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <button class="btn btn-primary"><h5><strong>Invite participants</strong></h5></button>
+                            <button ng-if="checkShow('inviteButton')" class="btn btn-primary"><h5><strong>Invite participants</strong></h5></button>
                         </div>
                     </div>
 
@@ -178,7 +178,7 @@
                             <h4><strong>Campaigns</strong></h4>
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <a ng-href="#/assembly/{{currentAssembly.assemblyId}}/campaign/create"><button class="btn btn-primary"><h5><strong>New campaign</strong></h5></button></a>
+                            <a ng-if="checkShow('campaignButton')" ng-href="#/assembly/{{currentAssembly.assemblyId}}/campaign/create"><button class="btn btn-primary"><h5><strong>New campaign</strong></h5></button></a>
                         </div>
                     </div>
                     <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">

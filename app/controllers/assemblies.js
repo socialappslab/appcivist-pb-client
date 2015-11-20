@@ -325,7 +325,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 });
 
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
-                                                    loginService, localStorageService) {
+                                                    loginService, localStorageService, Memberships) {
     init();
 
     function init() {
@@ -342,6 +342,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.contributions = Contributions.contributions($scope.assemblyID).query();
             $scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
             $scope.verifyAssembly = Assemblies.verifyMembership($scope.assemblyID, $scope.user.userId).get();
+            $scope.membership = Memberships.memberships().query();
             $scope.campaigns = null;
             $scope.currentAssembly.$promise.then(function(data) {
                 $scope.currentAssembly = data;
@@ -357,6 +358,17 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             });
             $scope.verifyAssembly.$promise.then(function(data){
                 $scope.verifyAssembly = data;
+            });
+            $scope.membership.$promise.then(function(data){
+                $scope.membership = data;
+                $scope.membershipRoles = null;
+                angular.forEach($scope.membership, function(membership) {
+                    if(membership.assembly){
+                        if(membership.assembly.assemblyId === $scope.currentAssembly.assemblyId){
+                            $scope.membershipRoles = membership.roles;
+                        }
+                    }
+                });
             });
         }
     }
@@ -381,5 +393,32 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 
     $scope.publishComment = function(comment) {
         //Contributions.contributions($scope.currentAssembly.assemblyId).save();
+    }
+
+    $scope.isRightRole = function(roleName) {
+        var result = false;
+        angular.forEach($scope.membershipRoles, function(role){
+            if(role.name === roleName) {
+                result = true;
+            }
+        });
+        return result;
+    }
+
+    $scope.checkShow = function(button) {
+        var show = false;
+            buttonMap = {
+                joinButton: !$scope.verifyAssembly && ( ($scope.currentAssembly.profile.supportedMembership == "OPEN") || ($scope.currentAssembly.profile.supportedMembership == "INVITATION_AND_REQUEST") ),
+                inviteButton: $scope.verifyAssembly && ( ($scope.currentAssembly.profile.managementType == "OPEN") ||
+                                                        ( ($scope.currentAssembly.profile.supportedMembership == "COORDINATED") && ($scope.isRightRole("COORDINATOR") ) ||
+                                                        ( ($scope.currentAssembly.profile.supportedMembership == "COORDINATED_AND_MODERATED") && ($scope.isRightRole("COORDINATOR")) ) ) ),
+                campaignButton: $scope.verifyAssembly && ( ($scope.currentAssembly.profile.managementType == "OPEN") ||
+                                                        ( ($scope.currentAssembly.profile.supportedMembership == "COORDINATED") && ($scope.isRightRole("COORDINATOR") ) ||
+                                                        ( ($scope.currentAssembly.profile.supportedMembership == "COORDINATED_AND_MODERATED") && ($scope.isRightRole("COORDINATOR")) ) ) )
+            };
+        if(buttonMap[button]){
+            show = true
+        }
+        return show;
     }
 });

@@ -1,4 +1,4 @@
-#contributionView{
+#contributionPage{
   margin: 1%;
   & .view{
     background: white;
@@ -34,5 +34,18 @@
 
   .infoBox{
     text-align: center;
+  }
+
+  .contribution-header-list{
+    list-style: none;
+    & .contribution-header-list-element{
+      display: block;
+      & .title{
+        display: inline-block;
+      }
+      & .description{
+        display: inline-block;
+      }
+    }
   }
 }

@@ -40,11 +40,13 @@
     list-style: none;
     & .contribution-header-list-element{
       display: block;
-      & .title{
+      & .list-title{
         display: inline-block;
+        width: 11rem;
       }
-      & .description{
+      & .list-description{
         display: inline-block;
+        border-bottom: 0.1rem solid $contribution-border;
       }
     }
   }

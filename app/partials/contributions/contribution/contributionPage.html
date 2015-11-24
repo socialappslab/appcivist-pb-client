@@ -1,4 +1,5 @@
 <div class="view col-md-12 col-sm-12" id="contributionPage">
+    <!--
     <div class="col-md-12 col-sm-12">
         <div class="row text-center">
             <span class="h4"><strong>Assembly: </strong></span>
@@ -67,160 +68,86 @@
                 </div>
             </div>
         </div>
-        <div class="row col-md-12 col-sm-12">
-            <h2><strong>Edit Proposal Version</strong></h2>
+        -->
+        <div class="row col-md-9 col-sm-9">
+            <h3><strong>Edit Proposal Version</strong></h3>
+            <div class="voffset4"></div>
             <div class="col-md-12 col-sm-12">
-                <ul class="contribution-header-list">
-                    <li class="contribution-header-list-element">
-                        <span class="title">
-                            <h3><strong>Title</strong></h3>
+                <ul class="contribution-header-list col-md-12 col-sm-12">
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Title</strong></h4>
                         </span>
-                        <span clas="description">
-                            <h3><strong>{{contribution.title}}</strong></h3>
-                        </span>
-                    </li>
-                    <li class="contribution-header-list-element">
-                        <span class="title">
-                            <h3><strong>Title</strong></h3>
-                        </span>
-                        <span clas="description">
-                            <h3><strong>{{contribution.title}}</strong></h3>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4><strong>{{contribution.title}}</strong></h4>
                         </span>
                     </li>
-                    <li class="contribution-header-list-element">
-                        <span class="title">
-                            <h3><strong>Title</strong></h3>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Summary</strong></h4>
                         </span>
-                        <span clas="description">
-                            <h3><strong>{{contribution.title}}</strong></h3>
-                        </span>
-                    </li>
-                    <li class="contribution-header-list-element">
-                        <span class="title">
-                            <h3><strong>Title</strong></h3>
-                        </span>
-                        <span clas="description">
-                            <h3><strong>{{contribution.title}}</strong></h3>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4>{{contribution.text}}</h4>
                         </span>
                     </li>
-                    <li class="contribution-header-list-element">
-                        <span class="title">
-                            <h3><strong>Title</strong></h3>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Keywords</strong></h4>
                         </span>
-                        <span clas="description">
-                            <h3><strong>{{contribution.title}}</strong></h3>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4>{{contribution.keywords}}-</h4>
+                        </span>
+                    </li>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Location</strong></h4>
+                        </span>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4>{{assembly.location.placeName}} - {{assembly.location.city}} - <strong>{{assembly.location.country}}</strong></h4>
+                        </span>
+                    </li>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Themes</strong></h4>
+                        </span>
+                        <span class="inline col-md-10 col-sm-10">
+                            <h4>{{contribution.title}}</h4>
                         </span>
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="row col-md-12 col-sm-12">
-            <div class="col-md-8 col-sm-8">
+            <div class="col-md-10 col-sm-10">
                 <div class="row contribution">
                     <div class="contribution-content">
                         <p class="contribution-description"> {{contribution.text}}</p>
-
                         <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
                         <iframe ng-if="userIsAuthor === false" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
-                                width=600 height=400>
+                                width=1000 height=800>
                         </iframe>
                         <iframe ng-if="userIsAuthor === true" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
-                                width=600 height=400>
+                                width=1000 height=800>
                         </iframe>
                     </div>
                 </div>
-
-                <div class="row forum">
-                    <div class="commentBox">
-                        <textarea name="commentForum" id="comment-forum" class="commentArea" rows="6"
-                                  placeholder="What's up? ..." ng-model="commentTextarea"></textarea>
-
-                        <div class="row no-margin">
-                            <a ng-href="/#/assembly/create/step1" class="button addButton">
-                                <img data-src="holder.js/20x20" alt="20x20" src="../../../../assets/images/addIcon.png"
-                                     data-holder-rendered="true" class="image-circle">
-                            </a>
-
-                            <div class="pull-right">
-                                <h4 class="text-info button aceptButton" ng-click="publishComment(commentTextarea)">
-                                    Publish</h4>
-                                <h4 class="button cancelButton">Cancel</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="voffset2"></div>
-                    <div class="row no-margin">
-                        <h4><strong>Comments ({{comments.length}})</strong></h4>
-                    </div>
-                    <ul class="row comments col-md-11 col-sm-11">
-                        <li class="row no-margin comment col-md-12 col-sm-12"
-                            ng-repeat="comment in comments | orderBy: 'date'">
-                            <div class="row no-margin col-md-12 col-sm-12">
-                                <div class="image-profile-comment inline">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../../../../assets/images/unknown.jpg"
-                                         alt=""/>
-                                </div>
-                                <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
-                                <h5 class="date-comment inline">
-                                    <time datetime="{{comment.lastUpdate}}"/>
-                                    {{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
-                                </h5>
-                                <div class="options-comment inline">
-                                    <ul class="tags" ng-repeat="theme in comment.themes">
-                                        <li class="tag"><strong>{{theme.title}}</strong></li>
-                                    </ul>
-                                </div>
-                                <votes-counter class="pull-right" content="comment"></votes-counter>
-                            </div>
-                            <div class="row no-margin col-md-12 col-sm-12">
-                                <div class="col-md-12 col-sm-12 text-comment">
-                                    <p class="comment-comment"><a>{{comment.text}}</a></p>
-                                </div>
-                            </div>
-                            <div class="row no-margin">
-                                <div class="pull-left">
-                                    <h5 class="text-info button replyButton" ng-click="replyComment()">Reply</h5>
-                                </div>
-                            </div>
-                            <ul class="row no-margin comments col-md-11 col-sm-11">
-                                <li class="row no-margin comment col-md-12 col-sm-12 reply"
-                                    ng-repeat="commentReply in comment.comments | orderBy: 'date' | filter: searchComments">
-                                    <div class="row no-margin col-md-12 col-sm-12">
-                                        <div class="image-profile-comment inline">
-                                            <img data-src="holder.js/100x100" alt="100x100"
-                                                 src="../../../../assets/images/unknown.jpg" alt=""/>
-                                        </div>
-                                        <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
-                                        <h5 class="date-comment inline">
-                                            <time datetime="{{commentReply.lastUpdate}}"/>
-                                            {{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
-                                        </h5>
-                                        <div class="options-comment inline">
-                                            <ul class="tags" ng-repeat="theme in comment.themes">
-                                                <li class="tag"><strong>{{theme.title}}</strong></li>
-                                            </ul>
-                                        </div>
-                                        <votes-counter class="pull-right" content="comment"></votes-counter>
-                                    </div>
-                                    <div class="row col-md-12 col-sm-12">
-                                        <div class="col-md-12 col-sm-12 text-comment">
-                                            <p class="comment-comment"><a>{{commentReply.text}}</a></p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+            </div>
+            <div class="col-md-10 col-sm-10">
+                <div class="col-md-6 col-sm-6">
+                    <h4><strong>Similar Proposals</strong></h4>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <h4><strong>This proposal is based on</strong></h4>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-4">
-            <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6">
-                        <h4><strong>Attachments</strong></h4>
-                    </div>
-                </div>
+        <div class="row col-md-2 col-sm-2">
+            <div class="row col-md-12 col-sm-12">
+                <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="100x100" data-holder-rendered="true" class="image-circle">
+                <div class="voffset2"></div>
+                <h4>Created by <strong>{{contribution.authors[0].name}}</strong></h4>
+                <div class="voffset2"></div>
+                <button class="btn btn-success">Invite people to join</button>
+                <div class="voffset2"></div>
+                <h4><strong>WG Members</strong></h4>
                 <div class="row list-item assembliesList">
                     <div class="row">
                         <!--

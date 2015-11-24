@@ -1929,11 +1929,13 @@ button#second-vote {
 #contributionPage .contribution-header-list .contribution-header-list-element {
   display: block;
 }
-#contributionPage .contribution-header-list .contribution-header-list-element .title {
+#contributionPage .contribution-header-list .contribution-header-list-element .list-title {
   display: inline-block;
+  width: 11rem;
 }
-#contributionPage .contribution-header-list .contribution-header-list-element .description {
+#contributionPage .contribution-header-list .contribution-header-list-element .list-description {
   display: inline-block;
+  border-bottom: 0.1rem solid #F4F4F4;
 }
 
 #newContribution {

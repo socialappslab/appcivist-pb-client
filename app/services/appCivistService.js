@@ -314,13 +314,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         },
         defaultNewContribution: function() {
             var newC = {
-                "title": "",
-                "text": "",
-                "type": "",
-                "location": {
-                    "placeName": "",
-                    "city": "",
-                    "state": ""
+                "title" : "",
+                "text" : "",
+                "type" : "",
+                "location" : {
+                    "placeName" : "",
+                    "city" : "",
+                    "state" : ""
                 },
                 "themes": [],
                 "hashtags": [],

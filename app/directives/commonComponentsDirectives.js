@@ -13,8 +13,6 @@ appCivistApp.directive('templateConfiguration',  function(){
             scope.isEnabled = true;
         },
         controller: ['$scope', 'Components', function($scope){
-
-
             initializeComponents();
 
             function initializeComponents() {
@@ -269,26 +267,21 @@ appCivistApp.directive('newForumPost', function() {
         templateUrl: "/app/partials/contributions/newForumPostBox/newForumPostBox.html",
         scope: {
             content: '=',
-            spaceId: '=',
-            resourceSpace: '=space',
+            targetSpaceId: '=targetspaceid',
+            targetSpace: '=targetspace',
             themes: '=',
-            newContribution: '='
+            contributionType: "@ctype",
+            newContribution: '=ngModel'
         },
-        controller: ['$scope', function($scope){
-            console.log("Loading new contribution controller with: ");
-            console.log("Target resource space id: " + $scope.spaceId);
-            //console.log("Themes #: " + $scope.themes.length);
-            //console.log("Target Resource Space #: " + $scope.resourceSpace.length);
-            //console.log("Target New Contribution #: " + angular.toJson($scope.newContribution));
-        }],
+        controller: "NewContributionCtrl",
         link: function(scope, element, attrs, ngModel) {
-            console.log("Loading new contribution controller with: ");
-            //console.log("Target resource space id: " + scope.spaceId);
-            //console.log("Themes #: " + scope.themes.length);
-            //console.log("Target Resource Space #: " + scope.resourceSpace.length);
-            //console.log("Target New Contribution #: " + angular.toJson(scope.newContribution));
-
-
+            scope.newContribution.type = scope.contributionType;
+            scope.$watch('contributionType', function(value){
+                if(value){
+                    console.log(value);
+                    scope.newContribution.type = value;
+                }
+            }, true);
         }
     }
 });

@@ -8,54 +8,44 @@
  * - On a contribution resources space (type = COMMENT)
  */
 appCivistApp.controller('NewContributionCtrl',
-		function($scope, $http, $routeParams, localStorageService, Contributions){
-	init();
-	function init() {
-		//$scope.currentAssembly = $scope.$parent.currentAssembly;
-		//$scope.newContribution = Contributions.defaultNewContribution();
-		//$scope.spaceId = $scope.currentAssembly.forum.resourceSpaceId;
-		//$scope.themes = $scope.currentAssembly.themes;
-		//console.log("Loading new contribution controller with: ");
-		//console.log("Target resource space id: " + $scope.spaceId);
-		//console.log("Themes #: " + $scope.themes.length);
-		//console.log("Target Resource Space #: " + $scope.resourceSpace.length);
-		//console.log("Target New Contribution #: " + angular.toJson($scope.newContribution));
+		function ($scope, $http, $routeParams, localStorageService, Contributions) {
 
-		//// TODO: remove reading of "campaigns" or "assemblies". Use only parameters from the route
-		//$scope.campaigns = localStorageService.get('campaigns');
-		//$scope.campaignID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-		//console.log("Loading campaign: "+$scope.campaignID);
-		//$scope.campaigns.forEach(function(entry) {
-		//	if(entry.campaignId === $scope.campaignID) {
-		//		localStorageService.set("currentCampaign", entry);
-		//	}
-		//});
-		//$scope.campaign = localStorageService.get("currentCampaign");
-		//$scope.assembly = localStorageService.get('currentAssembly');
-		//$scope.component = $scope.campaign.components[0];
-		//$scope.milestones = $scope.component.milestones;
-		////$scope.themes = $scope.currentAssembly.themes;
-		//var endDate = moment($scope.component.endDate);
-		//var now = moment();
-		//var diff = endDate.diff(now, 'minutes');
-		//$scope.minutesToDue = diff%60;
-		//$scope.hoursToDue = Math.floor(diff/60) % 24;
-		//$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
-	}
+			init();
 
-	$scope.postContribution = function(spaceId){
-		var newContributionRes = Contributions.contributionInResourceSpace(spaceId).save($scope.newContribution);
-		newContributionRes.$promise.then(
-				function(data) {
-					console.log("Created contribution: "+data);
-					localStorageService.set("currentContribution",data);
-				},
-				function(error) {
-					console.log("Created contribution: "+error);
+			function init() {
+				// put here scope initializations
+			}
+
+			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+				if (!newContribution.title || !newContribution.title === "") {
+					var maxlength = 250;
+					var trimlength = maxlength;
+					if(newContribution.text.length < maxlength) {
+						trimlength = newContribution.text.length;
+					}
+					newContribution.title = newContribution.text.substring(0, trimlength);
 				}
-		);
-	}
-});
+				var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);
+				newContributionRes.$promise.then(
+						function (data) {
+							console.log("Created contribution: " + data);
+							localStorageService.set("currentContribution", data);
+							targetSpace.unshift(data);
+						},
+						function (error) {
+							console.log("Error creating the contribution: " + angular.toJson(error.statusText));
+						}
+				);
+			}
+
+			$scope.clearContribution = function(newContribution){
+				console.log("Cleaning contribution");
+				var cType = newContribution.type;
+				newContribution = Contributions.defaultNewContribution();
+				newContribution.type = cType;
+				newContribution.text = "";
+			}
+		});
 
 appCivistApp.controller('contributionCtrl', function($scope, $http, $routeParams, localStorageService) {
 	$scope.$root.$on('contribution:selected', function(event, data){

@@ -36,6 +36,26 @@
     text-align: center;
   }
 
+  .image-circle-small{
+    height:20px;
+    width:20px;
+    border-radius: 1rem;
+  }
+
+  .image-capsule{
+    text-align: right;
+    img{
+      display: inline-block;
+    }
+    .caption{
+      display: inline-block;
+    }
+  }
+
+  .settingsBox h4{
+    text-align: left;
+  }
+
   .contribution-header-list{
     list-style: none;
     & .contribution-header-list-element{

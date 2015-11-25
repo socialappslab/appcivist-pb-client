@@ -111,7 +111,13 @@
                             <h4><strong>Themes</strong></h4>
                         </span>
                         <span class="inline col-md-10 col-sm-10">
-                            <h4>{{contribution.title}}</h4>
+                            <div class="row col-md-12 col-sm-12">
+                                <ul class="tags tags-filter" ng-repeat="theme in contribution.themes">
+                                    <li class="tag tag-filter">
+                                        <strong>{{theme.title}}</strong>
+                                    </li>
+                                </ul>
+                            </div>
                         </span>
                     </li>
                 </ul>
@@ -136,6 +142,14 @@
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <h4><strong>This proposal is based on</strong></h4>
+                    <div class="row col-md-12 col-sm-12">
+                        <div class="col-md-10 col-sm-10 no-padding">
+                            <input type="text" class="form-control " placeholder="Search oder contributions" ng-model="contributionBasedFilter">
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <button class="btn btn-success">Add</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -145,34 +159,35 @@
                 <div class="voffset2"></div>
                 <h4>Created by <strong>{{contribution.authors[0].name}}</strong></h4>
                 <div class="voffset2"></div>
-                <button class="btn btn-success">Invite people to join</button>
+                <button class="btn btn-success center">Invite people to join</button>
                 <div class="voffset2"></div>
-                <h4><strong>WG Members</strong></h4>
+                <h4 class="center"><strong>WG Members</strong></h4>
+                <div class="voffset2"></div>
                 <div class="row list-item assembliesList">
                     <div class="row">
-                        <!--
-                        <div class="assemblyItem item" ng-repeat="assembly in assemblies">
+                        <div class="assemblyItem item" ng-repeat="wgroup in campaign.workingGroups">
                             <div class="image-capsule">
-                                <a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
-                                    </div>
-                                </a>
+                                <div class="caption" style="text-align: center">
+                                    <h5 class="text" title="{{wgroup.name}}">{{wgroup.name}}</h5>
+                                </div>
+                                <img ng-src="{{wgroup.profile.icon}}" alt="100x100" data-holder-rendered="true" class="image-circle-small">
                             </div>
                         </div>
-                        -->
                     </div>
                 </div>
             </div>
             <div class="row voffset4"></div>
             <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+                <h4><strong>Attachments </strong></h4>
                 <div class="box descriptionBox">
                     <p>If you get inspired by this discussion, add a new contribution.</p>
                 </div>
-                <button class="btn btn-success btn-half-size" data-toggle="modal" data-dismiss="modal"
-                        data-target="#newContribution">Contribute
-                </button>
+                <button class="btn btn-success btn-half-size">Add</button>
             </div>
+            <div class="voffset2"></div>
+            <h4 class="center"><strong>Merges & Splits </strong><i class="fa fa-question-circle"></i></h4>
+            <button class="btn btn-success center">Propose merge</button>
+            <button class="btn btn-success center">Propose split</button>
         </div>
     </div>
 </div>

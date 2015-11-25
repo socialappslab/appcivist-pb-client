@@ -112,9 +112,9 @@ a {
 }
 
 .box {
-  padding: 10px;
-  border-radius: 5px;
-  margin: 5px;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  margin: 0.5rem;
 }
 .box.newsBox {
   background-color: #E1F1F9;
@@ -128,12 +128,12 @@ a {
   background-color: #F4F4F4;
 }
 .box.settingsBox {
-  border: 3px solid #524D4D;
-  margin: 30px 0px 30px 0px;
+  border: 0.1rem solid #524D4D;
+  margin: 3rem 0 3rem 0;
 }
 .box.settingsBox .checkbox {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 
 .tags {
@@ -173,6 +173,10 @@ textarea {
 .form-group {
   margin-left: 0px !important;
   margin-right: 0px !important;
+}
+
+.center {
+  text-align: center;
 }
 
 .vertical-space-little {
@@ -1922,6 +1926,23 @@ button#second-vote {
 }
 #contributionPage .infoBox {
   text-align: center;
+}
+#contributionPage .image-circle-small {
+  height: 20px;
+  width: 20px;
+  border-radius: 1rem;
+}
+#contributionPage .image-capsule {
+  text-align: right;
+}
+#contributionPage .image-capsule img {
+  display: inline-block;
+}
+#contributionPage .image-capsule .caption {
+  display: inline-block;
+}
+#contributionPage .settingsBox h4 {
+  text-align: left;
 }
 #contributionPage .contribution-header-list {
   list-style: none;

@@ -88,9 +88,9 @@ a{
 }
 
 .box{
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px;
+    padding: 1rem;
+    border-radius: 0.3rem;
+    margin: 0.5rem;
 
     &.newsBox{
         background-color: $news-box;
@@ -107,12 +107,12 @@ a{
     }
 
     &.settingsBox{
-        border: 3px solid $settings-box;
-        margin: 30px 0px 30px 0px;
+        border: 0.1rem solid $settings-box;
+        margin: 3rem 0 3rem 0;
 
         & .checkbox{
             display: inline-block;
-            margin-right: 10px;
+            margin-right: 1rem;
         }
     }
 }
@@ -157,6 +157,10 @@ textarea{
 .form-group{
     margin-left: 0px !important;
     margin-right: 0px !important;
+}
+
+.center{
+    text-align: center;
 }
 
 .vertical-space-little{

@@ -62,13 +62,10 @@ Before running the App, you will need to do the following:
 4. Try visiting the following routes: 
 	1. Go to [localhost:8000](http://localhost:8000)
 	2. Login with these credentials: bob@example.com / secret => [/home](http://localhost:8000/home)
-	3. Click on "+ Assembly" => [/assembly/create/step1](http://localhost:8000/#/assembly/create/step1) 
-	4. Click on "+ Assembly" => [/assembly/create/step1](http://localhost:8000/#/assembly/create/step1) 
-	5. Click on "Next" => [/assembly/create/step2](http://localhost:8000/#/assembly/create/step2) 
-	6. Click "Start Assembly" => [/assembly/forum](http://localhost:8000/#/assembly/forum)
-	7. Click "Assemblies" => [/assemblies](http://localhost:8000/#/assemblies)
-	8. Click "+" => Go to (3)
-	9. Unfinished: navigate to [/campaign/create/step1](http://localhost:8000/#/campaign/create/step1)
+	3. Click on "+ Assembly" => [/assembly/create](http://localhost:8000/#/assembly/create)
+	4. Click "Start Assembly" => [/assembly/1/forum](http://localhost:8000/#/assembly/1/forum)
+	5. Click "Assemblies" => [/assemblies](http://localhost:8000/#/assemblies)
+	6. Click "+Campaign" => [/assembly/1/campaign/create](http://localhost:8000/#/assembly/1/campaign/create)
 
 
 If you have problems maybe you can configure your git with this:

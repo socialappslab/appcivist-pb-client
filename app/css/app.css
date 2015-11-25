@@ -6,9 +6,11 @@
 /*******TAGS**************/
 /*****COMMON ELEMENTS***/
 /******HEADER**********/
+/*****FORUM*********/
 /******MAIN***********/
 /*****ASSEMBLY CREATION*****/
 /*****UPLOAD********/
+/*****CAMPAIGN CREATION*****/
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 5px;
@@ -186,11 +188,11 @@ textarea {
 }
 
 .no-padding {
-  padding: 0;
+  padding: 0 !important;
 }
 
 .no-margin {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .container-inline {
@@ -563,7 +565,7 @@ button#second-vote {
   display: inline-block;
 }
 .assemblyCreation label {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
 }
 .assemblyCreation ul {
   list-style: none;
@@ -573,6 +575,7 @@ button#second-vote {
 }
 .assemblyCreation .image-capsule {
   margin-right: 3rem;
+  margin-top: 3rem;
 }
 .assemblyCreation .image-circle {
   height: 6rem;
@@ -599,6 +602,37 @@ button#second-vote {
   padding: 1rem;
   border-radius: 0.5rem;
   margin: 0.5rem 0 0.5rem 0;
+}
+.assemblyCreation .grayBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.assemblyCreation .grayBox .grayBox-title {
+  color: dodgerblue;
+  display: inline-block;
+}
+.assemblyCreation .grayBox .checkbox {
+  padding-left: 2rem;
+}
+.assemblyCreation .grayBox .radio {
+  padding-left: 2rem;
+}
+.assemblyCreation th.remove-column, .assemblyCreation td.remove-column {
+  width: 15%;
+}
+.assemblyCreation th.email-column, .assemblyCreation td.email-column {
+  width: 45%;
+  /* Not necessary, since only 70% width remains */
+}
+.assemblyCreation th.coordinator-column, .assemblyCreation th.moderator-column,
+.assemblyCreation td.coordinator-column, .assemblyCreation td.moderator-column {
+  width: 25%;
+  /* Not necessary, since only 70% width remains */
+}
+.assemblyCreation .tooltip.customTooltip .tooltip-inner {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  text-align: left;
 }
 .assemblyCreation .optionsBox {
   background-color: #F4F4F4;
@@ -850,6 +884,9 @@ button#second-vote {
   margin-left: 0;
   margin-right: 0;
 }
+.campaign-creation label {
+  font-size: 1.8rem;
+}
 .campaign-creation .template-configuration {
   margin-top: -10px;
 }
@@ -913,8 +950,132 @@ button#second-vote {
   margin: -1.7rem 0 -2rem 0;
   color: #524D4D;
 }
+.campaign-creation .themes-container-title {
+  color: dodgerblue;
+  padding: 1rem 1rem 0rem 1rem;
+}
+.campaign-creation .themes-container-content.optionThemes {
+  padding: 0rem 1rem 0rem 1rem;
+}
+.campaign-creation .themes-container-content.optionThemesBox {
+  height: 15rem;
+  overflow: auto;
+  border-top: 0.1rem solid #F4F4F4;
+}
+.campaign-creation .slider {
+  background: #022;
+}
+.campaign-creation .handleCircle {
+  background-color: #524D4D;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.campaign-creation .handleCircle * {
+  color: white;
+  display: inline;
+  margin: 0;
+}
+.campaign-creation .angular-multi-slider {
+  display: inline-block;
+  position: relative;
+  height: 5px;
+  width: 100%;
+  margin: 25px 5px 25px 5px;
+  vertical-align: middle;
+}
+.campaign-creation .angular-multi-slider div {
+  white-space: nowrap;
+  position: absolute;
+}
+.campaign-creation .angular-multi-slider div.bar {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  background: #999;
+  overflow: hidden;
+}
+.campaign-creation .angular-multi-slider div.handle {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  top: -10px;
+  background-color: #524D4D;
+  /*can override with color in slider object*/
+  border: 2px solid #000;
+  z-index: 2;
+  border-radius: 50%;
+  -o-transition: .3s;
+  -ms-transition: .3s;
+  -moz-transition: .3s;
+  -webkit-transition: .3s;
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
+  color: white;
+  padding: 0px 0px 0px 6px;
+}
+.campaign-creation .angular-multi-slider div.handle:hover,
+.campaign-creation .angular-multi-slider div.handle:focus,
+.campaign-creation .angular-multi-slider div.handle:active,
+.campaign-creation .angular-multi-slider div.handle.active {
+  -webkit-filter: brightness(70%);
+  filter: brightness(70%);
+}
+.campaign-creation .angular-multi-slider div.handle:hover + .bubble,
+.campaign-creation .angular-multi-slider div.handle:focus + .bubble,
+.campaign-creation .angular-multi-slider div.handle.grab + .bubble,
+.campaign-creation .angular-multi-slider div.handle:hover,
+.campaign-creation .angular-multi-slider div.handle:focus,
+.campaign-creation .angular-multi-slider div.handle.grab {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  z-index: 9999;
+}
+.campaign-creation .angular-multi-slider div.handle.grab + .bubble,
+.campaign-creation .angular-multi-slider div.handle.grab {
+  background-color: black;
+}
+.campaign-creation .angular-multi-slider div.bubble {
+  display: none;
+  cursor: default;
+  top: -36px;
+  padding: 1px 3px 1px 3px;
+  font-size: 0.7em;
+  font-family: sans-serif;
+  -o-transition: .1s;
+  -ms-transition: .1s;
+  -moz-transition: .1s;
+  -webkit-transition: .1s;
+  -webkit-transition-property: top;
+  transition-property: top;
+}
+.campaign-creation .angular-multi-slider div.bubble:nth-child(2) {
+  top: 34px !important;
+  z-index: 9999;
+}
+.campaign-creation .angular-multi-slider div.bubble.active {
+  display: inline-block;
+  color: #fff;
+  font-size: 12px;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 8px;
+  padding: 3px 8px;
+}
+.campaign-creation .angular-multi-slider div.limit {
+  margin-top: 12px;
+  color: #000;
+  font-weight: bold;
+}
 
 .campaign-pmaking .contributions {
+  list-style: none;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+}
+.campaign-pmaking .proposals {
   list-style: none;
   -webkit-column-count: 3;
   -moz-column-count: 3;
@@ -1058,6 +1219,101 @@ button#second-vote {
   z-index: 1;
 }
 
+.timelineedit {
+  list-style: none;
+  display: inline-block;
+  width: 100%;
+  padding: 0rem 0rem 0rem 0rem;
+}
+.timelineedit li {
+  position: relative;
+  display: inline-block;
+  padding: 15px 15px;
+  background-color: #F4F4F4;
+  color: #524D4D;
+  opacity: 1;
+  width: 25%;
+  border-color: #524D4D;
+}
+.timelineedit li:first-child {
+  width: 25%;
+}
+.timelineedit li:last-child {
+  width: 15%;
+}
+.timelineedit li :only-child {
+  margin-left: 5%;
+}
+.timelineedit li#proposalMakingPhase {
+  width: 30%;
+}
+.timelineedit li#versioningPhase {
+  width: 25%;
+}
+.timelineedit li#deliberationPhase {
+  width: 25%;
+}
+.timelineedit li#votingPhase {
+  width: 15%;
+}
+.timelineedit li.selected {
+  color: white;
+  background-color: #524D4D;
+  opacity: 1;
+  z-index: 5 !important;
+}
+.timelineedit li.selected:before {
+  border-left-color: #524D4D;
+}
+.timelineedit li.disabled {
+  color: white;
+  background-color: #524D4D;
+  opacity: 0.5;
+  z-index: 5 !important;
+}
+.timelineedit li.disabled:before {
+  border-left-color: #524D4D;
+  opacity: 0.5;
+}
+.timelineedit li.active {
+  opacity: 1;
+}
+.timelineedit li:before, .timelineedit li:after {
+  left: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.timelineedit li:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-left-color: white;
+  border-width: 30px;
+  margin-top: -30px;
+  z-index: -1;
+}
+.timelineedit li:before {
+  border-color: rgba(194, 225, 245, 0);
+  border-left-color: #F4F4F4;
+  border-width: 25px;
+  margin-top: -25px;
+}
+.timelineedit #proposalMakingPhase {
+  z-index: 4;
+}
+.timelineedit #versioningPhase {
+  z-index: 3;
+}
+.timelineedit #deliberationPhase {
+  z-index: 2;
+}
+.timelineedit #votingPhase {
+  z-index: 1;
+}
+
 .progressline .progressline-phases {
   list-style: none;
   display: block;
@@ -1144,6 +1400,60 @@ button#second-vote {
   display: block;
   margin: -0.9rem 0;
   text-align: center;
+}
+
+.proposal {
+  border: 0.1rem solid #0f0f0f;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  display: inline-flex;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+.proposal .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.proposal .proposal-content {
+  padding: 1.5rem;
+}
+.proposal .proposal-content .proposal-image {
+  display: block;
+  width: 300px;
+  height: 150px;
+  overflow: hidden;
+}
+.proposal .proposal-content .proposal-image img {
+  top: 0px;
+  clip: rect(0px, 300px, 150px, 0px);
+  z-index: -1;
+}
+.proposal .proposal-content .proposal-image .tag {
+  top: 50%;
+  z-index: 10;
+}
+.proposal .proposal-content .proposal-info {
+  display: inline-block;
+}
+.proposal .proposal-content .proposal-info .comments-icon {
+  width: 2rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0.1rem;
+}
+.proposal .proposal-content .proposal-info .comments-icon .total-replies {
+  display: block;
+  margin: -0.9 rem 0;
+  text-align: center;
+}
+.proposal .proposal-title {
+  display: inline-block;
+  margin: 0;
+}
+.proposal .proposal-description {
+  display: inline;
 }
 
 .contribution {
@@ -1343,6 +1653,211 @@ button#second-vote {
   border-radius: 0.3rem;
 }
 
+.points {
+  list-style: none;
+  padding: 1rem;
+}
+.points li {
+  display: inline-block;
+}
+.points .section {
+  margin-right: 2rem;
+  width: 5rem;
+}
+.points .section div {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+
+.theme {
+  color: #ffffff;
+  margin: 100 rem;
+}
+
+.names {
+  margin: 30 rems;
+}
+
+.left {
+  max-height: 100%;
+  max-width: 100%;
+  background-color: #aaaaaa;
+}
+.leftli {
+  padding: 30 rem;
+}
+.lefth3 {
+  margin: 100 rems;
+}
+
+.images {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#icon {
+  max-width: 15%;
+  max-height: 15%;
+  float: right;
+}
+
+#save {
+  float: right;
+}
+
+#submit {
+  float: right;
+}
+
+.proposal {
+  overflow: none;
+  display: block;
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+.proposal.container.description {
+  margin: 10 rem;
+  width: 40%;
+  word-break: break-all;
+}
+
+.winners .container .row .project {
+  display: inline-block;
+  style: none;
+}
+.winners .container .row .project .block {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+.winners .container .row .project .tail {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+.winners .container .row .project .tail li {
+  float: left;
+}
+.winners .container .row .theme {
+  background-color: #15bf23;
+  color: #ffffff;
+}
+.winners .container .row .score {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+
+.range-voting-content {
+  font-family: "Helvetica Neue";
+  margin-left: 150px;
+  width: 500px;
+  position: relative;
+  left: 5px;
+}
+.range-voting-content .campaign-name {
+  display: inline-block;
+  font-size: 12px;
+}
+.range-voting-content .check-box {
+  height: 20px;
+  width: 20px;
+}
+.range-voting-content .voting-summary {
+  margin-bottom: 30px;
+  clear: both;
+  font-size: 22px;
+}
+.range-voting-content .summary-container {
+  border: 2px solid gray;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
+  background-color: #EEEEEE;
+  clear: both;
+  width: 480px;
+}
+.range-voting-content .score-box {
+  background-color: white;
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  padding: 3px 3px 3px 3px;
+  border-radius: 5px;
+  border: 2px solid #191919;
+  width: 50px;
+  height: 20px;
+}
+.range-voting-content .total-scored-box {
+  display: inline-block;
+}
+.range-voting-content .total-scored-text {
+  font-size: 12px;
+  display: inline-block;
+}
+.range-voting-content .back-button {
+  display: inline-block;
+}
+.range-voting-content .total-scored-box {
+  border: 2px solid #191919;
+  text-align: center;
+  width: 25px;
+  height: 20px;
+  background-color: white;
+  border-radius: 5px;
+  margin: 3px;
+}
+.range-voting-content .submit-button {
+  display: inline-block;
+}
+.range-voting-content .scored {
+  display: block;
+  font-size: 12px;
+}
+.range-voting-content .date {
+  font-size: 40px;
+  position: relative;
+  left: 17px;
+  top: -16px;
+}
+.range-voting-content .checkmark {
+  display: inline-block;
+  width: 3.5em;
+  height: 3em;
+  position: relative;
+  margin-bottom: 25px;
+  margin-left: 30px;
+}
+.range-voting-content h1 {
+  display: inline-block;
+  position: relative;
+  left: 17px;
+}
+.range-voting-content h3 {
+  position: relative;
+  left: 17px;
+}
+.range-voting-content .assembly-name {
+  position: relative;
+}
+.range-voting-content .individual-scores {
+  margin: 20px;
+}
+.range-voting-content .buttons {
+  margin-top: 10px;
+  float: right;
+}
+
 #contributionView {
   margin: 1%;
 }
@@ -1374,6 +1889,53 @@ button#second-vote {
 }
 #contributionView .infoBox {
   text-align: center;
+}
+
+#contributionPage {
+  margin: 1%;
+}
+#contributionPage .view {
+  background: white;
+}
+#contributionPage .optionsBox {
+  background-color: #F4F4F4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#contributionPage .optionsBox .checkbox {
+  padding-left: 2rem;
+}
+#contributionPage .forum {
+  margin-left: 2rem;
+}
+#contributionPage .forum .button {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: -1rem;
+}
+#contributionPage .forum .button.cancelButton {
+  margin-left: 1rem;
+}
+#contributionPage .forum .button.replyButton {
+  margin-bottom: -3rem;
+}
+#contributionPage .infoBox {
+  text-align: center;
+}
+#contributionPage .contribution-header-list {
+  list-style: none;
+}
+#contributionPage .contribution-header-list .contribution-header-list-element {
+  display: block;
+}
+#contributionPage .contribution-header-list .contribution-header-list-element .list-title {
+  display: inline-block;
+  width: 11rem;
+}
+#contributionPage .contribution-header-list .contribution-header-list-element .list-description {
+  display: inline-block;
+  border-bottom: 0.1rem solid #F4F4F4;
 }
 
 #newContribution {
@@ -1485,6 +2047,158 @@ button#second-vote {
 }
 .wGroupsSuggestion .wGroupsSuggestion-description {
   display: inline;
+}
+
+.wGroupForum {
+  /**********************COMMENTS********************/
+}
+.wGroupForum h1, .wGroupForum h2, .wGroupForum h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  vertical-align: middle;
+}
+.wGroupForum .image-circle {
+  height: 7.5rem;
+  width: 7.5rem;
+}
+.wGroupForum .addButton {
+  cursor: pointer;
+}
+.wGroupForum .button-group {
+  display: inline-block;
+  vertical-align: text-bottom;
+  float: right;
+}
+.wGroupForum .button-group * {
+  cursor: pointer;
+}
+.wGroupForum .button-group :last-child {
+  margin-left: 2rem;
+}
+.wGroupForum .text-info {
+  color: #4DAAD8;
+}
+.wGroupForum .title-button {
+  text-align: right;
+}
+.wGroupForum .title-button button {
+  margin-left: 1rem;
+}
+.wGroupForum .row {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.wGroupForum .header .assembly .caption {
+  width: auto;
+}
+.wGroupForum .header button {
+  float: right;
+  margin-top: 100px;
+}
+.wGroupForum .info-lateral {
+  margin-top: 3rem;
+}
+.wGroupForum .add-elements-box-button h5 {
+  vertical-align: super;
+}
+.wGroupForum .infoBox {
+  margin-top: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  height: 150px;
+  background-color: #f9f9f9;
+}
+.wGroupForum .infoBox .row {
+  margin-left: 0px;
+}
+.wGroupForum .infoBox .list-item {
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 8.5rem;
+}
+.wGroupForum .infoBox button {
+  float: right;
+}
+.wGroupForum .infoBox .image-circle {
+  height: 20px;
+  width: 20px;
+}
+.wGroupForum .infoBox .list-item .row {
+  margin-right: 0px;
+}
+.wGroupForum .image-capsule img {
+  display: inline-block;
+}
+.wGroupForum .image-capsule .caption {
+  display: inline-block;
+}
+.wGroupForum .green-tag {
+  cursor: pointer;
+  float: left;
+  color: white;
+  background-color: #5cb85c;
+  border-radius: 5px;
+  margin: 5px 5px 5px 5px;
+}
+.wGroupForum .forum-title h5 {
+  margin: 5px 0;
+}
+.wGroupForum .commentBox {
+  border: 1px solid #F4F4F4;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  box-shadow: inset 0rem 1.5rem 3rem -2.5rem #000000;
+}
+.wGroupForum .commentBox .image-circle {
+  height: 20px;
+  width: 20px;
+  opacity: 0.6;
+}
+.wGroupForum .commentArea {
+  border: none;
+  width: 100%;
+  resize: none;
+  outline: 0;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: 10rem;
+}
+.wGroupForum .comments {
+  list-style-type: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+.wGroupForum .reply {
+  margin-left: 25px;
+}
+.wGroupForum .comment {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 5px;
+}
+.wGroupForum .image-profile-comment img {
+  background-size: 100%;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+.wGroupForum .text-comment * {
+  display: inline;
+}
+.wGroupForum .options-comment {
+  margin-top: 0.5em;
+  display: block;
+}
+.wGroupForum .comment-comment a {
+  text-decoration: none;
+  color: black;
+}
+.wGroupForum .counter p {
+  margin: -8px 0 -8px 0px;
+  padding-left: 5px;
 }
 
 footer {

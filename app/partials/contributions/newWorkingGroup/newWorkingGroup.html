@@ -1,150 +1,109 @@
-<div id="newWorkingGroup">
-    <div class="row col-md-12 col-sm-12">
-        <h1><strong>Create Working Group</strong></h1>
-    </div>
-    <div class="row col-md-12 col-sm-12">
-        <div class="col-md-7 col-sm-7">
-            <div class="row col-md-12 col-sm-12">
-                <div class="box descriptionBox">
-                    <p><strong>Working groups</strong> develop campaigns by taking specific actions, such as drafting proposals and organizing events.</p>
-                </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <h4 class="no-padding">
-                            <label for="inputNameNewWorkingGroup" class="col-sm-2 col-md-2 control-label">Name</label>
-                        </h4>
-                        <div class="col-sm-10 col-md-10">
-                            <input class="form-control" id="inputNameNewWorkingGroup" placeholder="" ng-model="newWorkingGroup.name">
-                        </div>
+<div id="newWorkingGroup" class="view wGroupCreation">
+    <div class="container-fluid">
+        <div class="row col-md-12 col-sm-12">
+            <h1><strong>Create Working Group</strong></h1>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-7 col-sm-7">
+                <div class="row col-md-12 col-sm-12">
+                    <div class="box descriptionBox">
+                        <p><strong>Working groups</strong> develop campaigns by taking specific actions, such as drafting proposals and organizing events.</p>
                     </div>
                 </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <h4 class="no-padding">
-                            <label for="inputDescriptionNewWorkingGroup" class="col-sm-2 col-md-2 control-label">Description</label>
-                        </h4>
-                        <div class="col-sm-10 col-md-10">
-                            <textarea class="form-control" id="inputDescriptionNewWorkingGroup" maxlength="400" placeholder="(Max. 250 words) Group developing Urban Infrastucture proposals for Parc de Belleville" ng-model="newWorkingGroup.description"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <h4 class="no-padding">
-                            <label for="selectThemeNewWorkingGroup" class="col-sm-2 col-md-2 control-label">Themes</label>
-                        </h4>
-                        <div class="col-md-3 col-sm-3 optionsBox">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="newWorkingGroup.themes.urban"/>
-                                    <p>Urban infrastucture</p>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="newWorkingGroup.themes.education"/>
-                                    <p>Education</p>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="newWorkingGroup.themes.transportation"/>
-                                    <p>Transportation</p>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="newWorkingGroup.themes.parks"/>
-                                    <p>Parks and Recreation</p>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="">
-                            <h4 class="col-md-12 col-sm-12 no-padding">
-                                <label for="inputWhoWorkingGroup" class="control-label">Who do people become members?</label>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <h4 class="no-padding">
+                                <label for="inputNameNewWorkingGroup" class="col-sm-2 col-md-2 control-label">Name</label>
                             </h4>
-                            <div class="voffset3"></div>
-                            <div class="col-md-2">
-                                <div class="radio">
-                                    <label>
-                                        <input ng-model="newWorkingGroup.profile.membership" type="radio" name="membershipOpen" id="openRadio" value="open" checked="" class="ng-valid ng-dirty ng-touched">
-                                        Open
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input ng-model="newWorkingGroup.profile.membership" type="radio" name="membershipRegistration" id="registrationRadio" value="registration" class="ng-valid ng-dirty ng-touched ng-valid-parse">
-                                        Registration
-                                    </label>
-                                </div>
+                            <div class="col-sm-10 col-md-10">
+                                <input class="form-control" id="inputNameNewWorkingGroup" placeholder="" ng-model="newWorkingGroup.name">
                             </div>
-                            <div class="col-md-3 optionsBox" ng-show="newWorkingGroup.profile.membership == 'registration'">
-                                <h5 class="optionsBox-title">Membership by registration</h5>
-                                <i class="fa fa-question-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <h4 class="no-padding">
+                                <label for="inputDescriptionNewWorkingGroup" class="col-sm-2 col-md-2 control-label">Description</label>
+                            </h4>
+                            <div class="col-sm-10 col-md-10">
+                                <textarea class="form-control" id="inputDescriptionNewWorkingGroup" maxlength="400" placeholder="(Max. 250 words) Group developing Urban Infrastucture proposals for Parc de Belleville" ng-model="newWorkingGroup.description"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <h4 class="no-padding">
+                                <label for="selectThemeNewWorkingGroup" class="col-sm-2 col-md-2 control-label">Themes</label>
+                            </h4>
+                            <div class="col-md-3 col-sm-3 optionsBox">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" ng-model="newWorkingGroup.profile.member.invitation" class="ng-pristine ng-untouched ng-valid">
-                                        <p>By invitation, and/or</p>
+                                        <input type="checkbox" ng-model="newWorkingGroup.themes.urban"/>
+                                        <p>Urban infrastucture</p>
                                     </label>
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" ng-model="newWorkingGroup.profile.member.request" class="ng-pristine ng-untouched ng-valid">
-                                        <p>By request</p>
+                                        <input type="checkbox" ng-model="newWorkingGroup.themes.education"/>
+                                        <p>Education</p>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="newWorkingGroup.themes.transportation"/>
+                                        <p>Transportation</p>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="newWorkingGroup.themes.parks"/>
+                                        <p>Parks and Recreation</p>
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div>
-                            <h4 class="col-md-12 col-sm-12 no-padding">
-                                <label for="inputWhoWorkingGroup" class="control-label">Will some members have special roles?</label>
-                            </h4>
-                            <div>
-                                <div class="col-md-1">
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="">
+                                <h4 class="col-md-12 col-sm-12 no-padding">
+                                    <label for="inputWhoWorkingGroup" class="control-label">Who do people become members?</label>
+                                </h4>
+                                <div class="voffset3"></div>
+                                <div class="col-md-2">
                                     <div class="radio">
                                         <label>
-                                            <input ng-model="newWorkingGroup.profile.roles" type="radio" name="roleNo" id="noRadio" value="no" checked>
-                                            No
+                                            <input ng-model="newWorkingGroup.profile.membership" type="radio" name="membershipOpen" id="openRadio" value="open" checked="" class="ng-valid ng-dirty ng-touched">
+                                            Open
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input ng-model="newWorkingGroup.profile.roles" type="radio" name="roleYes" id="yesRadio" value="yes">
-                                            Yes
+                                            <input ng-model="newWorkingGroup.profile.membership" type="radio" name="membershipRegistration" id="registrationRadio" value="registration" class="ng-valid ng-dirty ng-touched ng-valid-parse">
+                                            Registration
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-3 optionsBox" ng-show="newWorkingGroup.profile.roles == 'yes'">
-                                    <h5 class="optionsBox-title">What are the special roles?</h5>
+                                <div class="col-md-3 optionsBox" ng-show="newWorkingGroup.profile.membership == 'registration'">
+                                    <h5 class="optionsBox-title">Membership by registration</h5>
                                     <i class="fa fa-question-circle"></i>
                                     <div class="checkbox">
                                         <label>
-                                            <input ng-model="newWorkingGroup.profile.role.coordinators" type="checkbox" value="coordinators"/>
-                                            <p>Coordinators</p>
+                                            <input type="checkbox" ng-model="newWorkingGroup.profile.member.invitation" class="ng-pristine ng-untouched ng-valid">
+                                            <p>By invitation, and/or</p>
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input ng-model="newWorkingGroup.profile.role.moderators" type="checkbox" value="moderators"/>
-                                            <p>Moderators</p>
+                                            <input type="checkbox" ng-model="newWorkingGroup.profile.member.request" class="ng-pristine ng-untouched ng-valid">
+                                            <p>By request</p>
                                         </label>
                                     </div>
                                 </div>
@@ -152,40 +111,83 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-sm-12 col-md-12 no-padding">
-                            <h4 class="col-md-12 col-sm-12 no-padding">
-                                <label for="inputWhoWGroupForum" class="control-label">Who can see the working group forum?</label>
-                            </h4>
-                            <div class="voffset3"></div>
-                            <div class="col-md-12 col-sm-12">
-                                <div class="col-md-4 col-sm-4">
-                                    <div class="radio">
-                                        <label>
-                                            <input ng-model="newWorkingGroup.profile.membership" type="radio" name="wGroupMembers" id="wGroupMembers" value="wGroupMembers" checked>
-                                            Members of the Working Group only
-                                        </label>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div>
+                                <h4 class="col-md-12 col-sm-12 no-padding">
+                                    <label for="inputWhoWorkingGroup" class="control-label">Will some members have special roles?</label>
+                                </h4>
+                                <div>
+                                    <div class="col-md-1">
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.roles" type="radio" name="roleNo" id="noRadio" value="no" checked>
+                                                No
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.roles" type="radio" name="roleYes" id="yesRadio" value="yes">
+                                                Yes
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input ng-model="newWorkingGroup.profile.membership" type="radio" name="assemblyMembers" id="assemblyMembers" value="assemblyMembers">
-                                            Assembly members only
-                                        </label>
+                                    <div class="col-md-3 optionsBox" ng-show="newWorkingGroup.profile.roles == 'yes'">
+                                        <h5 class="optionsBox-title">What are the special roles?</h5>
+                                        <i class="fa fa-question-circle"></i>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.role.coordinators" type="checkbox" value="coordinators"/>
+                                                <p>Coordinators</p>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.role.moderators" type="checkbox" value="moderators"/>
+                                                <p>Moderators</p>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input ng-model="newWorkingGroup.profile.membership" type="radio" name="invitation" id="invitation" value="invitation" checked>
-                                            By invitation (via link)
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input ng-model="newWorkingGroup.profile.membership" type="radio" name="everybody" id="everybody" value="everybody">
-                                            Everybody
-                                        </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12 no-padding">
+                                <h4 class="col-md-12 col-sm-12 no-padding">
+                                    <label for="inputWhoWGroupForum" class="control-label">Who can see the working group forum?</label>
+                                </h4>
+                                <div class="voffset3"></div>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.membership" type="radio" name="wGroupMembers" id="wGroupMembers" value="wGroupMembers" checked>
+                                                Members of the Working Group only
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.membership" type="radio" name="assemblyMembers" id="assemblyMembers" value="assemblyMembers">
+                                                Assembly members only
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.membership" type="radio" name="invitation" id="invitation" value="invitation" checked>
+                                                By invitation (via link)
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWorkingGroup.profile.membership" type="radio" name="everybody" id="everybody" value="everybody">
+                                                Everybody
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -193,60 +195,60 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-5 col-sm-5">
-            <div class="row col-md-12 col-sm-12">
-                <h4 class="col-md-12 col-sm-12 no-padding">
-                    <label for="inputInvitationsNewWorkingGroup" class="control-label">Send people an invitation to join this group</label>
-                </h4>
-                <div class="col-sm-12 col-md-12">
-                    <textarea class="form-control" id="inputInvitationsNewWorkingGroup" maxlength="400" placeholder=""/>
+            <div class="col-md-5 col-sm-5">
+                <div class="row col-md-12 col-sm-12">
+                    <h4 class="col-md-12 col-sm-12 no-padding">
+                        <label for="inputInvitationsNewWorkingGroup" class="control-label">Send people an invitation to join this group</label>
+                    </h4>
+                    <div class="col-sm-12 col-md-12">
+                        <textarea class="form-control" id="inputInvitationsNewWorkingGroup" maxlength="400" placeholder=""/>
+                    </div>
                 </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-sm-12 col-md-12 no-padding">
-                            <h4 class="col-md-12 col-sm-12 no-padding">
-                                <label for="inputWhoWGroupForum" class="control-label">Who can see the working group forum?</label>
-                                <i class="fa fa-question-circle"></i>
-                            </h4>
-                            <div class="col-md-12 col-sm-12 voffset3">
-                                <h4 class="inline">Majority threshold</h4>
-                                <select ng-model="newWorkingGroup.threshold" id="newWorkingGroupThreshold">
-                                    <option value="simple" selected>Simple</option>
-                                    <option value="66">66%</option>
-                                    <option value="90">90%</option>
-                                </select>
-                                <div class="checkbox">
-                                    <label>
-                                        <input ng-model="newWorkingGroup.blocking" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
-                                        <h4>Enable blocking</h4>
-                                    </label>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12 no-padding">
+                                <h4 class="col-md-12 col-sm-12 no-padding">
+                                    <label for="inputWhoWGroupForum" class="control-label">Who can see the working group forum?</label>
+                                    <i class="fa fa-question-circle"></i>
+                                </h4>
+                                <div class="col-md-12 col-sm-12 voffset3">
+                                    <h4 class="inline">Majority threshold</h4>
+                                    <select ng-model="newWorkingGroup.threshold" id="newWorkingGroupThreshold">
+                                        <option value="simple" selected>Simple</option>
+                                        <option value="66">66%</option>
+                                        <option value="90">90%</option>
+                                    </select>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input ng-model="newWorkingGroup.blocking" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
+                                            <h4>Enable blocking</h4>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <div class="col-sm-12 col-md-12 no-padding">
-                            <div class="col-md-12 col-sm-12">
-                                <div class="checkbox">
-                                    <label>
-                                        <input ng-model="newWorkingGroup.technicalAssesment" type="checkbox" name="newWorkingGroupTechnicalAssesment" id="newWorkingGroupTechnicalAssesment" value="newWorkingGroupTechnicalAssesment">
-                                        <h4>This is a Technical Assesment Group</h4>
-                                    </label>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12 no-padding">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input ng-model="newWorkingGroup.technicalAssesment" type="checkbox" name="newWorkingGroupTechnicalAssesment" id="newWorkingGroupTechnicalAssesment" value="newWorkingGroupTechnicalAssesment">
+                                            <h4>This is a Technical Assesment Group</h4>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <a ng-click="createWorkingGroup()"><button class="btn btn-primary col-md-6 pull-right"><h5><strong>Create</strong></h5></button></a>
+                <div class="row">
+                    <a ng-click="createWorkingGroup()"><button class="btn btn-primary col-md-6 pull-right"><h5><strong>Create</strong></h5></button></a>
+                </div>
             </div>
         </div>
     </div>

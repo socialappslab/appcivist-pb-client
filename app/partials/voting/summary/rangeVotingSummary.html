@@ -1,0 +1,24 @@
+<div class="range-voting-content">
+    <h3 class="assembly-name">{{assembly}}</h3> 
+    <h1><strong>Assembly Ballot</strong></h1>
+    <img class="checkmark" src="/assets/images/black_tick.png"/> 
+    <div class="date"> {{year}} {{month}} </div> 
+    <div class="container"> 
+        <div class="summary-container" style="width: 480px;"> 
+            <div id="voting-summary"><strong> Your Voting Summary </strong></div> 
+            <p class="scored"><strong> Assigned scores (range)</strong> </p> 
+            <ol class="individual-scores list-unstyled" ng-repeat="vote in votingBallotVotes">
+                <li> 
+                    <div class="score-box">{{vote.voteValue}}</div> 
+                    <div class="campaign-name">{{vote.name}}</div> 
+                </li> 
+            </ol> 
+            <p class="total-scored-text"><strong>You have scored </strong></p><span class="total-scored-box">{{totalScored}}</span><strong> / </strong><span class="total-scored-box">{{totalProposals}}</span><p class="total-scored-text"><strong> proposals.</strong></p> 
+        </div> 
+    </div> 
+
+    <div class="buttons">
+        <button type="submit" class="btn btn-success">Back to Ballot</button> 
+        <button type="button" class="btn btn-primary"> CONFIRM AND SUBMIT </button> 
+    </div>
+</div> 

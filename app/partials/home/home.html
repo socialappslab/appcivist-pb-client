@@ -8,7 +8,7 @@
 					<li ng-repeat="milestone in notifications.upcoming_milestones">
 						<!--<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>-->
 						<p><strong>{{milestone.resourceSummary}}</strong>.
-							<a  ng-click="selectCampaignById(milestone.containerId)" ng-href="#/campaign/{{milestone.containerId}}">Go to campaign!</a>
+							<a  ng-click="selectCampaignById(milestone.containerId)" ng-href="#{{milestone.relativeUrl}}">Go to campaign!</a>
 						</p>
 					</li>
 				</ul>
@@ -73,7 +73,7 @@
 						<h4><strong>My Assemblies</strong></h4>
 					</div>
 					<div class="col-md-6 col-sm-6">
-						<a ng-href="/#/assembly/create/step1" href="/#/assembly/create/step1">
+						<a ng-href="/#/assembly/create" href="/#/assembly/create">
 							<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" style="height: 25px; width:25px; display: inline-block;" data-holder-rendered="true" class="image-circle" style="cursor: pointer">
 						</a>
 						<h5 style="display: inline-block;">New Assembly</h5>

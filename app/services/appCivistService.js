@@ -311,7 +311,29 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             var groupId = group.groupId;
             var status = 'ACCEPTED';
             return WorkingGroups.verifyMembership(assemblyId, groupId, user.userId);
-        }
+        },
+        defaultNewContribution: function() {
+            var newC = {
+                "title": "",
+                "text": "",
+                "type": "",
+                "location": {
+                    "placeName": "",
+                    "city": "",
+                    "state": ""
+                },
+                "themes": [],
+                "hashtags": [],
+                "attachments": [],
+                "associatedMilestones": []
+            };
+            return newC;
+        },
+        contributionInResourceSpace: function(spaceId) {
+            return $resource(serverBaseUrl + '/space/:sid/contribution',
+                {sid: spaceId});
+        },
+
     };
 });
 

@@ -324,14 +324,16 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
     }
 });
 
-appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams, $resource, $http, Assemblies, Contributions,
-                                                    loginService, localStorageService, Memberships) {
+appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
+                                                 $resource, $http, Assemblies, Contributions,
+                                                 loginService, localStorageService, Memberships) {
     init();
 
     function init() {
         // Grab assemblyID off of the route
         $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
         $scope.currentAssembly = {};
+        $scope.newContribution = Contributions.defaultNewContribution();
 
         console.log("Loading Assembly: "+$routeParams.aid);
 

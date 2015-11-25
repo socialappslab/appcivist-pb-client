@@ -266,10 +266,29 @@ appCivistApp.directive('newForumPost', function() {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: "/app/partials/contributions/newForumPostBox.html",
+        templateUrl: "/app/partials/contributions/newForumPostBox/newForumPostBox.html",
         scope: {
-            content: '='
+            content: '=',
+            spaceId: '=',
+            resourceSpace: '=space',
+            themes: '=',
+            newContribution: '='
         },
-        controller: "NewContributionCtrl"
+        controller: ['$scope', function($scope){
+            console.log("Loading new contribution controller with: ");
+            console.log("Target resource space id: " + $scope.spaceId);
+            //console.log("Themes #: " + $scope.themes.length);
+            //console.log("Target Resource Space #: " + $scope.resourceSpace.length);
+            //console.log("Target New Contribution #: " + angular.toJson($scope.newContribution));
+        }],
+        link: function(scope, element, attrs, ngModel) {
+            console.log("Loading new contribution controller with: ");
+            //console.log("Target resource space id: " + scope.spaceId);
+            //console.log("Themes #: " + scope.themes.length);
+            //console.log("Target Resource Space #: " + scope.resourceSpace.length);
+            //console.log("Target New Contribution #: " + angular.toJson(scope.newContribution));
+
+
+        }
     }
 });

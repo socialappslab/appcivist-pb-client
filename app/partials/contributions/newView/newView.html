@@ -7,14 +7,20 @@
                     <span class="h4"><strong>Assembly: </strong></span>
                     <span class="h4">{{assembly.name}}</span>
                     <span class="h4"> / </span>
-                    <span class="h4" ng-if="campaign!=null && campaign!=undefined"><strong>Campaign: </strong></span>
-                    <span class="h4">{{campaign.title}}</span>
+                    <span class="h4" ng-if="campaign!=null
+                        && campaign!=undefined">
+                        <strong>Campaign: </strong>
+                    </span>
+                    <span class="h4" ng-if="campaign!=null
+                        && campaign!=undefined">
+                        {{campaign.title}}
+                    </span>
                 </div>
                 <br/>
-                <span ng-if="milestone.title === 'Brainstorming'">
+                <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Brainstorming'">
                     <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
                 </span>
-                <span ng-if="milestone.title === 'Proposal Drafting'">
+                <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Proposal Drafting'">
                     <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
                 </span>
             </div>

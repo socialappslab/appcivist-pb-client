@@ -1,4 +1,4 @@
-<div class="view campaign-pmaking" ng-controller="CampaignComponentCtrl">
+<div class="view campaign-pmaking">
     <div class="col-md-12 col-sm-12">
         <div class="row text-center">
             <span class="h4"><strong>Assembly: </strong></span>
@@ -112,7 +112,7 @@
                         <!--<button class="btn btn-success btn-half-size">Upload batch</button>-->
                     </span>
                     <span ng-if="milestone.title === 'Working Group Formation'">
-                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">Create New Group</button>
+                        <a ng-href="#/campaign/{{campaignID}}/wgroup/create"><button class="btn btn-success col-md-12">Create New Group</button></a>
                     </span>
                     <span ng-if="milestone.title === 'Proposal Drafting'">
                         <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">New Proposal Draft</button>

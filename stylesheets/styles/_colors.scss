@@ -4,6 +4,7 @@ $dark-green: #57965B;
 $light-grey: #F4F4F4;
 $light-pale-grey: rgb(249,249,249);
 $light-blue: #E1F1F9;
+$medium-blue: #4DAAD8;
 $dark-blue: #9CC7D3;
 $dodger-blue:dodgerblue;
 $light-black: #524D4D;
@@ -22,6 +23,8 @@ $news-box-font: $dark-blue;
 $settings-box: $light-black;
 $assembly-optionsBox: $light-grey;
 $assembly-optionsBox-title: $dodger-blue;
+$tags-container-title: $dodger-blue;
+$tags-container-content-border: $light-grey;
 
 /****TIMELINE*****/
 $timeline-background: $light-grey;
@@ -50,11 +53,21 @@ $border-header: $light-grey;
 $dropdown-hover: $dark-blue;
 $header-menu-active: $dark-grey;
 
+/*****FORUM*********/
+$forum-commentBox-border: $light-grey;
+$forum-commentBox-action-button: $medium-blue;
+$forum-infoBox-background: $light-pale-grey;
+
 /******MAIN***********/
 $icon-font: $black;
 
 /*****ASSEMBLY CREATION*****/
-$assembly-tags-container-title: $dodger-blue;
-$assembly-tags-container-content-border: $light-grey;
+$assembly-tags-container-title: $tags-container-title;
+$assembly-tags-container-content-border: $tags-container-content-border;
+
 /*****UPLOAD********/
 $progress-line-bar: $dark-blue;
+
+/*****CAMPAIGN CREATION*****/
+$campaign-tags-container-title: $tags-container-title;
+$campaign-tags-container-content-border: $tags-container-content-border;

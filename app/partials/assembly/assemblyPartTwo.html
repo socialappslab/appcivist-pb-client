@@ -1,4 +1,4 @@
-<div class="view assemblyCreation" ng-controller="AssemblyCtrl">
+<div class="view assemblyCreation">
     <div class="container">
         <div class="voffset3"></div>
         <div class="row col-md-12 col-sm-12">
@@ -23,7 +23,7 @@
             <div ng-if="assemblies.length > 0">
                 <div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies | filter:assemblyFilter">
                     <div class="thumbnail assembly" id="assembly{{assembly.assemblyId}}">
-                        <a ng-class="assemblyState" ng-click="selectAssembly(assembly)"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
+                        <a ng-class="assemblyState" ng-click="selectAssembly(assembly, $index)"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
                         <div class="caption">
                             <h4><strong>{{assembly.name}}</strong></h4>
                             <h5 class="text-muted"><strong><i><div ng-show="assembly.location.placeName != null">{{assembly.location.placeName}},</div> {{assembly.location.city}}, {{assembly.location.country}}</i></strong></h5>
@@ -34,7 +34,11 @@
             </div>
         </div>
         <div class="row">
-            <a href="/#/assembly/create/step3"><button class="col-md-push-8 col-md-4 btn btn-primary" ng-click="createNewAssembly(2)"><h3><strong>Next</strong></h3></button></a>
+            <a>
+                <button class="col-md-push-8 col-md-4 btn btn-primary" ng-click="createNewAssembly(2)">
+                    <h3><strong>Start the Assembly</strong></h3>
+                </button>
+            </a>
         </div>
     </div>
 </div>

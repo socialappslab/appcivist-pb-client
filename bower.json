@@ -19,7 +19,13 @@
     "ngstorage": "0.3.7",
     "textAngular": null,
     "spin.js": "2.0.1",
-    "angular-spinner": "0.6.2"
+    "angular-spinner": "0.6.2",
+    "angular-messages": null,
+    "angular-multirange-slider": null,
+    "nouislider": "~8.1.0",
+    "col-resizable": "*",
+    "angular-multi-slider": "~0.1.1",
+    "ngmodel-format": "*"
   },
   "resolutions": {
     "angular": "1.3.x"

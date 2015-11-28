@@ -813,3 +813,4 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
 
     };
 });
+

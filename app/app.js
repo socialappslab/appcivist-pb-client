@@ -138,6 +138,28 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         })
+        .when('/voting/:uuid/ballotlanding',{
+            controller: 'VotingLandingCtrl',
+            templateUrl: 'app/partials/voting/landing/votingBallotLanding.html'
+        })
+        .when('/voting/:uuid/rangevoting',{
+            controller: 'RangeVotingCtrl',
+            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
+        })
+        .when('/voting/:uuid/rangeresult',{
+            controller: 'RangeResultCtrl',
+            templateUrl: 'app/partials/voting/result/RangeResult.html'
+        })
+        .when('/voting/:uuid/registration',{
+            controller: 'RegistrationForm',
+            templateUrl: 'app/partials/voting/RegistrationForm.html'
+        })
+        //Define a route that has a route parameter in it (:customerID)
+        //.when('/assembly/:assemblyID/campaign/:campaignId',
+        //{
+        //  controller: 'AssemblyController',
+        //  templateUrl: '/app/partials/assemblyCampaignView.html'
+        //})
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
             controller: 'ContributionReadEditCtrl',
             templateUrl: 'app/partials/contributions/contribution/contributionPage.html'

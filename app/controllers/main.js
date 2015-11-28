@@ -1,4 +1,4 @@
-﻿// AppCivist Demo Client - Basic Controllers
+﻿	// AppCivist Demo Client - Basic Controllers
 
 /**
  * MainCtrl - this controller checks if the user is loggedIn and loads the main

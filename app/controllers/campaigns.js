@@ -18,7 +18,8 @@
 
 appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, $timeout, localStorageService,
-													   Campaigns, Assemblies, Components, moment, modelFormatConfig) {
+													   Campaigns, Assemblies, Components, Contributions,
+													   moment, modelFormatConfig) {
 
 	init();
 
@@ -538,7 +539,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	}
 });
 
-appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, localStorageService, Assemblies, Campaigns){
+appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location,
+														  localStorageService, Assemblies,
+														  Campaigns, Contributions){
 
 	init();
 
@@ -560,7 +563,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
-
+		$scope.newContribution = Contributions.defaultNewContribution();
 		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);

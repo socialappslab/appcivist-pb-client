@@ -243,11 +243,25 @@ appCivistApp.directive('newContribution', function() {
     return {
         restrict: 'E',
         replace: true,
-        templateUrl: "/app/partials/contribution/newContribution/newContribution.html",
+        templateUrl: "/app/partials/contributions/newContribution/newContribution.html",
         scope: {
-            content: '='
+            content: '=',
+            targetSpaceId: '=targetspaceid',
+            targetSpace: '=targetspace',
+            themes: '=',
+            contributionType: "@ctype",
+            newContribution: '=ngModel'
         },
-        controller: "NewContributionCtrl"
+        controller: "NewContributionCtrl",
+        link: function(scope, element, attrs, ngModel) {
+            scope.newContribution.type = scope.contributionType;
+            scope.$watch('contributionType', function(value){
+                if(value){
+                    console.log(value);
+                    scope.newContribution.type = value;
+                }
+            }, true);
+        }
     }
 });
     

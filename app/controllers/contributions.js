@@ -13,7 +13,7 @@ appCivistApp.controller('NewContributionCtrl',
 			init();
 
 			function init() {
-				// put here scope initializations
+				//$scope.newContribution = Contribut
 			}
 
 			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {

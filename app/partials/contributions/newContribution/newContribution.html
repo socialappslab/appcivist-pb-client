@@ -99,7 +99,11 @@
                 <!--</div>-->
             <!--</div>-->
             <div class="row">
-                <a ng-click="postContribution()"><button class="btn btn-success col-md-6 pull-right"><h5><strong>Post contribution</strong></h5></button></a>
+                <a ng-click="postContribution()">
+                    <button class="btn btn-success col-md-6 pull-right" ng-click="postContribution(newContribution, targetSpaceId, targetSpace)">
+                        <h5><strong>Post contribution</strong></h5>
+                    </button>
+                </a>
             </div>
         </div>
     </div>

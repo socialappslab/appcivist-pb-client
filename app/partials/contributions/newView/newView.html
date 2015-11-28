@@ -18,7 +18,16 @@
                 </div>
                 <br/>
                 <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Brainstorming'">
-                    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+                    <!--<ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>-->
+                    <new-contribution
+                            id="newContributionView"
+                            targetspaceid="campaign.resourceSpaceId"
+                            targetspace="campaign.contributions"
+                            themes="campaign.themes"
+                            ctype="BRAINSTORMING"
+                            ng-model="newContribution">
+                    </new-contribution>
+
                 </span>
                 <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Proposal Drafting'">
                     <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>

@@ -83,9 +83,10 @@
   }
 
   .commentBox{
-    border: 1px solid grey;
-    border-radius: 5px;
-    padding: 5px;
+    border: 1px solid $forum-commentBox-border;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    box-shadow: inset 0rem 1.5rem 3rem -2.5rem #000000;
 
     .image-circle{
       height:20px;

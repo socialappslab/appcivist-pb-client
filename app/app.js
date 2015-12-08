@@ -13,7 +13,7 @@
 console.log("Welcome to AppCivist!");
 
 var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
-    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format'];
+    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 var appCivistCoreBaseURL = "http://localhost:9000/api";
 // Comment the previous line and uncomment the following to use the API Server available in our public server
@@ -55,7 +55,17 @@ appCivistApp.config(config);
 appCivistApp.run(run);
 
 config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
-    'localStorageServiceProvider'];
+    'localStorageServiceProvider', function($translateProvider) {
+        $translateProvider.translations('en', {
+            upcomingMilestones: "Upcoming Milestones",
+            remainingPropDays: "Days left to submit a proposal to "
+        })
+        .translations('de', {
+            upcomingMilestones: 'Hey, das ist meine großartige App!',
+            remainingPropDays: 'Und sie untersützt mehrere Sprachen!'
+        });
+        $translateProvider.preferredLanguage(localStorageService.get('user').lang);
+    }];
 function config($routeProvider, $locationProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
          localStorageServiceProvider) {
 
@@ -246,3 +256,14 @@ function pathIsNotRestricted(path) {
     }
     return result;
 }
+
+app.config(function($translateProvider) {
+  $translateProvider.translations('en', {
+    HEADLINE: 'Hello there, This is my awesome app!',
+    INTRO_TEXT: 'And it has i18n support!'
+  })
+  .translations('de', {
+    HEADLINE: 'Hey, das ist meine großartige App!',
+    INTRO_TEXT: 'Und sie untersützt mehrere Sprachen!'
+  });
+}); 

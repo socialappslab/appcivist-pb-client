@@ -322,6 +322,64 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
         }
         $scope.currentStep=number;
     }
+
+    $scope.createNewAssemblyText = "Create a New Assembly"; 
+    $scope.step1NameText = "Name"; 
+    $scope.nameExample = "e.g. Assemble Belleville"; 
+    $scope.step1Description = "What's your assembly about?"; 
+    $scope.descriptionExample = "e.g. Assembly of residents of Beleville. We are using AppCivist to develop proposals to improve the neighborhood."; 
+    $scope.step1locationText = "Location"; 
+    $scope.step1LocExample = "e.g. City Hall"; 
+    $scope.step1ContactText = "Primary Contact"; 
+    $scope.phoneText = "Phone"; 
+    $scope.emailText = "Email"; 
+    $scope.iconSelectText = "Select Icon"; 
+    $scope.uploadImageBtn = "Upload Image"; 
+    $scope.defineThemesText = "Define Assembly Themes"; 
+    $scope.defineThemesEx = "e.g. Education"; 
+    $scope.themeExample1 = "City Planning"; 
+    $scope.themeExample2 = "Parks"; 
+    $scope.themeExample3 = "Infrastructure"; 
+    $scope.nextBtn = "Next"; 
+
+    $scope.step2Description = "Set Member Permissions"; 
+    $scope.memberDescription = "Who are members?"; 
+    $scope.memberDescriptionEx = "Describe who you want to join your assembly."; 
+    $scope.joiningMethod = "How can members join?"; 
+    $scope.joinOption1 = "Open"; 
+    $scope.joinOption2 = "Registration"; 
+    $scope.byInvitation = "By invitation"; 
+    $scope.byRequest = "By request"; 
+    $scope.modConfiguration = "Configure Moderation"; 
+    $scope.modDescription = "Who will be able to remove inappropriate comments?"; 
+    $scope.modRecommendation = "AppCivist recommends that assemblies have at least two moderators. To remove comments, at least two moderators must agree."; 
+    $scope.modOption1 = "Nominate specific moderators (at least two)"; 
+    $scope.modOption2 = "Make all members moderators"; 
+    $scope.modOption3 = "Have no moderators"; 
+    $scope.coordinationConfig = "Configure Coordination"; 
+    $scope.coordDescr = "Who will be able to change assembly settings?"; 
+    $scope.coordRecommendation = "AppCivist recommends that assemblies have at least two coordinators. To make changes, at least two coordinators must agree."; 
+    $scope.coordOption1 = "Nominate specific coordinators (at least two)"; 
+    $scope.coordOption2 = "Make all members moderating power"; 
+    $scope.coordOption3 = "Have no coordinators"; 
+    $scope.otherRolesText = "Other Roles"; 
+    $scope.otherRolesDescr = "You may define additional roles (although these will not have extra functionality on the platform)."; 
+    $scope.otherRolesTextBox = "Enter Role"; 
+
+    $scope.inviteMembersText = "Invite Members to Join"; 
+    $scope.inviteGenMembersText = "Invite General Members"; 
+    $scope.inviteListText = "Invite List"; 
+    $scope.inviteListDescr = "Enter emails separated by commas, or upload a CSV."; 
+    $scope.uploadCSVBtn = "Upload CSV of Emails"; 
+    $scope.invitationMsgText = "Invitation Message"; 
+    $scope.invitationMsgEx = "You've been invited to join [Assembly_Name] on AppCivist!\n [Assembly Description]\n If you have any questions, feel free to contact [Primary_Contact_Name] at [Primary_Contact_Email]."; 
+    $scope.inviteModsText = "Invite Moderators"; 
+    $scope.inviteModsEx = "You've been invited to be a moderator for [Assembly_Name] on AppCivist!\n [Assembly Description]\n If you have any questions, feel free to contact [Primary_Contact_Name] at [Primary_Contact_Email]."
+    $scope.inviteCoordsText = "Invite Coordinators"; 
+    $scope.inviteCoordsEx = "You've been invited to be a coordinator of [Assembly_Name] on AppCivist!\n [Assembly Description]\n If you have any questions, feel free to contact [Primary_Contact_Name] at [Primary_Contact_Email]."
+    $scope.backBtn = "Back"; 
+    $scope.createBtn = "Create Assembly"; 
+
 });
 
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,

@@ -1730,11 +1730,6 @@ button#second-vote {
   word-break: break-all;
 }
 
-.winners .container {
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
 .winners .container .row .project {
   display: inline-block;
   style: none;
@@ -1745,41 +1740,6 @@ button#second-vote {
   text-align: center;
   vertical-align: middle;
   background-color: #ffffff;
-  margin-bottom: 3px;
-}
-.winners .container .row .project .block .picture {
-  height: 300px;
-}
-.winners .container .row .project .block .picture ul .image {
-  position: relative;
-  z-index: 1;
-  max-width: 400px;
-  max-height: 300px;
-}
-.winners .container .row .project .block .picture ul .theme {
-  position: relative;
-  z-index: 3;
-  padding: 2px;
-  background-color: #15bf23;
-  color: #ffffff;
-  margin-top: 30px;
-  text-align: right;
-}
-.winners .container .row .project .block .picture ul .score {
-  position: relative;
-  z-index: 3;
-  border: 2px solid #aaaaaa;
-  padding: 2px;
-  text-align: right;
-  vertical-align: middle;
-  background-color: #ffffff;
-  margin-bottom: 30px;
-}
-.winners .container .row .project .block .info {
-  text-align: left;
-}
-.winners .container .row .project .block .info ul .proposal-info li {
-  float: right;
 }
 .winners .container .row .project .tail {
   border: 0.2rem solid #aaaaaa;
@@ -1788,30 +1748,16 @@ button#second-vote {
   vertical-align: middle;
   background-color: #ffffff;
 }
-.winners .container .row .project .tail ul li {
+.winners .container .row .project .tail li {
   float: left;
 }
-.winners .container .row .project .tail ul .icon {
-  max-width: 5px;
-  max-height: 5px;
+.winners .container .row .theme {
+  background-color: #15bf23;
+  color: #ffffff;
 }
-
-.result .container {
-  border: 3px solid #aaaaaa;
-  background-color: #cccccc;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  max-width: 70%;
-}
-.result .container .voting-result {
-  vertical-align: middle;
-}
-.result .container .voting-result li {
-  padding: 5px;
-}
-.result .container .voting-result li .score {
-  border: 0.2rem solid #000000;
-  padding: 2px;
+.winners .container .row .score {
+  border: 0.2rem solid #aaaaaa;
+  padding: 0.5rem;
   text-align: center;
   vertical-align: middle;
   background-color: #ffffff;

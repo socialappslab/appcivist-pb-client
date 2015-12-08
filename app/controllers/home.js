@@ -48,10 +48,19 @@
 				});
 	}
 
-
-
 	$scope.selectCampaign = function(campaign){
 		localStorageService.set("currentCampaign", campaign);
 	}
+
+	$scope.upcomingMilestones = "Upcoming Milestones"; 
+	$scope.remainingPropDays = "Days left to submit a proposal to "; 
+	$scope.remainingConsenDays = "Days left for consensus in "; 
+	$scope.recentActivity = "Recent Activity"; 
+	$scope.myAssembliesText = "My Assemblies"; 
+	$scope.newAssemblyBtnText = "New Assembly"; 
+	$scope.myCurrCampaignsText = "My Current Campaigns"; 
+	$scope.newCampaignBtn = "New Campaign"; 
+	$scope.myWorkingGroupsText = "My Working Groups"; 
+	$scope.newWGBtn = "New Working Group"; 
 
 });

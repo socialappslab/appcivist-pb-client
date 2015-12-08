@@ -1,4 +1,4 @@
-﻿<div class="view home">
+﻿<!-- <div class="view home">
 	<div class="container">
 		<div class="col-md-8 col-sm-8">
 			<h3><strong>Updates</strong></h3>
@@ -6,7 +6,6 @@
 				<strong>Upcoming Milestones</strong>
 				<ul class="upcoming-milestones-list">
 					<li ng-repeat="milestone in notifications.upcoming_milestones">
-						<!--<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>-->
 						<p><strong>{{milestone.resourceSummary}}</strong>.
 							<a  ng-click="selectCampaignById(milestone.containerId)" ng-href="#{{milestone.relativeUrl}}">Go to campaign!</a>
 						</p>
@@ -135,4 +134,8 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> --> 
+
+{{upcomingMilestones | translate}} 
+
+{{remainingPropDays | translate}}

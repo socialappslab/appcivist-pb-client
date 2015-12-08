@@ -579,7 +579,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		setCurrentCampaign($scope, localStorageService);
 	}
 
-	$scope.openNewContributionModal = function(size)  {
+	$scope.openNewContributionModal = function(size, cType)  {
+		if (!cType) cType = "BRAINSTORMING";
 		var modalInstance = $uibModal.open({
 			animation: true,
 			templateUrl: '/app/partials/contributions/newView/newView.html',
@@ -601,18 +602,24 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				contributions: function () {
 					return $scope.contributions;
 				},
+				themes: function () {
+					return $scope.themes;
+				},
 				newContribution: function () {
 					return $scope.newContribution;
 				},
 				newContributionResponse: function () {
 					return $scope.newContributionResponse;
+				},
+				cType: function () {
+					return cType;
 				}
 			}
 		});
 
 		modalInstance.result.then(function (newContribution) {
 			$scope.newContribution = newContribution;
-			console.log('New Contribution with Title: ' + newContribuiton.title);
+			console.log('New Contribution with Title: ' + newContribution.title);
 		}, function () {
 			console.log('Modal dismissed at: ' + new Date());
 		});

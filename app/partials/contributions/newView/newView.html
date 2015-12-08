@@ -4,43 +4,50 @@
     <div class="modal-content col-md-12 col-sm-12">
         <div class="modal-header">
             <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
-            <h1><strong>New Contribution</strong></h1>
-            <p>Identify a problem or make a suggestion</p>
+            <h1 ng-if="milestone!=null && milestone!=undefined && (milestone.title | uppercase) === 'BRAINSTORMING'">
+                <strong>New Contribution</strong>
+            </h1>
+            <p ng-if="milestone!=null && milestone!=undefined && (milestone.title | uppercase) === 'BRAINSTORMING'">
+                Identify a problem or make a suggestion
+            </p>
+            <h1 ng-if="milestone!=null && milestone!=undefined && (milestone.title | uppercase) === 'PROPOSAL DRAFTING'">
+                <strong>New Proposal</strong>
+            </h1>
             <span ng-if="newContributionResponse!=undefined && newContributionResponse.hasErrors">
                 <label class="alert-danger">Contribution not created. An error occurred: newContributionResponse.errors</label>
             </span>
         </div>
         <div class="modal-body view col-md-12 col-sm-12">
             <div class="col-md-12 col-sm-12">
-                <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Brainstorming'">
-                    <!--<ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>-->
-                    <new-contribution
-                            id="newContributionView"
-                            targetspaceid="component.resourceSpaceId"
-                            targetspace="contributions"
-                            themes="campaign.themes"
-                            ctype="BRAINSTORMING"
-                            response="newContributionResponse"
-                            ng-model="newContribution">
-                    </new-contribution>
-                </span>
-                <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Proposal Drafting'">
-                    <!--<ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>-->
-                     <new-contribution
-                             id="newContributionProposalDraftView"
-                             targetspaceid="component.resourceSpaceId"
-                             targetspace="contributions"
-                             themes="campaign.themes"
-                             ctype="PROPOSAL"
-                             response="newContributionResponse"
-                             ng-model="newContribution">
-                     </new-contribution>
-                </span>
+                <!--<span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Brainstorming'">-->
+                    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+                    <!--<new-contribution-->
+                            <!--id="newContributionView"-->
+                            <!--targetspaceid="component.resourceSpaceId"-->
+                            <!--targetspace="contributions"-->
+                            <!--themes="themes"-->
+                            <!--ctype="BRAINSTORMING"-->
+                            <!--response="newContributionResponse"-->
+                            <!--ng-model="newContribution">-->
+                    <!--</new-contribution>-->
+                <!--</span>-->
+                <!--<span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Proposal Drafting'">-->
+                    <!--&lt;!&ndash;<ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>&ndash;&gt;-->
+                     <!--<new-contribution-->
+                             <!--id="newContributionProposalDraftView"-->
+                             <!--targetspaceid="component.resourceSpaceId"-->
+                             <!--targetspace="contributions"-->
+                             <!--themes="themes"-->
+                             <!--ctype="PROPOSAL"-->
+                             <!--response="newContributionResponse"-->
+                             <!--ng-model="newContribution">-->
+                     <!--</new-contribution>-->
+                <!--</span>-->
             </div>
         </div>
         <div class="modal-footer view col-md-12 col-sm-12">
             <spinner name="mySpinner" show="postingContribution"></spinner>
-            <button class="btn btn-primary" type="button" ng-click="ok()">Create contribution</button>
+            <button class="btn btn-primary" type="button" ng-click="postContributionFromModal()">Create contribution</button>
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>

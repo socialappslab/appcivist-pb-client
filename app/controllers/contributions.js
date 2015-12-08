@@ -15,6 +15,7 @@ appCivistApp.controller('NewContributionCtrl',
 			init();
 			function init() {
 				$scope.clearContribution = clearNewContributionObject;
+				$scope.postingContribution = postingContributionFlag;
 				$scope.addAttachment = addAttachmentToContribution;
 			}
 
@@ -25,8 +26,8 @@ appCivistApp.controller('NewContributionCtrl',
 
 appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance,
-					assembly, campaign, component, milestone, contributions, newContribution, newContributionResponse,
-				  	localStorageService, Contributions) {
+				   assembly, campaign, component, milestone, contributions, themes, newContribution,
+				   newContributionResponse, cType, localStorageService, Contributions) {
 			init();
 			function init() {
 				$scope.assembly = assembly;
@@ -34,14 +35,22 @@ appCivistApp.controller('NewContributionModalCtrl',
 				$scope.component = component;
 				$scope.milestone = milestone;
 				$scope.contributions = contributions;
+				$scope.themes = themes;
 				$scope.newContribution = newContribution;
+				$scope.newContribution.themes = $scope.themes;
 				$scope.newContributionResponse = newContributionResponse;
-				$scope.postContribution = createNewContribution;
 				$scope.clearContribution = clearNewContributionObject;
 				$scope.postingContribution = postingContributionFlag;
+				$scope.addAttachment = addAttachmentToContribution;
+				$scope.cType = cType;
+				$scope.newContribution.type = cType;
 			}
 
-			$scope.ok = function () {
+			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+				createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
+			};
+
+			$scope.postContributionFromModal = function () {
 				createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
 						$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
 			};
@@ -297,6 +306,8 @@ function createNewContribution(newContribution, targetSpaceId, targetSpace, resp
 		newContribution.title = newContribution.text.substring(0, trimlength);
 	}
 
+	removeNonSelectedThemes(newContribution.themes);
+
 	var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);
 	newContributionRes.$promise.then(
 			function (data) {
@@ -330,4 +341,12 @@ function addAttachmentToContribution(newContribution, attachment) {
 	// POST attachment to IMGUR
 	// ADD to attachments array in Contributions
 	newContribution.attachments.push(attachment);
+}
+
+function removeNonSelectedThemes(themes) {
+	for (var i = 0; i < themes.length; i+=1) {
+		if(!themes[i].selected) {
+			themes.splice(i,1);
+		}
+	}
 }

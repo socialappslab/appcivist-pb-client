@@ -322,6 +322,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     "city" : "",
                     "state" : ""
                 },
+                "themesHash" : [],
                 "themes": [],
                 "hashtags": [],
                 "attachments": [],
@@ -333,7 +334,14 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             return $resource(serverBaseUrl + '/space/:sid/contribution',
                 {sid: spaceId});
         },
-
+        contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
+            return $resource(serverBaseUrl + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
+                {
+                    aid: assemblyID,
+                    cid: campaignID,
+                    ciid: componentID
+                })
+        }
     };
 });
 

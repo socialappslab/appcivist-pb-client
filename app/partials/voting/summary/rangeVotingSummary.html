@@ -1,24 +1,109 @@
+<div class="container">
+    <div class="row text-center">
+      <h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h2>
+    </div>
+    <br>
+    <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
+      <ul id="timeline" class="row timeline">
+        <li id="proposalMakingPhase" class=" active">
+          <h4>
+            <strong>Proposal Making</strong>
+          </h4>
+        </li>
+        <li id="proposalMakingPhase" class=" active">
+          <h4>
+            <strong>Versioning</strong>
+          </h4>
+        </li>
+        <li id="proposalMakingPhase" class=" active">
+          <h4>
+            <strong>Deliberation</strong>
+          </h4>
+        </li>
+        <li id="proposalMakingPhase" class=" selected active">
+          <h4>
+            <strong>Voting</strong>
+          </h4>
+        </li>
+      </ul>
+    </div>
+    <div class="progressline col-md-12 col-sm-12">
+        <div class="col-md-8 col-sm-8">
+            <ul class="progressline-phases">
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Registration
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Instructions
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Voting
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title selected">
+                            Summary
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Result
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                </ul>
+          </div>
+        <div class="col-md-4 col-sm-4">
+            <div class="counter-box">
+                <h3 class="counter-title"><strong>Voting will end in</strong></h3>
+                <ul class="counter">
+                    <li class="counter-section">
+                        <h5 class="text-muted"><strong>Days</strong></h5>
+                        <div>45</div>
+                    </li>
+                    <li class="counter-section">
+                        <h5 class="text-muted"><strong>Hours</strong></h5>
+                        <div>03</div>
+                    </li>
+                    <li class="counter-section">
+                        <h5 class="text-muted"><strong>Minutes</strong></h5>
+                        <div>03</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+</div>
 <div class="range-voting-content">
-    <h3 class="assembly-name">{{assembly}}</h3> 
+    <h3><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h3>
     <h1><strong>Assembly Ballot</strong></h1>
     <img class="checkmark" src="/assets/images/black_tick.png"/> 
-    <div class="date"> {{year}} {{month}} </div> 
+    <div class="date"> 2015-08 </div> 
     <div class="container"> 
         <div class="summary-container" style="width: 480px;"> 
             <div id="voting-summary"><strong> Your Voting Summary </strong></div> 
             <p class="scored"><strong> Assigned scores (range)</strong> </p> 
-            <ol class="individual-scores list-unstyled" ng-repeat="vote in votingBallotVotes">
+            <ol class="individual-scores list-unstyled" ng-repeat="vote in votingBallotVote.voteValues">
                 <li> 
-                    <div class="score-box">{{vote.voteValue}}</div> 
-                    <div class="campaign-name">{{vote.name}}</div> 
+                    <p class="score-box">{{vote.voteValue}}</p> 
+                    <div class="campaign-name">{{uuidMap[vote.selectedCandidate.uuid]}}</div> 
                 </li> 
             </ol> 
-            <p class="total-scored-text"><strong>You have scored </strong></p><span class="total-scored-box">{{totalScored}}</span><strong> / </strong><span class="total-scored-box">{{totalProposals}}</span><p class="total-scored-text"><strong> proposals.</strong></p> 
+            <p class="total-scored-text"><strong>You have scored </strong></p><span class="score-box">{{scored}}</span><strong> / </strong><span class="score-box">{{votingBallotVote.voteValues.length}}</span><p class="total-scored-text"><strong> proposals.</strong></p> 
         </div> 
     </div> 
 
     <div class="buttons">
-        <button type="submit" class="btn btn-success">Back to Ballot</button> 
-        <button type="button" class="btn btn-primary"> CONFIRM AND SUBMIT </button> 
+        <button type="button" ng-click ="back()" class="btn btn-success">Back to Ballot</button> 
+        <button type="submit" ng-click ="submit()" class="btn btn-primary"> CONFIRM AND SUBMIT </button> 
     </div>
 </div> 

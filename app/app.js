@@ -15,9 +15,9 @@ console.log("Welcome to AppCivist!");
 var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
-var appCivistCoreBaseURL = "http://localhost:9000/api";
-// Comment the previous line and uncomment the following to use the API Server available in our public server
-//var appCivistCoreBaseURL = "https://appcivist.littlemacondo.com/backend";
+//var appCivistCoreBaseURL = "http://localhost:9000/api";
+// Uncomment the previous line and comment the following to use the local API Server if you have it running
+var appCivistCoreBaseURL = "http://appcivist.littlemacondo.com/backend/api";
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",

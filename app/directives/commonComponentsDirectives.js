@@ -250,18 +250,11 @@ appCivistApp.directive('newContribution', function() {
             targetSpace: '=targetspace',
             themes: '=',
             contributionType: "@ctype",
+            response: "=response",
             newContribution: '=ngModel'
         },
         controller: "NewContributionCtrl",
-        link: function(scope, element, attrs, ngModel) {
-            scope.newContribution.type = scope.contributionType;
-            scope.$watch('contributionType', function(value){
-                if(value){
-                    console.log(value);
-                    scope.newContribution.type = value;
-                }
-            }, true);
-        }
+        link: newContributionLink
     }
 });
     
@@ -288,14 +281,37 @@ appCivistApp.directive('newForumPost', function() {
             newContribution: '=ngModel'
         },
         controller: "NewContributionCtrl",
-        link: function(scope, element, attrs, ngModel) {
-            scope.newContribution.type = scope.contributionType;
-            scope.$watch('contributionType', function(value){
-                if(value){
-                    console.log(value);
-                    scope.newContribution.type = value;
-                }
-            }, true);
+        link: newContributionLink
+    }
+});
+
+appCivistApp.directive('campaignHeader', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/campaign/component/campaignHeader.html",
+        scope: {
+            content: '=',
+            assembly: '=assembly',
+            campaign: '=campaign',
+            component: '=component'
         }
     }
 });
+
+/**
+ * Functions common to all component directives
+ */
+function newContributionLink(scope, element, attrs, ngModel) {
+    scope.newContribution.type = scope.contributionType;
+
+    // If the target space is undefined, it means it was empty an this contribution is the first
+    if (!scope.targetSpace) {
+        scope.targetSpace = [];
+    }
+    scope.$watch('contributionType', function(value){
+        if(value){
+            scope.newContribution.type = value;
+        }
+    }, true);
+}

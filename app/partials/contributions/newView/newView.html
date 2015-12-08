@@ -1,38 +1,47 @@
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="newView">
+<div class="col-md-12 col-sm-12 col-lg-12" tabindex="-1"
+     role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
     <div class="modal-content col-md-12 col-sm-12">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <div class="view col-md-12 col-sm-12">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+            <h1><strong>New Contribution</strong></h1>
+            <p>Identify a problem or make a suggestion</p>
+            <span ng-if="newContributionResponse!=undefined && newContributionResponse.hasErrors">
+                <label class="alert-danger">Contribution not created. An error occurred: newContributionResponse.errors</label>
+            </span>
+        </div>
+        <div class="modal-body view col-md-12 col-sm-12">
             <div class="col-md-12 col-sm-12">
-                <div class="row text-center">
-                    <span class="h4"><strong>Assembly: </strong></span>
-                    <span class="h4">{{assembly.name}}</span>
-                    <span class="h4"> / </span>
-                    <span class="h4" ng-if="campaign!=null
-                        && campaign!=undefined">
-                        <strong>Campaign: </strong>
-                    </span>
-                    <span class="h4" ng-if="campaign!=null
-                        && campaign!=undefined">
-                        {{campaign.title}}
-                    </span>
-                </div>
-                <br/>
                 <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Brainstorming'">
                     <!--<ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>-->
                     <new-contribution
                             id="newContributionView"
-                            targetspaceid="campaign.resourceSpaceId"
-                            targetspace="campaign.contributions"
+                            targetspaceid="component.resourceSpaceId"
+                            targetspace="contributions"
                             themes="campaign.themes"
                             ctype="BRAINSTORMING"
+                            response="newContributionResponse"
                             ng-model="newContribution">
                     </new-contribution>
-
                 </span>
                 <span ng-if="milestone!=null && milestone!=undefined && milestone.title === 'Proposal Drafting'">
-                    <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
+                    <!--<ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>-->
+                     <new-contribution
+                             id="newContributionProposalDraftView"
+                             targetspaceid="component.resourceSpaceId"
+                             targetspace="contributions"
+                             themes="campaign.themes"
+                             ctype="PROPOSAL"
+                             response="newContributionResponse"
+                             ng-model="newContribution">
+                     </new-contribution>
                 </span>
             </div>
+        </div>
+        <div class="modal-footer view col-md-12 col-sm-12">
+            <spinner name="mySpinner" show="postingContribution"></spinner>
+            <button class="btn btn-primary" type="button" ng-click="ok()">Create contribution</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>
 </div>

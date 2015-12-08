@@ -539,7 +539,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	}
 });
 
-appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location,
+appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies,
 														  Campaigns, Contributions){
 
@@ -564,10 +564,59 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.newContribution = Contributions.defaultNewContribution();
-		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
+		$scope.newContributionResponse = {hasErrors:false};
+
+		//$scope.$watch($scope.newContributionResponse.hasErrors,
+		//		function(hasErrors) {
+		//			if(!hasErrors) {
+		//				console.log("Contribution posted, closing modal");
+		//				$scope.newContributionModalHide();
+		//			}
+		//		});
+
+		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
 	}
+
+	$scope.openNewContributionModal = function(size)  {
+		var modalInstance = $uibModal.open({
+			animation: true,
+			templateUrl: '/app/partials/contributions/newView/newView.html',
+			controller: 'NewContributionModalCtrl',
+			size: size,
+			resolve: {
+				assembly: function () {
+					return $scope.assembly;
+				},
+				campaign: function () {
+					return $scope.campaign;
+				},
+				component: function () {
+					return $scope.component;
+				},
+				milestone: function () {
+					return $scope.milestone;
+				},
+				contributions: function () {
+					return $scope.contributions;
+				},
+				newContribution: function () {
+					return $scope.newContribution;
+				},
+				newContributionResponse: function () {
+					return $scope.newContributionResponse;
+				}
+			}
+		});
+
+		modalInstance.result.then(function (newContribution) {
+			$scope.newContribution = newContribution;
+			console.log('New Contribution with Title: ' + newContribuiton.title);
+		}, function () {
+			console.log('Modal dismissed at: ' + new Date());
+		});
+	};
 
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
@@ -683,7 +732,19 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	}
 
 	function setContributionsAndGroups($scope, localStorageService) {
+		// TODO: always get the list of contributions from server
+		var contributionsRes = Contributions.contributionsInCampaignComponent($scope.assemblyID, $scope.campaignID, $scope.componentID).query();
 		$scope.contributions = $scope.component.contributions;
+		contributionsRes.$promise.then(
+				function(data) {
+					$scope.component.contributions = data;
+					$scope.contributions = $scope.component.contributions;
+				},
+				function(error) {
+
+				}
+		)
+
 		$scope.workingGroups = $scope.campaign.workingGroups;
 		$scope.themes = $scope.campaign.themes;
 		$scope.displayedContributionType = $scope.milestone.mainContributionType;

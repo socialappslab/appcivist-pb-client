@@ -1,12 +1,10 @@
 <div class="view campaign-pmaking">
     <div class="col-md-12 col-sm-12">
-        <div class="row text-center">
-            <span class="h4"><strong>Assembly: </strong></span>
-            <span class="h4">{{assembly.name}}</span>
-            <span class="h4"> / </span>
-            <span class="h4"><strong>Campaign: </strong></span>
-            <span class="h4">{{campaign.title}}</span>
-        </div>
+        <campaign-header
+            assembly="assembly"
+            campaign="campaign"
+            component="component">
+        </campaign-header>
         <br/>
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
             <ul id="timeline" class="row timeline">
@@ -27,7 +25,8 @@
                     <ul class="progressline-phases">
                         <li class="progressline-phase" ng-repeat="m in milestones">
                             <h4 class="progressline-phase-title">
-                                <a ng-class="m.componentInstanceMilestoneId === milestoneID ? 'selected' : ''" ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{m.componentInstanceMilestoneId}}">
+                                <a ng-class="m.componentInstanceMilestoneId === milestoneID ? 'selected' : ''"
+                                   ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{m.componentInstanceMilestoneId}}">
                                     {{m.title}}
                                     <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue > 1">(due in {{mDaysToDue}} days)</span>
                                     <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue === 1">(due in {{mDaysToDue}} day)</span>
@@ -65,7 +64,7 @@
                 <!--<span ng-if="milestone.title === 'Brainstorming'">Identify problems and make suggestions for proposals</span>-->
                 <!--<span ng-if="milestone.title === 'Working Group Formation'">Join or create a group to develop proposals</span>-->
                 <!--<span ng-if="milestone.title === 'Proposal Drafting'">Explore existing proposals or start one with your working group</span>-->
-                <span> {{milestone.description}}</span>
+                <span>{{milestone.description}}</span>
             </h1>
         </div>
         <div class="row col-md-12 col-sm-12">
@@ -107,17 +106,24 @@
                     <!--</div>-->
                 <!--</div>-->
                 <div class="row">
-                    <span ng-if="milestone.title === 'Brainstorming'">
-                        <button class="btn btn-success btn-half-size" data-toggle="modal" data-target="#newView">Contribute</button>
+                    <span ng-if="(milestone.title | uppercase) === 'BRAINSTORMING'">
+                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg')">Contribute</button>
+                        <!---->
+                        <!--<button class="btn btn-success col-md-12"-->
+                                <!--data-toggle="modal" data-target="#newView">Contribute</button>-->
                         <!--<button class="btn btn-success btn-half-size">Upload batch</button>-->
                     </span>
-                    <span ng-if="milestone.title === 'Working Group Formation'">
+                    <span ng-if="(milestone.title | uppercase) === 'WORKING GROUP FORMATION'">
                         <a ng-href="#/campaign/{{campaignID}}/wgroup/create"><button class="btn btn-success col-md-12">Create New Group</button></a>
                     </span>
-                    <span ng-if="milestone.title === 'Proposal Drafting'">
+                    <!--QUICK FIX: todo: make sure the milestone title is always the same-->
+                    <span ng-if="(milestone.title | uppercase) === 'WORKING GROUPS FORMATION'">
+                        <a ng-href="#/campaign/{{campaignID}}/wgroup/create"><button class="btn btn-success col-md-12">Create New Group</button></a>
+                    </span>
+                    <span ng-if="(milestone.title | uppercase) === 'PROPOSAL DRAFTING'">
                         <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">New Proposal Draft</button>
                     </span>
-                    <span ng-if="milestone.title === 'Voting period'">
+                    <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD'">
                         <button class="btn btn-success col-md-12" ng-href="#/ballot/{{component.ballots[0].votingBallotId}}">Open Voting Ballot</button>
                     </span>
                 </div>
@@ -131,6 +137,6 @@
             </ul>
         </div>
     </div>
-    <ng-include src="'app/partials/contributions/newView/newView.html'"></ng-include>
+    <!--<ng-include src="'app/partials/contributions/newView/newView.html'"></ng-include>-->
     <ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>
 </div>

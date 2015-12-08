@@ -7,44 +7,49 @@
  * - On a component (i.e., phase) that is part of a campaign (type = PROPOSAL, BRAINSTORMING
  * - On a contribution resources space (type = COMMENT)
  */
+
+var postingContributionFlag = false;
+
 appCivistApp.controller('NewContributionCtrl',
 		function ($scope, $http, $routeParams, localStorageService, Contributions) {
-
 			init();
-
 			function init() {
-				//$scope.newContribution = Contribut
+				$scope.clearContribution = clearNewContributionObject;
+				$scope.addAttachment = addAttachmentToContribution;
 			}
 
 			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-				if (!newContribution.title || !newContribution.title === "") {
-					var maxlength = 250;
-					var trimlength = maxlength;
-					if(newContribution.text.length < maxlength) {
-						trimlength = newContribution.text.length;
-					}
-					newContribution.title = newContribution.text.substring(0, trimlength);
-				}
-				var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);
-				newContributionRes.$promise.then(
-						function (data) {
-							console.log("Created contribution: " + data);
-							localStorageService.set("currentContribution", data);
-							targetSpace.unshift(data);
-						},
-						function (error) {
-							console.log("Error creating the contribution: " + angular.toJson(error.statusText));
-						}
-				);
+				createNewContribution(newContribution, targetSpaceId,targetSpace, {}, undefined, Contributions);
+			};
+		});
+
+appCivistApp.controller('NewContributionModalCtrl',
+		function ($scope, $uibModalInstance,
+					assembly, campaign, component, milestone, contributions, newContribution, newContributionResponse,
+				  	localStorageService, Contributions) {
+			init();
+			function init() {
+				$scope.assembly = assembly;
+				$scope.campaign = campaign;
+				$scope.component = component;
+				$scope.milestone = milestone;
+				$scope.contributions = contributions;
+				$scope.newContribution = newContribution;
+				$scope.newContributionResponse = newContributionResponse;
+				$scope.postContribution = createNewContribution;
+				$scope.clearContribution = clearNewContributionObject;
+				$scope.postingContribution = postingContributionFlag;
 			}
 
-			$scope.clearContribution = function(newContribution){
-				console.log("Cleaning contribution");
-				var cType = newContribution.type;
-				newContribution = Contributions.defaultNewContribution();
-				newContribution.type = cType;
-				newContribution.text = "";
-			}
+			$scope.ok = function () {
+				createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
+						$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
+			};
+
+			$scope.cancel = function () {
+				$scope.newContribution = Contributions.defaultNewContribution();
+				$uibModalInstance.dismiss('cancel');
+			};
 		});
 
 appCivistApp.controller('contributionCtrl', function($scope, $http, $routeParams, localStorageService) {
@@ -283,6 +288,8 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, localStorageService, Contributions, WorkingGroups) {
 	init();
 	function init() {
+		$scope.newForumPost = Contributions.defaultNewContribution();
+		$scope.newForumPost.contributionType = "FORUM_POST";
 		angular.forEach(localStorageService.get('workingGroups'), function(wGroup) {
 			if(wGroup.groupId == $routeParams.wid) {
 				$scope.wGroup = wGroup;
@@ -301,3 +308,54 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
 		});
 	}
 });
+
+/**
+ * Functions common to all Contribution Controllers
+ *
+ */
+
+function createNewContribution(newContribution, targetSpaceId, targetSpace, response, modalInstance, Contributions) {
+	postingContributionFlag = true;
+	if (!newContribution.title || !newContribution.title === "") {
+		var maxlength = 250;
+		var trimlength = maxlength;
+		if(newContribution.text.length < maxlength) {
+			trimlength = newContribution.text.length;
+		}
+		newContribution.title = newContribution.text.substring(0, trimlength);
+	}
+
+	var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);
+	newContributionRes.$promise.then(
+			function (data) {
+				newContribution = data;
+				targetSpace.unshift(data);
+				response.hasErrors = false;
+				response.touched = !response.touched;
+				if(modalInstance)
+					modalInstance.close(newContribution);
+				postingContributionFlag = false;
+			},
+			function (error) {
+				console.log("Error creating the contribution: " + angular.toJson(error.statusText));
+				response.hasErrors = true;
+				response.errors = error;
+				response.touched = !response.touched;
+				postingContributionFlag = false;
+			}
+	);
+}
+
+function clearNewContributionObject(newContribution, Contributions){
+	console.log("Cleaning contribution");
+	var cType = newContribution.type;
+	newContribution = Contributions.defaultNewContribution();
+	newContribution.type = cType;
+	newContribution.text = "";
+}
+
+function addAttachmentToContribution(newContribution, attachment) {
+	// POST attachment to IMGUR
+	// ADD to attachments array in Contributions
+	newContribution.attachments.push(attachment);
+}

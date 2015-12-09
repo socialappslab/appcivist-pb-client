@@ -30,13 +30,37 @@
 		<div class="progressline col-md-12 col-sm-12">
 	  		<div class="col-md-8 col-sm-8">
         		<ul class="progressline-phases">
-            		<li class="progressline-phase">
-                		<h4 class="progressline-phase-title selected container-fluid">
-                    		Voting
-                		</h4>
-                		<div class="progressline-phase-line"></div>
-            		</li>
-        		</ul>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Registration
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Instructions
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title selected">
+                            Voting
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Summary
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                    <li class="progressline-phase">
+                        <h4 class="progressline-phase-title">
+                            Result
+                        </h4>
+                        <div class="progressline-phase-line"></div>
+                    </li>
+                </ul>
        		</div>
      		<div class="col-md-4 col-sm-4">
         		<div class="counter-box">
@@ -63,93 +87,121 @@
      		</div>
     	</div>
 </div>
-<div class="container">
-	<div class="row">
-		<div class="col-md-8 col-sm-8">
-			<div class = "container">
+
+<div class="container" id="rangeVotingVote">
+		<div class="row headline">
+			<div class="col-md-8 col-sm-8 title">
 				<h4>Paris PB 2016</h4>
-			</div>
-			<div class = "container">
 				<h2><b>Assembly Ballot</b></h2>
-			</div>
-			<div class = "container">
 				<h2 id="small">2015-08</h2>
 			</div>
-		</div>
-		<div class="col-md-4 col-sm-4">
-            		<ul class="points">
-            			<li>You have distributed </li>
-                		<li class="section">
-                    		<div>30</div>
-                		</li>
-                		<li>/</li>
-                		<li class="section">
-                    		<div>30</div>
-                		</li>
-                		<li> points.</li>
-            		</ul>
-        		</div>
-     	</div>
-	</div>
-</div>
-<div class="container">
-	<div class="row">
-		<div class="col-md-4 col-sm-4">
-			<div class="left">
-				<ul class="list-unstyled">
-					<li><h3><b>Campaign Themes and Proposals</b></h3></li>
-					<li class="theme"><button type="button" class="btn btn-success"><b>Urban Infrastructure</b></button></li>
-					<li>
-						<ul class="list-unstyled" ng-repeat = "proposal in urbanProposals">
-							<li>{{ proposal.name }}</li>
-						</ul>
-					</li>
-					<li class="theme"><button type="button" class="btn btn-success"><b>Streets and Transportation</b></button></li>
-					<li>
-						<ul class="list-unstyled" ng-repeat = "proposal in streetProposals">
-							<li class="names">{{ proposal.name }}</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class = "col-md-8 col-sm-8">
-			<div class="right">
-				<div class = "buttons">
-						<ul class="list-unstyled list-inline">
-							<li><input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"></li>
-							<li><button type="button" class="btn btn-success">Search</button></li>
-							<li><button type="button" class="btn btn-secondary">Voting Instructions</button></li>
-							<li><button type="button" id = "save" class="btn btn-success">Save</button></li>
-							<li><button type="button" id = "submit" class="btn btn-primary">Submit</button></li>
-						</ul>
+	    </div>
+	<div class="row voting-content">
+		<div class="col-md-4 col-sm-4 left">
+				<h3><b>Campaign Themes and Proposals</b></h3>
+				<div class="theme-proposals" ng-repeat="theme in themes">
+					<h4 class="theme"><b>{{theme}}</b></h4>
+					<ul class="list-unstyled proposals">
+						<li ng-repeat="proposal in themeMap[theme]" class="proposal-names">{{proposal}}</li>
+					</ul>
 				</div>
-				<ul class="list-unstyled" ng-repeat = "proposal in urbanProposals">
-					<li class="proposal">
-						<div>
-							<div class="container">
-								<div class="row">
-									<div class="col-md-2 col-sm-2">
-										<img class = "images" src="{{proposal.image}}">
-									</div>
-									<div class="col-md-6 col-sm-6">
-											<ul class="list-unstyled list-inline">
-												<li><h4><b>{{proposal.name}}</b></h4></li>
-												<li><img  id="icon" class = "img-circle" src="/../assets/images/image71.tiff" class="img-circle"></li>
-											</ul>
-											<ul class="list-unstyled list-inline">
-												<li><h5><b>Estimated Cost:</b>{{proposal.cost|currency}}</h5></li>
-												<li><h5><b>Location:</b>{{proposal.location}}</h5></li>
-											</ul>
-											<br>
-											<p class="description">{{proposal.description}}</p>
-										</div>
-									</div>
-								</div>
-						</div>
-					</li>
-				</ul>
+		</div>
+		<div class = "col-md-8 col-sm-8 right">
+			<div class = "buttons">
+					<ul class="list-unstyled list-inline">
+						<li><input type="text" ng-model="query" class="form-control" placeholder="Enter keyword"></li>
+						<li><button type="button" class="btn btn-success">Search</button></li>
+						<li><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#instructions">Voting Instructions</button></li>
+						<li><button type="button" id = "save" ng-click="save()" class="btn btn-success">Save</button></li>
+						<li><button type="button" id = "submit" ng-click="submit()" class="btn btn-primary">Submit</button></li>
+					</ul>
 			</div>
+
+			<!-- Modal for voting instructions -->
+			<div class="modal fade" id="instructions" tabindex="-1" role="dialog" aria-labelledby="instrLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="instrLabel">Voting Instructions</h4>
+			      </div>
+			      <div class="modal-body">
+			        <div class = "container instructions">
+						<h2 class="title"><strong>Voting Instructions</strong></h2>
+						<ul>
+							<li type="circle">{{votingBallot.instructions}}</li>
+							<li type="circle">The voting system your Assembly selected and configured for this campaign is <b>{{votingBallot.systemType}}</b></li>
+							<li type="none">
+								<ul>
+									<li  ng-repeat="pair in votingBallot.configs" type="circle">The {{pair.key}} of this voting ballot is {{pair.value}}.</li>
+								</ul>
+							</li>
+							<li type="circle">When you are ready to vote, close the instruction window and start voting.</li>
+						</ul>
+					</div>
+					<br>
+					<div class="container additional-info">
+							<h2><strong>Additional Information</strong></h2>
+							<p class="info">{{votingBallot.notes}}</p>
+							<br>
+							<h3><strong>Technical Issues</strong></h3>
+							<br>
+							<ul class="list-unstyled">
+								<li>Contact Cristhian at cristhian@example.com/ +1 999 999 9999</li>
+							</ul>
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+
+			<ul class="list-unstyled voted-proposals">
+				<li class="voted-proposal container" ng-repeat = "proposal in candidates | filter:query">
+					<div class="proposal-content">
+						<div class="col-md-2 col-sm-2 proposal-img-holder" data-toggle="modal" data-target="#{{proposal.uuid}}modal">
+							<img class = "proposal-img" src="/../assets/images/image78.jpg">
+						</div>
+						<div class="col-md-6 col-sm-6 data">
+							<h4 class="title" data-toggle="modal" data-target="#{{proposal.uuid}}modal"><b>{{proposal.title}}</b><img class = "img-circle assembly-img" src="/../assets/images/image71.tiff" class="img-circle"></h4>
+							<h5 data-toggle="modal" data-target="#{{proposal.uuid}}modal"><b>Estimated Cost:</b>{{proposal.budget|currency}}</h5>
+							<h5 data-toggle="modal" data-target="#{{proposal.uuid}}modal"><b>Location:</b>Berkeley, CA 94720</h5>
+							<p class="description"><span data-toggle="modal" data-target="#{{proposal.uuid}}modal">{{proposal.text}}</span><span class="rate"><input type="number" class="form-control" id="{{proposal.uuid}}" placeholder="/100"></span></p>
+						</div>
+					</div>
+
+					<!-- Modal for information of the candidate -->
+					<div class="modal fade" id="{{proposal.uuid}}modal" tabindex="-1" role="dialog" aria-labelledby="{{proposal.uuid}}Label">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title" id="{{proposal.uuid}}Label">{{proposal.title}}</h4>
+					      </div>
+					      <div class="modal-body">
+					        <h3><b>{{proposal.title}}</b></h3>
+					        <h5><b>Authors:</b><span ng-repeat="author in proposal.authors">{{author}}</span></h5>
+					        <h5><b>Working Group Authors:</b><span ng-repeat="author in proposal.workingGroupAuthors">{{author}}</span></h5>
+					        <h5 class="theme-holder"><b>Themes:</b><span class = "themes" ng-repeat="theme in proposal.themes">{{theme}}</span></h5>
+					        <br>
+					        <img class="pull-right" src="/../assets/images/image78.jpg">					        
+					        <p>{{proposal.text}}</p>
+					        <br>
+					        <h5><b>Comments:</b></h5>
+					        <p class="comments" ng-repeat="comment in proposal.comments">{{comment}}</p>
+					        
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>

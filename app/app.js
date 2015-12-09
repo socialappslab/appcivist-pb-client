@@ -178,6 +178,22 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'RangeSummaryCtrl',
             templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
         })
+        .when('/ballot/:uuid/result',{
+            controller: 'RangeResultCtrl',
+            templateUrl: 'app/partials/voting/result/RangeResult.html'
+        })
+        .when('/ballot/:uuid/landing',{
+            controller: 'VotingLandingCtrl',
+            templateUrl: 'app/partials/voting/landing/VotingBallotLanding.html'
+        })
+        .when('/ballot/:uuid/vote',{
+            controller: 'RangeVotingCtrl',
+            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
+        })
+        .when('/ballot/:uuid/register',{
+            controller: 'RegistrationForm',
+            templateUrl: 'app/partials/voting/RegistrationForm.html'
+        })
         .when('/campaign/:aid/temp3',{
             controller: 'RangeResultCtrl',
             templateUrl: 'app/partials/voting/result/RangeResult.html'

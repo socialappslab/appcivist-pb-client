@@ -130,7 +130,6 @@
             </div>
         </div>
         <div class="row col-md-12 col-sm-12">
-            <span>Milestone contribution type: {{milestone.mainContributionType}}</span>
             <ul class="row contributions">
                 <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date' | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType}">
                     <contribution content="contribution"></contribution>

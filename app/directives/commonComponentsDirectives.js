@@ -304,11 +304,6 @@ appCivistApp.directive('campaignHeader', function() {
  */
 function newContributionLink(scope, element, attrs, ngModel) {
     scope.newContribution.type = scope.contributionType;
-
-    // If the target space is undefined, it means it was empty an this contribution is the first
-    if (!scope.targetSpace) {
-        scope.targetSpace = [];
-    }
     scope.$watch('contributionType', function(value){
         if(value){
             scope.newContribution.type = value;

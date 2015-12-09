@@ -306,6 +306,11 @@ function createNewContribution(newContribution, targetSpaceId, targetSpace, resp
 		newContribution.title = newContribution.text.substring(0, trimlength);
 	}
 
+	// If the target space is undefined, it means it was empty an this contribution is the first
+	if (!targetSpace) {
+		targetSpace = [];
+	}
+
 	removeNonSelectedThemes(newContribution.themes);
 
 	var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);

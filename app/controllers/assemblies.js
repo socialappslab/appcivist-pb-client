@@ -348,6 +348,9 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.campaigns = null;
             $scope.currentAssembly.$promise.then(function(data) {
                 $scope.currentAssembly = data;
+                if(!$scope.currentAssembly.forumPosts) {
+                    $scope.currentAssembly.forumPosts = [];
+                }
                 localStorageService.set("currentAssembly", $scope.currentAssembly);
                 $scope.campaigns = $scope.currentAssembly.campaigns;
             });

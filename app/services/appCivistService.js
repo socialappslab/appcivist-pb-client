@@ -168,7 +168,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("1"),
                         opened:true,
                         componentIndex: 0,
-                        position: 1
+                        position: 1,
+                        mainContributionType: "BRAINSTORMING"
                     },
                     {
                         date: today().add(15, 'days').toDate(),
@@ -179,7 +180,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("2"),
                         opened:true,
                         componentIndex: 0,
-                        position: 2
+                        position: 2,
+                        mainContributionType: "BRAINSTORMING"
                     },
                     {
                         date: today().add(20, 'days').toDate(),
@@ -189,7 +191,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("3"),
                         opened:true,
                         componentIndex: 0,
-                        position: 3
+                        position: 3,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(30, 'days').toDate(),
@@ -200,7 +203,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("4"),
                         opened:true,
                         componentIndex: 1,
-                        position: 4
+                        position: 4,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(45, 'days').toDate(),
@@ -211,7 +215,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("5"),
                         opened:true,
                         componentIndex: 1,
-                        position: 5
+                        position: 5,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(60, 'days').toDate(),
@@ -221,7 +226,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("6"),
                         opened:true,
                         componentIndex: 2,
-                        position: 6
+                        position: 6,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(90, 'days').toDate(),
@@ -230,7 +236,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("7"),
                         opened:true,
                         componentIndex: 2,
-                        position: 7
+                        position: 7,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(120, 'days').toDate(),
@@ -239,7 +246,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("8"),
                         opened:true,
                         componentIndex: 3,
-                        position: 8
+                        position: 8,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(130, 'days').toDate(),
@@ -248,7 +256,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("8"),
                         opened:true,
                         componentIndex: 3,
-                        position: 9
+                        position: 9,
+                        mainContributionType: "PROPOSAL"
                     }
                 ]
             };

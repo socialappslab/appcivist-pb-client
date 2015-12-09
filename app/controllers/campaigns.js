@@ -563,8 +563,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
-		$scope.newContribution = Contributions.defaultNewContribution();
+		$scope.newComment = $scope.newContribution = Contributions.defaultNewContribution();
 		$scope.newContributionResponse = {hasErrors:false};
+
 
 		//$scope.$watch($scope.newContributionResponse.hasErrors,
 		//		function(hasErrors) {

@@ -27,7 +27,10 @@
                         <input type="password" placeholder="Password" class="form-control" ng-model="user.password"/>
                     </div>
                     <button type="submit" class="btn btn-success">Sign in</button>
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Individual
+                    <!--<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Individual-->
+                        <!--Sign Up-->
+                    <!--</button>-->
+                    <button type="button" class="btn btn-info" ng-click="openNewUserModal()">Individual
                         Sign Up
                     </button>
                     <a ng-href="#/assembly/create?userIsNew=true">
@@ -35,73 +38,75 @@
                     </a>
                 </form>
 
-                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
-                     aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myModal">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div id="form_person">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <div class="panel-title">Register</div>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="bg-success"
-                                             style="padding:5px;border-radius:5px;text-align:center; margin-bottom:10px"
-                                             id="success_person"></div>
-                                        <form id="signup_form" class="form-horizontal" role="form" method="post">
-                                            <div class="form-group">
-                                                <label for="username" class="col-md-3 control-label">Username</label>
 
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" id="username"
-                                                           name="username" placeholder="Desired Username" required
-                                                           ng-model="newUser.name"/>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="username" class="col-md-3 control-label">Email</label>
 
-                                                <div class="col-md-9">
-                                                    <input type="text" class="form-control" id="email" name="email"
-                                                           placeholder="Email" required ng-model="newUser.email"/>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="password" class="col-md-3 control-label">Password</label>
+                <!--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"-->
+                     <!--aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myModal">-->
+                    <!--<div class="modal-dialog modal-lg">-->
+                        <!--<div class="modal-content">-->
+                            <!--<div id="form_person">-->
+                                <!--<div class="panel panel-default">-->
+                                    <!--<div class="panel-heading">-->
+                                        <!--<div class="panel-title">Register</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="panel-body">-->
+                                        <!--<div class="bg-success"-->
+                                             <!--style="padding:5px;border-radius:5px;text-align:center; margin-bottom:10px"-->
+                                             <!--id="success_person"></div>-->
+                                        <!--<form id="signup_form" class="form-horizontal" role="form" method="post">-->
+                                            <!--<div class="form-group">-->
+                                                <!--<label for="username" class="col-md-3 control-label">Username</label>-->
 
-                                                <div class="col-md-9">
-                                                    <input type="password" class="form-control" id="password"
-                                                           name="password" placeholder="Desired Password" required
-                                                           ng-model="newUser.password"/>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="repeatPassword" class="col-md-3 control-label">Confirm
-                                                    Password</label>
+                                                <!--<div class="col-md-9">-->
+                                                    <!--<input type="text" class="form-control" id="username"-->
+                                                           <!--name="username" placeholder="Desired Username" required-->
+                                                           <!--ng-model="newUser.name"/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="form-group">-->
+                                                <!--<label for="username" class="col-md-3 control-label">Email</label>-->
 
-                                                <div class="col-md-9">
-                                                    <input type="password" class="form-control" id="repeatPassword"
-                                                           name="repeatPassword" placeholder="Confirm Password" required
-                                                           ng-model="newUser.repeatPassword"/>
-                                                </div>
-                                            </div>
+                                                <!--<div class="col-md-9">-->
+                                                    <!--<input type="text" class="form-control" id="email" name="email"-->
+                                                           <!--placeholder="Email" required ng-model="newUser.email"/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="form-group">-->
+                                                <!--<label for="password" class="col-md-3 control-label">Password</label>-->
 
-                                            <div class="form-group">
-                                                <!-- Button -->
-                                                <div class="col-md-offset-3 col-md-9">
-                                                    <input type="submit" name="submit" class="btn btn-primary"
-                                                           id="submit_person" ng-click="signup()" value="Submit"/>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <!--end of signup_form-->
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end of person registration-->
-                        </div>
-                    </div>
-                </div>
+                                                <!--<div class="col-md-9">-->
+                                                    <!--<input type="password" class="form-control" id="password"-->
+                                                           <!--name="password" placeholder="Desired Password" required-->
+                                                           <!--ng-model="newUser.password"/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="form-group">-->
+                                                <!--<label for="repeatPassword" class="col-md-3 control-label">Confirm-->
+                                                    <!--Password</label>-->
+
+                                                <!--<div class="col-md-9">-->
+                                                    <!--<input type="password" class="form-control" id="repeatPassword"-->
+                                                           <!--name="repeatPassword" placeholder="Confirm Password" required-->
+                                                           <!--ng-model="newUser.repeatPassword"/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+
+                                            <!--<div class="form-group">-->
+                                                <!--&lt;!&ndash; Button &ndash;&gt;-->
+                                                <!--<div class="col-md-offset-3 col-md-9">-->
+                                                    <!--<input type="submit" name="submit" class="btn btn-primary"-->
+                                                           <!--id="submit_person" ng-click="signup()" value="Submit"/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</form>-->
+                                        <!--&lt;!&ndash;end of signup_form&ndash;&gt;-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--&lt;!&ndash;end of person registration&ndash;&gt;-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/user/recoveryform" ng-if='!userIsAuthenticated()'>Forgot Password?</a></li>

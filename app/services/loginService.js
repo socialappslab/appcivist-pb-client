@@ -21,7 +21,7 @@
 		return this.userIsAuthenticated();
 	};
 
-	this.signUp = function(user) { //valentine written
+	this.signUp = function(user, modalInstance) { //valentine written
 		if (user.password.localeCompare(user.repeatPassword) != 0) {
 			$rootScope.message = "Your passwords don't match."; 
 			$location.url('/');
@@ -32,6 +32,9 @@
 		console.log(user); 
 		$http.post(serverBaseUrl+'/user/signup', user)
 			.success(function(user) {
+				if(modalInstance) {
+					modalInstance.dismiss('cancel');
+				}
 				localStorageService.set('sessionKey',user.sessionKey);
 				localStorageService.set('authenticated',true);
 				console.log("User get from API: " + user.userId);

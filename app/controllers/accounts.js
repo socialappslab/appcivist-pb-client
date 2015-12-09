@@ -3,7 +3,7 @@
 /**
  * AccountCtrl - functions to control authentication 
  */
-appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
+appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
 		localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
@@ -64,4 +64,41 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,
 		usSpinnerService.stop('spinner-1');
 		$(angular.element.find('.spinner-container')).remove();
 	}
+
+	$scope.openNewUserModal = function(size)  {
+		var modalInstance = $uibModal.open({
+			animation: true,
+			templateUrl: '/app/partials/signup.html',
+			controller: 'NewUserModalCtrl',
+			size: size,
+			resolve: {
+				newUser: function () {
+					return $scope.newUser;
+				}
+			}
+		});
+
+		modalInstance.result.then(function (newUser) {
+			$scope.newUser = newUser;
+			console.log('New User with Username: ' + newUser.username);
+		}, function () {
+			console.log('Modal dismissed at: ' + new Date());
+		});
+	};
+});
+
+
+appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, $uibModalInstance,
+												newUser,
+												localStorageService, Assemblies, loginService,
+												usSpinnerService) {
+	init();
+	function init() {
+		$scope.newUser = newUser;
+	}
+
+	$scope.signup = function() {
+		loginService.signUp($scope.newUser, $uibModalInstance);
+	}
+
 });

@@ -109,11 +109,14 @@
         $scope.notifications.$promise.then(
             function (data) {
                 $scope.notifications = {
-                    'upcoming_milestones': []
+                    'upcoming_milestones': [],
+                    'other_updates' : []
                 };
                 angular.forEach(data, function (obj) {
                     if (obj.type === 'UPCOMING_MILESTONE') {
                         $scope.notifications.upcoming_milestones.push(obj);
+                    } else {
+                        $scope.notifications.other_updates.push(obj);
                     }
                 });
                 localStorageService.set("notifications", $scope.notifications);

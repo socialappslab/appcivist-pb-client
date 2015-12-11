@@ -1,0 +1,11 @@
+<div class="box newsBox">
+    <strong>Upcoming Milestones</strong>
+    <ul class="upcoming-milestones-list">
+        <li ng-repeat="milestone in notifications.upcoming_milestones">
+            <!--<p><u><strong>Campaign Belleville - Paris PB 2016: </strong></u>Proposal drafts are due in <strong>2 days.</strong></p>-->
+            <p><strong>{{milestone.resourceSummary}}</strong>.
+                <a  ng-click="selectCampaignById(milestone.containerId)" ng-href="#{{milestone.relativeUrl}}">Go to campaign!</a>
+            </p>
+        </li>
+    </ul>
+</div>

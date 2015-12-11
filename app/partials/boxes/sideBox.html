@@ -5,12 +5,9 @@
         <!-- Box Action -->
         <div id="boxAction"  class="col-md-5 col-sm-5" ng-if="box.addAction">
             <a ng-href="{{box.addAction.href}}">
-                <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
-                     style="height: 25px; width:25px; display: inline-block;"
-                     data-holder-rendered="true" class="image-circle"
-                     style="cursor: pointer">
+                <img class="image-circle-sidebox" alt="100x100" src="../assets/images/addIcon.png">
             </a>
-            <h5 style="display: inline-block;">{{box.addAction.title}}</h5>
+            <h5>{{box.addAction.title}}</h5>
         </div>
     </div>
 
@@ -25,7 +22,7 @@
                    ng-href="/#/assembly/{{item.assemblyId}}/forum">
                     <img ng-src="{{item.profile.icon}}" alt="100x100"
                          class="image-circle">
-                    <div class="caption" style="text-align: center">
+                    <div class="caption">
                         <h5 class="text" title="{{item.name}}">{{item.name}}</h5>
                     </div>
                 </a>

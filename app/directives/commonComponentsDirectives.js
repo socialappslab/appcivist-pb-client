@@ -299,6 +299,17 @@ appCivistApp.directive('campaignHeader', function() {
     }
 });
 
+appCivistApp.directive('sideBox', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/boxes/sideBox.html",
+        scope: {
+            box: '=box'
+        }
+    }
+});
+
 /**
  * Functions common to all component directives
  */

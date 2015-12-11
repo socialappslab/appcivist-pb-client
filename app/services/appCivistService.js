@@ -277,7 +277,7 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
             return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid+'?type=assembly');
         },
         workingGroups: function() {
-            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid+'?type=campaign?status=ongoing');
+            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid+'?type=group');
         }
     };
 });

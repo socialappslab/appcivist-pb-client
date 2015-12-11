@@ -67,72 +67,9 @@
 			</ul>
 		</div>
 		<div class="col-md-4 col-sm-4">
-			<div class="row col-md-12 col-sm-12 box settingsBox infoBox assembliesBox">
-				<div class="row">
-					<div class="col-md-6 col-sm-6">
-						<h4><strong>My Assemblies</strong></h4>
-					</div>
-					<div class="col-md-6 col-sm-6">
-						<a ng-href="/#/assembly/create" href="/#/assembly/create">
-							<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" style="height: 25px; width:25px; display: inline-block;" data-holder-rendered="true" class="image-circle" style="cursor: pointer">
-						</a>
-						<h5 style="display: inline-block;">New Assembly</h5>
-					</div>
-				</div>
-				<div class="row list-item assembliesList">
-					<div class="row">
-						<div class="assemblyItem item" ng-repeat="assembly in assemblies">
-							<div class="image-capsule">
-								<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
-									<div class="caption" style="text-align: center">
-										<h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
-									</div>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row col-md-12 col-sm-12 box settingsBox infoBox campaignsBox">
-				<div class="row">
-					<div class="col-md-6 col-sm-6">
-						<h4><strong>My Campaigns</strong></h4>
-					</div>
-				</div>
-				<div class="row list-item campaignsList">
-					<div class="row">
-						<div class="campaignItem item" ng-repeat="campaign in campaigns">
-							<div class="image-capsule">
-								<a ng-click="selectCampaign(campaign)" ng-href="#/assembly/{{campaign.assemblies[0]}}/campaign/{{campaign.campaignId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
-									<div class="caption" style="text-align: center">
-										<h5 class="text" title="{{campaign.title}}">{{campaign.title}}</h5>
-									</div>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row col-md-12 col-sm-12 box settingsBox infoBox workingGroupBox">
-				<div class="row">
-					<div class="col-md-6 col-sm-6">
-						<h4><strong>My Working Groups</strong></h4>
-					</div>
-				</div>
-				<div class="row list-item workingGroupsList">
-					<div class="row">
-						<div class="workingGroupItem item" ng-repeat="workingGroup in workingGroups">
-							<div class="image-capsule">
-								<a ng-href="#/assembly/{{workingGroup.assemblies[0]}}/group/{{workingGroup.groupId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
-									<div class="caption" style="text-align: center">
-										<h5 class="text" title="{{workingGroup.name}}">{{workingGroup.name}}</h5>
-									</div>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<side-box id="myAssemblies" box="sideBoxes['assemblies']"></side-box>
+			<side-box id="myCampaigns" box="sideBoxes['campaigns']"></side-box>
+			<side-box id="myGroups" box="sideBoxes['groups']"></side-box>
 		</div>
 	</div>
 </div>

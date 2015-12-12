@@ -9,6 +9,7 @@
 
     function init() {
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+        console.log("serverBaseUrl: " + $scope.serverBaseUrl);
         $scope.assemblies = [];
         $scope.campaigns = [];
         $scope.workingGroups = [];
@@ -83,7 +84,6 @@
 
     function getUserWorkingGroups() {
         $scope.workingGroups = Memberships.workingGroups().query();
-
         $scope.workingGroups.$promise.then(
             function (data) {
                 $scope.workingGroups = [];

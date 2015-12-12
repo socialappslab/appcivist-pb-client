@@ -16,20 +16,20 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 			"password": "",
 			"email": ""
 		};
-		var user = $scope.user = localStorageService.get("user");
-        var sessionKey = $scope.sessionKey = localStorageService.get("sessionKey");
-        var serverBaseurl = $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+		$scope.user = localStorageService.get("user");
+        $scope.sessionKey = localStorageService.get("sessionKey");
+        $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 
-        if ($scope.serverBaseUrl == undefined || $scope.serverBaseUrl == null) {
+        if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
             $scope.serverBaseUrl = appCivistCoreBaseURL;
-            localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
-            console.log("Setting API Server in AccountCtrl to: "+appCivistCoreBaseURL);
+            localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
+            console.log("Setting API Server in AccountCtrl to: "+$scope.serverBaseUrl);
         } else {
             console.log("Using API Server: "+$scope.serverBaseUrl);
         }
-        console.log("User in AccountCtrl is: "+user);
+        console.log("User in AccountCtrl is: "+$scope.user);
 
-		if (user != null && sessionKey != null) {
+		if ($scope.user != null && $scope.sessionKey != null) {
 			// TODO Validate that the Session Key corresponds to the user
 			//$location.url('/home');
 		} else {
@@ -85,13 +85,21 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 			console.log('Modal dismissed at: ' + new Date());
 		});
 	};
+
+	$scope.changeServer = function() {
+		var serverBaseUrl = localStorageService.get("serverBaseUrl");
+		appCivistCoreBaseURL = $scope.serverBaseUrl =
+				(serverBaseUrl === backendServers.remoteDev) ?
+						backendServers.localDev : backendServers.remoteDev;
+
+		localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
+		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");
+	}
 });
 
 
-appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, $uibModalInstance,
-												newUser,
-												localStorageService, Assemblies, loginService,
-												usSpinnerService) {
+appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, $uibModalInstance, newUser,
+													 localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
 		$scope.newUser = newUser;

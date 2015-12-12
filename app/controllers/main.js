@@ -7,18 +7,17 @@
  *
  */
 appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService, Assemblies, loginService, $route) {
-	$scope.route = $route;
 	init();
 
 	function init() {
-		var user = $scope.user = localStorageService.get("user");
-		var sessionKey = $scope.sessionKey = localStorageService.get("sessionKey");
-		var serverBaseurl = $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
-		var etherpadServer = $scope.etherpadServer = localStorageService.get("etherpadServer");
-		var info = $scope.info = localStorageService.get("help");
+		$scope.route = $route;
+		$scope.user = localStorageService.get("user");
+		$scope.sessionKey = localStorageService.get("sessionKey");
+		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+		$scope.etherpadServer = localStorageService.get("etherpadServer");
+		$scope.info = localStorageService.get("help");
 
 		$scope.assembliesLoading = false;
-
 
 		if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
 			$scope.serverBaseUrl = appCivistCoreBaseURL;
@@ -29,7 +28,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		}
 
 		if ($scope.etherpadServer === undefined || $scope.etherpadServer === null ) {
-			etherpadServer = $scope.etherpadServer = etherpadServerURL;
+			$scope.etherpadServer = etherpadServerURL;
 			localStorageService.set("etherpadServer", etherpadServerURL);
 			console.log("Setting Etherpad Server in MainCtrl to: " + etherpadServerURL);
 		} else {
@@ -37,15 +36,19 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		}
 
 		if ($scope.info === undefined || $scope.info === null) {
-			info = $scope.info = helpInfo;
-			localStorageService.set("help",info);
+			$scope.info = helpInfo;
+			localStorageService.set("help", $scope.info);
 		}
 
 		// does scope already has the user and the sessionKey?
-		console.log("User in MainCtrl is: "+user);
+		console.log("User in MainCtrl is: " + $scope.user);
 
-		authCheck(user,sessionKey);
+		authCheck($scope.user,$scope.sessionKey);
 		loadListedAssemblies();
+
+        //$scope.$watch(appCivistCoreBaseURL,function() {
+        //    loadListedAssemblies();
+        //}, true);
 	}
 
 	// TODO: Redirect to the real search query

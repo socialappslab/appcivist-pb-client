@@ -67,7 +67,8 @@ appCivistApp.controller('contributionCtrl', function($scope, $http, $routeParams
 	});
 });
 
-appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $routeParams, localStorageService, Contributions, Campaigns, Assemblies, Etherpad) {
+appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $routeParams, localStorageService,
+															 Contributions, Campaigns, Assemblies, Etherpad) {
 	init();
 
 	// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
@@ -287,6 +288,66 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 				}
 			});
 		});
+	}
+});
+
+
+appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
+													   Contributions) {
+	init();
+	initializeNewReplyModel();
+
+	function init() {
+		$scope.orderProperty = 'creation';
+		$scope.orderReverse = true;
+		// TODO: read replies enabled from configurations
+		$scope.replyEnabled = true;
+		$scope.replyBoxIsOpen = false;
+
+		// Scope Functions
+		$scope.orderComments = function (property) {
+			if($scope.orderProperty = property) {
+				$scope.orderReverse = !$scope.orderReverse;
+			}
+		}
+
+		$scope.random = function() {
+			return 0.5 - Math.random();
+		}
+
+		$scope.openReplyBox = function () {
+			$scope.replyBoxIsOpen = true;
+		}
+
+		$scope.closeReplyBox = function () {
+			$scope.replyBoxIsOpen = false;
+		}
+
+	}
+
+	function initializeNewReplyModel() {
+		$scope.newReply = Contributions.defaultNewContribution();
+		$scope.newReply.type = "COMMENT";
+	}
+});
+
+appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
+														  Contributions ) {
+	init();
+
+	function init() {
+		$scope.votes = $scope.contribution.stats.ups-$scope.contribution.stats.downs;
+		$scope.upVote = function () {
+			$scope.contribution.stats.ups+=1;
+			var stats = $scope.contribution.stats;
+			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).save(stats);
+		};
+		$scope.downVote = function () {
+			$scope.contribution.stats.downs+=1;
+			var stats = $scope.contribution.stats;
+			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).save(stats);
+		};
+
 	}
 });
 

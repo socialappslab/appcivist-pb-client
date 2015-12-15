@@ -347,6 +347,9 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     cid: campaignID,
                     ciid: componentID
                 })
+        },
+        updateStats: function(statsId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid', {stid: statsId});
         }
     };
 });

@@ -68,58 +68,10 @@
 
                             <div class="voffset2"></div>
 
-                            <ul class="row comments col-md-11 col-sm-11">
-                                <li class="row no-margin comment col-md-12 col-sm-12" ng-repeat="comment in contribution.comments | orderBy: 'date'">
-                                    <div class="row no-margin col-md-12 col-sm-12">
-                                        <div class="image-profile-comment inline">
-                                            <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
-                                        </div>
-                                        <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
-                                        <h5 class="date-comment inline"><time datetime="{{comment.lastUpdate}}"/>{{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
-                                        <div class="options-comment inline">
-                                            <ul class="tags" ng-repeat="theme in comment.themes">
-                                                <li class="tag"><strong>{{theme.title}}</strong></li>
-                                            </ul>
-                                        </div>
-                                        <votes-counter class="pull-right" contribution="comment"></votes-counter>
-                                    </div>
-                                    <div class="row no-margin col-md-12 col-sm-12">
-                                        <div class="col-md-12 col-sm-12 text-comment">
-                                            <p class="comment-comment"><a>{{comment.text}}</a></p>
-                                        </div>
-                                    </div>
-                                    <div class="row no-margin">
-                                        <div class="pull-left">
-                                            <h5 class="text-info button replyButton" ng-click="replyComment()">Reply</h5>
-                                        </div>
-                                    </div>
-                                    <ul class="row no-margin comments col-md-11 col-sm-11">
-                                        <li class="row no-margin comment col-md-12 col-sm-12 reply" ng-repeat="commentReply in comment.comments | orderBy: 'date' | filter: searchComments">
-                                            <div class="row no-margin col-md-12 col-sm-12">
-                                                <div class="image-profile-comment inline">
-                                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
-                                                </div>
-                                                <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
-                                                <h5 class="date-comment inline"><time datetime="{{commentReply.lastUpdate}}"/>{{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
-                                                <div class="options-comment inline">
-                                                    <ul class="tags" ng-repeat="theme in comment.themes">
-                                                        <li class="tag"><strong>{{theme.title}}</strong></li>
-                                                    </ul>
-                                                </div>
-                                                <votes-counter class="pull-right" contribution="comment"></votes-counter>
-                                            </div>
-                                            <div class="row col-md-12 col-sm-12">
-                                                <div class="col-md-12 col-sm-12 text-comment">
-                                                    <p class="comment-comment"><a>{{commentReply.text}}</a></p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <div class="row comments col-md-11 col-sm-11">
+                                <appcivist-comments comments="contribution.comments"></appcivist-comments>
+                            </div>
                         </div>
-
-
 
 
                     </div>
@@ -132,17 +84,7 @@
                             </div>
                             <div class="row list-item assembliesList">
                                 <div class="row">
-                                    <!--
-                                    <div class="assemblyItem item" ng-repeat="assembly in assemblies">
-                                        <div class="image-capsule">
-                                            <a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
-                                                <div class="caption" style="text-align: center">
-                                                    <h5 class="text" title="{{assembly.name}}">{{assembly.name}}</h5>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    -->
+
                                 </div>
                             </div>
                         </div>

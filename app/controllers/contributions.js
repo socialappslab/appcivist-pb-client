@@ -221,7 +221,7 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 			// 1. Check if user is in the list of authors
 			$scope.userIsAuthor = Contributions.verifyAuthorship($scope.user, $scope.contribution);
 			// 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
-			if(!$scope.userIsAuthor) {
+			if(!$scope.userIsAuthor && $scope.workingGroup.groupId) {
 				var authorship = Contributions.verifyGroupAuthorship($scope.user, $scope.contribution, $scope.workingGroup).get();
 				authorship.$promise.then(function(response){
 					if (response.responseStatus === "OK") {
@@ -230,12 +230,13 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 				});
 			}
 
-			$scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
-			var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
-			etherpadRes.$promise.then(function(pad){
-				$scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
-			});
-
+			if($scope.contribution.extendedTextPad) {
+				$scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
+				var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
+				etherpadRes.$promise.then(function(pad){
+					$scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+				});
+			}
 			console.log("Loading {assembly,campaign,component,milestone,contribution}: "
 				+$scope.assembly.assemblyId+", "
 				+$scope.campaign.campaignId+", "

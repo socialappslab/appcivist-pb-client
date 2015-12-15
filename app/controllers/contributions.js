@@ -336,19 +336,31 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 	init();
 
 	function init() {
-		$scope.votes = $scope.contribution.stats.ups-$scope.contribution.stats.downs;
+		$scope.votes = $scope.contribution.stats.points;
 		$scope.upVote = function () {
 			$scope.contribution.stats.ups+=1;
 			var stats = $scope.contribution.stats;
-			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).save(stats);
+			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+			voteRes.$promise.then(
+					function (newStats) {
+						$scope.contribution.stats = newStats;
+						$scope.votes = $scope.contribution.stats.points;
+					}
+			);
 		};
 		$scope.downVote = function () {
 			$scope.contribution.stats.downs+=1;
 			var stats = $scope.contribution.stats;
-			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).save(stats);
+			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+			voteRes.$promise.then(
+					function (newStats) {
+						$scope.contribution.stats = newStats;
+						$scope.votes = $scope.contribution.stats.points;
+					});
 		};
-
 	}
+
+
 });
 
 /**

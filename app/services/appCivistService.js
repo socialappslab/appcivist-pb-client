@@ -349,7 +349,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 })
         },
         updateStats: function(statsId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid', {stid: statsId});
+            return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid',
+                {stid: statsId},
+                {'update': {method:'PUT'}}
+            );
         }
     };
 });

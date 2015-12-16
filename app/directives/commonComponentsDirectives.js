@@ -200,11 +200,9 @@ appCivistApp.directive('votesCounter', function(){
        replace: true,
        templateUrl: "/app/partials/directives/votesCounter/votesCounter.html",
        scope: {
-           content: '='
+           contribution: '='
        },
-       controller: ['$scope', function($scope){
-           $scope.votes = $scope.content.stats.ups-$scope.content.stats.downs;
-       }]
+       controller: "ContributionVotesCtrl"
    }
 });
 
@@ -299,16 +297,48 @@ appCivistApp.directive('campaignHeader', function() {
     }
 });
 
+appCivistApp.directive('sideBox', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/boxes/sideBox.html",
+        scope: {
+            box: '=box'
+        }
+    }
+});
+
+appCivistApp.directive('appcivistComments', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/forum/comments.html",
+        scope: {
+            comments: '=comments'
+        },
+        controller: "CommentsController"
+    }
+});
+
+appCivistApp.directive('appcivistIndividualComment', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/contributions/contribution/contributionComment.html",
+        scope: {
+            comment: '=comment'
+        },
+        controller: "CommentsController"
+    }
+});
+
+
+
 /**
  * Functions common to all component directives
  */
 function newContributionLink(scope, element, attrs, ngModel) {
     scope.newContribution.type = scope.contributionType;
-
-    // If the target space is undefined, it means it was empty an this contribution is the first
-    if (!scope.targetSpace) {
-        scope.targetSpace = [];
-    }
     scope.$watch('contributionType', function(value){
         if(value){
             scope.newContribution.type = value;

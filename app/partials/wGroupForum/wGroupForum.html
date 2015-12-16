@@ -19,64 +19,7 @@
                         ng-model="newForumPost">
                 </new-forum-post>
                 <div class="row no-margin">
-                    <!--<div class="row col-md-11 col-sm-11">-->
-                        <!--<div class="commentBox">-->
-                            <!--<textarea name="commentForum" id="comment-forum" class="commentArea" rows="6" placeholder="What's up? ..." ng-model="commentTextarea"></textarea>-->
-                            <!--<div class="row no-margin">-->
-                                <!--<div class="inline">-->
-                                    <!--<a ng-href="/#/" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>-->
-                                <!--</div>-->
-                                <!--<div class="button-group">-->
-                                    <!--<h5 class="inline text-info" ng-click="postContribution(commentTextarea)">Publish</h5>-->
-                                    <!--<h5 class="inline">Cancel</h5>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <ul class="row comments col-md-11 col-sm-11">
-                        <li class="row comment col-md-12 col-sm-12" ng-repeat="comment in wGroup.forumPosts | orderBy: 'date' | filter: searchComments">
-                            <div class="row col-md-12 col-sm-12">
-                                <div class="image-profile-comment inline">
-                                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
-                                </div>
-                                <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
-                                <h5 class="date-comment inline"><time datetime="{{comment.lastUpdate}}"/>{{comment.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
-                                <div class="options-comment inline">
-                                    <ul class="tags" ng-repeat="theme in comment.themes">
-                                        <li class="tag"><strong>{{theme.title}}</strong></li>
-                                    </ul>
-                                </div>
-                                <votes-counter class="pull-right" content="comment"></votes-counter>
-                            </div>
-                            <div class="row col-md-12 col-sm-12">
-                                <div class="col-md-12 col-sm-12 text-comment">
-                                    <p class="comment-comment"><a>{{comment.text}}</a></p>
-                                </div>
-                            </div>
-                            <ul class="row comments col-md-11 col-sm-11">
-                                <li class="row comment col-md-12 col-sm-12 reply" ng-repeat="commentReply in comment.comments | orderBy: 'date' | filter: searchComments">
-                                    <div class="row col-md-12 col-sm-12">
-                                        <div class="image-profile-comment inline">
-                                            <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
-                                        </div>
-                                        <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
-                                        <h5 class="date-comment inline"><time datetime="{{commentReply.lastUpdate}}"/>{{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
-                                        <div class="options-comment inline">
-                                            <ul class="tags" ng-repeat="theme in comment.themes">
-                                                <li class="tag"><strong>{{theme.title}}</strong></li>
-                                            </ul>
-                                        </div>
-                                        <votes-counter class="pull-right" content="comment"></votes-counter>
-                                    </div>
-                                    <div class="row col-md-12 col-sm-12">
-                                        <div class="col-md-12 col-sm-12 text-comment">
-                                            <p class="comment-comment"><a>{{commentReply.text}}</a></p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <appcivist-comments comments="wGroup.forumPosts"></appcivist-comments>
                 </div>
             </div>
             <div class="col-md-5 col-sm-5 info-lateral">

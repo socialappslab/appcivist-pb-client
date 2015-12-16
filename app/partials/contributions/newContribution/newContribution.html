@@ -35,9 +35,8 @@
 
         <div class="row form-horizontal form-group">
             <label for="selectThemeNewContribution" class="col-sm-2 col-md-2 control-label">Select theme(s)</label>
-
             <div id="selectThemeNewContribution" class="col-md-10 col-sm-10 optionsBox">
-                <div class="checkbox" ng-repeat="t in themes">
+                <div class="checkbox" ng-repeat="t in newContribution.themes track by $index">
                     <label>
                         <input type="checkbox"
                                ng-model="newContribution.themes[$index].selected"/>

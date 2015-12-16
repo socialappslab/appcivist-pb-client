@@ -107,7 +107,7 @@
                 <!--</div>-->
                 <div class="row">
                     <span ng-if="(milestone.title | uppercase) === 'BRAINSTORMING'">
-                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg')">Contribute</button>
+                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','BRAINSTORMING')">Contribute</button>
                         <!---->
                         <!--<button class="btn btn-success col-md-12"-->
                                 <!--data-toggle="modal" data-target="#newView">Contribute</button>-->
@@ -121,7 +121,7 @@
                         <a ng-href="#/campaign/{{campaignID}}/wgroup/create"><button class="btn btn-success col-md-12">Create New Group</button></a>
                     </span>
                     <span ng-if="(milestone.title | uppercase) === 'PROPOSAL DRAFTING'">
-                        <button class="btn btn-success col-md-12" data-toggle="modal" data-target="#newView">New Proposal Draft</button>
+                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','PROPOSAL')">New Proposal Draft</button>
                     </span>
                     <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD'">
                         <button class="btn btn-success col-md-12" ng-href="#/ballot/{{component.ballots[0].votingBallotId}}">Open Voting Ballot</button>

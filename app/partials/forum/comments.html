@@ -1,0 +1,27 @@
+<div id="discussionComments" class="row col-md-11 col-sm-11">
+    <!-- Filter -->
+    <div id="commentFilters" class="row">
+        <div class="col-md-12 col-sm-12 pull-right">
+            <div class="col-md-8 com-sm-8">
+                <input type="text" class="form-control" placeholder="Search Comments..." ng-model="searchComments"/>
+            </div>
+            <div class="col-md-4 col-sm-4 dropdown">
+                    <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Order by:<span class="caret"></span>
+                    </button>
+                    <ul class="ol-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a ng-click="orderComments('creation')">Ordery by date</a></li>
+                        <li><a ng-click="orderComments('random')">Random Order</a></li>
+                        <li><a ng-click="orderComments('stats.points')">Popularity</a></li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments -->
+    <ul class="comments">
+        <li class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: orderProperty : orderReverse  | filter: searchComments">
+            <appcivist-individual-comment comment="comment"></appcivist-individual-comment>
+        </li>
+    </ul>
+</div>

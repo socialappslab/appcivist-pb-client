@@ -15,6 +15,7 @@ appCivistApp.controller('NewContributionCtrl',
 			init();
 			function init() {
 				$scope.clearContribution = clearNewContributionObject;
+				$scope.postingContribution = postingContributionFlag;
 				$scope.addAttachment = addAttachmentToContribution;
 			}
 
@@ -25,8 +26,8 @@ appCivistApp.controller('NewContributionCtrl',
 
 appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance,
-					assembly, campaign, component, milestone, contributions, newContribution, newContributionResponse,
-				  	localStorageService, Contributions) {
+				   assembly, campaign, component, milestone, contributions, themes, newContribution,
+				   newContributionResponse, cType, localStorageService, Contributions) {
 			init();
 			function init() {
 				$scope.assembly = assembly;
@@ -34,14 +35,22 @@ appCivistApp.controller('NewContributionModalCtrl',
 				$scope.component = component;
 				$scope.milestone = milestone;
 				$scope.contributions = contributions;
+				$scope.themes = themes;
 				$scope.newContribution = newContribution;
+				$scope.newContribution.themes = $scope.themes;
 				$scope.newContributionResponse = newContributionResponse;
-				$scope.postContribution = createNewContribution;
 				$scope.clearContribution = clearNewContributionObject;
 				$scope.postingContribution = postingContributionFlag;
+				$scope.addAttachment = addAttachmentToContribution;
+				$scope.cType = cType;
+				$scope.newContribution.type = cType;
 			}
 
-			$scope.ok = function () {
+			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+				createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
+			};
+
+			$scope.postContributionFromModal = function () {
 				createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
 						$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
 			};
@@ -58,7 +67,8 @@ appCivistApp.controller('contributionCtrl', function($scope, $http, $routeParams
 	});
 });
 
-appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $routeParams, localStorageService, Contributions, Campaigns, Assemblies, Etherpad) {
+appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $routeParams, localStorageService,
+															 Contributions, Campaigns, Assemblies, Etherpad) {
 	init();
 
 	// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
@@ -211,7 +221,7 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 			// 1. Check if user is in the list of authors
 			$scope.userIsAuthor = Contributions.verifyAuthorship($scope.user, $scope.contribution);
 			// 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
-			if(!$scope.userIsAuthor) {
+			if(!$scope.userIsAuthor && $scope.workingGroup.groupId) {
 				var authorship = Contributions.verifyGroupAuthorship($scope.user, $scope.contribution, $scope.workingGroup).get();
 				authorship.$promise.then(function(response){
 					if (response.responseStatus === "OK") {
@@ -220,12 +230,13 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 				});
 			}
 
-			$scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
-			var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
-			etherpadRes.$promise.then(function(pad){
-				$scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
-			});
-
+			if($scope.contribution.extendedTextPad) {
+				$scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
+				var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
+				etherpadRes.$promise.then(function(pad){
+					$scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+				});
+			}
 			console.log("Loading {assembly,campaign,component,milestone,contribution}: "
 				+$scope.assembly.assemblyId+", "
 				+$scope.campaign.campaignId+", "
@@ -281,6 +292,78 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 	}
 });
 
+
+appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
+													   Contributions) {
+	init();
+	initializeNewReplyModel();
+
+	function init() {
+		$scope.orderProperty = 'creation';
+		$scope.orderReverse = true;
+		// TODO: read replies enabled from configurations
+		$scope.replyEnabled = true;
+		$scope.replyBoxIsOpen = false;
+
+		// Scope Functions
+		$scope.orderComments = function (property) {
+			if($scope.orderProperty = property) {
+				$scope.orderReverse = !$scope.orderReverse;
+			}
+		}
+
+		$scope.random = function() {
+			return 0.5 - Math.random();
+		}
+
+		$scope.openReplyBox = function () {
+			$scope.replyBoxIsOpen = true;
+		}
+
+		$scope.closeReplyBox = function () {
+			$scope.replyBoxIsOpen = false;
+		}
+
+	}
+
+	function initializeNewReplyModel() {
+		$scope.newReply = Contributions.defaultNewContribution();
+		$scope.newReply.type = "COMMENT";
+	}
+});
+
+appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
+														  Contributions ) {
+	init();
+
+	function init() {
+		$scope.votes = $scope.contribution.stats.points;
+		$scope.upVote = function () {
+			$scope.contribution.stats.ups+=1;
+			var stats = $scope.contribution.stats;
+			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+			voteRes.$promise.then(
+					function (newStats) {
+						$scope.contribution.stats = newStats;
+						$scope.votes = $scope.contribution.stats.points;
+					}
+			);
+		};
+		$scope.downVote = function () {
+			$scope.contribution.stats.downs+=1;
+			var stats = $scope.contribution.stats;
+			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+			voteRes.$promise.then(
+					function (newStats) {
+						$scope.contribution.stats = newStats;
+						$scope.votes = $scope.contribution.stats.points;
+					});
+		};
+	}
+
+
+});
+
 /**
  * Functions common to all Contribution Controllers
  *
@@ -296,6 +379,13 @@ function createNewContribution(newContribution, targetSpaceId, targetSpace, resp
 		}
 		newContribution.title = newContribution.text.substring(0, trimlength);
 	}
+
+	// If the target space is undefined, it means it was empty an this contribution is the first
+	if (!targetSpace) {
+		targetSpace = [];
+	}
+
+	removeNonSelectedThemes(newContribution.themes);
 
 	var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);
 	newContributionRes.$promise.then(
@@ -330,4 +420,12 @@ function addAttachmentToContribution(newContribution, attachment) {
 	// POST attachment to IMGUR
 	// ADD to attachments array in Contributions
 	newContribution.attachments.push(attachment);
+}
+
+function removeNonSelectedThemes(themes) {
+	for (var i = 0; i < themes.length; i+=1) {
+		if(!themes[i].selected) {
+			themes.splice(i,1);
+		}
+	}
 }

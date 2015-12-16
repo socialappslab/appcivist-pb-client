@@ -127,10 +127,10 @@
                     <div class="contribution-content">
                         <p class="contribution-description"> {{contribution.text}}</p>
                         <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
-                        <iframe ng-if="userIsAuthor === false" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
+                        <iframe ng-if="!userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
                                 width=1000 height=800>
                         </iframe>
-                        <iframe ng-if="userIsAuthor === true" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                        <iframe ng-if="userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
                                 width=1000 height=800>
                         </iframe>
                     </div>

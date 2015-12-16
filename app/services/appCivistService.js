@@ -15,39 +15,36 @@ function getServerBaseUrl(localStorageService) {
         serverBaseUrl = appCivistCoreBaseURL;
         localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
         console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
-    } else {
-        console.log("Using API Server in loginServer: "+serverBaseUrl);
     }
     return serverBaseUrl;
 }
 
 appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
-
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         assemblies: function() {
-            return $resource(serverBaseUrl + '/assembly');
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly');
         },
         assembly: function(assemblyId) {
-            return $resource(serverBaseUrl + '/assembly/:aid', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', {aid: assemblyId});
         },
         assembliesWithoutLogin: function() {
-            return $resource(serverBaseUrl + '/assembly/listed');
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/listed');
         },
         assembliesByQuery: function(q) {
-            return $resource(serverBaseUrl + '/assembly', {query: q});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly', {query: q});
         },
         assemblyMembers: function(assemblyId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/membership/ACCEPTED', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ACCEPTED', {aid: assemblyId});
         },
         linkedAssemblies: function(assemblyId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/linked', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/linked', {aid: assemblyId});
         },
         featuredAssemblies: function() {
-            return $resource(serverBaseUrl + '/assembly', {filter:"featured"});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly', {filter:"featured"});
         },
         verifyMembership: function(assemblyId, userId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/user/:uid',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/user/:uid',
                 {
                     aid: assemblyId,
                     uid: userId
@@ -108,20 +105,20 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         campaigns: function(state) {
-            return $resource(serverBaseUrl + '/user/'+localStorageService.get('user').uuid+'/campaign?status='+state+'');
+            return $resource(getServerBaseUrl(localStorageService) + '/user/'+localStorageService.get('user').uuid+'/campaign?status='+state+'');
         },
         campaign: function(assemblyId, campaignId) {
-            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/campaign/'+campaignId);
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/'+assemblyId+'/campaign/'+campaignId);
         },
         newCampaign: function(assemblyId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/campaign',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign',
                 {
                     aid: assemblyId
                 }
             );
         },
         templates: function() {
-            return $resource(serverBaseUrl+'/campaign/template');
+            return $resource(getServerBaseUrl(localStorageService)+'/campaign/template');
         },
         defaultNewCampaign: function() {
             var campaign = {
@@ -168,7 +165,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("1"),
                         opened:true,
                         componentIndex: 0,
-                        position: 1
+                        position: 1,
+                        mainContributionType: "BRAINSTORMING"
                     },
                     {
                         date: today().add(15, 'days').toDate(),
@@ -179,7 +177,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("2"),
                         opened:true,
                         componentIndex: 0,
-                        position: 2
+                        position: 2,
+                        mainContributionType: "BRAINSTORMING"
                     },
                     {
                         date: today().add(20, 'days').toDate(),
@@ -189,7 +188,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("3"),
                         opened:true,
                         componentIndex: 0,
-                        position: 3
+                        position: 3,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(30, 'days').toDate(),
@@ -200,7 +200,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("4"),
                         opened:true,
                         componentIndex: 1,
-                        position: 4
+                        position: 4,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(45, 'days').toDate(),
@@ -211,7 +212,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("5"),
                         opened:true,
                         componentIndex: 1,
-                        position: 5
+                        position: 5,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(60, 'days').toDate(),
@@ -221,7 +223,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("6"),
                         opened:true,
                         componentIndex: 2,
-                        position: 6
+                        position: 6,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(90, 'days').toDate(),
@@ -230,7 +233,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("7"),
                         opened:true,
                         componentIndex: 2,
-                        position: 7
+                        position: 7,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(120, 'days').toDate(),
@@ -239,7 +243,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("8"),
                         opened:true,
                         componentIndex: 3,
-                        position: 8
+                        position: 8,
+                        mainContributionType: "PROPOSAL"
                     },
                     {
                         date: today().add(130, 'days').toDate(),
@@ -248,7 +253,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                         symbol: $sce.trustAsHtml("8"),
                         opened:true,
                         componentIndex: 3,
-                        position: 9
+                        position: 9,
+                        mainContributionType: "PROPOSAL"
                     }
                 ]
             };
@@ -262,20 +268,20 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         memberships: function() {
-            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid);
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid);
         },
         assemblies: function() {
-            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid+'?type=assembly');
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid+'?type=assembly');
         },
         workingGroups: function() {
-            return $resource(serverBaseUrl + '/membership/user/'+localStorageService.get('user').uuid+'?type=campaign?status=ongoing');
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid+'?type=group');
         }
     };
 });
 
 appCivistApp.factory('Notifications', function ($resource, localStorageService) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
-    return $resource(serverBaseUrl + '/notification/user/'+localStorageService.get('user').uuid);
+    return $resource(getServerBaseUrl(localStorageService) + '/notification/user/'+localStorageService.get('user').uuid);
 
 });
 
@@ -283,14 +289,14 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         contributions: function(assemblyId) {
-            return $resource(serverBaseUrl + '/assembly/'+assemblyId+'/contribution?space=forum');
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/'+assemblyId+'/contribution?space=forum');
         },
         contribution: function(assemblyId, contributionId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/contribution/:coid',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid',
                 {aid: assemblyId, coid: contributionId});
         },
         groupContribution: function(assemblyId, groupId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/group/:gid/contribution',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution',
                 {aid: assemblyId, gid: groupId});
         },
         verifyAuthorship: function(user, c) {
@@ -331,16 +337,22 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             return newC;
         },
         contributionInResourceSpace: function(spaceId) {
-            return $resource(serverBaseUrl + '/space/:sid/contribution',
+            return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution',
                 {sid: spaceId});
         },
         contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
-            return $resource(serverBaseUrl + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
                 {
                     aid: assemblyID,
                     cid: campaignID,
                     ciid: componentID
                 })
+        },
+        updateStats: function(statsId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid',
+                {stid: statsId},
+                {'update': {method:'PUT'}}
+            );
         }
     };
 });
@@ -349,13 +361,13 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         workingGroup: function(assemblyId, groupId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/group/:gid', {aid: assemblyId, gid: groupId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', {aid: assemblyId, gid: groupId});
         },
         workingGroups: function(assemblyId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/group', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group', {aid: assemblyId});
         },
         workingGroupMembers: function(assemblyId, groupId, stat) {
-            return $resource(serverBaseUrl + '/assembly/:aid/group/:gid/membership/:status',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/membership/:status',
                 {
                     aid: assemblyId,
                     gid: groupId,
@@ -363,7 +375,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                 });
         },
         verifyMembership: function(assemblyId, groupId, userId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/group/:gid/user/:uid',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/user/:uid',
                 {
                     aid: assemblyId,
                     gid: groupId,
@@ -383,7 +395,7 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
             return url;
         },
         getReadWriteUrl : function(assemblyId, contributionId) {
-            return $resource(serverBaseUrl + '/assembly/:aid/contribution/:cid/padid',
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/padid',
                 {
                     aid: assemblyId,
                     cid: contributionId
@@ -822,3 +834,16 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
     };
 });
 
+appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) {
+    return {
+        signIn: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/user/login');
+        },
+        signOut: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/user/logout');
+        },
+        signUp: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/user/signup');
+        }
+    };
+});

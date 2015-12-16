@@ -1546,6 +1546,12 @@ button#second-vote {
   height: 20px;
   width: 20px;
 }
+.home .infoBox .image-circle-sidebox {
+  height: 25px;
+  width: 25px;
+  display: inline-block;
+  cursor: pointer;
+}
 .home .infoBox .list-item .row {
   margin-right: 0px;
 }
@@ -1660,112 +1666,6 @@ button#second-vote {
   text-align: left;
   border: 0.2rem solid black;
   border-radius: 0.3rem;
-}
-
-.points {
-  list-style: none;
-  padding: 1rem;
-}
-.points li {
-  display: inline-block;
-}
-.points .section {
-  margin-right: 2rem;
-  width: 5rem;
-}
-.points .section div {
-  border: 0.2rem solid #aaaaaa;
-  padding: 0.5rem;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #ffffff;
-}
-
-.theme {
-  color: #ffffff;
-  margin: 100 rem;
-}
-
-.names {
-  margin: 30 rems;
-}
-
-.left {
-  max-height: 100%;
-  max-width: 100%;
-  background-color: #aaaaaa;
-}
-.leftli {
-  padding: 30 rem;
-}
-.lefth3 {
-  margin: 100 rems;
-}
-
-.images {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-#icon {
-  max-width: 15%;
-  max-height: 15%;
-  float: right;
-}
-
-#save {
-  float: right;
-}
-
-#submit {
-  float: right;
-}
-
-.proposal {
-  overflow: none;
-  display: block;
-  border: 0.2rem solid #aaaaaa;
-  padding: 0.5rem;
-  vertical-align: middle;
-  background-color: #ffffff;
-}
-.proposal.container.description {
-  margin: 10 rem;
-  width: 40%;
-  word-break: break-all;
-}
-
-.winners .container .row .project {
-  display: inline-block;
-  style: none;
-}
-.winners .container .row .project .block {
-  border: 0.2rem solid #aaaaaa;
-  padding: 0.5rem;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #ffffff;
-}
-.winners .container .row .project .tail {
-  border: 0.2rem solid #aaaaaa;
-  padding: 0.5rem;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #ffffff;
-}
-.winners .container .row .project .tail li {
-  float: left;
-}
-.winners .container .row .theme {
-  background-color: #15bf23;
-  color: #ffffff;
-}
-.winners .container .row .score {
-  border: 0.2rem solid #aaaaaa;
-  padding: 0.5rem;
-  text-align: center;
-  vertical-align: middle;
-  background-color: #ffffff;
 }
 
 .range-voting-content {

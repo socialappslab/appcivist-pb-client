@@ -560,7 +560,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 
 		$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
-			var url = $scope.etherpadServer+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+			var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
 			console.log("Contribution Read Only Etherpad URL: "+url);
 			return url;
 		};

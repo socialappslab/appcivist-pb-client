@@ -1,49 +1,17 @@
 <div class="contribution-content">
+    <!-- Attachment background if there is one -->
+    <ng-include ng-if="contribution.type === 'PROPOSAL' && !inModal"
+                ng-click="openContributionModal(contribution)"
+                src="'app/partials/contributions/contribution/attachmentBackground.html'"></ng-include>
 
-    <span ng-if="contribution.type === 'WORKING GROUP'">
-        <div class="col-md-3">
-            <div class="contribution-info-user-wgroup">
-                <div class="image-profile-contribution">
-                    <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="row">
-                <h5 class="contribution-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)"><strong>{{contribution.title}}. </strong></h5><p class="contribution-description"> {{contribution.text}}</p>
-            </div>
-        </div>
+    <!-- Title and Text of Contribution -->
+    <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'"
+                ng-click="openContributionModal(contribution)"
+                src="'app/partials/contributions/contribution/contributionTitleText.html'"></ng-include>
 
-    </span>
-
-    <div ng-if="contribution.type === 'PROPOSAL'" class="row contribution-background" background-image="{{contribution.attachments[0].url ? contribution.attachments[0].url : '/assets/images/logotype.svg'}}">
-        <div class="tag tag-info-proposal" ng-repeat="theme in contribution.themes">
-            <strong class="text-muted">{{theme.title}}</strong>
-        </div>
-    </div>
-    <div class="row" ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'">
-        <h5 class="contribution-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)"><strong>{{contribution.title}}. </strong></h5><p class="contribution-description"> {{contribution.text}}</p>
-    </div>
-    <div class="row voffset2" ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'">
-        <div class="tag tag-info" ng-if="contribution.type === 'BRAINSTORMING'" ng-repeat="theme in contribution.themes">
-            <strong class="text-muted">{{theme.title}}</strong>
-        </div>
-        <div class="contribution-info-user">
-            <div class="image-profile-contribution">
-                <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">
-            </div>
-            <div class="info-block">
-                <em>{{contribution.authors[0].name}}</em>
-                <!--<time datetime="{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}">{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</time>-->
-                <time datetime="{{contribution.lastUpdate}}">{{contribution.lastUpdate}}</time>
-            </div>
-        </div>
-        <div class="votes-counter pull-right">
-            <i class="fa fa-caret-up add-vote"></i>
-            <div class="total-votes">
-                <strong>{{contribution.stats.ups}}</strong>
-            </div>
-            <i class="fa fa-caret-down substract-vote"></i>
-        </div>
+    <!-- Meta information of contribution: themes, authors, date, votes-->
+    <div class="row push-to-bottom no-padding">
+        <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'"
+                src="'app/partials/contributions/contribution/contributionMeta.html'"></ng-include>
     </div>
 </div>

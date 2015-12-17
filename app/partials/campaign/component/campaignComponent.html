@@ -61,9 +61,6 @@
         </div>
         <div class="row col-md-12 col-sm-12">
             <h1><strong>{{milestone.title}}</strong><strong>: </strong>
-                <!--<span ng-if="milestone.title === 'Brainstorming'">Identify problems and make suggestions for proposals</span>-->
-                <!--<span ng-if="milestone.title === 'Working Group Formation'">Join or create a group to develop proposals</span>-->
-                <!--<span ng-if="milestone.title === 'Proposal Drafting'">Explore existing proposals or start one with your working group</span>-->
                 <span>{{milestone.description}}</span>
             </h1>
         </div>
@@ -83,12 +80,21 @@
                         <li class="tag tag-filter" ng-repeat="t in themes">
                             <strong>{{t.title}}</strong>
                         </li>
-                        <!--<i class="fa fa-sort-desc"></i>-->
                     </ul>
                 </div>
                 <div class="row col-md-12 col-sm-12">
-                    <div class="col-md-10 col-sm-10 no-padding">
+                    <div class="col-md-7 col-sm-7 no-padding">
                         <input type="text" class="form-control" placeholder="Search existing contributions..." ng-model="campaignContributionFilter">
+                    </div>
+                    <div class="col-md-3 col-sm-3 dropdown">
+                        <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Order by:<span class="caret"></span>
+                        </button>
+                        <ul class="ol-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a ng-click="orderContributions('creation')">Ordery by date</a></li>
+                            <li><a ng-click="orderContributions('random')">Random Order</a></li>
+                            <li><a ng-click="orderContributions('stats.points')">Popularity</a></li>
+                        </ul>
                     </div>
                     <div class="col-md-2 col-sm-2">
                         <button class="btn btn-success col-md-12 col-sm-12">Search</button>
@@ -96,47 +102,50 @@
                 </div>
             </div>
             <div class="col-md-3 col-sm-3">
-                <!--<div class="row">-->
-                    <!--<div id="organization-buttons" class="btn-group">-->
-                        <!--<button type="button" class="btn btn-default" aria-label="Show as grid"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></button>-->
-                        <!--<button type="button" class="btn btn-default" aria-label="Show as list"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>-->
-                    <!--</div>-->
-                    <!--<div id="map-buttons" class="btn-group">-->
-                        <!--<button id="map-button" type="button" class="btn btn-default" aria-label="Show map"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></button>-->
-                    <!--</div>-->
-                <!--</div>-->
                 <div class="row">
                     <span ng-if="(milestone.title | uppercase) === 'BRAINSTORMING'">
                         <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','BRAINSTORMING')">Contribute</button>
-                        <!---->
-                        <!--<button class="btn btn-success col-md-12"-->
-                                <!--data-toggle="modal" data-target="#newView">Contribute</button>-->
-                        <!--<button class="btn btn-success btn-half-size">Upload batch</button>-->
                     </span>
-                    <span ng-if="(milestone.title | uppercase) === 'WORKING GROUP FORMATION'">
+                    <span ng-if="(milestone.title | uppercase) === 'WORKING GROUP FORMATION' || (milestone.title | uppercase) === 'WORKING GROUPS FORMATION'">
                         <a ng-href="#/campaign/{{campaignID}}/wgroup/create"><button class="btn btn-success col-md-12">Create New Group</button></a>
                     </span>
-                    <!--QUICK FIX: todo: make sure the milestone title is always the same-->
-                    <span ng-if="(milestone.title | uppercase) === 'WORKING GROUPS FORMATION'">
-                        <a ng-href="#/campaign/{{campaignID}}/wgroup/create"><button class="btn btn-success col-md-12">Create New Group</button></a>
-                    </span>
-                    <span ng-if="(milestone.title | uppercase) === 'PROPOSAL DRAFTING'">
+                    <span ng-if="(milestone.title | uppercase) === 'PROPOSAL DRAFTING' || (milestone.title | uppercase) === 'PROPOSAL EDITING'">
                         <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','PROPOSAL')">New Proposal Draft</button>
                     </span>
-                    <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD'">
+                    <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD' || (milestone.title | uppercase) === 'VOTING ON PROPOSALS' || (milestone.title | uppercase) === 'VOTING PERIOD ENDING'">
                         <button class="btn btn-success col-md-12" ng-href="#/ballot/{{component.ballots[0].votingBallotId}}">Open Voting Ballot</button>
                     </span>
                 </div>
             </div>
         </div>
-        <div class="row col-md-12 col-sm-12">
-            <ul class="row contributions">
-                <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date' | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType}">
-                    <contribution content="contribution"></contribution>
-                </li>
-            </ul>
+        <div class="container-fluid col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                     style="height:500px;" ng-if="milestone.mainContributionType==='PROPOSAL'"
+                     ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType}">
+                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                                  contribution="contribution" assemblyid="assemblyID"
+                                  assemblyid="assembly.assemblyId"
+                                  campaignid="campaign.campaignId"
+                                  componentid="component.componentInstanceId"
+                                  milestoneid="milestone.componentInstanceMilestoneId"
+                    ></contribution>
+                </div>
+                <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                     style="height:300px;" ng-if="milestone.mainContributionType==='BRAINSTORMING'"
+                     ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType}">
+                    <contribution
+                            ng-click="openContributionModal(contribution,'lg')"
+                            contribution="contribution"
+                            assemblyid="assembly.assemblyId"
+                            campaignid="campaign.campaignId"
+                            componentid="component.componentInstanceId"
+                            milestoneid="milestone.componentInstanceMilestoneId"
+                    ></contribution>
+                </div>
+
+            </div>
         </div>
     </div>
-    <!--<ng-include src="'app/partials/contributions/newView/newView.html'"></ng-include>-->
-    <ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>
+    <!--<ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>-->
 </div>

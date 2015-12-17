@@ -1,0 +1,31 @@
+<div>
+    <div class="row col-md-12 col-sm-12 no-padding">
+        <div class="tag tag-info" ng-repeat="theme in contribution.themes">
+            <strong class="text-muted">{{theme.title}}</strong>
+        </div>
+    </div>
+    <div class="row col-md-12 col-sm-12 no-padding contribution-info-user">
+        <!-- For brainstorming contributions or comments, show the User author -->
+        <div class="col-md-11 col-sm-11 no-padding no-margin">
+            <div class="image-profile-contribution" ng-if="contribution.type==='BRAINSTORMING'">
+                <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">
+            </div>
+            <div class="info-block"  ng-if="contribution.type==='BRAINSTORMING'">
+                <em>{{contribution.authors[0].name}}</em>
+                <time datetime="{{contribution.creation}}">{{contribution.creation}}</time>
+            </div>
+
+            <!-- For PROPOSAL contributions or comments, show the Group author -->
+            <div class="image-profile-contribution" ng-if="contribution.type==='PROPOSAL'">
+                <img ng-src="{{contribution.workingGroupAuthors[0].profile.icon}}" alt="" src="../assets/images/unknown.jpg">
+            </div>
+            <div class="info-block"  ng-if="contribution.type==='PROPOSAL'">
+                <a ng-href="#/assembly/{{assemblyID}}/group/{{contribution.workingGroupAuthors[0].groupId}}"><em>{{contribution.workingGroupAuthors[0].name}}</em></a>
+                <time datetime="{{contribution.creation}}">{{contribution.creation}}</time>
+            </div>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 pull-right no-padding no-margin">
+            <votes-counter contribution="contribution"></votes-counter>
+        </div>
+    </div>
+</div>

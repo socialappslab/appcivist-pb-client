@@ -212,14 +212,17 @@ appCivistApp.directive('contribution', function(){
         replace: true,
         templateUrl: "/app/partials/directives/contribution/contribution.html",
         scope: {
-            content: '='
+            contribution: '=',
+            assemblyID: '=assemblyid',
+            campaignID: '=campaignid',
+            componentID: '=componentid',
+            milestoneID: '=milestoneid',
+            inModal: '=inmodal'
         },
-        controller: ['$scope', function($scope){
-            $scope.contribution = $scope.content;
-            $scope.selectContribution = function(contribution){
-                $scope.$root.$emit('contribution:selected', contribution);
-            }
-        }]
+        controller: "ContributionDirectiveCtrl",
+        link: function (scope, element, attrs, ngModel) {
+            console.log("Linking contribution directive");
+        }
     }
 });
 
@@ -332,16 +335,27 @@ appCivistApp.directive('appcivistIndividualComment', function() {
     }
 });
 
-
+appCivistApp.directive('attachments', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/contributions/contribution/attachments.html",
+        scope: {
+            resources: "=resources"
+        },
+        controller: "contributionCtrl"
+    }
+});
 
 /**
  * Functions common to all component directives
  */
 function newContributionLink(scope, element, attrs, ngModel) {
-    scope.newContribution.type = scope.contributionType;
-    scope.$watch('contributionType', function(value){
-        if(value){
-            scope.newContribution.type = value;
-        }
-    }, true);
+    //if(scope.newContribution)
+    //scope.newContribution.type = scope.contributionType;
+    //scope.$watch('contributionType', function(value){
+    //    if(value){
+    //        scope.newContribution.type = value;
+    //    }
+    //}, true);
 }

@@ -20,7 +20,10 @@ appCivistApp.controller('NewContributionCtrl',
 			}
 
 			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-				createNewContribution(newContribution, targetSpaceId,targetSpace, {}, undefined, Contributions);
+				if (!newContribution.type) {
+					newContribution.type = $scope.contributionType;
+				}
+				createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
 			};
 		});
 
@@ -61,6 +64,44 @@ appCivistApp.controller('NewContributionModalCtrl',
 			};
 		});
 
+appCivistApp.controller('ContributionModalCtrl',
+		function ($scope, $uibModalInstance, $location,
+				  contribution, assemblyID, campaignID, componentID, milestoneID, localStorageService, Contributions) {
+			init();
+			function init() {
+				$scope.contribution = contribution;
+				$scope.assemblyID = assemblyID;
+				$scope.campaignID = campaignID;
+				$scope.componentID = componentID;
+				$scope.milestoneID = milestoneID;
+			}
+
+			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+				createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
+			};
+
+			$scope.postContributionFromModal = function () {
+				createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
+						$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
+			};
+
+			$scope.cancel = function () {
+				$uibModalInstance.dismiss('cancel');
+			};
+
+			$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
+				var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+				console.log("Contribution Read Only Etherpad URL: "+url);
+				return url;
+			};
+
+			$scope.openContributionPage = function(cID)  {
+				$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
+				$uibModalInstance.dismiss('cancel');
+			};
+		});
+
+
 appCivistApp.controller('contributionCtrl', function($scope, $http, $routeParams, localStorageService) {
 	$scope.$root.$on('contribution:selected', function(event, data){
 		$scope.contribution = data;
@@ -90,6 +131,7 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 		console.log("API Server = " + $scope.serverBaseUrl);
 		console.log("Etherpad Server = " + $scope.etherpadServer);
 	}
+
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
 	 * If the route ID is different, updates the current assembly in local storage
@@ -292,7 +334,6 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 	}
 });
 
-
 appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
 													   Contributions) {
 	init();
@@ -364,6 +405,58 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 
 });
 
+appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
+															  localStorageService, Contributions) {
+
+	init();
+
+	function init() {
+
+		if(!$scope.contribution.comments) {
+			$scope.contribution.comments = [];
+		}
+
+		$scope.selectContribution = function(contribution){
+			$scope.$root.$emit('contribution:selected', contribution);
+		}
+
+		$scope.openContributionModal = function(contribution,size) {
+			if(!$scope.inModal) {
+				var modalInstance = $uibModal.open({
+					animation: true,
+					templateUrl: 'app/partials/contributions/contribution/contributionView.html',
+					controller: 'ContributionModalCtrl',
+					size: 'lg',
+					resolve: {
+						contribution: function () {
+							return $scope.contribution;
+						},
+						assemblyID: function () {
+							return $scope.assemblyID;
+						},
+						campaignID: function () {
+							return $scope.campaignID;
+						},
+						componentID: function () {
+							return $scope.componentID;
+						},
+						milestoneID: function () {
+							return $scope.milestoneID;
+						}
+					}
+				});
+
+				modalInstance.result.then(function () {
+					console.log('Closed contribution modal');
+				}, function () {
+					console.log('Modal dismissed at: ' + new Date());
+				});
+			}
+		};
+	}
+
+});
+
 /**
  * Functions common to all Contribution Controllers
  *
@@ -423,9 +516,11 @@ function addAttachmentToContribution(newContribution, attachment) {
 }
 
 function removeNonSelectedThemes(themes) {
-	for (var i = 0; i < themes.length; i+=1) {
+	if(themes) {
+		for (var i = 0; i < themes.length; i+=1) {
 		if(!themes[i].selected) {
 			themes.splice(i,1);
 		}
+	}
 	}
 }

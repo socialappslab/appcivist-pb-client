@@ -107,7 +107,7 @@
         <div class="row col-md-12 col-sm-12">
             <ul class="row contributions">
                 <li class="contribution" ng-repeat="contribution in component.contributions | orderBy: 'date' | filter:campaignContributionFilter">
-                    <contribution content="contribution"></contribution>
+                    <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
                 </li>
             </ul>
         </div>

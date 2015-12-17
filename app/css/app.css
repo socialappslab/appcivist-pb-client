@@ -1491,6 +1491,10 @@ button#second-vote {
   width: 40px;
   border-radius: 20px;
 }
+.contribution .push-to-bottom {
+  bottom: 5%;
+  position: absolute;
+}
 .contribution .contribution-title {
   display: inline-block;
   margin: 0;

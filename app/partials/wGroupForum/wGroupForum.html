@@ -58,20 +58,20 @@
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date'">
-                                <contribution content="contribution"></contribution>
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'PROPOSALS'}">
+                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
                             </li>
                         </ul>
                     </div>
                     <button class="col-md-12 btn btn-success inline">New Proposal Draft</button>
                 </div>
                 <div class="row">
-                    <h3><strong>Our Contributions</strong></h3>
+                    <h3><strong>Our Brainstorming Contributions</strong></h3>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date'">
-                                <contribution content="contribution"></contribution>
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'}">
+                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
                             </li>
                         </ul>
                     </div>
@@ -81,8 +81,8 @@
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'date'">
-                                <contribution content="contribution"></contribution>
+                            <li class="contribution" ng-repeat="contribution in relatedContributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'}">
+                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
                             </li>
                         </ul>
                     </div>

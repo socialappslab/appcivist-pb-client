@@ -212,10 +212,10 @@ appCivistApp.directive('contribution', function(){
         replace: true,
         templateUrl: "/app/partials/directives/contribution/contribution.html",
         scope: {
-            content: '='
+            contribution: '=',
+            assemblyID: '=assemblyid'
         },
         controller: ['$scope', function($scope){
-            $scope.contribution = $scope.content;
             $scope.selectContribution = function(contribution){
                 $scope.$root.$emit('contribution:selected', contribution);
             }

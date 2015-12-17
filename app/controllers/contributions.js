@@ -131,6 +131,7 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 		console.log("API Server = " + $scope.serverBaseUrl);
 		console.log("Etherpad Server = " + $scope.etherpadServer);
 	}
+
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
 	 * If the route ID is different, updates the current assembly in local storage

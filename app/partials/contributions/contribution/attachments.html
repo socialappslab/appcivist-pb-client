@@ -1,0 +1,12 @@
+<div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+    <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <h4><strong>Attachments</strong></h4>
+        </div>
+    </div>
+    <ul>
+        <li ng-repeat="attachment in resources">
+            <a ng-href="{{attachment.url}}">{{attachment.url | limitTo: 25}}{{(attachment.url.lenght > 25) ? '...' : ''}}</a>
+        </li>
+    </ul>
+</div>

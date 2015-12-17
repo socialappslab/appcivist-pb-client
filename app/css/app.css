@@ -1493,7 +1493,6 @@ button#second-vote {
 }
 .contribution .push-to-bottom {
   bottom: 5%;
-  position: absolute;
 }
 .contribution .contribution-title {
   display: inline-block;
@@ -1507,6 +1506,7 @@ button#second-vote {
   background-size: 100%;
   height: 20rem;
   background-repeat: no-repeat;
+  align-self: center;
 }
 .contribution .tag-info-proposal {
   position: relative;
@@ -1802,6 +1802,73 @@ button#second-vote {
 }
 #contributionView .infoBox {
   text-align: center;
+}
+
+.contribution {
+  border: 0.1rem solid #F4F4F4;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  display: inline-flex;
+}
+.contribution .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.contribution .contribution-content {
+  padding: 1.5rem;
+}
+.contribution .contribution-content .contribution-info-user {
+  display: inline-block;
+  margin: 0 1rem;
+}
+.contribution .contribution-content .contribution-info-user .image-profile-contribution {
+  display: inline-block;
+}
+.contribution .contribution-content .contribution-info-user .image-profile-contribution img {
+  background-size: 100%;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+.contribution .push-to-bottom {
+  bottom: 5%;
+}
+.contribution .contribution-title {
+  display: inline-block;
+  margin: 0;
+  cursor: pointer;
+}
+.contribution .contribution-description {
+  display: inline;
+}
+.contribution .contribution-background {
+  background-size: 100%;
+  height: 20rem;
+  background-repeat: no-repeat;
+  align-self: center;
+}
+.contribution .tag-info-proposal {
+  position: relative;
+  top: 17rem;
+  left: 0rem;
+}
+.contribution .contribution-info-user-wgroup .image-profile-contribution {
+  display: inline-block;
+}
+.contribution .contribution-info-user-wgroup .image-profile-contribution img {
+  background-size: 100%;
+  height: 7rem;
+  width: 7rem;
+  border-radius: 4rem;
+}
+
+.modal-dialog.modal-lg {
+  width: 75%;
+  max-height: 800px;
+}
+
+.etherpad {
+  padding: 1.5rem;
 }
 
 #contributionPage {

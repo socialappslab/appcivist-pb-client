@@ -1,104 +1,84 @@
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="contributionView" ng-controller="contributionCtrl">
+<div id="contributionView"
+     class="col-md-12 col-sm-12 col-lg-12 bs-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
     <div class="modal-content col-md-12 col-sm-12">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <div class="view col-md-12 col-sm-12">
-            <div class="col-md-12 col-sm-12">
-                <!--<div class="row text-center">-->
-                    <!--<span class="h4"><strong>Assembly: </strong></span>-->
-                    <!--<span class="h4">{{assembly.name}}</span>-->
-                    <!--<span class="h4"> / </span>-->
-                    <!--<span class="h4"><strong>Campaign: </strong></span>-->
-                    <!--<span class="h4">{{campaign.title}}</span>-->
-                <!--</div>-->
-                <!--<br/>-->
-                <div class="row col-md-12 col-sm-12">
-                    <h1><strong>{{contribution.type | capitalize}} Contribution</strong></h1>
-                </div>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="col-md-8 col-sm-8">
-                        <div class="row contribution">
-                            <div class="contribution-content">
-                                <div class="row">
-                                    <h5 class="contribution-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)"><strong>{{contribution.title}}. </strong></h5><p class="contribution-description"> {{contribution.text}}</p>
-                                </div>
-                                <div class="row voffset2">
-                                    <div class="tag tag-info" ng-repeat="theme in contribution.themes">
-                                        <strong class="text-muted">{{theme.title}}</strong>
-                                    </div>
-                                    <div class="contribution-info-user">
-                                        <div class="image-profile-contribution">
-                                            <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="" src="../assets/images/unknown.jpg">
-                                        </div>
-                                        <div class="info-block">
-                                            <em>{{contribution.authors[0].name}}</em>
-                                            <!--<time datetime="{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}">{{contribution.lastUpdate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</time>-->
-                                            <time datetime="{{contribution.lastUpdate}}">{{contribution.lastUpdate}}</time>
-                                        </div>
-                                    </div>
-                                    <div class="votes-counter pull-right">
-                                        <i class="fa fa-caret-up add-vote"></i>
-                                        <div class="total-votes">
-                                            <strong>{{contribution.stats.ups}}</strong>
-                                        </div>
-                                        <i class="fa fa-caret-down substract-vote"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
 
-                        <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
-                        <iframe ng-if="contribution.type === 'PROPOSAL'" name="embed_readonly" ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}" width=600 height=400></iframe>
-
-                        <div class="row forum">
-
-                            <div class="row no-margin">
-                                <h4><strong>Comments ({{contribution.comments.length}})</strong></h4>
-                            </div>
-                            <div class="voffset2"></div>
-
-                            <new-forum-post
-                                    id="contributionForumCommentBox"
-                                    class="row col-md-11 col-sm-11"
-                                    targetspaceid="contribution.resourceSpaceId"
-                                    targetspace="contribution.comments"
-                                    themes="contribution.themes"
-                                    ctype="COMMENT"
-                                    ng-model="newComment">
-                            </new-forum-post>
-
-                            <div class="voffset2"></div>
-
-                            <div class="row comments col-md-11 col-sm-11">
-                                <appcivist-comments comments="contribution.comments"></appcivist-comments>
-                            </div>
-                        </div>
-
-
+            <div class="row col-md-12 col-sm-12">
+                <h1><strong>{{contribution.type | capitalize}} Contribution</strong></h1>
+            </div>
+        </div>
+        <div class="modal-body view col-md-12 col-sm-12">
+            <div class="row contribution no-padding no-margin">
+                <div class="row contribution-content">
+                    <!-- Title and Text of Contribution -->
+                    <div class="row">
+                        <ng-include class="row" src="'app/partials/contributions/contribution/contributionTitleText.html'"></ng-include>
                     </div>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <h4><strong>Attachments</strong></h4>
-                                </div>
-                            </div>
-                            <div class="row list-item assembliesList">
-                                <div class="row">
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row voffset4"></div>
-                        <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
-                            <div class="box descriptionBox">
-                                <p>If you get inspired by this discussion, add a new contribution.</p>
-                            </div>
-                            <button class="btn btn-success btn-half-size" data-toggle="modal" data-dismiss="modal"  data-target="#newContribution">Contribute</button>
-                            <button class="btn btn-success btn-half-size" ng-click="openContributionPage(contribution.contributionId)">Edit</button>
-                        </div>
-                    </div>
+                    <!-- Meta information of contribution: themes, authors, date, votes-->
+                    <ng-include class="row" src="'app/partials/contributions/contribution/contributionMeta.html'"></ng-include>
                 </div>
             </div>
+
+            <div class="row col-md-8 col-sm-8">    <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
+                <div class="row etherpad">
+                    <iframe class="" ng-if="contribution.type === 'PROPOSAL'"
+                            name="embed_readonly"
+                            ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}"
+                            width="100%"
+                            height="100%">
+                    </iframe>
+                </div>
+
+                <div class="row forum">
+
+                    <div class="row no-margin">
+                        <h4><strong>Comments ({{(contribution.comments && contribution.comments.length > 0) ? contribution.comments.length : 0}})</strong></h4>
+                    </div>
+                    <div class="voffset2"></div>
+
+                    <new-forum-post
+                            id="contributionForumCommentBox"
+                            class="row col-md-11 col-sm-11"
+                            targetspaceid="contribution.resourceSpaceId"
+                            targetspace="contribution.comments"
+                            themes="contribution.themes"
+                            ctype="COMMENT"
+                            ng-model="newComment">
+                    </new-forum-post>
+
+                    <div class="voffset2"></div>
+
+                    <div class="row comments col-md-11 col-sm-11">
+                        <appcivist-comments comments="contribution.comments"></appcivist-comments>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-4 col-sm-4">
+                <attachments resources="contributions.attachments"></attachments>
+                <div class="row voffset4"></div>
+                <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+                    <div class="box descriptionBox">
+                        <p>If you get inspired by this discussion, add a new contribution.</p>
+                    </div>
+                    <button class="btn btn-success btn-half-size" data-toggle="modal" data-dismiss="modal"  data-target="#newContribution">Contribute</button>
+                    <button class="btn btn-success btn-half-size" ng-click="openContributionPage(contribution.contributionId)">Edit</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer view col-md-12 col-sm-12">
+            <spinner name="mySpinner" show="postingContribution"></spinner>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>
 </div>

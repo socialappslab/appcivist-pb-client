@@ -121,18 +121,31 @@
         <div class="container-fluid col-md-12 col-sm-12">
             <div class="row">
                 <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                     style="height:450px;" ng-if="milestone.mainContributionType==='PROPOSAL'"
+                     style="height:500px;" ng-if="milestone.mainContributionType==='PROPOSAL'"
                      ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType}">
-                    <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                                  contribution="contribution" assemblyid="assemblyID"
+                                  assemblyid="assembly.assemblyId"
+                                  campaignid="campaign.campaignId"
+                                  componentid="component.componentInstanceId"
+                                  milestoneid="milestone.componentInstanceMilestoneId"
+                    ></contribution>
                 </div>
                 <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                     style="height:250px;" ng-if="milestone.mainContributionType==='BRAINSTORMING'"
+                     style="height:300px;" ng-if="milestone.mainContributionType==='BRAINSTORMING'"
                      ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType}">
-                    <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                    <contribution
+                            ng-click="openContributionModal(contribution,'lg')"
+                            contribution="contribution"
+                            assemblyid="assembly.assemblyId"
+                            campaignid="campaign.campaignId"
+                            componentid="component.componentInstanceId"
+                            milestoneid="milestone.componentInstanceMilestoneId"
+                    ></contribution>
                 </div>
 
             </div>
         </div>
     </div>
-    <ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>
+    <!--<ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>-->
 </div>

@@ -545,16 +545,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 	init();
 
-	$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
-		var url = $scope.etherpadServer+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
-		console.log("Contribution Read Only Etherpad URL: "+url);
-		return url;
-	};
-
-	$scope.openContributionPage = function(cID)  {
-		$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
-	};
-
 	function init() {
 		// 1. Setting up scope ID values
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
@@ -565,66 +555,79 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.newComment = $scope.newContribution = Contributions.defaultNewContribution();
 		$scope.newContributionResponse = {hasErrors:false};
+		$scope.orderProperty = 'creation';
+		$scope.orderReverse = true;
 
 
-		//$scope.$watch($scope.newContributionResponse.hasErrors,
-		//		function(hasErrors) {
-		//			if(!hasErrors) {
-		//				console.log("Contribution posted, closing modal");
-		//				$scope.newContributionModalHide();
-		//			}
-		//		});
+		$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
+			var url = $scope.etherpadServer+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+			console.log("Contribution Read Only Etherpad URL: "+url);
+			return url;
+		};
+
+		$scope.openContributionPage = function(cID)  {
+			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
+		};
+
+		$scope.openNewContributionModal = function(size, cType)  {
+			if (!cType) cType = "BRAINSTORMING";
+			var modalInstance = $uibModal.open({
+				animation: true,
+				templateUrl: '/app/partials/contributions/newView/newView.html',
+				controller: 'NewContributionModalCtrl',
+				size: size,
+				resolve: {
+					assembly: function () {
+						return $scope.assembly;
+					},
+					campaign: function () {
+						return $scope.campaign;
+					},
+					component: function () {
+						return $scope.component;
+					},
+					milestone: function () {
+						return $scope.milestone;
+					},
+					contributions: function () {
+						return $scope.contributions;
+					},
+					themes: function () {
+						return $scope.themes;
+					},
+					newContribution: function () {
+						return $scope.newContribution;
+					},
+					newContributionResponse: function () {
+						return $scope.newContributionResponse;
+					},
+					cType: function () {
+						return cType;
+					}
+				}
+			});
+
+			modalInstance.result.then(function (newContribution) {
+				$scope.newContribution = newContribution;
+				console.log('New Contribution with Title: ' + newContribution.title);
+			}, function () {
+				console.log('Modal dismissed at: ' + new Date());
+			});
+		};
+
+		$scope.orderContributions = function(property) {
+			if($scope.orderProperty === property) {
+				$scope.orderReverse = !$scope.orderReverse;
+			} else {
+				$scope.orderProperty = property;
+			}
+		};
 
 		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
 	}
 
-	$scope.openNewContributionModal = function(size, cType)  {
-		if (!cType) cType = "BRAINSTORMING";
-		var modalInstance = $uibModal.open({
-			animation: true,
-			templateUrl: '/app/partials/contributions/newView/newView.html',
-			controller: 'NewContributionModalCtrl',
-			size: size,
-			resolve: {
-				assembly: function () {
-					return $scope.assembly;
-				},
-				campaign: function () {
-					return $scope.campaign;
-				},
-				component: function () {
-					return $scope.component;
-				},
-				milestone: function () {
-					return $scope.milestone;
-				},
-				contributions: function () {
-					return $scope.contributions;
-				},
-				themes: function () {
-					return $scope.themes;
-				},
-				newContribution: function () {
-					return $scope.newContribution;
-				},
-				newContributionResponse: function () {
-					return $scope.newContributionResponse;
-				},
-				cType: function () {
-					return cType;
-				}
-			}
-		});
-
-		modalInstance.result.then(function (newContribution) {
-			$scope.newContribution = newContribution;
-			console.log('New Contribution with Title: ' + newContribution.title);
-		}, function () {
-			console.log('Modal dismissed at: ' + new Date());
-		});
-	};
 
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route

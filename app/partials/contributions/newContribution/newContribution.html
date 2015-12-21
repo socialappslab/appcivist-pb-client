@@ -85,7 +85,21 @@
             </li>
         </ul>
         <div class="pull-right">
-            <button class="btn btn-success"><h5><strong>Add attachment</strong></h5></button>
+            <div id="attachmentForm" ng-show="showNewAttachmentForm">
+                <input type="text" ng-model="newAttachment.url" placeholder="Add a public URL or upload a file"/>
+                <button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                        accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+                    Upload File</button>
+                <button ng-click="showHideNewAttachmentForm()">Cancel</button>
+            </div>
+            <button ng-show="!showNewAttachmentForm" class="btn btn-success" ng-click="showHideNewAttachmentForm()"><h5><strong>New Attachment</strong></h5></button>
+            <button ng-show="showNewAttachmentForm" class="btn btn-success" ng-click="addNewAttachment()"><h5><strong>Add attachment</strong></h5></button>
+        </div>
+        <div id="attachmentProgress" class="col-md-12 progress-section">
+            {{f.name}} {{f.url}} {{f.$error}} {{f.$errorParam}}
+            <span class="progress-line-container" ng-show="f.progress >= 0">
+                <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+            </span>
         </div>
     </div>
 </div>

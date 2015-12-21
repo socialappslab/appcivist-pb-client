@@ -628,7 +628,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		setCurrentCampaign($scope, localStorageService);
 	}
 
-
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
 	 * If the route ID is different, updates the current assembly in local storage

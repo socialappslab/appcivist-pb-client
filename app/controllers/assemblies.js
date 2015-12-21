@@ -244,30 +244,6 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             }
         }
 
-        //$scope.uploadFiles = function(file) {
-        //    $scope.f = file;
-        //
-        //    Upload.upload({
-        //        url: FileUploader.uploadEndpoint(),
-        //        data: {file: file }
-        //    }).then(function (response) {
-        //        $timeout(function () {
-        //            $scope.f.url = response.url;
-        //            $scope.newAssembly.profile.icon = response.url;
-        //
-        //        });
-        //    }, function (response) {
-        //        if (response.status > 0)
-        //            $scope.errorMsg = response.status + ': ' + response.data;
-        //    }, function (evt) {
-        //        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-        //        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file);
-        //        file.progress = progressPercentage;
-        //    });
-        //}
-
-
-
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];

@@ -28,7 +28,7 @@ appCivistApp.controller('NewContributionCtrl',
 		});
 
 appCivistApp.controller('NewContributionModalCtrl',
-		function ($scope, $uibModalInstance,
+		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout,
 				   assembly, campaign, component, milestone, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions) {
 			init();
@@ -44,9 +44,63 @@ appCivistApp.controller('NewContributionModalCtrl',
 				$scope.newContributionResponse = newContributionResponse;
 				$scope.clearContribution = clearNewContributionObject;
 				$scope.postingContribution = postingContributionFlag;
-				$scope.addAttachment = addAttachmentToContribution;
 				$scope.cType = cType;
 				$scope.newContribution.type = cType;
+
+				$scope.newAttachment = {
+					resourceType: "WEBPAGE",
+					url: ""
+				};
+
+				$scope.showNewAttachmentForm = false;
+
+				$scope.showHideNewAttachmentForm = function() {
+					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
+				};
+
+				$scope.addNewAttachment = function() {
+					var att = {
+						resourceType : $scope.newAttachment.resourceType,
+						url : $scope.newAttachment.url
+
+					};
+					$scope.newContribution.attachments.unshift(att);
+					$scope.newAttachment = {
+						resourceType:"WEBPAGE",
+						url:""
+					};
+					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
+				};
+
+				$scope.uploadFiles = function(file, errFiles) {
+					$scope.f = file;
+					$scope.errFile = errFiles && errFiles[0];
+					if (file) {
+
+						// TODO: change resource type of attachment depending on the content-type of file
+
+						file.upload = Upload.upload({
+							url: FileUploader.uploadEndpoint(),
+							data: {file: file}
+						});
+
+						file.upload.then(function (response) {
+							$timeout(function () {
+								file.result = response.data;
+								$scope.newAttachment.url = response.data.url;
+							});
+						}, function (response) {
+							if (response.status > 0)
+								$scope.errorMsg = response.status + ': ' + response.data;
+						}, function (evt) {
+							file.progress = Math.min(100, parseInt(100.0 *
+									evt.loaded / evt.total));
+							console.log('progress: ' + file.progress + '% ');
+						});
+					}
+				};
+
+				$scope.addAttachment = $scope.addNewAttachment;
 			}
 
 			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
@@ -65,7 +119,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 		});
 
 appCivistApp.controller('ContributionModalCtrl',
-		function ($scope, $uibModalInstance, $location,
+		function ($scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
 				  contribution, assemblyID, campaignID, componentID, milestoneID, localStorageService, Contributions) {
 			init();
 			function init() {
@@ -74,31 +128,78 @@ appCivistApp.controller('ContributionModalCtrl',
 				$scope.campaignID = campaignID;
 				$scope.componentID = componentID;
 				$scope.milestoneID = milestoneID;
+				$scope.newAttachment = {
+					resourceType: "WEBPAGE",
+					url: ""
+				};
+
+				$scope.showNewAttachmentForm = false;
+
+				$scope.showHideNewAttachmentForm = function() {
+					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
+				};
+
+				$scope.addNewAttachment = function() {
+					$scope.newContribution.attachments.unshift($scope.newAttachment);
+					$scope.newAttachment = {
+						resourceType:"WEBPAGE",
+						url:""
+					};
+					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
+				};
+
+				$scope.uploadFiles = function(file, errFiles) {
+					$scope.f = file;
+					$scope.errFile = errFiles && errFiles[0];
+					if (file) {
+
+						// TODO: change resource type of attachment depending on the content-type of file
+
+						file.upload = Upload.upload({
+							url: FileUploader.uploadEndpoint(),
+							data: {file: file}
+						});
+
+						file.upload.then(function (response) {
+							$timeout(function () {
+								file.result = response.data;
+								$scope.newAttachment.url = response.data.url;
+							});
+						}, function (response) {
+							if (response.status > 0)
+								$scope.errorMsg = response.status + ': ' + response.data;
+						}, function (evt) {
+							file.progress = Math.min(100, parseInt(100.0 *
+									evt.loaded / evt.total));
+							console.log('progress: ' + file.progress + '% ');
+						});
+					}
+				};
+
+				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+					createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
+				};
+
+				$scope.postContributionFromModal = function () {
+					createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
+							$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
+				};
+
+				$scope.cancel = function () {
+					$uibModalInstance.dismiss('cancel');
+				};
+
+				$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
+					var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+					console.log("Contribution Read Only Etherpad URL: "+url);
+					return url;
+				};
+
+				$scope.openContributionPage = function(cID)  {
+					$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
+					$uibModalInstance.dismiss('cancel');
+				};
 			}
-
-			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-				createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
-			};
-
-			$scope.postContributionFromModal = function () {
-				createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
-						$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
-			};
-
-			$scope.cancel = function () {
-				$uibModalInstance.dismiss('cancel');
-			};
-
-			$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
-				var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
-				console.log("Contribution Read Only Etherpad URL: "+url);
-				return url;
-			};
-
-			$scope.openContributionPage = function(cID)  {
-				$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
-				$uibModalInstance.dismiss('cancel');
-			};
 		});
 
 

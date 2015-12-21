@@ -857,3 +857,17 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
         }
     };
 });
+
+appCivistApp.factory('FileUploader', function ($resource, localStorageService) {
+    return {
+        upload: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/upload');
+        },
+        list: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/files');
+        },
+        uploadEndpoint: function() {
+            return getServerBaseUrl(localStorageService) + '/upload';
+        }
+    };
+});

@@ -31,9 +31,12 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
  */
 appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinnerService, Upload, $timeout,
                                                     $routeParams, $resource, $http, Assemblies, Contributions,
-													loginService, localStorageService) {
+													FileUploader, loginService, localStorageService) {
 	init();
-	function init() {
+    initializeNewAssembly();
+    initializeListOfAssembliesToFollow();
+
+    function init() {
 		$scope.currentStep=1;
         $scope.tabs = [
             {
@@ -71,207 +74,228 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
         $scope.selectedAssemblies = [];
         $scope.userIsNew = $routeParams.userIsNew ? true : false;
 
-        initializeNewAssembly();
-        initializeListOfAssembliesToFollow();
-	}
-
-    $scope.removeErrors = function(index) {
-        $scope.errors.splice(index,1);
-    }
-
-    $scope.setCurrentStep = function(number) {
-        step(number);
-    }
-
-    $scope.setNewAssemblyIcon = function(url, name) {
-        $scope.newAssembly.profile.icon = url;
-        var file = {};
-        file.name = name;
-        file.url = url;
-        $scope.f = file;
-
-    }
-
-	$scope.addEmailsToList = function(emailsText) {
-
-        $scope.invalidEmails = [];
-		console.log("Adding emails: " + emailsText);
-		var emails = emailsText.split(',');
-		console.log("Adding emails: " + emails);
-        emails.forEach(function(email){
-			console.log("Adding email: " + email);
-			var invitee = {};
-			invitee.email = email.trim();
-            if($scope.isValidEmail(invitee.email)) {
-                invitee.moderator = false;
-                invitee.coordinator = false;
-                $scope.newAssembly.invitations.push(invitee);
-            } else {
-                $scope.invalidEmails.push(invitee.email);
-            }
-		});
-        $scope.inviteesEmails = "";
-	}
-
-    $scope.isValidEmail = function(email) {
-        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        return re.test(email);
-    }
-
-    $scope.removeInvalidEmail = function(index) {
-        $scope.invalidEmails.splice(index, 1);
-    };
-
-	$scope.removeInvitee = function(index) {
-		$scope.newAssembly.invitations.splice(index,1);
-	}
-
-	$scope.addTheme = function(ts) {
-		console.log("Adding themes: " + ts);
-		var themes = ts.split(',');
-		console.log("Adding themes: " + themes);
-		themes.forEach(function(theme){
-			console.log("Adding theme: " + theme);
-			var addedTheme = {};
-			addedTheme.title = theme.trim();
-			$scope.newAssembly.themes.push(addedTheme);
-
-		});
-		$scope.themes = "";
-	}
-
-	$scope.removeTheme = function(index) {
-		$scope.newAssembly.themes.splice(index,1);
-	}
-
-    $scope.findWithAttr = function(array, attr, value) {
-        for (var i = 0; i < array.length; i += 1) {
-            if (array[i][attr] === value) {
-                return i;
-            }
+        $scope.removeErrors = function(index) {
+            $scope.errors.splice(index,1);
         }
-    }
 
-    $scope.removeByAttr = function(array, attr, value) {
-        for (var i = 0; i < array.length; i += 1) {
-            if (array[i][attr] === value) {
-                array.splice(i,1);
-            }
+        $scope.setCurrentStep = function(number) {
+            step(number);
         }
-    }
 
-    $scope.getLinkedAssemblyById = function(id) {
-        return $scope.findWithAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
-    }
+        $scope.setNewAssemblyIcon = function(url, name) {
+            $scope.newAssembly.profile.icon = url;
+            var file = {};
+            file.name = name;
+            file.url = url;
+            $scope.f = file;
 
-    $scope.removeLinkedAssemblyById = function(id) {
-        return $scope.removeByAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
-    }
-
-	$scope.selectAssembly = function(assemblyId) {
-        $scope.selectedAssemblies[assemblyId] = !$scope.selectedAssemblies[assemblyId];
-
-        if($scope.selectedAssemblies[assemblyId]){
-            var linked = {"assemblyId":assemblyId};
-            $scope.newAssembly.linkedAssemblies.push(linked);
-        } else {
-            $scope.removeLinkedAssemblyById(assemblyId);
         }
-    }
 
-	$scope.createNewAssembly = function(step) {
-		if (step === 1) {
-			console.log("Creating assembly with name = "+$scope.newAssembly.name);
-			if($scope.newAssembly.profile.membership === 'OPEN') {
-				$scope.newAssembly.profile.supportedMembership="OPEN";
-			} else if ($scope.newAssembly.profile.membership === 'REGISTRATION') {
-				if($scope.newAssembly.profile.registration.invitation &&
-					! $scope.newAssembly.profile.registration.request) {
-					$scope.newAssembly.profile.supportedMembership = "INVITATION";
-				} else if(! $scope.newAssembly.profile.registration.invitation &&
-					 $scope.newAssembly.profile.registration.request) {
-					$scope.newAssembly.profile.supportedMembership = "REQUEST";
-				} else if($scope.newAssembly.profile.registration.invitation &&
-					 $scope.newAssembly.profile.registration.request) {
-					$scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
-				}
-			}
+        $scope.addEmailsToList = function(emailsText) {
 
-			console.log("Creating assembly with membership = "+$scope.newAssembly.profile.supportedMembership);
-			if($scope.newAssembly.profile.moderators === 'none' && $scope.newAssembly.profile.coordinators === 'none' ) {
-				$scope.newAssembly.profile.managementType="OPEN";
-			} else if ($scope.newAssembly.profile.moderators === 'two' || $scope.newAssembly.profile.moderators === 'all') {
-				if($scope.newAssembly.profile.coordinators === 'two' || $scope.newAssembly.profile.coordinators === 'all') {
-					$scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
-				} else if(! $scope.newAssembly.profile.role.coordinators &&
-					 $scope.newAssembly.profile.role.moderators ) {
-					$scope.newAssembly.profile.managementType = "MODERATED";
-				}
-			} else {
-				$scope.newAssembly.profile.managementType = "COORDINATED";
-			}
-
-            $scope.newAssembly.configs[0].value = $scope.newAssembly.config.facetoface;
-            $scope.newAssembly.configs[1].value = $scope.newAssembly.config.messaging;
-
-            console.log("Creating assembly with managementType = "+$scope.newAssembly.profile.managementType);
-			//delete $scope.newAssembly.profile.;
-			//delete $scope.newAssembly.profile.member;
-			//delete $scope.newAssembly.profile.roles;
-			//delete $scope.newAssembly.profile.role;
-			localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
-            $scope.tabs[1].active=true;
-		} else if ((step === 2 && !$scope.userIsNew) || step === 3) {
-			console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
-			var newAssemblyRes = Assemblies.assembly().save($scope.newAssembly);
-            newAssemblyRes.$promise.then(
-                // Success
-                function(data) {
-                   console.log("Created assembly: "+data.assemblyId);
-                    localStorageService.set("currentAssembly",data);
-                    localStorageService.set("temporaryNewAssembly","");
-                    $location.url('/assembly/'+data.assemblyId+"/forum");
-                },
-                // Error
-                function(error) {
-                    var e = error.data;
-                    console.log("Couldn't create assembly: "+e.statusMessage);
-                    $scope.errors.push(e);
+            $scope.invalidEmails = [];
+            console.log("Adding emails: " + emailsText);
+            var emails = emailsText.split(',');
+            console.log("Adding emails: " + emails);
+            emails.forEach(function(email){
+                console.log("Adding email: " + email);
+                var invitee = {};
+                invitee.email = email.trim();
+                if($scope.isValidEmail(invitee.email)) {
+                    invitee.moderator = false;
+                    invitee.coordinator = false;
+                    $scope.newAssembly.invitations.push(invitee);
+                } else {
+                    $scope.invalidEmails.push(invitee.email);
                 }
-            );
-		} else if (step === 2 && $scope.userIsNew) {
-            localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
-            $scope.tabs[2].active=true;
+            });
+            $scope.inviteesEmails = "";
         }
+
+        $scope.isValidEmail = function(email) {
+            var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            return re.test(email);
+        }
+
+        $scope.removeInvalidEmail = function(index) {
+            $scope.invalidEmails.splice(index, 1);
+        };
+
+        $scope.removeInvitee = function(index) {
+            $scope.newAssembly.invitations.splice(index,1);
+        }
+
+        $scope.addTheme = function(ts) {
+            console.log("Adding themes: " + ts);
+            var themes = ts.split(',');
+            console.log("Adding themes: " + themes);
+            themes.forEach(function(theme){
+                console.log("Adding theme: " + theme);
+                var addedTheme = {};
+                addedTheme.title = theme.trim();
+                $scope.newAssembly.themes.push(addedTheme);
+
+            });
+            $scope.themes = "";
+        }
+
+        $scope.removeTheme = function(index) {
+            $scope.newAssembly.themes.splice(index,1);
+        }
+
+        $scope.findWithAttr = function(array, attr, value) {
+            for (var i = 0; i < array.length; i += 1) {
+                if (array[i][attr] === value) {
+                    return i;
+                }
+            }
+        }
+
+        $scope.removeByAttr = function(array, attr, value) {
+            for (var i = 0; i < array.length; i += 1) {
+                if (array[i][attr] === value) {
+                    array.splice(i,1);
+                }
+            }
+        }
+
+        $scope.getLinkedAssemblyById = function(id) {
+            return $scope.findWithAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
+        }
+
+        $scope.removeLinkedAssemblyById = function(id) {
+            return $scope.removeByAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
+        }
+
+        $scope.selectAssembly = function(assemblyId) {
+            $scope.selectedAssemblies[assemblyId] = !$scope.selectedAssemblies[assemblyId];
+
+            if($scope.selectedAssemblies[assemblyId]){
+                var linked = {"assemblyId":assemblyId};
+                $scope.newAssembly.linkedAssemblies.push(linked);
+            } else {
+                $scope.removeLinkedAssemblyById(assemblyId);
+            }
+        }
+
+        $scope.createNewAssembly = function(step) {
+            if (step === 1) {
+                console.log("Creating assembly with name = "+$scope.newAssembly.name);
+                if($scope.newAssembly.profile.membership === 'OPEN') {
+                    $scope.newAssembly.profile.supportedMembership="OPEN";
+                } else if ($scope.newAssembly.profile.membership === 'REGISTRATION') {
+                    if($scope.newAssembly.profile.registration.invitation &&
+                        ! $scope.newAssembly.profile.registration.request) {
+                        $scope.newAssembly.profile.supportedMembership = "INVITATION";
+                    } else if(! $scope.newAssembly.profile.registration.invitation &&
+                        $scope.newAssembly.profile.registration.request) {
+                        $scope.newAssembly.profile.supportedMembership = "REQUEST";
+                    } else if($scope.newAssembly.profile.registration.invitation &&
+                        $scope.newAssembly.profile.registration.request) {
+                        $scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
+                    }
+                }
+
+                console.log("Creating assembly with membership = "+$scope.newAssembly.profile.supportedMembership);
+                if($scope.newAssembly.profile.moderators === 'none' && $scope.newAssembly.profile.coordinators === 'none' ) {
+                    $scope.newAssembly.profile.managementType="OPEN";
+                } else if ($scope.newAssembly.profile.moderators === 'two' || $scope.newAssembly.profile.moderators === 'all') {
+                    if($scope.newAssembly.profile.coordinators === 'two' || $scope.newAssembly.profile.coordinators === 'all') {
+                        $scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
+                    } else if(! $scope.newAssembly.profile.role.coordinators &&
+                        $scope.newAssembly.profile.role.moderators ) {
+                        $scope.newAssembly.profile.managementType = "MODERATED";
+                    }
+                } else {
+                    $scope.newAssembly.profile.managementType = "COORDINATED";
+                }
+
+                $scope.newAssembly.configs[0].value = $scope.newAssembly.config.facetoface;
+                $scope.newAssembly.configs[1].value = $scope.newAssembly.config.messaging;
+
+                console.log("Creating assembly with managementType = "+$scope.newAssembly.profile.managementType);
+                //delete $scope.newAssembly.profile.;
+                //delete $scope.newAssembly.profile.member;
+                //delete $scope.newAssembly.profile.roles;
+                //delete $scope.newAssembly.profile.role;
+                localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
+                $scope.tabs[1].active=true;
+            } else if ((step === 2 && !$scope.userIsNew) || step === 3) {
+                console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
+                var newAssemblyRes = Assemblies.assembly().save($scope.newAssembly);
+                newAssemblyRes.$promise.then(
+                    // Success
+                    function(data) {
+                        console.log("Created assembly: "+data.assemblyId);
+                        localStorageService.set("currentAssembly",data);
+                        localStorageService.set("temporaryNewAssembly","");
+                        $location.url('/assembly/'+data.assemblyId+"/forum");
+                    },
+                    // Error
+                    function(error) {
+                        var e = error.data;
+                        console.log("Couldn't create assembly: "+e.statusMessage);
+                        $scope.errors.push(e);
+                    }
+                );
+            } else if (step === 2 && $scope.userIsNew) {
+                localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
+                $scope.tabs[2].active=true;
+            }
+        }
+
+        //$scope.uploadFiles = function(file) {
+        //    $scope.f = file;
+        //
+        //    Upload.upload({
+        //        url: FileUploader.uploadEndpoint(),
+        //        data: {file: file }
+        //    }).then(function (response) {
+        //        $timeout(function () {
+        //            $scope.f.url = response.url;
+        //            $scope.newAssembly.profile.icon = response.url;
+        //
+        //        });
+        //    }, function (response) {
+        //        if (response.status > 0)
+        //            $scope.errorMsg = response.status + ': ' + response.data;
+        //    }, function (evt) {
+        //        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+        //        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file);
+        //        file.progress = progressPercentage;
+        //    });
+        //}
+
+
+
+        $scope.uploadFiles = function(file, errFiles) {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) {
+                file.upload = Upload.upload({
+                    url: FileUploader.uploadEndpoint(),
+                    data: {file: file}
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        $scope.newAssembly.profile.icon = response.data.url;
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    file.progress = Math.min(100, parseInt(100.0 *
+                        evt.loaded / evt.total));
+                    console.log('progress: ' + file.progress + '% ');
+                });
+            }
+        }
+
 	}
 
-	$scope.uploadFiles = function(file) {
-		$scope.f = file;
-		if (file && !file.$error) {
-			file.upload = Upload.upload({
-                // TODO SETUP CREDENTIALS AND UPLOAD SERVER
-				url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-				file: file
-			});
 
-			file.upload.then(function (response) {
-				$timeout(function () {
-					file.result = response.data;
-                    // TODO SETUP THE RESPONSE URL AND PUT IT IN NEW ASSEMBLY ICON
-                    $scope.f.url = "";
-
-				});
-			}, function (response) {
-				if (response.status > 0)
-					$scope.errorMsg = response.status + ': ' + response.data;
-			});
-
-			file.upload.progress(function (evt) {
-				file.progress = Math.min(100, parseInt(100.0 *
-					evt.loaded / evt.total));
-			});
-		}
-	}
 
     function initializeNewAssembly() {
         if($scope.newAssembly===null || $scope.newAssembly===undefined){

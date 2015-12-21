@@ -135,11 +135,11 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="image-capsule">
+                    <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                         accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
                         <img data-src="holder.js/100x100" alt="100x100"
                              src="../assets/images/addIcon.png" data-holder-rendered="true"
-                             class="image-circle" type="file" ngf-select="uploadFiles($file)"
-                             accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
+                             class="image-circle"/>
                     </div>
                 </div>
             </div>

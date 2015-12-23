@@ -11,32 +11,38 @@
 var postingContributionFlag = false;
 
 appCivistApp.controller('NewContributionCtrl',
-		function ($scope, $http, $routeParams, localStorageService, Contributions) {
-			init();
-			function init() {
-				$scope.clearContribution = function (newContribution) {
-					clearNewContributionObject(newContribution, Contributions);
-				};
-				$scope.postingContribution = postingContributionFlag;
+        function ($scope, $http, $routeParams, localStorageService, Contributions) {
+            init();
 
-				$scope.clearContribution = function () {
-					clearNewContributionObject($scope.newContribution, Contributions);
-				};
+            function init() {
+                $scope.userIsAuthor = true;
+                $scope.postingContribution = postingContributionFlag;
 
-				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-					if (!newContribution.type) {
-						newContribution.type = $scope.contributionType;
-					}
-					createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
-				};
-			}
-		});
+                $scope.clearContribution = function () {
+                    clearNewContributionObject($scope, Contributions);
+                    if($scope.replyParent) {
+                        $scope.replyParent.boxIsOpen = false;
+                    }
+                };
+
+                $scope.postContribution = function () {
+                    if (!$scope.newContribution.type) {
+                        $scope.newContribution.type = $scope.contributionType;
+                    }
+                    $scope.response = {};
+                    $scope.modalInstance = undefined;
+                    createNewContribution($scope, Contributions);
+                };
+            }
+        });
 
 appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, component, milestone, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions) {
 			init();
+			$scope.userIsAuthor = true;
+
 			function init() {
 				$scope.assembly = assembly;
 				$scope.campaign = campaign;
@@ -57,12 +63,20 @@ appCivistApp.controller('NewContributionModalCtrl',
 				};
 
 				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-					createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
+					$scope.newContribution = newContribution;
+					$scope.targetSpaceId = targetSpaceId;
+					$scope.targetSpace = targetSpace;
+					$scope.response = {};
+					$scope.modalInstance = undefined;
+					createNewContribution($scope, Contributions);
 				};
 
 				$scope.postContributionFromModal = function () {
-					createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
-							$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
+					$scope.targetSpaceId = $scope.component.resourceSpaceId;
+					$scope.targetSpace = $scope.contributions;
+					$scope.response = $scope.newContributionResponse;
+					$scope.modalInstance = $uibModalInstance;
+					createNewContribution($scope, Contributions);
 				};
 
 				$scope.cancel = function () {
@@ -74,9 +88,10 @@ appCivistApp.controller('NewContributionModalCtrl',
 
 appCivistApp.controller('ContributionModalCtrl',
 		function ($scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
-				  contribution, assemblyID, campaignID, componentID, milestoneID, localStorageService, Contributions,
-				  Etherpad) {
+				  contribution, assemblyID, campaignID, componentID, milestoneID, container, containerID, containerIndex,
+				  localStorageService, Contributions, Etherpad) {
 			init();
+			verifyAuthorship($scope, localStorageService, Contributions);
 			function init() {
 				$scope.contribution = contribution;
 				$scope.assemblyID = assemblyID;
@@ -84,18 +99,34 @@ appCivistApp.controller('ContributionModalCtrl',
 				$scope.componentID = componentID;
 				$scope.milestoneID = milestoneID;
 				$scope.newAttachment = Contributions.defaultContributionAttachment();
+				$scope.container = container;
+				$scope.containerID = containerID;
+				$scope.containerIndex = containerIndex;
 
 				$scope.clearContribution = function () {
 					clearNewContributionObject($scope.newContribution, Contributions);
 				};
 
+				$scope.delete = function () {
+					deleteContribution($scope,localStorageService, Contributions);
+					$uibModalInstance.dismiss('cancel');
+				};
+
 				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-					createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
+					$scope.newContribution = newContribution;
+					$scope.targetSpaceId = targetSpaceId;
+					$scope.targetSpace = targetSpace;
+					$scope.response = {};
+					$scope.modalInstance = undefined;
+					createNewContribution($scope, Contributions);
 				};
 
 				$scope.postContributionFromModal = function () {
-					createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
-							$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
+					$scope.targetSpaceId = $scope.component.resourceSpaceId;
+					$scope.targetSpace = $scope.contributions;
+					$scope.response = $scope.newContributionResponse;
+					$scope.modalInstance = $uibModalInstance;
+					createNewContribution($scope, Contributions);
 				};
 
 				$scope.cancel = function () {
@@ -116,7 +147,7 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 													 FileUploader, Contributions) {
 
 	init();
-	verifyAuthorship();
+	verifyAuthorship($scope, localStorageService, Contributions);
 
 	function init() {
 		if(!$scope.newContribution) {
@@ -158,32 +189,13 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 			$scope.contribution = data;
 		});
 	}
-
-	function verifyAuthorship() {
-		if ($scope.contribution.contributionId) {
-			var user = localStorageService.get("user");
-			if($scope.contribution.type === "PROPOSAL") {
-				var group = $scope.contribution.responsibleGroups[0];
-				var groupAuthorshipRes = Contributions.verifyGroupAuthorship(user,$scope.contribution,group);
-				groupAuthorshipRes.$promise.then(function(response){
-					if (response.responseStatus === "OK") {
-						$scope.userIsAuthor  = true;
-					}
-				});
-
-			} else {
-				$scope.userIsAuthor = Contributions.verifyAuthorship(user,$scope.contribution);
-			}
-		} else {
-			$scope.userIsAuthor = true;
-		}
-	}
 });
 
 appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,
 													 FileUploader, Contributions) {
 
 	init();
+	verifyAuthorship($scope, localStorageService, Contributions);
 
 	function init() {
 		if(!$scope.newContribution) {
@@ -193,17 +205,17 @@ appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParam
 			$scope.newAttachment = Contributions.defaultContributionAttachment();
 		}
 
-		$scope.clearContribution = function (newContribution) {
-			clearNewContributionObject(newContribution, Contributions);
+		$scope.clearContribution = function () {
+			clearNewContributionObject($scope.newContribution, Contributions);
 		};
 
-		$scope.addNewAttachment = function(newContribution, newAttachment) {
-			addNewAttachmentToContribution(newContribution, newAttachment, Contributions);
+		$scope.addNewAttachment = function() {
+			addNewAttachmentToContribution($scope.contribution, $scope.newAttachment, Contributions);
 			$scope.f = {};
 		};
 
-		$scope.cancelNewAttachment = function (newAttachment) {
-			clearNewAttachment(newAttachment, Contributions);
+		$scope.cancelNewAttachment = function () {
+			clearNewAttachment($scope.newAttachment, Contributions);
 		};
 
 		$scope.uploadFiles = function(file, errFiles) {
@@ -363,21 +375,8 @@ appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $rou
 			$scope.comments = $scope.contribution.comments;
 			$scope.stats = $scope.contribution.stats;
 			$scope.workingGroup = {};
-			if($scope.contribution.responsibleWorkingGroups!=null && $scope.contribution.responsibleWorkingGroups!=undefined) {
-				$scope.workingGroup = $scope.contribution.responsibleWorkingGroups[0];
-			}
-			// Check Authorship
-			// 1. Check if user is in the list of authors
-			$scope.userIsAuthor = Contributions.verifyAuthorship($scope.user, $scope.contribution);
-			// 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
-			if(!$scope.userIsAuthor && $scope.workingGroup.groupId) {
-				var authorship = Contributions.verifyGroupAuthorship($scope.user, $scope.contribution, $scope.workingGroup).get();
-				authorship.$promise.then(function(response){
-					if (response.responseStatus === "OK") {
-						$scope.userIsAuthor  = true;
-					}
-				});
-			}
+
+			verifyAuthorship($scope, localStorageService, Contributions);
 
 			if($scope.contribution.extendedTextPad) {
 				$scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
@@ -450,8 +449,29 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 		$scope.orderProperty = 'creation';
 		$scope.orderReverse = true;
 		// TODO: read replies enabled from configurations
-		$scope.replyEnabled = true;
-		$scope.replyBoxIsOpen = false;
+		$scope.reply = {};
+		$scope.reply.enabled = true;
+		$scope.reply.boxIsOpen = false;
+
+		if($scope.comment) {
+			$scope.contribution = $scope.comment;
+			if(!$scope.comment.comments) {
+				$scope.comment.comments = [];
+			}
+			$scope.comments = $scope.comment.comments;
+			verifyAuthorship($scope,localStorageService,Contributions);
+            $scope.targetSpaceId = $scope.comment.resourceSpaceId;
+            $scope.targetSpace = $scope.comment.comments;
+            $scope.themes = $scope.comment.themes;
+		}
+
+		$scope.forumPostObj = {
+			targetSpaceId : $scope.targetSpaceId,
+			targetSpace: $scope.targetSpace,
+			themes: $scope.themes,
+			ctype: "COMMENT",
+			replyParent: $scope.reply
+		};
 
 		// Scope Functions
 		$scope.orderComments = function (property) {
@@ -465,13 +485,16 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 		}
 
 		$scope.openReplyBox = function () {
-			$scope.replyBoxIsOpen = true;
+			$scope.reply.boxIsOpen = true;
 		}
 
 		$scope.closeReplyBox = function () {
-			$scope.replyBoxIsOpen = false;
+			$scope.reply.boxIsOpen = false;
 		}
 
+        $scope.delete = function () {
+			deleteContribution($scope, localStorageService, Contributions);
+		};
 	}
 
 	function initializeNewReplyModel() {
@@ -486,42 +509,85 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 
 	function init() {
 		$scope.votes = $scope.contribution.stats.points;
+		userAlreadyVotedInContribution();
+
 		$scope.upVote = function () {
-			$scope.contribution.stats.ups+=1;
-			var stats = $scope.contribution.stats;
-			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
-			voteRes.$promise.then(
-					function (newStats) {
-						$scope.contribution.stats = newStats;
-						$scope.votes = $scope.contribution.stats.points;
-					}
-			);
+			if (!$scope.userAlreadyUpVoted) {
+				if ($scope.userAlreadyDownVoted) {
+					$scope.contribution.stats.downs -= 1;
+				} else {
+					$scope.contribution.stats.ups += 1;
+				}
+
+				var stats = $scope.contribution.stats;
+				var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+				voteRes.$promise.then(
+						function (newStats) {
+							$scope.contribution.stats = newStats;
+							$scope.votes = $scope.contribution.stats.points;
+							if ($scope.userAlreadyDownVoted) {
+								saveUserVote(0);
+							} else {
+								saveUserVote(1);
+							}
+						},
+						function (error) {
+							$scope.contribution.stats.ups-=1;
+						}
+				);
+			}
 		};
 		$scope.downVote = function () {
-			$scope.contribution.stats.downs+=1;
-			var stats = $scope.contribution.stats;
-			var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
-			voteRes.$promise.then(
-					function (newStats) {
-						$scope.contribution.stats = newStats;
-						$scope.votes = $scope.contribution.stats.points;
-					});
+			if (!$scope.userAlreadyDownVoted) {
+				if ($scope.userAlreadyUpVoted) {
+					$scope.contribution.stats.ups -= 1;
+				} else {
+					$scope.contribution.stats.downs += 1;
+				}
+				var stats = $scope.contribution.stats;
+				var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+				voteRes.$promise.then(
+						function (newStats) {
+							$scope.contribution.stats = newStats;
+							$scope.votes = $scope.contribution.stats.points;
+							if ($scope.userAlreadyUpVoted) {
+								saveUserVote(0);
+							} else {
+								saveUserVote(-1);
+							}
+						},
+						function (error) {
+							$scope.contribution.stats.downs -= 1;
+						}
+				);
+			}
 		};
 	}
 
+	function userAlreadyVotedInContribution() {
+		$scope.userVotes = localStorageService.get("userVotes");
+		$scope.userAlreadyUpVoted = $scope.userVotes[$scope.contribution.contributionId] === 1;
+		$scope.userAlreadyDownVoted = $scope.userVotes[$scope.contribution.contributionId] === -1;
+	}
 
+	function saveUserVote (vote) {
+		$scope.userVotes[$scope.contribution.contributionId] = vote;
+		localStorageService.set("userVotes", $scope.userVotes);
+		userAlreadyVotedInContribution();
+	}
 });
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
-															  localStorageService, Contributions) {
+															  localStorageService, Etherpad, Contributions) {
 
 	init();
 
 	function init() {
-
 		if(!$scope.contribution.comments) {
 			$scope.contribution.comments = [];
 		}
+
+		verifyAuthorship($scope, localStorageService, Contributions);
 
 		$scope.selectContribution = function(contribution){
 			$scope.$root.$emit('contribution:selected', contribution);
@@ -549,6 +615,15 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
 						},
 						milestoneID: function () {
 							return $scope.milestoneID;
+						},
+						container: function () {
+							return $scope.container;
+						},
+						containerID: function () {
+							return $scope.containerID;
+						},
+						containerIndex: function () {
+							return $scope.containerIndex;
 						}
 					}
 				});
@@ -560,6 +635,22 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
 				});
 			}
 		};
+
+		$scope.clearContribution = function () {
+			clearNewContributionObject($scope.newContribution, Contributions);
+		};
+
+		$scope.delete = function () {
+			deleteContribution($scope,localStorageService, Contributions);
+			$uibModalInstance.dismiss('cancel');
+		};
+
+		$scope.getEtherpadReadOnlyUrl = Etherpad.getEtherpadReadOnlyUrl;
+
+		$scope.openContributionPage = function(cID)  {
+			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
+		};
+
 	}
 
 });
@@ -569,61 +660,64 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
  *
  */
 
-function createNewContribution(newContribution, targetSpaceId, targetSpace, response, modalInstance, Contributions) {
+function createNewContribution (scope, Contributions) {
 	postingContributionFlag = true;
-	if (!newContribution.title || !newContribution.title === "") {
+	if (!scope.newContribution.title || !scope.newContribution.title === "") {
 		var maxlength = 250;
 		var trimlength = maxlength;
-		if(newContribution.text.length < maxlength) {
-			trimlength = newContribution.text.length;
+		if(scope.newContribution.text.length < maxlength) {
+			trimlength = scope.newContribution.text.length;
 		}
-		newContribution.title = newContribution.text.substring(0, trimlength);
+		scope.newContribution.title = scope.newContribution.text.substring(0, trimlength);
 	}
 
 	// TODO: fix this, targetSpace must be part of an object in order to be initialized
 	// If the target space is undefined, it means it was empty an this contribution is the first
-	if (!targetSpace) {
-		targetSpace = [];
+	if (!scope.targetSpace) {
+		scope.targetSpace = [];
 	}
 
-	newContribution.existingThemes = [];
-	newContribution.themes = [];
-	addSelectedThemes(newContribution.parentThemes, newContribution.existingThemes);
+	scope.newContribution.existingThemes = [];
+	scope.newContribution.themes = [];
+	addSelectedThemes(scope.newContribution.parentThemes, scope.newContribution.existingThemes);
 
-	var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);
+	var newContributionRes = Contributions.contributionInResourceSpace(scope.targetSpaceId).save(scope.newContribution);
 	newContributionRes.$promise.then(
 			function (data) {
-				newContribution = data;
-				targetSpace.unshift(data);
-				response.hasErrors = false;
-				response.touched = !response.touched;
-				if(modalInstance)
-					modalInstance.close(newContribution);
+				scope.newContribution = Contributions.defaultNewContribution();
+				scope.targetSpace.unshift(data);
+				scope.response.hasErrors = false;
+				scope.response.touched = !scope.response.touched;
+				if(scope.modalInstance)
+					scope.modalInstance.close(scope.newContribution);
+				if(scope.replyParent) {
+					scope.replyParent.boxIsOpen = false;
+				}
 				postingContributionFlag = false;
 			},
 			function (error) {
 				console.log("Error creating the contribution: " + angular.toJson(error.statusText));
-				response.hasErrors = true;
-				response.errors = error;
-				response.touched = !response.touched;
+				scope.response.hasErrors = true;
+				scope.response.errors = error;
+				scope.response.touched = !scope.response.touched;
 				postingContributionFlag = false;
 			}
 	);
 }
 
-function clearNewContributionObject(newContribution, Contributions){
-	var cType = newContribution.type;
-	Contributions.copyContributionObject(newContribution,Contributions.defaultNewContribution());
-	newContribution.type = cType;
+function clearNewContributionObject (scope, Contributions){
+	var cType = scope.newContribution.type;
+    scope.newContribution = Contributions.defaultNewContribution();
+	scope.newContribution.type = cType;
 }
 
-function addAttachmentToContribution(newContribution, attachment) {
+function addAttachmentToContribution (newContribution, attachment) {
 	// POST attachment to IMGUR
 	// ADD to attachments array in Contributions
 	newContribution.attachments.push(attachment);
 }
 
-function addSelectedThemes(parentThemes, contributionThemes) {
+function addSelectedThemes (parentThemes, contributionThemes) {
 	if(parentThemes) {
 		for (var i = 0; i < parentThemes.length; i+=1) {
 			if(parentThemes[i].selected) {
@@ -633,7 +727,7 @@ function addSelectedThemes(parentThemes, contributionThemes) {
 	}
 }
 
-function addNewAttachmentToContribution(contribution, newAttachment, Contributions) {
+function addNewAttachmentToContribution (contribution, newAttachment, Contributions) {
 	var att = Contributions.newAttachmentObject(newAttachment);
 	if(!contribution.attachments) {
 		contribution.attachments = [];
@@ -665,6 +759,53 @@ function addNewAttachmentToContribution(contribution, newAttachment, Contributio
 	}
 };
 
-function clearNewAttachment(newAttachment, Contributions) {
+function clearNewAttachment (newAttachment, Contributions) {
 	Contributions.copyAttachmentObject(newAttachment, Contributions.defaultContributionAttachment());
 };
+
+function verifyAuthorship (scope, localStorageService, Contributions) {
+	// Check if contribution has already an ID, otherwise is new
+	if (scope.contribution.contributionId) {
+		if (!scope.user) {
+			scope.user = localStorageService.get("user");
+		}
+
+		if(scope.contribution.responsibleWorkingGroups && scope.contribution.responsibleWorkingGroups.length > 0) {
+			scope.workingGroup = scope.contribution.responsibleWorkingGroups[0];
+		}
+
+		// Check Authorship
+		// 1. Check if user is in the list of authors
+		scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.contribution);
+
+		// 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
+		if(!scope.userIsAuthor && scope.workingGroup && scope.workingGroup.groupId) {
+			var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.workingGroup).get();
+			authorship.$promise.then(function(response){
+				if (response.responseStatus === "OK") {
+					scope.userIsAuthor  = true;
+				} else {
+					scope.userIsAuthor = false;
+				}
+			});
+		}
+	} else {
+		// Contribution is new
+		scope.userIsAuthor = true;
+	}
+}
+
+function deleteContribution (scope, localStorageService, Contributions) {
+	if(scope.userIsAuthor) {
+		var deleteRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId).delete();
+		deleteRes.$promise.then(
+				function (response) {
+					scope.container.splice(scope.containerIndex,1);
+					console.log("Contribution deleted");
+				},
+				function (error) {
+					console.log("Contribution cannot be deleted: "+error.statusMessage);
+				}
+		);
+	}
+}

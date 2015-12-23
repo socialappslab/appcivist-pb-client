@@ -217,7 +217,10 @@ appCivistApp.directive('contribution', function(){
             campaignID: '=campaignid',
             componentID: '=componentid',
             milestoneID: '=milestoneid',
-            inModal: '=inmodal'
+            inModal: '=inmodal',
+            container : '=container',
+            containerID : '=containerid',
+            containerIndex : '=containerindex'
         },
         controller: "ContributionDirectiveCtrl",
         link: function (scope, element, attrs, ngModel) {
@@ -279,6 +282,7 @@ appCivistApp.directive('newForumPost', function() {
             targetSpace: '=targetspace',
             themes: '=',
             contributionType: "@ctype",
+            replyParent: "=replyparent",
             newContribution: '=ngModel'
         },
         controller: "NewContributionCtrl",
@@ -317,7 +321,9 @@ appCivistApp.directive('appcivistComments', function() {
         replace: true,
         templateUrl: "/app/partials/forum/comments.html",
         scope: {
-            comments: '=comments'
+            comments: '=comments',
+            assemblyID: '=assemblyid',
+            containerID: '=containerid'
         },
         controller: "CommentsController"
     }
@@ -329,11 +335,32 @@ appCivistApp.directive('appcivistIndividualComment', function() {
         replace: true,
         templateUrl: "/app/partials/contributions/contribution/contributionComment.html",
         scope: {
-            comment: '=comment'
+            comment: '=comment',
+            assemblyID: '=assemblyid',
+            container: '=container',
+            containerID: '=containerid',
+            containerIndex: '=containerindex'
         },
         controller: "CommentsController"
     }
 });
+
+appCivistApp.directive('appcivistIndividualCommentNoReply', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/contributions/contribution/contributionCommentWithoutReply.html",
+        scope: {
+            comment: '=comment',
+            assemblyID: '=assemblyid',
+            container: '=container',
+            containerID: '=containerid',
+            containerIndex: '=containerindex'
+        },
+        controller: "CommentsController"
+    }
+});
+
 
 appCivistApp.directive('attachments', function () {
     return {

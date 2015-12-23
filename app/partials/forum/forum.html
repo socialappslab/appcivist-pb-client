@@ -69,7 +69,9 @@
                         ng-model="newContribution">
                 </new-forum-post>
                 <!-- Forum Comments-->
-                <appcivist-comments comments="currentAssembly.forumPosts"></appcivist-comments>
+                <appcivist-comments comments="currentAssembly.forumPosts"
+                                    assemblyid="assemblyID"
+                                    containerid="currentAssembly.forumResourceSpaceId"></appcivist-comments>
             </div>
             <div id="assemblyResourceBoxes" class="col-md-4 col-sm-4 info-lateral">
                 <div id="assemblyMembers" class="row infoBox">

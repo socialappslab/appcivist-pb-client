@@ -18,51 +18,42 @@
         <div class="col-md-12 col-sm-12 text-comment">
             <p class="comment-comment"><a>{{comment.text}}</a></p>
             <div class="pull-right">
-                <h4 class="text-info" ng-if="replyEnabled"
+                <h4 class="text-info" ng-if="reply.enabled && !reply.boxIsOpen"
                     style="display: inline-block; vertical-align: middle; cursor:pointer"
                     ng-click="openReplyBox(comment)">
-                    <strong>Reply | </strong>
+                    <strong>Reply</strong>
                 </h4>
-                <h4 class="text-info" ng-if="replyEnabled"
+                <h4 class="text-info" ng-if="reply.enabled && reply.boxIsOpen"
                     style="display: inline-block; vertical-align: middle; cursor:pointer"
                     ng-click="closeReplyBox(comment)">
                     <strong>Cancel</strong>
                 </h4>
+                <h4 class="text-info" ng-if="userIsAuthor"
+                    style="display: inline-block; vertical-align: middle; cursor:pointer"
+                    ng-click="delete()">
+                    <strong>| Delete </strong>
+                </h4>
             </div>
         </div>
-        <div ng-if="replyEnabled && replyBoxIsOpen">
+        <div ng-if="reply.enabled && reply.boxIsOpen">
             <new-forum-post
-                    class="row col-md-11 col-sm-11"
-                    targetspaceid="comment.resourceSpaceId"
-                    targetspace="comment.comments"
-                    themes="comment.themes"
+                    class="col-md-11 col-sm-11"
+                    targetspaceid="forumPostObj.targetSpaceId"
+                    targetspace="forumPostObj.targetSpace"
+                    themes="forumPostObj.themes"
                     ctype="COMMENT"
+                    replyparent="forumPostObj.replyParent"
                     ng-model="newReply">
             ></new-forum-post>
         </div>
     </div>
-    <ul class="row comments col-md-11 col-sm-11" ng-if="replyEnabled">
-        <li class="row comment col-md-12 col-sm-12 reply" ng-repeat="commentReply in comment.comments | orderBy: 'creation' : true | filter: searchComments">
-            <!--TODO: find out how to do this recursively-->
-            <!--<appcivist-individual-comment comment="commentReply"></appcivist-individual-comment>-->
-            <div class="row col-md-12 col-sm-12">
-                <div class="image-profile-comment inline">
-                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
-                </div>
-                <h5 class="user-comment inline">{{commentReply.authors[0].name}}. / </h5>
-                <h5 class="date-comment inline"><time datetime="{{commentReply.lastUpdate}}"/>{{commentReply.lastUpdate | date:"dd MMMM yyyy 'at' HH:mm:ss"}}</h5>
-                <div class="options-comment inline">
-                    <ul class="tags" ng-repeat="theme in comment.themes">
-                        <li class="tag"><strong>{{theme.title}}</strong></li>
-                    </ul>
-                </div>
-                <votes-counter class="pull-right" contribution="comment"></votes-counter>
-            </div>
-            <div class="row col-md-12 col-sm-12">
-                <div class="col-md-12 col-sm-12 text-comment">
-                    <p class="comment-comment"><a>{{commentReply.text}}</a></p>
-                </div>
-            </div>
+    <ul class="row comments col-md-11 col-sm-11" ng-if="reply.enabled">
+        <li class="row comment col-md-12 col-sm-12 reply" ng-repeat="commentReply in comments | orderBy: 'creation' : true | filter: searchComments track by $index">
+            <appcivist-individual-comment-no-reply
+                    comment="commentReply" assemblyid="assemblyID"
+                    container="comments" containerid="comment.resourceSpaceId"
+                    containerindex="$index">
+            </appcivist-individual-comment-no-reply>
         </li>
     </ul>
 </div>

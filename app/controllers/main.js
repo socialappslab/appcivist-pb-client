@@ -16,7 +16,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.info = localStorageService.get("help");
-
+		$scope.userVotes = localStorageService.get("userVotes");
 		$scope.assembliesLoading = false;
 
 		if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
@@ -38,6 +38,11 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		if ($scope.info === undefined || $scope.info === null) {
 			$scope.info = helpInfo;
 			localStorageService.set("help", $scope.info);
+		}
+
+		if (!$scope.userVotes) {
+			$scope.userVotes = [];
+			localStorageService.set("userVotes", $scope.userVotes);
 		}
 
 		// does scope already has the user and the sessionKey?

@@ -1,0 +1,29 @@
+<div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="image-profile-comment inline">
+            <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/unknown.jpg" alt="" />
+        </div>
+        <h5 class="user-comment inline">{{comment.authors[0].name}}. / </h5>
+        <h5 class="date-comment inline">
+            <time datetime="{{comment.creation}}"/>{{comment.creation | date:"dd MMMM yyyy 'at' HH:mm:ss"}}
+        </h5>
+        <div class="options-comment inline">
+            <ul class="tags" ng-repeat="theme in comment.themes">
+                <li class="tag"><strong>{{theme.title}}</strong></li>
+            </ul>
+        </div>
+        <votes-counter class="pull-right" contribution="comment"></votes-counter>
+    </div>
+    <div class="row col-md-12 col-sm-12">
+        <div class="col-md-12 col-sm-12 text-comment">
+            <p class="comment-comment"><a>{{comment.text}}</a></p>
+            <div class="pull-right">
+                <h4 class="text-info" ng-if="userIsAuthor"
+                    style="display: inline-block; vertical-align: middle; cursor:pointer"
+                    ng-click="delete()">
+                    <strong>Delete </strong>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>

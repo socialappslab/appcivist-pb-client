@@ -304,7 +304,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         contribution: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid',
                 {aid: assemblyId, coid: contributionId},
-                {'update': {method:'PUT'}});
+                {
+                    'update' : {method:'PUT'},
+                    'delete' : {method: 'DELETE'}
+                });
         },
         contributionAttachment: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/attachment',
@@ -420,6 +423,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             oldAtt.showForm = newAtt.showForm;
         },
         copyContributionObject: function (oldC, newC) {
+            if(newC.contributionId) {
+                oldC.contributionId = newC.contributionId;
+            } else {
+                delete oldC.contributionId;
+            }
             oldC.title = newC.title;
             oldC.text = newC.text;
             oldC.type = newC.type;

@@ -20,8 +20,11 @@
 
     <!-- Comments -->
     <ul class="comments">
-        <li class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: orderProperty : orderReverse  | filter: searchComments">
-            <appcivist-individual-comment comment="comment"></appcivist-individual-comment>
+        <li class="row comment col-md-12 col-sm-12" ng-repeat="comment in comments | orderBy: orderProperty : orderReverse  | filter: searchComments track by $index">
+            <appcivist-individual-comment comment="comment" assemblyid="assemblyID"
+                                          container="comments"
+                                          containerid="containerID"
+                                          containerindex="$index"></appcivist-individual-comment>
         </li>
     </ul>
 </div>

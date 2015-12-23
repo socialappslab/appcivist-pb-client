@@ -19,7 +19,9 @@
                         ng-model="newForumPost">
                 </new-forum-post>
                 <div class="row no-margin">
-                    <appcivist-comments comments="wGroup.forumPosts"></appcivist-comments>
+                    <appcivist-comments comments="wGroup.forumPosts"
+                                        assemblyid="assemblyID"
+                                        containerid="wGroup.forumResourceSpaceId"></appcivist-comments>
                 </div>
             </div>
             <div class="col-md-5 col-sm-5 info-lateral">
@@ -58,8 +60,13 @@
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'PROPOSALS'}">
-                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'PROPOSALS'} track by $index">
+                                <contribution contribution="contribution"
+                                              assemblyid="assemblyID"
+                                              container="contributions"
+                                              containerid="wGroup.forumResourceSpaceId"
+                                              containerindex="$index"></contribution>
+
                             </li>
                         </ul>
                     </div>
@@ -70,8 +77,12 @@
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'}">
-                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'} track by $index">
+                                <contribution contribution="contribution"
+                                              assemblyid="assemblyID"
+                                              container="contributions"
+                                              containerid="wGroup.forumResourceSpaceId"
+                                              containerindex="$index"></contribution>
                             </li>
                         </ul>
                     </div>
@@ -81,8 +92,12 @@
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in relatedContributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'}">
-                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                            <li class="contribution" ng-repeat="contribution in relatedContributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'} track by $index">
+                                <contribution contribution="contribution"
+                                              assemblyid="assemblyID"
+                                              container="relatedContributions"
+                                              containerid="contribution.resourceSpaceId"
+                                              containerindex="$index"></contribution>
                             </li>
                         </ul>
                     </div>

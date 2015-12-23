@@ -14,21 +14,26 @@ appCivistApp.controller('NewContributionCtrl',
 		function ($scope, $http, $routeParams, localStorageService, Contributions) {
 			init();
 			function init() {
-				$scope.clearContribution = clearNewContributionObject;
+				$scope.clearContribution = function (newContribution) {
+					clearNewContributionObject(newContribution, Contributions);
+				};
 				$scope.postingContribution = postingContributionFlag;
-				$scope.addAttachment = addAttachmentToContribution;
-			}
 
-			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-				if (!newContribution.type) {
-					newContribution.type = $scope.contributionType;
-				}
-				createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
-			};
+				$scope.clearContribution = function () {
+					clearNewContributionObject($scope.newContribution, Contributions);
+				};
+
+				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+					if (!newContribution.type) {
+						newContribution.type = $scope.contributionType;
+					}
+					createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
+				};
+			}
 		});
 
 appCivistApp.controller('NewContributionModalCtrl',
-		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout,
+		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, component, milestone, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions) {
 			init();
@@ -40,87 +45,37 @@ appCivistApp.controller('NewContributionModalCtrl',
 				$scope.contributions = contributions;
 				$scope.themes = themes;
 				$scope.newContribution = newContribution;
-				$scope.newContribution.themes = $scope.themes;
+				$scope.newContribution.parentThemes = $scope.themes;
 				$scope.newContributionResponse = newContributionResponse;
-				$scope.clearContribution = clearNewContributionObject;
 				$scope.postingContribution = postingContributionFlag;
 				$scope.cType = cType;
 				$scope.newContribution.type = cType;
+				$scope.newAttachment = Contributions.defaultContributionAttachment();
 
-				$scope.newAttachment = {
-					resourceType: "WEBPAGE",
-					url: ""
+				$scope.clearContribution = function () {
+					clearNewContributionObject($scope.newContribution, Contributions);
 				};
 
-				$scope.showNewAttachmentForm = false;
-
-				$scope.showHideNewAttachmentForm = function() {
-					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
+				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+					createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
 				};
 
-				$scope.addNewAttachment = function() {
-					var att = {
-						resourceType : $scope.newAttachment.resourceType,
-						url : $scope.newAttachment.url
-
-					};
-					$scope.newContribution.attachments.unshift(att);
-					$scope.newAttachment = {
-						resourceType:"WEBPAGE",
-						url:""
-					};
-					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
+				$scope.postContributionFromModal = function () {
+					createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
+							$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
 				};
 
-				$scope.uploadFiles = function(file, errFiles) {
-					$scope.f = file;
-					$scope.errFile = errFiles && errFiles[0];
-					if (file) {
-
-						// TODO: change resource type of attachment depending on the content-type of file
-
-						file.upload = Upload.upload({
-							url: FileUploader.uploadEndpoint(),
-							data: {file: file}
-						});
-
-						file.upload.then(function (response) {
-							$timeout(function () {
-								file.result = response.data;
-								$scope.newAttachment.url = response.data.url;
-							});
-						}, function (response) {
-							if (response.status > 0)
-								$scope.errorMsg = response.status + ': ' + response.data;
-						}, function (evt) {
-							file.progress = Math.min(100, parseInt(100.0 *
-									evt.loaded / evt.total));
-							console.log('progress: ' + file.progress + '% ');
-						});
-					}
+				$scope.cancel = function () {
+					$scope.newContribution = Contributions.defaultNewContribution();
+					$uibModalInstance.dismiss('cancel');
 				};
-
-				$scope.addAttachment = $scope.addNewAttachment;
 			}
-
-			$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-				createNewContribution(newContribution, targetSpaceId, targetSpace, {}, undefined, Contributions);
-			};
-
-			$scope.postContributionFromModal = function () {
-				createNewContribution($scope.newContribution, $scope.component.resourceSpaceId,
-						$scope.contributions, $scope.newContributionResponse, $uibModalInstance, Contributions);
-			};
-
-			$scope.cancel = function () {
-				$scope.newContribution = Contributions.defaultNewContribution();
-				$uibModalInstance.dismiss('cancel');
-			};
 		});
 
 appCivistApp.controller('ContributionModalCtrl',
 		function ($scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
-				  contribution, assemblyID, campaignID, componentID, milestoneID, localStorageService, Contributions) {
+				  contribution, assemblyID, campaignID, componentID, milestoneID, localStorageService, Contributions,
+				  Etherpad) {
 			init();
 			function init() {
 				$scope.contribution = contribution;
@@ -128,52 +83,10 @@ appCivistApp.controller('ContributionModalCtrl',
 				$scope.campaignID = campaignID;
 				$scope.componentID = componentID;
 				$scope.milestoneID = milestoneID;
-				$scope.newAttachment = {
-					resourceType: "WEBPAGE",
-					url: ""
-				};
+				$scope.newAttachment = Contributions.defaultContributionAttachment();
 
-				$scope.showNewAttachmentForm = false;
-
-				$scope.showHideNewAttachmentForm = function() {
-					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
-				};
-
-				$scope.addNewAttachment = function() {
-					$scope.newContribution.attachments.unshift($scope.newAttachment);
-					$scope.newAttachment = {
-						resourceType:"WEBPAGE",
-						url:""
-					};
-					$scope.showNewAttachmentForm = !$scope.showNewAttachmentForm;
-				};
-
-				$scope.uploadFiles = function(file, errFiles) {
-					$scope.f = file;
-					$scope.errFile = errFiles && errFiles[0];
-					if (file) {
-
-						// TODO: change resource type of attachment depending on the content-type of file
-
-						file.upload = Upload.upload({
-							url: FileUploader.uploadEndpoint(),
-							data: {file: file}
-						});
-
-						file.upload.then(function (response) {
-							$timeout(function () {
-								file.result = response.data;
-								$scope.newAttachment.url = response.data.url;
-							});
-						}, function (response) {
-							if (response.status > 0)
-								$scope.errorMsg = response.status + ': ' + response.data;
-						}, function (evt) {
-							file.progress = Math.min(100, parseInt(100.0 *
-									evt.loaded / evt.total));
-							console.log('progress: ' + file.progress + '% ');
-						});
-					}
+				$scope.clearContribution = function () {
+					clearNewContributionObject($scope.newContribution, Contributions);
 				};
 
 				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
@@ -189,11 +102,7 @@ appCivistApp.controller('ContributionModalCtrl',
 					$uibModalInstance.dismiss('cancel');
 				};
 
-				$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
-					var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
-					console.log("Contribution Read Only Etherpad URL: "+url);
-					return url;
-				};
+				$scope.getEtherpadReadOnlyUrl = Etherpad.getEtherpadReadOnlyUrl;
 
 				$scope.openContributionPage = function(cID)  {
 					$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
@@ -203,11 +112,108 @@ appCivistApp.controller('ContributionModalCtrl',
 		});
 
 
-appCivistApp.controller('contributionCtrl', function($scope, $http, $routeParams, localStorageService) {
-	$scope.$root.$on('contribution:selected', function(event, data){
-		$scope.contribution = data;
-	});
+appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams, localStorageService,
+													 FileUploader, Contributions) {
+
+	init();
+	verifyAuthorship();
+
+	function init() {
+		if(!$scope.newContribution) {
+			$scope.newContribution = Contributions.defaultNewContribution();
+		}
+		if(!$scope.contribution) {
+			$scope.contribution = $scope.newContribution;
+		}
+		if(!$scope.newAttachment) {
+			$scope.newAttachment = Contributions.defaultContributionAttachment();
+		}
+		if(!$scope.attachments) {
+			$scope.attachments =$scope.newContribution.attachments;
+		}
+
+		console.log("The assemblyId available in the Attachments Directive: "+$scope.assemblyID);
+		$scope.contribution.assemblyId = $scope.assemblyID;
+
+		$scope.clearContribution = function () {
+			clearNewContributionObject($scope.newContribution, Contributions);
+		};
+
+		$scope.addNewAttachment = function() {
+			addNewAttachmentToContribution($scope.contribution, $scope.newAttachment, Contributions);
+			$scope.f = {};
+		};
+
+		$scope.cancelNewAttachment = function () {
+			clearNewAttachment($scope.newAttachment, Contributions);
+		};
+
+		$scope.uploadFiles = function(file, errFiles) {
+			$scope.f = file;
+			$scope.errFile = errFiles && errFiles[0];
+			FileUploader.uploadFileAndAddToResource(file, $scope.newAttachment);
+		};
+
+		$scope.$root.$on('contribution:selected', function (event, data) {
+			$scope.contribution = data;
+		});
+	}
+
+	function verifyAuthorship() {
+		if ($scope.contribution.contributionId) {
+			var user = localStorageService.get("user");
+			if($scope.contribution.type === "PROPOSAL") {
+				var group = $scope.contribution.responsibleGroups[0];
+				var groupAuthorshipRes = Contributions.verifyGroupAuthorship(user,$scope.contribution,group);
+				groupAuthorshipRes.$promise.then(function(response){
+					if (response.responseStatus === "OK") {
+						$scope.userIsAuthor  = true;
+					}
+				});
+
+			} else {
+				$scope.userIsAuthor = Contributions.verifyAuthorship(user,$scope.contribution);
+			}
+		} else {
+			$scope.userIsAuthor = true;
+		}
+	}
 });
+
+appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,
+													 FileUploader, Contributions) {
+
+	init();
+
+	function init() {
+		if(!$scope.newContribution) {
+			$scope.newContribution = Contributions.defaultNewContribution();
+		}
+		if(!$scope.newAttachment) {
+			$scope.newAttachment = Contributions.defaultContributionAttachment();
+		}
+
+		$scope.clearContribution = function (newContribution) {
+			clearNewContributionObject(newContribution, Contributions);
+		};
+
+		$scope.addNewAttachment = function(newContribution, newAttachment) {
+			addNewAttachmentToContribution(newContribution, newAttachment, Contributions);
+			$scope.f = {};
+		};
+
+		$scope.cancelNewAttachment = function (newAttachment) {
+			clearNewAttachment(newAttachment, Contributions);
+		};
+
+		$scope.uploadFiles = function(file, errFiles) {
+			$scope.f = file;
+			$scope.errFile = errFiles && errFiles[0];
+			FileUploader.uploadFileAndAddToResource(file, $scope.newAttachment);
+		};
+	}
+});
+
 
 appCivistApp.controller('ContributionReadEditCtrl', function($scope, $http, $routeParams, localStorageService,
 															 Contributions, Campaigns, Assemblies, Etherpad) {
@@ -574,12 +580,15 @@ function createNewContribution(newContribution, targetSpaceId, targetSpace, resp
 		newContribution.title = newContribution.text.substring(0, trimlength);
 	}
 
+	// TODO: fix this, targetSpace must be part of an object in order to be initialized
 	// If the target space is undefined, it means it was empty an this contribution is the first
 	if (!targetSpace) {
 		targetSpace = [];
 	}
 
-	removeNonSelectedThemes(newContribution.themes);
+	newContribution.existingThemes = [];
+	newContribution.themes = [];
+	addSelectedThemes(newContribution.parentThemes, newContribution.existingThemes);
 
 	var newContributionRes = Contributions.contributionInResourceSpace(targetSpaceId).save(newContribution);
 	newContributionRes.$promise.then(
@@ -603,11 +612,9 @@ function createNewContribution(newContribution, targetSpaceId, targetSpace, resp
 }
 
 function clearNewContributionObject(newContribution, Contributions){
-	console.log("Cleaning contribution");
 	var cType = newContribution.type;
-	newContribution = Contributions.defaultNewContribution();
+	Contributions.copyContributionObject(newContribution,Contributions.defaultNewContribution());
 	newContribution.type = cType;
-	newContribution.text = "";
 }
 
 function addAttachmentToContribution(newContribution, attachment) {
@@ -616,12 +623,48 @@ function addAttachmentToContribution(newContribution, attachment) {
 	newContribution.attachments.push(attachment);
 }
 
-function removeNonSelectedThemes(themes) {
-	if(themes) {
-		for (var i = 0; i < themes.length; i+=1) {
-		if(!themes[i].selected) {
-			themes.splice(i,1);
+function addSelectedThemes(parentThemes, contributionThemes) {
+	if(parentThemes) {
+		for (var i = 0; i < parentThemes.length; i+=1) {
+			if(parentThemes[i].selected) {
+				contributionThemes.push(parentThemes[i])
+			}
 		}
 	}
-	}
 }
+
+function addNewAttachmentToContribution(contribution, newAttachment, Contributions) {
+	var att = Contributions.newAttachmentObject(newAttachment);
+	if(!contribution.attachments) {
+		contribution.attachments = [];
+	}
+
+	// If contribution has a contributionId, then we must UPDATE The contribution
+	if (contribution.contributionId) {
+		var assemblyId = contribution.assemblyId;
+		delete contribution.assemblyId;
+		delete contribution.firstAuthor;
+		delete contribution.firstAuthorName;
+		var updateRes = Contributions.contributionAttachment(assemblyId, contribution.contributionId).save(newAttachment);
+		updateRes.$promise.then(
+				function (response) {
+					att.resourceId=response.resourceId;
+					contribution.assemblyId = assemblyId;
+					contribution.attachments.unshift(att);
+					Contributions.copyAttachmentObject(newAttachment, Contributions.defaultContributionAttachment());
+				},
+				function(error) {
+					console.log("There was an error with the Update");
+					contribution.assemblyId = assemblyId;
+					Contributions.copyAttachmentObject(newAttachment, Contributions.defaultContributionAttachment());
+				}
+		);
+	} else {
+		contribution.attachments.unshift(att);
+		Contributions.copyAttachmentObject(newAttachment, Contributions.defaultContributionAttachment());
+	}
+};
+
+function clearNewAttachment(newAttachment, Contributions) {
+	Contributions.copyAttachmentObject(newAttachment, Contributions.defaultContributionAttachment());
+};

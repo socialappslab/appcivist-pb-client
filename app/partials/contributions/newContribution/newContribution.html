@@ -36,10 +36,10 @@
         <div class="row form-horizontal form-group">
             <label for="selectThemeNewContribution" class="col-sm-2 col-md-2 control-label">Select theme(s)</label>
             <div id="selectThemeNewContribution" class="col-md-10 col-sm-10 optionsBox">
-                <div class="checkbox" ng-repeat="t in newContribution.themes track by $index">
+                <div class="checkbox" ng-repeat="t in themes track by $index">
                     <label>
                         <input type="checkbox"
-                               ng-model="newContribution.themes[$index].selected"/>
+                               ng-model="themes[$index].selected"/>
                         <p>{{t.title}}</p>
                     </label>
                 </div>
@@ -69,37 +69,34 @@
     <!--</div>-->
     <!--</div>-->
     <div class="col-md-12 col-sm-12 box settingsBox infoBox">
-        <div class="row col-md-12 col-sm-12">
-            <h4><strong>Attachments</strong></h4>
-        </div>
-        <br>
-        <div class="col-md-12 col-sm-12 alert-info"
-             ng-if="newContribution.attachments === undefined
-                        || newContribution.attachments.length === 0">
-            No attachments added yet
-        </div>
+        <!--<div class="row col-md-12 col-sm-12">-->
+            <!--<h4><strong>Attachments</strong></h4>-->
+        <!--</div>-->
+        <!--<br>-->
+        <!--<div class="col-md-12 col-sm-12 alert-info"-->
+             <!--ng-if="newContribution.attachments === undefined-->
+                        <!--|| newContribution.attachments.length === 0">-->
+            <!--No attachments added yet-->
+        <!--</div>-->
 
-        <ul class="row list-item assembliesList">
-            <li ng-repeat="att in newContribution.attachments">
-                <span>{{att.name}}: ({{att.url}})</span>
-            </li>
-        </ul>
-        <div class="pull-right">
-            <div id="attachmentForm" ng-show="showNewAttachmentForm">
-                <input type="text" ng-model="newAttachment.url" placeholder="Add a public URL or upload a file"/>
-                <button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-                        accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
-                    Upload File</button>
-                <button ng-click="showHideNewAttachmentForm()">Cancel</button>
-            </div>
-            <button ng-show="!showNewAttachmentForm" class="btn btn-success" ng-click="showHideNewAttachmentForm()"><h5><strong>New Attachment</strong></h5></button>
-            <button ng-show="showNewAttachmentForm" class="btn btn-success" ng-click="addNewAttachment()"><h5><strong>Add attachment</strong></h5></button>
-        </div>
-        <div id="attachmentProgress" class="col-md-12 progress-section">
-            {{f.name}} {{f.url}} {{f.$error}} {{f.$errorParam}}
-            <span class="progress-line-container" ng-show="f.progress >= 0">
-                <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
-            </span>
-        </div>
+        <attachments
+                attachments="newContribution.attachments"
+                contribution="newContribution"
+                newattach="newAttachment"
+                assemblyid="assemblyID"></attachments>
+
+        <!--<ul class="row list-item assembliesList">-->
+            <!--<li ng-repeat="att in newContribution.attachments">-->
+                <!--<span ng-if="att.resourceType!='PICTURE'">-->
+                    <!--<a ng-href="{{att.url}}">{{(att.name ? att.name : att.url) | limitTo: 25}}{{(attachment.url.length > 25) ? '...' : ''}}</a>-->
+                <!--</span>-->
+                <!--<span ng-if="att.resourceType==='PICTURE'">-->
+                    <!--<img src="{{att.url}}" height="25" width="25"> <a ng-href="{{att.url}}">{{(att.name ? att.name : att.url) | limitTo: 25}}{{(attachment.url.length > 25) ? '...' : ''}}</a>-->
+                <!--</span>-->
+            <!--</li>-->
+        <!--</ul>-->
+        <!--<div class="pull-right">-->
+            <!--<ng-include src="'app/partials/contributions/contribution/add-attachment.html'"></ng-include>-->
+        <!--</div>-->
     </div>
 </div>

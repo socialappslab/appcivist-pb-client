@@ -77,7 +77,6 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
     // Setup CORS requests
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common["X-Requested-With"];
-
     localStorageServiceProvider
         .setPrefix('appcivist')
         .setStorageType('sessionStorage')

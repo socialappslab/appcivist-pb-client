@@ -341,9 +341,30 @@ appCivistApp.directive('attachments', function () {
         replace: true,
         templateUrl: "/app/partials/contributions/contribution/attachments.html",
         scope: {
-            resources: "=resources"
+            attachments: "=attachments",
+            newAttachment: "=newattach",
+            contribution: "=contribution",
+            showTitle: "=showtitle",
+            assemblyID: "=assemblyid"
         },
-        controller: "contributionCtrl"
+        controller: "ContributionCtrl"
+    }
+});
+
+
+appCivistApp.directive('addAttachment', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/contributions/contribution/add-attachment.html",
+        scope: {
+            attachments: "=attachments",
+            newAttachment: "=newattach",
+            contribution: "=contribution",
+            showTitle: "=showtitle",
+            assemblyID: "=assemblyid"
+        },
+        controller: "ContributionCtrl"
     }
 });
 

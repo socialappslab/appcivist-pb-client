@@ -298,18 +298,23 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
 appCivistApp.factory('Contributions', function ($resource, localStorageService, WorkingGroups) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
-        contributions: function(assemblyId) {
+        contributions: function (assemblyId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/'+assemblyId+'/contribution?space=forum');
         },
-        contribution: function(assemblyId, contributionId) {
+        contribution: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid',
+                {aid: assemblyId, coid: contributionId},
+                {'update': {method:'PUT'}});
+        },
+        contributionAttachment: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/attachment',
                 {aid: assemblyId, coid: contributionId});
         },
-        groupContribution: function(assemblyId, groupId) {
+        groupContribution: function (assemblyId, groupId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution',
                 {aid: assemblyId, gid: groupId});
         },
-        verifyAuthorship: function(user, c) {
+        verifyAuthorship: function (user, c) {
             if(user!=null && user != undefined && c!=null && c!=undefined) {
                 var authorList = c.authors;
                 // Check if author is in authorList (if author list is defined)
@@ -322,13 +327,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 }
             }
         },
-        verifyGroupAuthorship: function(user, c, group) {
+        verifyGroupAuthorship: function (user, c, group) {
             var assemblyId = group.assemblies[0];
             var groupId = group.groupId;
             var status = 'ACCEPTED';
             return WorkingGroups.verifyMembership(assemblyId, groupId, user.userId);
         },
-        defaultNewContribution: function() {
+        defaultNewContribution: function () {
             var newC = {
                 "title" : "",
                 "text" : "",
@@ -340,17 +345,19 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 },
                 "themesHash" : [],
                 "themes": [],
+                "existingThemes" : [],
+                "parentThemes" : [],
                 "hashtags": [],
                 "attachments": [],
                 "associatedMilestones": []
             };
             return newC;
         },
-        contributionInResourceSpace: function(spaceId) {
+        contributionInResourceSpace: function (spaceId) {
             return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution',
                 {sid: spaceId});
         },
-        contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
+        contributionsInCampaignComponent: function (assemblyID, campaignID, componentID) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
                 {
                     aid: assemblyID,
@@ -358,11 +365,70 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     ciid: componentID
                 })
         },
-        updateStats: function(statsId) {
+        updateStats: function (statsId) {
             return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid',
                 {stid: statsId},
                 {'update': {method:'PUT'}}
             );
+        },
+        defaultContributionAttachment: function () {
+            var att = {
+                name: "",
+                resourceType: "",
+                url: "",
+                showForm: false
+            };
+            return att;
+        },
+        newAttachmentObject: function (newAttachment) {
+            if(!newAttachment.resourceType) {
+                newAttachment.resourceType = "WEBPAGE";
+                if (newAttachment.url.endsWith(".jpg")
+                    || newAttachment.url.toLowerCase().endsWith(".png")
+                    || newAttachment.url.toLowerCase().endsWith(".jpeg")
+                    || newAttachment.url.toLowerCase().endsWith(".gif")
+                    || newAttachment.url.toLowerCase().endsWith(".tiff")) {
+                    newAttachment.resourceType = "PICTURE";
+                } else if (newAttachment.url.toLowerCase().endsWith(".pdf")
+                    || newAttachment.url.toLowerCase().endsWith(".doc")
+                    || newAttachment.url.toLowerCase().endsWith(".docx")
+                    || newAttachment.url.toLowerCase().endsWith(".xsl")
+                    || newAttachment.url.toLowerCase().endsWith(".xslx")) {
+                    newAttachment.resourceType = "FILE";
+                } else if (newAttachment.url.toLowerCase().endsWith(".mp3")
+                    || newAttachment.url.toLowerCase().endsWith(".ogg")
+                    || newAttachment.url.toLowerCase().endsWith(".acc")) {
+                    newAttachment.resourceType = "AUDIO";
+                } else if (newAttachment.url.toLowerCase().endsWith(".mp4")
+                    || newAttachment.url.toLowerCase().endsWith(".mov")
+                    || newAttachment.url.toLowerCase().endsWith(".avi")) {
+                    newAttachment.resourceType = "VIDEO";
+                } else {
+                    newAttachment.resourceType = "WEBPAGE";
+                }
+            }
+            return {
+                name : newAttachment.name,
+                url : newAttachment.url,
+                resourceType : newAttachment.resourceType
+            }
+        },
+        copyAttachmentObject: function (oldAtt, newAtt) {
+            oldAtt.name = newAtt.name;
+            oldAtt.url = newAtt.url;
+            oldAtt.resourceType = newAtt.resourceType;
+            oldAtt.showForm = newAtt.showForm;
+        },
+        copyContributionObject: function (oldC, newC) {
+            oldC.title = newC.title;
+            oldC.text = newC.text;
+            oldC.type = newC.type;
+            oldC.location = newC.location
+            oldC.themesHash = newC.themesHash;
+            oldC.themes = newC.themes;
+            oldC.hashtags = newC.hashtags;
+            oldC.attachments = newC.attachments;
+            oldC.associatedMilestones = newC.associatedMilestones;
         }
     };
 });
@@ -410,6 +476,9 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
                     aid: assemblyId,
                     cid: contributionId
                 });
+        },
+        getEtherpadReadOnlyUrl : function (readOnlyPadId) {
+            return localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
         }
     };
 });
@@ -858,7 +927,7 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
     };
 });
 
-appCivistApp.factory('FileUploader', function ($resource, localStorageService) {
+appCivistApp.factory('FileUploader', function ($resource, localStorageService, Upload, $timeout) {
     return {
         upload: function() {
             return $resource(getServerBaseUrl(localStorageService) + '/upload');
@@ -868,6 +937,40 @@ appCivistApp.factory('FileUploader', function ($resource, localStorageService) {
         },
         uploadEndpoint: function() {
             return getServerBaseUrl(localStorageService) + '/upload';
+        },
+        uploadFileAndAddToResource: function(file, resource) {
+            if (file) {
+                var type = "FILE";
+                if (file.type.startsWith("image")) {
+                    type = "PICTURE"
+                } else if (file.type.startsWith("audio")) {
+                    type = "AUDIO"
+                } else if (file.type.startsWith("video")) {
+                    type = "VIDEO"
+                }
+
+                resource.resourceType = type;
+                file.upload = Upload.upload({
+                    url: getServerBaseUrl(localStorageService) + '/upload',
+                    data: {file: file}
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        resource.name = response.data.name;
+                        resource.url = response.data.url;
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        file.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    file.progress = Math.min(100, parseInt(100.0 *
+                        evt.loaded / evt.total));
+                    console.log('progress: ' + file.progress + '% ');
+                });
+            }
         }
+
     };
 });

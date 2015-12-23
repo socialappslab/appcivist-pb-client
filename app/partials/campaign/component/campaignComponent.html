@@ -1,14 +1,17 @@
 <div class="view campaign-pmaking">
     <div class="col-md-12 col-sm-12">
         <campaign-header
-            assembly="assembly"
-            campaign="campaign"
-            component="component">
+                assembly="assembly"
+                campaign="campaign"
+                component="component">
         </campaign-header>
         <br/>
+
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
             <ul id="timeline" class="row timeline">
-                <li ng-class="component.componentInstanceId === componentID ? 'active selected' : 'active'" ng-repeat="component in components | filter: (component.timeline===1)" ng-class="component.componentInstanceId === componentID ? 'selected active' : ''">
+                <li ng-class="component.componentInstanceId === componentID ? 'active selected' : 'active'"
+                    ng-repeat="component in components | filter: (component.timeline===1)"
+                    ng-class="component.componentInstanceId === componentID ? 'selected active' : ''">
                     <h4>
                         <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentInstanceId}}">
                             <strong>
@@ -34,6 +37,7 @@
                                     <span ng-if="m.componentInstanceMilestoneId === milestoneID && !milestoneStarted && mDaysToDue === 1">(starts in {{mDaysToDue}} day)</span>
                                 </a>
                             </h4>
+
                             <div class="progressline-phase-line"></div>
                         </li>
                     </ul>
@@ -44,14 +48,17 @@
                         <ul class="counter">
                             <li class="counter-section" ng-if="daysToDue > 1">
                                 <h5 class="text-muted"><strong>Days</strong></h5>
+
                                 <div>{{daysToDue}}</div>
                             </li>
                             <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue > 1">
                                 <h5 class="text-muted"><strong>Hours</strong></h5>
+
                                 <div>{{hoursToDue}}</div>
                             </li>
                             <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue === 1">
                                 <h5 class="text-muted"><strong>Minutes</strong></h5>
+
                                 <div>{{minutesToDue}}</div>
                             </li>
                         </ul>
@@ -84,10 +91,12 @@
                 </div>
                 <div class="row col-md-12 col-sm-12">
                     <div class="col-md-7 col-sm-7 no-padding">
-                        <input type="text" class="form-control" placeholder="Search existing contributions..." ng-model="campaignContributionFilter">
+                        <input type="text" class="form-control" placeholder="Search existing contributions..."
+                               ng-model="campaignContributionFilter">
                     </div>
                     <div class="col-md-3 col-sm-3 dropdown">
-                        <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
+                                id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             Order by:<span class="caret"></span>
                         </button>
                         <ul class="ol-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -104,16 +113,24 @@
             <div class="col-md-3 col-sm-3">
                 <div class="row">
                     <span ng-if="(milestone.title | uppercase) === 'BRAINSTORMING'">
-                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','BRAINSTORMING')">Contribute</button>
+                        <button class="btn btn-success col-md-12"
+                                ng-click="openNewContributionModal('lg','BRAINSTORMING')">Contribute
+                        </button>
                     </span>
                     <span ng-if="(milestone.title | uppercase) === 'WORKING GROUP FORMATION' || (milestone.title | uppercase) === 'WORKING GROUPS FORMATION'">
-                        <a ng-href="#/campaign/{{campaignID}}/wgroup/create"><button class="btn btn-success col-md-12">Create New Group</button></a>
+                        <a ng-href="#/campaign/{{campaignID}}/wgroup/create">
+                            <button class="btn btn-success col-md-12">Create New Group</button>
+                        </a>
                     </span>
                     <span ng-if="(milestone.title | uppercase) === 'PROPOSAL DRAFTING' || (milestone.title | uppercase) === 'PROPOSAL EDITING'">
-                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','PROPOSAL')">New Proposal Draft</button>
+                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','PROPOSAL')">
+                            New Proposal Draft
+                        </button>
                     </span>
                     <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD' || (milestone.title | uppercase) === 'VOTING ON PROPOSALS' || (milestone.title | uppercase) === 'VOTING PERIOD ENDING'">
-                        <button class="btn btn-success col-md-12" ng-href="#/ballot/{{component.ballots[0].votingBallotId}}">Open Voting Ballot</button>
+                        <button class="btn btn-success col-md-12"
+                                ng-href="#/ballot/{{component.ballots[0].votingBallotId}}">Open Voting Ballot
+                        </button>
                     </span>
                 </div>
             </div>

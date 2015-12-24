@@ -131,7 +131,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             templateUrl: 'app/partials/forum/forum.html'
         })
         // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
-        .when('/campaign/:aid/wgroup/create',{
+        .when('/assembly/:aid/campaign/:cid/wgroup/create',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })

@@ -35,7 +35,7 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly', {query: q});
         },
         assemblyMembers: function(assemblyId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ACCEPTED', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', {aid: assemblyId});
         },
         linkedAssemblies: function(assemblyId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/linked', {aid: assemblyId});
@@ -457,6 +457,13 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                     aid: assemblyId,
                     gid: groupId,
                     status: stat
+                });
+        },
+        workingGroupProposals: function(assemblyId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals',
+                {
+                    aid: assemblyId,
+                    gid: groupId
                 });
         },
         verifyMembership: function(assemblyId, groupId, userId) {

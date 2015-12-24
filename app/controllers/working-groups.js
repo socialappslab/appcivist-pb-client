@@ -8,7 +8,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 });
 
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService,
-                                                     localStorageService, Contributions, WorkingGroups) {
+                                                     localStorageService, Contributions, WorkingGroups, Assemblies) {
     init();
     function init() {
         $scope.assemblyID = $routeParams.aid;
@@ -18,8 +18,10 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.errors = [];
         $scope.wGroup = {};
         $scope.wGroupMembers = [];
+        $scope.proposals = [];
 
         initializeWorkingGroup();
+        initializeAssemblyCampaigns();
 
         //angular.forEach(localStorageService.get('workingGroups'), function(wGroup) {
         //    if(wGroup.groupId == $routeParams.wid) {
@@ -49,6 +51,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 $scope.wGroup = data;
                 $scope.$root.stopSpinner();
                 getWorkingGroupMembers($scope.assemblyID, $scope.workingGroupID);
+                getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
             },
             function (error) {
                 $scope.$root.stopSpinner();
@@ -57,12 +60,38 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         )
     }
 
+    function initializeAssemblyCampaigns() {
+        var res = Assemblies.assembly($scope.assemblyID).get();
+        res.$promise.then(
+            function (data) {
+                $scope.assembly = data;
+                $scope.assemblyCampaigns = data.campaigns;
+            },
+            function (error) {
+                $scope.errors.unshift(error);
+            }
+        )
+    }
+
+
     function getWorkingGroupMembers() {
         var res = WorkingGroups.workingGroupMembers($scope.assemblyID, $scope.workingGroupID,
-            $scope.wGroup.supportedMembership).get();
+            "ALL").query();
         res.$promise.then(
             function (data) {
                 $scope.wGroupMembers = data;
+            },
+            function (error) {
+                $scope.errors.unshift(error);
+            }
+        );
+    }
+
+    function getWorkingGroupProposals() {
+        var res = WorkingGroups.workingGroupProposals($scope.assemblyID, $scope.workingGroupID).query();
+        res.$promise.then(
+            function (data) {
+                $scope.proposals = data;
             },
             function (error) {
                 $scope.errors.unshift(error);

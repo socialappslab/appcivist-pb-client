@@ -78,8 +78,8 @@
                     <div class="box descriptionBox">
                         <p>If you get inspired by this discussion, add a new contribution.</p>
                     </div>
-                    <button class="btn btn-success btn-half-size" ng-if="userIsAuthor" ng-click="openContributionPage(contribution.contributionId)">Edit</button>
-                    <button class="btn btn-success btn-half-size" ng-if="!userIsAuthor" ng-click="openContributionPage(contribution.contributionId)">Open</button>
+                    <button class="btn btn-success btn-half-size" ng-if="userIsAuthor" ng-click="openContributionPage(contribution.contributionId, true)">Edit</button>
+                    <button class="btn btn-success btn-half-size" ng-if="!userIsAuthor" ng-click="openContributionPage(contribution.contributionId, false)">Open</button>
                 </div>
             </div>
 

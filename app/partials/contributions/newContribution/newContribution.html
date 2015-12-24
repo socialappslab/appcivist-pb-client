@@ -10,19 +10,19 @@
         <div class="row form-horizontal form-group">
             <label for="inputTextNewContribution" class="col-sm-2 col-md-2 control-label">Text</label>
             <div class="col-sm-10 col-md-10">
-                <textarea class="form-control" id="inputTextNewContribution"
+                <textarea class="form-control" rows="5" id="inputTextNewContribution"
                           maxlength="400" placeholder="Max. 250 words"
                           ng-model="newContribution.text"/>
             </div>
         </div>
-        <div class="row form-horizontal form-group">
-            <label for="inputKeywordsNewContribution" class="col-sm-2 col-md-2 control-label">Keywords</label>
-            <div class="col-sm-10 col-md-10">
-                <input class="form-control" id="inputKeywordsNewContribution"
-                       placeholder=""
-                       ng-model="newContribution.keywords">
-            </div>
-        </div>
+        <!--<div class="row form-horizontal form-group">-->
+            <!--<label for="inputKeywordsNewContribution" class="col-sm-2 col-md-2 control-label">Keywords</label>-->
+            <!--<div class="col-sm-10 col-md-10">-->
+                <!--<input class="form-control" id="inputKeywordsNewContribution"-->
+                       <!--placeholder=""-->
+                       <!--ng-model="newContribution.keywords">-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="row form-horizontal form-group">
             <label for="inputLocationNewContribution" class="col-sm-2 col-md-2 control-label">Location</label>
 
@@ -69,34 +69,10 @@
     <!--</div>-->
     <!--</div>-->
     <div class="col-md-12 col-sm-12 box settingsBox infoBox">
-        <!--<div class="row col-md-12 col-sm-12">-->
-            <!--<h4><strong>Attachments</strong></h4>-->
-        <!--</div>-->
-        <!--<br>-->
-        <!--<div class="col-md-12 col-sm-12 alert-info"-->
-             <!--ng-if="newContribution.attachments === undefined-->
-                        <!--|| newContribution.attachments.length === 0">-->
-            <!--No attachments added yet-->
-        <!--</div>-->
-
         <attachments
                 attachments="newContribution.attachments"
                 contribution="newContribution"
                 newattach="newAttachment"
                 assemblyid="assemblyID"></attachments>
-
-        <!--<ul class="row list-item assembliesList">-->
-            <!--<li ng-repeat="att in newContribution.attachments">-->
-                <!--<span ng-if="att.resourceType!='PICTURE'">-->
-                    <!--<a ng-href="{{att.url}}">{{(att.name ? att.name : att.url) | limitTo: 25}}{{(attachment.url.length > 25) ? '...' : ''}}</a>-->
-                <!--</span>-->
-                <!--<span ng-if="att.resourceType==='PICTURE'">-->
-                    <!--<img src="{{att.url}}" height="25" width="25"> <a ng-href="{{att.url}}">{{(att.name ? att.name : att.url) | limitTo: 25}}{{(attachment.url.length > 25) ? '...' : ''}}</a>-->
-                <!--</span>-->
-            <!--</li>-->
-        <!--</ul>-->
-        <!--<div class="pull-right">-->
-            <!--<ng-include src="'app/partials/contributions/contribution/add-attachment.html'"></ng-include>-->
-        <!--</div>-->
     </div>
 </div>

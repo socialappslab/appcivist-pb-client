@@ -130,19 +130,6 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/forum/forum.html'
         })
-        // TODO Check the following 3
-        .when('/campaign/:aid/pmaking/wgroups',{
-            controller: 'CampaignComponentCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
-        })
-        .when('/campaign/:aid/pmaking/wgroups/new',{
-            controller: 'CampaignComponentCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/wGroups/campaignWorkingGroups.html'
-        })
-        .when('/campaign/:aid/pmaking/wgroups/forum',{
-            controller: 'CampaignComponentCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
-        })
         // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
         .when('/campaign/:aid/wgroup/create',{
             controller: 'CampaignComponentCtrl',
@@ -160,48 +147,21 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         })
-        .when('/voting/:uuid/ballotlanding',{
-            controller: 'VotingLandingCtrl',
-            templateUrl: 'app/partials/voting/landing/votingBallotLanding.html'
-        })
-        .when('/voting/:uuid/rangevoting',{
-            controller: 'RangeVotingCtrl',
-            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
-        })
-        .when('/voting/:uuid/rangeresult',{
-            controller: 'RangeResultCtrl',
-            templateUrl: 'app/partials/voting/result/RangeResult.html'
-        })
-        .when('/voting/:uuid/registration',{
-            controller: 'RegistrationForm',
-            templateUrl: 'app/partials/voting/RegistrationForm.html'
-        })
-        //Define a route that has a route parameter in it (:customerID)
-        //.when('/assembly/:assemblyID/campaign/:campaignId',
-        //{
-        //  controller: 'AssemblyController',
-        //  templateUrl: '/app/partials/assemblyCampaignView.html'
-        //})
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
-            controller: 'ContributionReadEditCtrl',
+            controller: 'ContributionPageCtrl',
             templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
         })
         .when('/assembly/:aid/group/:wid',{
             controller: 'WorkingGroupCtrl',
             templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
         })
-        // TODO: remove the following
-        .when('/campaign/:aid/temp',{
-            controller: 'CampaignCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingDrafts.html'
-        })
-        // TODO: finalize voting UIs
+        // TODO: finalize voting UIs s
         .when('/ballot/:uuid/summary',{
-            controller: 'RangeSummaryCtrl',
+            controller: 'VotingSummaryCtrl',
             templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
         })
         .when('/ballot/:uuid/result',{
-            controller: 'RangeResultCtrl',
+            controller: 'VotingResultCtrl',
             templateUrl: 'app/partials/voting/result/RangeResult.html'
         })
         .when('/ballot/:uuid/landing',{
@@ -209,16 +169,12 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             templateUrl: 'app/partials/voting/landing/VotingBallotLanding.html'
         })
         .when('/ballot/:uuid/vote',{
-            controller: 'RangeVotingCtrl',
+            controller: 'VotingCtrl',
             templateUrl: 'app/partials/voting/vote/RangeVoting.html'
         })
         .when('/ballot/:uuid/register',{
             controller: 'RegistrationForm',
             templateUrl: 'app/partials/voting/RegistrationForm.html'
-        })
-        .when('/campaign/:aid/temp3',{
-            controller: 'RangeResultCtrl',
-            templateUrl: 'app/partials/voting/result/RangeResult.html'
         })
         .otherwise({
             redirectTo : '/'

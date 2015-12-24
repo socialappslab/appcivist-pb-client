@@ -565,8 +565,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			return url;
 		};
 
-		$scope.openContributionPage = function(cID)  {
-			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
+		$scope.openContributionPage = function(cID, edit)  {
+			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID+"?edit="+edit);
 		};
 
 		$scope.openNewContributionModal = function(size, cType)  {

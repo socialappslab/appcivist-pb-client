@@ -347,6 +347,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     "state" : ""
                 },
                 "themesHash" : [],
+                "workingGroupAuthors" : [],
                 "themes": [],
                 "existingThemes" : [],
                 "parentThemes" : [],

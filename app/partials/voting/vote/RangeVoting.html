@@ -64,7 +64,7 @@
        		</div>
      		<div class="col-md-4 col-sm-4">
         		<div class="counter-box">
-            		<h3 class="counter-title"><strong>Voting will end in</strong></h3>
+            		<h3 class="counter-title"><strong>Final drafts due</strong></h3>
             		<ul class="counter">
                 		<li class="counter-section">
                     		<h5 class="text-muted"><strong>Days</strong></h5>
@@ -164,7 +164,7 @@
 							<h4 class="title" data-toggle="modal" data-target="#{{proposal.uuid}}modal"><b>{{proposal.title}}</b><img class = "img-circle assembly-img" src="/../assets/images/image71.tiff" class="img-circle"></h4>
 							<h5 data-toggle="modal" data-target="#{{proposal.uuid}}modal"><b>Estimated Cost:</b>{{proposal.budget|currency}}</h5>
 							<h5 data-toggle="modal" data-target="#{{proposal.uuid}}modal"><b>Location:</b>Berkeley, CA 94720</h5>
-							<p class="description"><span data-toggle="modal" data-target="#{{proposal.uuid}}modal">{{proposal.text}}</span><span class="rate"><input type="number" class="form-control" id="{{proposal.uuid}}" placeholder="/100"></span></p>
+							<p class="description"><span data-toggle="modal" data-target="#{{proposal.uuid}}modal">{{proposal.text}}</span><span class="rate"><input type="number" class="form-control" id="{{proposal.uuid}}" placeholder="{{scores[proposal.uuid]}}"></span></p>
 						</div>
 					</div>
 

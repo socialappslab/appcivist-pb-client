@@ -17,6 +17,15 @@ appCivistApp.controller('NewContributionCtrl',
             function init() {
                 $scope.userIsAuthor = true;
                 $scope.postingContribution = postingContributionFlag;
+                $scope.newAttachment = Contributions.defaultContributionAttachment();
+                $scope.userWorkingGroups = localStorageService.get("workingGroups");
+                $scope.createNewGroup = false;
+                if($scope.newContribution.type === "PROPOSAL") {
+                    if ($scope.userWorkingGroups && $scope.userWorkingGroups.length > 0) {
+                        $scope.newContribution.workingGroupAuthor = $scope.userWorkingGroups[0];
+                        $scope.newContribution.workingGroupAuthors[0] = $scope.userWorkingGroups[0];
+                    }
+                }
 
                 $scope.clearContribution = function () {
                     clearNewContributionObject($scope, Contributions);
@@ -39,11 +48,11 @@ appCivistApp.controller('NewContributionCtrl',
 appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, component, milestone, contributions, themes, newContribution,
-				   newContributionResponse, cType, localStorageService, Contributions) {
+				   newContributionResponse, cType, localStorageService, Contributions, Memberships) {
 			init();
-			$scope.userIsAuthor = true;
 
 			function init() {
+                $scope.userIsAuthor = true;
 				$scope.assembly = assembly;
 				$scope.campaign = campaign;
 				$scope.component = component;
@@ -57,6 +66,14 @@ appCivistApp.controller('NewContributionModalCtrl',
 				$scope.cType = cType;
 				$scope.newContribution.type = cType;
 				$scope.newAttachment = Contributions.defaultContributionAttachment();
+                $scope.userWorkingGroups = localStorageService.get("workingGroups");
+                $scope.createNewGroup = false;
+                if($scope.newContribution.type === "PROPOSAL") {
+                    if ($scope.userWorkingGroups && $scope.userWorkingGroups.length > 0 ) {
+                        $scope.newContribution.workingGroupAuthor = $scope.userWorkingGroups[0];
+                        $scope.newContribution.workingGroupAuthors[0] = $scope.userWorkingGroups[0];
+                    }
+                }
 
 				$scope.clearContribution = function () {
 					clearNewContributionObject($scope.newContribution, Contributions);
@@ -83,9 +100,12 @@ appCivistApp.controller('NewContributionModalCtrl',
 					$scope.newContribution = Contributions.defaultNewContribution();
 					$uibModalInstance.dismiss('cancel');
 				};
+
+                $scope.changeWorkingGroupAuthor = function (workingAuthor) {
+                    $scope.newContribution.workingGroupAuthors[0] = workingAuthor;
+                }
 			}
 		});
-
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
                                                               localStorageService, Etherpad, Contributions) {
@@ -294,6 +314,10 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
 
         console.log("API Server = " + $scope.serverBaseUrl);
         console.log("Etherpad Server = " + $scope.etherpadServer);
+
+        $scope.update = function () {
+            updateContribution($scope,Contributions);
+        }
     }
 
     /**
@@ -316,7 +340,6 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
             console.log("Route assembly ID is the same as the current assembly in local storage: "+$scope.assembly.assemblyId);
         }
     }
-
 
     /**
      * Returns the current campaign in local storage if its ID matches with the requested ID on the route
@@ -717,6 +740,22 @@ function createNewContribution (scope, Contributions) {
 				postingContributionFlag = false;
 			}
 	);
+}
+
+function updateContribution(scope, Contributions) {
+    if(scope.userIsAuthor) {
+        var updateRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId)
+            .update(scope.contribution);
+
+        updateRes.$promise.then(
+            function (response) {
+                scope.contribution = response;
+            },
+            function (error) {
+                console.log("Error in update");
+            }
+        );
+    }
 }
 
 function clearNewContributionObject (scope, Contributions){

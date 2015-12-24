@@ -18,7 +18,22 @@
             </span>
         </div>
         <div class="modal-body view col-md-12 col-sm-12">
-            <div class="col-md-12 col-sm-12">
+            <div class="row col-md-12 col-sm-12">
+                <div class="form-horizontal form-group" ng-if="milestone!=null && milestone!=undefined && (milestone.title | uppercase) === 'PROPOSAL DRAFTING'">
+                    <label for="selectGroupAuthor" class="col-sm-2 col-md-2 control-label">Authoring Group</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select ng-if="!createNewGroup" id="selectGroupAuthor" name="workingGroupAuthors"
+                                class="form-control"
+                                ng-model="newContribution.workingGroupAuthor"
+                                ng-options="group.name for group in userWorkingGroups track by option.groupId"
+                                ng-change="changeWorkingGroupAuthor(newContribution.workingGroupAuthor)">
+                        </select>
+                    </div>
+                    <a  ng-href="#/campaign/{{campaign.campaignId}}/wgroup/create">
+                        <button ng-if="!createNewGroup" class="btn btn-primary col-md-4 col-sm-4 col-xs-4" type="button">Create a new group</button>
+                    </a>
+                </div>
+                <div class="voffset3"></div>
                 <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
             </div>
         </div>

@@ -155,6 +155,11 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'WorkingGroupCtrl',
             templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
         })
+        // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
+        .when('/assembly/:aid/campaign/:cid/wgroup/create',{
+            controller: 'NewWorkingGroupCtrl',
+            templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
+        })
         // TODO: finalize voting UIs s
         .when('/ballot/:uuid/summary',{
             controller: 'VotingSummaryCtrl',

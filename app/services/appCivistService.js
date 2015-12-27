@@ -473,6 +473,46 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                     gid: groupId,
                     uid: userId
                 });
+        },
+        defaultNewWorkingGroup: function() {
+            return {
+                //"name": "Assemblée Belleville",
+                //"text": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
+                "listed": true, // TODO: ADD TO FORM
+                "profile": {
+                    "targetAudience": "RESIDENTS",
+                    "membership": "REGISTRATION",
+                    "registration" : {
+                        "invitation" : true,
+                        "request" : true
+                    },
+                    "moderators":"two",
+                    "coordinators":"two",
+                    "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png"
+                },
+                //"location": {
+                //	"placeName": "Belleville, Paris, France"
+                //},
+                "themes": [],
+                "existingThemes": [],
+                "config" : {
+                    "majority":"66%",
+                    "blocking":false
+                },
+                "configs": [
+                    {
+                        "key": "group.consensus.majority",
+                        "value": "66%"
+                    },
+                    {
+                        "key": "group.consensus.blocking",
+                        "value": "false"
+                    }
+                ],
+                "lang": "en", // TODO: ADD TO FORM
+                //"invitationEmail"
+                "invitations" : [ ] // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
+            };
         }
     };
 });

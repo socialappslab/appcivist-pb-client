@@ -1,0 +1,18 @@
+footer{
+  background: $footer-background;
+  position: absolute;
+  width: 100%;
+  height: 8rem;
+  line-height: 8rem;
+  color: $footer-font;
+
+  & *{
+    text-align: center;
+    padding: 1.7rem 0;
+    margin: 0;
+  }
+
+  & :last-child{
+    padding-top: 0;
+  }
+}

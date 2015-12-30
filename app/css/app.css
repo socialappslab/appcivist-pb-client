@@ -6,6 +6,8 @@
 /*******TAGS**************/
 /*****COMMON ELEMENTS***/
 /******HEADER**********/
+/**OLDHEADER DELETE WHEN REDESIGN ENDS*/
+/**FOOTER**/
 /*****FORUM*********/
 /******MAIN***********/
 /*****ASSEMBLY CREATION*****/
@@ -27,13 +29,6 @@ i {
 
 a {
   cursor: pointer;
-}
-
-.header {
-  display: inline-block;
-}
-.header > div {
-  display: inline;
 }
 
 .title {
@@ -255,6 +250,118 @@ textarea {
   height: 106%;
   width: 100%;
   z-index: 10;
+}
+
+.header {
+  width: 100%;
+  height: 7rem;
+  line-height: 7rem;
+  padding: 0 4rem;
+  background-color: #50E3C2;
+  color: #FFFFFF;
+  /*
+    display: inline-block;
+  
+    & > div {
+      display: inline;
+    }
+  
+    #navbar-options{
+      ul{
+        li{
+          border-right: 0.1rem solid $border-header;
+        }
+        li:first-child{
+          border-left: 0.1rem solid $border-header;
+        }
+        li:hover{
+          background-color: rgba(128, 128, 128, 0.05);
+        }
+        li:active{
+          background-color: rgba(128, 128, 128, 0.05);
+          box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+        }
+        li {
+          a:focus {
+            color:white;
+            background: $header-menu-active;
+          }
+        }
+      }
+    }
+  
+    .navBarImage{
+      height: 5rem;
+    }
+  
+    #user-menu{
+  
+      .icon{
+        font-size: 2.5rem;
+        vertical-align: middle;
+      }
+  
+      ul.menu-elements{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li{
+          display: inline-block;
+          margin: 0 0.5rem;
+          cursor: pointer;
+        }
+  
+        & .dropdown .dropdown-menu{
+          li:hover{
+            color: white;
+            background: transparent;
+          }
+          li{
+            a:hover{
+              background: transparent;
+            }
+          }
+          li:last-child{
+            a{
+              color: $dropdown-hover;
+            }
+          }
+        }
+      }
+    }
+  */
+}
+.header * {
+  display: inline-block;
+  margin: auto;
+}
+.header .links-group {
+  float: right;
+}
+.header .links-group * {
+  display: inline-block;
+  cursor: pointer;
+}
+.header .links-group :last-child {
+  margin-left: 4rem;
+  color: #F2EFCD;
+}
+
+footer {
+  background: #029A78;
+  position: absolute;
+  width: 100%;
+  height: 8rem;
+  line-height: 8rem;
+  color: #FFFFFF;
+}
+footer * {
+  text-align: center;
+  padding: 1.7rem 0;
+  margin: 0;
+}
+footer :last-child {
+  padding-top: 0;
 }
 
 /**
@@ -2198,60 +2305,6 @@ button#second-vote {
   padding-left: 5px;
 }
 
-footer {
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-}
-
-/******HEADER******/
-#navbar-options ul li {
-  border-right: 0.1rem solid #F4F4F4;
-}
-#navbar-options ul li:first-child {
-  border-left: 0.1rem solid #F4F4F4;
-}
-#navbar-options ul li:hover {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-#navbar-options ul li:active {
-  background-color: rgba(128, 128, 128, 0.05);
-  box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
-}
-#navbar-options ul li a:focus {
-  color: white;
-  background: grey;
-}
-
-.navBarImage {
-  height: 5rem;
-}
-
-#user-menu .icon {
-  font-size: 2.5rem;
-  vertical-align: middle;
-}
-#user-menu ul.menu-elements {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-#user-menu ul.menu-elements li {
-  display: inline-block;
-  margin: 0 0.5rem;
-  cursor: pointer;
-}
-#user-menu ul.menu-elements .dropdown .dropdown-menu li:hover {
-  color: white;
-  background: transparent;
-}
-#user-menu ul.menu-elements .dropdown .dropdown-menu li a:hover {
-  background: transparent;
-}
-#user-menu ul.menu-elements .dropdown .dropdown-menu li:last-child a {
-  color: #9CC7D3;
-}
-
 .inline {
   display: inline-block !important;
 }
@@ -2301,6 +2354,46 @@ i {
 
 .marketing .caption {
   margin: auto;
+}
+
+/****NEW DESIGN****/
+.section {
+  width: 100%;
+}
+.section.first-section {
+  background-image: url("../../assets/images/section1pic.jpg");
+  vertical-align: middle;
+  background-size: 100%;
+  height: 82rem;
+  padding-top: 17%;
+}
+.section.first-section .main-title {
+  color: #FFFFFF;
+  margin-bottom: 3%;
+}
+.section.first-section form {
+  text-align: center;
+  margin-bottom: 20%;
+}
+.section.first-section form * {
+  display: inline-block;
+  width: 15.9rem;
+  height: 4rem;
+  margin-right: 2.3rem;
+}
+.section.first-section form :last-child {
+  margin-right: 0;
+}
+.section.first-section .bottom-info {
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.section.first-section .btn-yellow {
+  background-color: #FCCF26;
+  border: 0;
+  color: #FFFFFF;
+  padding: 0.8rem 1.6rem;
 }
 
 /*# sourceMappingURL=app.css.map */

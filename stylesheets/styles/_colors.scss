@@ -1,6 +1,8 @@
 /*****COLORS*********/
 $light-green: #DFEFD6;
 $dark-green: #57965B;
+$corporative-green: #50E3C2;
+$corporative-dark-green: #029A78;
 $light-grey: #F4F4F4;
 $light-pale-grey: rgb(249,249,249);
 $light-blue: #E1F1F9;
@@ -12,7 +14,9 @@ $light-pink: #F4E5E4;
 $white: #FFFFFF;
 $dark-grey: grey;
 $orange: #FCD49A;
+$yellow: #FCCF26;
 $black: black;
+$pale-yellow: #F2EFCD;
 
 /******COMMON BOXES*******/
 $description-box: $light-green;
@@ -49,9 +53,18 @@ $vertical-divider: $light-black;
 $indexBall: $light-black;
 
 /******HEADER**********/
+$header-background: $corporative-green;
+$header-font: $white;
+$header-sign-up-font: $pale-yellow;
+
+/**OLDHEADER DELETE WHEN REDESIGN ENDS*/
 $border-header: $light-grey;
 $dropdown-hover: $dark-blue;
 $header-menu-active: $dark-grey;
+
+/**FOOTER**/
+$footer-background: $corporative-dark-green;
+$footer-font: $white;
 
 /*****FORUM*********/
 $forum-commentBox-border: $light-grey;
@@ -60,6 +73,8 @@ $forum-infoBox-background: $light-pale-grey;
 
 /******MAIN***********/
 $icon-font: $black;
+$main-first-section-button-sign-up-background: $yellow;
+$main-first-section-font-color: $white;
 
 /*****ASSEMBLY CREATION*****/
 $assembly-tags-container-title: $tags-container-title;

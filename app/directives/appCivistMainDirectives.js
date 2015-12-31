@@ -9,7 +9,7 @@ appCivistApp.directive('footer', function () {
         restrict: 'A',  // This means that it will be used as an attribute and NOT as an element. 
         				// I don't like creating custom HTML elements
         replace: true,
-        templateUrl: "/app/partials/footer.html",
+        templateUrl: "/app/partials/_footer.html",
         controller: ['$scope', '$filter', function ($scope, $filter) {
             // Your behaviour goes here :)
         }]
@@ -21,7 +21,7 @@ appCivistApp.directive('header', function () {
         restrict: 'A', 
         replace: false,
         scope: {user: '='}, // This is one of the cool things :). Will be explained in post.
-        templateUrl: "/app/partials/header.html",
+        templateUrl: "/app/partials/_header.html",
         controller: ['$scope', '$filter', function ($scope, $filter) {
             console.log("User = "+$scope.user);
             console.log("User = "+$scope.sessionKey);            

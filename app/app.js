@@ -102,7 +102,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
     $routeProvider
         .when('/', {
             controller : 'MainCtrl',
-            templateUrl : '/app/partials/main.html'
+            templateUrl : '/app/partials/_main.html'
         })
         .when('/home',{
             controller: 'HomeCtrl',

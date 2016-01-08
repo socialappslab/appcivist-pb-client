@@ -1,77 +1,95 @@
-  $white : #ffffff;
-  $grey: #aaaaaa;
-  $green: #15bf23;
-  .points{
-    list-style: none;
-    padding: 1rem;
-
-    & li{
-      display: inline-block;
-    }
-    & .section{
-        margin-right: 2rem;
-        width: 5rem;
-        & div{
-          border: 0.2rem solid $grey;
-          padding: 0.5rem;
-          text-align: center;
-          vertical-align: middle;
-          background-color: $white;
-        }
-      }
-
+  #rangeVotingVote{
+    height:100%;
   }
-
-  .theme {
-    color: $white;
-    margin: 100 rem;
+  #rangeVotingVote .voting-content{
+    height:100%;
   }
-  .names {
-    margin: 30 rems;
+  #rangeVotingVote .headline .points .show-points{
+    vertical-align: bottom;
+    text-align: right;
+    padding-right:10px;
   }
-  .left {
-    max-height: 100%;
-    max-width: 100%;
-    background-color: $grey;
-    &li {
-      padding: 30 rem;
-    }
-
-    &h3 {
-      margin: 100 rems;
-    }
+  #rangeVotingVote .headline .points .show-points .score{
+    border: 0.2rem solid #cccccc;
+    padding: 0.5rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ffffff;
+    margin-left: 5px;
+    margin-right: 5px;
   }
-
-  .images {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  #icon {
-    max-width: 15%;
-    max-height:15%;
-    float: right;
-  }
-  #save {
-    float: right;
-  }
-  #submit {
-    float: right;
-  }
-  .proposal {
-    overflow: none;
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal{
+    width: 100%;
     display: block;
-    border: 0.2rem solid $grey;
-
+    border: 1px solid #cccccc;
+    border-radius: 3px;
     padding: 0.5rem;
     vertical-align: middle;
-    background-color: $white;
+    background-color: #ffffff;
+    margin-bottom: 15px;
+  }
 
-    &.container {
-      &.description {
-        margin: 10 rem;
-        width: 40%;
-        word-break: break-all;
-      }
-    }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .title:hover{
+    cursor:pointer;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data h5,p:hover{
+    cursor:pointer;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .proposal-img-holder:hover{
+    cursor:pointer;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data{
+    width:75%;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .title{
+    width:100%;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .title .assembly-img{
+    max-height:15px;
+    width:auto;
+    float: right;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .description .rate{
+    display: inline-block;
+    float: right;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .proposal-img-holder .proposal-img{
+    width:100%;
+    height:auto;
+    padding-top: 5px;
+  }
+  #rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .modal .modal-dialog .modal-content .modal-body img{
+    width:40%;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid #cccccc;
+    margin-left: 50px;
+  }
+  #rangeVotingVote .voting-content .left{
+    background-color: #cccccc;
+    border-radius: 3px;
+    height: 100%;
+  }
+
+  #rangeVotingVote .voting-content .left h3{
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  #rangeVotingVote .voting-content .left .theme-proposals .theme{
+    color:#ffffff;
+    background-color: #12a11e;
+    padding:4px 4px 4px 4px;
+    width:70%;
+    border-bottom: 10px;
+    border-radius: 3px;
+  }
+
+  #rangeVotingVote .voting-content .left .theme-proposals .proposal-names{
+    padding: 2px 2px 2px 2px;
+    font-weight: 3px;
+  }
+
+  #rangeVotingVote .voting-content .right .modal .modal-dialog .modal-content .modal-body .additional-info{
+    width:100%;
+    margin-left: 0px;
   }

@@ -55,7 +55,8 @@ appCivistApp.factory('VotingBallot', function($http, $resource, localStorageServ
                 },
                 {
                   "targetUuid": 1, 
-                },{
+                },
+                {
                   "targetUuid": 2, 
                 },
                 {

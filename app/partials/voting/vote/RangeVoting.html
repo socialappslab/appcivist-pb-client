@@ -1,97 +1,21 @@
-<div class="container">
-		<div class="row text-center">
-			<h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h2>
-		</div>
-		<br>
-		<div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
-			<ul id="timeline" class="row timeline">
-				<li id="proposalMakingPhase" class=" active">
-					<h4>
-						<strong>Proposal Making</strong>
-					</h4>
-				</li>
-				<li id="proposalMakingPhase" class=" active">
-					<h4>
-						<strong>Versioning</strong>
-					</h4>
-				</li>
-				<li id="proposalMakingPhase" class=" active">
-					<h4>
-						<strong>Deliberation</strong>
-					</h4>
-				</li>
-				<li id="proposalMakingPhase" class=" selected active">
-					<h4>
-						<strong>Voting</strong>
-					</h4>
-				</li>
-			</ul>
-		</div>
-		<div class="progressline col-md-12 col-sm-12">
-	  		<div class="col-md-8 col-sm-8">
-        		<ul class="progressline-phases">
-                    <li class="progressline-phase">
-                        <h4 class="progressline-phase-title">
-                            Registration
-                        </h4>
-                        <div class="progressline-phase-line"></div>
-                    </li>
-                    <li class="progressline-phase">
-                        <h4 class="progressline-phase-title">
-                            Instructions
-                        </h4>
-                        <div class="progressline-phase-line"></div>
-                    </li>
-                    <li class="progressline-phase">
-                        <h4 class="progressline-phase-title selected">
-                            Voting
-                        </h4>
-                        <div class="progressline-phase-line"></div>
-                    </li>
-                    <li class="progressline-phase">
-                        <h4 class="progressline-phase-title">
-                            Summary
-                        </h4>
-                        <div class="progressline-phase-line"></div>
-                    </li>
-                    <li class="progressline-phase">
-                        <h4 class="progressline-phase-title">
-                            Result
-                        </h4>
-                        <div class="progressline-phase-line"></div>
-                    </li>
-                </ul>
-       		</div>
-     		<div class="col-md-4 col-sm-4">
-        		<div class="counter-box">
-            		<h3 class="counter-title"><strong>Final drafts due</strong></h3>
-            		<ul class="counter">
-                		<li class="counter-section">
-                    		<h5 class="text-muted"><strong>Days</strong></h5>
-                    		<div>45</div>
-                		</li>
-                		<li class="counter-section">
-                    		<h5 class="text-muted"><strong>Hours</strong></h5>
-                    		<div>03</div>
-                		</li>
-                		<li class="counter-section">
-                    		<h5 class="text-muted"><strong>Minutes</strong></h5>
-                    		<div>03</div>
-                		</li>
-            		</ul>
-        		</div>
-     		</div>
-    	</div>
-</div>
-
 <div class="container" id="rangeVotingVote">
-		<div class="row headline">
-			<div class="col-md-8 col-sm-8 title">
-				<h4>Paris PB 2016</h4>
-				<h2><b>Assembly Ballot</b></h2>
-				<h2 id="small">2015-08</h2>
-			</div>
-	    </div>
+	<div class="row text-center">
+		<h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h2>
+	</div>
+	<br>
+
+	<div class="titles">
+		<div class="container">
+			<h3>Paris PB 2016</h3>
+		</div>
+		<div class="container">
+			<h1><b>Assembly Ballot</b></h1>
+		</div>
+		<div class="container">
+			<h1 id="small">2016 August</h1>
+		</div>
+	</div>
+	<br>
 	<div class="row voting-content">
 		<div class="col-md-4 col-sm-4 left">
 				<h3><b>Campaign Themes and Proposals</b></h3>
@@ -157,7 +81,9 @@
 			<ul class="list-unstyled voted-proposals">
 				<li class="voted-proposal container" ng-repeat = "proposal in candidates | filter:query">
 					<div class="proposal-content">
-						<div class="col-md-2 col-sm-2 proposal-img-holder" data-toggle="modal" data-target="#{{proposal.uuid}}modal">
+						<div class="col-md-2 col-sm-2 proposal-img-holder"
+							 data-toggle="modal" data-target="#{{proposal.uuid}}modal"
+							 background-image="/../assets/images/image78.jpg">
 							<img class = "proposal-img" src="/../assets/images/image78.jpg">
 						</div>
 						<div class="col-md-6 col-sm-6 data">

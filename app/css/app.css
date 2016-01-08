@@ -1780,6 +1780,160 @@ button#second-vote {
   border-radius: 0.3rem;
 }
 
+#rangeLanding .additional-info .info {
+  font-size: 15px;
+}
+
+#rangeLanding .additional-info {
+  width: 70%;
+  border: 2px solid #aaaaaa;
+  background-color: #ffffff;
+  margin-left: 0;
+}
+
+#rangeLanding .instructions {
+  width: 70%;
+  border: 2px solid #aaaaaa;
+  background-color: #ffffff;
+  margin-left: 0;
+}
+
+#rangeLanding .instructions .title {
+  width: 100%;
+}
+
+#rangeLanding .instructions .title button {
+  float: right;
+  margin-top: 5px;
+}
+
+#rangeLanding {
+  background-color: #e6e6e6;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .container {
+  border: 2px solid #cccccc;
+  border-radius: 2px;
+  display: block;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  width: 100%;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .container:hover {
+  cursor: pointer;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .tail .assembly {
+  width: 100%;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .tail .assembly .assembly-img {
+  max-height: 20px;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .tail .assembly span {
+  text-align: right;
+  float: right;
+  margin-left: 20px;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .info .icon-tail .icons div {
+  display: inline-block;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .info .icon-tail .icons .comments-icon {
+  width: 2rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0.1rem;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .info .icon-tail .icons .comments-icon .total-replies {
+  display: block;
+  margin: -2rem 0;
+  text-align: center;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .picture {
+  overflow: hidden;
+  position: relative;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .picture p {
+  text-align: left;
+  left: 0;
+  padding: 3px 3px 3px 3px;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .picture .score {
+  margin-bottom: 150px;
+  background-color: #ffffff;
+  border: 2px solid #cccccc;
+  border-radius: 2px;
+  width: 40%;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .picture .theme {
+  background-color: #12a11e;
+  color: #ffffff;
+  border-radius: 2px;
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 13px;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .block .picture img {
+  max-height: 100%;
+  z-index: -1;
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+}
+
+#rangeVotingResult .allocated {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+#rangeVotingResult .result {
+  background-color: #cccccc;
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #aaaaaa;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#rangeVotingResult .result .voting-result .candidate {
+  padding: 5px 5px 5px 5px;
+  margin-bottom: 5px;
+}
+
+#rangeVotingResult .result .voting-result .candidate .score {
+  background-color: #ffffff;
+  border: 2px solid #aaaaaa;
+  padding: 5px 5px 5px 5px;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .modal .modal-dialog .modal-content .modal-body img {
+  width: 40%;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid #cccccc;
+  margin-left: 50px;
+}
+
+#rangeVotingResult .winners .row .winning-proposal .modal .modal-dialog .modal-content .modal-body .theme-holder .themes {
+  background-color: #12a11e;
+  color: #ffffff;
+  border-radius: 2px;
+  display: inline-block;
+  margin-left: 5px;
+  padding: 3px 3px 3px 3px;
+}
+
 .range-voting-content {
   font-family: "Helvetica Neue";
   margin-left: 150px;
@@ -1877,6 +2031,115 @@ button#second-vote {
 .range-voting-content .buttons {
   margin-top: 10px;
   float: right;
+}
+
+#rangeVotingVote {
+  height: 100%;
+}
+
+#rangeVotingVote .voting-content {
+  height: 100%;
+}
+
+#rangeVotingVote .headline .points .show-points {
+  vertical-align: bottom;
+  text-align: right;
+  padding-right: 10px;
+}
+
+#rangeVotingVote .headline .points .show-points .score {
+  border: 0.2rem solid #cccccc;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #ffffff;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal {
+  width: 100%;
+  display: block;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  padding: 0.5rem;
+  vertical-align: middle;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .title:hover {
+  cursor: pointer;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data h5, p:hover {
+  cursor: pointer;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .proposal-img-holder:hover {
+  cursor: pointer;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data {
+  width: 75%;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .title {
+  width: 100%;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .title .assembly-img {
+  max-height: 15px;
+  width: auto;
+  float: right;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .data .description .rate {
+  display: inline-block;
+  float: right;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .proposal-content .proposal-img-holder .proposal-img {
+  width: 100%;
+  height: auto;
+  padding-top: 5px;
+}
+
+#rangeVotingVote .voting-content .right .voted-proposals .voted-proposal .modal .modal-dialog .modal-content .modal-body img {
+  width: 40%;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid #cccccc;
+  margin-left: 50px;
+}
+
+#rangeVotingVote .voting-content .left {
+  background-color: #cccccc;
+  border-radius: 3px;
+  height: 100%;
+}
+
+#rangeVotingVote .voting-content .left h3 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#rangeVotingVote .voting-content .left .theme-proposals .theme {
+  color: #ffffff;
+  background-color: #12a11e;
+  padding: 4px 4px 4px 4px;
+  width: 70%;
+  border-bottom: 10px;
+  border-radius: 3px;
+}
+
+#rangeVotingVote .voting-content .left .theme-proposals .proposal-names {
+  padding: 2px 2px 2px 2px;
+  font-weight: 3px;
+}
+
+#rangeVotingVote .voting-content .right .modal .modal-dialog .modal-content .modal-body .additional-info {
+  width: 100%;
+  margin-left: 0px;
 }
 
 #contributionView {

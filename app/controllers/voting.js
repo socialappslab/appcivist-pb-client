@@ -1,3 +1,6 @@
+/**
+ * Voting Landing Page
+ */
 appCivistApp.controller('VotingLandingCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
 	$scope.uuid = $routeParams.uuid;
 	
@@ -91,7 +94,157 @@ appCivistApp.controller('VotingLandingCtrl', function($scope, $http, $routeParam
 
 });
 
-appCivistApp.controller('RangeVotingCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
+/**
+ * Voting Registration Form
+ */
+appCivistApp.controller('VotingRegistrationCtrl', function($scope, $http, $routeParams, $location, GetRegistrationForm, VotingBallot, localStorageService){
+	$scope.uuid = $routeParams.uuid;
+	var resource = GetRegistrationForm.form($scope.uuid);
+	$scope.returned = {
+		"votingBallotRegistrationFormId":"1",
+		"fields": [
+			{
+				"votingBallotRegistrationFieldId":1,
+				"fieldName":"",
+				"fieldDescription":"",
+				"providedValue":""
+			}
+		]
+	};
+	/*to be deleted when backend is ready*/
+	$scope.returned = resource;
+	$scope.fields = resource.fields;
+	/*uncomment when backend is ready!*/
+	// resource.get().$promise.then(function(data){
+	// 	$scope.returned.votingBallotRegistrationFormId = data.votingBallotRegistrationFormId;
+	// 	$scope.fields = data.fields;
+	// 	while ($scope.returned.fields.length<$scope.fields.length) {
+	// 		$scope.returned.fields[$scope.returned.fields.length] =
+	// 		{
+
+	//       		"votingBallotRegistrationFieldId":,
+	//         	"fieldName":"",
+	//             "fieldDescription":""
+
+	//    		};
+	// 	}
+	// 	for (var i=0;i<$scope.returned.fields.length;i+=1) {
+	// 		$scope.returned.fields[i].votingBallotRegistrationFieldId = $scope.fields[i].votingBallotRegistrationFieldId;
+	// 	}
+	// });
+
+	$scope.votingBallot = {
+		"votingBallotId" : 1,
+		"uuid":1,
+		"instructions":[
+			"instruction1",
+			"instruction2",
+			"instruction3"
+		],
+		"systemType":"range",
+		"starts":"2015-12-01 20:27",
+		"ends": "2015-12-31 20:27",
+		"candidates": [
+			{
+				"targetUuid": 3,
+			},
+			{
+				"targetUuid": 5,
+			}
+		],
+		"registrationForm": {
+			"votingBallotRegistrationFormId":"",
+			"fields": [
+				{
+					"votingBallotRegistrationFieldId":"",
+					"fieldName":"",
+					"fieldDescription":"",
+					"providedValue":""
+				}
+			]}
+
+	};
+
+
+	$scope.fillForm = function() {
+		for (var i=0;i<$scope.returned.fields.length;i++) {
+			$scope.returned.fields[i].providedValue = document.getElementById($scope.fields[i].votingBallotRegistrationFieldId).value;
+		}
+		/* uncomment when backend is ready */
+		// var form = resource.$save($scope.returned);
+		// form.$promise.then(
+		// 	function(data){
+		// 		// $scope.password = data.password;
+		// 		$scope.signature = data.signature;
+		// 		console.log("Posted voting registration form.");
+		// 	},
+		// 	function(error) {
+		// 		alert("Sorry, the provided information cannot generate a valid voting ballot.");
+		// 		return;
+		// 	}
+		// )
+		// var ballot = VotingBallot.ballot($scope.uuid, $scope.signature).get();
+		// ballot.$promise.then(
+		// 	function(data){
+		// 		$scope.votingBallot= data;
+		// localStorageService.set("currentVotingBallot", data);
+		// 	},
+		// 	function(error){
+		// 		alert("Sorry, a valid ballot could not be obtained from the server.");
+		// 		return;
+		// 	}
+		// )
+
+		var ballot = VotingBallot.ballot($scope.uuid, 1);
+
+		/*save the votingBallot to the localservice so that we can access it from other controllers*/
+		localStorageService.set("currentVotingBallot",ballot);
+		// TODO: below if is only a temporal fix to always redirect to a valid ballot url
+		var redirect = '/ballot/'+$scope.votingBallot.uuid+"/vote";
+		if (!$scope.votingBallot || !$scope.votingBallot.uuid) {
+			redirect = "/ballot/abcd-efgh-ijkl-mnop/vote";
+		}
+		$location.url(redirect);
+	}
+
+	$scope.loadBallot = function(){
+		/*uncomment when backend is ready*/
+		// var signature = VotingBallot.signature($scope.uuid).get();
+		// signature.$promise.then(
+		// 	function(data){
+		// 		$scope.signature = data;
+		// 		console.log("Retreived signature from server.");
+		// 	},
+		// 	function(error){
+		// 		alert("Sorry, no valid signature under this username can be retreived.");
+		// 		return;
+		// 	}
+		// )
+		// var ballot = VotingBallot.ballot($scope.uuid, $scope.signature).get();
+		// ballot.$promise.then(
+		// 	function(data){
+		// 		$scope.votingBallot = data;
+		// localStorageService.set("currentVotingBallot", data);
+		// $location.url('/ballot/'+$scope.votingBallot.uuid+"/voting");
+		// 	},
+		// 	function(error){
+		// 		alert("Sorry, no valid voting ballot can be retreived using this signature.");
+		// 		return;
+		// 	}
+		// )
+
+		$scope.signature = VotingBallot.signature($scope.uuid);
+		$scope.votingBallot = VotingBallot.ballot($scope.uuid, $scope.signature).ballot;
+		localStorageService.set("currentVotingBallot", VotingBallot.ballot($scope.uuid, $scope.signature));
+		$location.url('/ballot/'+$scope.votingBallot.uuid+"/vote");
+	}
+
+});
+
+/**
+ * Voting Page (the actual UI of the ballot)
+ */
+appCivistApp.controller('VotingCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
 	$scope.uuid = $routeParams.uuid;
 	
 	$scope.votingBallot = {
@@ -166,6 +319,7 @@ appCivistApp.controller('RangeVotingCtrl', function($scope, $http, $routeParams,
 			$scope.votingBallot = currentBallot.ballot;
 			$scope.votingBallotVote = currentBallot.vote;
 		}
+
 		for(var i=0;i<$scope.votingBallot.candidates.length;i++){
 			/*uncomment when backend is ready; delete the part currently used*/
 			// var candidateInfo = VotingBallot.getCandidate($scope.votingBallot.candidates[i].targetUuid).get();
@@ -285,7 +439,11 @@ appCivistApp.controller('RangeVotingCtrl', function($scope, $http, $routeParams,
 		$location.url('/ballot/'+$scope.votingBallot.uuid+"/summary");
 	}
 });
-appCivistApp.controller('RangeSummaryCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){	
+
+/**
+ * Summary of one's voting choices
+ */
+appCivistApp.controller('VotingSummaryCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
 	init();
 
 	function init(){
@@ -334,7 +492,11 @@ appCivistApp.controller('RangeSummaryCtrl', function($scope, $http, $routeParams
 		$location.url('/ballot/'+$scope.votingBallot.uuid+"/result");
 	}
 });
-appCivistApp.controller('RangeResultCtrl', function($scope, $http, $routeParams, $location, VotingTally, VotingBallot, localStorageService){
+
+/**
+ * Summary of results once ellection is over
+ */
+appCivistApp.controller('VotingResultCtrl', function($scope, $http, $routeParams, $location, VotingTally, VotingBallot, localStorageService){
 	$scope.winners = [];
 	$scope.used = 0;
 	$scope.total = 300000;
@@ -360,142 +522,3 @@ appCivistApp.controller('RangeResultCtrl', function($scope, $http, $routeParams,
 	}
 });
 
-appCivistApp.controller('RegistrationForm', function($scope, $http, $routeParams, $location, GetRegistrationForm, VotingBallot, localStorageService){
-	$scope.uuid = $routeParams.uuid;
-	var resource = GetRegistrationForm.form($scope.uuid);
-	$scope.returned = {
-  	"votingBallotRegistrationFormId":"1",
-  	"fields": [
-    	{
-      		"votingBallotRegistrationFieldId":1,
-        	"fieldName":"",
-            "fieldDescription":"",
-            "providedValue":""
-    	}
-  		]
-	};
-	/*to be deleted when backend is ready*/
-	$scope.returned = resource;
-	$scope.fields = resource.fields;
-	/*uncomment when backend is ready!*/
-	// resource.get().$promise.then(function(data){
-	// 	$scope.returned.votingBallotRegistrationFormId = data.votingBallotRegistrationFormId;
-	// 	$scope.fields = data.fields;
-	// 	while ($scope.returned.fields.length<$scope.fields.length) {
-	// 		$scope.returned.fields[$scope.returned.fields.length] = 
-	// 		{
-
-	//       		"votingBallotRegistrationFieldId":,
-	//         	"fieldName":"",
-	//             "fieldDescription":""
-    	
- //    		};
-	// 	}
-	// 	for (var i=0;i<$scope.returned.fields.length;i+=1) {
-	// 		$scope.returned.fields[i].votingBallotRegistrationFieldId = $scope.fields[i].votingBallotRegistrationFieldId;
-	// 	}
-	// });
-	
-	$scope.votingBallot = {
-			"votingBallotId" : 1,
-			"uuid":1,
-			"instructions":[
-				"instruction1",
-				"instruction2",
-				"instruction3"
-			],
-			"systemType":"range",
-			"starts":"2015-12-01 20:27",
-	  		"ends": "2015-12-31 20:27",
-			"candidates": [
-			    {
-			      "targetUuid": 3,
-			    },
-			    {
-			      "targetUuid": 5, 
-			    }
-			],
-			"registrationForm": {
-				"votingBallotRegistrationFormId":"",
-	  			"fields": [
-		    	{
-		      	"votingBallotRegistrationFieldId":"",
-		      	"fieldName":"",
-            	"fieldDescription":"",
-		      	"providedValue":""
-		    	}
-	  		]}
- 		
-	};
-
-
-	$scope.fillForm = function() {
-		for (var i=0;i<$scope.returned.fields.length;i++) {
-			$scope.returned.fields[i].providedValue = document.getElementById($scope.fields[i].votingBallotRegistrationFieldId).value;
-		}
-		/* uncomment when backend is ready */
-		// var form = resource.$save($scope.returned);
-		// form.$promise.then(
-		// 	function(data){
-		// 		// $scope.password = data.password;
-		// 		$scope.signature = data.signature;
-		// 		console.log("Posted voting registration form.");
-		// 	},
-		// 	function(error) {
-		// 		alert("Sorry, the provided information cannot generate a valid voting ballot.");
-		// 		return;
-		// 	}
-		// )
-		// var ballot = VotingBallot.ballot($scope.uuid, $scope.signature).get();
-		// ballot.$promise.then(
-		// 	function(data){
-		// 		$scope.votingBallot= data;
-				// localStorageService.set("currentVotingBallot", data);
-		// 	},
-		// 	function(error){
-		// 		alert("Sorry, a valid ballot could not be obtained from the server.");
-		// 		return;
-		// 	}
-		// )
-
-		var ballot = VotingBallot.ballot($scope.uuid, 1);
-
-		/*save the votingBallot to the localservice so that we can access it from other controllers*/
-		localStorageService.set("currentVotingBallot",ballot);
-		$location.url('/ballot/'+$scope.votingBallot.uuid+"/vote");
-		
-	}
-
-	$scope.loadBallot = function(){
-		/*uncomment when backend is ready*/
-		// var signature = VotingBallot.signature($scope.uuid).get();
-		// signature.$promise.then(
-		// 	function(data){
-		// 		$scope.signature = data;
-		// 		console.log("Retreived signature from server.");
-		// 	},
-		// 	function(error){
-		// 		alert("Sorry, no valid signature under this username can be retreived.");
-		// 		return;
-		// 	}
-		// )
-		// var ballot = VotingBallot.ballot($scope.uuid, $scope.signature).get();
-		// ballot.$promise.then(
-		// 	function(data){
-		// 		$scope.votingBallot = data;
-				// localStorageService.set("currentVotingBallot", data);
-				// $location.url('/ballot/'+$scope.votingBallot.uuid+"/voting");
-		// 	},
-		// 	function(error){
-		// 		alert("Sorry, no valid voting ballot can be retreived using this signature.");
-		// 		return;
-		// 	}
-		// )
-
-		$scope.signature = VotingBallot.signature($scope.uuid);
-		$scope.votingBallot = VotingBallot.ballot($scope.uuid, $scope.signature).ballot;
-		localStorageService.set("currentVotingBallot", VotingBallot.ballot($scope.uuid, $scope.signature));
-		$location.url('/ballot/'+$scope.votingBallot.uuid+"/vote");
-	}
-
-});

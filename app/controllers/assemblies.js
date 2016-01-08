@@ -271,8 +271,6 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 
 	}
 
-
-
     function initializeNewAssembly() {
         if($scope.newAssembly===null || $scope.newAssembly===undefined){
             $scope.newAssembly = localStorageService.get("temporaryNewAssembly");

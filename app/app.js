@@ -189,9 +189,9 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'RangeResultCtrl',
             templateUrl: 'app/partials/voting/result/RangeResult.html'
         })
-        .when('/ballot/:uuid/landing',{
+        .when('/ballot/:uuid/start',{
             controller: 'VotingLandingCtrl',
-            templateUrl: 'app/partials/voting/landing/VotingBallotLanding.html'
+            templateUrl: 'public/ballot/start.html'
         })
         .when('/ballot/:uuid/vote',{
             controller: 'RangeVotingCtrl',

@@ -41,15 +41,9 @@ module.exports = function(grunt) {
           }
         },
         connect: {
-            server:{
-                options:{
-                    port: 8000,
-                    /*open: {
-                        target: 'http://localhost:8000'
-                    },*/
-                    keepalive: true
-                }
-            }
+          server:{
+            options:{ port: 8000 }
+          }
         },
         watch: {
             css: {

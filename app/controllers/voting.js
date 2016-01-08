@@ -1,9 +1,9 @@
 /**
  * Voting Landing Page
  */
-appCivistApp.controller('VotingLandingCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
+appCivistApp.controller('ballotStartCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
 	$scope.uuid = $routeParams.uuid;
-	
+
 	$scope.votingBallot = {
   	  	"votingBallotId" : 1,
         "uuid":1,
@@ -16,7 +16,7 @@ appCivistApp.controller('VotingLandingCtrl', function($scope, $http, $routeParam
               "targetUuid": 3,
             },
             {
-              "targetUuid": 5, 
+              "targetUuid": 5,
             }
         ],
         "registrationForm": {
@@ -86,8 +86,8 @@ appCivistApp.controller('VotingLandingCtrl', function($scope, $http, $routeParam
 			$scope.candidates[$scope.candidates.length] = VotingBallot.getCandidate($scope.votingBallot.candidates[i].targetUuid);
 		}
 	}
-	
-	
+
+
 	$scope.nextPage = function(){
 		$location.url('/ballot/'+$scope.votingBallot.uuid+"/register");
 	}
@@ -97,7 +97,7 @@ appCivistApp.controller('VotingLandingCtrl', function($scope, $http, $routeParam
 /**
  * Voting Registration Form
  */
-appCivistApp.controller('VotingRegistrationCtrl', function($scope, $http, $routeParams, $location, GetRegistrationForm, VotingBallot, localStorageService){
+appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routeParams, $location, GetRegistrationForm, VotingBallot, localStorageService){
 	$scope.uuid = $routeParams.uuid;
 	var resource = GetRegistrationForm.form($scope.uuid);
 	$scope.returned = {
@@ -244,9 +244,9 @@ appCivistApp.controller('VotingRegistrationCtrl', function($scope, $http, $route
 /**
  * Voting Page (the actual UI of the ballot)
  */
-appCivistApp.controller('VotingCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
+appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
 	$scope.uuid = $routeParams.uuid;
-	
+
 	$scope.votingBallot = {
   	  	"votingBallotId" : 1,
         "uuid":1,
@@ -259,7 +259,7 @@ appCivistApp.controller('VotingCtrl', function($scope, $http, $routeParams, $loc
               "targetUuid": 3,
             },
             {
-              "targetUuid": 5, 
+              "targetUuid": 5,
             }
         ],
         "registrationForm": {
@@ -357,7 +357,7 @@ appCivistApp.controller('VotingCtrl', function($scope, $http, $routeParams, $loc
 	}
 
 	$scope.save = function(){
-		
+
 		var newVote = {
 			"ballot":"",
 			"vote":""
@@ -367,8 +367,8 @@ appCivistApp.controller('VotingCtrl', function($scope, $http, $routeParams, $loc
 			for(var i = 0;i<$scope.votingBallotVote.voteValues.length;i++){
 				var vote = $scope.votingBallotVote.voteValues[i];
 				vote.voteValue = document.getElementById(vote.selectedCandidate.uuid).value+"/100";
-			}		
-			
+			}
+
 			newVote.vote = $scope.votingBallotVote;
 			localStorageService.set("currentVotingBallot",newVote);
 			alert("Your vote has been saved successfully!");
@@ -432,8 +432,8 @@ appCivistApp.controller('VotingCtrl', function($scope, $http, $routeParams, $loc
 				continue;
 			}
 			vote.voteValue = document.getElementById(vote.selectedCandidate.uuid).value+"/100";
-		}			
-		$scope.votingBallotVote.status = "FINISHED";	
+		}
+		$scope.votingBallotVote.status = "FINISHED";
 		newVote.vote = $scope.votingBallotVote;
 		localStorageService.set("currentVotingBallot",newVote);
 		$location.url('/ballot/'+$scope.votingBallot.uuid+"/summary");
@@ -443,7 +443,7 @@ appCivistApp.controller('VotingCtrl', function($scope, $http, $routeParams, $loc
 /**
  * Summary of one's voting choices
  */
-appCivistApp.controller('VotingSummaryCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
+appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
 	init();
 
 	function init(){
@@ -496,7 +496,7 @@ appCivistApp.controller('VotingSummaryCtrl', function($scope, $http, $routeParam
 /**
  * Summary of results once ellection is over
  */
-appCivistApp.controller('VotingResultCtrl', function($scope, $http, $routeParams, $location, VotingTally, VotingBallot, localStorageService){
+appCivistApp.controller('ballotResultCtrl', function($scope, $http, $routeParams, $location, VotingTally, VotingBallot, localStorageService){
 	$scope.winners = [];
 	$scope.used = 0;
 	$scope.total = 300000;
@@ -521,4 +521,3 @@ appCivistApp.controller('VotingResultCtrl', function($scope, $http, $routeParams
 		}
 	}
 });
-

@@ -1,0 +1,46 @@
+[
+  {
+    "tag": "Title",
+    "type" : "caution"
+  },
+  {
+    "tag": "Theme/s",
+    "type" : "caution"
+  },
+  {
+    "tag": "Summary",
+    "type" : "caution"
+  },
+  {
+    "tag": "Keywords",
+    "type" : "caution"
+  },
+  {
+    "tag": "Location",
+    "type" : "caution"
+  },
+  {
+    "tag": "Attachment",
+    "type" : "caution"
+  },
+  {
+    "tag": "Total Budget",
+    "type" : "filter"
+  },
+  {
+    "tag": "Background",
+    "type" : "filter"
+  },
+  {
+    "tag": "Description",
+    "type" : "filter"
+  },
+  {
+    "tag": "Supporting Evidence",
+    "type" : "filter"
+  },
+  {
+    "tag": "Detailed Budget",
+    "type" : "filter"
+  }
+]

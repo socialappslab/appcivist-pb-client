@@ -1,0 +1,73 @@
+#contributionPage{
+  margin: 1%;
+  & .view{
+    background: white;
+  }
+
+  .optionsBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .checkbox{
+      padding-left: 2rem;
+    }
+  }
+
+  .forum{
+    margin-left: 2rem;
+
+    .button{
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: middle;
+      margin-bottom: -1rem;
+
+      &.cancelButton{
+        margin-left: 1rem;
+      }
+
+      &.replyButton{
+        margin-bottom: -3rem;
+      }
+    }
+  }
+
+  .infoBox{
+    text-align: center;
+  }
+
+  .image-circle-small{
+    height:20px;
+    width:20px;
+    border-radius: 1rem;
+  }
+
+  .image-capsule{
+    text-align: right;
+    img{
+      display: inline-block;
+    }
+    .caption{
+      display: inline-block;
+    }
+  }
+
+  .settingsBox h4{
+    text-align: left;
+  }
+
+  .contribution-header-list{
+    list-style: none;
+    & .contribution-header-list-element{
+      display: block;
+      & .list-title{
+        display: inline-block;
+        width: 11rem;
+      }
+      & .list-description{
+        display: inline-block;
+        border-bottom: 0.1rem solid $contribution-border;
+      }
+    }
+  }
+}

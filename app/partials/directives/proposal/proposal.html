@@ -1,0 +1,31 @@
+<div class="proposal-content">
+    <div class="row"> 
+        <div class="proposal-image">
+            <img ng-src="{{proposal.image}}" alt="" src="../assets/images/unknown.jpg">
+            <div class="tag tag-filter" ng-repeat="theme in proposal.themes">
+                <strong>{{theme.title}}</strong>
+            </div> 
+        </div> 
+    </div> 
+    <div class="row">
+        <h5 class="proposal-title"><strong>{{proposal.title}}.</strong></h5><p class="proposal-description">{{proposal.text}}</p> 
+    </div> 
+    <div class="row voffset2">
+        <div class="proposal-budget"><strong>Budget: </strong></div> 
+        <div class="proposal-info">
+            <div class="comments-icon">
+                <i class="icon-chat-empty pull-right">
+                <div class="total-replies">
+                    <strong>{{proposal.replies}}</strong>
+                </div> 
+            </div> 
+            <div class="votes-counter pull-right">
+                <i class="fa fa-caret-up add-vote"></i>
+                <div class="total-votes">
+                    <strong>{{suggestion.stats.ups}}</strong>
+                </div>
+                <i class="fa fa-caret-down substract-vote"></i>
+            </div>
+        </div> 
+    </div> 
+</div> 

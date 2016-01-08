@@ -1,38 +1,7 @@
-<!-- Fixed navbar -->
-<div>
-	<nav class="navbar navbar-default" role="navigation" ng-controller="AccountCtrl">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#navbar-menu">
-					<span class="sr-only">Toggle navigation</span> 
-					<span class="icon-bar"></span> 
-					<span class="icon-bar"></span> 
-					<span class="icon-bar"></span>
-				</button>
-				<a href="#/"><img src="/assets/images/logotype.svg" class="logotype" /></a>
-			</div>
-
-			<div class="collapse navbar-collapse navbar-right" id="navbar-menu" ng-if='!userIsAuthenticated()'>
-				<form class="navbar-form navbar-left" role="login" ng-submit="login()">
-					<div class="form-group">
-						<input type="text" placeholder="Email" class="form-control" ng-model="user.email">
-						<input type="password" placeholder="Password" class="form-control" ng-model="user.password"/>
-					</div>
-					<button type="submit" class="btn btn-success">Sign in</button>
-					<button type="button" class="btn btn-primary" ng-click="signup()">Sign up</button>	
-				</form>
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="/user/recoveryform" ng-if='!userIsAuthenticated()'>Forgot Password?</a></li>
-					<li ng-if='userIsAuthenticated()'><button type="button" class="btn btn-primary">Logout</button></li>
-				</ul>
-			</div>
-			<div class="collapse navbar-collapse navbar-right" id="navbar-menu" ng-if='userIsAuthenticated()'>
-				<form class="navbar-form navbar-left">
-					<button type="button" class="btn btn-danger" ng-click="signout()">Log out</button>
-				</form>
-			</div>
-
-		</div>
-	</nav>
+<div class="header" ng-controller="AccountCtrl">
+    <h1>{{ 'APPCIVIST_STRING' | translate}}</h1>
+    <div class="links-group">
+        <h4>{{'LOG_IN' | translate}}</h4>
+        <h4>{{'SIGN_UP' | translate}}</h4>
+    </div>
 </div>

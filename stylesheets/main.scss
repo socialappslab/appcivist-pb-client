@@ -1,28 +1,19 @@
 @import "../stylesheets/styles/colors";
 @import "../stylesheets/styles/common";
+@import "../stylesheets/styles/header";
+@import "../stylesheets/styles/footer";
 @import "../app/partials/landing/landing";
 @import "../app/partials/assembly/assembly";
 @import "../app/partials/assemblies/assemblies";
 @import "../app/partials/forum/forum";
-@import "../app/partials/campaign/campaign";
-@import "../app/partials/directives/templateConfiguration/templateConfiguration";
-@import "../app/partials/campaign/timeline";
-
-footer{
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-}
-
-.bubbleChart {
-  height: 100%;
-  padding-bottom: 15px;
-}
-
-.bubbleChart svg{
-  background: rgba(0, 0, 0, 0);
-
-}
+@import "../app/partials/campaign/index";
+@import "../app/partials/directives/index";
+@import "../app/partials/home/home";
+@import "../app/partials/tooltips/index";
+@import "../app/partials/voting/index"; 
+@import "../app/partials/contributions/index";
+@import "../app/partials/wGroupsSuggestions/wGroupsSuggestion";
+@import "../app/partials/wGroupForum/wGroupForum";
 
 .inline{
   display: inline-block !important;
@@ -38,7 +29,7 @@ footer{
   margin-bottom: 20px;
   border: 0;
   border-radius: 0px;
-  height: 150px;
+  height: auto;
 
   img{
     -webkit-box-shadow:0;
@@ -69,4 +60,121 @@ footer{
 
 i{
   cursor: pointer;
+}
+
+.summary-heading{
+  margin: 2rem 0;
+}
+
+.marketing{
+  .caption{
+    margin: auto;
+  }
+}
+
+/******HEADER******/
+
+#navbar-options{
+  ul{
+    li{
+      border-right: 0.1rem solid $border-header;
+    }
+    li:first-child{
+      border-left: 0.1rem solid $border-header;
+    }
+    li:hover{
+      background-color: rgba(128, 128, 128, 0.05);
+    }
+    li:active{
+      background-color: rgba(128, 128, 128, 0.05);
+      box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+    }
+    li {
+      a:focus {
+        color:white;
+        background: $header-menu-active;
+      }
+    }
+  }
+}
+
+.navBarImage{
+  height: 5rem;
+}
+
+#user-menu{
+
+  .icon{
+    font-size: 2.5rem;
+    vertical-align: middle;
+  }
+
+  ul.menu-elements{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li{
+      display: inline-block;
+      margin: 0 0.5rem;
+      cursor: pointer;
+    }
+
+    & .dropdown .dropdown-menu{
+      li:hover{
+        color: white;
+        background: transparent;
+      }
+      li{
+        a:hover{
+          background: transparent;
+        }
+      }
+      li:last-child{
+        a{
+          color: $dropdown-hover;
+        }
+      }
+    }
+  }
+}
+
+/****NEW DESIGN****/
+.section{
+  width: 100%;
+  &.first-section{
+    background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/section1pic.jpg");
+    vertical-align: middle;
+    background-size: 100%;
+    height: 82rem;
+    padding-top: 17%;
+    .main-title{
+      color: $main-first-section-font-color;
+      margin-bottom: 3%;
+    }
+    & form{
+      text-align: center;
+      margin-bottom: 20%;
+      & *{
+        display: inline-block;
+        width: 15.9rem;
+        height: 4rem;
+        margin-right: 2.3rem;
+      }
+      & :last-child{
+        margin-right: 0;
+      }
+    }
+    .bottom-info{
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-yellow{
+      background-color: $main-first-section-button-sign-up-background;
+      border: 0;
+      color: $main-first-section-font-color;
+      padding: 0.8rem 1.6rem;
+    }
+  }
 }

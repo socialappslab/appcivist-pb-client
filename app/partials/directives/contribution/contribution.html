@@ -1,0 +1,17 @@
+<div class="contribution-content">
+    <!-- Attachment background if there is one -->
+    <ng-include ng-if="contribution.type === 'PROPOSAL' && !inModal"
+                ng-click="openContributionModal(contribution)"
+                src="'app/partials/contributions/contribution/attachmentBackground.html'"></ng-include>
+
+    <!-- Title and Text of Contribution -->
+    <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'"
+                ng-click="openContributionModal(contribution)"
+                src="'app/partials/contributions/contribution/contributionTitleText.html'"></ng-include>
+
+    <!-- Meta information of contribution: themes, authors, date, votes-->
+    <div class="row push-to-bottom no-padding">
+        <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'"
+                src="'app/partials/contributions/contribution/contributionMeta.html'"></ng-include>
+    </div>
+</div>

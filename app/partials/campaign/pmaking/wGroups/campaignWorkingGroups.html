@@ -1,0 +1,257 @@
+<div class="view campaign-wGroups" ng-controller="CampaignComponentCtrl">
+    <div class="col-md-12 col-sm-12">
+        <div class="row text-center">
+            <span class="h4"><strong>Assembly: </strong></span>
+            <span class="h4">{{assembly.name}}</span>
+            <span class="h4"> / </span>
+            <span class="h4"><strong>Campaign: </strong></span>
+            <span class="h4">{{campaign.title}}</span>
+        </div>
+        <br/>
+        <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
+            <ul id="timeline" class="row timeline">
+                <li id="proposalMakingPhase" class="{{proposalMakingState}} selected active">
+                    <h4><strong>Proposal Making</strong></h4>
+                </li>
+                <li id="versioningPhase" class="{{versioningState}} active">
+                    <h4><strong>Versioning</strong></h4>
+                </li>
+                <li id="deliberationPhase" class="{{deliberationState}} active">
+                    <h4><strong>Deliberation</strong></h4>
+                </li>
+                <li id="votingPhase" class="{{votingState}} active">
+                    <h4><strong>Voting</strong></h4>
+                </li>
+            </ul>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="progressline col-md-12 col-sm-12">
+                <div class="col-md-8 col-sm-8">
+                    <ul class="progressline-phases">
+                        <li class="progressline-phase" ng-repeat="milestone in milestones">
+                            <h4 class="progressline-phase-title">
+                                {{milestone.title}}
+                            </h4>
+                            <div class="progressline-phase-line"></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="counter-box">
+                        <h3 class="counter-title"><strong>Final drafts due</strong></h3>
+                        <ul class="counter">
+                            <li class="counter-section">
+                                <h5 class="text-muted"><strong>Days</strong></h5>
+                                <div>{{daysToDue}}</div>
+                            </li>
+                            <li class="counter-section">
+                                <h5 class="text-muted"><strong>Hours</strong></h5>
+                                <div>{{hoursToDue}}</div>
+                            </li>
+                            <li class="counter-section">
+                                <h5 class="text-muted"><strong>Minutes</strong></h5>
+                                <div>{{minutesToDue}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-7 col-sm-7">
+                <div class="row col-md-12 col-sm-12">
+                    <h1><strong>Create Working Group</strong></h1>
+                    <div class="voffset2"></div>
+                    <div class="box descriptionBox">
+                        <p><strong>Working groups</strong> develop campaigns by taking specific actions, such as drafting proposals and organizing events.</p>
+                    </div>
+                    <div class="voffset4"></div>
+                    <div class="col-md-12 col-sm-12 form-horizontal">
+                        <div class="form-group">
+                            <h3 class="col-md-2 col-sm-2 no-padding"><label for="inputCampaignWGroupName" class="control-label">Name</label></h3>
+                            <div class="col-md-10 col-sm-10 no-padding">
+                                <input class="form-control" id="inputCampaignWGroupName" placeholder="Passionés du Parc de Belleville"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="col-md-12 col-sm-12 form-horizontal">
+                        <div class="form-group">
+                            <h3 class="col-md-2 col-sm-2 no-padding"><label for="inputCampaignWGroupDescription" class="control-label">Description</label></h3>
+                            <div class="col-md-10 col-sm-10 no-padding">
+                                <textarea class="form-control" id="inputCampaignWGroupDescription" placeholder="(Max 250 words) Group developing Urban Infrastucture proposals for Parc du Belleville"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="col-md-12 col-sm-12 form-horizontal">
+                        <div class="form-group">
+                            <h3 class="col-md-2 col-sm-2 no-padding">
+                                <label for="checkConfirmWGroupTheme" class="control-label">Themes</label>
+                            </h3>
+                            <div class="box selectionBox col-md-4 col-sm-4" id="checkConfirmWGroupTheme">
+                                <!--<div class="col-md-9 col-md-9" ng-repeat="campaignTheme in campaignThemes">-->
+                                <div class="col-md-12 col-md-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="">
+                                            <span>Urban infrastucture</span>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="">
+                                            <span>Education</span>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="">
+                                            <span>Transportation</span>
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="">
+                                            <span>Parks and Recreation</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12">
+                                <h3 class="col-md-12 col-sm-12 no-padding">
+                                    <label for="inputByWhoWGroup" class="control-label">Who do people become members?</label>
+                                </h3>
+                                <div class="voffset3"></div>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-md-2 col-sm-2">
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.membership" type="radio" name="membershipOpen" id="openRadio" value="open" checked>
+                                                Open
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.membership" type="radio" name="membershipRegistration" id="registrationRadio" value="registration">
+                                                Registration
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 optionsBox" ng-show="newWGroup.profile.membership == 'registration'">
+                                        <h5 class="optionsBox-title">Membership by registration</h5>
+                                        <i class="fa fa-question-circle"></i>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="newAssembly.profile.member.invitation"/>
+                                                <p>By invitation, and/or</p>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="newAssembly.profile.member.request" />
+                                                <p>By request</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12">
+                                <h3 class="col-md-12 col-sm-12 no-padding">
+                                    <label for="inputWhoWGroup" class="control-label">Will some members have special roles?</label>
+                                </h3>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-md-1">
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.roles" type="radio" name="roleNo" id="noRadio" value="no" checked>
+                                                No
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.roles" type="radio" name="roleYes" id="yesRadio" value="yes">
+                                                Yes
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 optionsBox" ng-show="newWGroup.profile.roles == 'yes'">
+                                        <h5 class="optionsBox-title">What are the special roles?</h5>
+                                        <i class="fa fa-question-circle"></i>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.role.coordinators" type="checkbox" value="coordinators"/>
+                                                <p>Coordinators</p>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.role.moderators" type="checkbox" value="moderators"/>
+                                                <p>Moderators</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12">
+                                <h3 class="col-md-12 col-sm-12 no-padding">
+                                    <label for="inputWhoWGroupForum" class="control-label">Who can see the working group forum?</label>
+                                </h3>
+                                <div class="voffset3"></div>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.membership" type="radio" name="wGroupMembers" id="wGroupMembers" value="wGroupMembers" checked>
+                                                Members of the Working Group only
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.membership" type="radio" name="assemblyMembers" id="assemblyMembers" value="assemblyMembers">
+                                                Assembly members only
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.membership" type="radio" name="invitation" id="invitation" value="invitation" checked>
+                                                By invitation (via link)
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input ng-model="newWGroup.profile.membership" type="radio" name="everybody" id="everybody" value="everybody">
+                                                Everybody
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-5"></div>
+        </div>
+    </div>
+</div>

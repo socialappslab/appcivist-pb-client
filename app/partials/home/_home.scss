@@ -1,0 +1,186 @@
+.home{
+  a{
+    color: cornflowerblue;
+  }
+  .infoBox{
+    margin-top:10px;
+    border: 2px solid black;
+    border-radius:5px;
+    padding:5px;
+    height: 150px;
+    background-color: #f3f3f3;
+
+    .row{
+      margin-left:0px;
+    }
+
+    .list-item{
+      margin-top: 5px;
+    }
+
+    button{
+      float:right;
+    }
+
+    .image-circle{
+      height:20px;
+      width:20px;
+    }
+
+    .image-circle-sidebox{
+      height: 25px;
+      width:25px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .list-item{
+      .row{
+        margin-right: 0px;
+      }
+    }
+
+  }
+
+  .image-capsule{
+    img{
+      display: inline-block;
+    }
+    .caption{
+      display: inline-block;
+    }
+  }
+
+  .discussion{
+    margin-top: -35px;
+  }
+
+  .commentBox{
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 5px;
+
+    .image-circle{
+      height:20px;
+      width:20px;
+      opacity: 0.6;
+    }
+  }
+
+  .commentArea{
+    border:none;
+    width:100%;
+    resize: none;
+    outline: 0;
+  }
+
+
+  /**********************COMMENTS********************/
+
+  .comments{
+    list-style-type: none;
+    margin-left: 10px;
+  }
+
+  .reply{
+    margin-left:25px;
+  }
+
+  .comment{
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 15px;
+  }
+
+  .image-profile-comment img{
+    background-size: 100%;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+  }
+
+  .user-comment{
+    a {
+
+    }
+  }
+
+  .text-comment *{
+    display: inline;
+  }
+
+  .options-comment{
+    display: block;
+  }
+
+  .date-comment{
+
+  }
+
+  .comment-comment{
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+
+  .tags{
+    padding-left: 0;
+    list-style: none;
+    display: inline-block;
+  }
+
+  .tag{
+    margin: 0 2px;
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    display: inline-block;
+
+    border: none;
+    background: rgba(0, 0, 0, 0.26);
+  }
+
+  .counter{
+    p{
+      margin: -8px 0 -8px 0px;
+      padding-left: 5px;
+    }
+  }
+
+  .settingsBox{
+    .list-item{
+      overflow-y: auto;
+      overflow-x:hidden;
+      height: 8.5rem;
+      margin-right: 0.5rem;
+      margin-top: 2rem;
+      .item{
+        display: inline-block;
+        width: 50%;
+
+        .caption{
+          vertical-align: middle;
+          width: 12rem;
+          .text{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+
+  .upcoming-milestones-list{
+    margin-top: 1rem;
+    overflow: auto;
+    height: 11rem;
+  }
+}
+
+
+
+

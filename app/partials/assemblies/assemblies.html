@@ -1,37 +1,37 @@
 ﻿<div class="view assembliesLanding">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-6 col-md-6 col-sm-6">
-				<h1><strong>Featured Assemblies</strong></h1>
+			<div class="col-lg-5 col-md-5 col-sm-12 h1">
+				<h1><strong>Current Assemblies</strong></h1>
 			</div><!-- /.col-lg-6 -->
-			<div class="col-lg-6 col-md-6 col-sm-6">
-				<div class="input-group h1">
-					<input type="text" class="form-control" placeholder="Search for...">
+			<div class="col-lg-4 col-md-4 col-sm-6 h1">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Filter..." ng-model="assemblyFilter"/>
       				<span class="input-group-btn">
-        				<button class="btn btn-default" type="button">Search</button>
+        				<button class="btn btn-default" type="button" ng-click="searchAssembly(assemblyFilter)">Search</button>
 					</span>
 				</div><!-- /input-group -->
 			</div><!-- /.col-lg-6 -->
+			<div class="col-lg-3 col-md-3 col-sm-3 h1">
+				<a ng-href="/#/assembly/create">
+					<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="height: 34px; width:34px; display: inline-block; cursor: pointer;float:left;margin-right:12px;">
+					<div class="caption" style="align-content: center;vertical-align: middle;">
+						<h2 style="color:black;"><strong>New Assembly</strong></h2>
+						<!--<p>Organize your community and start the discussion</p>-->
+					</div>
+				</a>
+			</div>
 		</div>
 		<div class="row assemblies">
 			<div ng-if="assemblies.length > 0">
-				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies">
+				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies | filter:assemblyFilter">
 					<div class="thumbnail assembly">
-						<img data-src="{{assembly.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+						<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
 						<div class="caption">
-							<h4><strong>{{assembly.name}}</strong></h4>
-							<h5 class="text-muted"><strong><i>{{assembly.location.city}}, {{assembly.location.state}}</i></strong></h5>
+							<h4><strong><a ng-href="#/assembly/{{assembly.assemblyId}}/forum">{{assembly.name}}</a></strong></h4>
+							<h5 class="text-muted"><strong><i><div ng-show="assembly.location.placeName != null">{{assembly.location.placeName}},</div> {{assembly.location.city}}, {{assembly.location.country}}</i></strong></h5>
 							<p>{{assembly.description}}</p>
 						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-6 col-md-4">
-				<div class="thumbnail assembly">
-					<a ng-href="/#/assembly/create/step1"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="cursor: pointer"></a>
-					<div class="caption">
-						<h4><strong>New Assembly</strong></h4>
-						<p>Organize your community and start the discussion</p>
 					</div>
 				</div>
 			</div>

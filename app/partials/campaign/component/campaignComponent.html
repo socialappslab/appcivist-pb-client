@@ -1,0 +1,174 @@
+<div class="view campaign-pmaking">
+    <div class="col-md-12 col-sm-12">
+        <campaign-header
+                assembly="assembly"
+                campaign="campaign"
+                component="component">
+        </campaign-header>
+        <br/>
+
+        <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
+            <ul id="timeline" class="row timeline">
+                <li ng-class="component.componentInstanceId === componentID ? 'active selected' : 'active'"
+                    ng-repeat="component in components | filter: (component.timeline===1)"
+                    ng-class="component.componentInstanceId === componentID ? 'selected active' : ''">
+                    <h4>
+                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentInstanceId}}">
+                            <strong>
+                                {{component.title}}
+                            </strong>
+                        </a>
+                    </h4>
+                </li>
+            </ul>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="progressline col-md-12 col-sm-12">
+                <div class="col-md-8 col-sm-8">
+                    <ul class="progressline-phases">
+                        <li class="progressline-phase" ng-repeat="m in milestones">
+                            <h4 class="progressline-phase-title">
+                                <a ng-class="m.componentInstanceMilestoneId === milestoneID ? 'selected' : ''"
+                                   ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{m.componentInstanceMilestoneId}}">
+                                    {{m.title}}
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue > 1">(due in {{mDaysToDue}} days)</span>
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue === 1">(due in {{mDaysToDue}} day)</span>
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && !milestoneStarted && mDaysToDue > 1">(starts in {{mDaysToDue}} days)</span>
+                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && !milestoneStarted && mDaysToDue === 1">(starts in {{mDaysToDue}} day)</span>
+                                </a>
+                            </h4>
+
+                            <div class="progressline-phase-line"></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="counter-box">
+                        <h3 class="counter-title"><strong>{{component.title}} ends in </strong></h3>
+                        <ul class="counter">
+                            <li class="counter-section" ng-if="daysToDue > 1">
+                                <h5 class="text-muted"><strong>Days</strong></h5>
+
+                                <div>{{daysToDue}}</div>
+                            </li>
+                            <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue > 1">
+                                <h5 class="text-muted"><strong>Hours</strong></h5>
+
+                                <div>{{hoursToDue}}</div>
+                            </li>
+                            <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue === 1">
+                                <h5 class="text-muted"><strong>Minutes</strong></h5>
+
+                                <div>{{minutesToDue}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <h1><strong>{{milestone.title}}</strong><strong>: </strong>
+                <span>{{milestone.description}}</span>
+            </h1>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-2 col-sm-2">
+                <div class="row container-inline">
+                    <h2><strong class="text-muted">Contributions</strong></h2>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-7">
+                <div class="row col-md-12 col-sm-12">
+                    <ul class="tags tags-filter">
+                        <li class="tag tag-filter"><strong>All</strong></li>
+                        <li class="vertical-divider">
+                            &nbsp;
+                        </li>
+                        <li class="tag tag-filter" ng-repeat="t in themes">
+                            <strong>{{t.title}}</strong>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="col-md-7 col-sm-7 no-padding">
+                        <input type="text" class="form-control" placeholder="Search existing contributions..."
+                               ng-model="campaignContributionFilter">
+                    </div>
+                    <div class="col-md-3 col-sm-3 dropdown">
+                        <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
+                                id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Order by:<span class="caret"></span>
+                        </button>
+                        <ul class="ol-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a ng-click="orderContributions('creation')">Ordery by date</a></li>
+                            <li><a ng-click="orderContributions('random')">Random Order</a></li>
+                            <li><a ng-click="orderContributions('stats.points')">Popularity</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <button class="btn btn-success col-md-12 col-sm-12">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3">
+                <div class="row">
+                    <span ng-if="(milestone.title | uppercase) === 'BRAINSTORMING'">
+                        <button class="btn btn-success col-md-12"
+                                ng-click="openNewContributionModal('lg','BRAINSTORMING')">Contribute
+                        </button>
+                    </span>
+                    <span ng-if="(milestone.title | uppercase) === 'WORKING GROUP FORMATION' || (milestone.title | uppercase) === 'WORKING GROUPS FORMATION'">
+                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create">
+                            <button class="btn btn-success col-md-12">Create New Group</button>
+                        </a>
+                    </span>
+                    <span ng-if="(milestone.title | uppercase) === 'PROPOSAL DRAFTING' || (milestone.title | uppercase) === 'PROPOSAL EDITING'">
+                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','PROPOSAL')">
+                            New Proposal Draft
+                        </button>
+                    </span>
+                    <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD' || (milestone.title | uppercase) === 'VOTING ON PROPOSALS' || (milestone.title | uppercase) === 'VOTING PERIOD ENDING'">
+                        <a ng-href="#/ballot/{{component.ballots[0].uuid}}">
+                            <button class="btn btn-success col-md-12">Open Voting Ballot</button>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                     style="height:500px;" ng-if="milestone.mainContributionType==='PROPOSAL'"
+                     ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType} track by $index ">
+                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                                  contribution="contribution" assemblyid="assemblyID"
+                                  assemblyid="assembly.assemblyId"
+                                  campaignid="campaign.campaignId"
+                                  componentid="component.componentInstanceId"
+                                  milestoneid="milestone.componentInstanceMilestoneId"
+                                  container="contributions"
+                                  containerid="component.resourceSpaceId"
+                                  containerindex="$index"
+                    ></contribution>
+                </div>
+                <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                     style="height:300px;" ng-if="milestone.mainContributionType==='BRAINSTORMING'"
+                     ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType} track by $index ">
+                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                            contribution="contribution"
+                            assemblyid="assembly.assemblyId"
+                            campaignid="campaign.campaignId"
+                            componentid="component.componentInstanceId"
+                            milestoneid="milestone.componentInstanceMilestoneId"
+                            container="contributions"
+                            containerid="component.resourceSpaceId"
+                            containerindex="$index"
+                    ></contribution>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--<ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>-->
+</div>
+

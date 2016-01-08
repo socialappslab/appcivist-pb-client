@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="panel-body">
+        <div class="bg-success"
+             style="padding:5px;border-radius:5px;text-align:center; margin-bottom:10px"
+             id="success_person"></div>
+        <form id="signup_form" class="form-horizontal" role="form" method="post">
+            <div class="form-group">
+                <label for="username" class="col-md-3 control-label">Username</label>
+
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="username"
+                           name="username" placeholder="Desired Username" required
+                           ng-model="newUser.name"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="username" class="col-md-3 control-label">Email</label>
+
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="email" name="email"
+                           placeholder="Email" required ng-model="newUser.email"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-md-3 control-label">Password</label>
+
+                <div class="col-md-9">
+                    <input type="password" class="form-control" id="password"
+                           name="password" placeholder="Desired Password" required
+                           ng-model="newUser.password"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="repeatPassword" class="col-md-3 control-label">Confirm
+                    Password</label>
+
+                <div class="col-md-9">
+                    <input type="password" class="form-control" id="repeatPassword"
+                           name="repeatPassword" placeholder="Confirm Password" required
+                           ng-model="newUser.repeatPassword"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Button -->
+                <div class="col-md-offset-3 col-md-9">
+                    <input type="submit" name="submit" class="btn btn-primary"
+                           id="submit_person" ng-click="signup()" value="Submit"/>
+                </div>
+            </div>
+        </form>
+        <!--end of signup_form-->
+    </div>
+</div>
+<div class="row">
+    <uib-alert ng-repeat="error in errors track by $index" type="danger" close="removeErrors($index)">{{error.statusMessage}} </uib-alert>
+    <button class="col-md-push-2 col-md-2 btn btn-primary" ng-click="tabs[0].active=true">
+        <h3><strong>Back</strong></h3>
+    </button>
+    <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(3)">
+        <h3 ng-if="userIsNew"><strong>Next</strong></h3>
+        <h3 ng-if="!userIsNew"><strong>Start the Assembly</strong></h3>
+    </button>
+</div>

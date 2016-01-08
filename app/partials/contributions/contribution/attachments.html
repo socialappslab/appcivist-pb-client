@@ -1,0 +1,22 @@
+<div>
+    <div ng-if="showTitle" class="col-md-12 col-sm-12">
+            <h4><strong>Attachments</strong></h4>
+    </div>
+    <div ng-if="attachments === undefined || attachments.length === 0" class="col-md-12 col-sm-12">
+        <span>No attachments added yet</span>
+    </div>
+    <ul class="col-md-12 col-sm-12">
+        <li ng-repeat="att in attachments" class="col-md-12 col-sm-12">
+            <span ng-if="att.resourceType!='PICTURE'">
+                <a ng-href="{{att.url}}">{{(att.name && att.name != "" ? att.name : att.url) | limitTo: 25}}{{(att.url.length > 25) ? '...' : ''}}</a>
+            </span>
+            <span ng-if="att.resourceType==='PICTURE'">
+                <img src="{{att.url}}" height="25" width="25"> <a ng-href="{{att.url}}">{{(att.name && att.name != "" ? att.name : att.url) | limitTo: 25}}{{(att.url.length > 25) ? '...' : ''}}</a>
+            </span>
+        </li>
+    </ul>
+
+    <div class="pull-right">
+        <ng-include src="'app/partials/contributions/contribution/add-attachment.html'"></ng-include>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="container">
+	<div class="row text-center">
+		<h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h2>
+	</div>
+	<div class = "jumbotron" id="rangeLanding">
+		<div class = "titles">
+			<div class = "container">
+				<h3>Paris PB 2016</h3>
+			</div>
+			<div class = "container">
+				<h1><b>Assembly Ballot</b></h1>
+			</div>
+			<div class = "container">
+				<h1 id="small">2016 August</h1>
+			</div>
+		</div>
+		<br>
+		<div class = "container instructions">
+			<h2 class="title"><strong>Voting Instructions</strong><button type="button" class="btn btn-success" ng-click="nextPage()">Start Voting</button></h2>
+			<ul>
+				<li type="circle">{{votingBallot.instructions}}</li>
+				<li type="circle">The voting system your Assembly selected and configured for this campaign is <b>{{votingBallot.systemType}}</b></li>
+				<li type="none">
+					<ul>
+						<li  ng-repeat="pair in votingBallot.configs" type="circle">The {{pair.key}} of this voting ballot is {{pair.value}}.</li>
+					</ul>
+				</li>
+				<li type="circle">When you are ready to vote, click the button "Start voting".</li>
+			</ul>
+		</div>
+		<br>
+		<div class="container additional-info">
+			<h2><strong>Additional Information</strong></h2>
+			<p class="info">{{votingBallot.notes}}</p>
+			<br>
+			<h3><strong>Technical Issues</strong></h3>
+			<br>
+			<ul class="list-unstyled">
+				<li>Contact Cristhian at cristhian@example.com/ +1 999 999 9999</li>
+			</ul>
+		</div>
+	</div>
+</div>
+

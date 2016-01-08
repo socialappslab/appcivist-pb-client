@@ -1,0 +1,31 @@
+<div class="view campaign-creation" id="prePhase">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="indexBall pull-right" >
+                    <h1>{{currentStep}}</h1>
+                    <h4>/</h4>
+                    <h4>{{steps.length}}</h4>
+                </div>
+            </div>
+            <div class="col-md-10">
+                    <uib-tabset>
+                        <uib-tab ng-repeat="step in steps track by $index"
+                                 heading="{{step.title}}"
+                                 active="step.active"
+                                 disable="step.disabled"
+                                 ng-click="createCampaign(step, { fastrack:false })">
+                            <uib-tab-heading>
+                                <h4>
+                                    <strong>{{step.title}}</strong>
+                                    <i class="fa fa-question-circle" tooltip-placement="right"
+                                       uib-tooltip="{{tab.info}}" ng-show="step.info!=''"></i>
+                                </h4>
+                            </uib-tab-heading>
+                            <div ng-include="step.template"></div>
+                        </uib-tab>
+                    </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>

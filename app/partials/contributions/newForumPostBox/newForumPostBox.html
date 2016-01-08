@@ -1,0 +1,54 @@
+<div class="commentBox">
+    <form name="newForumPost">
+        <textarea name="commentForum"
+                  id="comment-forum"
+                  class="commentArea"
+                  rows="6"
+                  placeholder="What's up? ..."
+                  ng-model="newContribution.text">
+        </textarea>
+        <div class="col-md-1">
+            <a ng-click="addAttachmentToContribution(newContribution, attachment);" style="display: inline-block; cursor: pointer;">
+                <img data-src="holder.js/20x20" alt="20x20"
+                     src="../assets/images/addIcon.png"
+                     data-holder-rendered="true"
+                     class="image-circle" style="cursor: pointer">
+            </a>
+        </div>
+        <div class="pull-right">
+            <div class="dropdown" style="display: inline-block;">
+                <select class="dropdown"
+                        aria-labelledby="dropdownMenu2"
+                        name="commentTheme"
+                        ng-options="theme.title for theme in themes track by theme.themeId"
+                        ng-model="newContribution.theme">
+                    <option value="">Select Theme: </option>
+                </select>
+                <!--<button class="btn btn-default dropdown-toggle"-->
+                        <!--type="button" id="dropdownMenu2"-->
+                        <!--data-toggle="dropdown"-->
+                        <!--aria-haspopup="true"-->
+                        <!--aria-expanded="true">-->
+                    <!--Select Theme:-->
+                    <!--<span class="caret"></span>-->
+                <!--</button>-->
+                <!--<ul class="dropdown-menu"-->
+                    <!--aria-labelledby="dropdownMenu2">-->
+                    <!--<li ng-repeat="theme in currentAssembly.themes">-->
+                        <!--<a>{{theme.title}}</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            </div>
+            <h4 class="text-info"
+                style="display: inline-block; vertical-align: middle; cursor:pointer"
+                ng-click="postContribution()">
+                <strong>Publish | </strong>
+            </h4>
+            <h4 class="text-info"
+                style="display: inline-block; vertical-align: middle; cursor:pointer"
+                ng-click="clearContribution()">
+                <strong>Cancel</strong>
+            </h4>
+        </div>
+    </form>
+</div>

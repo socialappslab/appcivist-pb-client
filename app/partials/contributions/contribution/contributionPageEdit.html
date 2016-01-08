@@ -1,0 +1,129 @@
+<div class="view col-md-12 col-sm-12" id="contributionPage">
+        <div class="row col-md-9 col-sm-9">
+            <h3><strong>Edit Proposal Version</strong></h3>
+            <div class="voffset4"></div>
+            <div class="col-md-12 col-sm-12">
+                <ul class="contribution-header-list col-md-12 col-sm-12">
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Title</strong></h4>
+                        </span>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4><strong>{{contribution.title}}</strong></h4>
+                        </span>
+                    </li>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Summary</strong></h4>
+                        </span>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4>{{contribution.text}}</h4>
+                        </span>
+                    </li>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Keywords</strong></h4>
+                        </span>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4>{{contribution.keywords}}-</h4>
+                        </span>
+                    </li>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Location</strong></h4>
+                        </span>
+                        <span class="list-description col-md-10 col-sm-10">
+                            <h4>{{assembly.location.placeName}} - {{assembly.location.city}} - <strong>{{assembly.location.country}}</strong></h4>
+                        </span>
+                    </li>
+                    <li class="contribution-header-list-element col-md-12 col-sm-12">
+                        <span class="list-title col-md-1 col-sm-1">
+                            <h4><strong>Themes</strong></h4>
+                        </span>
+                        <span class="inline col-md-10 col-sm-10">
+                            <div class="row col-md-12 col-sm-12">
+                                <ul class="tags tags-filter" ng-repeat="theme in contribution.themes">
+                                    <li class="tag tag-filter">
+                                        <strong>{{theme.title}}</strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10 col-sm-10">
+                <div class="row contribution">
+                    <div class="contribution-content">
+                        <p class="contribution-description"> {{contribution.text}}</p>
+                        <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
+                        <iframe ng-if="!userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
+                                width="100%" height="100%">
+                        </iframe>
+                        <iframe ng-if="userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                                width="100%" height="100%">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 col-sm-10">
+                <div class="col-md-6 col-sm-6">
+                    <h4><strong>Similar Proposals</strong></h4>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <h4><strong>This proposal is based on</strong></h4>
+                    <div class="row col-md-12 col-sm-12">
+                        <div class="col-md-10 col-sm-10 no-padding">
+                            <input type="text" class="form-control " placeholder="Search oder contributions" ng-model="contributionBasedFilter">
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <button class="btn btn-success">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-2 col-sm-2">
+            <div class="row col-md-12 col-sm-12">
+                <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="100x100" data-holder-rendered="true" class="image-circle">
+                <div class="voffset2"></div>
+                <h4>Created by <strong>{{contribution.authors[0].name}}</strong></h4>
+                <div class="voffset2"></div>
+                <button class="btn btn-success center">Invite people to join</button>
+                <div class="voffset2"></div>
+                <h4 class="center"><strong>WG Members</strong></h4>
+                <div class="voffset2"></div>
+                <div class="row list-item assembliesList">
+                    <div class="row">
+                        <div class="assemblyItem item" ng-repeat="wgroup in campaign.workingGroups">
+                            <div class="image-capsule">
+                                <div class="caption" style="text-align: center">
+                                    <h5 class="text" title="{{wgroup.name}}">{{wgroup.name}}</h5>
+                                </div>
+                                <img ng-src="{{wgroup.profile.icon}}" alt="100x100" data-holder-rendered="true" class="image-circle-small">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row voffset4"></div>
+            <div class="row col-md-12 col-sm-12 box settingsBox">
+                <attachments attachments="contribution.attachments"
+                             contribution="contribution"
+                             assemblyid="assemblyID"
+                             showtitle="true"></attachments>
+            </div>
+            <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+
+                <div class="box descriptionBox">
+                    <p>If you get inspired by this discussion, add a new contribution.</p>
+                </div>
+                <button class="btn btn-success btn-half-size">Add</button>
+            </div>
+            <div class="voffset2"></div>
+            <h4 class="center"><strong>Merges & Splits </strong><i class="fa fa-question-circle"></i></h4>
+            <button class="btn btn-success center">Propose merge</button>
+            <button class="btn btn-success center">Propose split</button>
+        </div>
+    </div>
+</div>

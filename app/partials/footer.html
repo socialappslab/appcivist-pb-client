@@ -1,15 +1,4 @@
 <footer ng-controller="AccountCtrl">
-	<div ng-if='!userIsAuthenticated()' class="jumbotron jumbotron-index jumbotron-copyright">
-		<div class="container">
-			<div class="row">
-				<span><a href="http://socialappslab.org/">Socialapps Lab</a> at UC Berkeley.<br/>In partnership with
-					the <a href="https://mimove.inria.fr/">MiMove Team</a> at 
-					<a href="http://www.inria.fr/">INRIA</a>, France.
-				</span>
-			</div>
-		</div>
-	</div>
-	<div>
-		<span app-version></span>
-	</div>
+	<h4 translate="{{'FOOTER_TEXT'}}"></h4>
+	<h5><a ng-click="changeServer()">{{'FOOTER_TEXT_DEV' | translate}}{{serverBaseUrl}}</a></h5>
 </footer>

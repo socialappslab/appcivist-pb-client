@@ -1,0 +1,12 @@
+.votes-counter{
+  width: 2rem;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0.1rem;
+  .total-votes{
+    display: block;
+    margin: -0.9rem 0;
+    text-align: center;
+  }
+}

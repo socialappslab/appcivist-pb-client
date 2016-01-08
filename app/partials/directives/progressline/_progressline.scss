@@ -1,0 +1,90 @@
+.progressline{
+  & .progressline-phases{
+    list-style: none;
+    display: block;
+    vertical-align: bottom;
+    text-align: center;
+    margin: 2rem;
+    & .progressline-phase{
+      display: inline-block;
+      padding: 0.5rem 2.5rem 0rem 2.5rem;
+      vertical-align: bottom;
+      & .selected{
+        color: $progressline-phase-selected;
+      }
+
+      &:first-child{
+        color: $progressline-phase-selected;
+      }
+
+      & .progressline-phase-line {
+        position: relative;
+        border: 0.4rem solid $dark-grey;
+        margin: 0 -2rem;
+      }
+
+      & .progressline-phase-line:before, & .progressline-phase-line:after{
+        top: 50%;
+        border: solid;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-radius: 1rem;
+        border-width: 1rem;
+        margin-top: -1rem;
+        color: $dark-grey;
+      }
+
+      & .progressline-phase-line:before {
+        right: 100%;
+        border-right-color: $dark-grey;
+      }
+
+      & .progressline-phase-line:after{
+        left: 100%;
+        border-left-color: $dark-grey;
+      }
+
+      &:last-child{
+        & .progressline-phase-line:after {
+          color: transparent;
+          border-radius: 0rem;
+        }
+      }
+    }
+  }
+
+  & .counter-box{
+    list-style: none;
+    background-color: $progressline-background;
+    padding: 1rem;
+
+    & li{
+      display: inline-block;
+    }
+
+    .counter-title{
+      display: inline-block;
+      margin-left: 2rem;
+    }
+
+    .counter{
+      display: inline-block;
+
+      & .counter-section{
+        margin-right: 2rem;
+        width: 5rem;
+        & div{
+          border: 0.2rem solid grey;
+          padding: 0.5rem;
+          text-align: center;
+          vertical-align: middle;
+          background-color: $progressline-counter-box-background;
+        }
+      }
+
+    }
+  }
+}

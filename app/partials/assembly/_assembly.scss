@@ -1,15 +1,26 @@
 .assemblyCreation{
+  h1{
+    vertical-align: sub;
+    display: inline-block;
+  }
+  label{
+    font-size: 1.8rem;
+  }
+  ul{
+    list-style: none;
+  }
   .row{
-    margin: 0 0 10px 0;
+    margin: 0 0 1rem 0;
   }
 
   .image-capsule{
-    margin-right: 30px;
+    margin-right: 3rem;
+    margin-top: 3rem;
   }
 
   .image-circle {
-    height: 60px;
-    width: 60px;
+    height: 6rem;
+    width: 6rem;
     display: block;
     margin: auto;
     border-radius: 100%;
@@ -17,12 +28,12 @@
   }
 
   .image-cover {
-    height: 100px;
-    width: 500px;
+    height: 10rem;
+    width: 50rem;
     display: block;
     margin: auto;
     display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
   }
 
   .collection-tags{
@@ -32,21 +43,136 @@
   .green-tag{
     color: white;
     background-color: #5cb85c;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px 0 5px 0px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0 0.5rem 0;
   }
 
-  h1{
-    vertical-align: sub;
+  .grayBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .grayBox-title{
+      color: $assembly-optionsBox-title;
+      display: inline-block;
+    }
+    .checkbox{
+      padding-left: 2rem;
+    }
+    .radio{
+      padding-left: 2rem;
+    }
+  }
+
+  th.remove-column, td.remove-column  {
+    width: 15%
+  }
+  th.email-column, td.email-column  {
+    width: 45%; /* Not necessary, since only 70% width remains */
+  }
+  th.coordinator-column, th.moderator-column,
+  td.coordinator-column, td.moderator-column {
+    width: 25%; /* Not necessary, since only 70% width remains */
+  }
+
+  .tooltip.customTooltip .tooltip-inner {
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    text-align: left;
+  }
+
+  .optionsBox{
+    background-color: $assembly-optionsBox;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .optionsBox-title{
+      color: $assembly-optionsBox-title;
+      display: inline-block;
+    }
+    .checkbox{
+      padding-left: 2rem;
+    }
+  }
+  .optionsBox:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: $assembly-optionsBox;
+    border-width: 1rem;
+    margin-top: -2.3rem;
+  }
+
+  .assembly .assemblySelected:before{
+    content: '';
+    position: absolute;
+    height: 10rem;
+    width: 10rem;
+    background-color: black;
+    border-radius: 5rem;
+    opacity: 0.5;
+    background-size: 80%;
+    background-image: url("/assets/images/white_tick.png");
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+
+
+  /*******INPUT - TEXTAREA *********/
+  #inputAboutAssembly{
+    height: 10rem;
+  }
+  #inputJoinAssembly{
+    height: 10rem;
+  }
+  #inputInvitationByEmailAssembly{
+    height: 20rem;
+  }
+
+  input {
     display: inline-block;
+    margin: 0.5rem 0.5rem 0 0;
+    &#inputCityAssembly{
+      width: 10rem;
+    }
+    &#inputStateAssembly{
+      width: 7rem;
+    }
+    &#inputZipAssembly{
+      width: 6rem;
+    }
+    &#inputCountryAssembly{
+      width: 9rem;
+    }
+    &#inputContactNameAssembly{
+      width: 24.5rem;
+    }
+    &#inputContactPhoneAssembly{
+      width: 24.5rem;
+    }
+    &#inputContactEmailAssembly {
+      width: 24.5rem;
+    }
   }
 
-  label{
-    font-size: 16px;
+  .picsList{
+    white-space: nowrap;
+    & .image-capsule{
+      cursor: pointer;
+    }
   }
 
-  ul{
-    list-style: none;
+  /******STEP 3****/
+  .assembly-tags-container-title{
+    color: $assembly-tags-container-title;
+    padding: 1rem 1rem 0rem 1rem;
+  }
+  .assembly-tags-container-content{
+    height: 15rem;
+    overflow: auto;
+    border-top: 0.1rem solid $assembly-tags-container-content-border;
   }
 }

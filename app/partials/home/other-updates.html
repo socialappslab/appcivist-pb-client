@@ -1,0 +1,88 @@
+<ul class="row comments col-md-12 col-sm-12">
+    <li class="row comment col-md-12 col-sm-12" ng-repeat="update in notifications.other_updates">
+        <div class="row col-md-12 col-sm-12">
+            <h5 ng-if="update.containerType==='ASSEMBLY'" class="user-comment inline"><strong>Assembly Update</strong></h5>
+            <h5 ng-if="update.containerType==='CAMPAIGN'" class="user-comment inline"><strong>Campaign Update</strong></h5>
+            <h5 ng-if="update.containerType==='WORKING_GROUP'" class="user-comment inline"><strong>Working Group Update</strong></h5>
+
+            <div class="options-comment inline pull-right" ng-if="update.resource.themes">
+                <ul class="tags">
+                    <li class="tag" ng-repeat="t in update.resource.themes | limitTo:2">
+                        <strong>{{t.title}}</strong>
+                    </li>
+                    <li class="tag" ng-if="update.resource.themes.length > 2">
+                        <strong>...</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12 text-comment">
+                <p class="comment-comment">
+                    <strong>
+                        {{update.resource.author}} posted a new contribution in the {{update.containerType}} {{update.container.title}}
+                    </strong>
+                </p>
+                <br/>
+                <p class="comment-comment">
+                    <a class="text-muted"><i><strong>{{update.resource.title}}</strong> {{update.resource.text | limitTo: 61 }} {{update.resource.text.length > 61 ? '...' : ''}}</i></a></p>
+                <br/>
+                <a ng-href="#{{update.relativeUrl}}"><muted><i>Go to the {{update.containerType}} Page</i></muted></a>
+            </div>
+        </div>
+    </li>
+</ul>
+
+
+<!--<ul class="row comments col-md-12 col-sm-12">-->
+    <!--<li class="row comment col-md-12 col-sm-12">-->
+        <!--<div class="row col-md-12 col-sm-12">-->
+            <!--<h5 class="user-comment inline"><strong>Campaign Contribution</strong></h5>-->
+            <!--<div class="options-comment inline pull-right">-->
+                <!--<ul class="tags">-->
+                    <!--<li class="tag"><strong>Urban infrastucture</strong></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row col-md-12 col-sm-12">-->
+            <!--<div class="col-md-12 col-sm-12 text-comment">-->
+                <!--<p class="comment-comment"><a><strong>Alicia M. posted a new contribution in the Campaign "Belleville - Paris PB 2016"</strong></a></p>-->
+                <!--<br/>-->
+                <!--<p class="comment-comment"><a class="text-muted"><i><strong>Empty lot in Channing and Telegraph. </strong>For the past 10 years, this empty lot has been a problem for ...</i></a></p>-->
+                <!--<br/>-->
+                <!--<a><muted><i>Go to the Campaign Page</i></muted></a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</li>-->
+    <!--<li class="row comment col-md-12 col-sm-12">-->
+        <!--<div class="row col-md-12 col-sm-12">-->
+            <!--<h5 class="user-comment inline"><strong>Assembly Forum Post</strong></h5>-->
+            <!--<div class="options-comment inline pull-right">-->
+                <!--<ul class="tags">-->
+                    <!--<li class="tag"><strong>Urban infrastucture</strong></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row col-md-12 col-sm-12">-->
+            <!--<div class="col-md-12 col-sm-12 text-comment">-->
+                <!--<p class="comment-comment"><a><strong>Alicia M. posted in the Assembly "Assemblée Belleville" Forum</strong></a></p>-->
+                <!--<br/>-->
+                <!--<p class="comment-comment"><a class="text-muted"><i><strong>Proposals for Urban infrastucture. </strong>Hey guys, I think we should start a campaign to develop proposals for Urban infrastucture. What do you think?</i></a></p>-->
+                <!--<br/>-->
+                <!--<a><muted><i>Go to the Assembly Page</i></muted></a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</li>-->
+    <!--<li class="row comment col-md-12 col-sm-12">-->
+        <!--<div class="row col-md-12 col-sm-12">-->
+            <!--<h5 class="user-comment inline"><strong>Assembly Update</strong></h5>-->
+        <!--</div>-->
+        <!--<div class="row col-md-12 col-sm-12">-->
+            <!--<div class="col-md-12 col-sm-12 text-comment">-->
+                <!--<p class="comment-comment"><a>The Assembly <strong>"Mairie de Paris" </strong>is now receiving proposals for the PB voting due in 30 days.</a></p>-->
+                <!--<br/>-->
+                <!--<a><muted><i>Go to the Campaign Page</i></muted></a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</li>-->
+<!--</ul>-->

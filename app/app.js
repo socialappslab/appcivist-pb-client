@@ -164,9 +164,9 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         .when('/ballot/',{ // TODO: this redirect is just temporal
             redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
         })
-        .when('/ballot/:uuid/landing',{
+        .when('/ballot/:uuid/start',{
             controller: 'VotingLandingCtrl',
-            templateUrl: 'app/partials/voting/landing/VotingBallotLanding.html'
+            templateUrl: 'public/ballot/start.html'
         })
         .when('/ballot/:uuid/register',{
             controller: 'VotingRegistrationCtrl',

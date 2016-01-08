@@ -29,25 +29,32 @@ module.exports = function(grunt) {
                 }
             }
         },
+        haml: {
+          dist: {
+            files: [{
+              expand: true,
+              cwd: "app/views",
+              src: '**/*.haml',
+              dest: 'public',
+              ext: '.html'
+            }]
+          }
+        },
         connect: {
-            server:{
-                options:{
-                    port: 8000,
-                    /*open: {
-                        target: 'http://localhost:8000'
-                    },*/
-                    keepalive: true
-                }
-            }
+          server:{
+            options:{ port: 8000 }
+          }
         },
         watch: {
-            css: {
-                files: '**/*.sass',
-                tasks: ['sass'],
-                options: {
-                    livereload: true,
-                },
-            }
+          options: { livereload: true },
+          css: {
+            files: '**/*.sass',
+            tasks: ['sass'],
+          },
+          haml: {
+            files: ['app/views/**/*.haml'],
+            tasks: ['haml']
+          }
         }
     });
 
@@ -55,15 +62,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-haml');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-exec');
 
     // Default task(s).
-    grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['uglify', "haml"]);
 
     // Server tasks
-    grunt.registerTask('server', ['clean','sass','uglify','jshint','connect']);
+    grunt.registerTask('server', ['clean', 'sass','uglify','jshint','haml', 'connect', 'watch']);
 
 };

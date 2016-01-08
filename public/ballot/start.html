@@ -1,0 +1,144 @@
+<div class='container'>
+  <div class='row text-center'>
+    <h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016
+    </h2>
+  </div>
+  <br>
+  <div class='row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2'>
+    <ul class='row timeline' id='timeline'>
+      <li class='active' id='proposalMakingPhase'>
+        <h4>
+          <strong>Proposal Making</strong>
+        </h4>
+      </li>
+      <li class='active' id='proposalMakingPhase'>
+        <h4>
+          <strong>Versioning</strong>
+        </h4>
+      </li>
+      <li class='active' id='proposalMakingPhase'>
+        <h4>
+          <strong>Deliberation</strong>
+        </h4>
+      </li>
+      <li class='selected active' id='proposalMakingPhase'>
+        <h4>
+          <strong>Voting</strong>
+        </h4>
+      </li>
+    </ul>
+  </div>
+  <div class='progressline col-md-12 col-sm-12'>
+    <div class='col-md-8 col-sm-8'>
+      <ul class='progressline-phases'>
+        <li class='progressline-phase'>
+          <h4 class='progressline-phase-title'>
+            Registration
+          </h4>
+          <div class='progressline-phase-line'></div>
+        </li>
+        <li class='progressline-phase'>
+          <h4 class='progressline-phase-title selected'>
+            Instructions
+          </h4>
+          <div class='progressline-phase-line'></div>
+        </li>
+        <li class='progressline-phase'>
+          <h4 class='progressline-phase-title'>
+            Voting
+          </h4>
+          <div class='progressline-phase-line'></div>
+        </li>
+        <li class='progressline-phase'>
+          <h4 class='progressline-phase-title'>
+            Summary
+          </h4>
+          <div class='progressline-phase-line'></div>
+        </li>
+        <li class='progressline-phase'>
+          <h4 class='progressline-phase-title'>
+            Result
+          </h4>
+          <div class='progressline-phase-line'></div>
+        </li>
+      </ul>
+    </div>
+    <div class='col-md-4 col-sm-4'>
+      <div class='counter-box'>
+        <h3 class='counter-title'>
+          <strong>Final drafts due</strong>
+        </h3>
+        <ul class='counter'>
+          <li class='counter-section'>
+            <h5 class='text-muted'>
+              <strong>Days</strong>
+            </h5>
+            <div>45</div>
+          </li>
+          <li class='counter-section'>
+            <h5 class='text-muted'>
+              <strong>Hours</strong>
+            </h5>
+            <div>03</div>
+          </li>
+          <li class='counter-section'>
+            <h5 class='text-muted'>
+              <strong>Minutes</strong>
+            </h5>
+            <div>03</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='jumbotron' id='rangeLanding'>
+  <div class='titles'>
+    <div class='container'>
+      <h3>Paris PB 2016</h3>
+    </div>
+    <div class='container'>
+      <h1>
+        <b>Assembly Ballot</b>
+      </h1>
+    </div>
+    <div class='container'>
+      <h1 id='small'>2016 August</h1>
+    </div>
+  </div>
+  <br>
+  <div class='container instructions'>
+    <h2 class='title'>
+      <strong>Voting Instructions</strong>
+      <button class='btn btn-success' ng-click='nextPage()' type='button'>Start Voting</button>
+    </h2>
+    <ul>
+      <li type='circle'></li>
+      <li type='circle'>
+        The voting system your Assembly selected and configured for this campaign is
+        <b></b>
+      </li>
+      <li type='none'>
+        <ul>
+          <li ng-repeat='pair in votingBallot.configs' type='circle'>The  of this voting ballot is .</li>
+        </ul>
+      </li>
+      <li type='circle'>When you are ready to vote, click the button "Start voting".</li>
+    </ul>
+  </div>
+  <br>
+  <div class='container additional-info'>
+    <h2>
+      <strong>Additional Information</strong>
+    </h2>
+    <p class='info'></p>
+    <br>
+    <h3>
+      <strong>Technical Issues</strong>
+    </h3>
+    <br>
+    <ul class='list-unstyled'>
+      <li>Contact Cristhian at cristhian@example.com/ +1 999 999 9999</li>
+    </ul>
+  </div>
+</div>

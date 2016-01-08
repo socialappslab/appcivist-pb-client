@@ -9,7 +9,7 @@ appCivistApp.directive('footer', function () {
         restrict: 'A',  // This means that it will be used as an attribute and NOT as an element. 
         				// I don't like creating custom HTML elements
         replace: true,
-        templateUrl: "/app/partials/_footer.html",
+        templateUrl: "/app/partials/footer.html",
         controller: ['$scope', '$filter', function ($scope, $filter) {
             // Your behaviour goes here :)
         }]

@@ -5,10 +5,8 @@ appCivistApp.config(function ($translateProvider) {
         APPCIVIST_STRING: 'AppCivist',
         LOG_IN: 'Log In',
         SIGN_UP: 'Sign Up',
-        FOOTER_FIRST_LINE: 'By the Social Apps Lab at UC Berkeley',
-        FOOTER_SECOND_LINE: 'In partnership with the MiMove Team at INRIA, France'
-        //FOOTER_FIRST_LINE: 'By the <a href="http://socialappslab.org/">Social Apps Lab</a> at UC Berkeley',
-        //FOOTER_SECOND_LINE: 'In partnership with the "<a href="https://mimove.inria.fr/">MiMove Team</a>" at "<a href="http://www.inria.fr/">INRIA</a>", France'
+        FOOTER_TEXT: 'Created by the <a href="http://socialappslab.org/">Social Apps Lab</a> at CITRIS, University of California, Berkeley.<br/> 2015-2016 &copy; Regents of the University of California <br/> In partnership with the <a href="https://mimove.inria.fr/">MiMove Team</a> at <a href="http://www.inria.fr/">INRIA</a>, France.',
+        FOOTER_TEXT_DEV: '[DEV] Change Backend Server: Currently Using '
     });
 
     //French strings

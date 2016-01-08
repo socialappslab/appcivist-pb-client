@@ -46,13 +46,15 @@ module.exports = function(grunt) {
           }
         },
         watch: {
-            css: {
-                files: '**/*.sass',
-                tasks: ['sass'],
-                options: {
-                    livereload: true,
-                },
-            }
+          options: { livereload: true },
+          css: {
+            files: '**/*.sass',
+            tasks: ['sass'],
+          },
+          haml: {
+            files: ['app/views/**/*.haml'],
+            tasks: ['haml']
+          }
         }
     });
 
@@ -70,6 +72,6 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['uglify', "haml"]);
 
     // Server tasks
-    grunt.registerTask('server', ['clean', 'sass','uglify','jshint','haml', 'connect']);
+    grunt.registerTask('server', ['clean', 'sass','uglify','jshint','haml', 'connect', 'watch']);
 
 };

@@ -35,7 +35,7 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly', {query: q});
         },
         assemblyMembers: function(assemblyId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ACCEPTED', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', {aid: assemblyId});
         },
         linkedAssemblies: function(assemblyId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/linked', {aid: assemblyId});
@@ -298,18 +298,26 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
 appCivistApp.factory('Contributions', function ($resource, localStorageService, WorkingGroups) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
-        contributions: function(assemblyId) {
+        contributions: function (assemblyId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/'+assemblyId+'/contribution?space=forum');
         },
-        contribution: function(assemblyId, contributionId) {
+        contribution: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid',
+                {aid: assemblyId, coid: contributionId},
+                {
+                    'update' : {method:'PUT'},
+                    'delete' : {method: 'DELETE'}
+                });
+        },
+        contributionAttachment: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/attachment',
                 {aid: assemblyId, coid: contributionId});
         },
-        groupContribution: function(assemblyId, groupId) {
+        groupContribution: function (assemblyId, groupId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution',
                 {aid: assemblyId, gid: groupId});
         },
-        verifyAuthorship: function(user, c) {
+        verifyAuthorship: function (user, c) {
             if(user!=null && user != undefined && c!=null && c!=undefined) {
                 var authorList = c.authors;
                 // Check if author is in authorList (if author list is defined)
@@ -322,13 +330,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 }
             }
         },
-        verifyGroupAuthorship: function(user, c, group) {
+        verifyGroupAuthorship: function (user, c, group) {
             var assemblyId = group.assemblies[0];
             var groupId = group.groupId;
             var status = 'ACCEPTED';
             return WorkingGroups.verifyMembership(assemblyId, groupId, user.userId);
         },
-        defaultNewContribution: function() {
+        defaultNewContribution: function () {
             var newC = {
                 "title" : "",
                 "text" : "",
@@ -339,18 +347,21 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     "state" : ""
                 },
                 "themesHash" : [],
+                "workingGroupAuthors" : [],
                 "themes": [],
+                "existingThemes" : [],
+                "parentThemes" : [],
                 "hashtags": [],
                 "attachments": [],
                 "associatedMilestones": []
             };
             return newC;
         },
-        contributionInResourceSpace: function(spaceId) {
+        contributionInResourceSpace: function (spaceId) {
             return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution',
                 {sid: spaceId});
         },
-        contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
+        contributionsInCampaignComponent: function (assemblyID, campaignID, componentID) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
                 {
                     aid: assemblyID,
@@ -358,11 +369,75 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     ciid: componentID
                 })
         },
-        updateStats: function(statsId) {
+        updateStats: function (statsId) {
             return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid',
                 {stid: statsId},
                 {'update': {method:'PUT'}}
             );
+        },
+        defaultContributionAttachment: function () {
+            var att = {
+                name: "",
+                resourceType: "",
+                url: "",
+                showForm: false
+            };
+            return att;
+        },
+        newAttachmentObject: function (newAttachment) {
+            if(!newAttachment.resourceType) {
+                newAttachment.resourceType = "WEBPAGE";
+                if (newAttachment.url.endsWith(".jpg")
+                    || newAttachment.url.toLowerCase().endsWith(".png")
+                    || newAttachment.url.toLowerCase().endsWith(".jpeg")
+                    || newAttachment.url.toLowerCase().endsWith(".gif")
+                    || newAttachment.url.toLowerCase().endsWith(".tiff")) {
+                    newAttachment.resourceType = "PICTURE";
+                } else if (newAttachment.url.toLowerCase().endsWith(".pdf")
+                    || newAttachment.url.toLowerCase().endsWith(".doc")
+                    || newAttachment.url.toLowerCase().endsWith(".docx")
+                    || newAttachment.url.toLowerCase().endsWith(".xsl")
+                    || newAttachment.url.toLowerCase().endsWith(".xslx")) {
+                    newAttachment.resourceType = "FILE";
+                } else if (newAttachment.url.toLowerCase().endsWith(".mp3")
+                    || newAttachment.url.toLowerCase().endsWith(".ogg")
+                    || newAttachment.url.toLowerCase().endsWith(".acc")) {
+                    newAttachment.resourceType = "AUDIO";
+                } else if (newAttachment.url.toLowerCase().endsWith(".mp4")
+                    || newAttachment.url.toLowerCase().endsWith(".mov")
+                    || newAttachment.url.toLowerCase().endsWith(".avi")) {
+                    newAttachment.resourceType = "VIDEO";
+                } else {
+                    newAttachment.resourceType = "WEBPAGE";
+                }
+            }
+            return {
+                name : newAttachment.name,
+                url : newAttachment.url,
+                resourceType : newAttachment.resourceType
+            }
+        },
+        copyAttachmentObject: function (oldAtt, newAtt) {
+            oldAtt.name = newAtt.name;
+            oldAtt.url = newAtt.url;
+            oldAtt.resourceType = newAtt.resourceType;
+            oldAtt.showForm = newAtt.showForm;
+        },
+        copyContributionObject: function (oldC, newC) {
+            if(newC.contributionId) {
+                oldC.contributionId = newC.contributionId;
+            } else {
+                delete oldC.contributionId;
+            }
+            oldC.title = newC.title;
+            oldC.text = newC.text;
+            oldC.type = newC.type;
+            oldC.location = newC.location
+            oldC.themesHash = newC.themesHash;
+            oldC.themes = newC.themes;
+            oldC.hashtags = newC.hashtags;
+            oldC.attachments = newC.attachments;
+            oldC.associatedMilestones = newC.associatedMilestones;
         }
     };
 });
@@ -384,6 +459,13 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                     status: stat
                 });
         },
+        workingGroupProposals: function(assemblyId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals',
+                {
+                    aid: assemblyId,
+                    gid: groupId
+                });
+        },
         verifyMembership: function(assemblyId, groupId, userId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/user/:uid',
                 {
@@ -391,6 +473,46 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                     gid: groupId,
                     uid: userId
                 });
+        },
+        defaultNewWorkingGroup: function() {
+            return {
+                //"name": "Assemblée Belleville",
+                //"text": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
+                "listed": true, // TODO: ADD TO FORM
+                "profile": {
+                    "targetAudience": "RESIDENTS",
+                    "membership": "REGISTRATION",
+                    "registration" : {
+                        "invitation" : true,
+                        "request" : true
+                    },
+                    "moderators":"two",
+                    "coordinators":"two",
+                    "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png"
+                },
+                //"location": {
+                //	"placeName": "Belleville, Paris, France"
+                //},
+                "themes": [],
+                "existingThemes": [],
+                "config" : {
+                    "majority":"66%",
+                    "blocking":false
+                },
+                "configs": [
+                    {
+                        "key": "group.consensus.majority",
+                        "value": "66%"
+                    },
+                    {
+                        "key": "group.consensus.blocking",
+                        "value": "false"
+                    }
+                ],
+                "lang": "en", // TODO: ADD TO FORM
+                //"invitationEmail"
+                "invitations" : [ ] // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
+            };
         }
     };
 });
@@ -410,6 +532,9 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
                     aid: assemblyId,
                     cid: contributionId
                 });
+        },
+        getEtherpadReadOnlyUrl : function (readOnlyPadId) {
+            return localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
         }
     };
 });
@@ -855,5 +980,53 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
         signUp: function() {
             return $resource(getServerBaseUrl(localStorageService) + '/user/signup');
         }
+    };
+});
+
+appCivistApp.factory('FileUploader', function ($resource, localStorageService, Upload, $timeout) {
+    return {
+        upload: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/upload');
+        },
+        list: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/files');
+        },
+        uploadEndpoint: function() {
+            return getServerBaseUrl(localStorageService) + '/upload';
+        },
+        uploadFileAndAddToResource: function(file, resource) {
+            if (file) {
+                var type = "FILE";
+                if (file.type.startsWith("image")) {
+                    type = "PICTURE"
+                } else if (file.type.startsWith("audio")) {
+                    type = "AUDIO"
+                } else if (file.type.startsWith("video")) {
+                    type = "VIDEO"
+                }
+
+                resource.resourceType = type;
+                file.upload = Upload.upload({
+                    url: getServerBaseUrl(localStorageService) + '/upload',
+                    data: {file: file}
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                        resource.name = response.data.name;
+                        resource.url = response.data.url;
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        file.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    file.progress = Math.min(100, parseInt(100.0 *
+                        evt.loaded / evt.total));
+                    console.log('progress: ' + file.progress + '% ');
+                });
+            }
+        }
+
     };
 });

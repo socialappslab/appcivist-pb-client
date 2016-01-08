@@ -1,5 +1,7 @@
 @import "../stylesheets/styles/colors";
 @import "../stylesheets/styles/common";
+@import "../stylesheets/styles/header";
+@import "../stylesheets/styles/footer";
 @import "../app/partials/landing/landing";
 @import "../app/partials/assembly/assembly";
 @import "../app/partials/assemblies/assemblies";
@@ -13,10 +15,61 @@
 @import "../app/partials/wGroupsSuggestions/wGroupsSuggestion";
 @import "../app/partials/wGroupForum/wGroupForum";
 
-footer{
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
+.inline{
+  display: inline-block !important;
+}
+
+
+/*Mixin*/
+.assembly{
+  -webkit-box-shadow:none;
+  box-shadow:none;
+  display: inline-flex;
+  padding: 4px;
+  margin-bottom: 20px;
+  border: 0;
+  border-radius: 0px;
+  height: auto;
+
+  img{
+    -webkit-box-shadow:0;
+    box-shadow:0;
+    height: 100px;
+    display: inline-block;
+  }
+
+  .caption{
+    display: inline-block;
+    width: 220px;
+  }
+
+}
+
+.image-circle{
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin:auto;
+  border-radius: 100%;
+}
+
+.image-capsule{
+  cursor: default;
+  margin: 0px 10px;
+}
+
+i{
+  cursor: pointer;
+}
+
+.summary-heading{
+  margin: 2rem 0;
+}
+
+.marketing{
+  .caption{
+    margin: auto;
+  }
 }
 
 /******HEADER******/
@@ -85,59 +138,43 @@ footer{
   }
 }
 
-.inline{
-  display: inline-block !important;
-}
+/****NEW DESIGN****/
+.section{
+  width: 100%;
+  &.first-section{
+    background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/section1pic.jpg");
+    vertical-align: middle;
+    background-size: 100%;
+    height: 82rem;
+    padding-top: 17%;
+    .main-title{
+      color: $main-first-section-font-color;
+      margin-bottom: 3%;
+    }
+    & form{
+      text-align: center;
+      margin-bottom: 20%;
+      & *{
+        display: inline-block;
+        width: 15.9rem;
+        height: 4rem;
+        margin-right: 2.3rem;
+      }
+      & :last-child{
+        margin-right: 0;
+      }
+    }
+    .bottom-info{
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-
-/*Mixin*/
-.assembly{
-  -webkit-box-shadow:none;
-  box-shadow:none;
-  display: inline-flex;
-  padding: 4px;
-  margin-bottom: 20px;
-  border: 0;
-  border-radius: 0px;
-  height: auto;
-
-  img{
-    -webkit-box-shadow:0;
-    box-shadow:0;
-    height: 100px;
-    display: inline-block;
-  }
-
-  .caption{
-    display: inline-block;
-    width: 220px;
-  }
-
-}
-
-.image-circle{
-  height: 100px;
-  width: 100px;
-  display: block;
-  margin:auto;
-  border-radius: 100%;
-}
-
-.image-capsule{
-  cursor: default;
-  margin: 0px 10px;
-}
-
-i{
-  cursor: pointer;
-}
-
-.summary-heading{
-  margin: 2rem 0;
-}
-
-.marketing{
-  .caption{
-    margin: auto;
+    .btn-yellow{
+      background-color: $main-first-section-button-sign-up-background;
+      border: 0;
+      color: $main-first-section-font-color;
+      padding: 0.8rem 1.6rem;
+    }
   }
 }

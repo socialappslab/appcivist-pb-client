@@ -6,7 +6,7 @@
      aria-hidden="true">
     <div class="modal-content col-md-12 col-sm-12">
         <div class="modal-header">
-            <button type="button" class="close" ng-click="cancel" aria-label="Close">
+            <button type="button" class="close" ng-click="cancel()" aria-label="Close">
                 <span aria-hidden="true">×</span>
             </button>
 
@@ -56,21 +56,30 @@
                     <div class="voffset2"></div>
 
                     <div class="row comments col-md-11 col-sm-11">
-                        <appcivist-comments comments="contribution.comments"></appcivist-comments>
+                        <appcivist-comments comments="contribution.comments"
+                                            assemblyid="assemblyID"
+                                            containerid="contribution.resourceSpaceId"></appcivist-comments>
                     </div>
                 </div>
 
             </div>
 
             <div class="col-md-4 col-sm-4">
-                <attachments resources="contribution.attachments"></attachments>
+                <div class="row col-md-12 col-sm-12 box settingsBox">
+                    <attachments attachments="contribution.attachments"
+                                 contribution="contribution"
+                                 newattach="newAttachment"
+                                 showtitle="true"
+                                 assemblyid="assemblyID">
+                    </attachments>
+                </div>
                 <div class="row voffset4"></div>
                 <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
                     <div class="box descriptionBox">
                         <p>If you get inspired by this discussion, add a new contribution.</p>
                     </div>
-                    <button class="btn btn-success btn-half-size" data-toggle="modal" data-dismiss="modal"  data-target="#newContribution">Contribute</button>
-                    <button class="btn btn-success btn-half-size" ng-click="openContributionPage(contribution.contributionId)">Edit</button>
+                    <button class="btn btn-success btn-half-size" ng-if="userIsAuthor" ng-click="openContributionPage(contribution.contributionId, true)">Edit</button>
+                    <button class="btn btn-success btn-half-size" ng-if="!userIsAuthor" ng-click="openContributionPage(contribution.contributionId, false)">Open</button>
                 </div>
             </div>
 
@@ -78,6 +87,7 @@
 
         <div class="modal-footer view col-md-12 col-sm-12">
             <spinner name="mySpinner" show="postingContribution"></spinner>
+            <button class="btn btn-danger" type="button" ng-if="userIsAuthor" ng-click="delete()">Delete</button>
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>

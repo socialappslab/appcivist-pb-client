@@ -21,7 +21,7 @@ appCivistApp.directive('header', function () {
         restrict: 'A', 
         replace: false,
         scope: {user: '='}, // This is one of the cool things :). Will be explained in post.
-        templateUrl: "/app/partials/header.html",
+        templateUrl: "/app/partials/_header.html",
         controller: ['$scope', '$filter', function ($scope, $filter) {
             console.log("User = "+$scope.user);
             console.log("User = "+$scope.sessionKey);            

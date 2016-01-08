@@ -1,76 +1,30 @@
 <div class="container">
     <div class="row text-center">
-      <h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h2>
+        <h2><b>Assembly:</b>PB Belleville Paris/<b>Campaign:</b>Belleville - Paris PB 2016</h2>
     </div>
     <br>
-    <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
-      <ul id="timeline" class="row timeline">
-        <li id="proposalMakingPhase" class=" active">
-          <h4>
-            <strong>Proposal Making</strong>
-          </h4>
-        </li>
-        <li id="proposalMakingPhase" class=" active">
-          <h4>
-            <strong>Versioning</strong>
-          </h4>
-        </li>
-        <li id="proposalMakingPhase" class=" active">
-          <h4>
-            <strong>Deliberation</strong>
-          </h4>
-        </li>
-        <li id="proposalMakingPhase" class=" selected active">
-          <h4>
-            <strong>Voting</strong>
-          </h4>
-        </li>
-      </ul>
+
+    <div class="titles">
+        <div class="container">
+            <h3>Paris PB 2016</h3>
+        </div>
+        <div class="container">
+            <h1><b>Assembly Ballot</b></h1>
+        </div>
+        <div class="container">
+            <h1 id="small">2016 August</h1>
+        </div>
     </div>
-    <div class="progressline col-md-12 col-sm-12">
-        <div class="col-md-8 col-sm-8">
-            <ul class="progressline-phases">
-                <li class="progressline-phase">
-                    <h4 class="progressline-phase-title selected container-fluid">
-                        Voting
-                    </h4>
-                    <div class="progressline-phase-line"></div>
-                </li>
-            </ul>
-          </div>
-        <div class="col-md-4 col-sm-4">
-            <div class="counter-box">
-                <h3 class="counter-title"><strong>Voting will end in</strong></h3>
-                <ul class="counter">
-                    <li class="counter-section">
-                        <h5 class="text-muted"><strong>Days</strong></h5>
-                        <div>45</div>
-                    </li>
-                    <li class="counter-section">
-                        <h5 class="text-muted"><strong>Hours</strong></h5>
-                        <div>03</div>
-                    </li>
-                    <li class="counter-section">
-                        <h5 class="text-muted"><strong>Minutes</strong></h5>
-                        <div>03</div>
-                    </li>
-                </ul>
+    <br>
+
+    <form>
+        <div class="fields" ng-repeat="field in fields">
+            <div class="form-group">
+                <label for="exampleInputEmail1">{{field.fieldName}}</label>
+                <input class="form-control" id="{{field.votingBallotRegistrationFieldId}}"
+                       placeholder="{{field.fieldDescription}}">
             </div>
         </div>
-      </div>
-</div>
-<div class="container">
-  <h4>Paris PB 2016</h4>
-  <h1><b>Registration Form</b></h1>
-  <h3>2015-08</h3>
-  <br>
-  <form>
-    <div class="fields" ng-repeat="field in fields">
-      <div class="form-group">
-        <label for="exampleInputEmail1">{{field.fieldName}}</label>
-        <input class="form-control" id="{{field.votingBallotRegistrationFieldId}}" placeholder="{{field.fieldDescription}}">
-      </div>
-    </div>
-    <button type="submit" ng-click="fillForm($scope)" class="btn btn-default"><a href="#">Submit</a></button>
-  </form>
+        <button type="submit" ng-click="fillForm($scope)" class="btn btn-default"><a href="#">Submit</a></button>
+    </form>
 </div>

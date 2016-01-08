@@ -22,6 +22,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 													   moment, modelFormatConfig) {
 
 	init();
+	initializeNewCampaignModel();
+	setListOfLinkedAssemblies();
 
 	function init() {
 		$scope.forms = {};
@@ -93,209 +95,202 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		//		$scope.steps[1].disabled = $scope.steps[2].disabled = false;
 		//}, true);
 
-		initializeNewCampaignModel();
-		setListOfLinkedAssemblies();
-	}
-
-	// $scope functions
-
-	$scope.changeCampaignTemplate = function(template) {
-		if(template.value==="LINKED") {
-			$scope.newCampaign.proposalComponents[4].enabled=true;
-			$scope.newCampaign.proposalComponents[5].enabled=true;
-		} else {
-			$scope.newCampaign.useLinkedCampaign=false;
-			$scope.newCampaign.proposalComponents[2].enabled=true;
-			$scope.newCampaign.proposalComponents[3].enabled=true;
-			$scope.newCampaign.proposalComponents[4].enabled=false;
-			$scope.newCampaign.proposalComponents[5].enabled=false;
+		$scope.changeCampaignTemplate = function(template) {
+			if(template.value==="LINKED") {
+				$scope.newCampaign.proposalComponents[4].enabled=true;
+				$scope.newCampaign.proposalComponents[5].enabled=true;
+			} else {
+				$scope.newCampaign.useLinkedCampaign=false;
+				$scope.newCampaign.proposalComponents[2].enabled=true;
+				$scope.newCampaign.proposalComponents[3].enabled=true;
+				$scope.newCampaign.proposalComponents[4].enabled=false;
+				$scope.newCampaign.proposalComponents[5].enabled=false;
+			}
 		}
-	}
 
-	$scope.updateConfigOptionValue = function(config, optionValue) {
-		config.value = optionValue.value;
-	}
+		$scope.updateConfigOptionValue = function(config, optionValue) {
+			config.value = optionValue.value;
+		}
 
-	$scope.checkOption = function(config,option) {
-		console.log('Checked: '+option.value+" for config "+config.key);
-	}
+		$scope.checkOption = function(config,option) {
+			console.log('Checked: '+option.value+" for config "+config.key);
+		}
 
-	$scope.checkParentValue =  function(parent, child) {
-		return internalCheckParentValue(parent,child);
-	}
+		$scope.checkParentValue =  function(parent, child) {
+			return internalCheckParentValue(parent,child);
+		}
 
-	$scope.configIsEnabled = function(config, configs, type) {
-		var typeCondition = config.type === type;
-		var dependsOfIsUndefined = config.dependsOf === undefined || config.dependsOf === 0 || config.dependsOf === null;
-		var dependsOfConfigValueIsSelected = !dependsOfIsUndefined && internalCheckParentValue(configs[config.dependsOf-1],config)
-		var result = ( typeCondition && (dependsOfIsUndefined || dependsOfConfigValueIsSelected ) );
-		return result;
-	}
+		$scope.configIsEnabled = function(config, configs, type) {
+			var typeCondition = config.type === type;
+			var dependsOfIsUndefined = config.dependsOf === undefined || config.dependsOf === 0 || config.dependsOf === null;
+			var dependsOfConfigValueIsSelected = !dependsOfIsUndefined && internalCheckParentValue(configs[config.dependsOf-1],config)
+			var result = ( typeCondition && (dependsOfIsUndefined || dependsOfConfigValueIsSelected ) );
+			return result;
+		}
 
-	$scope.removeError = function (index) {
-		$scope.errors.splice(index,1)
-	}
+		$scope.removeError = function (index) {
+			$scope.errors.splice(index,1)
+		}
 
-	$scope.removeTemplateError = function (index) {
-		$scope.templateErrors.splice(index,1)
-	}
+		$scope.removeTemplateError = function (index) {
+			$scope.templateErrors.splice(index,1)
+		}
 
-	/**
-	 * Add/removes themes to the list of themes in the newCampaign Model
-	 * @param ts
-     */
-	$scope.addTheme = function(ts) {
-		var themes = ts.split(',');
-		themes.forEach(function(theme){
-			var addedTheme = {title: theme.trim()};
-			$scope.newCampaign.themes.push(addedTheme);
-		});
-		$scope.themes = "";
-	}
+		/**
+		 * Add/removes themes to the list of themes in the newCampaign Model
+		 * @param ts
+		 */
+		$scope.addTheme = function(ts) {
+			var themes = ts.split(',');
+			themes.forEach(function(theme){
+				var addedTheme = {title: theme.trim()};
+				$scope.newCampaign.themes.push(addedTheme);
+			});
+			$scope.themes = "";
+		}
 
-	$scope.removeTheme = function(index) {
-		$scope.newCampaign.themes.splice(index,1);
-	}
+		$scope.removeTheme = function(index) {
+			$scope.newCampaign.themes.splice(index,1);
+		}
 
-	$scope.addExistingTheme = function(ts) {
-		var themes = ts.split(',');
-		themes.forEach(function(theme){
-			var addedTheme = {title: theme.trim()};
-			$scope.newCampaign.existingThemes.push(addedTheme);
+		$scope.addExistingTheme = function(ts) {
+			var themes = ts.split(',');
+			themes.forEach(function(theme){
+				var addedTheme = {title: theme.trim()};
+				$scope.newCampaign.existingThemes.push(addedTheme);
 
-		});
-		$scope.themes = "";
-	}
+			});
+			$scope.themes = "";
+		}
 
-	$scope.removeExistingTheme = function(index) {
-		$scope.newCampaign.existingThemes.splice(index,1);
-	}
+		$scope.removeExistingTheme = function(index) {
+			$scope.newCampaign.existingThemes.splice(index,1);
+		}
 
-	/**
-	 * Add/removes sections to the contributions template of a component
-	 * @param section
-	 */
-	$scope.addContributionTemplateSection = function(section, component) {
-		var newSection = {
-			title: section.title,
-			description: section.description,
-			length: section.length
+		/**
+		 * Add/removes sections to the contributions template of a component
+		 * @param section
+		 */
+		$scope.addContributionTemplateSection = function(section, component) {
+			var newSection = {
+				title: section.title,
+				description: section.description,
+				length: section.length
+			};
+			component.contributionTemplate.push(newSection);
+		}
+
+		$scope.removeContributionTemplateSection = function(index, component) {
+			component.contributionTemplate.splice(index,1);
+		}
+
+		/**
+		 * Updates the current and previous step models in the $scope
+		 * @param step
+		 * @param prevStep
+		 */
+		$scope.setCurrentStep = function (step, prevStep) {
+			privateSetCurrentStep(step,prevStep);
+		}
+
+		/**
+		 * Populates the list of optional themes according to the linked campaign themes
+		 */
+		$scope.initializeLinkedCampaignOptionThemes = function(campaign) {
+			$scope.campaignThemes = [];
+			$scope.newCampaign.linkedCampaign = campaign;
+			var linkedCampaignThemes = $scope.newCampaign.linkedCampaign.campaign.themes;
+			if (linkedCampaignThemes != undefined && linkedCampaignThemes != null && linkedCampaignThemes.length > 0) {
+				for (var i = 0; i < linkedCampaignThemes.length; i += 1) {
+					var t = linkedCampaignThemes[i];
+					var themeOption = {
+						title: t.title,
+						selected: true,
+						id: t.themeId
+					}
+					$scope.campaignThemes.push(themeOption);
+				}
+			}
+
+			if($scope.newCampaign.linkedComponents[0]===undefined) {
+				$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[2]);
+				$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[3]);
+
+			} else {
+				$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
+				$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
+			}
+			$scope.newCampaign.proposalComponents[4].componentInstanceId = $scope.newCampaign.linkedComponents[0].componentInstanceId;
+			$scope.newCampaign.proposalComponents[5].componentInstanceId = $scope.newCampaign.linkedComponents[1].componentInstanceId;
+		}
+
+		/**
+		 * Populates the list of optional themes according to the parent assembly
+		 */
+		$scope.initializeAssemblyOptionThemes = function() {
+			$scope.assemblyThemes = [];
+			var assemblyThemes = $scope.assembly.themes;
+			if (assemblyThemes != undefined && assemblyThemes != null && assemblyThemes.length > 0) {
+				for (var i = 0; i < assemblyThemes.length; i += 1) {
+					var t = assemblyThemes[i];
+					var themeOption = {
+						title: t.title,
+						selected: true,
+						id: t.themeId
+					}
+					$scope.assemblyThemes.push(themeOption);
+				}
+			}
+		}
+
+		/**
+		 * Scope shortcut to refreshing the Timeframe slider models
+		 * for milestones
+		 * @param months
+		 */
+		$scope.refreshTimeframe = function(months) {
+			privateRefreshTimeframe(months);
+		}
+
+		/**
+		 * Updates the value of a milestone based on a new date
+		 * @param date
+		 * @param index
+		 */
+		$scope.updateMilestoneValue =  function(date, index) {
+			var newDate = moment(date);
+			var campaignStartDate = moment($scope.campaignTimeframeStartDate);
+			var d = duration(campaignStartDate,newDate);
+			$scope.newCampaign.milestones[index].date = date;
+			$scope.newCampaign.milestones[index].value = d.days;
+			$scope.newCampaign.triggerTimeframeUpdate = true;
+		}
+
+		/**
+		 * Opens or closes the date pickers for each milestone
+		 * @param $event
+		 * @param m
+		 */
+		$scope.open = function($event,m) {
+			m.calOpened = true;
 		};
-		component.contributionTemplate.push(newSection);
-	}
 
-	$scope.removeContributionTemplateSection = function(index, component) {
-		component.contributionTemplate.splice(index,1);
-	}
+		$scope.disabled = function(date, mode) {
+			return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+		};
 
-	/**
-	 * Updates the current and previous step models in the $scope
-	 * @param step
-	 * @param prevStep
-     */
-	$scope.setCurrentStep = function (step, prevStep) {
-		privateSetCurrentStep(step,prevStep);
-	}
-
-	/**
-	 * Populates the list of optional themes according to the linked campaign themes
-	 */
-	$scope.initializeLinkedCampaignOptionThemes = function(campaign) {
-		$scope.campaignThemes = [];
-		$scope.newCampaign.linkedCampaign = campaign;
-		var linkedCampaignThemes = $scope.newCampaign.linkedCampaign.campaign.themes;
-		if (linkedCampaignThemes != undefined && linkedCampaignThemes != null && linkedCampaignThemes.length > 0) {
-			for (var i = 0; i < linkedCampaignThemes.length; i += 1) {
-				var t = linkedCampaignThemes[i];
-				var themeOption = {
-					title: t.title,
-					selected: true,
-					id: t.themeId
-				}
-				$scope.campaignThemes.push(themeOption);
-			}
-		}
-
-		if($scope.newCampaign.linkedComponents[0]===undefined) {
-			$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[2]);
-			$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[3]);
-
-		} else {
-			$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
-			$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
-		}
-		$scope.newCampaign.proposalComponents[4].componentInstanceId = $scope.newCampaign.linkedComponents[0].componentInstanceId;
-		$scope.newCampaign.proposalComponents[5].componentInstanceId = $scope.newCampaign.linkedComponents[1].componentInstanceId;
-	}
-
-	/**
-	 * Populates the list of optional themes according to the parent assembly
-	 */
-	$scope.initializeAssemblyOptionThemes = function() {
-		$scope.assemblyThemes = [];
-		var assemblyThemes = $scope.assembly.themes;
-		if (assemblyThemes != undefined && assemblyThemes != null && assemblyThemes.length > 0) {
-			for (var i = 0; i < assemblyThemes.length; i += 1) {
-				var t = assemblyThemes[i];
-				var themeOption = {
-					title: t.title,
-					selected: true,
-					id: t.themeId
-				}
-				$scope.assemblyThemes.push(themeOption);
+		/**
+		 * Scope function called to create the campaign
+		 * or move between stages of the creation process
+		 * @param step
+		 * @param options
+		 */
+		$scope.createCampaign = function (step, options) {
+			if (!step.disabled) {
+				privateCreateCampaign(step.step,options);
 			}
 		}
 	}
-
-	/**
-	 * Scope shortcut to refreshing the Timeframe slider models
-	 * for milestones
-	 * @param months
-     */
-	$scope.refreshTimeframe = function(months) {
-		privateRefreshTimeframe(months);
-	}
-
-	/**
-	 * Updates the value of a milestone based on a new date
-	 * @param date
-	 * @param index
-     */
-	$scope.updateMilestoneValue =  function(date, index) {
-		var newDate = moment(date);
-		var campaignStartDate = moment($scope.campaignTimeframeStartDate);
-		var d = duration(campaignStartDate,newDate);
-		$scope.newCampaign.milestones[index].date = date;
-		$scope.newCampaign.milestones[index].value = d.days;
-		$scope.newCampaign.triggerTimeframeUpdate = true;
-	}
-
-	/**
-	 * Opens or closes the date pickers for each milestone
-	 * @param $event
-	 * @param m
-     */
-	$scope.open = function($event,m) {
-		m.calOpened = true;
-	};
-
-	$scope.disabled = function(date, mode) {
-		return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-	};
-
-	/**
-	 * Scope function called to create the campaign
-	 * or move between stages of the creation process
-	 * @param step
-	 * @param options
-     */
-	$scope.createCampaign = function (step, options) {
-		if (!step.disabled) {
-			privateCreateCampaign(step.step,options);
-		}
-	}
-
-	// Functions not available in the scope
 
 	/**
 	 * Initialize the model for the New Campaign with default values
@@ -565,8 +560,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			return url;
 		};
 
-		$scope.openContributionPage = function(cID)  {
-			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID);
+		$scope.openContributionPage = function(cID, edit)  {
+			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID+"?edit="+edit);
 		};
 
 		$scope.openNewContributionModal = function(size, cType)  {
@@ -627,7 +622,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
 	}
-
 
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route

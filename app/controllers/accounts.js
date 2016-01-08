@@ -3,7 +3,7 @@
 /**
  * AccountCtrl - functions to control authentication 
  */
-appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
+appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,/* $uibModal,*/
 		localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
@@ -66,7 +66,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 	}
 
 	$scope.openNewUserModal = function(size)  {
-		var modalInstance = $uibModal.open({
+		/*var modalInstance = $uibModal.open({
 			animation: true,
 			templateUrl: '/app/partials/signup.html',
 			controller: 'NewUserModalCtrl',
@@ -76,7 +76,9 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 					return $scope.newUser;
 				}
 			}
-		});
+		});*/
+
+		var modalInstance;
 
 		modalInstance.result.then(function (newUser) {
 			$scope.newUser = newUser;
@@ -98,7 +100,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 });
 
 
-appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, $uibModalInstance, newUser,
+appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, /*$uibModalInstance, */newUser,
 													 localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
@@ -106,7 +108,7 @@ appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $locatio
 	}
 
 	$scope.signup = function() {
-		loginService.signUp($scope.newUser, $uibModalInstance);
+		//loginService.signUp($scope.newUser, $uibModalInstance);
 	}
 
 });

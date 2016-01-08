@@ -1,0 +1,17 @@
+<div ng-if="userIsAuthor">
+    <div id="attachmentForm" class="" ng-show="newAttachment.showForm">
+        <input type="text" class="col-md-8 col-sm-8 col-xs-12" ng-model="newAttachment.url" placeholder="Add a public URL or upload a file"/>
+        <button type="file" class="btn btn-default " ngf-select="uploadFiles($file, $invalidFiles)"
+            accept="image/*" ngf-max-size="5MB">
+            Upload File</button>
+    </div>
+    <button ng-show="!newAttachment.showForm" class="btn btn-info " ng-click="newAttachment.showForm=!newAttachment.showForm;"><h5><strong>New Attachment</strong></h5></button>
+    <button ng-show="newAttachment.showForm" class="btn btn-success " ng-click="addNewAttachment()"><h5><strong>Add attachment</strong></h5></button>
+    <button ng-show="newAttachment.showForm" class="btn btn-danger " ng-click="cancelNewAttachment()"><h5><strong>Cancel</strong></h5></button>
+    <div id="attachmentProgress" class="col-md-12 progress-section">
+        {{f.name}} {{f.url}} {{f.$error}} {{f.$errorParam}}
+            <span class="progress-line-container" ng-show="f.progress >= 0">
+                <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+            </span>
+    </div>
+</div>

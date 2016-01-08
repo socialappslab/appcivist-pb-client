@@ -19,7 +19,9 @@
                         ng-model="newForumPost">
                 </new-forum-post>
                 <div class="row no-margin">
-                    <appcivist-comments comments="wGroup.forumPosts"></appcivist-comments>
+                    <appcivist-comments comments="wGroup.forumPosts"
+                                        assemblyid="assemblyID"
+                                        containerid="wGroup.forumResourceSpaceId"></appcivist-comments>
                 </div>
             </div>
             <div class="col-md-5 col-sm-5 info-lateral">
@@ -27,6 +29,7 @@
                     <button class="btn btn-success col-md-5 inline">Send message</button>
                     <button class="btn btn-success col-md-5 col-md-push-2 inline">Organize meeting</button>
                 </div>
+                <!-- Working Group Members -->
                 <div class="row infoBox">
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
@@ -34,44 +37,77 @@
                         </div>
                         <div class="col-md-5 col-sm-5 col-md-push-2 add-elements-box-button">
                             <div class="inline">
-                                <a ng-href="/#/assembly/create/step1" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>
+                                <a ng-click="inviteParticipants()" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>
                             </div>
                             <h5 class="inline"><strong>Invite participants</strong></h5>
                         </div>
                     </div>
 
                     <div class="row list-item">
-                        <div class="row" ng-repeat="member in assemblyMembers">
+                        <div class="row" ng-repeat="member in wGroupMembers">
                             <div style="display: inline-block;">
                                 <div class="image-capsule">
                                     <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
                                     <div class="caption" style="text-align: center">
-                                        <h5>{{member.user.name}}</h5>
+                                        <h5 class="text" title="{{member.user.name}}">{{member.user.name}} ({{member.status}})</h5>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Assembly Campaigns -->
+                <div class="row infoBox">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <h4><strong>Assembly Campaigns</strong></h4>
+                        </div>
+                    </div>
+
+                    <div class="row list-item">
+                        <div class="row" ng-repeat="campaign in assemblyCampaigns">
+                            <div style="display: inline-block;">
+                                <div class="image-capsule">
+                                    <div class="caption" style="text-align: center">
+                                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaign.campaignId}}"><h5 class="text" title="{{campaign.title}}">{{campaign.title}}</h5></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <h3><strong>Our Proposals</strong></h3>
+                    <div class="box descriptionBox">
+                        <p>To create a new proposal, visit the page of one of the Assembly campaigns, and then move to the Versioning Phase</p>
+                    </div>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'PROPOSALS'}">
-                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                            <li class="contribution" ng-repeat="contribution in proposals | orderBy: 'creation' | filter:{type:'PROPOSALS'} track by $index">
+                                <contribution contribution="contribution"
+                                              assemblyid="assemblyID"
+                                              container="proposals"
+                                              containerid="wgroup.resourcesResourceSpaceId"
+                                              containerindex="$index"></contribution>
+
                             </li>
                         </ul>
                     </div>
-                    <button class="col-md-12 btn btn-success inline">New Proposal Draft</button>
                 </div>
                 <div class="row">
                     <h3><strong>Our Brainstorming Contributions</strong></h3>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'}">
-                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                            <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'BRAINSTORMING'} track by $index">
+                                <contribution contribution="contribution"
+                                              assemblyid="assemblyID"
+                                              container="contributions"
+                                              containerid="wGroup.forumResourceSpaceId"
+                                              containerindex="$index"></contribution>
                             </li>
                         </ul>
                     </div>
@@ -81,8 +117,12 @@
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in relatedContributions | orderBy: 'creation' filter:{type:'BRAINSTORMING'}">
-                                <contribution contribution="contribution" assemblyid="assemblyID"></contribution>
+                            <li class="contribution" ng-repeat="contribution in relatedContributions | orderBy: 'creation' | filter:{type:'BRAINSTORMING'} track by $index">
+                                <contribution contribution="contribution"
+                                              assemblyid="assemblyID"
+                                              container="relatedContributions"
+                                              containerid="contribution.resourceSpaceId"
+                                              containerindex="$index"></contribution>
                             </li>
                         </ul>
                     </div>

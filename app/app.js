@@ -13,7 +13,7 @@
 console.log("Welcome to AppCivist!");
 
 var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
-    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format'];
+    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var backendServers = {
@@ -25,7 +25,6 @@ var backendServers = {
 // Uncomment the previous line and comment the following to use the local API Server if you have it running
 var appCivistCoreBaseURL = backendServers.remoteDev;
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
-
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",
     locationTooltip : "Can be the name of a specific place, address, city or country associated with your assembly",
@@ -61,12 +60,26 @@ var helpInfo = {
 appCivistApp.config(config);
 appCivistApp.run(run);
 
+/**
+ * Dependencies needed during configuration of the App
+ * @type {string[]}
+ */
 config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
     'localStorageServiceProvider'];
+
+/**
+ * Configuration of the app, executed before everything else.
+ * @param $routeProvider
+ * @param $locationProvider
+ * @param $resourceProvider
+ * @param $httpProvider
+ * @param $sceDelegateProvider
+ * @param localStorageServiceProvider
+ */
 function config($routeProvider, $locationProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
          localStorageServiceProvider) {
 
-    // Added to whilelist the etherpad server
+    // Whilelist of external domains/URLs allowed to be queried (e.g., the etherpad server)
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
         'self',
@@ -77,13 +90,15 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
     // Setup CORS requests
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common["X-Requested-With"];
-
     localStorageServiceProvider
         .setPrefix('appcivist')
         .setStorageType('sessionStorage')
-        //.set("appcivist_api_base_url",appCivistCoreBaseURL)
         .setNotify(true,true);
 
+    /**
+     * Main routes available in the APP. Each route has its onw controller, which allows the user to
+     * simply write down the route and if that's available, it will load everything needed.
+     */
     $routeProvider
         .when('/', {
             controller : 'MainCtrl',
@@ -115,21 +130,8 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'AssemblyCtrl',
             templateUrl: 'app/partials/forum/forum.html'
         })
-        // TODO Check the following 3
-        .when('/campaign/:aid/pmaking/wgroups',{
-            controller: 'CampaignComponentCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
-        })
-        .when('/campaign/:aid/pmaking/wgroups/new',{
-            controller: 'CampaignComponentCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/wGroups/campaignWorkingGroups.html'
-        })
-        .when('/campaign/:aid/pmaking/wgroups/forum',{
-            controller: 'CampaignComponentCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingWorkingGroups.html'
-        })
         // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
-        .when('/campaign/:aid/wgroup/create',{
+        .when('/assembly/:aid/campaign/:cid/wgroup/create',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
@@ -145,70 +147,50 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         })
-        .when('/voting/:uuid/ballotlanding',{
-            controller: 'VotingLandingCtrl',
-            templateUrl: 'app/partials/voting/landing/votingBallotLanding.html'
-        })
-        .when('/voting/:uuid/rangevoting',{
-            controller: 'RangeVotingCtrl',
-            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
-        })
-        .when('/voting/:uuid/rangeresult',{
-            controller: 'RangeResultCtrl',
-            templateUrl: 'app/partials/voting/result/RangeResult.html'
-        })
-        .when('/voting/:uuid/registration',{
-            controller: 'RegistrationForm',
-            templateUrl: 'app/partials/voting/RegistrationForm.html'
-        })
-        //Define a route that has a route parameter in it (:customerID)
-        //.when('/assembly/:assemblyID/campaign/:campaignId',
-        //{
-        //  controller: 'AssemblyController',
-        //  templateUrl: '/app/partials/assemblyCampaignView.html'
-        //})
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
-            controller: 'ContributionReadEditCtrl',
+            controller: 'ContributionPageCtrl',
             templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
         })
         .when('/assembly/:aid/group/:wid',{
             controller: 'WorkingGroupCtrl',
             templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
         })
-        // TODO: remove the following
-        .when('/campaign/:aid/temp',{
-            controller: 'CampaignCtrl',
-            templateUrl: 'app/partials/campaign/pmaking/campaignPmakingDrafts.html'
+        // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
+        .when('/assembly/:aid/campaign/:cid/wgroup/create',{
+            controller: 'NewWorkingGroupCtrl',
+            templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
-        // TODO: finalize voting UIs
-        .when('/ballot/:uuid/summary',{
-            controller: 'RangeSummaryCtrl',
-            templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
-        })
-        .when('/ballot/:uuid/result',{
-            controller: 'RangeResultCtrl',
-            templateUrl: 'app/partials/voting/result/RangeResult.html'
+        // TODO: finalize voting UIs s
+        .when('/ballot/',{ // TODO: this redirect is just temporal
+            redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
         })
         .when('/ballot/:uuid/start',{
             controller: 'VotingLandingCtrl',
             templateUrl: 'public/ballot/start.html'
         })
-        .when('/ballot/:uuid/vote',{
-            controller: 'RangeVotingCtrl',
-            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
-        })
         .when('/ballot/:uuid/register',{
-            controller: 'RegistrationForm',
+            controller: 'VotingRegistrationCtrl',
             templateUrl: 'app/partials/voting/RegistrationForm.html'
         })
-        .when('/campaign/:aid/temp3',{
-            controller: 'RangeResultCtrl',
+        .when('/ballot/:uuid/vote',{
+            controller: 'VotingCtrl',
+            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
+        })
+        .when('/ballot/:uuid/summary',{
+            controller: 'VotingSummaryCtrl',
+            templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
+        })
+        .when('/ballot/:uuid/result',{
+            controller: 'VotingResultCtrl',
             templateUrl: 'app/partials/voting/result/RangeResult.html'
         })
         .otherwise({
             redirectTo : '/'
         });
 
+    /**
+     * HTTP Interceptor that makes sure that all HTTP requests have the session key inserted as HEADER
+     */
     $httpProvider.interceptors.push(['$q', '$location', 'localStorageService', function($q, $location, localStorageService) {
         return {
             'request': function (config) {
@@ -234,7 +216,19 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 
 }
 
+/**
+ * Services that are injected to the main method of the app to make them available when it starts running
+ * @type {string[]}
+ */
 run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'loginService'];
+
+/**
+ * The function that runs the App on the browser
+ * @param $rootScope
+ * @param $location
+ * @param $http
+ * @param localStorageService
+ */
 function run($rootScope, $location, $http, localStorageService) {
     //// keep user logged in after page refresh
     //$rootScope.globals = $cookieStore.get('globals') || {};
@@ -259,6 +253,12 @@ function run($rootScope, $location, $http, localStorageService) {
     });
 }
 
+/**
+ * Special function to configure a list of URLs inside the APP that will be available even without being
+ * logged in our having an account.
+ * @param path
+ * @returns {boolean}
+ */
 function pathIsNotRestricted(path) {
     //var allowedPaths = /\/assembly\/[0-9]*\/create/g;
     var allowedPaths = "/assembly/create"

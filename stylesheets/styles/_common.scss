@@ -16,14 +16,6 @@ a{
     cursor: pointer;
 }
 
-.header{
-    display: inline-block;
-
-    & > div {
-        display: inline;
-    }
-}
-
 .title{
     display: inline-block;
     vertical-align: middle;

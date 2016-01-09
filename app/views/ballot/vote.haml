@@ -87,7 +87,7 @@
                   %p.description
                     %span{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"} {{proposal.text}}
                     %span.rate
-                      %input.form-control{:id => "{{proposal.uuid}}", :placeholder => "{{scores[proposal.uuid]}}", :type => "number", :min => "{{minimumPossibleScore()}}", :max => "{{maximumPossibleScore()}}"}/
+                      %input.form-control{:id => "{{proposal.uuid}}", "ng-model" => "proposal.value", :placeholder => "{{scores[proposal.uuid]}}", :type => "number", :min => "{{minimumPossibleScore()}}", :max => "{{maximumPossibleScore()}}"}/
               / Modal for information of the candidate
               .modal.fade{"aria-labelledby" => "{{proposal.uuid}}Label", :id => "{{proposal.uuid}}modal", :role => "dialog", :tabindex => "-1"}
                 .modal-dialog{:role => "document"}

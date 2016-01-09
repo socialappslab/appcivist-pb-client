@@ -19,9 +19,9 @@
       .fields{"ng-repeat" => "field in ballot.ballot_registration_fields"}
         .form-group
           %label{:for => "exampleInputEmail1"} {{field.name}}
-          %input.form-control{:id => "{{field.id}}", :placeholder => "{{field.description}}"}
-      %button.btn.btn-default{"ng-click" => "createBallotPaper($scope)", :type => "submit"}
-        %a{:href => "#"} Begin Voting
+          %input.form-control{:id => "{{field.id}}", :placeholder => "{{field.description}}", "ng-model" => "field.user_input"}
+      %button.btn.btn-default{"ng-click" => "createBallotPaper()", :type => "submit"}
+        Begin Voting
   %br
   %h1
     OR

@@ -6,19 +6,29 @@
       %b> Campaign:
       Belleville - Paris PB 2016
   %br
-    .titles
-      .container
-        %h3 Paris PB 2016
-      .container
-        %h1
-          %b Assembly Ballot
-      .container
-        %h1#small 2016 August
-    %br
-      %form
-        .fields{"ng-repeat" => "field in fields"}
-          .form-group
-            %label{:for => "exampleInputEmail1"} {{field.fieldName}}
-            %input.form-control{:id => "{{field.votingBallotRegistrationFieldId}}", :placeholder => "{{field.fieldDescription}}"}
-        %button.btn.btn-default{"ng-click" => "fillForm($scope)", :type => "submit"}
-          %a{:href => "#"} Submit
+  .titles
+    .container
+      %h3 Paris PB 2016
+    .container
+      %h1
+        %b Assembly Ballot
+    .container
+      %h1#small 2016 August
+  %br
+    %form
+      .fields{"ng-repeat" => "field in ballot.ballot_registration_fields"}
+        .form-group
+          %label{:for => "exampleInputEmail1"} {{field.name}}
+          %input.form-control{:id => "{{field.id}}", :placeholder => "{{field.description}}"}
+      %button.btn.btn-default{"ng-click" => "createBallotPaper($scope)", :type => "submit"}
+        %a{:href => "#"} Begin Voting
+  %br
+  %h1
+    OR
+  %form
+    .form-group
+      %label{:for => "signature"}
+        Signature
+      %input.form-control{:name => "signature", :placeholder => "Enter your ballot paper signature"}
+    %button.btn.btn-default{"ng-click" => "loadBallotPaper($scope)", :type => "submit"}
+      %a{:href => "#"} Load my votes

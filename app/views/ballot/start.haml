@@ -18,21 +18,21 @@
       .container.instructions
         %h2.title
           %strong Voting Instructions
-          %button.btn.btn-success{"ng-click" => "nextPage()", :type => "button"} Start Voting
+          %button.btn.btn-success{"ng-click" => "transitionToRegistration()", :type => "button"} Register to Vote
         %ul
-          %li{:type => "circle"} {{votingBallot.instructions}}
+          %li{:type => "circle"} {{ballot.ballot.instructions}}
           %li{:type => "circle"}
             The voting system your Assembly selected and configured for this campaign is
-            %b {{votingBallot.systemType}}
+            %b {{ballot.ballot.voting_system_type}}
           %li{:type => "none"}
             %ul
-              %li{"ng-repeat" => "pair in votingBallot.configs", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
+              %li{"ng-repeat" => "config in ballot.ballot_configurations", :type => "circle"} The {{config.key}} of this voting ballot is {{config.value}}.
           %li{:type => "circle"} When you are ready to vote, click the button "Start voting".
       %br
         .container.additional-info
           %h2
             %strong Additional Information
-          %p.info {{votingBallot.notes}}
+          %p.info{:style => "white-space: pre-wrap;"}{{ballot.notes}}
           %br
             %h3
               %strong Technical Issues

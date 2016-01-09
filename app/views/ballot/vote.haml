@@ -34,9 +34,7 @@
               %li
                 %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} Voting Instructions
               %li
-                %button#save.btn.btn-success{"ng-click" => "save()", :type => "button"} Save
-              %li
-                %button#submit.btn.btn-primary{"ng-click" => "submit()", :type => "button"} Submit
+                %button#save.btn.btn-success{"ng-click" => "saveBallot()", :type => "button"} Save
           / Modal for voting instructions
           #instructions.modal.fade{"aria-labelledby" => "instrLabel", :role => "dialog", :tabindex => "-1"}
             .modal-dialog{:role => "document"}
@@ -50,19 +48,19 @@
                     %h2.title
                       %strong Voting Instructions
                     %ul
-                      %li{:type => "circle"} {{votingBallot.instructions}}
+                      %li{:type => "circle"} {{ballot.instructions}}
                       %li{:type => "circle"}
                         The voting system your Assembly selected and configured for this campaign is
-                        %b {{votingBallot.systemType}}
+                        %b {{ballot.systemType}}
                       %li{:type => "none"}
                         %ul
-                          %li{"ng-repeat" => "pair in votingBallot.configs", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
+                          %li{"ng-repeat" => "pair in ballot.ballot_configurations", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
                       %li{:type => "circle"} When you are ready to vote, close the instruction window and start voting.
                   %br
                     .container.additional-info
                       %h2
                         %strong Additional Information
-                      %p.info {{votingBallot.notes}}
+                      %p.info{:style => "white-space: pre-wrap;"} {{ballot.notes}}
                       %br
                         %h3
                           %strong Technical Issues
@@ -89,7 +87,7 @@
                   %p.description
                     %span{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"} {{proposal.text}}
                     %span.rate
-                      %input.form-control{:id => "{{proposal.uuid}}", :placeholder => "{{scores[proposal.uuid]}}", :type => "number"}/
+                      %input.form-control{:id => "{{proposal.uuid}}", "ng-model" => "proposal.value", :placeholder => "{{scores[proposal.uuid]}}", :type => "number", :min => "{{minimumPossibleScore()}}", :max => "{{maximumPossibleScore()}}"}/
               / Modal for information of the candidate
               .modal.fade{"aria-labelledby" => "{{proposal.uuid}}Label", :id => "{{proposal.uuid}}modal", :role => "dialog", :tabindex => "-1"}
                 .modal-dialog{:role => "document"}

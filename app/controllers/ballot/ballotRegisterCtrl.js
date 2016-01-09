@@ -29,6 +29,7 @@ appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routePara
       return;
 		var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: $scope.signature}).$promise;
 	  ballotPaper.then(function(data){
+      localStorageService.set("voteSignature", $scope.signature);
       $location.url("/ballot/" + $routeParams.uuid + "/vote");
     }, function(error) {
       alert(error.data.error);

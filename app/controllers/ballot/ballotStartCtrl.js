@@ -8,6 +8,7 @@ appCivistApp.controller('ballotStartCtrl', function($scope, $http, $routeParams,
     console.log(data)
     $scope.ballot = data;
   }, function(data) {
+    console.log(data)
     alert(data);
   });
 

@@ -2,6 +2,8 @@
 // with the $scope
 // The $scope is bound to the order view
 appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routeParams, $location, Ballot, BallotPaper, localStorageService) {
+  $scope.signature = localStorageService.get("voteSignature");
+
   var ballot = Ballot.get({uuid:$routeParams.uuid}).$promise;
   ballot.then(function(data) {
     console.log(data)

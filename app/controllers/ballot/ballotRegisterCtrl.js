@@ -1,7 +1,7 @@
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routeParams, $location, Ballot, localStorageService) {
+appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routeParams, $location, Ballot, BallotPaper, localStorageService) {
   var ballot = Ballot.get({uuid:$routeParams.uuid}).$promise;
   ballot.then(function(data) {
     console.log(data)
@@ -10,31 +10,27 @@ appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routePara
     alert(data);
   });
 
-	$scope.createBallotPaper = function() {
+	$scope.generateSignature = function() {
 		var ballot = Ballot.save({uuid: $routeParams.uuid}, {ballot_registration_fields: $scope.ballot.ballot_registration_fields});
 		ballot.$promise.then(function(data){
       console.log("Posted voting registration form.");
-      alert("You've successfully registered! Your unique registration signature is " + data.signature + ". Please record it to access your ballot at a later date.")
-      transitionToVoting();
+      localStorageService.set("voteSignature", data.signature);
+      $location.url("/ballot/" + $routeParams.uuid + "/success");
 		}, function(error) {
-			alert("Sorry, the provided information cannot generate a valid voting ballot.");
+			alert(error.data.error);
 			return;
 		})
 	};
 
 	$scope.loadBallotPaper = function(){
+    if (!$scope.signature)
+      return;
 		var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: $scope.signature}).$promise;
 	  ballotPaper.then(function(data){
-      console.log(data)
-      $scope.signature = data;
-      // transitionToVoting();
+      $location.url("/ballot/" + $routeParams.uuid + "/vote");
     }, function(error) {
-      alert("Sorry, no valid signature under this username can be retreived.");
+      alert(error.data.error);
       return;
     });
-  }
-
-  var transitionToVoting = function() {
-    $location.url("/ballot/" + $routeParams.uuid + "/vote");
   }
 });

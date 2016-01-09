@@ -3,7 +3,7 @@
 /**
  * Voting Page (the actual UI of the ballot)
  */
-appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
+appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, $location, Ballot, localStorageService){
 	$scope.uuid = $routeParams.uuid;
 
 	$scope.votingBallot = {
@@ -44,10 +44,10 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 	init();
 
 	function init(){
-		var currentBallot = localStorageService.get("currentVotingBallot");
+		var currentBallot = localStorageService.get("currentBallot");
 		if (currentBallot==null) {
 			/*uncomment when backend is ready; delete the part currently used*/
-			// var signature = VotingBallot.signature($scope.uuid).get();
+			// var signature = Ballot.signature($scope.uuid).get();
 			// signature.$promise.then(
 			// 	function(data){
 			// 		$scope.signature = data;
@@ -58,22 +58,22 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 			// 		return;
 			// 	}
 			// )
-			// var ballot = VotingBallot.ballot($scope.uuid, $scope.signature).get();
+			// var ballot = Ballot.ballot($scope.uuid, $scope.signature).get();
 			// ballot.$promise.then(
 			// 	function(data){
 					// $scope.votingBallot = data.ballot;
 					// $scope.votingBallotVote = data.vote;
 			// 		console.log("Retreived voting ballot from server.");
-			// 		localStorageService.set("currentVotingBallot",data);
+			// 		localStorageService.set("currentBallot",data);
 			// 	},
 			// 	function(error){
 			// 		alert("Sorry, no valid voting ballot could be found using this signature.");
 			// 		return;
 			// 	}
 			// )
-			$scope.votingBallot = VotingBallot.ballot($scope.uuid, 1).ballot;
-			$scope.votingBallotVote = VotingBallot.ballot($scope.uuid, 1).vote;
-			localStorageService.set("currentVotingBallot",VotingBallot);
+			$scope.votingBallot = Ballot.ballot($scope.uuid, 1).ballot;
+			$scope.votingBallotVote = Ballot.ballot($scope.uuid, 1).vote;
+			localStorageService.set("currentBallot",Ballot);
 		} else {
 			$scope.votingBallot = currentBallot.ballot;
 			$scope.votingBallotVote = currentBallot.vote;
@@ -81,7 +81,7 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 
 		for(var i=0;i<$scope.votingBallot.candidates.length;i++){
 			/*uncomment when backend is ready; delete the part currently used*/
-			// var candidateInfo = VotingBallot.getCandidate($scope.votingBallot.candidates[i].targetUuid).get();
+			// var candidateInfo = Ballot.getCandidate($scope.votingBallot.candidates[i].targetUuid).get();
 			// candidateInfo.$promise.then(
 			// 	function(data){
 			// 		$scope.candidates[$scope.candidates.length] = data;
@@ -90,7 +90,7 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 			// 		console.log("The candidate with uuid "+candidate.targetUuid+" cannot be retreived from the server.");
 			// 	}
 			// )
-			var candidate = VotingBallot.getCandidate($scope.votingBallot.candidates[i].targetUuid);
+			var candidate = Ballot.getCandidate($scope.votingBallot.candidates[i].targetUuid);
 			$scope.candidates[$scope.candidates.length] = candidate;
 			for(var j=0;j<candidate.themes.length;j++){
 				var theme = candidate.themes[j];
@@ -129,10 +129,10 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 			}
 
 			newVote.vote = $scope.votingBallotVote;
-			localStorageService.set("currentVotingBallot",newVote);
+			localStorageService.set("currentBallot",newVote);
 			alert("Your vote has been saved successfully!");
 		/*uncomment when backend is ready*/
-		// 	var toSave = VotingBallot.fill($scope.uuid).$put(newVote);
+		// 	var toSave = Ballot.fill($scope.uuid).$put(newVote);
 		// 	toSave.$promise.then(
 		// 		function(){
 					// alert("Your vote has been saved successfully!");
@@ -168,9 +168,9 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
             	count++;
             }
             newVote.vote = ballotVote;
-            localStorageService.set("currentVotingBallot",newVote);
+            localStorageService.set("currentBallot",newVote);
             /*uncomment when backend is ready*/
-		// 	var toSave = VotingBallot.fill($scope.uuid).$save(newVote);
+		// 	var toSave = Ballot.fill($scope.uuid).$save(newVote);
 		// 	toSave.$promise.then(
 		// 		function(){
 		// 			$location.url('/ballot/'+$scope.votingBallot.uuid+"/summary");
@@ -194,7 +194,7 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 		}
 		$scope.votingBallotVote.status = "FINISHED";
 		newVote.vote = $scope.votingBallotVote;
-		localStorageService.set("currentVotingBallot",newVote);
+		localStorageService.set("currentBallot",newVote);
 		$location.url('/ballot/'+$scope.votingBallot.uuid+"/summary");
 	}
 });
@@ -202,11 +202,11 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 /**
  * Summary of one's voting choices
  */
-appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeParams, $location, VotingBallot, localStorageService){
+appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeParams, $location, Ballot, localStorageService){
 	init();
 
 	function init(){
-		$scope.currentBallot = localStorageService.get("currentVotingBallot");
+		$scope.currentBallot = localStorageService.get("currentBallot");
 		if($scope.currentBallot==null){
 			$location.url('/ballot/'+$scope.votingBallot.uuid+"/vote");
 		} else {
@@ -216,7 +216,7 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeP
 			$scope.scored = 0;
 			for (var i=0;i<$scope.votingBallot.candidates.length;i++){
 				/*uncomment when backend is ready*/
-				// var candidate = VotingBallot.candidate($scope.votingBallot.candidates[i].targetUuid).get();
+				// var candidate = Ballot.candidate($scope.votingBallot.candidates[i].targetUuid).get();
 				// candidate.$promise.then(
 				// 	function(data){
 				// 		$scope.uuidMap[data.uuid] = data.title;
@@ -225,7 +225,7 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeP
 				// 		console.log("Candidate with targetUuid: "+$scope.votingBallot.candidates[i].targetUuid+" could not be obtained from the server.");
 				// 	}
 				// )
-				var candidate = VotingBallot.getCandidate($scope.votingBallot.candidates[i].targetUuid);
+				var candidate = Ballot.getCandidate($scope.votingBallot.candidates[i].targetUuid);
 				$scope.uuidMap[candidate.uuid] = candidate.title;
 			}
 			for (var j=0;j<$scope.votingBallotVote.voteValues.length;j++){
@@ -242,7 +242,7 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeP
 
 	$scope.submit = function(){
 		/*uncomment when backend is ready*/
-		// var toSave = VotingBallot.fill($scope.uuid).$save($scope.currentBallot);
+		// var toSave = Ballot.fill($scope.uuid).$save($scope.currentBallot);
 		// toSave.$promise.then(
 		// 	function(){
 		// 		$location.url('/ballot/'+$scope.votingBallot.uuid+"/result");
@@ -255,14 +255,14 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeP
 /**
  * Summary of results once ellection is over
  */
-appCivistApp.controller('ballotResultCtrl', function($scope, $http, $routeParams, $location, VotingTally, VotingBallot, localStorageService){
+appCivistApp.controller('ballotResultCtrl', function($scope, $http, $routeParams, $location, VotingTally, Ballot, localStorageService){
 	$scope.winners = [];
 	$scope.used = 0;
 	$scope.total = 300000;
 	$scope.allCandidates = [];
 
 	$scope.uuid = $routeParams.uuid;
-	$scope.signature = VotingBallot.signature($scope.uuid);
+	$scope.signature = Ballot.signature($scope.uuid);
 	$scope.tally = VotingTally.tally($scope.uuid, $scope.signature);
 	$scope.ballot = $scope.tally.ballot;
 	$scope.configs = {};
@@ -272,7 +272,7 @@ appCivistApp.controller('ballotResultCtrl', function($scope, $http, $routeParams
 	}
 	for (var j=0;j<$scope.tally.talliedResults.length;j++){
 		var result = $scope.tally.talliedResults[j];
-		var candidate = VotingBallot.getCandidate(result.selectedCandidate.targetUuid);
+		var candidate = Ballot.getCandidate(result.selectedCandidate.targetUuid);
 		candidate.score = result.voteValue;
 		$scope.allCandidates[$scope.allCandidates.length] = candidate;
 		if(j<$scope.configs["number of winners"]){

@@ -1,7 +1,61 @@
-<div class="header" ng-controller="AccountCtrl">
-    <h1>{{ 'APPCIVIST_STRING' | translate}}</h1>
-    <div class="links-group">
-        <h4>{{'LOG_IN' | translate}}</h4>
-        <h4>{{'SIGN_UP' | translate}}</h4>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default" role="navigation" ng-controller="AccountCtrl">
+    <div class="navbar-header">
+        <div class="navbar-brand">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#/"><img src="/assets/images/logotype.svg" class="logotype" alt="{{ 'APPCIVIST_STRING' | translate}}"/></a>
+        </div>
     </div>
-</div>
+    <div class="collapse navbar-collapse" id="navbar-options">
+        <!-- Menu when the user is logged in-->
+        <ul class="nav navbar-nav navbar-left" ng-if='userIsAuthenticated()'>
+            <li><a href="#/home"><strong>{{'Home' | translate}}</strong></a></li>
+            <li><a href="#/assemblies"><strong>{{'Assemblies' | translate}}</strong></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right menu-elements" ng-if='userIsAuthenticated()'>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-inbox icon"></i></a>
+                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
+                    <li><a><strong>{{'Notifications' | translate}} 1</strong></a></li>
+                    <li><a>{{'Notifications' | translate}} 2</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>{{'Notifications' | translate}} 3</a></li>
+                </ul>
+            </li>
+            <li>
+                <img class="navBarImage" src="../assets/images/unknown.jpg" ng-src="{{user.profilePic.urlLargeString}}" alt=""/>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {{user.name}}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
+                    <li><a>{{'SendMessage' | translate}}</a></li>
+                    <li><a>{{'Profile' | translate}}</a></li>
+                    <li><a>{{'Settings' | translate}}</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-click="signout()">{{'SIGN_OUT' | translate}}</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Menu when the user is NOT logged in-->
+        <form class="navbar-form navbar-right" role="login" ng-submit="login()" ng-if='!userIsAuthenticated()'>
+            <div class="form-group">
+                <input type="text" placeholder="Email" class="form-control" ng-model="user.email">
+                <input type="password" placeholder="Password" class="form-control" ng-model="user.password"/>
+            </div>
+            <button type="submit" class="btn btn-success">{{'SIGN_IN' | translate}}</button>
+            <button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'SIGN_UP_INDIVIDUAL' | translate}}</button>
+            <a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'SIGN_UP_GROUP' | translate}}</button></a>
+        </form>
+        <ul class="nav navbar-nav navbar-right" ng-if='!userIsAuthenticated()'>
+            <li><a href="/user/recoveryform">{{'ForgotPassword' | translate}}</a></li>
+        </ul>
+    </div>
+</nav>

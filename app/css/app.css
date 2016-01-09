@@ -259,77 +259,6 @@ textarea {
   padding: 0 4rem;
   background-color: #50E3C2;
   color: #FFFFFF;
-  /*
-    display: inline-block;
-  
-    & > div {
-      display: inline;
-    }
-  
-    #navbar-options{
-      ul{
-        li{
-          border-right: 0.1rem solid $border-header;
-        }
-        li:first-child{
-          border-left: 0.1rem solid $border-header;
-        }
-        li:hover{
-          background-color: rgba(128, 128, 128, 0.05);
-        }
-        li:active{
-          background-color: rgba(128, 128, 128, 0.05);
-          box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
-        }
-        li {
-          a:focus {
-            color:white;
-            background: $header-menu-active;
-          }
-        }
-      }
-    }
-  
-    .navBarImage{
-      height: 5rem;
-    }
-  
-    #user-menu{
-  
-      .icon{
-        font-size: 2.5rem;
-        vertical-align: middle;
-      }
-  
-      ul.menu-elements{
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        li{
-          display: inline-block;
-          margin: 0 0.5rem;
-          cursor: pointer;
-        }
-  
-        & .dropdown .dropdown-menu{
-          li:hover{
-            color: white;
-            background: transparent;
-          }
-          li{
-            a:hover{
-              background: transparent;
-            }
-          }
-          li:last-child{
-            a{
-              color: $dropdown-hover;
-            }
-          }
-        }
-      }
-    }
-  */
 }
 .header * {
   display: inline-block;
@@ -349,9 +278,12 @@ textarea {
 
 footer {
   background: #029A78;
-  position: absolute;
+  position: relative;
+  margin-top: -16rem;
+  /* negative value of footer height */
+  height: 16rem;
+  clear: both;
   width: 100%;
-  height: 12rem;
   line-height: 4rem;
   color: #FFFFFF;
   text-align: center;
@@ -889,6 +821,9 @@ button#second-vote {
 .forum .row {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+.forum .header {
+  background-color: #FFFFFF;
 }
 .forum .header .assembly .caption {
   width: auto;
@@ -2456,6 +2391,9 @@ button#second-vote {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.wGroupForum .header {
+  background-color: #FFFFFF;
+}
 .wGroupForum .header .assembly .caption {
   width: auto;
 }
@@ -2569,6 +2507,20 @@ button#second-vote {
   padding-left: 5px;
 }
 
+html, body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -16rem;
+}
+
 .inline {
   display: inline-block !important;
 }
@@ -2621,28 +2573,88 @@ i {
 }
 
 /******HEADER******/
-#navbar-options ul li {
-  border-right: 0.1rem solid #F4F4F4;
+/******NEW DESIGN NAVBAR COLORS******/
+.navbar-default {
+  background-color: #50E3C2;
+  border-color: #029A78;
 }
-#navbar-options ul li:first-child {
-  border-left: 0.1rem solid #F4F4F4;
+.navbar-default .navbar-brand {
+  background-color: #50E3C2;
+  color: #524D4D;
 }
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: #CFF7EE;
+}
+.navbar-default .navbar-text {
+  color: #524D4D;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #524D4D;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #CFF7EE;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: #CFF7EE;
+  background-color: #029A78;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #CFF7EE;
+  background-color: #029A78;
+}
+.navbar-default .navbar-toggle {
+  border-color: #029A78;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #029A78;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #524D4D;
+}
+.navbar-default .navbar-collapse {
+  background-color: #50E3C2;
+  border-color: #029A78;
+}
+.navbar-default .navbar-form {
+  border-color: #524D4D;
+}
+.navbar-default .navbar-link {
+  color: #524D4D;
+}
+.navbar-default .navbar-link:hover {
+  color: #CFF7EE;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #524D4D;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #CFF7EE;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #CFF7EE;
+    background-color: #029A78;
+  }
+}
+/*******NAVBAR MENU BORDERS********/
 #navbar-options ul li:hover {
-  background-color: rgba(128, 128, 128, 0.05);
+  background-color: #029A78;
 }
 #navbar-options ul li:active {
-  background-color: rgba(128, 128, 128, 0.05);
-  box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+  background-color: #029A78;
+  box-shadow: inset 0 0 0.2rem 0.2rem #50E3C2;
 }
 #navbar-options ul li a:focus {
   color: white;
-  background: grey;
+  background: #029A78;
 }
 
 .navBarImage {
   height: 5rem;
 }
 
+/*******NAVBAR USER MENU********/
 #user-menu .icon {
   font-size: 2.5rem;
   vertical-align: middle;
@@ -2668,7 +2680,7 @@ i {
   color: #9CC7D3;
 }
 
-/****NEW DESIGN****/
+/****NEW DESIGN FOR LANDING PAGE****/
 .section {
   width: 100%;
 }
@@ -2677,6 +2689,7 @@ i {
   vertical-align: middle;
   background-size: 100%;
   height: 82rem;
+  margin-top: -20px;
   padding-top: 17%;
 }
 .section.first-section .main-title {

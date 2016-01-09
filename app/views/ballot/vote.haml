@@ -50,19 +50,19 @@
                     %h2.title
                       %strong Voting Instructions
                     %ul
-                      %li{:type => "circle"} {{votingBallot.instructions}}
+                      %li{:type => "circle"} {{ballot.instructions}}
                       %li{:type => "circle"}
                         The voting system your Assembly selected and configured for this campaign is
-                        %b {{votingBallot.systemType}}
+                        %b {{ballot.systemType}}
                       %li{:type => "none"}
                         %ul
-                          %li{"ng-repeat" => "pair in votingBallot.configs", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
+                          %li{"ng-repeat" => "pair in ballot.ballot_configurations", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
                       %li{:type => "circle"} When you are ready to vote, close the instruction window and start voting.
                   %br
                     .container.additional-info
                       %h2
                         %strong Additional Information
-                      %p.info {{votingBallot.notes}}
+                      %p.info{:style => "white-space: pre-wrap;"} {{ballot.notes}}
                       %br
                         %h3
                           %strong Technical Issues

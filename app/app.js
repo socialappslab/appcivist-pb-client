@@ -160,29 +160,32 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'NewWorkingGroupCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
+
         // TODO: finalize voting UIs s
         .when('/ballot/',{ // TODO: this redirect is just temporal
             redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
         })
+
+        // TODO: finalize voting UIs
         .when('/ballot/:uuid/start',{
-            controller: 'VotingLandingCtrl',
-            templateUrl: 'public/ballot/start.html'
+          controller: 'ballotStartCtrl',
+          templateUrl: 'public/ballot/start.html'
         })
         .when('/ballot/:uuid/register',{
-            controller: 'VotingRegistrationCtrl',
-            templateUrl: 'app/partials/voting/RegistrationForm.html'
+          controller: 'ballotRegisterCtrl',
+          templateUrl: 'public/ballot/register.html'
         })
         .when('/ballot/:uuid/vote',{
-            controller: 'VotingCtrl',
-            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
+          controller: 'ballotVoteCtrl',
+          templateUrl: 'public/ballot/vote.html'
         })
         .when('/ballot/:uuid/summary',{
-            controller: 'VotingSummaryCtrl',
-            templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
+          controller: 'ballotVoteSummaryCtrl',
+          templateUrl: 'public/ballot/summary.html'
         })
         .when('/ballot/:uuid/result',{
-            controller: 'VotingResultCtrl',
-            templateUrl: 'app/partials/voting/result/RangeResult.html'
+          controller: 'ballotResultCtrl',
+          templateUrl: 'public/ballot/result.html'
         })
         .otherwise({
             redirectTo : '/'

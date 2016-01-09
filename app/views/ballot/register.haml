@@ -1,0 +1,24 @@
+.container
+  .row.text-center
+    %h2
+      %b> Assembly:
+      PB Belleville Paris/
+      %b> Campaign:
+      Belleville - Paris PB 2016
+  %br
+    .titles
+      .container
+        %h3 Paris PB 2016
+      .container
+        %h1
+          %b Assembly Ballot
+      .container
+        %h1#small 2016 August
+    %br
+      %form
+        .fields{"ng-repeat" => "field in fields"}
+          .form-group
+            %label{:for => "exampleInputEmail1"} {{field.fieldName}}
+            %input.form-control{:id => "{{field.votingBallotRegistrationFieldId}}", :placeholder => "{{field.fieldDescription}}"}
+        %button.btn.btn-default{"ng-click" => "fillForm($scope)", :type => "submit"}
+          %a{:href => "#"} Submit

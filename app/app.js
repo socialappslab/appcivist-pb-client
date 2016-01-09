@@ -1,7 +1,7 @@
 /// AppCivist Simple Demo Client
 /**
  * AppCivist Platform Demo Client developed with AngularJS
- * Folders: 
+ * Folders:
  * 	/app
  * 		/controllers
  * 		/directives
@@ -17,13 +17,16 @@ var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'Loc
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var backendServers = {
-    "localDev" : "http://localhost:9000/api",
-    "remoteDev" : "http://appcivist.littlemacondo.com/backend/api"
+  "localDev" : "http://localhost:9000/api",
+  "remoteDev" : "http://appcivist.littlemacondo.com/backend/api",
+  "voting": "http://127.0.0.1:5000/api/v0"
 };
 
 //var appCivistCoreBaseURL = backendServers.localDev;;
 // Uncomment the previous line and comment the following to use the local API Server if you have it running
 var appCivistCoreBaseURL = backendServers.remoteDev;
+var votingApiURL = backendServers.voting;
+
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",
@@ -53,7 +56,7 @@ var helpInfo = {
 };
 
 /**
- * AngularJS initial configurations: 
+ * AngularJS initial configurations:
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */

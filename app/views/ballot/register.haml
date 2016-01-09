@@ -19,16 +19,16 @@
       .fields{"ng-repeat" => "field in ballot.ballot_registration_fields"}
         .form-group
           %label{:for => "exampleInputEmail1"} {{field.name}}
-          %input.form-control{:id => "{{field.id}}", :placeholder => "{{field.description}}"}
-      %button.btn.btn-default{"ng-click" => "createBallotPaper($scope)", :type => "submit"}
-        %a{:href => "#"} Begin Voting
+          %input.form-control{:id => "{{field.id}}", :placeholder => "{{field.description}}", :type => "text", "ng-model" => "field.user_input"}
+      %button.btn.btn-default{"ng-click" => "generateSignature()", :type => "submit"}
+        Begin Voting
   %br
-  %h1
+  %h1.text-center
     OR
   %form
     .form-group
       %label{:for => "signature"}
         Signature
-      %input.form-control{:name => "signature", :placeholder => "Enter your ballot paper signature"}
-    %button.btn.btn-default{"ng-click" => "loadBallotPaper($scope)", :type => "submit"}
-      %a{:href => "#"} Load my votes
+      %input.form-control{:name => "signature", :placeholder => "Enter your ballot paper signature", "ng-model" => "signature", :required => true, :type => "text", "ng-minlength" => 1}
+    %button.btn.btn-default{"ng-click" => "loadBallotPaper()", :type => "submit"}
+      Load my votes

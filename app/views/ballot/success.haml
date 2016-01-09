@@ -1,0 +1,13 @@
+
+
+.container.instructions.text-center
+  .jumbotron
+    %h2.title
+      Congratulations on registering to vote. Your unique signature is
+      .text-center{:style => "font-weight: bold; margin-top: 10px; margin-bottom: 10px;"}
+        {{signature}}
+    %h2.title
+      Please write this down to access your votes in the future.
+    .show
+      %a.btn.btn-default.btn-lg.pull-left{"ng-click" => "returnToRegister()", :type => "button", :style => "margin-top: 20px;"} Back to Registration
+      %button.btn-lg.btn.btn-success{"ng-click" => "createBallotPaper()", :type => "button", :style => "margin-top: 20px;"} Begin Voting

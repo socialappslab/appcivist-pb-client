@@ -178,6 +178,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
           controller: 'ballotRegisterCtrl',
           templateUrl: 'public/ballot/register.html'
         })
+        .when('/ballot/:uuid/success',{
+          controller: 'ballotSuccessCtrl',
+          templateUrl: 'public/ballot/success.html'
+        })
         .when('/ballot/:uuid/vote',{
           controller: 'ballotVoteCtrl',
           templateUrl: 'public/ballot/vote.html'

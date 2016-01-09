@@ -34,7 +34,7 @@
               %li
                 %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} Voting Instructions
               %li
-                %button#save.btn.btn-success{"ng-click" => "save()", :type => "button"} Save
+                %button#save.btn.btn-success{"ng-click" => "saveBallot()", :type => "button"} Save
           / Modal for voting instructions
           #instructions.modal.fade{"aria-labelledby" => "instrLabel", :role => "dialog", :tabindex => "-1"}
             .modal-dialog{:role => "document"}

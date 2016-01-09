@@ -15,10 +15,24 @@
 @import "../app/partials/wGroupsSuggestions/wGroupsSuggestion";
 @import "../app/partials/wGroupForum/wGroupForum";
 
+
+html, body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -16rem;
+}
+
 .inline{
   display: inline-block !important;
 }
-
 
 /*Mixin*/
 .assembly{
@@ -73,21 +87,93 @@ i{
 }
 
 /******HEADER******/
+/******NEW DESIGN NAVBAR COLORS******/
+$bgDefault      : $header-background;
+$bgHighlight    : $header-menu-active;
+$colDefault     : $header-default-color;
+$colHighlight   : $header-menu-highlight;
+$dropDown       : false;
+.navbar-default {
+  background-color: $bgDefault;
+  border-color: $bgHighlight;
+  .navbar-brand {
+    background-color: $bgDefault;
+    color: $colDefault;
+    &:hover, &:focus {
+      color: $colHighlight; }}
+  .navbar-text {
+    color: $colDefault; }
+  .navbar-nav {
+    > li {
+      > a {
+        color: $colDefault;
+        &:hover,  &:focus {
+          color: $colHighlight; }}
+      @if $dropDown {
+        > .dropdown-menu {
+          background-color: $bgDefault;
+          > li > a {
+            color: $colDefault;
+            &:hover,  &:focus {
+              color: $colHighlight;
+              background-color: $bgHighlight; }}
+          .divider {
+            background-color: $bgHighlight;}}}
+    }
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}
+    > .open {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}}
+  .navbar-toggle {
+    border-color: $bgHighlight;
+    &:hover, &:focus {
+      background-color: $bgHighlight; }
+    .icon-bar {
+      background-color: $colDefault; }}
+  .navbar-collapse {
+    background-color: $bgDefault;
+    border-color: $bgHighlight;
+  }
+  .navbar-form {
+    border-color: $colDefault; }
+  .navbar-link {
+    color: $colDefault;
+    &:hover {
+      color: $colHighlight; }}}
 
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu {
+    > li > a {
+      color: $colDefault;
+      &:hover, &:focus {
+        color: $colHighlight; }}
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}}
+}
+
+/*******NAVBAR MENU BORDERS********/
 #navbar-options{
   ul{
-    li{
-      border-right: 0.1rem solid $border-header;
-    }
-    li:first-child{
-      border-left: 0.1rem solid $border-header;
-    }
+    //li{
+    //  border-right: 0.1rem solid $header-menu-active;
+    //}
+    //li:first-child{
+    //  border-left: 0.1rem solid $header-menu-active;
+    //}
     li:hover{
-      background-color: rgba(128, 128, 128, 0.05);
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
     }
     li:active{
-      background-color: rgba(128, 128, 128, 0.05);
-      box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
+      box-shadow: inset 0 0 0.2rem 0.2rem $header-background;
     }
     li {
       a:focus {
@@ -102,13 +188,12 @@ i{
   height: 5rem;
 }
 
+/*******NAVBAR USER MENU********/
 #user-menu{
-
   .icon{
     font-size: 2.5rem;
     vertical-align: middle;
   }
-
   ul.menu-elements{
     list-style: none;
     padding: 0;
@@ -138,7 +223,7 @@ i{
   }
 }
 
-/****NEW DESIGN****/
+/****NEW DESIGN FOR LANDING PAGE****/
 .section{
   width: 100%;
   &.first-section{
@@ -146,6 +231,7 @@ i{
     vertical-align: middle;
     background-size: 100%;
     height: 82rem;
+    margin-top: -20px;
     padding-top: 17%;
     .main-title{
       color: $main-first-section-font-color;

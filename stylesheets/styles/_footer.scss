@@ -1,8 +1,10 @@
 footer{
   background: $footer-background;
-  position: absolute;
+  position: relative;
+  margin-top: -16rem; /* negative value of footer height */
+  height: 16rem;
+  clear: both;
   width: 100%;
-  height: 12rem;
   line-height: 4rem;
   color: $footer-font;
   text-align: center;

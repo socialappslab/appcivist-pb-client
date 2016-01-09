@@ -3,6 +3,7 @@ $light-green: #DFEFD6;
 $dark-green: #57965B;
 $corporative-green: #50E3C2;
 $corporative-dark-green: #029A78;
+$corporative-light-green: #CFF7EE;
 $light-grey: #F4F4F4;
 $light-pale-grey: rgb(249,249,249);
 $light-blue: #E1F1F9;
@@ -54,13 +55,16 @@ $indexBall: $light-black;
 
 /******HEADER**********/
 $header-background: $corporative-green;
+$header-menu-active: $corporative-dark-green;
+$header-default-color: $light-black;
+$header-menu-highlight: $corporative-light-green;
 $header-font: $white;
 $header-sign-up-font: $pale-yellow;
 
 /**OLDHEADER DELETE WHEN REDESIGN ENDS*/
 $border-header: $light-grey;
 $dropdown-hover: $dark-blue;
-$header-menu-active: $dark-grey;
+//$header-menu-active: $dark-grey;
 
 /**FOOTER**/
 $footer-background: $corporative-dark-green;

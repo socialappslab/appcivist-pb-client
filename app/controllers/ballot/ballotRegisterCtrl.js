@@ -15,43 +15,26 @@ appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routePara
 		ballot.$promise.then(function(data){
       console.log("Posted voting registration form.");
       alert("You've successfully registered! Your unique registration signature is " + data.signature + ". Please record it to access your ballot at a later date.")
-      $location.url("/ballot/" + $routeParams.uuid + "/vote");
+      transitionToVoting();
 		}, function(error) {
 			alert("Sorry, the provided information cannot generate a valid voting ballot.");
 			return;
 		})
 	};
 
-	$scope.loadBallot = function(){
-		/*uncomment when backend is ready*/
-		// var signature = Ballot.signature($scope.uuid).get();
-		// signature.$promise.then(
-		// 	function(data){
-		// 		$scope.signature = data;
-		// 		console.log("Retreived signature from server.");
-		// 	},
-		// 	function(error){
-		// 		alert("Sorry, no valid signature under this username can be retreived.");
-		// 		return;
-		// 	}
-		// )
-		// var ballot = Ballot.ballot($scope.uuid, $scope.signature).get();
-		// ballot.$promise.then(
-		// 	function(data){
-		// 		$scope.votingBallot = data;
-		// localStorageService.set("currentBallot", data);
-		// $location.url('/ballot/'+$scope.votingBallot.uuid+"/voting");
-		// 	},
-		// 	function(error){
-		// 		alert("Sorry, no valid voting ballot can be retreived using this signature.");
-		// 		return;
-		// 	}
-		// )
+	$scope.loadBallotPaper = function(){
+		var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: $scope.signature}).$promise;
+	  ballotPaper.then(function(data){
+      console.log(data)
+      $scope.signature = data;
+      // transitionToVoting();
+    }, function(error) {
+      alert("Sorry, no valid signature under this username can be retreived.");
+      return;
+    });
+  }
 
-		$scope.signature = Ballot.signature($scope.uuid);
-		$scope.votingBallot = Ballot.ballot($scope.uuid, $scope.signature).ballot;
-		localStorageService.set("currentBallot", Ballot.ballot($scope.uuid, $scope.signature));
-		$location.url('/ballot/'+$scope.votingBallot.uuid+"/vote");
-	}
-
+  var transitionToVoting = function() {
+    $location.url("/ballot/" + $routeParams.uuid + "/vote");
+  }
 });

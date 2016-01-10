@@ -2694,11 +2694,13 @@ i {
   cursor: pointer;
   padding-bottom: 4%;
 }
-.section .btn-yellow {
-  background-color: #FCCF26;
+.section .btn {
   border: 0;
   color: #FFFFFF;
   padding: 0.8rem 1.6rem;
+}
+.section .btn-yellow {
+  background-color: #FCCF26;
 }
 .section h2 {
   font-weight: bold;

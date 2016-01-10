@@ -3,7 +3,7 @@
 /**
  * AccountCtrl - functions to control authentication 
  */
-appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,/* $uibModal,*/
+appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
 		localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
@@ -66,17 +66,17 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,/* 
 	}
 
 	$scope.openNewUserModal = function(size)  {
-		/*var modalInstance = $uibModal.open({
-			animation: true,
-			templateUrl: '/app/partials/signup.html',
-			controller: 'NewUserModalCtrl',
-			size: size,
-			resolve: {
-				newUser: function () {
-					return $scope.newUser;
+		var modalInstance = $uibModal.open({
+				animation: true,
+				templateUrl: '/app/partials/signup.html',
+				controller: 'NewUserModalCtrl',
+				size: size,
+				resolve: {
+					newUser: function () {
+						return $scope.newUser;
+					}
 				}
-			}
-		});*/
+		});
 
 		var modalInstance;
 

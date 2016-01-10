@@ -234,13 +234,15 @@ $dropDown       : false;
     color: white;
     font-weight: bold;
     cursor: pointer;
-    padding-bottom: 4%;
+    padding-bottom: 10%;
   }
-  .btn-yellow{
-    background-color: $main-first-section-button-sign-up-background;
+  .btn {
     border: 0;
     color: $main-first-section-font-color;
     padding: 0.8rem 1.6rem;
+  }
+  .btn-yellow{
+    background-color: $main-first-section-button-sign-up-background;
   }
   h2 {
     font-weight: bold;

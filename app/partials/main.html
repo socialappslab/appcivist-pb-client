@@ -2,11 +2,12 @@
 	<!-- Landing Section 1 -->
 	<div class="row section first-section" id="section1">
 		<h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
-		<form>
-			<input type="text" class="form-control" id="username" name="username" placeholder="Name" required ng-model="newUser.name">
-			<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="newUser.email"/>
-			<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="newUser.password"/>
-			<a class="btn btn-yellow btn-lg" href="#" role="button">{{'header.sign_up' | translate}}</a>
+		<form ng-submit="login()">
+			<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="user.email"/>
+			<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="user.password"/>
+			<button type="submit" class="btn btn-success btn-lg">{{'header.sign_in' | translate}}</button>
+			<button type="button" class="btn btn-yellow btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
+			<a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
 		</form>
 		<h6 class="text-center bottom-info"><a href="#section2" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.Learn more' | translate}}</a></h6>
 	</div>
@@ -117,14 +118,6 @@
 		</ul>
 		<!--<a href="#section4" du-smooth-scroll class="btn btn-info btn-lg text-center bottom-info">{{'landing.section3.button' | translate}}</a>-->
 	</div>
-	<!--<div class="section fourth-section" id="section4" smooth-scroll>-->
-		<!--<h2 class="main-title">{{'landing.section4.title' | translate}}</h2>-->
-		<!--<ul>-->
-			<!--<li><i class="icon-users"></i><span>{{'Proposal making' | translate}}</span><p>{{'AssemblyDefinition' | translate}}</p></li>-->
-			<!--<li><i class="icon-flag-empty"></i><span>{{'Versioning' | translate}}</span><p>{{'CampaignDefinition' | translate}}</p></li>-->
-			<!--<li><i class="icon-doc-text"></i><span>{{'Deliberation' | translate}}</span><p>{{'ProposalDevelopment' | translate}}</p></li>-->
-			<!--<li><i class="icon-doc-text"></i><span>{{'Voting' | translate}}</span><p>{{'ProposalDevelopment' | translate}}</p></li>-->
-		<!--</ul>-->
-	<!--</div>-->
+
 </div>
 

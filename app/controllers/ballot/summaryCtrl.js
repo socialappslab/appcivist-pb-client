@@ -20,7 +20,6 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $routeParams, 
         value = voteFromAPI[0].value;
       }
 
-      console.log(value)
       $scope.candidates.push(Candidate.get({uuid: candidateUuid, value: value}))
     };
 

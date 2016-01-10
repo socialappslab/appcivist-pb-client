@@ -32,7 +32,7 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $routeParams, 
   }
 
 	$scope.submitBallotPaper = function(){
-    var ballot_paper = BallotPaper.update(
+    var ballot_paper = BallotPaper.complete(
       {uuid: $routeParams.uuid, signature: localStorageService.get("voteSignature")},
       {vote: {status: 1}}
     ).$promise;

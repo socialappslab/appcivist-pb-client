@@ -20,7 +20,17 @@ appCivistApp.factory('Ballot', function($http, $resource, localStorageService) {
 
 appCivistApp.factory('BallotPaper', function($http, $resource, localStorageService) {
   var url = getVotingApiURL(localStorageService);
-  return $resource(url + '/ballot/:uuid/vote/:signature', {"uuid": "@id", "signature": "@id"}, {"update": {method: "PUT"}} );
+  return $resource(
+    url + '/ballot/:uuid/vote/:signature',
+    { "uuid": "@id", "signature": "@id" },
+    {
+      "update": {method: "PUT"},
+      "complete": {
+        method: "PUT",
+        url: url + "/ballot/:uuid/vote/:signature/complete"
+      }
+    }
+  );
 });
 
 appCivistApp.factory("Candidate", function($http, $resource, localStorageService) {

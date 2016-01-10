@@ -15,7 +15,16 @@ var getVotingApiURL = function(localStorageService) {
 
 appCivistApp.factory('Ballot', function($http, $resource, localStorageService) {
   var url = getVotingApiURL(localStorageService);
-  return $resource(url + '/ballot/:uuid/registration', {"uuid": "@id"});
+  return $resource(
+    url + '/ballot/:uuid/registration',
+    {"uuid": "@id"},
+    {
+      "results": {
+        method: "GET",
+        url: url + '/ballot/:uuid/results'
+      }
+    }
+  );
 });
 
 appCivistApp.factory('BallotPaper', function($http, $resource, localStorageService) {

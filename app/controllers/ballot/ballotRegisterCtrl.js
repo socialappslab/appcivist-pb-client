@@ -1,16 +1,14 @@
 // This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routeParams, $location, Ballot, BallotPaper, localStorageService) {
+appCivistApp.controller('ballotRegisterCtrl', function($scope, $routeParams, $location, Ballot, BallotPaper, localStorageService) {
   $scope.signature = localStorageService.get("voteSignature");
 
   var ballot = Ballot.get({uuid:$routeParams.uuid}).$promise;
   ballot.then(function(data) {
     console.log(data)
     $scope.ballot = data;
-  }, function(error) {
-    alert(data);
-  });
+  }, function(error){ window.appcivist.handleError(error); });
 
 	$scope.generateSignature = function() {
 		var ballot = Ballot.save({uuid: $routeParams.uuid}, {ballot_registration_fields: $scope.ballot.ballot_registration_fields});
@@ -18,10 +16,7 @@ appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routePara
       console.log("Posted voting registration form.");
       localStorageService.set("voteSignature", data.signature);
       $location.url("/ballot/" + $routeParams.uuid + "/success");
-		}, function(error) {
-			alert(error.data.error);
-			return;
-		})
+		}, function(error){ window.appcivist.handleError(error); })
 	};
 
 	$scope.loadBallotPaper = function(){
@@ -31,9 +26,6 @@ appCivistApp.controller('ballotRegisterCtrl', function($scope, $http, $routePara
 	  ballotPaper.then(function(data){
       localStorageService.set("voteSignature", $scope.signature);
       $location.url("/ballot/" + $routeParams.uuid + "/vote");
-    }, function(error) {
-      alert(error.data.error);
-      return;
-    });
+    }, function(error){ window.appcivist.handleError(error); });
   }
 });

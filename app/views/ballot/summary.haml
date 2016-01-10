@@ -76,17 +76,17 @@
         %strong Your Voting Summary
       %p.scored
         %strong Assigned scores (range)
-      %ol.individual-scores.list-unstyled{"ng-repeat" => "vote in votingBallotVote.voteValues"}
+      %ol.individual-scores.list-unstyled{"ng-repeat" => "candidate in candidates"}
         %li
-          %p.score-box {{vote.voteValue}}
-          .campaign-name {{uuidMap[vote.selectedCandidate.uuid]}}
+          %p.score-box {{candidate.value || ""}}
+          .campaign-name {{candidate.title}}
       %p.total-scored-text
         %strong You have scored
-      %span.score-box {{scored}}
+      %span.score-box {{scoredCandidates.length}}
       %strong /
-      %span.score-box {{votingBallotVote.voteValues.length}}
+      %span.score-box {{candidates.length}}
       %p.total-scored-text
         %strong proposals.
   .buttons
-    %button.btn.btn-success{"ng-click" => "back()", :type => "button"} Back to Ballot
-    %button.btn.btn-primary{"ng-click" => "submit()", :type => "submit"} CONFIRM AND SUBMIT
+    %button.btn.btn-success{"ng-click" => "transitionToVoting()", :type => "button"} Back to Ballot
+    %button.btn.btn-primary{"ng-click" => "submitBallotPaper()", :type => "submit"} CONFIRM AND SUBMIT

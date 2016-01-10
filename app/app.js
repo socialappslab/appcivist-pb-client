@@ -31,8 +31,10 @@ var votingApiURL = backendServers.voting;
 var appcivist = {
   handleError: function(error) {
     console.log(error);
-    console.log("HAHA")
-    if (error.status == -1 && error.data == null)
+
+    if (error.status == 500)
+      alert("Something went wrong on our end. Please try again at a later time.");
+    else if (error.status == -1 && error.data == null)
       alert("Voting API service is probably not running!")
     else
       alert(error.data.error);

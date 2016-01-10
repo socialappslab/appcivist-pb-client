@@ -1,43 +1,130 @@
 ﻿<div class="view">
-	<div class="section first-section">
-		<h1 class="main-title text-center">{{'TAGLINE' | translate}}</h1>
+	<!-- Landing Section 1 -->
+	<div class="row section first-section" id="section1">
+		<h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
 		<form>
 			<input type="text" class="form-control" id="username" name="username" placeholder="Name" required ng-model="newUser.name">
 			<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="newUser.email"/>
 			<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="newUser.password"/>
-			<a class="btn btn-yellow btn-lg" href="#" role="button">{{'SIGN_UP' | translate}}</a>
+			<a class="btn btn-yellow btn-lg" href="#" role="button">{{'header.sign_up' | translate}}</a>
 		</form>
-		<h6 class="text-center bottom-info">{{'LearnMore' | translate}}</h6>
+		<h6 class="text-center bottom-info"><a href="#section2" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.Learn more' | translate}}</a></h6>
 	</div>
-	<!--<div class="section first-section">-->
-		<!--<h2 class="main-title">{{'MAIN_TITLE' | translate}}</h2>-->
-		<!--<form>-->
-			<!--<input type="text" class="form-control" id="username" name="username" placeholder="Name" required ng-model="newUser.name">-->
-			<!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="newUser.email"/>-->
-			<!--<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="newUser.password"/>-->
-			<!--<a class="btn btn-primary btn-lg" href="#" role="button">SIGN UP</a>-->
-		<!--</form>-->
-		<!--<h6 class="text-center">Learn More</h6>-->
-	<!--</div>-->
-	<!--<div class="section first-section">-->
-		<!--<h2 class="main-title">{{'MAIN_TITLE' | translate}}</h2>-->
-		<!--<form>-->
-			<!--<input type="text" class="form-control" id="username" name="username" placeholder="Name" required ng-model="newUser.name">-->
-			<!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="newUser.email"/>-->
-			<!--<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="newUser.password"/>-->
-			<!--<a class="btn btn-primary btn-lg" href="#" role="button">SIGN UP</a>-->
-		<!--</form>-->
-		<!--<h6 class="text-center">Learn More</h6>-->
-	<!--</div>-->
-	<!--<div class="section first-section">-->
-		<!--<h2 class="main-title">{{'MAIN_TITLE' | translate}}</h2>-->
-		<!--<form>-->
-			<!--<input type="text" class="form-control" id="username" name="username" placeholder="Name" required ng-model="newUser.name">-->
-			<!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="newUser.email"/>-->
-			<!--<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="newUser.password"/>-->
-			<!--<a class="btn btn-primary btn-lg" href="#" role="button">SIGN UP</a>-->
-		<!--</form>-->
-		<!--<h6 class="text-center">Learn More</h6>-->
+
+	<!-- Landing Section 2 -->
+	<div class="row section second-section" id="section2">
+		<h2 class="main-title">{{'landing.goal' | translate}}</h2>
+		<div class="voffset3"></div>
+		<ul>
+			<li class="row">
+				<div class="col-md-2 col-sm-2 col-xs-1 align-right">
+					<i class="fa fa-users fa-lg fa-5x i1"></i>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-11">
+					<h2>{{'landing.goal.assembly' | translate}}</h2>
+					<h3>{{'definition.assembly' | translate}}</h3>
+				</div>
+			</li>
+			<div class="voffset6"></div>
+			<li class="row">
+				<div class="col-md-2 col-sm-2 col-xs-1 align-right">
+					<i class="fa fa-flag fa-lg fa-5x i3"></i>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-11">
+					<h2>{{'landing.goal.campaign' | translate}}</h2>
+					<h3>{{'definition.campaign' | translate}}</h3>
+				</div>
+			</li>
+			<div class="voffset6"></div>
+			<li class="row">
+				<div class="col-md-2 col-sm-2 col-xs-1 align-right">
+					<i class="fa fa-file-text fa-lg fa-5x i4"></i>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-11">
+					<h2>{{'landing.goal.proposal' | translate}}</h2>
+					<h3>{{'definition.proposal.development' | translate}}</h3>
+				</div>
+			</li>
+			<div class="voffset3"></div>
+		</ul>
+		<h6 class="text-center bottom-info"><a href="#section3" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.section2.button' | translate}}</a></h6>
+	</div>
+
+	<!-- Landing Section 3 -->
+	<div class="row section third-section" id="section3">
+		<h2 class="row main-title">{{'landing.section3.title' | translate}}</h2>
+		<div class="voffset4"></div>
+		<h3 class="row sub-title">{{'landing.section3.desc' | translate}}</h3>
+		<div class="voffset6"></div>
+		<ul class="row">
+			<li class="col-md-3 col-sm-3 col-xs-12">
+				<h2 class="row">{{'landing.component.Proposal Making' | translate}}</h2>
+				<div class="row">
+					<span class="fa-stack fa-lg col-md-2">
+						<i class="fa fa-circle fa-stack-2x i1"></i>
+						<i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+					</span>
+					<div class="greenline1"></div>
+				</div>
+				<ul class="row">
+					<li>{{'landing.component.Proposal Making.Brainstorming' | translate}}</li>
+					<li>{{'landing.component.Proposal Making.Forming working groups' | translate}}</li>
+					<li>{{'landing.component.Proposal Making.Drafting proposals' | translate}}</li>
+				</ul>
+			</li>
+			<li class="col-md-3 col-sm-3 col-xs-12">
+				<h2 class="row">{{'landing.component.Versioning' | translate}}</h2>
+				<div class="row">
+					<span class="fa-stack fa-lg col-md-2">
+						<i class="fa fa-circle fa-stack-2x i2"></i>
+						<i class="fa fa-files-o fa-stack-1x fa-inverse"></i>
+					</span>
+					<div class="greenline2"></div>
+				</div>
+				<ul class="row">
+					<li>{{'landing.component.Versioning.Proposal editing' | translate}}</li>
+					<li>{{'landing.component.Versioning.Proposal merging/splitting' | translate}}</li>
+					<li>{{'landing.component.Versioning.Proposal selection within groups' | translate}}</li>
+				</ul>
+			</li>
+			<li class="col-md-3 col-sm-3 col-xs-12">
+				<h2 class="row">{{'landing.component.Deliberation' | translate}}</h2>
+				<div class="row">
+					<span class="fa-stack fa-lg col-md-2">
+						<i class="fa fa-circle fa-stack-2x i3"></i>
+						<i class="fa fa-comments fa-stack-1x fa-inverse"></i>
+					</span>
+					<div class="greenline3"></div>
+				</div>
+				<ul class="row">
+					<li>{{'landing.component.Deliberation.Open discussion' | translate}}</li>
+					<li>{{'landing.component.Deliberation.Technical assessment' | translate}}</li>
+				</ul>
+			</li>
+			<li class="col-md-3 col-sm-3 col-xs-12">
+				<h2 class="row">{{'landing.component.Voting' | translate}}</h2>
+				<div class="row">
+					<span class="fa-stack fa-lg col-md-2">
+						<i class="fa fa-circle fa-stack-2x i4"></i>
+						<i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+					</span>
+					<div class="greenline4"></div>
+				</div>
+				<ul class="row">
+					<li>{{'landing.component.Voting.Final selection' | translate}}</li>
+				</ul>
+			</li>
+		</ul>
+		<!--<a href="#section4" du-smooth-scroll class="btn btn-info btn-lg text-center bottom-info">{{'landing.section3.button' | translate}}</a>-->
+	</div>
+	<!--<div class="section fourth-section" id="section4" smooth-scroll>-->
+		<!--<h2 class="main-title">{{'landing.section4.title' | translate}}</h2>-->
+		<!--<ul>-->
+			<!--<li><i class="icon-users"></i><span>{{'Proposal making' | translate}}</span><p>{{'AssemblyDefinition' | translate}}</p></li>-->
+			<!--<li><i class="icon-flag-empty"></i><span>{{'Versioning' | translate}}</span><p>{{'CampaignDefinition' | translate}}</p></li>-->
+			<!--<li><i class="icon-doc-text"></i><span>{{'Deliberation' | translate}}</span><p>{{'ProposalDevelopment' | translate}}</p></li>-->
+			<!--<li><i class="icon-doc-text"></i><span>{{'Voting' | translate}}</span><p>{{'ProposalDevelopment' | translate}}</p></li>-->
+		<!--</ul>-->
 	<!--</div>-->
 </div>
 

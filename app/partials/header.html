@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="#/"><img src="/assets/images/logotype.svg" class="logotype" alt="{{ 'APPCIVIST_STRING' | translate}}"/></a>
+            <a href="#/"><img src="/assets/images/logotype.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
         </div>
     </div>
     <div class="collapse navbar-collapse" id="navbar-options">
@@ -21,10 +21,10 @@
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-inbox icon"></i></a>
                 <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
-                    <li><a><strong>{{'Notifications' | translate}} 1</strong></a></li>
-                    <li><a>{{'Notifications' | translate}} 2</a></li>
+                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a>{{'Notifications' | translate}} 3</a></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
                 </ul>
             </li>
             <li>
@@ -35,11 +35,11 @@
                     {{user.name}}<b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
-                    <li><a>{{'SendMessage' | translate}}</a></li>
-                    <li><a>{{'Profile' | translate}}</a></li>
-                    <li><a>{{'Settings' | translate}}</a></li>
+                    <li><a>{{'header.menu.Send message' | translate}}</a></li>
+                    <li><a>{{'header.menu.Profile' | translate}}</a></li>
+                    <li><a>{{'header.menu.Settings' | translate}}</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a ng-click="signout()">{{'SIGN_OUT' | translate}}</a></li>
+                    <li><a ng-click="signout()">{{'header.sign_out' | translate}}</a></li>
                 </ul>
             </li>
         </ul>
@@ -50,12 +50,12 @@
                 <input type="text" placeholder="Email" class="form-control" ng-model="user.email">
                 <input type="password" placeholder="Password" class="form-control" ng-model="user.password"/>
             </div>
-            <button type="submit" class="btn btn-success">{{'SIGN_IN' | translate}}</button>
-            <button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'SIGN_UP_INDIVIDUAL' | translate}}</button>
-            <a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'SIGN_UP_GROUP' | translate}}</button></a>
+            <button type="submit" class="btn btn-success">{{'header.menu.sign_in' | translate}}</button>
+            <button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
+            <a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'header.sign_up_group' | translate}}</button></a>
         </form>
         <ul class="nav navbar-nav navbar-right" ng-if='!userIsAuthenticated()'>
-            <li><a href="/user/recoveryform">{{'ForgotPassword' | translate}}</a></li>
+            <li><a href="/user/recoveryform">{{'header.Forgot password' | translate}}</a></li>
         </ul>
     </div>
 </nav>

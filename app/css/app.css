@@ -2379,7 +2379,7 @@ button#second-vote {
   margin-left: 2rem;
 }
 .wGroupForum .text-info {
-  color: #4DAAD8;
+  color: #4A90E2;
 }
 .wGroupForum .title-button {
   text-align: right;
@@ -2683,14 +2683,49 @@ i {
 /****NEW DESIGN FOR LANDING PAGE****/
 .section {
   width: 100%;
+  background-color: #FFFFFF;
+}
+.section .align-right {
+  text-align: right;
+}
+.section .bottom-info {
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding-bottom: 4%;
+}
+.section .btn-yellow {
+  background-color: #FCCF26;
+  border: 0;
+  color: #FFFFFF;
+  padding: 0.8rem 1.6rem;
+}
+.section h2 {
+  font-weight: bold;
+}
+.section ul {
+  list-style: none;
+}
+.section .i1 {
+  color: #50E3C2;
+}
+.section .i2 {
+  color: #3FB59B;
+}
+.section .i3 {
+  color: #029A78;
+}
+.section .i4 {
+  color: #134B3E;
 }
 .section.first-section {
   background-image: linear-gradient(to bottom, rgba(19, 74, 62, 0.5) 0%, rgba(19, 74, 62, 0.5) 100%), url("../../assets/images/section1pic.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   vertical-align: middle;
-  background-size: 100%;
-  height: 82rem;
   margin-top: -20px;
-  padding-top: 17%;
+  padding-top: 20%;
 }
 .section.first-section .main-title {
   color: #FFFFFF;
@@ -2709,16 +2744,84 @@ i {
 .section.first-section form :last-child {
   margin-right: 0;
 }
-.section.first-section .bottom-info {
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
+.section.second-section {
+  vertical-align: middle;
+  margin-top: -20px;
+  background-color: #FFFFFF;
+  padding: 5% 5% 5% 5%;
 }
-.section.first-section .btn-yellow {
-  background-color: #FCCF26;
-  border: 0;
-  color: #FFFFFF;
-  padding: 0.8rem 1.6rem;
+.section.second-section .main-title {
+  color: #4A90E2;
+  /* AppCivist lets users: */
+  font-family: Lato-Regular;
+  font-size: 32px;
+  line-height: 39px;
+  margin-bottom: 3%;
+}
+.section.third-section {
+  vertical-align: middle;
+  margin-top: -20px;
+  /* Rectangle 345: */
+  background: rgba(207, 247, 238, 0.5);
+  padding: 5% 5% 5% 5%;
+}
+.section.third-section .main-title {
+  color: #4A90E2;
+  text-align: center;
+  font-family: Lato-Regular;
+  font-size: 32px;
+  line-height: 39px;
+}
+.section.third-section .sub-title {
+  text-align: center;
+  font-family: Lato-Regular;
+  font-size: 24px;
+  color: #524D4D;
+  line-height: 19px;
+  margin-bottom: 3%;
+}
+.section.third-section .circle {
+  border-radius: 50%;
+}
+.section.third-section .green1 {
+  background: #50E3C2;
+}
+.section.third-section .green2 {
+  background: #3FB59B;
+}
+.section.third-section .green3 {
+  background: #029A78;
+}
+.section.third-section .green4 {
+  background: #134B3E;
+}
+.section.third-section .greenline1 {
+  border: #50E3C2;
+  border-style: solid;
+  margin-top: 6%;
+  margin-left: 5%;
+  margin-right: -4%;
+}
+.section.third-section .greenline2 {
+  border: #3FB59B;
+  border-style: solid;
+  margin-top: 6%;
+  margin-left: 5%;
+  margin-right: -4%;
+}
+.section.third-section .greenline3 {
+  border: #029A78;
+  border-style: solid;
+  margin-top: 6%;
+  margin-left: 5%;
+  margin-right: -4%;
+}
+.section.third-section .greenline4 {
+  border: #134B3E;
+  border-style: solid;
+  margin-top: 6%;
+  margin-left: 5%;
+  margin-right: -4%;
 }
 
 /*# sourceMappingURL=app.css.map */

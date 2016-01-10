@@ -6,7 +6,8 @@
  * user can view
  *
  */
-appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService, Assemblies, loginService, $route) {
+appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService,
+											 Assemblies, loginService, $route) {
 	init();
 
 	function init() {

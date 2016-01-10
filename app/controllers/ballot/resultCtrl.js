@@ -2,11 +2,9 @@
 /**
  * Summary of results once ellection is over
  */
-appCivistApp.controller('ballotResultCtrl', function($scope, $routeParams, $location, Ballot, Candidate, localStorageService){
-	$scope.winners = [];
-	$scope.used = 0;
+appCivistApp.controller('ballotResultCtrl', function($scope, $routeParams, Ballot, Candidate){
 	$scope.total = 300000;
-	$scope.allCandidates = [];
+  $scope.candidates = [];
 
   var ballot = Ballot.get({uuid: $routeParams.uuid}).$promise;
   ballot.then(function(data) {
@@ -15,8 +13,6 @@ appCivistApp.controller('ballotResultCtrl', function($scope, $routeParams, $loca
 
 	var results = Ballot.results({uuid: $routeParams.uuid}).$promise;
   results.then(function(data) {
-    $scope.candidates = [];
-
     for (var candidateUuid = 1; candidateUuid < 5; candidateUuid++) {
       var scoreFromAPI = data.results.filter(function(el) {return el.candidate_id == candidateUuid});
 
@@ -33,7 +29,6 @@ appCivistApp.controller('ballotResultCtrl', function($scope, $routeParams, $loca
 
 
   $scope.calculateTotalBudget = function() {
-    if ($scope.candidates)
-      return $scope.candidates.slice(0, 3).reduce( (prev, curr) => prev + parseInt(curr.budget), 0);
+    return $scope.candidates.slice(0, 3).reduce( (prev, curr) => prev + parseInt(curr.budget), 0);
   }
 });

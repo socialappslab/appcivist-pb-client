@@ -1,15 +1,9 @@
 var getVotingApiURL = function(localStorageService) {
-  // var url = localStorageService.get('votingApiURL');
-  // if (url)
-  //   console.log("Using API Server in loginServer: " + url);
-  // else {
-  //   url = votingApiURL;
-  //   localStorageService.set("votingApiURL", url);
-  //   console.log("Setting API Server in appCivistService to: " + url);
-  // }
-
-  url = votingApiURL;
-
+  var url = localStorageService.get('votingApiUrl');
+  if (!url) {
+      url = votingApiUrl;
+      localStorageService.set("votingApiUrl", url);
+  }
   return url;
 }
 

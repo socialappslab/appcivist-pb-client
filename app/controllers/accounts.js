@@ -1,7 +1,7 @@
 ﻿// AppCivist Demo Client - Basic Controllers
 
 /**
- * AccountCtrl - functions to control authentication 
+ * AccountCtrl - functions to control authentication
  */
 appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
 		localStorageService, Assemblies, loginService, usSpinnerService) {
@@ -19,6 +19,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 		$scope.user = localStorageService.get("user");
         $scope.sessionKey = localStorageService.get("sessionKey");
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+        $scope.votingApiUrl  = localStorageService.get("votingApiUrl");
 
         if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
             $scope.serverBaseUrl = appCivistCoreBaseURL;
@@ -97,6 +98,14 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 		localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
 		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");
 	}
+
+  $scope.changeVotingServer = function() {
+		var apiURL = localStorageService.get("votingApiUrl");
+		$scope.votingApiUrl = (apiURL === appcivist.api.voting.development) ? appcivist.api.voting.production : appcivist.api.voting.development;
+		localStorageService.set("votingApiUrl", $scope.votingApiUrl);
+		console.log("Changing Backend Server from: [" + apiURL + "] to [" + $scope.votingApiUrl + "]");
+	}
+
 });
 
 

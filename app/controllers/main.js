@@ -15,6 +15,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		$scope.user = localStorageService.get("user");
 		$scope.sessionKey = localStorageService.get("sessionKey");
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+    $scope.votingApiUrl  = localStorageService.get("votingApiUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.info = localStorageService.get("help");
 		$scope.userVotes = localStorageService.get("userVotes");
@@ -26,6 +27,14 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 			console.log("Setting API Server in MainCtrl to: " + appCivistCoreBaseURL);
 		} else {
 			console.log("Using API Server: " + $scope.serverBaseUrl);
+		}
+
+    if ($scope.votingApiUrl)
+      console.log("Using Voting API Server: " + $scope.votingApiUrl);
+		else {
+      $scope.votingApiUrl = votingApiUrl;
+			localStorageService.set("votingApiUrl", $scope.votingApiUrl);
+			console.log("Setting Voting API Server in MainCtrl to: " + $scope.votingApiUrl);
 		}
 
 		if ($scope.etherpadServer === undefined || $scope.etherpadServer === null ) {
@@ -116,6 +125,13 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 
 		localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
 		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");
+	}
+
+  $scope.changeVotingServer = function() {
+		var apiURL = localStorageService.get("votingApiUrl");
+		$scope.votingApiUrl = (apiURL === appcivist.api.voting.development) ? appcivist.api.voting.production : appcivist.api.voting.development;
+		localStorageService.set("votingApiUrl", $scope.votingApiUrl);
+		console.log("Changing Backend Server from: [" + apiURL + "] to [" + $scope.votingApiUrl + "]");
 	}
 
 	function authCheck(user, sessionKey) {

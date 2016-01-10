@@ -1,0 +1,153 @@
+.container
+  .row.text-center
+    %h2
+      %b> Assembly:
+      PB Belleville Paris/
+      %b> Campaign:
+      Belleville - Paris PB 2016
+  %br
+    .row.col-md-8.col-md-push-2.col-sm-8.col-sm-push-2
+      %ul#timeline.row.timeline
+        %li#winnerMakingPhase.active
+          %h4
+            %strong winner Making
+        %li#winnerMakingPhase.active
+          %h4
+            %strong Versioning
+        %li#winnerMakingPhase.active
+          %h4
+            %strong Deliberation
+        %li#winnerMakingPhase.selected.active
+          %h4
+            %strong Voting
+    .progressline.col-md-12.col-sm-12
+      .col-md-8.col-sm-8
+        %ul.progressline-phases
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Registration
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Instructions
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Voting
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Summary
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title.selected
+              Result
+            .progressline-phase-line
+      .col-md-4.col-sm-4
+        .counter-box
+          %h3.counter-title
+            %strong Final drafts due
+          %ul.counter
+            %li.counter-section
+              %h5.text-muted
+                %strong Days
+              %div 45
+            %li.counter-section
+              %h5.text-muted
+                %strong Hours
+              %div 03
+            %li.counter-section
+              %h5.text-muted
+                %strong Minutes
+              %div 03
+#rangeVotingResult.container
+  .titles
+    .container
+      %h3 Paris PB 2016
+    .container
+      %h1
+        %b Campaign Winners
+    .container
+      %h1#small 2016 August
+    %br
+      .container
+        %h3
+          %b Congratulations to our 3 winning winners
+  %br
+    .winners.container
+      .row
+        .col-md-4.col-sm-4.winning-proposal{"ng-repeat" => "winner in candidates | limitTo:3"}
+          .block.container{"data-target" => "\#{{winner.uuid}}modal", "data-toggle" => "modal"}
+            .picture.container
+              %img{:src => "/../assets/images/image78.jpg"}
+                %p.score {{winner.score}}
+                %p.theme{"ng-repeat" => "theme in winner.themes"}
+                  %b {{theme}}
+            .info
+              %h4
+                %b {{winner.title}}
+              %p {{winner.text}}
+              %ul.list-unstyled.list-inline.icon-tail
+                %li
+                  %p
+                    %b> Budget:
+                    {{winner.budget | currency}}
+                %li.comments-icon
+                  %div
+                    %i.icon-chat-empty
+                  / cannot fix css for total-replies
+                  /
+                    <div class="total-replies">
+                    <strong>{{winner.comments}}</strong>
+                    </div>
+                %li.votes-counter
+                  %i.fa.fa-caret-up.add-vote
+                  .total-votes
+                    %strong {{winner.comments.length}}
+                  %i.fa.fa-caret-down.substract-vote
+          .tail.container
+            %p.assembly
+              %img.assembly-img.img-circle{:src => "/../assets/images/image71.tiff"}
+                %span{"ng-repeat" => "author in winner.authors"} {{author}}
+          / Modal for information of the candidate
+          .modal.fade{"aria-labelledby" => "{{winner.uuid}}Label", :id => "{{winner.uuid}}modal", :role => "dialog", :tabindex => "-1"}
+            .modal-dialog{:role => "document"}
+              .modal-content
+                .modal-header
+                  %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                    %span{"aria-hidden" => "true"} &times;
+                  %h4.modal-title{:id => "{{winner.uuid}}Label"} {{winner.title}}
+                .modal-body
+                  %h3
+                    %b {{winner.title}}
+                  %h5
+                    %b Authors:
+                    %span{"ng-repeat" => "author in winner.authors"} {{author}}
+                  %h5
+                    %b Working Group Authors:
+                    %span{"ng-repeat" => "author in winner.workingGroupAuthors"} {{author}}
+                  %h5.theme-holder
+                    %b Themes:
+                    %span.themes{"ng-repeat" => "theme in winner.themes"}
+                      %b {{theme}}
+                  %br
+                    %img.pull-right{:src => "/../assets/images/image78.jpg"}
+                      %p {{winner.text}}
+                      %br
+                        %h5
+                          %b Comments:
+                        %p.comments{"ng-repeat" => "comment in winner.comments"} {{comment}}
+                .modal-footer
+                  %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+    .allocated
+      %h3
+        %b Allocated budget:
+        {{ calculateTotalBudget() | currency }} (out of {{ total | currency }} available)
+    .result.container
+      %h3
+        %b Assembly Voting Results
+      %br
+        %ol.voting-result.list-unstyled
+          %li.candidate{"ng-repeat" => "candidate in candidates"}
+            %span.score {{candidate.score}}
+            %b {{candidate.title}}

@@ -6,7 +6,8 @@
  * user can view
  *
  */
-appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService, Assemblies, loginService, $route) {
+appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService,
+											 Assemblies, loginService, $route, usSpinnerService, $uibModal) {
 	init();
 
 	function init() {
@@ -61,8 +62,60 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		searchAssemblies(query);
 	}
 
-	$scope.login = function(email, password) {
-		$scope.user = loginService.signIn(email, password);
+	$scope.login = function() {
+		console.log("Signing in with email = " + $scope.email);
+		loginService.signIn($scope.user.email, $scope.user.password);
+	}
+
+	$scope.signup = function() {
+		loginService.signUp($scope.newUser);
+	}
+
+	$scope.signout = function() {
+		loginService.signOut();
+	}
+
+	$scope.startSpinner = function(){
+		$(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+		usSpinnerService.spin('spinner-1');
+	}
+
+	$scope.stopSpinner = function(){
+		usSpinnerService.stop('spinner-1');
+		$(angular.element.find('.spinner-container')).remove();
+	}
+
+	$scope.openNewUserModal = function(size)  {
+		var modalInstance = $uibModal.open({
+			 animation: true,
+			 templateUrl: '/app/partials/signup.html',
+			 controller: 'NewUserModalCtrl',
+			 size: size,
+			 resolve: {
+				 newUser: function () {
+					return $scope.newUser;
+				 }
+			 }
+		 });
+
+		var modalInstance;
+
+		modalInstance.result.then(function (newUser) {
+			$scope.newUser = newUser;
+			console.log('New User with Username: ' + newUser.username);
+		}, function () {
+			console.log('Modal dismissed at: ' + new Date());
+		});
+	};
+
+	$scope.changeServer = function() {
+		var serverBaseUrl = localStorageService.get("serverBaseUrl");
+		appCivistCoreBaseURL = $scope.serverBaseUrl =
+				(serverBaseUrl === backendServers.remoteDev) ?
+						backendServers.localDev : backendServers.remoteDev;
+
+		localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
+		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");
 	}
 
 	function authCheck(user, sessionKey) {

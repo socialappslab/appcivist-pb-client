@@ -1,0 +1,34 @@
+.container
+  .row.text-center
+    %h2
+      %b> Assembly:
+      PB Belleville Paris/
+      %b> Campaign:
+      Belleville - Paris PB 2016
+  %br
+  .titles
+    .container
+      %h3 Paris PB 2016
+    .container
+      %h1
+        %b Assembly Ballot
+    .container
+      %h1#small 2016 August
+  %br
+    %form
+      .fields{"ng-repeat" => "field in ballot.ballot_registration_fields"}
+        .form-group
+          %label{:for => "exampleInputEmail1"} {{field.name}}
+          %input.form-control{:id => "{{field.id}}", :placeholder => "{{field.description}}", :type => "text", "ng-model" => "field.user_input"}
+      %button.btn.btn-default{"ng-click" => "generateSignature()", :type => "submit"}
+        Begin Voting
+  %br
+  %h1.text-center
+    OR
+  %form
+    .form-group
+      %label{:for => "signature"}
+        Signature
+      %input.form-control{:name => "signature", :placeholder => "Enter your ballot paper signature", "ng-model" => "signature", :required => true, :type => "text", "ng-minlength" => 1}
+    %button.btn.btn-default{"ng-click" => "loadBallotPaper()", :type => "submit"}
+      Load my votes

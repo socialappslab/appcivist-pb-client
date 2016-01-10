@@ -15,10 +15,24 @@
 @import "../app/partials/wGroupsSuggestions/wGroupsSuggestion";
 @import "../app/partials/wGroupForum/wGroupForum";
 
+
+html, body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -16rem;
+}
+
 .inline{
   display: inline-block !important;
 }
-
 
 /*Mixin*/
 .assembly{
@@ -73,21 +87,93 @@ i{
 }
 
 /******HEADER******/
+/******NEW DESIGN NAVBAR COLORS******/
+$bgDefault      : $header-background;
+$bgHighlight    : $header-menu-active;
+$colDefault     : $header-default-color;
+$colHighlight   : $header-menu-highlight;
+$dropDown       : false;
+.navbar-default {
+  background-color: $bgDefault;
+  border-color: $bgHighlight;
+  .navbar-brand {
+    background-color: $bgDefault;
+    color: $colDefault;
+    &:hover, &:focus {
+      color: $colHighlight; }}
+  .navbar-text {
+    color: $colDefault; }
+  .navbar-nav {
+    > li {
+      > a {
+        color: $colDefault;
+        &:hover,  &:focus {
+          color: $colHighlight; }}
+      @if $dropDown {
+        > .dropdown-menu {
+          background-color: $bgDefault;
+          > li > a {
+            color: $colDefault;
+            &:hover,  &:focus {
+              color: $colHighlight;
+              background-color: $bgHighlight; }}
+          .divider {
+            background-color: $bgHighlight;}}}
+    }
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}
+    > .open {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}}
+  .navbar-toggle {
+    border-color: $bgHighlight;
+    &:hover, &:focus {
+      background-color: $bgHighlight; }
+    .icon-bar {
+      background-color: $colDefault; }}
+  .navbar-collapse {
+    background-color: $bgDefault;
+    border-color: $bgHighlight;
+  }
+  .navbar-form {
+    border-color: $colDefault; }
+  .navbar-link {
+    color: $colDefault;
+    &:hover {
+      color: $colHighlight; }}}
 
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu {
+    > li > a {
+      color: $colDefault;
+      &:hover, &:focus {
+        color: $colHighlight; }}
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}}
+}
+
+/*******NAVBAR MENU BORDERS********/
 #navbar-options{
   ul{
-    li{
-      border-right: 0.1rem solid $border-header;
-    }
-    li:first-child{
-      border-left: 0.1rem solid $border-header;
-    }
+    //li{
+    //  border-right: 0.1rem solid $header-menu-active;
+    //}
+    //li:first-child{
+    //  border-left: 0.1rem solid $header-menu-active;
+    //}
     li:hover{
-      background-color: rgba(128, 128, 128, 0.05);
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
     }
     li:active{
-      background-color: rgba(128, 128, 128, 0.05);
-      box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
+      box-shadow: inset 0 0 0.2rem 0.2rem $header-background;
     }
     li {
       a:focus {
@@ -102,13 +188,12 @@ i{
   height: 5rem;
 }
 
+/*******NAVBAR USER MENU********/
 #user-menu{
-
   .icon{
     font-size: 2.5rem;
     vertical-align: middle;
   }
-
   ul.menu-elements{
     list-style: none;
     padding: 0;
@@ -138,15 +223,53 @@ i{
   }
 }
 
-/****NEW DESIGN****/
+/****NEW DESIGN FOR LANDING PAGE****/
 .section{
   width: 100%;
+  background-color: $white;
+  .align-right {
+    text-align: right;
+  }
+  .bottom-info{
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding-bottom: 10%;
+  }
+  .btn {
+    border: 0;
+    color: $main-first-section-font-color;
+    padding: 0.8rem 1.6rem;
+  }
+  .btn-yellow{
+    background-color: $main-first-section-button-sign-up-background;
+  }
+  h2 {
+    font-weight: bold;
+  }
+  ul {
+    list-style: none;
+  }
+  .i1 {
+    color: $corporative-green;
+  }
+  .i2 {
+    color: $corporative-dark-light-green;
+  }
+  .i3 {
+    color: $corporative-dark-green;
+  }
+  .i4 {
+    color: $corporative-darker-green;
+  }
   &.first-section{
     background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/section1pic.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
     vertical-align: middle;
-    background-size: 100%;
-    height: 82rem;
-    padding-top: 17%;
+    margin-top: -20px;
+    padding-top: 20%;
     .main-title{
       color: $main-first-section-font-color;
       margin-bottom: 3%;
@@ -164,17 +287,84 @@ i{
         margin-right: 0;
       }
     }
-    .bottom-info{
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+  }
+  &.second-section{
+    vertical-align: middle;
+    margin-top: -20px;
+    background-color: $white;
+    padding: 5% 5% 5% 5%;
+    .main-title{
+      color: $medium-blue;
+      /* AppCivist lets users: */
+      font-family: Lato-Regular;
+      font-size: 32px;
+      line-height: 39px;
+      margin-bottom: 3%;
     }
-
-    .btn-yellow{
-      background-color: $main-first-section-button-sign-up-background;
-      border: 0;
-      color: $main-first-section-font-color;
-      padding: 0.8rem 1.6rem;
+  }
+  &.third-section{
+    vertical-align: middle;
+    margin-top: -20px;
+    /* Rectangle 345: */
+    background: rgba(207,247,238,0.50);;
+    padding: 5% 5% 5% 5%;
+    .main-title{
+      color: $medium-blue;
+      text-align: center;
+      font-family: Lato-Regular;
+      font-size: 32px;
+      line-height: 39px;
+    }
+    .sub-title{
+      text-align: center;
+      font-family: Lato-Regular;
+      font-size: 24px;
+      color: $light-black;
+      line-height: 19px;
+      margin-bottom: 3%;
+    }
+    .circle {
+      border-radius: 50%;
+    }
+    .green1 {
+      background: $corporative-green;
+    }
+    .green2 {
+      background: $corporative-dark-light-green;
+    }
+    .green3 {
+      background: $corporative-dark-green;
+    }
+    .green4 {
+      background: $corporative-darker-green;
+    }
+    .greenline1 {
+      border: $corporative-green;
+      border-style: solid;
+      margin-top: 6%;
+      margin-left: 5%;
+      margin-right: -4%;
+    }
+    .greenline2 {
+      border: $corporative-dark-light-green;
+      border-style: solid;
+      margin-top: 6%;
+      margin-left: 5%;
+      margin-right: -4%;
+    }
+    .greenline3 {
+      border: $corporative-dark-green;
+      border-style: solid;
+      margin-top: 6%;
+      margin-left: 5%;
+      margin-right: -4%;
+    }
+    .greenline4 {
+      border: $corporative-darker-green;
+      border-style: solid;
+      margin-top: 6%;
+      margin-left: 5%;
+      margin-right: -4%;
     }
   }
 }

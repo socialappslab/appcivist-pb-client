@@ -1,0 +1,119 @@
+#rangeVotingVote.container
+  .row.text-center
+    %h2
+      %b> Assembly:
+      PB Belleville Paris/
+      %b> Campaign:
+      Belleville - Paris PB 2016
+  %br
+    .titles
+      .container
+        %h3 Paris PB 2016
+      .container
+        %h1
+          %b Assembly Ballot
+      .container
+        %h1#small 2016 August
+    %br
+      .row.voting-content
+        .col-md-4.col-sm-4.left
+          %h3
+            %b Campaign Themes and Proposals
+          .theme-proposals{"ng-repeat" => "theme in themes"}
+            %h4.theme
+              %b {{theme}}
+            %ul.list-unstyled.proposals
+              %li.proposal-names{"ng-repeat" => "proposal in themeMap[theme]"} {{proposal}}
+        .col-md-8.col-sm-8.right
+          .buttons
+            %ul.list-unstyled.list-inline
+              %li
+                %input.form-control{"ng-model" => "query", :placeholder => "Enter keyword", :type => "text"}/
+              %li
+                %button.btn.btn-success{:type => "button"} Search
+              %li
+                %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} Voting Instructions
+              %li
+                %button#save.btn.btn-success{"ng-click" => "saveBallot()", :type => "button"} Save
+          / Modal for voting instructions
+          #instructions.modal.fade{"aria-labelledby" => "instrLabel", :role => "dialog", :tabindex => "-1"}
+            .modal-dialog{:role => "document"}
+              .modal-content
+                .modal-header
+                  %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                    %span{"aria-hidden" => "true"} &times;
+                  %h4#instrLabel.modal-title Voting Instructions
+                .modal-body
+                  .container.instructions
+                    %h2.title
+                      %strong Voting Instructions
+                    %ul
+                      %li{:type => "circle"} {{ballot.instructions}}
+                      %li{:type => "circle"}
+                        The voting system your Assembly selected and configured for this campaign is
+                        %b {{ballot.systemType}}
+                      %li{:type => "none"}
+                        %ul
+                          %li{"ng-repeat" => "pair in ballot.ballot_configurations", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
+                      %li{:type => "circle"} When you are ready to vote, close the instruction window and start voting.
+                  %br
+                    .container.additional-info
+                      %h2
+                        %strong Additional Information
+                      %p.info{:style => "white-space: pre-wrap;"} {{ballot.notes}}
+                      %br
+                        %h3
+                          %strong Technical Issues
+                        %br
+                          %ul.list-unstyled
+                            %li Contact Cristhian at cristhian@example.com/ +1 999 999 9999
+                .modal-footer
+                  %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+          %ul.list-unstyled.voted-proposals
+            %li.voted-proposal.container{"ng-repeat" => "proposal in candidates | filter:query"}
+              .proposal-content
+                .col-md-2.col-sm-2.proposal-img-holder{"background-image" => "/../assets/images/image78.jpg", "data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
+                  %img.proposal-img{:src => "/../assets/images/image78.jpg"}
+                .col-md-6.col-sm-6.data
+                  %h4.title{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
+                    %b {{proposal.title}}
+                    %img.img-circle{:src => "/../assets/images/image71.tiff"}/
+                  %h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
+                    %b> Estimated Cost:
+                    {{proposal.budget|currency}}
+                  %h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
+                    %b> Location:
+                    Berkeley, CA 94720
+                  %p.description
+                    %span{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"} {{proposal.text}}
+                    %span.rate
+                      %input.form-control{:id => "{{proposal.uuid}}", "ng-model" => "proposal.value", :placeholder => "{{scores[proposal.uuid]}}", :type => "number", :min => "{{minimumPossibleScore()}}", :max => "{{maximumPossibleScore()}}"}/
+              / Modal for information of the candidate
+              .modal.fade{"aria-labelledby" => "{{proposal.uuid}}Label", :id => "{{proposal.uuid}}modal", :role => "dialog", :tabindex => "-1"}
+                .modal-dialog{:role => "document"}
+                  .modal-content
+                    .modal-header
+                      %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                        %span{"aria-hidden" => "true"} &times;
+                      %h4.modal-title{:id => "{{proposal.uuid}}Label"} {{proposal.title}}
+                    .modal-body
+                      %h3
+                        %b {{proposal.title}}
+                      %h5
+                        %b Authors:
+                        %span{"ng-repeat" => "author in proposal.authors"} {{author}}
+                      %h5
+                        %b Working Group Authors:
+                        %span{"ng-repeat" => "author in proposal.workingGroupAuthors"} {{author}}
+                      %h5.theme-holder
+                        %b Themes:
+                        %span.themes{"ng-repeat" => "theme in proposal.themes"} {{theme}}
+                      %br
+                        %img.pull-right{:src => "/../assets/images/image78.jpg"}
+                          %p {{proposal.text}}
+                          %br
+                            %h5
+                              %b Comments:
+                            %p.comments{"ng-repeat" => "comment in proposal.comments"} {{comment}}
+                    .modal-footer
+                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

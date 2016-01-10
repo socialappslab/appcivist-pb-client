@@ -1,7 +1,7 @@
 /// AppCivist Simple Demo Client
 /**
  * AppCivist Platform Demo Client developed with AngularJS
- * Folders: 
+ * Folders:
  * 	/app
  * 		/controllers
  * 		/directives
@@ -13,17 +13,35 @@
 console.log("Welcome to AppCivist!");
 
 var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
-    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate'];
+    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var backendServers = {
-    "localDev" : "http://localhost:9000/api",
-    "remoteDev" : "http://appcivist.littlemacondo.com/backend/api"
+  "localDev" : "http://localhost:9000/api",
+  "remoteDev" : "http://appcivist.littlemacondo.com/backend/api",
+  "voting": "http://127.0.0.1:5000/api/v0",
+  // "voting": "http://appcivist-voting-api.herokuapp.com/api/v0"
 };
 
 //var appCivistCoreBaseURL = backendServers.localDev;;
 // Uncomment the previous line and comment the following to use the local API Server if you have it running
 var appCivistCoreBaseURL = backendServers.remoteDev;
+var votingApiURL = backendServers.voting;
+
+var appcivist = {
+  handleError: function(error) {
+    console.log(error);
+
+    if (error.status == 500)
+      alert("Something went wrong on our end. Please try again at a later time.");
+    else if (error.status == -1 && error.data == null)
+      alert("Voting API service is probably not running!")
+    else
+      alert(error.data.error);
+  }
+};
+
+
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",
@@ -53,7 +71,7 @@ var helpInfo = {
 };
 
 /**
- * AngularJS initial configurations: 
+ * AngularJS initial configurations:
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
@@ -160,29 +178,36 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'NewWorkingGroupCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
+
         // TODO: finalize voting UIs s
         .when('/ballot/',{ // TODO: this redirect is just temporal
             redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
         })
+
+        // TODO: finalize voting UIs
         .when('/ballot/:uuid/start',{
-            controller: 'VotingLandingCtrl',
-            templateUrl: 'public/ballot/start.html'
+          controller: 'ballotStartCtrl',
+          templateUrl: 'public/ballot/start.html'
         })
         .when('/ballot/:uuid/register',{
-            controller: 'VotingRegistrationCtrl',
-            templateUrl: 'app/partials/voting/RegistrationForm.html'
+          controller: 'ballotRegisterCtrl',
+          templateUrl: 'public/ballot/register.html'
+        })
+        .when('/ballot/:uuid/success',{
+          controller: 'ballotSuccessCtrl',
+          templateUrl: 'public/ballot/success.html'
         })
         .when('/ballot/:uuid/vote',{
-            controller: 'VotingCtrl',
-            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
+          controller: 'ballotVoteCtrl',
+          templateUrl: 'public/ballot/vote.html'
         })
         .when('/ballot/:uuid/summary',{
-            controller: 'VotingSummaryCtrl',
-            templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
+          controller: 'ballotVoteSummaryCtrl',
+          templateUrl: 'public/ballot/summary.html'
         })
         .when('/ballot/:uuid/result',{
-            controller: 'VotingResultCtrl',
-            templateUrl: 'app/partials/voting/result/RangeResult.html'
+          controller: 'ballotResultCtrl',
+          templateUrl: 'public/ballot/result.html'
         })
         .otherwise({
             redirectTo : '/'

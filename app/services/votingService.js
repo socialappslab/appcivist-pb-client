@@ -101,7 +101,11 @@ appCivistApp.factory("Candidate", function($http, $resource, localStorageService
   return {
     get: function(params) {
       var match = mockCandidates.filter(function(el) { return el.uuid == params.uuid; })[0];
-      match.value = parseInt(params.value);
+
+      if (params.value)
+        match.value = parseInt(params.value);
+      if (params.score)
+        match.score = parseInt(params.score);
       return match;
     }
   }

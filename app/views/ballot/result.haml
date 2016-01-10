@@ -76,7 +76,7 @@
   %br
     .winners.container
       .row
-        .col-md-4.col-sm-4.winning-proposal{"ng-repeat" => "winner in winners"}
+        .col-md-4.col-sm-4.winning-proposal{"ng-repeat" => "winner in candidates | limitTo:3"}
           .block.container{"data-target" => "\#{{winner.uuid}}modal", "data-toggle" => "modal"}
             .picture.container
               %img{:src => "/../assets/images/image78.jpg"}
@@ -142,12 +142,12 @@
     .allocated
       %h3
         %b Allocated budget:
-        {{ calculateTotal() | currency }} (out of {{ total | currency }} available)
+        {{ calculateTotalBudget() | currency }} (out of {{ total | currency }} available)
     .result.container
       %h3
         %b Assembly Voting Results
       %br
         %ol.voting-result.list-unstyled
-          %li.candidate{"ng-repeat" => "candidate in allCandidates"}
+          %li.candidate{"ng-repeat" => "candidate in candidates"}
             %span.score {{candidate.score}}
             %b {{candidate.title}}

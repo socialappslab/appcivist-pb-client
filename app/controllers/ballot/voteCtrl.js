@@ -9,6 +9,7 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 	$scope.scores = {};
 
   $scope.signature = localStorageService.get("voteSignature");
+  console.log($scope.signature)
 
   console.log("Fetching the ballot paper")
   var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: $scope.signature}).$promise;
@@ -60,10 +61,11 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 
   },
   function(error){
-    alert(error.data.error);
-    return;
+    if (error.status == -1 && error.data == null)
+      alert("Voting API service is probably not running!")
+    else
+      alert(error.data.error);
   });
-
 
   $scope.minimumPossibleScore = function() {
     if ($scope.ballot) {
@@ -79,97 +81,17 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
       return 234234234;
   }
 
-	$scope.saveBallot = function(){
+	$scope.saveBallot = function() {
     console.log("Candidates: ")
     console.log($scope.candidates)
 
-    var ballot = BallotPaper.update({uuid: $routeParams.uuid, signature: $scope.signature}, {vote: {votes: $scope.candidates}}).$promise;
-    ballot.then(function(data){
+    var ballot_paper = BallotPaper.update({uuid: $routeParams.uuid, signature: $scope.signature}, {vote: {votes: $scope.candidates}}).$promise;
+    ballot_paper.then(function(data){
       console.log(data);
       $location.url("/ballot/" + $routeParams.uuid + "/summary");
     }, function(error) {
       alert(error.data.error);
       return;
     })
-
-		// var newVote = {
-		// 	"ballot":"",
-		// 	"vote":""
-		// };
-		// newVote.ballot = $scope.ballot;
-		// if ($scope.vote) {
-		// 	for(var i = 0; i < $scope.vote.voteValues.length; i++){
-		// 		var vote = $scope.votingBallotVote.voteValues[i];
-		// 		vote.voteValue = document.getElementById(vote.selectedCandidate.uuid).value+"/100";
-		// 	}
-    //
-		// 	newVote.vote = $scope.votingBallotVote;
-		// 	localStorageService.set("currentBallot",newVote);
-		// 	alert("Your vote has been saved successfully!");
-		// /*uncomment when backend is ready*/
-		// // 	var toSave = Ballot.fill($scope.uuid).$put(newVote);
-		// // 	toSave.$promise.then(
-		// // 		function(){
-		// 			// alert("Your vote has been saved successfully!");
-		// // 			$location.url('/ballot/'+$scope.votingBallot.uuid+"/summary");
-		// // 		}
-		// // 	)
-		// } else {
-		// 	var ballotVote = {
-		// 		"votingBallotVote":1,
-    //         "uuid":1,
-    //         "signature":"1",
-    //         "status":"DRAFT",
-    //         "voteValues":[]
-		// 	};
-		// 	var temp = {
-		// 		"votingCandidateVoteId":1,
-    //             "uuid":1,
-    //            	"selectedCandidate":{
-    //                 "uuid":1
-    //             },
-    //             "voteValue":"",
-    //             "voteValueType":""
-    //         };
-    //         var count=0;
-    //         for (var i=0;i<$scope.candidates.length;i++) {
-    //         	var candidate = $scope.candidates[i];
-    //         	temp.selectedCandidate.uuid = candidate.uuid;
-    //         	var value = document.getElementById(candidate.uuid).value;
-    //         	if (value==null) continue;
-    //         	temp.voteValue = value + "/100";
-    //         	temp.voteValueType = $scope.votingBallot.systemType;
-    //         	ballotVote.voteValues[count] = temp;
-    //         	count++;
-    //         }
-    //         newVote.vote = ballotVote;
-    //         localStorageService.set("currentBallot",newVote);
-    //         /*uncomment when backend is ready*/
-		// // 	var toSave = Ballot.fill($scope.uuid).$save(newVote);
-		// 	toSave.$promise.then(
-		// 		function(){
-		// 			$location.url('/ballot/'+$scope.votingBallot.uuid+"/summary");
-		// 		}
-		// 	)
-		// }
 	}
-
-	// $scope.submit = function(){
-	// 	var newVote = {
-	// 		"ballot":"",
-	// 		"vote":""
-	// 	};
-	// 	newVote.ballot = $scope.votingBallot;
-	// 	for(var i = 0;i<$scope.votingBallotVote.voteValues.length;i++){
-	// 		var vote = $scope.votingBallotVote.voteValues[i];
-	// 		if(document.getElementById(vote.selectedCandidate.uuid).value==undefined){
-	// 			continue;
-	// 		}
-	// 		vote.voteValue = document.getElementById(vote.selectedCandidate.uuid).value+"/100";
-	// 	}
-	// 	$scope.votingBallotVote.status = "FINISHED";
-	// 	newVote.vote = $scope.votingBallotVote;
-	// 	localStorageService.set("currentBallot",newVote);
-	// 	$location.url('/ballot/'+$scope.votingBallot.uuid+"/summary");
-	// }
 });

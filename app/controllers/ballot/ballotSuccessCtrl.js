@@ -8,10 +8,10 @@ appCivistApp.controller('ballotSuccessCtrl', function($scope, $http, $routeParam
   $scope.createBallotPaper = function() {
     var ballot = BallotPaper.save({uuid: $routeParams.uuid}, {vote: {signature: $scope.signature}});
 		ballot.$promise.then(function(data){
-      console.log("Posted voting registration form.");
-      localStorageService.set("voteSignature", data.signature);
+      localStorageService.set("voteSignature", data.vote.signature);
       $location.url("/ballot/" + $routeParams.uuid + "/vote");
 		}, function(error) {
+      console.log(error)
 			alert(error.data.error);
 
       // If the error code is 409, then that means the signature already exists.

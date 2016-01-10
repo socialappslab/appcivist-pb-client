@@ -7,10 +7,7 @@ appCivistApp.controller('ballotStartCtrl', function($scope, $http, $routeParams,
   ballot.then(function(data) {
     console.log(data)
     $scope.ballot = data;
-  }, function(data) {
-    console.log(data)
-    alert(data);
-  });
+  }, function(error){ window.appcivist.handleError(error); });
 
 	$scope.transitionToRegistration = function(){
 		$location.url("/ballot/" + $routeParams.uuid + "/register");

@@ -61,10 +61,7 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, 
 
   },
   function(error){
-    if (error.status == -1 && error.data == null)
-      alert("Voting API service is probably not running!")
-    else
-      alert(error.data.error);
+    window.appcivist.handleError(error);
   });
 
   $scope.minimumPossibleScore = function() {

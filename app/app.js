@@ -28,6 +28,18 @@ var backendServers = {
 var appCivistCoreBaseURL = backendServers.remoteDev;
 var votingApiURL = backendServers.voting;
 
+var appcivist = {
+  handleError: function(error) {
+    console.log(error);
+    console.log("HAHA")
+    if (error.status == -1 && error.data == null)
+      alert("Voting API service is probably not running!")
+    else
+      alert(error.data.error);
+  }
+};
+
+
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",

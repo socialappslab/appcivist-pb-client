@@ -25,12 +25,7 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeP
     };
 
     $scope.scoredCandidates = $scope.candidates.filter(function(c) { return c.value; });
-  },
-  function(error){
-    console.log(error)
-    alert(error.data.error);
-    return;
-  });
+  }, function(error){ window.appcivist.handleError(error); });
 
   $scope.transitionToVoting = function() {
     $location.url("ballot/" + $routeParams.uuid + "/vote");
@@ -44,9 +39,6 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeP
     ballot_paper.then(function(data){
       console.log(data);
       $location.url("/ballot/" + $routeParams.uuid + "/result");
-    }, function(error) {
-      alert(error.data.error);
-      return;
-    })
+    }, function(error) { window.appcivist.handleError(error); })
 	}
 });

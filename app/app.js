@@ -19,19 +19,18 @@ var appCivistApp = angular.module('appCivistApp', dependencies);
 var backendServers = {
   "localDev" : "http://localhost:9000/api",
   "remoteDev" : "http://appcivist.littlemacondo.com/backend/api",
-  "voting": "http://127.0.0.1:5000/api/v0",
-  // "voting": "http://appcivist-voting-api.herokuapp.com/api/v0"
 };
 
-//var appCivistCoreBaseURL = backendServers.localDev;;
-// Uncomment the previous line and comment the following to use the local API Server if you have it running
-var appCivistCoreBaseURL = backendServers.remoteDev;
-var votingApiURL = backendServers.voting;
-
 var appcivist = {
+  api: {
+    voting: {
+      production: "http://appcivist-voting-api.herokuapp.com/api/v0",
+      development: "http://127.0.0.1:5000/api/v0"
+    }
+  },
+
   handleError: function(error) {
     console.log(error);
-
     if (error.status == 500)
       alert("Something went wrong on our end. Please try again at a later time.");
     else if (error.status == -1 && error.data == null)
@@ -40,6 +39,13 @@ var appcivist = {
       alert(error.data.error);
   }
 };
+
+//var appCivistCoreBaseURL = backendServers.localDev;;
+// Uncomment the previous line and comment the following to use the local API Server if you have it running
+var appCivistCoreBaseURL = backendServers.remoteDev;
+var votingApiUrl = appcivist.api.voting.development;
+
+
 
 
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";

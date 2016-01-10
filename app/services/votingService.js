@@ -15,7 +15,16 @@ var getVotingApiURL = function(localStorageService) {
 
 appCivistApp.factory('Ballot', function($http, $resource, localStorageService) {
   var url = getVotingApiURL(localStorageService);
-  return $resource(url + '/ballot/:uuid/registration', {"uuid": "@id"});
+  return $resource(
+    url + '/ballot/:uuid/registration',
+    {"uuid": "@id"},
+    {
+      "results": {
+        method: "GET",
+        url: url + '/ballot/:uuid/results'
+      }
+    }
+  );
 });
 
 appCivistApp.factory('BallotPaper', function($http, $resource, localStorageService) {
@@ -92,7 +101,11 @@ appCivistApp.factory("Candidate", function($http, $resource, localStorageService
   return {
     get: function(params) {
       var match = mockCandidates.filter(function(el) { return el.uuid == params.uuid; })[0];
-      match.value = parseInt(params.value);
+
+      if (params.value)
+        match.value = parseInt(params.value);
+      if (params.score)
+        match.score = parseInt(params.score);
       return match;
     }
   }

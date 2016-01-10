@@ -19,7 +19,8 @@ var appCivistApp = angular.module('appCivistApp', dependencies);
 var backendServers = {
   "localDev" : "http://localhost:9000/api",
   "remoteDev" : "http://appcivist.littlemacondo.com/backend/api",
-  "voting": "http://127.0.0.1:5000/api/v0"
+  "voting": "http://127.0.0.1:5000/api/v0",
+  // "voting": "http://appcivist-voting-api.herokuapp.com/api/v0"
 };
 
 //var appCivistCoreBaseURL = backendServers.localDev;;

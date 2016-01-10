@@ -1,8 +1,7 @@
 /**
  * Voting Landing Page
  */
- // The ballot UUID to use: 68643fbf-9a30-4b81-83d1-439947711a46
-appCivistApp.controller('ballotSuccessCtrl', function($scope, $http, $routeParams, $resource, $location, BallotPaper, localStorageService){
+appCivistApp.controller('ballotSuccessCtrl', function($scope, $routeParams, $location, BallotPaper, localStorageService){
 	$scope.signature = localStorageService.get("voteSignature");
 
   $scope.createBallotPaper = function() {

@@ -1,7 +1,7 @@
 /**
  * Summary of one's voting choices
  */
-appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $http, $routeParams, $location, Ballot, BallotPaper, Candidate, localStorageService){
+appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $routeParams, $location, BallotPaper, Candidate, localStorageService){
   var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: localStorageService.get("voteSignature")}).$promise;
   ballotPaper.then(function(data){
     console.log(data)

@@ -2,7 +2,7 @@
  * Voting Page
  */
  // The ballot UUID to use: 68643fbf-9a30-4b81-83d1-439947711a46
-appCivistApp.controller('ballotVoteCtrl', function($scope, $http, $routeParams, $location, Ballot, BallotPaper, Candidate, localStorageService) {
+appCivistApp.controller('ballotVoteCtrl', function($scope, $routeParams, $location, BallotPaper, Candidate, localStorageService) {
 	$scope.candidates = [];
 	$scope.themeMap = {};
 	$scope.themes = [];

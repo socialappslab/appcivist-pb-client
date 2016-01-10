@@ -285,12 +285,7 @@ function run($rootScope, $location, $http, localStorageService) {
  * @returns {boolean}
  */
 function pathIsNotRestricted(path) {
-    //var allowedPaths = /\/assembly\/[0-9]*\/create/g;
-    var allowedPaths = "/assembly/create"
-    var pathMatches = path.match(allowedPaths);
-    var result = pathMatches != undefined && pathMatches.length > 0;
-    if (result) {
-        console.log("Requested path '"+path+"' is not restricted");
-    }
-    return result;
+  var allowedPaths = ["assembly/create", "ballot/"];
+  var pathMatch = allowedPaths.filter( (ap) => path.match(ap) );
+  return (pathMatch.length > 0)
 }

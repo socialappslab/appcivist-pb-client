@@ -3,9 +3,9 @@
 	<div class="row section first-section" id="section1">
 		<h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
 		<form ng-submit="login()">
-			<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="user.email"/>
-			<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="user.password"/>
-			<button type="submit" class="btn btn-success btn-lg">{{'header.sign_in' | translate}}</button>
+			<!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="user.email"/>-->
+			<!--<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="user.password"/>-->
+			<!--<button type="submit" class="btn btn-success btn-lg">{{'header.sign_in' | translate}}</button>-->
 			<button type="button" class="btn btn-yellow btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
 			<a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
 		</form>

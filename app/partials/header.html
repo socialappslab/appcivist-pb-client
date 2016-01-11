@@ -51,11 +51,9 @@
                 <input type="password" placeholder="Password" class="form-control" ng-model="user.password"/>
             </div>
             <button type="submit" class="btn btn-success">{{'header.sign_in' | translate}}</button>
-            <button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
-            <a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'header.sign_up_group' | translate}}</button></a>
+            <!--<button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>-->
+            <!--<a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'header.sign_up_group' | translate}}</button></a>-->
+            <a href="/user/recoveryform">{{'header.Forgot password' | translate}}</a></li>
         </form>
-        <ul class="nav navbar-nav navbar-right" ng-if='!userIsAuthenticated()'>
-            <li><a href="/user/recoveryform">{{'header.Forgot password' | translate}}</a></li>
-        </ul>
     </div>
 </nav>

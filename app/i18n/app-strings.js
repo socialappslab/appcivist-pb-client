@@ -4,7 +4,7 @@ appCivistApp.config(function ($translateProvider) {
 
         // Landing Page Strings
         "landing.tagline": "AppCivist is a platform for democratic assembly and collective action.",
-        "landing.Learn more": "Learn more",
+        "landing.Learn more": "How it works",
         "landing.goal": "AppCivist lets users design and build their own Assemblies with modular components to organize democratic action.",
         "landing.goal.assembly": "CREATE OR JOIN AN ASSEMBLY",
         "landing.goal.campaign": "CREATE A CAMPAIGN",

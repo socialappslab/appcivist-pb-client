@@ -2,7 +2,6 @@ footer{
   background: $footer-background;
   position: relative;
   margin-top: -16rem; /* negative value of footer height */
-  height: 16rem;
   clear: both;
   width: 100%;
   line-height: 4rem;
@@ -16,5 +15,10 @@ footer{
 
   & :last-child{
     padding-top: 0;
+  }
+
+  a {
+    color: $white;
+    font-weight: bold;
   }
 }

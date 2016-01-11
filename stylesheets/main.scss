@@ -93,14 +93,16 @@ $bgHighlight    : $header-menu-active;
 $colDefault     : $header-default-color;
 $colHighlight   : $header-menu-highlight;
 $dropDown       : false;
-.navbar-default {
+
+.navbar {
   background-color: $bgDefault;
   border-color: $bgHighlight;
   .navbar-brand {
     background-color: $bgDefault;
     color: $colDefault;
     &:hover, &:focus {
-      color: $colHighlight; }}
+      color: $colHighlight;
+      background-color: $bgHighlight}}
   .navbar-text {
     color: $colDefault; }
   .navbar-nav {
@@ -108,7 +110,8 @@ $dropDown       : false;
       > a {
         color: $colDefault;
         &:hover,  &:focus {
-          color: $colHighlight; }}
+          color: $colHighlight;
+          background-color: $bgHighlight }}
       @if $dropDown {
         > .dropdown-menu {
           background-color: $bgDefault;
@@ -139,7 +142,18 @@ $dropDown       : false;
     border-color: $bgHighlight;
   }
   .navbar-form {
-    border-color: $colDefault; }
+    border-color: $colDefault;
+    a {
+      /* Log In Copy: */
+      font-family: Lato-Regular;
+      font-size: 20px;
+      color: $white;
+      &:hover {
+        text-decoration: none;
+        text-weight: bold;
+      }
+    }
+  }
   .navbar-link {
     color: $colDefault;
     &:hover {
@@ -227,6 +241,7 @@ $dropDown       : false;
 .section{
   width: 100%;
   background-color: $white;
+  height: 100%;
 
   .align-right {
     text-align: right;

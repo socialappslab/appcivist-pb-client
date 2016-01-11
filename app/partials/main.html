@@ -1,6 +1,6 @@
 ﻿<div class="view">
 	<!-- Landing Section 1 -->
-	<div class="row section first-section" id="section1">
+	<div class="section first-section" id="section1">
 		<h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
 		<form ng-submit="login()">
 			<!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="user.email"/>-->
@@ -8,12 +8,13 @@
 			<!--<button type="submit" class="btn btn-success btn-lg">{{'header.sign_in' | translate}}</button>-->
 			<button type="button" class="btn btn-yellow btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
 			<a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
+			<a href="#section2" du-smooth-scroll class="btn btn-success btn-lg">{{'landing.Learn more' | translate}}</a>
 		</form>
-		<h6 class="text-center bottom-info"><a href="#section2" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.Learn more' | translate}}</a></h6>
+		<h6 class="text-center bottom-info"></h6>
 	</div>
 
 	<!-- Landing Section 2 -->
-	<div class="row section second-section" id="section2">
+	<div class="section second-section" id="section2">
 		<div class="row">
 			<span class="col-md-1 col-sm-1 hidden-xs"></span>
 			<h2 class="col-md-9 col-sm-9 col-xs-12 main-title">{{'landing.goal' | translate}}</h2>
@@ -65,7 +66,7 @@
 	</div>
 
 	<!-- Landing Section 3 -->
-	<div class="row section third-section" id="section3">
+	<div class="section third-section" id="section3">
 		<h2 class="row main-title">{{'landing.section3.title' | translate}}</h2>
 		<div class="voffset4"></div>
 		<h3 class="row sub-title">{{'landing.section3.desc' | translate}}</h3>

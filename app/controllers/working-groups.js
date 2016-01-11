@@ -117,17 +117,6 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                 $scope.newWorkingGroup.profile.managementType = "COORDINATED";
             }
 
-            // 4. add configs
-            $scope.newWorkingGroup.configs = [];
-            $scope.newWorkingGroup.configs.push({
-                "key" : "working.group.majority.threshold",
-                "value" : $scope.newWorkingGroup.threshold
-            });
-            $scope.newWorkingGroup.configs.push({
-                "key" : "working.group.majority.blocking",
-                "value" : $scope.newWorkingGroup.blocking
-            });
-
             var newGroup = WorkingGroups.workingGroup($scope.assemblyID).save($scope.newWorkingGroup);
             newGroup.$promise.then(
                 function (response) {

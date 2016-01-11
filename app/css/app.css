@@ -2692,7 +2692,7 @@ i {
   color: white;
   font-weight: bold;
   cursor: pointer;
-  padding-bottom: 4%;
+  padding-bottom: 10%;
 }
 .section .btn {
   border: 0;
@@ -2701,6 +2701,75 @@ i {
 }
 .section .btn-yellow {
   background-color: #FCCF26;
+}
+.section hr {
+  display: block;
+  height: 0px;
+  padding: 0;
+}
+.section .vertical1-container {
+  height: 80px;
+}
+.section .vertical1 {
+  margin: 36px 0px 0px 26.664px;
+  height: 100%;
+  width: 0px;
+  position: absolute;
+  display: inline;
+  border-width: 1px;
+}
+.section .vertical2-container {
+  height: 150px;
+}
+.section .vertical2 {
+  margin: 50px 0px 0px -27.219px;
+  height: 120%;
+  width: 0px;
+  position: absolute;
+  display: inline;
+}
+.section .vertical3 {
+  margin: 46px 0px 0px 26.664px;
+  height: 60%;
+  width: 0px;
+  position: absolute;
+  display: inline;
+  border-width: 1px;
+}
+.section .icon-circle-number {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 0.57143em;
+  text-align: center;
+  color: #FFFFFF;
+  margin: 19px 0px 0px -35.9845px;
+  position: absolute;
+}
+.section .milestone {
+  font-size: 2rem;
+  vertical-align: middle;
+  margin: 12px 0px 0px 0px;
+}
+.section .horizontal {
+  position: absolute;
+  margin: 23px -4% auto 50px;
+  width: 100%;
+}
+.section .greenline1 {
+  border-color: #50E3C2;
+  border-style: solid;
+}
+.section .greenline2 {
+  border-color: #3FB59B;
+  border-style: solid;
+}
+.section .greenline3 {
+  border-color: #029A78;
+  border-style: solid;
+}
+.section .greenline4 {
+  border-color: #134B3E;
+  border-style: solid;
 }
 .section h2 {
   font-weight: bold;
@@ -2779,7 +2848,7 @@ i {
   font-family: Lato-Regular;
   font-size: 24px;
   color: #524D4D;
-  line-height: 19px;
+  line-height: 3rem;
   margin-bottom: 3%;
 }
 .section.third-section .circle {
@@ -2796,34 +2865,6 @@ i {
 }
 .section.third-section .green4 {
   background: #134B3E;
-}
-.section.third-section .greenline1 {
-  border: #50E3C2;
-  border-style: solid;
-  margin-top: 6%;
-  margin-left: 5%;
-  margin-right: -4%;
-}
-.section.third-section .greenline2 {
-  border: #3FB59B;
-  border-style: solid;
-  margin-top: 6%;
-  margin-left: 5%;
-  margin-right: -4%;
-}
-.section.third-section .greenline3 {
-  border: #029A78;
-  border-style: solid;
-  margin-top: 6%;
-  margin-left: 5%;
-  margin-right: -4%;
-}
-.section.third-section .greenline4 {
-  border: #134B3E;
-  border-style: solid;
-  margin-top: 6%;
-  margin-left: 5%;
-  margin-right: -4%;
 }
 
 /*# sourceMappingURL=app.css.map */

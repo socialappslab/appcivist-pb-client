@@ -109,7 +109,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 });
 
 
-appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, /*$uibModalInstance, */newUser,
+appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, $uibModalInstance, newUser,
 													 localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
@@ -117,7 +117,7 @@ appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $locatio
 	}
 
 	$scope.signup = function() {
-		//loginService.signUp($scope.newUser, $uibModalInstance);
+		loginService.signUp($scope.newUser, $uibModalInstance);
 	}
 
 });

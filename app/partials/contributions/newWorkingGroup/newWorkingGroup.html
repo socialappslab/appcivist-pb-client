@@ -1,250 +1,233 @@
-<div id="newWorkingGroup" class="view wGroupCreation">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-10">
-                <div class="row col-md-12 col-sm-12">
-                    <h1><strong>Create Working Group</strong></h1>
+<div id="newWorkingGroup" class="row view wGroupCreation">
+    <div class="col-md-2"></div>
+    <div class="col-md-6">
+        <div class="row col-md-12 col-sm-12">
+            <h1><strong>{{'Create Working Group' | translate}}</strong></h1>
+        </div>
+        <div id="description" class="row col-md-12 col-sm-12 box descriptionBox">
+            <p><strong>{{'Working groups' | translate}}</strong> {{'wgroups.purpose' | translate}}.</p>
+        </div>
+        <div id="workingGroupName" class="row col-md-12 col-sm-12">
+            <label for="inputNameNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">Name*</label>
+            <div class="voffset4"></div>
+            <input id="inputNameNewWorkingGroup" class="form-control"
+                   placeholder="{{'wgroups.name.example' | translate}}"
+                   ng-model="newWorkingGroup.name" type="text" ng-required="true">
+        </div>
+        <div id="workingGroupDescription" class="row col-md-12 col-sm-12">
+            <label for="inputDescriptionNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">
+                Description*
+            </label>
+            <textarea id="inputDescriptionNewWorkingGroup" class="form-control"
+                      maxlength="400" placeholder="{{'wgroups.text.example' | translate}}"
+                      ng-model="newWorkingGroup.text"/>
+        </div>
+        <div id="workingGroupThemes" class="row col-md-12 col-sm-12">
+            <label for="checkConfirmCampaignGoals" class="control-label">{{'wgroups.select.campaign.themes' | translate}}</label>
+            <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
+                <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index">
+                    <input type="checkbox" ng-model="campaignThemes[$index].selected">
+                    <span>{{theme.title}}</span>
                 </div>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="col-md-9 col-sm-9">
-                        <div id="description" class="row col-md-12 col-sm-12 box descriptionBox">
-                                <p><strong>Working groups</strong> develop campaigns by taking specific actions, such as drafting proposals and organizing events.</p>
+            </div>
+        </div>
+        <div id="workingGroupIcon" class="row col-md-12">
+            <label class="control-label">{{'wgroups.select.icon' | translate}}</label>
+            <div class="picsList">
+                <div ng-repeat="icon in defaultIcons">
+                    <div class="col-md-4">
+                        <div class="image-capsule">
+                            <img alt="100x100" src="{{icon.url}}"
+                                 class="image-circle"
+                                 ng-click="setNewWorkingGroupIcon(icon.url, icon.name)">
                         </div>
-                        <div id="workingGroupName" class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="inputNameNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">Name*</label>
-                                    <div class="voffset4"></div>
-                                    <input id="inputNameNewWorkingGroup" class="form-control no-padding "
-                                           placeholder="e.g., Urban Infrastucture Interest Group"
-                                           ng-model="newWorkingGroup.name" type="text" ng-required="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div id="workingGroupDescription" class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="inputDescriptionNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">
-                                        Description*
-                                    </label>
-                                    <textarea id="inputDescriptionNewWorkingGroup" class="form-control"
-                                              maxlength="400" placeholder="(Max. 250 words) e.g., Group developing Urban Infrastucture proposals for Parc de Belleville"
-                                              ng-model="newWorkingGroup.description"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="workingGroupThemes" class="row col-md-12 col-sm-12">
-                            <div class="form-group">
-                                <label for="checkConfirmCampaignGoals" class="control-label">Select one or more focus Campaign Themes for the group</label>
-                                <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
-                                    <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index">
-                                        <input type="checkbox" ng-model="campaignThemes[$index].selected">
-                                        <span>{{theme.title}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="workingGroupIcon" class="col-md-12 form-group">
-                            <label class="control-label">Pick an Icon to represent your Group</label>
-                            <div class="picsList">
-                                <div ng-repeat="icon in defaultIcons">
-                                    <div class="col-md-4">
-                                        <div class="image-capsule">
-                                            <img alt="100x100" src="{{icon.url}}"
-                                                 class="image-circle"
-                                                 ng-click="setNewWorkingGroupIcon(icon.url, icon.name)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-                                         accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
-                                        <img data-src="holder.js/100x100" alt="100x100"
-                                             src="../assets/images/addIcon.png" data-holder-rendered="true"
-                                             class="image-circle"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="workingGroupMembership" class="col-md-12 form-group">
-                            <label class="control-label">How do people become members?</label>
-                            <div class="voffset3"></div>
-                            <div class="col-md-4">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="membership" id="openRadio" value="OPEN"
-                                               ng-model="newWorkingGroup.profile.membership">
-                                        Open
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="membership" id="registrationRadio" value="REGISTRATION"
-                                               ng-model="newWorkingGroup.profile.membership"> Registration
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-8 optionsBox"
-                                 ng-show="newWorkingGroup.profile.membership === 'REGISTRATION'">
-                                <h5 class="optionsBox-title">Membership by registration</h5>
-                                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.supportedMembershipRegistrationTooltip}}"></i>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="newWorkingGroup.profile.registration.invitation"/>
-                                        <p>By invitation, and/or</p>
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="newWorkingGroup.profile.registration.request" checked/>
-                                        <p>By request</p>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        /* Rectangle 6 Copy: */
-                        background: ;
-
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div>
-                                        <h4 class="col-md-12 col-sm-12 no-padding">
-                                            <label for="inputWhoWorkingGroup" class="control-label">Will some members have special roles?</label>
-                                        </h4>
-                                        <div>
-                                            <div class="col-md-1">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.roles" type="radio" name="roleNo" id="noRadio" value="no" checked>
-                                                        No
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.roles" type="radio" name="roleYes" id="yesRadio" value="yes">
-                                                        Yes
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 optionsBox" ng-show="newWorkingGroup.profile.roles == 'yes'">
-                                                <h5 class="optionsBox-title">What are the special roles?</h5>
-                                                <i class="fa fa-question-circle"></i>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.role.coordinators" type="checkbox" value="coordinators"/>
-                                                        <p>Coordinators</p>
-                                                    </label>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.role.moderators" type="checkbox" value="moderators"/>
-                                                        <p>Moderators</p>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="col-sm-12 col-md-12 no-padding">
-                                        <h4 class="col-md-12 col-sm-12 no-padding">
-                                            <label for="inputWhoWGroupForum" class="control-label">Who can see the working group forum?</label>
-                                        </h4>
-                                        <div class="voffset3"></div>
-                                        <div class="col-md-12 col-sm-12">
-                                            <div class="col-md-4 col-sm-4">
-                                                <div class="radio">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.membership" type="radio" name="wGroupMembers" id="wGroupMembers" value="wGroupMembers" checked>
-                                                        Members of the Working Group only
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.membership" type="radio" name="assemblyMembers" id="assemblyMembers" value="assemblyMembers">
-                                                        Assembly members only
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.membership" type="radio" name="invitation" id="invitation" value="invitation" checked>
-                                                        By invitation (via link)
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input ng-model="newWorkingGroup.profile.membership" type="radio" name="everybody" id="everybody" value="everybody">
-                                                        Everybody
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <h4 class="col-md-12 col-sm-12 no-padding">
-                                <label for="inputInvitationsNewWorkingGroup" class="control-label">Send people an invitation to join this group</label>
-                            </h4>
-                            <div class="col-sm-12 col-md-12">
-                                <textarea class="form-control" id="inputInvitationsNewWorkingGroup" maxlength="400" placeholder=""/>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="col-sm-12 col-md-12 no-padding">
-                                        <h4 class="col-md-12 col-sm-12 no-padding">
-                                            <label for="inputWhoWGroupForum" class="control-label">Who can see the working group forum?</label>
-                                            <i class="fa fa-question-circle"></i>
-                                        </h4>
-                                        <div class="col-md-12 col-sm-12 voffset3">
-                                            <h4 class="inline">Majority threshold</h4>
-                                            <select ng-model="newWorkingGroup.threshold" id="newWorkingGroupThreshold">
-                                                <option value="simple" selected>Simple</option>
-                                                <option value="66">66%</option>
-                                                <option value="90">90%</option>
-                                            </select>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input ng-model="newWorkingGroup.blocking" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
-                                                    <h4>Enable blocking</h4>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 col-sm-12">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="col-sm-12 col-md-12 no-padding">
-                                        <div class="col-md-12 col-sm-12">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input ng-model="newWorkingGroup.technicalAssesment" type="checkbox" name="newWorkingGroupTechnicalAssesment" id="newWorkingGroupTechnicalAssesment" value="newWorkingGroupTechnicalAssesment">
-                                                    <h4>This is a Technical Assesment Group</h4>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <a ng-click="createWorkingGroup()"><button class="btn btn-primary col-md-6 pull-right"><h5><strong>Create</strong></h5></button></a>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                         accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+                        <img data-src="holder.js/100x100" alt="100x100"
+                             src="../assets/images/addIcon.png" data-holder-rendered="true"
+                             class="image-circle"/>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="groupIconProgress" class="row col-md-12 progress-section">
+            {{f.name}} {{f.url}} {{f.$error}} {{f.$errorParam}}
+                <span class="progress-line-container" ng-show="f.progress >= 0">
+                    <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+                </span>
+        </div>
+        <div id="workingGroupMembership" class="row col-md-12">
+            <label class="control-label">{{'How do people become members?' | translate}}</label>
+            <div class="voffset3"></div>
+            <div class="col-md-4">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="membership" id="openRadio" value="OPEN"
+                               ng-model="newWorkingGroup.profile.membership">
+                        {{'Open' | translate}}
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="membership" id="registrationRadio" value="REGISTRATION"
+                               ng-model="newWorkingGroup.profile.membership"> {{'Registration' | translate}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-8 optionsBox"
+                 ng-show="newWorkingGroup.profile.membership === 'REGISTRATION'">
+                <h3 class="optionsBox-title">{{'Membership by registration' | translate}}</h3>
+                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.supportedMembershipRegistration' | translate}}"></i>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="newWorkingGroup.profile.registration.invitation"/>
+                        <p>{{'By invitation' | translate}}, {{'and/or' | translate}}</p>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="newWorkingGroup.profile.registration.request" checked/>
+                        <p>{{'By request' | translate}}</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 voffset3"></div>
+        <div id="groupManagement" class="row col-md-12">
+            <label for="inputManagementType" class="control-label">
+                {{'Who will be able to change settings and remove inappropriate comments?' | translate}}
+            </label>
+            <div class="voffset3"></div>
+            <div class="col-md-12 grayBox" id="inputManagementType">
+                <label class="control-label">
+                    {{'Moderators' | translate}}
+                    <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.moderators' | translate}}"></i>
+                </label>
+                <div class="col-md-12 radio">
+                    <input ng-model="newWorkingGroup.profile.moderators" type="radio" name="moderators" id="noRadio" value="two" checked>
+                    {{'Nominate specific moderators (at least two)' | translate}}
+                </div>
+                <div class="col-md-12 radio">
+                    <input ng-model="newWorkingGroup.profile.moderators" type="radio" name="moderators" id="noRadio" value="all">
+                    {{'Make all group members moderators' | translate}}
+                </div>
+                <div class="col-md-12 radio">
+                    <input ng-model="newWorkingGroup.profile.moderators" type="radio" name="moderators" id="noRadio" value="none">
+                    {{'Have no moderators' | translate}}
+                </div>
+
+                <div class="voffset3"></div>
+                <label class="control-label">
+                    {{'Coordinators' | translate}}
+                    <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.coordinators' | translate}}"></i>
+                </label>
+                <div class="col-md-12 radio">
+                    <input ng-model="newWorkingGroup.profile.coordinators" type="radio" name="coordinators" id="noRadio" value="two" checked>
+                    {{'Nominate specific coordinators (at least two)' | translate}}
+                </div>
+                <div class="col-md-12 radio">
+                    <input ng-model="newWorkingGroup.profile.coordinators" type="radio" name="coordinators" id="noRadio" value="all">
+                    {{'Make all group members coordinators' | translate}}
+                </div>
+                <div class="col-md-12 radio">
+                    <input ng-model="newWorkingGroup.profile.coordinators" type="radio" name="coordinators" id="noRadio" value="none">
+                    {{'Have no coordinators' | translate}}
+                </div>
+            </div>
+        </div>
+        <div id="groupInvitations" class="row col-md-12">
+            <label class="control-label">
+                {{'Invite people to join' | translate}}
+                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitations' | translate}}"></i>
+            </label>
+            <textarea class="form-control" id="invitees" rows="4" ng-model="inviteesEmails"></textarea>
+
+            <div class="col-md-12 voffset3"></div>
+            <div class="col-md-8 col-sm-8"></div>
+            <div class="col-md-4 col-sm-4">
+                <a ng-click="addEmailsToList(inviteesEmails)">
+                    <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
+                         data-holder-rendered="true" class="image-circle image-circle-25">
+                </a>
+                <h4 class="add-button-text">Add to list</h4>
+            </div>
+            <div class="col-md-12 voffset3"></div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="remove-column"></th>
+                    <th class="email-column">{{'Email' | translate}}</th>
+                    <th class="coordinator-column">{{'Coordinator' | translate}}</th>
+                    <th class="moderator-column">{{'Moderator' | translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="invitee in newWorkingGroup.invitations track by $index">
+                    <td class="remove-column">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeInvitee($index)"></span>
+                    </td>
+                    <td class="email-column">{{invitee.email}}</td>
+                    <td class="coordinator-column">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="invitee.coordinator"/>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="moderator-column">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="invitee.moderator"/>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <uib-alert ng-repeat="email in invalidEmails track by $index" type="danger" close="removeInvalidEmail($index)">{{'Invalid email(s)' | translate}}: {{email}} </uib-alert>
+        </div>
+        <div class="col-md-12 voffset3"></div>
+        <div id="groupInvitationsEmails" class="row col-md-12">
+            <label class="control-label">
+                {{'Invitation Email' | translate}}
+                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail' | translate}}"></i>
+            </label>
+            <textarea class="form-control" id="invitationEmail" ng-model="newWorkingGroup.invitationEmail" rows="6"></textarea>
+        </div>
+        <div id="groupConfigs" class="row col-md-12">
+            <div class="checkbox">
+                <label>
+                    <strong>{{'Majority threshold' | translate}}</strong>
+                    <select ng-model="newWorkingGroup.threshold" id="newWorkingGroupThreshold">
+                        <option value="simple" selected>{{'Simple' | translate}}</option>
+                        <option value="66">66%</option>
+                        <option value="90">90%</option>
+                    </select>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input ng-model="newWorkingGroup.blocking" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
+                    <h4>{{'Enable blocking' | translate}}</h4>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="newAssembly.listed"/>
+                    <strong>
+                        {{'Do you want your Working Group to be listed?' | translate}}
+                        <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
+                    </strong>
+                </label>
+            </div>
+        </div>
+        <div class="col-md-12 voffset5"></div>
+        <div class="row col-md-12">
+            <a ng-click="createWorkingGroup()"><button class="btn btn-primary col-md-12"><h3><strong>{{'Create' | translate}}</strong></h3></button></a>
+        </div>
+        <div class="col-md-12 voffset5"></div>
     </div>
 </div>

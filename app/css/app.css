@@ -2318,6 +2318,18 @@ button#second-vote {
   border-width: 1rem;
   margin-top: -2.3rem;
 }
+#newWorkingGroup .progress-section {
+  height: 8rem;
+}
+#newWorkingGroup .image-circle-25 {
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  display: inline-block;
+}
+#newWorkingGroup .add-button-text {
+  display: inline-block;
+}
 
 .wGroupsSuggestion {
   border: 0.1rem solid #F4F4F4;

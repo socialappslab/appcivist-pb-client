@@ -442,7 +442,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     };
 });
 
-appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) {
+appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStorageService) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         workingGroup: function(assemblyId, groupId) {
@@ -475,7 +475,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                 });
         },
         defaultNewWorkingGroup: function() {
-            return {
+            var newWGroup = {
                 //"name": "Assemblée Belleville",
                 //"text": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
                 "listed": true, // TODO: ADD TO FORM
@@ -510,9 +510,19 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                     }
                 ],
                 "lang": "en", // TODO: ADD TO FORM
-                //"invitationEmail"
-                "invitations" : [ ] // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
+                "invitationEmail" : "",
+                "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
+                "threshold" : "simple"
             };
+
+            var inviationEmail = $translate('wgroup.invitation.email.text',
+                { group: "[Group's Name]" }).then(
+                function (text) {
+                    newWGroup.invitationEmail = text;
+                }
+            );
+
+            return newWGroup;
         }
     };
 });

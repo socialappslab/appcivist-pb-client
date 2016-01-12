@@ -324,7 +324,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
                                                  $resource, $http, Assemblies, Contributions, $uibModal,
-                                                 loginService, localStorageService, Memberships) {
+                                                 loginService, localStorageService, Memberships, Invitations) {
     init();
 
     function init() {
@@ -352,7 +352,6 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                 }
                 localStorageService.set("currentAssembly", $scope.currentAssembly);
                 $scope.campaigns = $scope.currentAssembly.campaigns;
-                getInvitations($scope.assemblies);
             });
             $scope.verifyAssembly.$promise.then(function(data) {
                 $scope.verifyAssembly = data.responseStatus === "OK";
@@ -376,6 +375,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                 $scope.assemblyMembers = data;
                 $scope.$root.stopSpinner();
             });
+            getInvitations($scope.assemblyID);
         }
     }
 

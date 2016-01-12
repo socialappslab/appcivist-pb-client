@@ -1041,3 +1041,32 @@ appCivistApp.factory('FileUploader', function ($resource, localStorageService, U
 
     };
 });
+
+appCivistApp.factory('Invitations', function ($resource, localStorageService) {
+    var serverBaseUrl = getServerBaseUrl(localStorageService);
+    return {
+        assemblyInvitation: function(assemblyId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/assembly/:aid', {aid: assemblyId});
+        },
+        groupInvitation: function(groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/group/:gid', {gid: groupId});
+        },
+        invitations: function(target, status) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:s', {t: target, s: status});
+        },
+        invitation: function(token) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t', {t: token});
+        },
+        defaultInvitation: function(target, type, defaultEmail) {
+            var newInvitation = {
+                email : "",
+                moderator : true,
+                coordinator : true,
+                targetId : target,
+                targetType : type,
+                invitationEmail : defaultEmail
+            }
+            return newInvitation;
+        },
+    }
+});

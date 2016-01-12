@@ -60,11 +60,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             }
         ];
         $scope.defaultIcons = [
-            {"name": "Justice Icon", "url":"http://appcivist.littlemacondo.com/assets/images/justicia-140.png"},
-            {"name": "Plan Icon", "url":"http://appcivist.littlemacondo.com/assets/images/tabacalera-140.png"},
-            {"name": "Article 49 Icon", "url":"http://appcivist.littlemacondo.com/assets/images/article19-140.png"},
-            {"name": "Passe Livre Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image74.png"},
-            {"name": "Skyline Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image75.jpg"}
+            {"name": "Justice Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png"},
+            {"name": "Plan Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png"},
+            {"name": "Article 49 Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png"},
+            {"name": "Passe Livre Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png"},
+            {"name": "Skyline Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"}
         ];
         if ($scope.info === undefined || $scope.info === null) {
             info = $scope.info = helpInfo;

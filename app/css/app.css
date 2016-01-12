@@ -936,9 +936,17 @@ button#second-vote {
 }
 .assembliesLanding .assembly .caption {
   display: inline-block;
-  width: 220px;
+  width: auto;
 }
 .assembliesLanding .assembly .caption i {
+  margin: 0;
+}
+.assembliesLanding .assembly .caption220 {
+  display: inline-block;
+  width: 220px;
+  margin-left: 10px;
+}
+.assembliesLanding .assembly .caption220 i {
   margin: 0;
 }
 .assembliesLanding .image-circle {
@@ -2698,7 +2706,7 @@ html, body {
 }
 .assembly .caption {
   display: inline-block;
-  width: 220px;
+  width: auto;
 }
 
 .image-circle {

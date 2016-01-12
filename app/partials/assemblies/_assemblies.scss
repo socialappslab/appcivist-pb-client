@@ -3,7 +3,6 @@
     margin-bottom: 40px;
   }
 
-
   ul{
     list-style-type: none;
   }
@@ -27,7 +26,16 @@
 
     .caption{
       display: inline-block;
+      width: auto;
+      i{
+        margin: 0;
+      }
+    }
+
+    .caption220{
+      display: inline-block;
       width: 220px;
+      margin-left: 10px;
       i{
         margin: 0;
       }

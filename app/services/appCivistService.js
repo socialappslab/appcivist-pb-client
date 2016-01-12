@@ -442,7 +442,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     };
 });
 
-appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) {
+appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStorageService) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         workingGroup: function(assemblyId, groupId) {
@@ -475,7 +475,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                 });
         },
         defaultNewWorkingGroup: function() {
-            return {
+            var newWGroup = {
                 //"name": "Assemblée Belleville",
                 //"text": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
                 "listed": true, // TODO: ADD TO FORM
@@ -495,24 +495,35 @@ appCivistApp.factory('WorkingGroups', function ($resource, localStorageService) 
                 //},
                 "themes": [],
                 "existingThemes": [],
-                "config" : {
-                    "majority":"66%",
-                    "blocking":false
-                },
-                "configs": [
-                    {
-                        "key": "group.consensus.majority",
-                        "value": "66%"
-                    },
-                    {
-                        "key": "group.consensus.blocking",
-                        "value": "false"
-                    }
-                ],
+                //"config" : {
+                //    "majority":"66%",
+                //    "blocking":false
+                //},
+                //"configs": [
+                //    {
+                //        "key": "group.consensus.majority",
+                //        "value": "66%"
+                //    },
+                //    {
+                //        "key": "group.consensus.blocking",
+                //        "value": "false"
+                //    }
+                //],
                 "lang": "en", // TODO: ADD TO FORM
-                //"invitationEmail"
-                "invitations" : [ ] // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
+                "invitationEmail" : "",
+                "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
+                "majorityThreshold" : "simple",
+                "blockMajority" : false
             };
+
+            var inviationEmail = $translate('wgroup.invitation.email.text',
+                { group: "[Group's Name]" }).then(
+                function (text) {
+                    newWGroup.invitationEmail = text;
+                }
+            );
+
+            return newWGroup;
         }
     };
 });
@@ -1029,4 +1040,33 @@ appCivistApp.factory('FileUploader', function ($resource, localStorageService, U
         }
 
     };
+});
+
+appCivistApp.factory('Invitations', function ($resource, localStorageService) {
+    var serverBaseUrl = getServerBaseUrl(localStorageService);
+    return {
+        assemblyInvitation: function(assemblyId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/assembly/:aid', {aid: assemblyId});
+        },
+        groupInvitation: function(groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/group/:gid', {gid: groupId});
+        },
+        invitations: function(target, status) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:s', {t: target, s: status});
+        },
+        invitation: function(token) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t', {t: token});
+        },
+        defaultInvitation: function(target, type, defaultEmail) {
+            var newInvitation = {
+                email : "",
+                moderator : true,
+                coordinator : true,
+                targetId : target,
+                targetType : type,
+                invitationEmail : defaultEmail
+            }
+            return newInvitation;
+        },
+    }
 });

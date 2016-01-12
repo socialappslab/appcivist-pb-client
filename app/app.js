@@ -1,7 +1,7 @@
 /// AppCivist Simple Demo Client
 /**
  * AppCivist Platform Demo Client developed with AngularJS
- * Folders: 
+ * Folders:
  * 	/app
  * 		/controllers
  * 		/directives
@@ -13,17 +13,41 @@
 console.log("Welcome to AppCivist!");
 
 var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
-    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate'];
+    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var backendServers = {
-    "localDev" : "http://localhost:9000/api",
-    "remoteDev" : "http://appcivist.littlemacondo.com/backend/api"
+  "localDev" : "http://localhost:9000/api",
+  "remoteDev" : "http://appcivist.littlemacondo.com/backend/api",
+};
+
+var appcivist = {
+  api: {
+    voting: {
+      production: "http://appcivist-voting-api.herokuapp.com/api/v0",
+      development: "http://127.0.0.1:5000/api/v0"
+    }
+  },
+
+  handleError: function(error) {
+    console.log(error);
+    if (error.status == 500)
+      alert("Something went wrong on our end. Please try again at a later time.");
+    else if (error.status == -1 && error.data == null)
+      alert("Voting API service is probably not running!")
+    else
+      alert(error.data.error);
+  }
 };
 
 //var appCivistCoreBaseURL = backendServers.localDev;;
 // Uncomment the previous line and comment the following to use the local API Server if you have it running
 var appCivistCoreBaseURL = backendServers.remoteDev;
+var votingApiUrl = appcivist.api.voting.development;
+
+
+
+
 var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",
@@ -42,18 +66,17 @@ var helpInfo = {
         "campaign has its own template that structures its components, working groups, and timeline.",
     campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development " +
         "components. Linking to another campaign will bring that campaign's configuration",
-    campaignFastrackTooltip: "Fastrack creation of a campaign will use default values for each phase of the " +
-        "campaign (e.g., default dates and durations for each phase, default values for each phases specific " +
-        "configurations, etc.)",
-    proposalTimeline: "Click on the phase name to activate or deactivate the phases you wish to include in your " +
-        "campaign. Phases shown as disabled take place in the linked campaign.",
+    campaignFastrackTooltip: "Fastrack uses default values for each stage of a " +
+        "campaign (e.g., default dates and duration, default configuration values)",
+    proposalTimeline: "Click on the stage name to activate or deactivate the stages you wish to include in your " +
+        "campaign. Stages shown as disabled take place in the linked campaign.",
     campaignTimeframeTooltip: "Select a period of time to represent in the timeline below.",
     componentContributionTemplateTooltip: "A proposal template is the list of sections (with its descriptions) that " +
         "are used to initialized proposal drafts"
 };
 
 /**
- * AngularJS initial configurations: 
+ * AngularJS initial configurations:
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
@@ -160,29 +183,36 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'NewWorkingGroupCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
+
         // TODO: finalize voting UIs s
         .when('/ballot/',{ // TODO: this redirect is just temporal
             redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
         })
+
+        // TODO: finalize voting UIs
         .when('/ballot/:uuid/start',{
-            controller: 'VotingLandingCtrl',
-            templateUrl: 'public/ballot/start.html'
+          controller: 'ballotStartCtrl',
+          templateUrl: 'public/ballot/start.html'
         })
         .when('/ballot/:uuid/register',{
-            controller: 'VotingRegistrationCtrl',
-            templateUrl: 'app/partials/voting/RegistrationForm.html'
+          controller: 'ballotRegisterCtrl',
+          templateUrl: 'public/ballot/register.html'
+        })
+        .when('/ballot/:uuid/success',{
+          controller: 'ballotSuccessCtrl',
+          templateUrl: 'public/ballot/success.html'
         })
         .when('/ballot/:uuid/vote',{
-            controller: 'VotingCtrl',
-            templateUrl: 'app/partials/voting/vote/RangeVoting.html'
+          controller: 'ballotVoteCtrl',
+          templateUrl: 'public/ballot/vote.html'
         })
         .when('/ballot/:uuid/summary',{
-            controller: 'VotingSummaryCtrl',
-            templateUrl: 'app/partials/voting/summary/rangeVotingSummary.html'
+          controller: 'ballotVoteSummaryCtrl',
+          templateUrl: 'public/ballot/summary.html'
         })
         .when('/ballot/:uuid/result',{
-            controller: 'VotingResultCtrl',
-            templateUrl: 'app/partials/voting/result/RangeResult.html'
+          controller: 'ballotResultCtrl',
+          templateUrl: 'public/ballot/result.html'
         })
         .otherwise({
             redirectTo : '/'
@@ -260,12 +290,7 @@ function run($rootScope, $location, $http, localStorageService) {
  * @returns {boolean}
  */
 function pathIsNotRestricted(path) {
-    //var allowedPaths = /\/assembly\/[0-9]*\/create/g;
-    var allowedPaths = "/assembly/create"
-    var pathMatches = path.match(allowedPaths);
-    var result = pathMatches != undefined && pathMatches.length > 0;
-    if (result) {
-        console.log("Requested path '"+path+"' is not restricted");
-    }
-    return result;
+  var allowedPaths = ["assembly/create", "ballot/"];
+  var pathMatch = allowedPaths.filter( (ap) => path.match(ap) );
+  return (pathMatch.length > 0)
 }

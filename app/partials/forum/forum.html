@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div id="assemblyInfoActivity" class="col-md-8 col-sm-8 discussion">
-                <div id="assemblyInfo" class="row header col-md-12 col-sm-12">
+                <div id="assemblyInfo" class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="thumbnail assembly">
                             <img alt="100x100" src="{{currentAssembly.profile.icon}}"
@@ -76,11 +76,11 @@
             <div id="assemblyResourceBoxes" class="col-md-4 col-sm-4 info-lateral">
                 <div id="assemblyMembers" class="row infoBox">
                     <div class="row">
-                        <div class="col-md-6 col-sm-6">
+                        <div class="col-md-4 col-sm-4">
                             <h4><strong>Members</strong></h4>
                         </div>
-                        <div class="col-md-6 col-sm-6">
-                            <button ng-if="checkShow('inviteButton')" class="btn btn-primary"><h5><strong>Invite participants</strong></h5></button>
+                        <div class="col-md-8 col-sm-8">
+                            <button ng-if="checkShow('inviteButton')" class="btn btn-primary" ng-click="openNewInvitationModal()"><h5><strong>Invite participants</strong></h5></button>
                         </div>
                     </div>
 
@@ -91,6 +91,18 @@
                                     <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
                                     <div class="caption" style="text-align: center">
                                         <h5 class="text" title="{{member.user.name}}">{{member.user.name}} ({{member.status}})</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row list-item">
+                            <h4 ng-if="pendingInvitations.length>0">Pending Invitations</h4>
+                            <div class="row" ng-repeat="invitation in pendingInvitations">
+                                <div style="display: inline-block;">
+                                    <div class="image-capsule">
+                                        <div class="caption" style="text-align: center">
+                                            <h5 class="text" title="{{invitation.email}}">{{invitation.email}}({{invitation.status}})</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

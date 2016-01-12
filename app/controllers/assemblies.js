@@ -60,11 +60,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             }
         ];
         $scope.defaultIcons = [
-            {"name": "Justice Icon", "url":"http://appcivist.littlemacondo.com/assets/images/justicia-140.png"},
-            {"name": "Plan Icon", "url":"http://appcivist.littlemacondo.com/assets/images/tabacalera-140.png"},
-            {"name": "Article 49 Icon", "url":"http://appcivist.littlemacondo.com/assets/images/article19-140.png"},
-            {"name": "Passe Livre Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image74.png"},
-            {"name": "Skyline Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image75.jpg"}
+            {"name": "Justice Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png"},
+            {"name": "Plan Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png"},
+            {"name": "Article 49 Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png"},
+            {"name": "Passe Livre Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png"},
+            {"name": "Skyline Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"}
         ];
         if ($scope.info === undefined || $scope.info === null) {
             info = $scope.info = helpInfo;
@@ -323,7 +323,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 });
 
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
-                                                 $resource, $http, Assemblies, Contributions,
+                                                 $resource, $http, Assemblies, Contributions, $uibModal,
                                                  loginService, localStorageService, Memberships) {
     init();
 
@@ -344,6 +344,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.verifyAssembly = Assemblies.verifyMembership($scope.assemblyID, $scope.user.userId).get();
             $scope.membership = Memberships.memberships().query();
             $scope.campaigns = null;
+            $scope.pendingInvitations = [];
             $scope.currentAssembly.$promise.then(function(data) {
                 $scope.currentAssembly = data;
                 if(!$scope.currentAssembly.forumPosts) {
@@ -351,6 +352,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                 }
                 localStorageService.set("currentAssembly", $scope.currentAssembly);
                 $scope.campaigns = $scope.currentAssembly.campaigns;
+                getInvitations($scope.assemblies);
             });
             $scope.verifyAssembly.$promise.then(function(data) {
                 $scope.verifyAssembly = data.responseStatus === "OK";
@@ -443,5 +445,48 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             show = true
         }
         return show;
+    }
+
+    $scope.openNewInvitationModal = function(size)  {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '/app/partials/invitation.html',
+            controller: 'NewInvitationModalCtrl',
+            size: size,
+            resolve: {
+                target: function () {
+                    return $scope.currentAssembly;
+                },
+                type: function () {
+                    return "ASSEMBLY";
+                },
+                defaultEmail: function() {
+                    return $scope.currentAssembly.invitationEmail;
+                }
+            }
+        });
+
+        var modalInstance;
+
+        modalInstance.result.then(
+            function (newInvitation) {
+                $scope.newInvitation = newInvitation;
+            },
+            function () {
+                console.log('Modal dismissed at: ' + new Date());
+            }
+        );
+    };
+
+    function getInvitations(target) {
+        $scope.pendingInvitations = Invitations.invitations(target,"INVITED").query();
+        $scope.pendingInvitations.$promise.then(
+            function(response){
+                $scope.pendingInvitations = response;
+            },
+            function(error) {
+                $scope.errors.push(error);
+            }
+        );
     }
 });

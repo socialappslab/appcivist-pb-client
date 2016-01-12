@@ -1,0 +1,92 @@
+.container
+  .row.text-center
+    %h2
+      %b> Assembly:
+      PB Belleville Paris/
+      %b> Campaign:
+      Belleville - Paris PB 2016
+  %br
+    .row.col-md-8.col-md-push-2.col-sm-8.col-sm-push-2
+      %ul#timeline.row.timeline
+        %li#proposalMakingPhase.active
+          %h4
+            %strong Proposal Making
+        %li#proposalMakingPhase.active
+          %h4
+            %strong Versioning
+        %li#proposalMakingPhase.active
+          %h4
+            %strong Deliberation
+        %li#proposalMakingPhase.selected.active
+          %h4
+            %strong Voting
+    .progressline.col-md-12.col-sm-12
+      .col-md-8.col-sm-8
+        %ul.progressline-phases
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Registration
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Instructions
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Voting
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title.selected
+              Summary
+            .progressline-phase-line
+          %li.progressline-phase
+            %h4.progressline-phase-title
+              Result
+            .progressline-phase-line
+      .col-md-4.col-sm-4
+        .counter-box
+          %h3.counter-title
+            %strong Voting will end in
+          %ul.counter
+            %li.counter-section
+              %h5.text-muted
+                %strong Days
+              %div 45
+            %li.counter-section
+              %h5.text-muted
+                %strong Hours
+              %div 03
+            %li.counter-section
+              %h5.text-muted
+                %strong Minutes
+              %div 03
+.range-voting-content
+  %h3
+    %b> Assembly:
+    PB Belleville Paris/
+    %b> Campaign:
+    Belleville - Paris PB 2016
+  %h1
+    %strong Voting Ballot
+  %img.checkmark{:src => "/assets/images/black_tick.png"}/
+  .date 2015-08
+  .container
+    .summary-container{:style => "width: 480px;"}
+      #voting-summary
+        %strong Your Voting Summary
+      %p.scored
+        %strong Assigned scores (range)
+      %ol.individual-scores.list-unstyled{"ng-repeat" => "candidate in candidates"}
+        %li
+          %p.score-box {{candidate.value || ""}}
+          .campaign-name {{candidate.title}}
+      %p.total-scored-text
+        %strong You have scored
+      %span.score-box {{scoredCandidates.length}}
+      %strong /
+      %span.score-box {{candidates.length}}
+      %p.total-scored-text
+        %strong proposals.
+  .buttons
+    %button.btn.btn-success{"ng-click" => "transitionToVoting()", :type => "button"} Back to Ballot
+    %button.btn.btn-primary{"ng-click" => "submitBallotPaper()", :type => "submit"} CONFIRM AND SUBMIT

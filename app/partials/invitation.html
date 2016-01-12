@@ -1,0 +1,56 @@
+<div class="col-md-12 col-sm-12 col-lg-12" tabindex="-1"
+     role="dialog" aria-labelledby="mySignupModal"
+     aria-hidden="true">
+    <div class="modal-content">
+        <div id="form_person">
+            <div class="modal-heading">
+                <div class="panel-title">Send invitation for {{type}} {{targetId}}</div>
+            </div>
+            <div class="modal-body">
+                <div class="bg-success"
+                     style="padding:5px;border-radius:5px;text-align:center; margin-bottom:10px"
+                     id="success_person"></div>
+                <form id="signup_form" class="form-horizontal" role="form" method="post">
+                    <div class="form-group">
+                        <label for="email" class="col-md-3 control-label">Email</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="email" name="email"
+                                   placeholder="Email" required ng-model="newInvitation.email"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-md-3 control-label">Invitation text</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" id="text" rows="6"
+                                      ng-model="newInvitation.invitationEmail"
+                                      placeholder="Hello! This is an invitation from AppCivist. Join us!">
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="newInvitation.moderator"/>
+                            <strong>Invite the user to be a moderator</strong>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="newInvitation.coordinator"/>
+                            <strong>Invite the user to be a coordinator</strong>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- Button -->
+                        <div class="col-md-offset-3 col-md-9">
+                            <input type="submit" name="submit" class="btn btn-primary"
+                                   id="submit_person" ng-click="sendInvitation()" value="Send"/>
+                        </div>
+                    </div>
+                </form>
+                <!--end of signup_form-->
+            </div>
+        </div>
+        <!--end of person registration-->
+    </div>
+</div>

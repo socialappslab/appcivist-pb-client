@@ -6,7 +6,8 @@
  * user can view
  *
  */
-appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService, Assemblies, loginService, $route) {
+appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService,
+											 Assemblies, loginService, $route, usSpinnerService, $uibModal) {
 	init();
 
 	function init() {
@@ -14,6 +15,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		$scope.user = localStorageService.get("user");
 		$scope.sessionKey = localStorageService.get("sessionKey");
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+    $scope.votingApiUrl  = localStorageService.get("votingApiUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.info = localStorageService.get("help");
 		$scope.userVotes = localStorageService.get("userVotes");
@@ -25,6 +27,14 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 			console.log("Setting API Server in MainCtrl to: " + appCivistCoreBaseURL);
 		} else {
 			console.log("Using API Server: " + $scope.serverBaseUrl);
+		}
+
+    if ($scope.votingApiUrl)
+      console.log("Using Voting API Server: " + $scope.votingApiUrl);
+		else {
+      $scope.votingApiUrl = votingApiUrl;
+			localStorageService.set("votingApiUrl", $scope.votingApiUrl);
+			console.log("Setting Voting API Server in MainCtrl to: " + $scope.votingApiUrl);
 		}
 
 		if ($scope.etherpadServer === undefined || $scope.etherpadServer === null ) {
@@ -61,8 +71,67 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		searchAssemblies(query);
 	}
 
-	$scope.login = function(email, password) {
-		$scope.user = loginService.signIn(email, password);
+	$scope.login = function() {
+		console.log("Signing in with email = " + $scope.email);
+		loginService.signIn($scope.user.email, $scope.user.password);
+	}
+
+	$scope.signup = function() {
+		loginService.signUp($scope.newUser);
+	}
+
+	$scope.signout = function() {
+		loginService.signOut();
+	}
+
+	$scope.startSpinner = function(){
+		$(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+		usSpinnerService.spin('spinner-1');
+	}
+
+	$scope.stopSpinner = function(){
+		usSpinnerService.stop('spinner-1');
+		$(angular.element.find('.spinner-container')).remove();
+	}
+
+	$scope.openNewUserModal = function(size)  {
+		var modalInstance = $uibModal.open({
+			 animation: true,
+			 templateUrl: '/app/partials/signup.html',
+			 controller: 'NewUserModalCtrl',
+			 size: size,
+			 resolve: {
+				 newUser: function () {
+					return $scope.newUser;
+				 }
+			 }
+		 });
+
+		var modalInstance;
+
+		modalInstance.result.then(function (newUser) {
+			$scope.newUser = newUser;
+			console.log('New User with Username: ' + newUser.username);
+		}, function () {
+			console.log('Modal dismissed at: ' + new Date());
+		});
+	};
+
+	$scope.changeServer = function() {
+		var serverBaseUrl = localStorageService.get("serverBaseUrl");
+		appCivistCoreBaseURL = $scope.serverBaseUrl =
+				(serverBaseUrl === backendServers.remoteDev) ?
+						backendServers.localDev : backendServers.remoteDev;
+
+		localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
+		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");
+	}
+
+  $scope.changeVotingServer = function() {
+		var apiURL = localStorageService.get("votingApiUrl");
+		$scope.votingApiUrl = (apiURL === appcivist.api.voting.development) ? appcivist.api.voting.production : appcivist.api.voting.development;
+		localStorageService.set("votingApiUrl", $scope.votingApiUrl);
+		console.log("Changing Backend Server from: [" + apiURL + "] to [" + $scope.votingApiUrl + "]");
 	}
 
 	function authCheck(user, sessionKey) {

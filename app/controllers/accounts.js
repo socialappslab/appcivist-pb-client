@@ -1,9 +1,9 @@
 ﻿// AppCivist Demo Client - Basic Controllers
 
 /**
- * AccountCtrl - functions to control authentication 
+ * AccountCtrl - functions to control authentication
  */
-appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,/* $uibModal,*/
+appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
 		localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
@@ -19,6 +19,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,/* 
 		$scope.user = localStorageService.get("user");
         $scope.sessionKey = localStorageService.get("sessionKey");
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+        $scope.votingApiUrl  = localStorageService.get("votingApiUrl");
 
         if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
             $scope.serverBaseUrl = appCivistCoreBaseURL;
@@ -66,17 +67,17 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,/* 
 	}
 
 	$scope.openNewUserModal = function(size)  {
-		/*var modalInstance = $uibModal.open({
-			animation: true,
-			templateUrl: '/app/partials/signup.html',
-			controller: 'NewUserModalCtrl',
-			size: size,
-			resolve: {
-				newUser: function () {
-					return $scope.newUser;
+		var modalInstance = $uibModal.open({
+				animation: true,
+				templateUrl: '/app/partials/signup.html',
+				controller: 'NewUserModalCtrl',
+				size: size,
+				resolve: {
+					newUser: function () {
+						return $scope.newUser;
+					}
 				}
-			}
-		});*/
+		});
 
 		var modalInstance;
 
@@ -97,10 +98,18 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location,/* 
 		localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
 		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");
 	}
+
+  $scope.changeVotingServer = function() {
+		var apiURL = localStorageService.get("votingApiUrl");
+		$scope.votingApiUrl = (apiURL === appcivist.api.voting.development) ? appcivist.api.voting.production : appcivist.api.voting.development;
+		localStorageService.set("votingApiUrl", $scope.votingApiUrl);
+		console.log("Changing Backend Server from: [" + apiURL + "] to [" + $scope.votingApiUrl + "]");
+	}
+
 });
 
 
-appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, /*$uibModalInstance, */newUser,
+appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, $uibModalInstance, newUser,
 													 localStorageService, Assemblies, loginService, usSpinnerService) {
 	init();
 	function init() {
@@ -108,7 +117,37 @@ appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $locatio
 	}
 
 	$scope.signup = function() {
-		//loginService.signUp($scope.newUser, $uibModalInstance);
+		loginService.signUp($scope.newUser, $uibModalInstance);
 	}
 
+});
+
+appCivistApp.controller('NewInvitationModalCtrl', function($scope, $resource, $location, $uibModalInstance,
+														   target, type, defaultEmail, Invitations, localStorageService, Assemblies,
+														   loginService, usSpinnerService) {
+	init();
+	function init() {
+		$scope.targetId = type === 'ASSEMBLY' ? target.assemblyId : target.groupId;
+		$scope.type = type;
+		$scope.defaultEmail = defaultEmail;
+		$scope.newInvitation = Invitations.defaultInvitation($scope.targetId, $scope.type, $scope.defaultEmail);
+
+		$scope.sendInvitation = function() {
+			var invitation;
+			if(type === 'ASSEMBLY') {
+				invitation = Invitations.assemblyInvitation($scope.targetId).save($scope.newInvitation);
+			} else {
+				invitation = Invitations.groupInvitation($scope.targetId).save($scope.newInvitation);
+			}
+
+			invitation.$promise.then(
+					function (response){
+						$uibModalInstance.close(response);
+					},
+					function (error) {
+						$uibModalInstance.dismiss('cancel');
+					}
+			);
+		}
+	}
 });

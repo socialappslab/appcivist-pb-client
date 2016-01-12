@@ -1,5 +1,6 @@
 @import "../stylesheets/styles/colors";
 @import "../stylesheets/styles/common";
+@import "../stylesheets/styles/fonts";
 @import "../stylesheets/styles/header";
 @import "../stylesheets/styles/footer";
 @import "../app/partials/landing/landing";
@@ -15,10 +16,24 @@
 @import "../app/partials/wGroupsSuggestions/wGroupsSuggestion";
 @import "../app/partials/wGroupForum/wGroupForum";
 
+
+html, body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 60px auto -16rem;
+}
+
 .inline{
   display: inline-block !important;
 }
-
 
 /*Mixin*/
 .assembly{
@@ -40,7 +55,7 @@
 
   .caption{
     display: inline-block;
-    width: 220px;
+    width: auto;
   }
 
 }
@@ -73,21 +88,107 @@ i{
 }
 
 /******HEADER******/
+/******NEW DESIGN NAVBAR COLORS******/
+$bgDefault      : $header-background;
+$bgHighlight    : $header-menu-active;
+$colDefault     : $header-default-color;
+$colHighlight   : $header-menu-highlight;
+$dropDown       : false;
 
+.navbar {
+  background-color: $bgDefault;
+  border-color: $bgHighlight;
+  .navbar-brand {
+    background-color: $bgDefault;
+    color: $colDefault;
+    &:hover, &:focus {
+      color: $colHighlight;
+      background-color: $bgHighlight}}
+  .navbar-text {
+    color: $colDefault; }
+  .navbar-nav {
+    > li {
+      > a {
+        color: $colDefault;
+        &:hover,  &:focus {
+          color: $colHighlight;
+          background-color: $bgHighlight }}
+      @if $dropDown {
+        > .dropdown-menu {
+          background-color: $bgDefault;
+          > li > a {
+            color: $colDefault;
+            &:hover,  &:focus {
+              color: $colHighlight;
+              background-color: $bgHighlight; }}
+          .divider {
+            background-color: $bgHighlight;}}}
+    }
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}
+    > .open {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}}
+  .navbar-toggle {
+    border-color: $bgHighlight;
+    &:hover, &:focus {
+      background-color: $bgHighlight; }
+    .icon-bar {
+      background-color: $colDefault; }}
+  .navbar-collapse {
+    background-color: $bgDefault;
+    border-color: $bgHighlight;
+  }
+  .navbar-form {
+    border-color: $colDefault;
+    a {
+      /* Log In Copy: */
+      font-family: Lato-Regular;
+      font-size: 20px;
+      color: $white;
+      &:hover {
+        text-decoration: none;
+        text-weight: bold;
+      }
+    }
+  }
+  .navbar-link {
+    color: $colDefault;
+    &:hover {
+      color: $colHighlight; }}}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu {
+    > li > a {
+      color: $colDefault;
+      &:hover, &:focus {
+        color: $colHighlight; }}
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}}
+}
+
+/*******NAVBAR MENU BORDERS********/
 #navbar-options{
   ul{
-    li{
-      border-right: 0.1rem solid $border-header;
-    }
-    li:first-child{
-      border-left: 0.1rem solid $border-header;
-    }
+    //li{
+    //  border-right: 0.1rem solid $header-menu-active;
+    //}
+    //li:first-child{
+    //  border-left: 0.1rem solid $header-menu-active;
+    //}
     li:hover{
-      background-color: rgba(128, 128, 128, 0.05);
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
     }
     li:active{
-      background-color: rgba(128, 128, 128, 0.05);
-      box-shadow: inset 0 0 0.2rem 0.2rem rgba(128, 128, 128, 0.05);
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
+      box-shadow: inset 0 0 0.2rem 0.2rem $header-background;
     }
     li {
       a:focus {
@@ -102,13 +203,12 @@ i{
   height: 5rem;
 }
 
+/*******NAVBAR USER MENU********/
 #user-menu{
-
   .icon{
     font-size: 2.5rem;
     vertical-align: middle;
   }
-
   ul.menu-elements{
     list-style: none;
     padding: 0;
@@ -138,15 +238,135 @@ i{
   }
 }
 
-/****NEW DESIGN****/
+/****NEW DESIGN FOR LANDING PAGE****/
 .section{
   width: 100%;
+  background-color: $white;
+  height: 100%;
+
+  .align-right {
+    text-align: right;
+  }
+  .bottom-info{
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding-bottom: 10%;
+  }
+  .btn {
+    border: 0;
+    color: $main-first-section-font-color;
+    padding: 0.8rem 1.6rem;
+  }
+  .btn-yellow{
+    background-color: $main-first-section-button-sign-up-background;
+  }
+  hr {
+    display: block;
+    height: 0px;
+    padding: 0;
+  }
+  .vertical1-container{
+    height: 80px;
+  }
+  .vertical1 {
+    // calculated based on fa icon 1x (17.156x20)
+    //margin: 50px 0px 0px -((17.156-1)/2+1)px;
+    //margin: 15px 0px 0px -9.078px;
+    margin: 36px 0px 0px 26.664px;
+    height: 100%;
+    width: 0px;
+    position: absolute;
+    display: inline;
+    border-width: 1px;
+  }
+  .vertical2-container{
+    height: 150px;
+  }
+  .vertical2 {
+    // calculated based on fa icon 3x (51.438x60)
+    //margin: 50px 0px 0px ((51.438-3)/2+3)px;
+    margin: 50px 0px 0px -27.219px;
+    height: 120%;
+    width: 0px;
+    position: absolute;
+    display: inline;
+  }
+  .vertical3 {
+    // calculated based on fa icon stack (53.328x100)
+    //margin: 50px 0px 0px ((51.438-3)/2+3)px;
+    margin: 46px 0px 0px 26.664px;
+    height: 60%;
+    width: 0px;
+    position: absolute;
+    display: inline;
+    border-width: 1px;
+  }
+  .icon-circle-number {
+    font-size: 2em;
+    font-weight: 700;
+    line-height: (8em / 14);
+    text-align: center;
+    color: $white;
+    // calculated based on fa icon 3x (51.438x60)
+    //margin: (60-22)/2 0px 0px ((51.438-20.531)/2+20.531)px;
+    margin: 19px 0px 0px -35.9845px;
+    position: absolute;
+  }
+  .milestone {
+    font-size: 2rem;
+    vertical-align: middle;
+    //line-height: 2rem;
+    //left: 10px;
+    margin: 12px 0px 0px 0px;
+  }
+  .horizontal {
+    position: absolute;
+    margin: 23px -4% auto 50px;
+    width: 100%;
+  }
+  .greenline1 {
+    border-color: $corporative-green;
+    border-style: solid;
+  }
+  .greenline2 {
+    border-color: $corporative-dark-light-green;
+    border-style: solid;
+  }
+  .greenline3 {
+    border-color: $corporative-dark-green;;
+    border-style: solid;
+  }
+  .greenline4 {
+    border-color: $corporative-darker-green;
+    border-style: solid;
+  }
+  h2 {
+    font-weight: bold;
+  }
+  ul {
+    list-style: none;
+  }
+  .i1 {
+    color: $corporative-green;
+  }
+  .i2 {
+    color: $corporative-dark-light-green;
+  }
+  .i3 {
+    color: $corporative-dark-green;
+  }
+  .i4 {
+    color: $corporative-darker-green;
+  }
   &.first-section{
     background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/section1pic.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
     vertical-align: middle;
-    background-size: 100%;
-    height: 82rem;
-    padding-top: 17%;
+    margin-top: -20px;
+    padding-top: 20%;
     .main-title{
       color: $main-first-section-font-color;
       margin-bottom: 3%;
@@ -164,17 +384,62 @@ i{
         margin-right: 0;
       }
     }
-    .bottom-info{
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+  }
+  &.second-section{
+    vertical-align: middle;
+    margin-top: -20px;
+    background-color: $white;
+    padding: 5% 5% 5% 5%;
+    .main-title{
+      color: $medium-blue;
+      /* AppCivist lets users: */
+      font-family: Lato-Regular;
+      font-size: 32px;
+      line-height: 39px;
+      margin-bottom: 3%;
     }
-
-    .btn-yellow{
-      background-color: $main-first-section-button-sign-up-background;
-      border: 0;
-      color: $main-first-section-font-color;
-      padding: 0.8rem 1.6rem;
+    .jumbotron-index {
+      background-color: $white;
+    }
+  }
+  &.third-section{
+    vertical-align: middle;
+    margin-top: -20px;
+    /* Rectangle 345: */
+    background: rgba(207,247,238,0.50);;
+    padding: 5% 5% 5% 5%;
+    .main-title{
+      color: $medium-blue;
+      text-align: center;
+      font-family: Lato-Regular;
+      font-size: 32px;
+      line-height: 39px;
+    }
+    .sub-title{
+      text-align: center;
+      font-family: Lato-Regular;
+      font-size: 24px;
+      color: $light-black;
+      line-height: 3rem;
+      //margin-bottom: 3%;
+    }
+    .input-field {
+      width: 10%;
+    }
+    .circle {
+      border-radius: 50%;
+    }
+    .green1 {
+      background: $corporative-green;
+    }
+    .green2 {
+      background: $corporative-dark-light-green;
+    }
+    .green3 {
+      background: $corporative-dark-green;
+    }
+    .green4 {
+      background: $corporative-darker-green;
     }
   }
 }

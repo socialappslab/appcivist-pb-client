@@ -5,92 +5,37 @@
       PB Belleville Paris/
       %b> Campaign:
       Belleville - Paris PB 2016
-  %br/
-  .row.col-md-8.col-md-push-2.col-sm-8.col-sm-push-2
-    %ul#timeline.row.timeline
-      %li#proposalMakingPhase.active
-        %h4
-          %strong Proposal Making
-      %li#proposalMakingPhase.active
-        %h4
-          %strong Versioning
-      %li#proposalMakingPhase.active
-        %h4
-          %strong Deliberation
-      %li#proposalMakingPhase.selected.active
-        %h4
-          %strong Voting
-  .progressline.col-md-12.col-sm-12
-    .col-md-8.col-sm-8
-      %ul.progressline-phases
-        %li.progressline-phase
-          %h4.progressline-phase-title
-            Registration
-          .progressline-phase-line
-        %li.progressline-phase
-          %h4.progressline-phase-title.selected
-            Instructions
-          .progressline-phase-line
-        %li.progressline-phase
-          %h4.progressline-phase-title
-            Voting
-          .progressline-phase-line
-        %li.progressline-phase
-          %h4.progressline-phase-title
-            Summary
-          .progressline-phase-line
-        %li.progressline-phase
-          %h4.progressline-phase-title
-            Result
-          .progressline-phase-line
-    .col-md-4.col-sm-4
-      .counter-box
-        %h3.counter-title
-          %strong Final drafts due
-        %ul.counter
-          %li.counter-section
-            %h5.text-muted
-              %strong Days
-            %div 45
-          %li.counter-section
-            %h5.text-muted
-              %strong Hours
-            %div 03
-          %li.counter-section
-            %h5.text-muted
-              %strong Minutes
-            %div 03
-#rangeLanding.jumbotron
-  .titles
-    .container
-      %h3 Paris PB 2016
-    .container
-      %h1
-        %b Assembly Ballot
-    .container
-      %h1#small 2016 August
-  %br/
-  .container.instructions
-    %h2.title
-      %strong Voting Instructions
-      %button.btn.btn-success{"ng-click" => "nextPage()", :type => "button"} Start Voting
-    %ul
-      %li{:type => "circle"}
-      %li{:type => "circle"}
-        The voting system your Assembly selected and configured for this campaign is
-        %b
-      %li{:type => "none"}
+  #rangeLanding.jumbotron
+    .titles
+      .container
+        %h3 Paris PB 2016
+      .container
+        %h1
+          %b Voting Ballot
+      .container
+        %h1#small 2016 August
+    %br
+      .container.instructions
+        %h2.title
+          %strong Voting Instructions
+          %button.btn.btn-success{"ng-click" => "transitionToRegistration()", :type => "button"} Register to Vote
         %ul
-          %li{"ng-repeat" => "pair in votingBallot.configs", :type => "circle"} The  of this voting ballot is .
-      %li{:type => "circle"} When you are ready to vote, click the button "Start voting".
-  %br/
-  .container.additional-info
-    %h2
-      %strong Additional Information
-    %p.info
-    %br/
-    %h3
-      %strong Technical Issues
-    %br/
-    %ul.list-unstyled
-      %li Contact Cristhian at cristhian@example.com/ +1 999 999 9999
+          %li{:type => "circle"} {{ballot.ballot.instructions}}
+          %li{:type => "circle"}
+            The voting system your Assembly selected and configured for this campaign is
+            %b {{ballot.ballot.voting_system_type}}
+          %li{:type => "none"}
+            %ul
+              %li{"ng-repeat" => "config in ballot.ballot_configurations", :type => "circle"} The {{config.key}} of this voting ballot is {{config.value}}.
+          %li{:type => "circle"} When you are ready to vote, click the button "Start voting".
+      %br
+        .container.additional-info
+          %h2
+            %strong Additional Information
+          %p.info{:style => "white-space: pre-wrap;"}{{ballot.notes}}
+          %br
+            %h3
+              %strong Technical Issues
+            %br
+              %ul.list-unstyled
+                %li Contact Cristhian at cristhian@example.com/ +1 999 999 9999

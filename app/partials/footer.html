@@ -1,4 +1,5 @@
 <footer ng-controller="AccountCtrl">
-	<h4 translate="{{'FOOTER_TEXT'}}"></h4>
-	<h5><a ng-click="changeServer()">{{'FOOTER_TEXT_DEV' | translate}}{{serverBaseUrl}}</a></h5>
+	<h4 translate="{{'footer.text'}}"></h4>
+	<h5><a ng-click="changeServer()">{{'footer.text.dev' | translate}}{{serverBaseUrl}}</a></h5>
+  <h5><a ng-click="changeVotingServer()">{{'footer.text.dev' | translate}}{{votingApiUrl}}</a></h5>
 </footer>

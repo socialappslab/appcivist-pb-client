@@ -1,5 +1,6 @@
 ﻿appCivistApp.controller('HomeCtrl', function ($scope, $routeParams,
-                                              $resource, $location, Campaigns, Memberships, Notifications, loginService, localStorageService) {
+                                              $resource, $location, Campaigns, Memberships, Notifications,
+                                              loginService, localStorageService) {
     init();
     initializeSideBoxes();
     getUserAssemblies();

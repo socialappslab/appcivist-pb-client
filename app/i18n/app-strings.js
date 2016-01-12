@@ -11,20 +11,26 @@ appCivistApp.config(function ($translateProvider) {
         "landing.goal.proposal": "SUBMIT AND EVALUATE PROPOSALS",
         "landing.section2.button": "AppCivist for Participatory Budgeting",
         "landing.section3.title" : "The Participatory Budgeting Campaign",
-        "landing.section3.desc" : "AppCivist is designed to support assemblies in a bottom-up process of collaborative development and selection of proposals. This process is ideal for participatory budgeting campaigns and it consists of the following four main stages, each with its distinctive milestones.",
+        //"landing.section3.desc" : "AppCivist is designed to support assemblies in a bottom-up process of collaborative development and selection of proposals. This process is ideal for participatory budgeting campaigns and it consists of the following four main stages, each with its distinctive milestones.",
+
+
+        //
+        "landing.section3.desc1" : "AppCivist provides a framework for the collaborative development and selection of proposals. ",
+        "landing.section3.desc2" : "It consists of the following four stages, each with distinctive milestones.",
+        "landing.section3.desc3" : "Campaigns can be linked to each other at various stages, allowing assemblies of different kinds to collaborate.",
         "landing.component.Proposal Making" : "PROPOSAL MAKING",
         "landing.component.Proposal Making.Brainstorming" : "Brainstorming",
         "landing.component.Proposal Making.Forming working groups" : "Forming working groups",
         "landing.component.Proposal Making.Drafting proposals" : "Drafting proposals",
         "landing.component.Versioning" : "VERSIONING",
-        "landing.component.Versioning.Proposal editing" : "Proposal Editing",
+        "landing.component.Versioning.Proposal editing" : "Proposal editing",
         "landing.component.Versioning.Proposal merging/splitting" : "Proposal merging/splitting",
         "landing.component.Versioning.Proposal selection within groups" : "Proposal selection within groups",
         "landing.component.Deliberation" : "DELIBERATION",
-        "landing.component.Deliberation.Open discussion" : "Open discussion",
+        "landing.component.Deliberation.Open discussion" : "Assembly discussion and evaluation",
         "landing.component.Deliberation.Technical assessment" : "Technical assessment",
         "landing.component.Voting" : "VOTING",
-        "landing.component.Voting.Final selection" : "Final selection",
+        "landing.component.Voting.Final selection" : "Final selection of proposals",
         "landing.section3.button": "Other features",
         "landing.section4.title": "Customizable tools for democratic action",
 
@@ -35,7 +41,7 @@ appCivistApp.config(function ($translateProvider) {
         "header.sign_up_individual": "Individual Sign Up",
         "header.sign_out": "Sign Out",
         "header.Forgot password": "Forgot Password?",
-        "footer.text": "Created by the <a href='http://socialappslab.org/'>Social Apps Lab</a> at CITRIS, University of California, Berkeley.<br/> 2015-2016 &copy; Regents of the University of California <br/> In partnership with the <a href='https://mimove.inria.fr/'>MiMove Team</a> at <a href='http://www.inria.fr/'>INRIA</a>, France.",
+        "footer.text": "Created by the <a href='http://socialappslab.org/'>Social Apps Lab</a> at CITRIS, University of California, Berkeley.<br/> 2014-2016 &copy; Regents of the University of California <br/> In partnership with the <a href='https://mimove.inria.fr/'>MiMove Team</a> at <a href='http://www.inria.fr/'>INRIA</a>, France.",
         "footer.text.dev": "[DEV] Change Backend Server: Currently Using ",
 
         // User Menus
@@ -108,9 +114,9 @@ appCivistApp.config(function ($translateProvider) {
         "Do you want your Working Group to be listed?" : "Do you want your Working Group to be listed?",
 
         // Definitions
-        "definition.assembly":"Assemblies are groups of people with shared concerns, like neighborhood safety or city budgets, and who want to become organized for taking action.",
-        "definition.campaign":"Campaigns are initiatives that an assembly undertake to achieve a specific goal.Each campaign has its own template that structures its components, working groups, and timeline.",
-        "definition.proposal.development":"Assembly members organize in Working Groups to brainstorm, develop and democratically select proposals for collective action.",
+        "definition.assembly":"Assemblies are groups of people with shared concerns, like neighborhood safety or city budgets, who want to organize to take action.",
+        "definition.campaign":"Campaigns are initiatives that an assembly undertakes to achieve a specific goal. Each campaign has its own template that structures its components, working groups, and timeline.",
+        "definition.proposal.development":"Assembly members organize into Working Groups to brainstorm, develop, and select proposals democratically for collective action.",
 
         // Help Strings
         "help.proposalTimeline" : "Click on the phase name to activate or deactivate the phases you wish to include in your campaign. Phases shown as disabled take place in the linked campaign.",

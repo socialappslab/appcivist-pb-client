@@ -66,9 +66,8 @@ var helpInfo = {
         "campaign has its own template that structures its components, working groups, and timeline.",
     campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development " +
         "components. Linking to another campaign will bring that campaign's configuration",
-    campaignFastrackTooltip: "Fastrack creation of a campaign will use default values for each phase of the " +
-        "campaign (e.g., default dates and durations for each phase, default values for each phases specific " +
-        "configurations, etc.)",
+    campaignFastrackTooltip: "Fastrack uses default values for each phase of a " +
+        "campaign (e.g., default dates and duration, default configuration values)",
     proposalTimeline: "Click on the phase name to activate or deactivate the phases you wish to include in your " +
         "campaign. Phases shown as disabled take place in the linked campaign.",
     campaignTimeframeTooltip: "Select a period of time to represent in the timeline below.",

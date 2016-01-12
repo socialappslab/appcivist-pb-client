@@ -397,6 +397,9 @@ $dropDown       : false;
       line-height: 39px;
       margin-bottom: 3%;
     }
+    .jumbotron-index {
+      background-color: $white;
+    }
   }
   &.third-section{
     vertical-align: middle;
@@ -417,7 +420,10 @@ $dropDown       : false;
       font-size: 24px;
       color: $light-black;
       line-height: 3rem;
-      margin-bottom: 3%;
+      //margin-bottom: 3%;
+    }
+    .input-field {
+      width: 10%;
     }
     .circle {
       border-radius: 50%;

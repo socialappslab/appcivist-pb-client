@@ -2856,6 +2856,9 @@ i {
   line-height: 39px;
   margin-bottom: 3%;
 }
+.section.second-section .jumbotron-index {
+  background-color: #FFFFFF;
+}
 .section.third-section {
   vertical-align: middle;
   margin-top: -20px;
@@ -2876,7 +2879,9 @@ i {
   font-size: 24px;
   color: #524D4D;
   line-height: 3rem;
-  margin-bottom: 3%;
+}
+.section.third-section .input-field {
+  width: 10%;
 }
 .section.third-section .circle {
   border-radius: 50%;

@@ -1,13 +1,17 @@
 <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
     <div class="row">
         <!-- Box Title -->
-        <div id="boxTitle" class="col-md-7 col-sm-7"><h4><strong>{{box.title}}</strong></h4></div>
+        <div id="boxTitle" class="col-md-6 col-sm-6"><h4><strong>{{box.title}}</strong></h4></div>
         <!-- Box Action -->
-        <div id="boxAction"  class="col-md-5 col-sm-5" ng-if="box.addAction">
-            <a ng-href="{{box.addAction.href}}">
-                <img class="image-circle-sidebox" alt="100x100" src="../assets/images/addIcon.png">
-            </a>
-            <h5>{{box.addAction.title}}</h5>
+        <div id="boxAction"  class="col-md-6 col-sm-6" ng-if="box.addAction">
+            <div class="col-md-2">
+                <a ng-href="{{box.addAction.href}}">
+                    <img class="image-circle-sidebox" alt="100x100" src="../assets/images/addIcon.png">
+                </a>
+            </div>
+            <div class="col-md-8">
+                <h5>{{box.addAction.title}}</h5>
+            </div>
         </div>
     </div>
 

@@ -6,7 +6,7 @@
 			<!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="user.email"/>-->
 			<!--<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="user.password"/>-->
 			<!--<button type="submit" class="btn btn-success btn-lg">{{'header.sign_in' | translate}}</button>-->
-			<button type="button" class="btn btn-yellow btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
+			<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
 			<a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
 			<a href="#section2" du-smooth-scroll class="btn btn-success btn-lg">{{'landing.Learn more' | translate}}</a>
 		</form>
@@ -19,7 +19,65 @@
 			<span class="col-md-1 col-sm-1 hidden-xs"></span>
 			<h2 class="col-md-9 col-sm-9 col-xs-12 main-title">{{'landing.goal' | translate}}</h2>
 		</div>
-		<div class="voffset3"></div>
+		<div class="jumbotron jumbotron-index">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-1">
+						<i class="icon-doc-text"></i>
+						<h5>Proposal Making</h5>
+					</div>
+					<div class="col-md-1">
+						<i class="icon-users"></i>
+						<h5>Working Groups</h5>
+					</div>
+					<div class="col-md-1">
+						<i class="icon-flag-empty"></i>
+						<h5>Mobilizing</h5>
+					</div>
+					<div class="col-md-1">
+						<i class="icon-chat-empty"></i>
+						<h5>Deliberating</h5>
+					</div>
+					<div class="col-md-1">
+						<i class="icon-docs"></i>
+						<h5>Versioning</h5>
+					</div>
+					<div class="col-md-1">
+						<i class="icon-chart-bar"></i>
+						<h5>Visualizing</h5>
+					</div>
+					<!--           <div class="col-md-1">
+                <i class="icon-edit"></i>
+                <h5>Drawing</h5>
+              </div>
+     -->
+					<div class="col-md-1">
+						<i class="icon-thumbs-up"></i>
+						<h5>Voting</h5>
+					</div>
+					<div class="col-md-1">
+						<i class="icon-megaphone"></i>
+						<h5>Reporting</h5>
+					</div>
+					<div class="col-md-1">
+						<i class="icon-location"></i>
+						<h5>Mapping</h5>
+					</div>
+					<!--           <div class="col-md-1">
+                <i class="icon-attention"></i>
+                <h5>Alerts</h5>
+              </div>
+     -->
+					<div class="col-md-1">
+						<i class="icon-desktop"></i>
+						<h5>Implementing</h5>
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="voffset5"></div>
 		<div class="row">
 			<span class="col-md-1 col-sm-1 hidden-xs"></span>
 			<span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-users fa-5x i1"></span>
@@ -69,7 +127,14 @@
 	<div class="section third-section" id="section3">
 		<h2 class="row main-title">{{'landing.section3.title' | translate}}</h2>
 		<div class="voffset4"></div>
-		<h3 class="row sub-title">{{'landing.section3.desc' | translate}}</h3>
+		<h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc1' | translate}}</h3>
+		<h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc2' | translate}}</h3>
+		<h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc3' | translate}}</h3>
+
+		<h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc1' | translate}}</h4>
+		<h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc2' | translate}}</h4>
+		<h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc3' | translate}}</h4>
+
 		<div class="voffset6"></div>
 		<ul class="row hidden-xs">
 			<li class="col-md-3 col-sm-3 col-xs-12">
@@ -191,6 +256,12 @@
 
 			</li>
 		</ul>
+
+		<div class="voffset5"></div>
+		<div class="text-center">
+			<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
+			<a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
+		</div>
 		<!--<a href="#section4" du-smooth-scroll class="btn btn-info btn-lg text-center bottom-info">{{'landing.section3.button' | translate}}</a>-->
 	</div>
 

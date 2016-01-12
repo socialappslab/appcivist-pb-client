@@ -201,7 +201,7 @@
             <div class="checkbox">
                 <label>
                     <strong>{{'Majority threshold' | translate}}</strong>
-                    <select ng-model="newWorkingGroup.threshold" id="newWorkingGroupThreshold">
+                    <select ng-model="newWorkingGroup.majorityThreshold" id="newWorkingGroupThreshold">
                         <option value="simple" selected>{{'Simple' | translate}}</option>
                         <option value="66">66%</option>
                         <option value="90">90%</option>
@@ -210,7 +210,7 @@
             </div>
             <div class="checkbox">
                 <label>
-                    <input ng-model="newWorkingGroup.blocking" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
+                    <input ng-model="newWorkingGroup.blockMajority" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
                     <h4>{{'Enable blocking' | translate}}</h4>
                 </label>
             </div>

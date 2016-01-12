@@ -50,7 +50,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			},
 			{
 				step: 3,
-				title: "Campaign phases",
+				title: "Campaign stages",
 				template: "app/partials/campaign/creation/newCampaign3.html",
 				info: "",
 				active: false,
@@ -72,7 +72,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.campaigns = [];
 		$scope.templateOptions = [
 			{
-				description : "Link to another camplate and use its template",
+				description : "Link to another campaign and use its template",
 				value: "LINKED",
 				subTemplateTitle: "Select a campaign from the list or search by name"
 			},
@@ -213,12 +213,27 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			}
 
 			if($scope.newCampaign.linkedComponents[0]===undefined) {
-				$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[2]);
-				$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[3]);
+				for(var i=0; i<$scope.newCampaign.linkedCampaign.campaign.components.length; i+=1) {
+					var component = $scope.newCampaign.linkedCampaign.campaign.components[i];
+					if(component.title === 'Voting' || component.title === 'Deliberation') {
+						$scope.newCampaign.linkedComponents.push(component);
+					}
+				}
+				//$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[2]);
+				//$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[3]);
 
 			} else {
-				$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
-				$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
+				for(var i=0; i<$scope.newCampaign.linkedCampaign.campaign.components.length; i+=1) {
+					var component = $scope.newCampaign.linkedCampaign.campaign.components[i];
+					if(component.title === 'Deliberation') {
+						$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[i];
+					}
+					if(component.title === 'Voting') {
+						$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[i];
+					}
+				}
+				//$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
+				//$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
 			}
 			$scope.newCampaign.proposalComponents[4].componentInstanceId = $scope.newCampaign.linkedComponents[0].componentInstanceId;
 			$scope.newCampaign.proposalComponents[5].componentInstanceId = $scope.newCampaign.linkedComponents[1].componentInstanceId;
@@ -356,7 +371,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				},
 				function(error){
 					$scope.linkedAssemblies = undefined;
-					$scope.templateErrors.push(error);
+					//$scope.templateErrors.push(error);
 				}
 		);
 
@@ -368,8 +383,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 						var assembly = assemblies[i];
 						var aCampaigns = assembly.campaigns;
 						if(aCampaigns!=undefined && aCampaigns !=null) {
-							for (var i = 0; i < aCampaigns.length; i += 1) {
-								var c = aCampaigns[i];
+							for (var j = 0; j < aCampaigns.length; j += 1) {
+								var c = aCampaigns[j];
 								$scope.campaigns.push({
 									assembly: assembly.name,
 									title: c.title,

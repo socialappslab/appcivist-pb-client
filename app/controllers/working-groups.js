@@ -18,11 +18,11 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
         $scope.workingGroupID = $routeParams.wid;
         $scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
         $scope.defaultIcons = [
-            {"name": "Justice Icon", "url":"http://appcivist.littlemacondo.com/assets/images/justicia-140.png"},
-            {"name": "Plan Icon", "url":"http://appcivist.littlemacondo.com/assets/images/tabacalera-140.png"},
-            {"name": "Article 49 Icon", "url":"http://appcivist.littlemacondo.com/assets/images/article19-140.png"},
-            {"name": "Passe Livre Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image74.png"},
-            {"name": "Skyline Icon", "url":"http://appcivist.littlemacondo.com/assets/images/image75.jpg"}
+            {"name": "Justice Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png"},
+            {"name": "Plan Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png"},
+            {"name": "Article 49 Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png"},
+            {"name": "Passe Livre Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png"},
+            {"name": "Skyline Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"}
         ];
 
         $scope.$watch("newWorkingGroup.name",function(newVal, oldval){
@@ -117,17 +117,6 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                 $scope.newWorkingGroup.profile.managementType = "COORDINATED";
             }
 
-            // 4. add configs
-            $scope.newWorkingGroup.configs = [];
-            $scope.newWorkingGroup.configs.push({
-                "key" : "working.group.majority.threshold",
-                "value" : $scope.newWorkingGroup.threshold
-            });
-            $scope.newWorkingGroup.configs.push({
-                "key" : "working.group.majority.blocking",
-                "value" : $scope.newWorkingGroup.blocking
-            });
-
             var newGroup = WorkingGroups.workingGroup($scope.assemblyID).save($scope.newWorkingGroup);
             newGroup.$promise.then(
                 function (response) {
@@ -167,7 +156,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
     }
 });
 
-appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService,
+appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal,
                                                      localStorageService, Contributions, WorkingGroups, Assemblies) {
     init();
     function init() {
@@ -179,6 +168,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.wGroup = {};
         $scope.wGroupMembers = [];
         $scope.proposals = [];
+        $scope.pendingInvitations = [];
 
         initializeWorkingGroup();
         initializeAssemblyCampaigns();
@@ -203,6 +193,37 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         });
     }
 
+    $scope.openNewInvitationModal = function(size)  {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '/app/partials/invitation.html',
+            controller: 'NewInvitationModalCtrl',
+            size: size,
+            resolve: {
+                target: function () {
+                    return $scope.wGroup;
+                },
+                type: function () {
+                    return "GROUP";
+                },
+                defaultEmail: function() {
+                    return $scope.wGroup.invitationEmail;
+                }
+            }
+        });
+
+        var modalInstance;
+
+        modalInstance.result.then(
+            function (newInvitation) {
+                $scope.newInvitation = newInvitation;
+            },
+            function () {
+                console.log('Modal dismissed at: ' + new Date());
+            }
+        );
+    };
+
     function initializeWorkingGroup() {
         $scope.$root.startSpinner();
         var res = WorkingGroups.workingGroup($scope.assemblyID, $scope.workingGroupID).get();
@@ -212,6 +233,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 $scope.$root.stopSpinner();
                 getWorkingGroupMembers($scope.assemblyID, $scope.workingGroupID);
                 getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
+                getInvitations($scope.workingGroupID);
             },
             function (error) {
                 $scope.$root.stopSpinner();
@@ -255,6 +277,18 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             },
             function (error) {
                 $scope.errors.unshift(error);
+            }
+        );
+    }
+
+    function getInvitations(target) {
+        $scope.pendingInvitations = Invitations.invitations(target,"INVITED").query();
+        $scope.pendingInvitations.$promise.then(
+            function(response){
+                $scope.pendingInvitations = response;
+            },
+            function(error) {
+                $scope.errors.push(error);
             }
         );
     }

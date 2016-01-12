@@ -32,12 +32,12 @@
                 <!-- Working Group Members -->
                 <div class="row infoBox">
                     <div class="row">
-                        <div class="col-md-6 col-sm-6">
+                        <div class="col-md-4 col-sm-4">
                             <h4><strong>Members</strong></h4>
                         </div>
-                        <div class="col-md-5 col-sm-5 col-md-push-2 add-elements-box-button">
+                        <div class="col-md-8 col-sm-8 add-elements-box-button">
                             <div class="inline">
-                                <a ng-click="inviteParticipants()" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>
+                                <a ng-click="openNewInvitationModal()" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>
                             </div>
                             <h5 class="inline"><strong>Invite participants</strong></h5>
                         </div>
@@ -50,6 +50,18 @@
                                     <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
                                     <div class="caption" style="text-align: center">
                                         <h5 class="text" title="{{member.user.name}}">{{member.user.name}} ({{member.status}})</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row list-item">
+                        <h4 ng-if="pendingInvitations.length>0">Pending Invitations</h4>
+                        <div class="row" ng-repeat="invitation in pendingInvitations">
+                            <div style="display: inline-block;">
+                                <div class="image-capsule">
+                                    <div class="caption" style="text-align: center">
+                                        <h5 class="text" title="{{invitation.email}}">{{invitation.email}}({{invitation.status}})</h5>
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +93,7 @@
                 <div class="row">
                     <h3><strong>Our Proposals</strong></h3>
                     <div class="box descriptionBox">
-                        <p>To create a new proposal, visit the page of one of the Assembly campaigns, and then move to the Versioning Phase</p>
+                        <p>To create a new proposal, visit the page of one of the Assembly campaigns, and then move to the Versioning Stage</p>
                     </div>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">

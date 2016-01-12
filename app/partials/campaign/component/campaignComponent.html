@@ -128,9 +128,10 @@
                         </button>
                     </span>
                     <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD' || (milestone.title | uppercase) === 'VOTING ON PROPOSALS' || (milestone.title | uppercase) === 'VOTING PERIOD ENDING'">
-                        <a ng-href="#/ballot/{{component.ballots[0].uuid}}">
+                        <a ng-if="component.ballots[0]" ng-href="#/ballot/{{component.ballots[0].uuid}}/start">
                             <button class="btn btn-success col-md-12">Open Voting Ballot</button>
                         </a>
+                        <button ng-if="!component.ballots[0]" class="btn btn-success disabled col-md-12">No voting ballot available yet</button>
                     </span>
                 </div>
             </div>

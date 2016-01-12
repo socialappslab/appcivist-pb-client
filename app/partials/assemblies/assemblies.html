@@ -26,11 +26,13 @@
 			<div ng-if="assemblies.length > 0">
 				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies | filter:assemblyFilter">
 					<div class="thumbnail assembly">
-						<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
-						<div class="caption">
+						<div class="image-circle">
+							<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
+						</div>
+						<div class="caption220">
 							<h4><strong><a ng-href="#/assembly/{{assembly.assemblyId}}/forum">{{assembly.name}}</a></strong></h4>
 							<h5 class="text-muted"><strong><i><div ng-show="assembly.location.placeName != null">{{assembly.location.placeName}},</div> {{assembly.location.city}}, {{assembly.location.country}}</i></strong></h5>
-							<p>{{assembly.description}}</p>
+							<p>{{assembly.description | limitTo: 60}} {{assembly.description.length > 60 ? '...' : ''}}</p>
 						</div>
 					</div>
 				</div>

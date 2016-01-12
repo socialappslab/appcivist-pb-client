@@ -119,7 +119,7 @@ appCivistApp.config(function ($translateProvider) {
         "definition.proposal.development":"Assembly members organize into Working Groups to brainstorm, develop, and select proposals democratically for collective action.",
 
         // Help Strings
-        "help.proposalTimeline" : "Click on the phase name to activate or deactivate the phases you wish to include in your campaign. Phases shown as disabled take place in the linked campaign.",
+        "help.proposalTimeline" : "Click on the stage name to activate or deactivate the phases you wish to include in your campaign. Stages shown as disabled take place in the linked campaign.",
 
         // Help Tooltips
         "help.tooltip.location" : "Can be the name of a specific place, address, city or country associated with your assembly",
@@ -131,7 +131,7 @@ appCivistApp.config(function ($translateProvider) {
         "help.tooltip.invitationsEmail" : "Each invitee will receive the following email",
         "help.tooltip.listedAssembly" : "If true, the 'profile' of the assembly will be searchable and public",
         "help.tooltip.campaignTemplate" : "The campaign template determines an initial configuration of the proposal development components. Linking to another campaign will bring that campaign's configuration",
-        "help.tooltip.campaignFastrack" : "Fastrack creation of a campaign will use default values for each phase of the campaign (e.g., default dates and durations for each phase, default values for each phases specific configurations, etc.)",
+        "help.tooltip.campaignFastrack" : "Fastrack uses default values for each stage of a campaign (e.g., default dates and duration, default configuration values)",
         "help.tooltip.campaignTimeframe" : "Select a period of time to represent in the timeline below.",
         "help.tooltip.componentContributionTemplate": "A proposal template is the list of sections (with its descriptions) that are used to initialized proposal drafts",
 

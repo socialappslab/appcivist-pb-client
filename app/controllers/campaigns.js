@@ -50,7 +50,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			},
 			{
 				step: 3,
-				title: "Campaign phases",
+				title: "Campaign stages",
 				template: "app/partials/campaign/creation/newCampaign3.html",
 				info: "",
 				active: false,
@@ -72,7 +72,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.campaigns = [];
 		$scope.templateOptions = [
 			{
-				description : "Link to another camplate and use its template",
+				description : "Link to another campaign and use its template",
 				value: "LINKED",
 				subTemplateTitle: "Select a campaign from the list or search by name"
 			},

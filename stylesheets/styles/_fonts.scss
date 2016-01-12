@@ -1,0 +1,144 @@
+//Cabin
+@font-face {
+    font-family: Cabin-Bold;
+    src: url('../../stylesheets/font/cabin/Cabin-Bold.otf')format('opentype');
+}
+@font-face {
+    font-family: Cabin-BoldItalic;
+    src: url('../../stylesheets/font/cabin/Cabin-BoldItalic.otf')format('opentype');
+}
+@font-face {
+    font-family: Cabin-Italic;
+    src: url('../../stylesheets/font/cabin/Cabin-Italic.otf')format('opentype');
+}
+@font-face {
+    font-family: Cabin-Medium;
+    src: url('../../stylesheets/font/cabin/Cabin-Medium.otf')format('opentype');
+}
+@font-face {
+    font-family: Cabin-MediumItalic;
+    src: url('../../stylesheets/font/cabin/Cabin-MediumItalic.otf')format('opentype');
+}
+@font-face {
+    font-family: Cabin-Regular;
+    src: url('../../stylesheets/font/cabin/Cabin-Regular.otf')format('opentype');
+}
+@font-face {
+    font-family: Cabin-SemiBold;
+    src: url('../../stylesheets/font/cabin/Cabin-SemiBold.otf')format('opentype');
+}
+@font-face {
+    font-family: Cabin-SemiBoldItalic;
+    src: url('../../stylesheets/font/cabin/Cabin-SemiBoldItalic.otf')format('opentype');
+}
+//questrial
+@font-face {
+    font-family: Questrial-Regular;
+    src: url('../../stylesheets/font/questrial/Questrial-Regular.otf')format('opentype');
+}
+//work-sans
+@font-face {
+    font-family: WorkSans-Black;
+    src: url('../../stylesheets/font/work-sans/WorkSans-Black.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-Bold;
+    src: url('../../stylesheets/font/work-sans/WorkSans-Bold.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-ExtraBold;
+    src: url('../../stylesheets/font/work-sans/WorkSans-ExtraBold.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-ExtraLight;
+    src: url('../../stylesheets/font/work-sans/WorkSans-ExtraLight.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-Hairline;
+    src: url('../../stylesheets/font/work-sans/WorkSans-Hairline.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-Light;
+    src: url('../../stylesheets/font/work-sans/WorkSans-Light.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-Medium;
+    src: url('../../stylesheets/font/work-sans/WorkSans-Medium.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-Regular;
+    src: url('../../stylesheets/font/work-sans/WorkSans-Regular.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-SemiBold;
+    src: url('../../stylesheets/font/work-sans/WorkSans-SemiBold.otf')format('opentype');
+}
+@font-face {
+    font-family: WorkSans-Thin;
+    src: url('../../stylesheets/font/work-sans/WorkSans-Thin.otf')format('opentype');
+}
+//lato2ofl
+@font-face {
+    font-family: Lato-Black;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Black.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-BlackItalic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-BlackItalic.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Bold;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Bold.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-BoldItalic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-BoldItalic.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Hairline;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Hairline.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Heavy;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Heavy.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-HeavyItalic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-HeavyItalic.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Italic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Italic.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-LightItalic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-LightItalic.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Medium;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Medium.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-MediumItalic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-MediumItalic.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Regular;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Regular.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Semibold;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Semibold.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-SemiboldItalic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-SemiboldItalic.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-Thin;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-Thin.ttf')format('truetype');
+}
+@font-face {
+    font-family: Lato-ThinItalic;
+    src: url('../../stylesheets/font/Lato2OFL/Lato-ThinItalic.ttf')format('truetype');
+}

@@ -1055,7 +1055,12 @@ appCivistApp.factory('Invitations', function ($resource, localStorageService) {
             return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:s', {t: target, s: status});
         },
         invitation: function(token) {
-            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t', {t: token});
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t',
+                {t: token},
+                {
+                    'update' : {method:'PUT'},
+                    'delete' : {method: 'DELETE'}
+                });
         },
         defaultInvitation: function(target, type, defaultEmail) {
             var newInvitation = {

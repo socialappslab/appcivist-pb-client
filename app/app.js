@@ -214,6 +214,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
           controller: 'ballotResultCtrl',
           templateUrl: 'public/ballot/result.html'
         })
+        .when('/invitation/:uuid',{
+            controller: 'InvitationCtrl',
+            templateUrl: 'app/partials/verify.html'
+        })
         .otherwise({
             redirectTo : '/'
         });
@@ -290,7 +294,7 @@ function run($rootScope, $location, $http, localStorageService) {
  * @returns {boolean}
  */
 function pathIsNotRestricted(path) {
-  var allowedPaths = ["assembly/create", "ballot/"];
+  var allowedPaths = ["assembly/create", "ballot/", "invitation/"];
   var pathMatch = allowedPaths.filter( (ap) => path.match(ap) );
   return (pathMatch.length > 0)
 }

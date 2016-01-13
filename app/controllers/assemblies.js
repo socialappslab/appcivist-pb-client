@@ -471,6 +471,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
         modalInstance.result.then(
             function (newInvitation) {
                 $scope.newInvitation = newInvitation;
+                getInvitations($scope.assemblyID);
             },
             function () {
                 console.log('Modal dismissed at: ' + new Date());

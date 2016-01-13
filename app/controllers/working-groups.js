@@ -157,7 +157,8 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 });
 
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal,
-                                                     localStorageService, Contributions, WorkingGroups, Assemblies) {
+                                                     localStorageService, Contributions, WorkingGroups, Assemblies,
+                                                     Invitations) {
     init();
     function init() {
         $scope.assemblyID = $routeParams.aid;
@@ -217,6 +218,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         modalInstance.result.then(
             function (newInvitation) {
                 $scope.newInvitation = newInvitation;
+                getInvitations($scope.workingGroupID);
             },
             function () {
                 console.log('Modal dismissed at: ' + new Date());

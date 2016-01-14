@@ -1,0 +1,14 @@
+<div class="view invitation">
+    <div class="section first-section" id="section1">
+        <h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
+        <h1 class="main-title text-center">You have been invited to join AppCivist to participate in the Assembly {{invitation.assembly.name}}</h1>
+        <form ng-submit="login()">
+            <!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="user.email"/>-->
+            <!--<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="user.password"/>-->
+            <!--<button type="submit" class="btn btn-success btn-lg">{{'header.sign_in' | translate}}</button>-->
+            <button type="button" class="btn btn-success btn-lg" role="button" ng-click="sendResponse('ACCEPTED')">Accept Invitation</button>
+            <button type="button" class="btn btn-danger btn-lg" role="button" ng-click="sendResponse('REJECTED')">Reject Invitation</button>
+        </form>
+        <h6 class="text-center bottom-info"></h6>
+    </div>
+</div>

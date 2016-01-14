@@ -295,6 +295,8 @@ function run($rootScope, $location, $http, localStorageService) {
  */
 function pathIsNotRestricted(path) {
   var allowedPaths = ["assembly/create", "ballot/", "invitation/"];
-  var pathMatch = allowedPaths.filter( (ap) => path.match(ap) );
+  var pathMatch = allowedPaths.filter( function (ap) {
+        return path.match(ap);
+      });
   return (pathMatch.length > 0)
 }

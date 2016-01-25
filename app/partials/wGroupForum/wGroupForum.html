@@ -43,25 +43,28 @@
                         </div>
                     </div>
 
-                    <div class="row list-item">
-                        <div class="row" ng-repeat="member in wGroupMembers">
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
-                                    <div class="caption" style="text-align: center">
-                                        <h5 class="text" title="{{member.user.name}}">{{member.user.name}} ({{member.status}})</h5>
+                    <!-- TODO: turn style into class -->
+                    <div style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
+                        <div class="row list-item">
+                            <div class="col-md-6" ng-repeat="member in wGroupMembers">
+                                <div style="display: inline-block;" class="">
+                                    <div class="image-capsule">
+                                        <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
+                                        <div class="caption " style="text-align: center">
+                                            <h5 class="text" title="{{member.user.name}}">{{member.user.name}} <span ng-if="member.status!='ACCEPTED'">({{member.status}})</span></h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row list-item">
-                        <h4 ng-if="pendingInvitations.length>0">Pending Invitations</h4>
-                        <div class="row" ng-repeat="invitation in pendingInvitations">
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <div class="caption" style="text-align: center">
-                                        <h5 class="text" title="{{invitation.email}}">{{invitation.email}}({{invitation.status}})</h5>
+                        <div class="row list-item">
+                            <h4 ng-if="pendingInvitations.length>0"><strong>Pending Invitations</strong></h4>
+                            <div class="col-md-6" ng-repeat="invitation in pendingInvitations">
+                                <div style="display: inline-block;">
+                                    <div class="image-capsule">
+                                        <div class="caption" style="text-align: center">
+                                            <h5 class="text" title="{{invitation.email}}">{{invitation.email}}({{invitation.status}})</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +72,7 @@
                     </div>
                 </div>
 
-                <!-- Assembly Campaigns -->
+                <!-- Working Group Campaigns -->
                 <div class="row infoBox">
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
@@ -90,6 +93,7 @@
                     </div>
                 </div>
 
+                <!-- Working Group Proposals -->
                 <div class="row">
                     <h3><strong>Our Proposals</strong></h3>
                     <div class="box descriptionBox">

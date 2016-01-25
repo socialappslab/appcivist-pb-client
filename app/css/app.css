@@ -1,4 +1,5 @@
 /*****COLORS*********/
+/*****GREEN THEME******/
 /******COMMON BOXES*******/
 /****TIMELINE*****/
 /*****PROGRESSLINE******/
@@ -1841,6 +1842,7 @@ button#second-vote {
   width: 12rem;
 }
 .home .settingsBox .list-item .item .caption .text {
+  margin-bottom: 0px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2965,7 +2967,7 @@ i {
   color: #134B3E;
 }
 .section.first-section {
-  background-image: linear-gradient(to bottom, rgba(19, 74, 62, 0.5) 0%, rgba(19, 74, 62, 0.5) 100%), url("../../assets/images/section1pic.jpg");
+  background-image: linear-gradient(to bottom, rgba(19, 74, 62, 0.5) 0%, rgba(19, 74, 62, 0.5) 100%), url("../../assets/images/bg-hands-collaborating.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;

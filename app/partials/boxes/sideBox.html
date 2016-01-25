@@ -4,14 +4,14 @@
         <div id="boxTitle" class="col-md-6 col-sm-6"><h4><strong>{{box.title}}</strong></h4></div>
         <!-- Box Action -->
         <div id="boxAction"  class="col-md-6 col-sm-6" ng-if="box.addAction">
-            <div class="col-md-2">
-                <a ng-href="{{box.addAction.href}}">
-                    <img class="image-circle-sidebox" alt="100x100" src="../assets/images/addIcon.png">
-                </a>
-            </div>
-            <div class="col-md-8">
-                <h5>{{box.addAction.title}}</h5>
-            </div>
+            <a ng-href="{{box.addAction.href}}">
+                <div class="col-md-2">
+                        <img class="image-circle-sidebox" alt="100x100" src="../assets/images/addIcon.png">
+                </div>
+                <div class="col-md-8">
+                    <h5>{{box.addAction.title}}</h5>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -27,14 +27,14 @@
                     <img ng-src="{{item.profile.icon}}" alt="100x100"
                          class="image-circle">
                     <div class="caption">
-                        <h5 class="text" title="{{item.name}}">{{item.name}}</h5>
+                        <h4 class="text" title="{{item.name}}">{{item.name}}</h4>
                     </div>
                 </a>
                 <!-- Links if items are Campaigns-->
                 <a ng-if="box.type==='CAMPAIGNS'"
                    ng-click="selectCampaign(item)" ng-href="#/assembly/{{item.assemblies[0]}}/campaign/{{item.campaignId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
-                    <div class="caption" style="text-align: center">
-                        <h5 class="text" title="{{item.title}}">{{item.title}}</h5>
+                    <div class="caption">
+                        <h4 class="text" title="{{item.title}}">{{item.title}}</h4>
                     </div>
                 </a>
 
@@ -44,8 +44,8 @@
                     <img alt="100x100" src="../assets/images/dublin.jpg"
                          data-holder-rendered="true"
                          class="image-circle">
-                    <div class="caption" style="text-align: center">
-                        <h5 class="text" title="{{item.name}}">{{item.name}}</h5>
+                    <div class="caption">
+                        <h4 class="text" title="{{item.name}}">{{item.name}}</h4>
                     </div>
                 </a>
             </div>

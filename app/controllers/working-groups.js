@@ -157,7 +157,8 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 });
 
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal,
-                                                     localStorageService, Contributions, WorkingGroups, Assemblies) {
+                                                     localStorageService, Contributions, WorkingGroups, Assemblies,
+                                                     Invitations) {
     init();
     function init() {
         $scope.assemblyID = $routeParams.aid;
@@ -170,59 +171,49 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.proposals = [];
         $scope.pendingInvitations = [];
 
+        $scope.postContribution = function(content){
+            var newContribution =
+                Contributions.groupContribution($routeParams.aid, $routeParams.wid).save(content, function() {
+                    console.log("Created contribution wGroup: "+newContribution);
+                    localStorageService.set("currentContributionWGroup", newContribution);
+                });
+        }
+
+        $scope.openNewInvitationModal = function(size)  {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '/app/partials/invitation.html',
+                controller: 'NewInvitationModalCtrl',
+                size: size,
+                resolve: {
+                    target: function () {
+                        return $scope.wGroup;
+                    },
+                    type: function () {
+                        return "GROUP";
+                    },
+                    defaultEmail: function() {
+                        return $scope.wGroup.invitationEmail;
+                    }
+                }
+            });
+
+            var modalInstance;
+
+            modalInstance.result.then(
+                function (newInvitation) {
+                    $scope.newInvitation = newInvitation;
+                    getInvitations($scope.workingGroupID);
+                },
+                function () {
+                    console.log('Modal dismissed at: ' + new Date());
+                }
+            );
+        };
+
         initializeWorkingGroup();
         initializeAssemblyCampaigns();
-
-        //angular.forEach(localStorageService.get('workingGroups'), function(wGroup) {
-        //    if(wGroup.groupId == $routeParams.wid) {
-        //        $scope.wGroup = wGroup;
-        //    }
-        //    var res = WorkingGroups.workingGroupMembers($routeParams.aid, $routeParams.wid,
-        //        $scope.wGroup.supportedMembership).get();
-        //    res.$promise.then(function(data) {
-        //        $scope.wGroupMembers = data;
-        //    });
-        //});
     }
-
-    $scope.postContribution = function(content){
-        var newContribution =
-            Contributions.groupContribution($routeParams.aid, $routeParams.wid).save(content, function() {
-            console.log("Created contribution wGroup: "+newContribution);
-            localStorageService.set("currentContributionWGroup", newContribution);
-        });
-    }
-
-    $scope.openNewInvitationModal = function(size)  {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: '/app/partials/invitation.html',
-            controller: 'NewInvitationModalCtrl',
-            size: size,
-            resolve: {
-                target: function () {
-                    return $scope.wGroup;
-                },
-                type: function () {
-                    return "GROUP";
-                },
-                defaultEmail: function() {
-                    return $scope.wGroup.invitationEmail;
-                }
-            }
-        });
-
-        var modalInstance;
-
-        modalInstance.result.then(
-            function (newInvitation) {
-                $scope.newInvitation = newInvitation;
-            },
-            function () {
-                console.log('Modal dismissed at: ' + new Date());
-            }
-        );
-    };
 
     function initializeWorkingGroup() {
         $scope.$root.startSpinner();
@@ -254,7 +245,6 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             }
         )
     }
-
 
     function getWorkingGroupMembers() {
         var res = WorkingGroups.workingGroupMembers($scope.assemblyID, $scope.workingGroupID,
@@ -292,4 +282,5 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             }
         );
     }
+
 });

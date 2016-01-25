@@ -7,7 +7,7 @@
  *
  */
 appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService,
-											 Assemblies, loginService, $route, usSpinnerService, $uibModal) {
+											 Assemblies, loginService, $route, $routeParams, usSpinnerService, $uibModal) {
 	init();
 
 	function init() {
@@ -179,5 +179,38 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 					$scope.assembliesLoading = false;
 				}
 		);
+	}
+});
+
+
+
+appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location, localStorageService,
+												   Assemblies, loginService, $route, $routeParams, usSpinnerService, $uibModal,
+												   Invitations, WorkingGroups, Memberships) {
+	init();
+
+	function init() {
+
+		$scope.token = $routeParams.uuid;
+		$scope.errors = [];
+		console.log("Reading invitation: "+$scope.token);
+		$scope.invitation = Invitations.invitation($scope.token).get();
+
+		$scope.invitation.$promise.then(
+				function (response) {
+					$scope.invitation = response;
+				},
+				function (error) {
+					$scope.errors.push(error);
+				}
+		);
+
+		$scope.sendResponse = function (resp) {
+			$scope.invitation.status = resp;
+			$scope.response = Invitations.invitation($scope.token).update($scope.invitation);
+
+			//$scope.response.$prom
+
+		}
 	}
 });

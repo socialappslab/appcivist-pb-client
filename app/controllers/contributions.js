@@ -17,7 +17,7 @@ appCivistApp.controller('NewContributionCtrl',
             function init() {
                 $scope.userIsAuthor = true;
                 $scope.postingContribution = postingContributionFlag;
-                $scope.newAttachment = Contributions.defaultContributionAttachment();
+                $scope.newContribution = Contributions.defaultContributionAttachment();
                 $scope.userWorkingGroups = localStorageService.get("workingGroups");
                 $scope.createNewGroup = false;
                 if($scope.newContribution.type === "PROPOSAL") {
@@ -823,8 +823,8 @@ function verifyAuthorship (scope, localStorageService, Contributions) {
 			scope.user = localStorageService.get("user");
 		}
 
-		if(scope.contribution.responsibleWorkingGroups && scope.contribution.responsibleWorkingGroups.length > 0) {
-			scope.workingGroup = scope.contribution.responsibleWorkingGroups[0];
+		if(scope.contribution.workingGroupAuthors && scope.contribution.workingGroupAuthors.length > 0) {
+			scope.workingGroup = scope.contribution.workingGroupAuthors[0];
 		}
 
 		// Check Authorship

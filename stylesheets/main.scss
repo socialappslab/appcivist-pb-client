@@ -359,8 +359,9 @@ $dropDown       : false;
   .i4 {
     color: $corporative-darker-green;
   }
+
   &.first-section{
-    background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/section1pic.jpg");
+    background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/bg-hands-collaborating.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;

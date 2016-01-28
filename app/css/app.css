@@ -2973,7 +2973,13 @@ i {
   background-size: cover;
   vertical-align: middle;
   margin-top: -20px;
+}
+.section.first-section.landing-section {
   padding-top: 20%;
+}
+.section.first-section.invitation {
+  padding-top: 10%;
+  padding-bottom: 10%;
 }
 .section.first-section .main-title {
   color: #FFFFFF;

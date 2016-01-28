@@ -31,7 +31,7 @@
         </div>
     </div>
     <!-- Submit button when new user is created via Signup Button -->
-    <div class="form-group" ng-if="invitation===undefined || invitation === null">
+    <div class="form-group" ng-if="(!invitation) && (!newAssembly)">
         <div class="col-md-offset-3 col-md-9">
             <input type="submit" name="submit" class="btn btn-primary"
                    id="submit_person" ng-click="signup()" value="Submit"/>

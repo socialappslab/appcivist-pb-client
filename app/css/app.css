@@ -2788,11 +2788,13 @@ i {
   /* Log In Copy: */
   font-family: Lato-Regular;
   font-size: 20px;
-  color: #FFFFFF;
+  color: #524D4D;
+  padding: 5px 15px;
 }
 .navbar .navbar-form a:hover {
+  color: #CFF7EE;
   text-decoration: none;
-  text-weight: bold;
+  font-weight: bold;
 }
 .navbar .navbar-link {
   color: #524D4D;

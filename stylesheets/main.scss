@@ -148,10 +148,12 @@ $dropDown       : false;
       /* Log In Copy: */
       font-family: Lato-Regular;
       font-size: 20px;
-      color: $white;
+      color: $colDefault;
+      padding: 5px 15px;
       &:hover {
+        color: $colHighlight;
         text-decoration: none;
-        text-weight: bold;
+        font-weight: bold;
       }
     }
   }

@@ -367,7 +367,13 @@ $dropDown       : false;
     background-size: cover;
     vertical-align: middle;
     margin-top: -20px;
-    padding-top: 20%;
+    &.landing-section {
+      padding-top: 20%;
+    }
+    &.invitation {
+      padding-top: 10%;
+      padding-bottom: 10%;
+    }
     .main-title{
       color: $main-first-section-font-color;
       margin-bottom: 3%;

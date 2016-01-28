@@ -195,22 +195,26 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		$scope.errors = [];
 		console.log("Reading invitation: "+$scope.token);
 		$scope.invitation = Invitations.invitation($scope.token).get();
+		$scope.newUser = {};
+		$scope.newUser.lang = 'en';
+		$scope.newUser.invitationToken = $scope.token;
 
 		$scope.invitation.$promise.then(
 				function (response) {
 					$scope.invitation = response;
 				},
 				function (error) {
-					$scope.errors.push(error);
+					$scope.errors.push(error.data);
 				}
 		);
 
 		$scope.sendResponse = function (resp) {
 			$scope.invitation.status = resp;
 			$scope.response = Invitations.invitation($scope.token).update($scope.invitation);
+		}
 
-			//$scope.response.$prom
-
+		$scope.acceptInvitationAndSignup = function() {
+			loginService.signUp($scope.newUser);
 		}
 	}
 });

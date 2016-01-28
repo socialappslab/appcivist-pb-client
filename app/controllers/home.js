@@ -123,7 +123,7 @@
                 localStorageService.set("notifications", $scope.notifications);
             },
             function (error) {
-                errors['notifications'] = error;
+                $scope.errors['notifications'] = error;
             }
         );
     }

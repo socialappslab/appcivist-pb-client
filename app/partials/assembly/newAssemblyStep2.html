@@ -1,7 +1,10 @@
 <div class="row">
     <div class="col-lg-6 col-md-6 col-xs-12">
         <div class="box descriptionBox">
-            <p>Linking Assemblies is a quick way for gaining access to the resources and campaigns of other Assemblies of interest. If you want to link to other Assemblies, click on their icons.</p>
+            <p>
+                Linking Assemblies is a quick way for gaining access to the resources and campaigns of other
+                Assemblies of interest. If you want to link to other Assemblies, click on their icons.
+            </p>
         </div>
     </div>
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -19,7 +22,7 @@
                     <a ng-class="selectedAssemblies[assembly.assemblyId] ? 'assemblySelected' : '' "
                        ng-click="selectAssembly(assembly.assemblyId)">
                         <img data-src="{{assembly.profile.icon}}"
-                             alt="100x100" src="../assets/images/dublin.jpg"
+                             alt="{{assembly.name | limitTo: 10}}" src="../assets/images/dublin.jpg"
                              data-holder-rendered="true" class="image-circle"/>
                     </a>
                     <div class="caption">

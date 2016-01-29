@@ -229,7 +229,7 @@ textarea {
 
 /******Upload files******/
 .progress-section {
-  height: 4rem;
+  height: 5rem;
 }
 .progress-section .progress-line-container {
   display: inline-block;
@@ -2788,11 +2788,13 @@ i {
   /* Log In Copy: */
   font-family: Lato-Regular;
   font-size: 20px;
-  color: #FFFFFF;
+  color: #524D4D;
+  padding: 5px 15px;
 }
 .navbar .navbar-form a:hover {
+  color: #CFF7EE;
   text-decoration: none;
-  text-weight: bold;
+  font-weight: bold;
 }
 .navbar .navbar-link {
   color: #524D4D;
@@ -2990,10 +2992,7 @@ i {
   margin-bottom: 20%;
 }
 .section.first-section form * {
-  display: inline-block;
-  width: 15.9rem;
   height: 4rem;
-  margin-right: 2.3rem;
 }
 .section.first-section form :last-child {
   margin-right: 0;

@@ -31,7 +31,7 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
  */
 appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinnerService, Upload, $timeout,
                                                     $routeParams, $resource, $http, Assemblies, Contributions,
-													FileUploader, loginService, localStorageService) {
+													FileUploader, loginService, localStorageService, $translate) {
 	init();
     initializeNewAssembly();
     initializeListOfAssembliesToFollow();
@@ -73,6 +73,9 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
         $scope.errors = [];
         $scope.selectedAssemblies = [];
         $scope.userIsNew = $routeParams.userIsNew ? true : false;
+        if($scope.userIsNew) {
+            $scope.newUser = {};
+        }
 
         $scope.removeErrors = function(index) {
             $scope.errors.splice(index,1);
@@ -134,7 +137,6 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 var addedTheme = {};
                 addedTheme.title = theme.trim();
                 $scope.newAssembly.themes.push(addedTheme);
-
             });
             $scope.themes = "";
         }
@@ -193,7 +195,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                     } else if($scope.newAssembly.profile.registration.invitation &&
                         $scope.newAssembly.profile.registration.request) {
                         $scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
-                    }
+                    } s
                 }
 
                 console.log("Creating assembly with membership = "+$scope.newAssembly.profile.supportedMembership);
@@ -220,7 +222,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 //delete $scope.newAssembly.profile.role;
                 localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
                 $scope.tabs[1].active=true;
-            } else if ((step === 2 && !$scope.userIsNew) || step === 3) {
+            } else if (step === 2 && !$scope.userIsNew) {
                 console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
                 var newAssemblyRes = Assemblies.assembly().save($scope.newAssembly);
                 newAssemblyRes.$promise.then(
@@ -239,8 +241,13 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                     }
                 );
             } else if (step === 2 && $scope.userIsNew) {
-                localStorageService.set("temporaryNewAssembly",$scope.newAssembly);
                 $scope.tabs[2].active=true;
+            } else if (step === 3 && $scope.userIsNew) {
+                $scope.newUser.newAssembly = $scope.newAssembly;
+                if(!$scope.newUser.lang) {
+                    $scope.newUser.lang = $translate.proposedLanguage() || $translate.use();
+                }
+                loginService.signUp($scope.newUser);
             }
         }
 
@@ -289,6 +296,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 themes: [] // same as assemblyThemes
             }
         }
+        $scope.newAssembly.profile.icon = $scope.defaultIcons[0].url
+        var file = {};
+        file.name = $scope.defaultIcons[0].name;
+        file.url = $scope.defaultIcons[0].url;
+        $scope.f = file;
     }
 
     function initializeListOfAssembliesToFollow() {

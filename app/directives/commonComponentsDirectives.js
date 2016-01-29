@@ -361,7 +361,6 @@ appCivistApp.directive('appcivistIndividualCommentNoReply', function() {
     }
 });
 
-
 appCivistApp.directive('attachments', function () {
     return {
         restrict: 'E',
@@ -378,7 +377,6 @@ appCivistApp.directive('attachments', function () {
     }
 });
 
-
 appCivistApp.directive('addAttachment', function () {
     return {
         restrict: 'E',
@@ -392,6 +390,14 @@ appCivistApp.directive('addAttachment', function () {
             assemblyID: "=assemblyid"
         },
         controller: "ContributionCtrl"
+    }
+});
+
+appCivistApp.directive('signupForm', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/signup-form.html"
     }
 });
 

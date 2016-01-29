@@ -12,43 +12,43 @@
 
 console.log("Welcome to AppCivist!");
 
-var dependencies = [ 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
+var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
-var backendServers = {
-  "localDev" : "http://localhost:9000/api",
-  "remoteDev" : "http://appcivist.littlemacondo.com/backend/api",
-};
-
 var appcivist = {
-  api: {
-    voting: {
-      production: "http://appcivist-voting-api.herokuapp.com/api/v0",
-      development: "http://127.0.0.1:5000/api/v0"
+    api: {
+        voting: {
+            production: "http://appcivist-voting-api.herokuapp.com/api/v0",
+            testing: "http://appcivist-voting-api.herokuapp.com/api/v0",
+            development: "http://127.0.0.1:5000/api/v0"
+        },
+        core: {
+            production: "http://appcivist.littlemacondo.com/backend/api",
+            testing: "http://appcivist.littlemacondo.com/backend/api",
+            development: "http://localhost:9000/api"
+        }
+    },
+    handleError: function (error) {
+        console.log(error);
+        if (error.status == 500)
+            alert("Something went wrong on our end. Please try again at a later time.");
+        else if (error.status == -1 && error.data == null)
+            alert("Voting API service is probably not running!")
+        else
+            alert(error.data.error);
     }
-  },
-
-  handleError: function(error) {
-    console.log(error);
-    if (error.status == 500)
-      alert("Something went wrong on our end. Please try again at a later time.");
-    else if (error.status == -1 && error.data == null)
-      alert("Voting API service is probably not running!")
-    else
-      alert(error.data.error);
-  }
 };
 
-//var appCivistCoreBaseURL = backendServers.localDev;;
-// Uncomment the previous line and comment the following to use the local API Server if you have it running
-var appCivistCoreBaseURL = backendServers.remoteDev;
-var votingApiUrl = appcivist.api.voting.development;
+var etherpad = {
+    server: "http://etherpad.littlemacondo.com/"
+};
 
+// By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
+var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
+var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
+var etherpadServerURL = etherpad.server;
 
-
-
-var etherpadServerURL = "http://etherpad.littlemacondo.com/";
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",
     locationTooltip : "Can be the name of a specific place, address, city or country associated with your assembly",
@@ -264,12 +264,10 @@ run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'login
  * @param localStorageService
  */
 function run($rootScope, $location, $http, localStorageService) {
-    //// keep user logged in after page refresh
-    //$rootScope.globals = $cookieStore.get('globals') || {};
-    //if ($rootScope.globals.currentUser) {
-    //    $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
-    //}
-
+    localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+    localStorageService.set("votingApiUrl", votingApiUrl);
+    localStorageService.set("etherpadServer", etherpadServerURL);
+    localStorageService.set("help", helpInfo); // TODO: replace with translation support
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in and trying to access a restricted page
 
@@ -299,4 +297,20 @@ function pathIsNotRestricted(path) {
         return path.match(ap);
       });
   return (pathMatch.length > 0)
+}
+
+/**
+ * Special function to decide automatically what backend server to use by default
+ * - If this is a local instance (running in localhost), then use the local dev server
+ * - If this is *.littlemacondo.com, then use the remote testing server
+ * - TODO: when production version are ready, add a rule for selecting the production server
+ */
+function selectBackendServer(hostname, apis) {
+    var possibleHosts = ["localhost", "appcivist.littlemacondo.com"];
+
+    if(hostname.match(possibleHosts[0])) {
+        return apis.development;
+    } else {
+        return apis.testing;
+    }
 }

@@ -1,4 +1,5 @@
-﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $modal, AppCivistAuth) {
+﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $modal, AppCivistAuth,
+											  FlashService) {
 
 
 	this.getUser = function() {
@@ -10,12 +11,12 @@
 	};
 
 	this.signUp = function(user, modalInstance) { //valentine written
-		if (user.password.localeCompare(user.repeatPassword) != 0) {
-			$rootScope.message = "Your passwords don't match."; 
-			$location.url('/');
+		if (user.password && user.password.localeCompare(user.repeatPassword) != 0) {
+			FlashService.Error("Your passwords don't match.");
+			//$location.url('/');
 		} else if (user === '0') {
-			$rootScope.message = 'You are already registered.'; 
-			$location.url('/'); 
+			FlashService.Error("You are already registered.");
+			//$location.url('/');
 		}
 		console.log(user);
 		var authRes = AppCivistAuth.signUp().save(user);
@@ -31,7 +32,9 @@
 					$location.url('/home');
 				},
 				function(error) {
-					$rootScope.message = "There was an error with your sign up" + error;
+					var data = error.data;
+					var errorString = "There was an error with your sign up: " + JSON.stringify(data);
+					FlashService.Error(errorString);
 				}
 		);
 	}

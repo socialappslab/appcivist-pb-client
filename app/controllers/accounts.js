@@ -92,8 +92,8 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 	$scope.changeServer = function() {
 		var serverBaseUrl = localStorageService.get("serverBaseUrl");
 		appCivistCoreBaseURL = $scope.serverBaseUrl =
-				(serverBaseUrl === backendServers.remoteDev) ?
-						backendServers.localDev : backendServers.remoteDev;
+				(serverBaseUrl === appcivist.api.core.development) ?
+						appcivist.api.core.testing : appcivist.api.core.development;
 
 		localStorageService.set("serverBaseUrl", $scope.serverBaseUrl);
 		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");

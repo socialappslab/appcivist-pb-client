@@ -28,6 +28,9 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
         assembly: function(assemblyId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', {aid: assemblyId});
         },
+        assemblyPublicProfile: function (assemblyId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', {aid: assemblyId});
+        },
         assembliesWithoutLogin: function() {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/listed');
         },
@@ -277,6 +280,22 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
 appCivistApp.factory('Memberships', function ($resource, localStorageService) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
+        membership: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership',
+                {},
+                {
+                    'update' : {method:'PUT'},
+                    'delete' : {method: 'DELETE'}
+                });
+        },
+        membershipRequest: function(targetCollection, targetId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/:target/:id/request',
+                {
+                    target: targetCollection,
+                    id: targetId
+                }
+            );
+        },
         memberships: function() {
             return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid);
         },

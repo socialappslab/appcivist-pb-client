@@ -275,7 +275,6 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 });
             }
         }
-
 	}
 
     function initializeNewAssembly() {
@@ -336,7 +335,8 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
                                                  $resource, $http, Assemblies, Contributions, $uibModal,
-                                                 loginService, localStorageService, Memberships, Invitations) {
+                                                 loginService, localStorageService, Memberships, Invitations,
+                                                 FlashService) {
     init();
 
     function init() {
@@ -357,17 +357,36 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.membership = Memberships.memberships().query();
             $scope.campaigns = null;
             $scope.pendingInvitations = [];
-            $scope.currentAssembly.$promise.then(function(data) {
-                $scope.currentAssembly = data;
-                if(!$scope.currentAssembly.forumPosts) {
-                    $scope.currentAssembly.forumPosts = [];
+            $scope.currentAssembly.$promise.then(
+                function(data) {
+                    $scope.currentAssembly = data;
+                    if(!$scope.currentAssembly.forumPosts) {
+                        $scope.currentAssembly.forumPosts = [];
+                    }
+                    localStorageService.set("currentAssembly", $scope.currentAssembly);
+                    $scope.campaigns = $scope.currentAssembly.campaigns;
+                },
+                function (error) {
+                    // try to read the public profile of the assembly if is available
+                    $scope.currentAssembly = Assemblies.assemblyPublicProfile($scope.assemblyID).get();
+                    $scope.currentAssembly.$promise.then(
+                        function (data) {
+                            $scope.currentAssembly = data;
+                        },
+                        function (error) {
+                            FlashService.Error("The assembly is not listed");
+                        }
+                    );
                 }
-                localStorageService.set("currentAssembly", $scope.currentAssembly);
-                $scope.campaigns = $scope.currentAssembly.campaigns;
-            });
-            $scope.verifyAssembly.$promise.then(function(data) {
-                $scope.verifyAssembly = data.responseStatus === "OK";
-            });
+            );
+            $scope.verifyAssembly.$promise.then(
+                function(data) {
+                    $scope.verifyAssembly = data.responseStatus === "OK";
+                },
+                function(error) {
+                    $scope.verifyAssembly = false;
+                }
+            );
             $scope.membership.$promise.then(function(data) {
                 $scope.membership = data;
                 $scope.membershipRoles = null;
@@ -383,17 +402,22 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.contributions.$promise.then(function(data){
                 $scope.contributions = data;
             });
-            $scope.assemblyMembers.$promise.then(function(data){
-                $scope.assemblyMembers = data;
-                $scope.$root.stopSpinner();
-            });
+            $scope.assemblyMembers.$promise.then(
+                function(data){
+                    $scope.assemblyMembers = data;
+                    $scope.$root.stopSpinner();
+                },
+                function(error) {
+                    $scope.$root.stopSpinner();
+                }
+            );
             getInvitations($scope.assemblyID);
         }
     }
 
     $scope.selectCampaign = function(campaign) {
         localStorageService.set("currentCampaign", campaign);
-    }
+    };
 
     $scope.selectCampaignById = function(cId) {
         $scope.campaigns = localStorageService.get("campaigns");
@@ -403,15 +427,15 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             }
         });
         localStorageService.set("currentCampaign", campaign);
-    }
+    };
 
     $scope.selectGroup = function(group) {
         localStorageService.set("currentGroup", group);
-    }
+    };
 
     $scope.publishComment = function(comment) {
         //Contributions.contributions($scope.currentAssembly.assemblyId).save();
-    }
+    };
 
     $scope.isRightRole = function(roleName) {
         var result = false;
@@ -421,7 +445,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             }
         });
         return result;
-    }
+    };
 
     $scope.checkShow = function(button) {
         var show = false;
@@ -457,7 +481,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             show = true
         }
         return show;
-    }
+    };
 
     $scope.openNewInvitationModal = function(size)  {
         var modalInstance = $uibModal.open({
@@ -487,6 +511,24 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             },
             function () {
                 console.log('Modal dismissed at: ' + new Date());
+            }
+        );
+    };
+
+    $scope.joinAssembly = function() {
+        var membership = {
+            userId : $scope.user.userId,
+            email : $scope.user.email,
+            type : "REQUEST",
+            targetCollection: "ASSEMBLY"
+        }
+        var membershipRequest = Memberships.membershipRequest("assembly",$scope.assemblyID).save(membership);
+        membershipRequest.$promise.then(
+            function (data) {
+                $scope.verifyAssembly = true;
+            },
+            function (error) {
+
             }
         );
     };

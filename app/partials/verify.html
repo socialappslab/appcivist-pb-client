@@ -1,12 +1,14 @@
 <div class="view container section first-section invitation">
-    <div id="section1" ng-if="invitation.token">
+    <div id="section1" ng-if="invitation.email">
         <h1 class="main-title text-center">
-            You have been invited to join AppCivist to participate in the {{invitation.targetType}} <b>{{invitation.assembly.name}}</b>
+            You have been invited to join AppCivist to participate in the {{invitation.targetType}}
+            <b>{{invitation.targetType === 'ASSEMBLY' ? invitation.assembly.name : invitation.targetGroup.name}}</b>
         </h1>
         <h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
         <div class="main-title">
             <div class="col-md-3"></div>
-            <div class="col-md-6" ng-if="!invitation.userId" ng-include="'app/partials/signup-form.html'"></div>
+            <!--<div class="col-md-6" ng-if="!invitation.userId" ng-include="'app/partials/signup-form.html'"></div>-->
+            <signup-form class="col-md-6" ng-if="!invitation.userId"></signup-form>
             <div class="col-md-3"></div>
         </div>
         <div class="main-title">

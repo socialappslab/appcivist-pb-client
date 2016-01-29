@@ -137,7 +137,6 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 var addedTheme = {};
                 addedTheme.title = theme.trim();
                 $scope.newAssembly.themes.push(addedTheme);
-
             });
             $scope.themes = "";
         }
@@ -297,6 +296,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 themes: [] // same as assemblyThemes
             }
         }
+        $scope.newAssembly.profile.icon = $scope.defaultIcons[0].url
+        var file = {};
+        file.name = $scope.defaultIcons[0].name;
+        file.url = $scope.defaultIcons[0].url;
+        $scope.f = file;
     }
 
     function initializeListOfAssembliesToFollow() {

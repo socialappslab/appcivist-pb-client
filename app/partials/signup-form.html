@@ -1,59 +1,64 @@
-<div id="signup_form" class="form-horizontal" role="form" method="post">
-    <div class="form-group">
-        <label for="username" class="col-md-3 control-label">Username</label>
-        <div class="col-md-9">
+<form name="newUserForm" id="signup_form" class="form-horizontal">
+    <div class="form-group" ng-class="{ 'has-error': newUserForm.username.$touched && newUserForm.username.$invalid }">
+        <label for="username" class="col-md-4 control-label">Username*</label>
+        <div class="col-md-8">
             <input type="text" class="form-control" id="username"
-                   name="username" placeholder="Desired Username" required
+                   name="username" placeholder="Desired Username"
+                   ng-required="true"
                    ng-model="newUser.name"/>
         </div>
     </div>
-    <div class="form-group">
-        <label for="username" class="col-md-3 control-label">Email</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control" id="email" name="email"
-                   placeholder="Email" required ng-model="newUser.email"/>
+    <div class="form-group" ng-class="{ 'has-error': newUserForm.email.$touched && newUserForm.email.$invalid }">
+        <label for="email" class="col-md-4 control-label">Email*</label>
+        <div class="col-md-8">
+            <input type="text" class="form-control" id="email"
+                   name="email" placeholder="Email"
+                   ng-required="true"
+                   ng-model="newUser.email"/>
         </div>
     </div>
-    <div class="form-group">
-        <label for="password" class="col-md-3 control-label">Password</label>
-        <div class="col-md-9">
+    <div class="form-group" ng-class="{ 'has-error': newUserForm.password.$touched && newUserForm.password.$invalid }">
+        <label for="password" class="col-md-4 control-label">Password* </label>
+        <div class="col-md-8">
             <input type="password" class="form-control" id="password"
-                   name="password" placeholder="Desired Password" required
+                   name="password" placeholder="Desired Password" ng-required="true"
                    ng-model="newUser.password"/>
         </div>
     </div>
-    <div class="form-group">
-        <label for="repeatPassword" class="col-md-3 control-label">Confirm Password</label>
-        <div class="col-md-9">
+    <div class="form-group" ng-class="{ 'has-error': newUserForm.repeatPassword.$touched && newUserForm.repeatPassword.$invalid }">
+        <label for="repeatPassword" class="col-md-4 control-label">Confirm Password*</label>
+        <div class="col-md-8">
             <input type="password" class="form-control" id="repeatPassword"
-                   name="repeatPassword" placeholder="Confirm Password" required
+                   name="repeatPassword" placeholder="Confirm Password" ng-required="true"
                    ng-model="newUser.repeatPassword"/>
         </div>
     </div>
     <!-- Submit button when new user is created via Signup Button -->
     <div class="form-group" ng-if="(!invitation) && (!newAssembly)">
-        <div class="col-md-offset-3 col-md-9">
+        <div class="col-md-offset-3 col-md-8">
             <input type="submit" name="submit" class="btn btn-primary"
-                   id="submit_person" ng-click="signup()" value="Submit"/>
+                   id="submit_person" ng-click="signup()" value="Submit" ng-disabled="!newUserForm.$valid"/>
         </div>
     </div>
     <!-- Submit button when new user is created via Membership Invitation -->
     <div class="row form-group" ng-if="invitation!=undefined || invitation != null">
-        <label for="accept_invitation" class="col-md-3 control-label"></label>
+        <label for="accept_invitation" class="col-md-4 control-label"></label>
         <!-- Button -->
-        <div class="col-md-offset-3 col-md-9">
+        <div class="col-md-offset-3 col-md-8">
             <input type="submit" name="submit" class="btn btn-success"
-                   id="accept_invitation" ng-click="acceptInvitationAndSignup()" value="Accept invitation and create user"/>
+                   id="accept_invitation" ng-click="acceptInvitationAndSignup()"
+                   value="Accept invitation and create user" ng-disabled="!newUserForm.$valid"/>
         </div>
     </div>
 
     <!-- Reject button when new user is created via Membership Invitation -->
     <div class="row form-group" ng-if="invitation!=undefined || invitation != null">
-        <label for="reject_invitation" class="col-md-3 control-label"></label>
+        <label for="reject_invitation" class="col-md-4 control-label"></label>
         <!-- Button -->
-        <div class="col-md-offset-3 col-md-9">
+        <div class="col-md-offset-3 col-md-8">
             <input type="submit" name="submit" class="btn btn-danger"
-                   id="reject_invitation" ng-click="sendResponse('REJECTED')" value="Decline invitation"/>
+                   id="reject_invitation" ng-click="sendResponse('REJECTED')"
+                   value="Decline invitation"/>
         </div>
     </div>
-</div>
+</form>

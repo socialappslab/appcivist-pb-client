@@ -1,14 +1,14 @@
 <div class="row">
-    <div class="panel-body">
-        <div class="col-md-6" ng-if="!invitation.userId" ng-include="'app/partials/signup-form.html'"></div>
-    </div>
+    <!--<div class="col-md-6" ng-if="!invitation.userId" ng-include="'app/partials/signup-form.html'"></div>-->
+    <signup-form class="col-md-6"></signup-form>
 </div>
 <div class="row">
     <uib-alert ng-if="flash && flash.type==='error'" type="danger">{{flash.message}} </uib-alert>
     <button class="col-md-push-2 col-md-2 btn btn-primary" ng-click="tabs[1].active=true">
         <h3><strong>Back</strong></h3>
     </button>
-    <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(3)">
+    <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(3)"
+            ng-disabled="!newUserForm.$valid">
         <h3 ng-if="userIsNew"><strong>Create User and Assembly</strong></h3>
     </button>
 </div>

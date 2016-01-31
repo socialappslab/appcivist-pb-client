@@ -28,6 +28,9 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
         assembly: function(assemblyId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', {aid: assemblyId});
         },
+        assemblyPublicProfile: function (assemblyId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', {aid: assemblyId});
+        },
         assembliesWithoutLogin: function() {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/listed');
         },
@@ -277,15 +280,38 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
 appCivistApp.factory('Memberships', function ($resource, localStorageService) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
+        membership: function() {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership',
+                {},
+                {
+                    'update' : {method:'PUT'},
+                    'delete' : {method: 'DELETE'}
+                });
+        },
+        membershipRequest: function(targetCollection, targetId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/:target/:id/request',
+                {
+                    target: targetCollection,
+                    id: targetId
+                }
+            );
+        },
         memberships: function() {
-            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid);
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').userId);
         },
         assemblies: function() {
-            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid+'?type=assembly');
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').userId+'?type=assembly');
         },
         workingGroups: function() {
-            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid+'?type=group');
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').userId+'?type=group');
+        },
+        membershipInAssembly: function(assemblyId, userId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/assembly/:aid/user/:uid', {aid: assemblyId, uid: userId});
+        },
+        membershipInGroup: function(groupId, userId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/group/:gid/user/:uid', {gid: groupId, uid: userId});
         }
+
     };
 });
 
@@ -473,6 +499,10 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                     gid: groupId,
                     uid: userId
                 });
+        },
+        workingGroupPublicProfile: function (assemblyId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/public',
+                {aid: assemblyId, gid: groupId});
         },
         defaultNewWorkingGroup: function() {
             var newWGroup = {
@@ -1057,6 +1087,14 @@ appCivistApp.factory('Invitations', function ($resource, localStorageService) {
         invitation: function(token) {
             return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t',
                 {t: token},
+                {
+                    'update' : {method:'PUT'},
+                    'delete' : {method: 'DELETE'}
+                });
+        },
+        invitationResponse: function(token, response) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:r',
+                {t: token, r: response},
                 {
                     'update' : {method:'PUT'},
                     'delete' : {method: 'DELETE'}

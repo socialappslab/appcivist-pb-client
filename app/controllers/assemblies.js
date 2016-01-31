@@ -275,7 +275,6 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 });
             }
         }
-
 	}
 
     function initializeNewAssembly() {
@@ -335,104 +334,71 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 });
 
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
-                                                 $resource, $http, Assemblies, Contributions, $uibModal,
-                                                 loginService, localStorageService, Memberships, Invitations) {
+                                                 $resource, $http, Assemblies, $location, Contributions, $uibModal,
+                                                 loginService, localStorageService, Memberships, Invitations,
+                                                 FlashService) {
     init();
 
     function init() {
         // Grab assemblyID off of the route
         $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-        $scope.currentAssembly = {};
-        $scope.newContribution = Contributions.defaultNewContribution();
-
-
         console.log("Loading Assembly: "+$routeParams.aid);
 
         if ($scope.assemblyID > 0) {
+            // 0. Prepare scope variables to use and start loading spinner
             $scope.$root.startSpinner();
-            $scope.currentAssembly = Assemblies.assembly($scope.assemblyID).get();
-            $scope.contributions = Contributions.contributions($scope.assemblyID).query();
-            $scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
-            $scope.verifyAssembly = Assemblies.verifyMembership($scope.assemblyID, $scope.user.userId).get();
-            $scope.membership = Memberships.memberships().query();
+            $scope.currentAssembly = {};
             $scope.campaigns = null;
             $scope.pendingInvitations = [];
-            $scope.currentAssembly.$promise.then(function(data) {
-                $scope.currentAssembly = data;
-                if(!$scope.currentAssembly.forumPosts) {
-                    $scope.currentAssembly.forumPosts = [];
-                }
-                localStorageService.set("currentAssembly", $scope.currentAssembly);
-                $scope.campaigns = $scope.currentAssembly.campaigns;
-            });
-            $scope.verifyAssembly.$promise.then(function(data) {
-                $scope.verifyAssembly = data.responseStatus === "OK";
-            });
-            $scope.membership.$promise.then(function(data) {
-                $scope.membership = data;
-                $scope.membershipRoles = null;
-                for (var i = 0; i < $scope.membership.length; i += 1) {
-                    var membership = $scope.membership[i];
-                    if (membership.assembly) {
-                        if (membership.assembly.assemblyId === $scope.currentAssembly.assemblyId) {
-                            $scope.membershipRoles = membership.roles;
-                        }
-                    }
-                }
-            });
-            $scope.contributions.$promise.then(function(data){
-                $scope.contributions = data;
-            });
-            $scope.assemblyMembers.$promise.then(function(data){
-                $scope.assemblyMembers = data;
-                $scope.$root.stopSpinner();
-            });
-            getInvitations($scope.assemblyID);
+            $scope.newContribution = Contributions.defaultNewContribution();
+
+            // 1. Verify if the user is member of this assembly and read get its membership detail
+            $scope.membership = Memberships.membershipInAssembly($scope.assemblyID, $scope.user.userId).get();
+            $scope.membership.$promise.then(userIsMemberSuccess, userIsMemberError);
         }
-    }
 
-    $scope.selectCampaign = function(campaign) {
-        localStorageService.set("currentCampaign", campaign);
-    }
+        $scope.selectCampaign = function(campaign) {
+            localStorageService.set("currentCampaign", campaign);
+        };
 
-    $scope.selectCampaignById = function(cId) {
-        $scope.campaigns = localStorageService.get("campaigns");
-        campaign = campaigns.forEach(function(entry) {
-            if(entry.campaignId == cId) {
-                return entry;
-            }
-        });
-        localStorageService.set("currentCampaign", campaign);
-    }
+        $scope.selectCampaignById = function(cId) {
+            $scope.campaigns = localStorageService.get("campaigns");
+            campaign = campaigns.forEach(function(entry) {
+                if(entry.campaignId == cId) {
+                    return entry;
+                }
+            });
+            localStorageService.set("currentCampaign", campaign);
+        };
 
-    $scope.selectGroup = function(group) {
-        localStorageService.set("currentGroup", group);
-    }
+        $scope.selectGroup = function(group) {
+            localStorageService.set("currentGroup", group);
+        };
 
-    $scope.publishComment = function(comment) {
-        //Contributions.contributions($scope.currentAssembly.assemblyId).save();
-    }
+        $scope.publishComment = function(comment) {
+            //Contributions.contributions($scope.currentAssembly.assemblyId).save();
+        };
 
-    $scope.isRightRole = function(roleName) {
-        var result = false;
-        angular.forEach($scope.membershipRoles, function(role){
-            if(role.name === roleName) {
-                result = true;
-            }
-        });
-        return result;
-    }
+        $scope.isRightRole = function(roleName) {
+            var result = false;
+            angular.forEach($scope.membershipRoles, function(role){
+                if(role.name === roleName) {
+                    result = true;
+                }
+            });
+            return result;
+        };
 
-    $scope.checkShow = function(button) {
-        var show = false;
-        buttonMap = {
-            joinButton:
-                !$scope.verifyAssembly && $scope.currentAssembly.profile != undefined
-                    && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
-                        || ($scope.currentAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST")
+        $scope.checkShow = function(button) {
+            var show = false;
+            buttonMap = {
+                joinButton:
+                !$scope.userIsMember && $scope.currentAssembly.profile != undefined
+                && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
+                    || ($scope.currentAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST")
                 ),
-            inviteButton:
-                $scope.verifyAssembly
+                inviteButton:
+                $scope.userIsMember
                 && $scope.currentAssembly.profile != undefined
                 && ( ( $scope.currentAssembly.profile.supportedMembership === "OPEN")
                     || ( ($scope.currentAssembly.profile.supportedMembership === "COORDINATED")
@@ -440,9 +406,9 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                         || ( ($scope.currentAssembly.profile.supportedMembership === "COORDINATED_AND_MODERATED")
                         && ($scope.isRightRole("COORDINATOR")) )
                     )
-            ),
-            campaignButton:
-                $scope.verifyAssembly
+                ),
+                campaignButton:
+                $scope.userIsMember
                 && $scope.currentAssembly.profile != undefined
                 && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
                     || ( ($scope.currentAssembly.profile.supportedMembership === "COORDINATED")
@@ -452,53 +418,186 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                         )
                     )
                 )
+            };
+            if(buttonMap[button]){
+                show = true
+            }
+            return show;
         };
-        if(buttonMap[button]){
-            show = true
-        }
-        return show;
+
+        $scope.openNewInvitationModal = function(size)  {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '/app/partials/invitation.html',
+                controller: 'NewInvitationModalCtrl',
+                size: size,
+                resolve: {
+                    target: function () {
+                        return $scope.currentAssembly;
+                    },
+                    type: function () {
+                        return "ASSEMBLY";
+                    },
+                    defaultEmail: function() {
+                        return $scope.currentAssembly.invitationEmail;
+                    }
+                }
+            });
+
+            var modalInstance;
+
+            modalInstance.result.then(
+                function (newInvitation) {
+                    $scope.newInvitation = newInvitation;
+                    getInvitations($scope.assemblyID);
+                },
+                function () {
+                    console.log('Modal dismissed at: ' + new Date());
+                }
+            );
+        };
+
+        $scope.joinAssembly = function() {
+            if (!$scope.userIsMember && !$scope.userIsRequestedMember && !$scope.userIsInvitedMember) {
+                // If user is not a member, has not requested to join and has no pending invitation,
+                // send a request for membership
+                var membership = {
+                    userId : $scope.user.userId,
+                    email : $scope.user.email,
+                    type : "REQUEST",
+                    targetCollection: "ASSEMBLY"
+                }
+                var membershipRequest = Memberships.membershipRequest("assembly",$scope.assemblyID).save(membership);
+                membershipRequest.$promise.then(
+                    function (data) {
+                        $scope.userIsMember = false;
+                        $scope.userIsRequestedMember = true;
+                        $scope.userIsInvitedMember = false;
+                        $scope.membership = data;
+                        $scope.membershipRoles = $scope.membership.roles;
+                    },
+                    function (error) {
+                        FlashService.Error("Membership request could not be completed: "+JSON.stringify(error));
+                    }
+                );
+            } else if (!$scope.userIsMember && $scope.userIsInvitedMember) {
+                // If user has been invited to join, redirect to the invitation verification page
+                $location.url("/invitation/"+$scope.membership.invitationToken);
+            }
+        };
     }
 
-    $scope.openNewInvitationModal = function(size)  {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: '/app/partials/invitation.html',
-            controller: 'NewInvitationModalCtrl',
-            size: size,
-            resolve: {
-                target: function () {
-                    return $scope.currentAssembly;
-                },
-                type: function () {
-                    return "ASSEMBLY";
-                },
-                defaultEmail: function() {
-                    return $scope.currentAssembly.invitationEmail;
+    /**
+     * Callback when the membership verification is a success
+     * @param data
+     */
+    function userIsMemberSuccess (data) {
+        $scope.membership = data;
+        $scope.membershipRoles = data.roles;
+        $scope.userIsMember = $scope.membership.status === "ACCEPTED";
+        $scope.userIsRequestedMember = $scope.membership.status === "REQUESTED";
+        $scope.userIsInvitedMember = $scope.membership.status === "INVITED";
+
+        // 2.
+        // - If user is member of the Assembly, get the full information of the assembly.
+        // - If the user is not a member of the Assembly, get public profile of the assembly
+        if ($scope.userIsMember) {
+
+            // 2.1. Read assembly and initialize it in the scope
+            $scope.currentAssembly = Assemblies.assembly($scope.assemblyID).get();
+            $scope.currentAssembly.$promise.then(
+                initializeAssembly,
+                function (error) {
+                    $scope.$root.stopSpinner();
+                    FlashService.Error("An error occured while trying to read the assembly: "+JSON.stringify(error));
                 }
-            }
-        });
+            );
 
-        var modalInstance;
+        } else {
+            $scope.userIsMember = false;
+            initalizeAssemblyForNonMember (data);
+        }
+    }
 
-        modalInstance.result.then(
-            function (newInvitation) {
-                $scope.newInvitation = newInvitation;
-                getInvitations($scope.assemblyID);
+    /**
+     * Callback when the membership verification is an error
+     * @param data
+     */
+    function userIsMemberError (error) {
+        $scope.userIsMember = false;
+        $scope.userIsRequestedMember = false;
+        $scope.userIsInvitedMember = false;
+        if (error.data.responseStatus === "NODATA" || error.data.responseStatus === "UNAUTHORIZED") {
+            initalizeAssemblyForNonMember();
+        } else {
+            $scope.$root.stopSpinner();
+            FlashService.Error("An error occured while verifying your membership to the assembly: "+JSON.stringify(error))
+        }
+    }
+
+    /**
+     * After getting information about the assembly, initialize the corresponding scope variable and
+     * its resources (contributions, members, campaigns, workign groups)
+     * @param data
+     */
+    function initializeAssembly (data) {
+        $scope.currentAssembly = data;
+        if(!$scope.currentAssembly.forumPosts) {
+            $scope.currentAssembly.forumPosts = [];
+        }
+        localStorageService.set("currentAssembly", $scope.currentAssembly);
+
+        // 3. Initialize campaigns, contributions, working groups and members of the Assembly
+        initializeAssemblyResources();
+    }
+
+    /**
+     * Flag the user as "non-member" and try to read the public profile of the assembly
+     * @param error
+     */
+    function initalizeAssemblyForNonMember () {
+        // 2. If user is not member, read the public profile of the assembly if this is available
+        $scope.currentAssembly = Assemblies.assemblyPublicProfile($scope.assemblyID).get();
+        $scope.currentAssembly.$promise.then(
+            function (data) {
+                $scope.$root.stopSpinner();
+                $scope.currentAssembly = data;
             },
-            function () {
-                console.log('Modal dismissed at: ' + new Date());
+            function (error) {
+                $scope.$root.stopSpinner();
+                $scope.assemblyNotListed = true;
+                FlashService.Error("The assembly is not listed");
             }
         );
-    };
+    }
 
-    function getInvitations(target) {
+    function initializeAssemblyResources () {
+        $scope.campaigns = $scope.currentAssembly.campaigns;
+        $scope.contributions = Contributions.contributions($scope.assemblyID).query();
+        $scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
+        $scope.contributions.$promise.then(function(data){
+            $scope.contributions = data;
+        });
+        $scope.assemblyMembers.$promise.then(
+            function(data){
+                $scope.assemblyMembers = data;
+                $scope.$root.stopSpinner();
+            },
+            function(error) {
+                $scope.$root.stopSpinner();
+            }
+        );
+        getInvitations($scope.assemblyID);
+    }
+
+    function getInvitations (target) {
         $scope.pendingInvitations = Invitations.invitations(target,"INVITED").query();
         $scope.pendingInvitations.$promise.then(
             function(response){
                 $scope.pendingInvitations = response;
             },
             function(error) {
-                $scope.errors.push(error);
+                FlashService.Error("Invitations couldn't be read: "+JSON.stringify(error));
             }
         );
     }

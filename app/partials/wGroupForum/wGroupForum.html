@@ -2,14 +2,50 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7 col-sm-7 discussion">
-                <div class="row col-md-12 col-sm-12">
+                <div class="row col-md-12 col-sm-12" ng-if="wGroup.profile">
                     <img alt="100x100" src="{{wGroup.profile.icon}}" ng-src="{{wGroup.profile.icon}}" data-holder-rendered="true" class="image-circle inline">
                     <h2 class="inline"><strong>Working Group: </strong>{{wGroup.name}}</h2>
                 </div>
-                <div class="row col-md-12 col-sm-12">
+                <div class="row col-md-6 col-sm-6">
                     <h3 class="inline"><strong>Working Group Forum</strong></h3>
                 </div>
+                <div class="row col-md-5 col-sm-5 align-right">
+                    <h1 ng-if="checkShow('joinButton')" class="align-right">
+                        <button class="btn btn-success btn-lg" ng-click="joinGroup()" ng-disabled="!userIsMember && userIsRequestedMember">
+                            <h4 style="float:right;">
+                                <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">Join Working Group</strong>
+                                <strong ng-if="!userIsMember && userIsRequestedMember">Join request awaiting approval</strong>
+                                <strong ng-if="!userIsMember && userIsInvitedMember">Invitation awaiting your response</strong>
+                            </h4>
+                        </button>
+                    </h1>
+                </div>
+                <div class="row col-md-12">
+                    <!-- Alert message shown if User is not member -->
+                    <uib-alert ng-if="!wGroup.profile" type="success" class="row">
+                        The Working Group you have requested is not listed as public. If you know people who are member, ask
+                        them to send you an invitation to join.
+                    </uib-alert>
+                    <!-- Alert message shown if User is not member -->
+                    <uib-alert ng-if="wGroup.profile && !userIsMember && !userIsRequestedMember && !userIsInvitedMember" type="success" class="row">
+                        You are not member of this Working Group but the its profile is public and you can send a request
+                        to join. Press "Join Working Group" to do so.
+                    </uib-alert>
+                    <!-- Alert message shown if User is not member but has requested to join -->
+                    <uib-alert ng-if="wGroup.profile && !userIsMember && userIsRequestedMember" type="success" class="row">
+                        You have requested to join this Working Group. Once a member approves your request you
+                        will be able to see the comments and discussions in the Working Group forum as well as the list of
+                        campaigns in which the working groups is participating.
+                    </uib-alert>
+                    <!-- Alert message shown if User is not member but has been invited-->
+                    <uib-alert ng-if="wGroup.profile && !userIsMember && userIsInvitedMember" type="success" class="row">
+                        You have been invited to join this Working Group. Press the button to Join the Working Group (above) to
+                        review this invitation. As long as the invitation is pending, you will be able to see comments and
+                        discussions in the Working Group Forum, but will not be able to participate nor see the list of campaigns.
+                    </uib-alert>
+                </div>
                 <new-forum-post
+                        ng-if="userIsMember"
                         id="groupForumCommentBox"
                         class="row col-md-11 col-sm-11"
                         targetspaceid="wGroup.forumResourceSpaceId"
@@ -19,15 +55,17 @@
                         ng-model="newForumPost">
                 </new-forum-post>
                 <div class="row no-margin">
-                    <appcivist-comments comments="wGroup.forumPosts"
-                                        assemblyid="assemblyID"
-                                        containerid="wGroup.forumResourceSpaceId"></appcivist-comments>
+                    <appcivist-comments
+                            ng-if="userIsMember || userIsInvitedMember"
+                            comments="wGroup.forumPosts"
+                            assemblyid="assemblyID"
+                            containerid="wGroup.forumResourceSpaceId"></appcivist-comments>
                 </div>
             </div>
-            <div class="col-md-5 col-sm-5 info-lateral">
+            <div class="col-md-5 col-sm-5 info-lateral" ng-if="userIsMember">
                 <div class="row no-padding no-margin">
-                    <button class="btn btn-success col-md-5 inline">Send message</button>
-                    <button class="btn btn-success col-md-5 col-md-push-2 inline">Organize meeting</button>
+                    <button class="btn btn-success col-md-5 inline" ng-if="checkShow('sendMessage')">Send message</button>
+                    <button class="btn btn-success col-md-5 col-md-push-2 inline" ng-if="checkShow('organizeMeeting')">Organize meeting</button>
                 </div>
                 <!-- Working Group Members -->
                 <div class="row infoBox">
@@ -35,7 +73,7 @@
                         <div class="col-md-4 col-sm-4">
                             <h4><strong>Members</strong></h4>
                         </div>
-                        <div class="col-md-8 col-sm-8 add-elements-box-button">
+                        <div class="col-md-8 col-sm-8 add-elements-box-button" ng-if="checkShow('inviteButton')">
                             <div class="inline">
                                 <a ng-click="openNewInvitationModal()" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>
                             </div>

@@ -500,6 +500,10 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                     uid: userId
                 });
         },
+        workingGroupPublicProfile: function (assemblyId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/public',
+                {aid: assemblyId, gid: groupId});
+        },
         defaultNewWorkingGroup: function() {
             var newWGroup = {
                 //"name": "Assemblée Belleville",

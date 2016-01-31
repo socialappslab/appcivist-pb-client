@@ -156,11 +156,14 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
     }
 });
 
-appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal,
-                                                     localStorageService, Contributions, WorkingGroups, Assemblies,
-                                                     Invitations) {
+appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal, $location,
+                                                     Upload, localStorageService, Contributions, WorkingGroups,
+                                                     Memberships, Assemblies, Invitations, FlashService) {
     init();
     function init() {
+        // 0. Initalize general scope variables
+        $scope.$root.startSpinner();
+        //$scope.user = localStorageService.get("user");
         $scope.assemblyID = $routeParams.aid;
         $scope.workingGroupID = $routeParams.wid;
         $scope.newForumPost = Contributions.defaultNewContribution();
@@ -171,6 +174,11 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.proposals = [];
         $scope.pendingInvitations = [];
 
+        if ($scope.assemblyID > 0 && $scope.workingGroupID > 0) {
+            $scope.membership = Memberships.membershipInGroup($scope.workingGroupID, $scope.user.userId).get();
+            $scope.membership.$promise.then(userIsMemberSuccess, userIsMemberError);
+        }
+
         $scope.postContribution = function(content){
             var newContribution =
                 Contributions.groupContribution($routeParams.aid, $routeParams.wid).save(content, function() {
@@ -178,7 +186,6 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                     localStorageService.set("currentContributionWGroup", newContribution);
                 });
         }
-
         $scope.openNewInvitationModal = function(size)  {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -210,13 +217,135 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 }
             );
         };
+        $scope.checkShow = function(button) {
+            var show = false;
+            buttonMap = {
+                joinButton:
+                !$scope.userIsMember && $scope.wGroup.profile != undefined
+                && ( ($scope.wGroup.profile.supportedMembership === "OPEN")
+                    || ($scope.wGroup.profile.supportedMembership === "INVITATION_AND_REQUEST")
+                ),
+                inviteButton:
+                $scope.userIsMember
+                && $scope.wGroup.profile != undefined
+                && ( ( $scope.wGroup.profile.supportedMembership === "OPEN")
+                    || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED")
+                        && ($scope.isRightRole("COORDINATOR") )
+                        || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                        && ($scope.isRightRole("COORDINATOR")) )
+                    )
+                ),
+                campaignButton:
+                $scope.userIsMember
+                && $scope.wGroup.profile != undefined
+                && ( ($scope.wGroup.profile.supportedMembership === "OPEN")
+                    || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED")
+                        && ($scope.isRightRole("COORDINATOR") )
+                        || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                            && ($scope.isRightRole("COORDINATOR"))
+                        )
+                    )
+                ),
+                sendMessage: $scope.userIsMember && $scope.wGroup.profile != undefined,
+                organizeMeeting: $scope.userIsMember
+                // && $scope.wGroup.profile != undefined
+                    //&& ( ($scope.wGroup.profile.supportedMembership === "OPEN")
+                    //|| ( ($scope.wGroup.profile.supportedMembership === "COORDINATED")
+                    //    && ($scope.isRightRole("COORDINATOR") )
+                    //    || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                    //        && ($scope.isRightRole("COORDINATOR"))
+                    //    )
+                    //)
+                //)
+            };
+            if(buttonMap[button]){
+                show = true
+            }
+            return show;
+        };
+        $scope.isRightRole = function(roleName) {
+            var result = false;
+            angular.forEach($scope.membershipRoles, function(role){
+                if(role.name === roleName) {
+                    result = true;
+                }
+            });
+            return result;
+        };
+        $scope.joinGroup = function() {
+            if (!$scope.userIsMember && !$scope.userIsRequestedMember && !$scope.userIsInvitedMember) {
+                // If user is not a member, has not requested to join and has no pending invitation,
+                // send a request for membership
+                var membership = {
+                    userId : $scope.user.userId,
+                    email : $scope.user.email,
+                    type : "REQUEST",
+                    targetCollection: "GROUP"
+                }
+                var membershipRequest = Memberships.membershipRequest("group",$scope.workingGroupID).save(membership);
+                membershipRequest.$promise.then(
+                    function (data) {
+                        $scope.userIsMember = false;
+                        $scope.userIsRequestedMember = true;
+                        $scope.userIsInvitedMember = false;
+                        $scope.membership = data;
+                        $scope.membershipRoles = $scope.membership.roles;
+                    },
+                    function (error) {
+                        FlashService.Error("Membership request could not be completed: "+JSON.stringify(error));
+                    }
+                );
+            } else if (!$scope.userIsMember && $scope.userIsInvitedMember) {
+                // If user has been invited to join, redirect to the invitation verification page
+                $location.url("/invitation/"+$scope.membership.invitationToken);
+            }
+        };
+    }
 
-        initializeWorkingGroup();
-        initializeAssemblyCampaigns();
+    function userIsMemberSuccess(data) {
+        $scope.membership = data;
+        $scope.membershipRoles = data.roles;
+        $scope.userIsMember = $scope.membership.status === "ACCEPTED";
+        $scope.userIsRequestedMember = $scope.membership.status === "REQUESTED";
+        $scope.userIsInvitedMember = $scope.membership.status === "INVITED";
+        if ($scope.userIsRequestedMember) {
+            console.log("User "+$scope.user.userId+" has requested to join group "+$scope.workingGroupID);
+        }
+
+        if ($scope.userIsInvitedMember) {
+            console.log("User "+$scope.user.userId+" has been invited to join group "+$scope.workingGroupID);
+        }
+
+        // 2.
+        // - If user is member of the Assembly, get the full information of the assembly.
+        // - If the user is not a member of the Assembly, get public profile of the assembly
+        if ($scope.userIsMember) {
+            console.log("User "+$scope.user.userId+" is member of the group "+$scope.workingGroupID);
+            initializeWorkingGroup();
+            initializeAssemblyCampaigns();
+        } else {
+            $scope.userIsMember = false;
+            console.log("User "+$scope.user.userId+" is NOT a member of the group "+$scope.workingGroupID);
+            initializeWorkingGroupForNonMembers();
+            initializeAssemblyCampaigns();
+        }
+    }
+
+    function userIsMemberError(error) {
+        $scope.userIsMember = false;
+        $scope.userIsRequestedMember = false;
+        $scope.userIsInvitedMember = false;
+        if (error.data.responseStatus === "NODATA" || error.data.responseStatus === "UNAUTHORIZED") {
+            initializeWorkingGroupForNonMembers();
+            initializeAssemblyCampaigns();
+        } else {
+            $scope.$root.stopSpinner();
+            FlashService.Error("An error occured while verifying your membership to the assembly: "+JSON.stringify(error))
+        }
     }
 
     function initializeWorkingGroup() {
-        $scope.$root.startSpinner();
+        console.log("Reading detail information of group "+$scope.workingGroupID);
         var res = WorkingGroups.workingGroup($scope.assemblyID, $scope.workingGroupID).get();
         res.$promise.then(
             function (data) {
@@ -228,7 +357,29 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             },
             function (error) {
                 $scope.$root.stopSpinner();
-                $scope.errors.unshift(error);
+                FlashService.Error("Error occured trying to initialize the working group: "+JSON.stringify(error));
+            }
+        )
+    }
+
+    function initializeWorkingGroupForNonMembers() {
+        console.log("Reading public information of group "+$scope.workingGroupID);
+        var res = WorkingGroups.workingGroupPublicProfile($scope.assemblyID, $scope.workingGroupID).get();
+        res.$promise.then(
+            function (data) {
+                $scope.wGroup = data;
+                $scope.$root.stopSpinner();
+
+                if ($scope.userIsInvitedMember) {
+                    getWorkingGroupMembers($scope.assemblyID, $scope.workingGroupID);
+                    getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
+                    getInvitations($scope.workingGroupID);
+                }
+            },
+            function (error) {
+                console.log("Group "+$scope.workingGroupID+" is NOT public");
+                $scope.$root.stopSpinner();
+                FlashService.Error("Error occured trying to initialize the working group: "+JSON.stringify(error));
             }
         )
     }

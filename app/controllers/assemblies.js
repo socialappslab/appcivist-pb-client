@@ -474,6 +474,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                         $scope.userIsRequestedMember = true;
                         $scope.userIsInvitedMember = false;
                         $scope.membership = data;
+                        $scope.membershipRoles = $scope.membership.roles;
                     },
                     function (error) {
                         FlashService.Error("Membership request could not be completed: "+JSON.stringify(error));

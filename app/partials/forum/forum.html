@@ -99,10 +99,11 @@
                         ng-model="newContribution">
                 </new-forum-post>
                 <!-- Forum Comments (visible to members and invited members-->
-                <appcivist-comments ng-if="userIsMember || userIsInvitedMember"
+                <appcivist-comments
+                        ng-if="userIsMember || userIsInvitedMember"
                         comments="currentAssembly.forumPosts"
-                                    assemblyid="assemblyID"
-                                    containerid="currentAssembly.forumResourceSpaceId"></appcivist-comments>
+                        assemblyid="assemblyID"
+                        containerid="currentAssembly.forumResourceSpaceId"></appcivist-comments>
             </div>
             <div id="assemblyResourceBoxes" class="col-md-4 col-sm-4 info-lateral" ng-if="userIsMember">
                 <div id="assemblyMembers" class="row infoBox">

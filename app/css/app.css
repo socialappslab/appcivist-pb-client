@@ -969,6 +969,9 @@ button#second-vote {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.forum .align-right {
+  text-align: right;
+}
 .forum .row {
   margin-top: 5px;
   margin-bottom: 5px;

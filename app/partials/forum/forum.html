@@ -1,9 +1,9 @@
 <div class="view forum">
     <div class="container">
         <div class="row">
-            <div id="assemblyInfoActivity" class="col-md-8 col-sm-8 discussion">
+            <div id="assemblyInfoActivity" class="col-md-8 col-sm-8 discussion"  >
                 <div id="assemblyInfo" class="row">
-                    <div class="col-md-12 col-sm-12">
+                    <div class="col-md-12 col-sm-12" ng-if="currentAssembly.profile">
                         <div class="thumbnail assembly">
                             <img alt="100x100" src="{{currentAssembly.profile.icon}}"
                                  data-holder-rendered="true" class="image-circle">
@@ -33,12 +33,18 @@
                     </div>
                 </div>
                 <div id="assemblyActivity" class="row">
-                    <div class="col-md-9 col-sm-9">
+                    <div class="col-md-7 col-sm-7">
                         <h1><strong>Assembly Forum</strong></h1>
                     </div>
-                    <div class="col-md-3 col-sm-3">
-                        <h1 ng-if="checkShow('joinButton')">
-                            <button class="btn btn-success" ng-click="joinAssembly()"><h4 style="float:right;"><strong>Join Assembly</strong></h4></button>
+                    <div class="col-md-5 col-sm-5 align-right">
+                        <h1 ng-if="checkShow('joinButton')" class="align-right">
+                            <button class="btn btn-success btn-lg" ng-click="joinAssembly()" ng-disabled="!userIsMember && userIsRequestedMember">
+                                <h4 style="float:right;">
+                                    <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">Join Assembly</strong>
+                                    <strong ng-if="!userIsMember && userIsRequestedMember">Join request awaiting approval</strong>
+                                    <strong ng-if="!userIsMember && userIsInvitedMember">Invitation awaiting your response</strong>
+                                </h4>
+                            </button>
                         </h1>
                     </div>
                 </div>
@@ -58,8 +64,32 @@
                         </ul>
                     </div>
                 </div>
-                <!-- New Post Box -->
+                <!-- Alert message shown if User is not member -->
+                <uib-alert ng-if="!currentAssembly.profile" type="success">
+                    The Assembly you have requested is not listed as public. If you know people who are member, ask
+                    them to send you an invitation to join.
+                </uib-alert>
+                <!-- Alert message shown if User is not member -->
+                <uib-alert ng-if="currentAssembly.profile && !userIsMember && !userIsRequestedMember && !userIsInvitedMember" type="success">
+                    You are not member of this Assembly but the assembly profile is public and you can send a request
+                    to join. Press "Join Assembly" to do so.
+                </uib-alert>
+                <!-- Alert message shown if User is not member but has requested to join -->
+                <uib-alert ng-if="currentAssembly.profile && !userIsMember && userIsRequestedMember" type="success">
+                    You have requested to join this assembly. Once a member of the assembly approves your request you
+                    will be able to see the comments and discussions in the Assembly forum as well as the list of
+                    campaigns and working groups that are part of the Assembly.
+                </uib-alert>
+                <!-- Alert message shown if User is not member but has been invited-->
+                <uib-alert ng-if="currentAssembly.profile && !userIsMember && userIsInvitedMember" type="success">
+                    You have been invited to join this assembly. Press the button to join the Assembly (above) to
+                    review this invitation. As long as the invitation is pending, you will be able to see comments and
+                    discussions in the Assembly Forum, but will not be able to participate nor see the list of campaigns
+                    and working groups
+                </uib-alert>
+                <!-- New Post Box (visible only to members)-->
                 <new-forum-post
+                        ng-if="userIsMember"
                         id="assemblyForumCommentBox"
                         class="row col-md-11 col-sm-11"
                         targetspaceid="currentAssembly.forumResourceSpaceId"
@@ -68,12 +98,13 @@
                         ctype="FORUM_POST"
                         ng-model="newContribution">
                 </new-forum-post>
-                <!-- Forum Comments-->
-                <appcivist-comments comments="currentAssembly.forumPosts"
+                <!-- Forum Comments (visible to members and invited members-->
+                <appcivist-comments ng-if="userIsMember || userIsInvitedMember"
+                        comments="currentAssembly.forumPosts"
                                     assemblyid="assemblyID"
                                     containerid="currentAssembly.forumResourceSpaceId"></appcivist-comments>
             </div>
-            <div id="assemblyResourceBoxes" class="col-md-4 col-sm-4 info-lateral">
+            <div id="assemblyResourceBoxes" class="col-md-4 col-sm-4 info-lateral" ng-if="userIsMember">
                 <div id="assemblyMembers" class="row infoBox">
                     <div class="row">
                         <div class="col-md-4 col-sm-4">

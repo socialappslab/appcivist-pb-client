@@ -186,7 +186,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 
 appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location, localStorageService,
 												   Assemblies, loginService, $route, $routeParams, usSpinnerService, $uibModal,
-												   Invitations, WorkingGroups, Memberships) {
+												   Invitations, WorkingGroups, Memberships, FlashService) {
 	init();
 
 	function init() {
@@ -209,8 +209,15 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		);
 
 		$scope.sendResponse = function (resp) {
-			$scope.invitation.status = resp;
-			$scope.response = Invitations.invitation($scope.token).update($scope.invitation);
+			$scope.response = Invitations.invitationResponse($scope.token, resp).update();
+			$scope.response.$promise.then(
+					function (data)	{
+						$location.url("/assembly/"+$scope.invitation.targetId+"/forum");
+					},
+					function (error) {
+						FlashService.Error("An error occured while trying to answer your invitation: "+JSON.stringify(error));
+					}
+			);
 		}
 
 		$scope.acceptInvitationAndSignup = function() {

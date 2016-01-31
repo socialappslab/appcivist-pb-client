@@ -297,14 +297,21 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
             );
         },
         memberships: function() {
-            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid);
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').userId);
         },
         assemblies: function() {
-            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid+'?type=assembly');
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').userId+'?type=assembly');
         },
         workingGroups: function() {
-            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').uuid+'?type=group');
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/user/'+localStorageService.get('user').userId+'?type=group');
+        },
+        membershipInAssembly: function(assemblyId, userId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/assembly/:aid/user/:uid', {aid: assemblyId, uid: userId});
+        },
+        membershipInGroup: function(groupId, userId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/group/:gid/user/:uid', {gid: groupId, uid: userId});
         }
+
     };
 });
 
@@ -1076,6 +1083,14 @@ appCivistApp.factory('Invitations', function ($resource, localStorageService) {
         invitation: function(token) {
             return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t',
                 {t: token},
+                {
+                    'update' : {method:'PUT'},
+                    'delete' : {method: 'DELETE'}
+                });
+        },
+        invitationResponse: function(token, response) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:r',
+                {t: token, r: response},
                 {
                     'update' : {method:'PUT'},
                     'delete' : {method: 'DELETE'}

@@ -6,16 +6,18 @@
  * user can view
  *
  */
-appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService,
+appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService, $translate,
 											 Assemblies, loginService, $route, $routeParams, usSpinnerService, $uibModal) {
 	init();
 
 	function init() {
 		$scope.route = $route;
 		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);
 		$scope.sessionKey = localStorageService.get("sessionKey");
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
-    $scope.votingApiUrl  = localStorageService.get("votingApiUrl");
+    	$scope.votingApiUrl  = localStorageService.get("votingApiUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.info = localStorageService.get("help");
 		$scope.userVotes = localStorageService.get("userVotes");
@@ -73,11 +75,11 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 
 	$scope.login = function() {
 		console.log("Signing in with email = " + $scope.email);
-		loginService.signIn($scope.user.email, $scope.user.password);
+		loginService.signIn($scope.user.email, $scope.user.password, $scope);
 	}
 
 	$scope.signup = function() {
-		loginService.signUp($scope.newUser);
+		loginService.signUp($scope.newUser, $scope);
 	}
 
 	$scope.signout = function() {
@@ -221,7 +223,7 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		}
 
 		$scope.acceptInvitationAndSignup = function() {
-			loginService.signUp($scope.newUser);
+			loginService.signUp($scope.newUser, $scope);
 		}
 	}
 });

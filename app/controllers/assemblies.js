@@ -247,7 +247,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 if(!$scope.newUser.lang) {
                     $scope.newUser.lang = $translate.proposedLanguage() || $translate.use();
                 }
-                loginService.signUp($scope.newUser);
+                loginService.signUp($scope.newUser, $scope);
             }
         }
 

@@ -88,7 +88,7 @@ appCivistApp.run(run);
  * @type {string[]}
  */
 config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
-    'localStorageServiceProvider'];
+    'localStorageServiceProvider', '$translateProvider'];
 
 /**
  * Configuration of the app, executed before everything else.
@@ -100,9 +100,11 @@ config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$
  * @param localStorageServiceProvider
  */
 function config($routeProvider, $locationProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
-         localStorageServiceProvider) {
+                localStorageServiceProvider, $translateProvider) {
 
-    // Whilelist of external domains/URLs allowed to be queried (e.g., the etherpad server)
+    /**
+     * Whitelist of external domains/URLs allowed to be queried (e.g., the etherpad server)
+     */
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
         'self',
@@ -110,7 +112,9 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         etherpadServerURL+'**'
     ]);
 
-    // Setup CORS requests
+    /**
+     * Setup CORS requests
+     */
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common["X-Requested-With"];
     localStorageServiceProvider
@@ -183,12 +187,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'NewWorkingGroupCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
-
-        // TODO: finalize voting UIs s
+         // TODO: finalize voting UIs s
         .when('/ballot/',{ // TODO: this redirect is just temporal
             redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
         })
-
         // TODO: finalize voting UIs
         .when('/ballot/:uuid/start',{
           controller: 'ballotStartCtrl',
@@ -248,6 +250,29 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         };
     }]);
 
+    /**
+     * Configure translations
+     */
+    $translateProvider.useStaticFilesLoader({
+        prefix: 'assets/i18n/locale-',
+        suffix: '.json'
+    });
+
+    $translateProvider
+        .preferredLanguage('en-US')
+        .fallbackLanguage('en-US')
+        .registerAvailableLanguageKeys(["en-US", "es-ES", "it-IT", "de-DE", "fr-FR" ], {
+            'en' : 'en-US',
+            'es' : 'es-ES',
+            'it' : 'it-IT',
+            'fr' : 'fr-FR',
+            'de' : 'de-DE',
+            'en_US' : 'en-US',
+            'es_ES' : 'es-ES',
+            'it_IT' : 'it-IT',
+            'fr_FR' : 'fr-FR',
+            'de_DE' : 'de-DE'
+        })
 }
 
 /**

@@ -10,7 +10,7 @@
 		return this.userIsAuthenticated();
 	};
 
-	this.signUp = function(user, modalInstance) { //valentine written
+	this.signUp = function(user, scope, modalInstance) {
 		if (user.password && user.password.localeCompare(user.repeatPassword) != 0) {
 			FlashService.Error("Your passwords don't match.");
 			//$location.url('/');
@@ -29,17 +29,19 @@
 					localStorageService.set('authenticated',true);
 					console.log("User get from API: " + user.userId);
 					localStorageService.set("user",user);
+					scope.user = user;
 					$location.url('/home');
 				},
 				function(error) {
 					var data = error.data;
 					var errorString = "There was an error with your sign up: " + JSON.stringify(data);
+					scope.user = null;
 					FlashService.Error(errorString);
 				}
 		);
 	}
 
-	this.signIn = function(email, password) {
+	this.signIn = function(email, password, scope) {
 		var user = {};
 		user.email = email;
 		user.password = password;
@@ -52,8 +54,10 @@
 						localStorageService.set('authenticated', true);
 						console.log("User get from API: " + user.userId);
 						localStorageService.set("user", user);
+						scope.user = user;
 						$location.url('/home');
 					} else { // Not Authenticated
+						scope.user = null;
 						$rootScope.message = 'You need to log in.';
 						// $timeout(function(){deferred.reject();}, 0);
 						//deferred.reject();

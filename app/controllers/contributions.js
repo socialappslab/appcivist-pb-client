@@ -11,15 +11,19 @@
 var postingContributionFlag = false;
 
 appCivistApp.controller('NewContributionCtrl',
-        function ($scope, $http, $routeParams, localStorageService, Contributions) {
+        function ($scope, $http, $routeParams, localStorageService, Contributions, $translate) {
             init();
 
             function init() {
+                $scope.user = localStorageService.get("user");
+                if ($scope.user && $scope.user.language)
+                    $translate.use($scope.user.language);
                 $scope.userIsAuthor = true;
                 $scope.postingContribution = postingContributionFlag;
                 $scope.newContribution = Contributions.defaultContributionAttachment();
                 $scope.userWorkingGroups = localStorageService.get("workingGroups");
                 $scope.createNewGroup = false;
+
                 if($scope.newContribution.type === "PROPOSAL") {
                     if ($scope.userWorkingGroups && $scope.userWorkingGroups.length > 0) {
                         $scope.newContribution.workingGroupAuthor = $scope.userWorkingGroups[0];
@@ -48,10 +52,15 @@ appCivistApp.controller('NewContributionCtrl',
 appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, component, milestone, contributions, themes, newContribution,
-				   newContributionResponse, cType, localStorageService, Contributions, Memberships) {
+				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
+                  $translate) {
 			init();
 
 			function init() {
+                $scope.user = localStorageService.get("user");
+                if ($scope.user && $scope.user.language)
+                    $translate.use($scope.user.language);
+
                 $scope.userIsAuthor = true;
 				$scope.assembly = assembly;
 				$scope.campaign = campaign;
@@ -108,11 +117,15 @@ appCivistApp.controller('NewContributionModalCtrl',
 		});
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
-                                                              localStorageService, Etherpad, Contributions) {
+                                                              localStorageService, Etherpad, Contributions, $translate) {
 
     init();
 
     function init() {
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
         if(!$scope.contribution.comments) {
             $scope.contribution.comments = [];
         }
@@ -188,10 +201,13 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
 appCivistApp.controller('ContributionModalCtrl',
     function ($scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
               contribution, assemblyID, campaignID, componentID, milestoneID, container, containerID, containerIndex,
-              localStorageService, Contributions, Etherpad) {
+              localStorageService, Contributions, Etherpad, $translate) {
         init();
         verifyAuthorship($scope, localStorageService, Contributions);
         function init() {
+            $scope.user = localStorageService.get("user");
+            if ($scope.user && $scope.user.language)
+                $translate.use($scope.user.language);
             $scope.contribution = contribution;
             $scope.assemblyID = assemblyID;
             $scope.campaignID = campaignID;
@@ -242,13 +258,17 @@ appCivistApp.controller('ContributionModalCtrl',
     });
 
 appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams, localStorageService,
-													 FileUploader, Contributions) {
+													 FileUploader, Contributions, $translate) {
 
 	init();
 	verifyAuthorship($scope, localStorageService, Contributions);
 
 	function init() {
-		if(!$scope.newContribution) {
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
+        if(!$scope.newContribution) {
 			$scope.newContribution = Contributions.defaultNewContribution();
 		}
 		if(!$scope.contribution) {
@@ -291,7 +311,7 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 
 appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routeParams, localStorageService,
                                                              Contributions, Campaigns, Assemblies, Etherpad,
-                                                             WorkingGroups) {
+                                                             WorkingGroups, $translate) {
     init();
 
     // TODO: improve efficiency by using angularjs filters instead of iterating through arrays
@@ -299,6 +319,10 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
     setCurrentCampaign($scope, localStorageService);
 
     function init() {
+        $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
         // 1. Setting up scope ID values
         $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
         $scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
@@ -307,8 +331,6 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         $scope.contributionID = ($routeParams.coid) ? parseInt($routeParams.coid) : 0;
         $scope.editContribution = ($routeParams.edit) ? ($routeParams.edit === "true") ? true : false : false;
         console.log("Editing contribution: "+$scope.editContribution);
-        $scope.user = localStorageService.get('user');
-
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
         $scope.etherpadServer = localStorageService.get("etherpadServer");
 
@@ -521,12 +543,16 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
 });
 
 appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
-													   Contributions) {
+													   Contributions, $translate) {
 	init();
 	initializeNewReplyModel();
 
 	function init() {
-		$scope.orderProperty = 'creation';
+        $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
+        $scope.orderProperty = 'creation';
 		$scope.orderReverse = true;
 		// TODO: read replies enabled from configurations
 		$scope.reply = {};
@@ -584,11 +610,15 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 });
 
 appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
-														  Contributions ) {
+														  Contributions, $translate ) {
 	init();
 
 	function init() {
-		$scope.votes = $scope.contribution.stats.points;
+        $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
+        $scope.votes = $scope.contribution.stats.points;
 		userAlreadyVotedInContribution();
 
 		$scope.upVote = function () {
@@ -658,12 +688,16 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 });
 
 appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,
-                                                      FileUploader, Contributions) {
+                                                      FileUploader, Contributions, $translate) {
 
     init();
     verifyAuthorship($scope, localStorageService, Contributions);
 
     function init() {
+        $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
         if(!$scope.newContribution) {
             $scope.newContribution = Contributions.defaultNewContribution();
         }

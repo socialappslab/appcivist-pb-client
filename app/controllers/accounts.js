@@ -4,11 +4,10 @@
  * AccountCtrl - functions to control authentication
  */
 appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
-		localStorageService, Assemblies, loginService, usSpinnerService) {
+		localStorageService, Assemblies, loginService, usSpinnerService, $translate) {
 	init();
 	function init() {
-		// check if there is already a user and a sessionKey in the
-		// $localStorage
+		// create a default newUser object for signup forms
 		$scope.newUser = {
 			"name": "",
 			"lang": "en",
@@ -16,6 +15,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 			"password": "",
 			"email": ""
 		};
+		// check if there is already a user and a sessionKey in the $localStorage
 		$scope.user = localStorageService.get("user");
         $scope.sessionKey = localStorageService.get("sessionKey");
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
@@ -32,7 +32,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 		if ($scope.user != null && $scope.sessionKey != null) {
 			// TODO Validate that the Session Key corresponds to the user
-			//$location.url('/home');
+			$translate.use($scope.user.language);
 		} else {
 			$scope.user = {};
 			$scope.sessionKey = null;
@@ -45,11 +45,11 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 	$scope.login = function() {
 		console.log("Signing in with email = " + $scope.email);
-		loginService.signIn($scope.user.email, $scope.user.password);
+		loginService.signIn($scope.user.email, $scope.user.password, $scope);
 	}
 
 	$scope.signup = function() {
-		loginService.signUp($scope.newUser);
+		loginService.signUp($scope.newUser, $scope);
 	}
 
 	$scope.signout = function() {
@@ -99,7 +99,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 		console.log("Changing Backend Server from: [" + serverBaseUrl + "] to [" + appCivistCoreBaseURL + "]");
 	}
 
-  $scope.changeVotingServer = function() {
+    $scope.changeVotingServer = function() {
 		var apiURL = localStorageService.get("votingApiUrl");
 		$scope.votingApiUrl = (apiURL === appcivist.api.voting.development) ? appcivist.api.voting.production : appcivist.api.voting.development;
 		localStorageService.set("votingApiUrl", $scope.votingApiUrl);
@@ -117,7 +117,7 @@ appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $locatio
 	}
 
 	$scope.signup = function() {
-		loginService.signUp($scope.newUser, $uibModalInstance);
+		loginService.signUp($scope.newUser, $scope, $uibModalInstance);
 	}
 
 });

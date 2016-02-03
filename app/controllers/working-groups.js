@@ -161,8 +161,19 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                                                      Memberships, Assemblies, Invitations, FlashService) {
     init();
     function init() {
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
+
+
         // 0. Initalize general scope variables
-        $scope.$root.startSpinner();
+        $scope.startSpinner();
         //$scope.user = localStorageService.get("user");
         $scope.assemblyID = $routeParams.aid;
         $scope.workingGroupID = $routeParams.wid;
@@ -339,7 +350,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             initializeWorkingGroupForNonMembers();
             initializeAssemblyCampaigns();
         } else {
-            $scope.$root.stopSpinner();
+            $scope.stopSpinner();
             FlashService.Error("An error occured while verifying your membership to the assembly: "+JSON.stringify(error))
         }
     }
@@ -350,13 +361,13 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         res.$promise.then(
             function (data) {
                 $scope.wGroup = data;
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
                 getWorkingGroupMembers($scope.assemblyID, $scope.workingGroupID);
                 getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
                 getInvitations($scope.workingGroupID);
             },
             function (error) {
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
                 FlashService.Error("Error occured trying to initialize the working group: "+JSON.stringify(error));
             }
         )
@@ -368,7 +379,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         res.$promise.then(
             function (data) {
                 $scope.wGroup = data;
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
 
                 if ($scope.userIsInvitedMember) {
                     getWorkingGroupMembers($scope.assemblyID, $scope.workingGroupID);
@@ -378,7 +389,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             },
             function (error) {
                 console.log("Group "+$scope.workingGroupID+" is NOT public");
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
                 FlashService.Error("Error occured trying to initialize the working group: "+JSON.stringify(error));
             }
         )

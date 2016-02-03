@@ -1,4 +1,5 @@
-﻿appCivistApp.controller('CampaignListCtrl', function($scope, $routeParams,$resource, $location, Campaigns, loginService, localStorageService) {
+﻿appCivistApp.controller('CampaignListCtrl', function($scope, $routeParams,$resource, $location, Campaigns, loginService,
+													 localStorageService, $translate) {
 	$scope.campaigns = [];
 	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 	$scope.etherpadServer = localStorageService.get("etherpadServer");
@@ -8,7 +9,9 @@
 	init();
 
 	function init() {
-		$scope.campaigns = Campaigns.get();
+		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);		$scope.campaigns = Campaigns.get();
 		$scope.campaigns.$promise.then(function(data) {
 			$scope.campaigns = data;
 			localStorageService.set("campaigns", $scope.campaigns);
@@ -19,13 +22,16 @@
 appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, $timeout, localStorageService,
 													   Campaigns, Assemblies, Components, Contributions,
-													   moment, modelFormatConfig) {
+													   moment, modelFormatConfig, $translate) {
 
 	init();
 	initializeNewCampaignModel();
 	setListOfLinkedAssemblies();
 
 	function init() {
+		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);
 		$scope.forms = {};
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.currentStep = 1;
@@ -551,11 +557,14 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies,
-														  Campaigns, Contributions){
+														  Campaigns, Contributions, $translate){
 
 	init();
 
 	function init() {
+		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);
 		// 1. Setting up scope ID values
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;

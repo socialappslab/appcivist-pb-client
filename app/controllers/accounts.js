@@ -4,7 +4,7 @@
  * AccountCtrl - functions to control authentication
  */
 appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
-		localStorageService, Assemblies, loginService, usSpinnerService) {
+		localStorageService, Assemblies, loginService, usSpinnerService, $translate) {
 	init();
 	function init() {
 		// create a default newUser object for signup forms
@@ -32,7 +32,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 		if ($scope.user != null && $scope.sessionKey != null) {
 			// TODO Validate that the Session Key corresponds to the user
-			//$location.url('/home');
+			$translate.use($scope.user.language);
 		} else {
 			$scope.user = {};
 			$scope.sessionKey = null;

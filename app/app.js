@@ -258,7 +258,21 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         suffix: '.json'
     });
 
-    $translateProvider.preferredLanguage('en_US');
+    $translateProvider
+        .preferredLanguage('en-US')
+        .fallbackLanguage('en-US')
+        .registerAvailableLanguageKeys(["en-US", "es-ES", "it-IT", "de-DE", "fr-FR" ], {
+            'en' : 'en-US',
+            'es' : 'es-ES',
+            'it' : 'it-IT',
+            'fr' : 'fr-FR',
+            'de' : 'de-DE',
+            'en_US' : 'en-US',
+            'es_ES' : 'es-ES',
+            'it_IT' : 'it-IT',
+            'fr_FR' : 'fr-FR',
+            'de_DE' : 'de-DE'
+        })
 }
 
 /**

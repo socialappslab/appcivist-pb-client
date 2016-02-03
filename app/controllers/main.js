@@ -15,6 +15,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		$scope.user = localStorageService.get("user");
 		if ($scope.user && $scope.user.language)
 			$translate.use($scope.user.language);
+
 		$scope.sessionKey = localStorageService.get("sessionKey");
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
     	$scope.votingApiUrl  = localStorageService.get("votingApiUrl");
@@ -22,6 +23,15 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		$scope.info = localStorageService.get("help");
 		$scope.userVotes = localStorageService.get("userVotes");
 		$scope.assembliesLoading = false;
+
+		// New User Object to be used by signup forms
+		$scope.newUser = {
+			"name": "",
+			"lang": "en",
+			"repeatPassword": "",
+			"password": "",
+			"email": ""
+		};
 
 		if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
 			$scope.serverBaseUrl = appCivistCoreBaseURL;

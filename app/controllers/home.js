@@ -1,6 +1,5 @@
-﻿appCivistApp.controller('HomeCtrl', function ($scope, $routeParams,
-                                              $resource, $location, Campaigns, Memberships, Notifications,
-                                              loginService, localStorageService) {
+﻿appCivistApp.controller('HomeCtrl', function ($scope, $routeParams, $resource, $location, Campaigns, Memberships,
+                                              Notifications, loginService, localStorageService, $translate) {
     init();
     initializeSideBoxes();
     getUserAssemblies();
@@ -9,6 +8,10 @@
     getUserNotifications();
 
     function init() {
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
         console.log("serverBaseUrl: " + $scope.serverBaseUrl);
         $scope.assemblies = [];
@@ -52,7 +55,7 @@
     }
 
     function getUserAssemblies() {
-        $scope.assemblies = Memberships.assemblies().query();
+        $scope.assemblies = Memberships.assemblies($scope.user.userId).query();
         $scope.assemblies.$promise.then(
             function (data) {
                 $scope.assemblies = [];
@@ -70,7 +73,7 @@
     }
 
     function getUserCampaigns() {
-        $scope.campaigns = Campaigns.campaigns('ongoing').query();
+        $scope.campaigns = Campaigns.campaigns($scope.user.uuid, 'ongoing').query();
         $scope.campaigns.$promise.then(
             function (data) {
                 $scope.campaigns = data;
@@ -84,7 +87,7 @@
     }
 
     function getUserWorkingGroups() {
-        $scope.workingGroups = Memberships.workingGroups().query();
+        $scope.workingGroups = Memberships.workingGroups($scope.user.userId).query();
         $scope.workingGroups.$promise.then(
             function (data) {
                 $scope.workingGroups = [];
@@ -105,7 +108,7 @@
     }
 
     function getUserNotifications() {
-        $scope.notifications = Notifications.query();
+        $scope.notifications = Notifications.userNotificationsByUUID($scope.user.uuid).query();
 
         $scope.notifications.$promise.then(
             function (data) {

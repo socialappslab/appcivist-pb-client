@@ -37,7 +37,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
     initializeListOfAssembliesToFollow();
 
     function init() {
-		$scope.currentStep=1;
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
+        $scope.currentStep=1;
         $scope.tabs = [
             {
                 step: 1,
@@ -275,6 +279,16 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 });
             }
         }
+
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
 	}
 
     function initializeNewAssembly() {
@@ -303,7 +317,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
     }
 
     function initializeListOfAssembliesToFollow() {
-        $scope.$root.startSpinner();
+        $scope.startSpinner();
         var sessionKey = localStorageService.get("sessionKey");
         if(sessionKey === null || sessionKey === undefined || sessionKey === "") {
             $scope.assemblies = Assemblies.assembliesWithoutLogin().query();
@@ -314,11 +328,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             function(data){
                 $scope.assemblies =  data;
                 console.log("Assemblies loaded...");
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
             },
             function (error) {
                 $scope.errors.push(error);
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
             }
         );
     }
@@ -336,17 +350,30 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
                                                  $resource, $http, Assemblies, $location, Contributions, $uibModal,
                                                  loginService, localStorageService, Memberships, Invitations,
-                                                 FlashService) {
+                                                 FlashService, $translate) {
     init();
 
     function init() {
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
         // Grab assemblyID off of the route
         $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
         console.log("Loading Assembly: "+$routeParams.aid);
 
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
+
         if ($scope.assemblyID > 0) {
+            $scope.startSpinner();
             // 0. Prepare scope variables to use and start loading spinner
-            $scope.$root.startSpinner();
             $scope.currentAssembly = {};
             $scope.campaigns = null;
             $scope.pendingInvitations = [];
@@ -508,7 +535,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.currentAssembly.$promise.then(
                 initializeAssembly,
                 function (error) {
-                    $scope.$root.stopSpinner();
+                    $scope.stopSpinner();
                     FlashService.Error("An error occured while trying to read the assembly: "+JSON.stringify(error));
                 }
             );
@@ -530,7 +557,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
         if (error.data.responseStatus === "NODATA" || error.data.responseStatus === "UNAUTHORIZED") {
             initalizeAssemblyForNonMember();
         } else {
-            $scope.$root.stopSpinner();
+            $scope.stopSpinner();
             FlashService.Error("An error occured while verifying your membership to the assembly: "+JSON.stringify(error))
         }
     }
@@ -560,11 +587,11 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
         $scope.currentAssembly = Assemblies.assemblyPublicProfile($scope.assemblyID).get();
         $scope.currentAssembly.$promise.then(
             function (data) {
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
                 $scope.currentAssembly = data;
             },
             function (error) {
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
                 $scope.assemblyNotListed = true;
                 FlashService.Error("The assembly is not listed");
             }
@@ -581,10 +608,10 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
         $scope.assemblyMembers.$promise.then(
             function(data){
                 $scope.assemblyMembers = data;
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
             },
             function(error) {
-                $scope.$root.stopSpinner();
+                $scope.stopSpinner();
             }
         );
         getInvitations($scope.assemblyID);

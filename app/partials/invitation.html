@@ -4,7 +4,7 @@
     <div class="modal-content">
         <div id="form_person">
             <div class="modal-header">
-                <h1><strong>Send invitation for {{type}} {{targetId}}</strong></h1>
+                <h1><strong>{{'Send invitation for'| translate}} {{type}} {{targetId}}</strong></h1>
             </div>
             <div class="modal-body">
                 <form id="signup_form" class="form-horizontal" role="form" method="post">
@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="email" class="col-md-3 control-label">Invitation text</label>
+                        <label for="email" class="col-md-3 control-label">{{'Invitation text' | translate}}</label>
                         <div class="col-md-9">
                             <textarea class="form-control" id="text" rows="6"
                                       ng-model="newInvitation.invitationEmail"
@@ -27,13 +27,13 @@
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" ng-model="newInvitation.moderator"/>
-                            <strong>Invite the user to be a moderator</strong>
+                            <strong>{{'Invite user to be a moderator' | translate}}</strong>
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" ng-model="newInvitation.coordinator"/>
-                            <strong>Invite the user to be a coordinator</strong>
+                            <strong>{{'Invite user to be a coordinator' | translate}}</strong>
                         </label>
                     </div>
                     <div class="voffset3"></div>
@@ -41,7 +41,7 @@
                         <!-- Button -->
                         <div class="col-md-12">
                             <input type="submit" name="submit" class="btn btn-primary col-md-12"
-                                   id="submit_person" ng-click="sendInvitation()" value="Send"/>
+                                   id="submit_person" ng-click="sendInvitation()" value="{{'Send' | translate}}"/>
                         </div>
                     </div>
                 </form>

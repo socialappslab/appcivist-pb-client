@@ -43,6 +43,7 @@
   "header.menu.Settings" : "Settings",
   "header.menu.Notification" : "Notification",
   "header.menu.Notifications" : "Notifications",
+  "Toggle navigation" : "Toggle navigation",
 
   "AppCivist Common Strings" : "AppCivist Common Strings",
   "appcivist" : "AppCivist",
@@ -62,6 +63,12 @@
   "ProposalDrafts" : "Proposal Drafts",
   "Idea" : "Idea",
   "Ideas" : "Ideas",
+  "Proposal Making" : "Proposal Making",
+  "Working Groups" : "Working Groups",
+  "Mobilizing" : "Mobilizing",
+  "Deliberating" : "Deliberating",
+  "Versioning" : "Versioning",
+  "Visualizing" : "Visualizing",
 
   "Other common strings" : "Other common strings",
   "Email" : "Email",
@@ -137,4 +144,13 @@
   "wgroups.text.example" : "(Max. 250 words) e.g., Group developing Urban Infrastucture proposals for Parc de Belleville",
   "wgroups.select.campaign.themes" : "Select one or more Campaign Themes for the group",
   "wgroups.select.icon" : "Pick an icon or upload an image to represent your Group"
+
+  "Invitation page strings" : "Invitation page strings",
+  "Invitation text" : "Invitation text",
+  "Invitation" : "Invitation",
+  "Invitations" : "Invitations",
+  "Invite user to be a moderator" : "Invite the user to be a moderator",
+  "Invite user to be a coordinator" : "Invite user to be a coordinator",
+  "Send" : "Send",
+  "Send invitation for" : "Send invitation for"
 }

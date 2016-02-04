@@ -158,7 +158,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal, $location,
                                                      Upload, localStorageService, Contributions, WorkingGroups,
-                                                     Memberships, Assemblies, Invitations, FlashService) {
+                                                     Memberships, Assemblies, Invitations, FlashService, $translate) {
     init();
     function init() {
         $scope.startSpinner = function(){

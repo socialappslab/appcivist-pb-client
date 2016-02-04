@@ -174,7 +174,10 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
 
         // 0. Initalize general scope variables
         $scope.startSpinner();
-        //$scope.user = localStorageService.get("user");
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
         $scope.assemblyID = $routeParams.aid;
         $scope.workingGroupID = $routeParams.wid;
         $scope.newForumPost = Contributions.defaultNewContribution();

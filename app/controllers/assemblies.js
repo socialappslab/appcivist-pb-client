@@ -199,7 +199,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                     } else if($scope.newAssembly.profile.registration.invitation &&
                         $scope.newAssembly.profile.registration.request) {
                         $scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
-                    } s
+                    }
                 }
 
                 console.log("Creating assembly with membership = "+$scope.newAssembly.profile.supportedMembership);

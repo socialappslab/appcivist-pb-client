@@ -238,24 +238,25 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 !$scope.userIsMember && $scope.wGroup.profile != undefined
                 && ( ($scope.wGroup.profile.supportedMembership === "OPEN")
                     || ($scope.wGroup.profile.supportedMembership === "INVITATION_AND_REQUEST")
+                    || ($scope.wGroup.profile.supportedMembership === "REQUEST")
                 ),
                 inviteButton:
                 $scope.userIsMember
                 && $scope.wGroup.profile != undefined
-                && ( ( $scope.wGroup.profile.supportedMembership === "OPEN")
-                    || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED")
+                && ( ( $scope.wGroup.profile.managementType === "OPEN")
+                    || ( ($scope.wGroup.profile.managementType === "COORDINATED")
                         && ($scope.isRightRole("COORDINATOR") )
-                        || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                        || ( ($scope.wGroup.profile.managementType === "COORDINATED_AND_MODERATED")
                         && ($scope.isRightRole("COORDINATOR")) )
                     )
                 ),
                 campaignButton:
                 $scope.userIsMember
                 && $scope.wGroup.profile != undefined
-                && ( ($scope.wGroup.profile.supportedMembership === "OPEN")
-                    || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED")
+                && ( ($scope.wGroup.profile.managementType === "OPEN")
+                    || ( ($scope.wGroup.profile.managementType === "COORDINATED")
                         && ($scope.isRightRole("COORDINATOR") )
-                        || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                        || ( ($scope.wGroup.profile.managementType === "COORDINATED_AND_MODERATED")
                             && ($scope.isRightRole("COORDINATOR"))
                         )
                     )

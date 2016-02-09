@@ -421,26 +421,27 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             buttonMap = {
                 joinButton:
                 !$scope.userIsMember && $scope.currentAssembly.profile != undefined
-                && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
-                    || ($scope.currentAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST")
+                    && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
+                        || ($scope.currentAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST")
+                        || ($scope.currentAssembly.profile.supportedMembership === "REQUEST")
                 ),
                 inviteButton:
                 $scope.userIsMember
-                && $scope.currentAssembly.profile != undefined
-                && ( ( $scope.currentAssembly.profile.supportedMembership === "OPEN")
-                    || ( ($scope.currentAssembly.profile.supportedMembership === "COORDINATED")
-                        && ($scope.isRightRole("COORDINATOR") )
-                        || ( ($scope.currentAssembly.profile.supportedMembership === "COORDINATED_AND_MODERATED")
-                        && ($scope.isRightRole("COORDINATOR")) )
+                    && $scope.currentAssembly.profile != undefined
+                    && ( ( $scope.currentAssembly.profile.managementType === "OPEN")
+                        || ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
+                            && ($scope.isRightRole("COORDINATOR") )
+                        || ( ($scope.currentAssembly.profile.managementType === "COORDINATED_AND_MODERATED")
+                            && ($scope.isRightRole("COORDINATOR")) )
                     )
                 ),
                 campaignButton:
                 $scope.userIsMember
                 && $scope.currentAssembly.profile != undefined
-                && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
-                    || ( ($scope.currentAssembly.profile.supportedMembership === "COORDINATED")
+                && ( ($scope.currentAssembly.profile.managementType === "OPEN")
+                    || ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
                         && ($scope.isRightRole("COORDINATOR") )
-                        || ( ($scope.currentAssembly.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                        || ( ($scope.currentAssembly.profile.managementType === "COORDINATED_AND_MODERATED")
                             && ($scope.isRightRole("COORDINATOR"))
                         )
                     )

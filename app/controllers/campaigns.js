@@ -451,7 +451,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			}
 
 			// Setup existing components (from linkedCampaigns)
-			addToExistingComponents(newCampaign.existingComponents, newCampaign.proposalComponents, linkedCampaign)
+			addToExistingComponents(newCampaign.existingComponents, newCampaign.proposalComponents, newCampaign.linkedCampaign)
 
 			// setup milestones in components
 			// TODO: setup milestones already inside components when creation

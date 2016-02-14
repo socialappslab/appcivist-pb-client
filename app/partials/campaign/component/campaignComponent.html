@@ -10,9 +10,8 @@
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
             <ul id="timeline" class="row timeline">
                 <li ng-class="component.componentId === componentID ? 'active selected' : 'active'"
-                    ng-repeat="component in components | filter: (component.timeline===1)"
-                    ng-class="component.componentId === componentID ? 'selected active' : ''">
-                    <h4>
+                    ng-repeat="component in components track by $index">
+                    <!--<h4 ng-if="component.timeline === 1">-->
                         <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentId}}">
                             <strong>
                                 {{component.title}}
@@ -160,7 +159,7 @@
                             assemblyid="assembly.assemblyId"
                             campaignid="campaign.campaignId"
                             componentid="component.componentId"
-                            milestoneid="milestone.componentMilestoneId"
+                            milestoneid="milestone.componentInstanceMilestoneId"
                             container="contributions"
                             containerid="component.resourceSpaceId"
                             containerindex="$index"

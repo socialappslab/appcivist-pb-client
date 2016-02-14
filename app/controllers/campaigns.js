@@ -718,6 +718,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 */
 	function setCurrentComponent($scope, localStorageService) {
 		$scope.components = $scope.campaign.components;
+
 		if ($scope.componentID === null || $scope.componentID===0) {
 			$scope.component = $scope.components[0];
 			$scope.componentID = $scope.component.componentId;
@@ -790,18 +791,16 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.displayedContributionType = $scope.milestone.mainContributionType;
 
 		console.log("Loading {assembly,campaign,component,milestone}: "
-			+$scope.assembly.assemblyId+", "
-			+$scope.campaign.campaignId+", "
-			+$scope.component.componentId+", "
-			+$scope.milestone.componentMilestoneId
+			+$scope.assemblyID+", "
+			+$scope.campaignID+", "
+			+$scope.componentID+", "
+			+$scope.milestoneID
 		);
-
 
 		console.log("Loading {# of components, # of components}: "
-			+$scope.components.length+", "
-			+$scope.milestones.length
+				+$scope.components.length+", "
+				+$scope.milestones.length
 		);
-
 	}
 
 	function setupDaysToDue() {

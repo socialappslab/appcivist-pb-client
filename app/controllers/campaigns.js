@@ -468,17 +468,10 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				components[m.componentIndex].milestones.push(m);
 			}
 
-			var timelineOrder = [];
 			for (var i = 0; i<components.length; i+=1) {
 				var component = components[i];
-				if(component.enabled) {
-					//timelineOrder.push({"name":component.name, "position": component.position});
+				if((component.enabled && component.active)||(component.enabled && component.linked)) {
 					newCampaign.components.push(component);
-					//if(component.linked) {
-					//	newCampaign.existingComponents.push(component);
-					//} else {
-					//	newCampaign.components.push(component);
-					//}
 				}
 			}
 

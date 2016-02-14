@@ -1,4 +1,4 @@
-﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $modal, AppCivistAuth,
+﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
 											  FlashService) {
 
 
@@ -65,7 +65,7 @@
 					}
 				},
 				function(error) {
-					$modal.open({
+					$uibModal.open({
 						templateUrl: 'app/partials/landing/loginErrorModal.html',
 						size: 'sm',
 						controller: ['$scope', function($scope){

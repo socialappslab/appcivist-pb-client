@@ -148,8 +148,12 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             function (response) {
                 $scope.campaign = response;
                 $scope.campaignThemes = $scope.campaign.themes;
+                if (!$scope.campaignThemes) {
+                    $scope.campaignThemes = [];
+                }
             },
             function (error) {
+                $scope.campaignThemes = [];
                 $scope.errors.push(error);
             }
         );

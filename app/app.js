@@ -273,6 +273,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             'fr_FR' : 'fr-FR',
             'de_DE' : 'de-DE'
         })
+        .useSanitizeValueStrategy(null);
 }
 
 /**

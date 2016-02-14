@@ -404,22 +404,22 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         $scope.components = $scope.campaign.components;
         if ($scope.componentID === null || $scope.componentID===0) {
             $scope.component = $scope.components[0];
-            $scope.componentID = $scope.component.componentInstanceId;
+            $scope.componentID = $scope.component.componentId;
             localStorageService.set("currentComponent", $scope.component );
             console.log("Setting current component to: "+ $scope.component.title );
 
         } else {
             $scope.component = localStorageService.get('currentComponent');
-            if($scope.component === null || $scope.component.componentInstanceId != $scope.componentID) {
+            if($scope.component === null || $scope.component.componentId != $scope.componentID) {
                 $scope.components.forEach(function(entry) {
-                    if(entry.componentInstanceId === $scope.componentID) {
+                    if(entry.componentId === $scope.componentID) {
                         localStorageService.set("currentComponent", entry);
                         $scope.component = entry;
-                        console.log("Setting current component to: " + entry.componentInstanceId);
+                        console.log("Setting current component to: " + entry.componentId);
                     }
                 });
             } else {
-                console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentInstanceId);
+                console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentId);
             }
         }
     }
@@ -437,14 +437,14 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         $scope.milestones = $scope.component.milestones;
         if ($scope.milestoneID === null || $scope.milestoneID === 0) {
             $scope.milestone = $scope.milestones[0];
-            $scope.milestoneID = $scope.milestone.componentInstanceMilestoneId;
+            $scope.milestoneID = $scope.milestone.componentMilestoneId;
             localStorageService.set("currentMilestone", $scope.milestone);
             console.log("Setting current milestone to: "+$scope.milestone.title);
         } else {
             $scope.milestone = localStorageService.get('currentMilestone');
-            if($scope.milestone === null || $scope.milestone.componentInstanceMilestoneId != $scope.milestoneID) {
+            if($scope.milestone === null || $scope.milestone.componentMilestoneId != $scope.milestoneID) {
                 $scope.milestones.forEach(function(entry) {
-                    if(entry.componentInstanceMilestoneId === $scope.milestoneID) {
+                    if(entry.componentMilestoneId === $scope.milestoneID) {
                         localStorageService.set("currentMilestone", entry);
                         $scope.milestone = entry;
                         console.log("Setting current milestone to: " + entry.title);
@@ -490,8 +490,8 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
             console.log("Loading {assembly,campaign,component,milestone,contribution}: "
                 +$scope.assembly.assemblyId+", "
                 +$scope.campaign.campaignId+", "
-                +$scope.component.componentInstanceId+", "
-                +$scope.milestone.componentInstanceMilestoneId+", "
+                +$scope.component.componentId+", "
+                +$scope.milestone.componentMilestoneId+", "
                 +$scope.contribution.contributionId
             );
 

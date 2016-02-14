@@ -9,11 +9,11 @@
 
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
             <ul id="timeline" class="row timeline">
-                <li ng-class="component.componentInstanceId === componentID ? 'active selected' : 'active'"
+                <li ng-class="component.componentId === componentID ? 'active selected' : 'active'"
                     ng-repeat="component in components | filter: (component.timeline===1)"
-                    ng-class="component.componentInstanceId === componentID ? 'selected active' : ''">
+                    ng-class="component.componentId === componentID ? 'selected active' : ''">
                     <h4>
-                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentInstanceId}}">
+                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentId}}">
                             <strong>
                                 {{component.title}}
                             </strong>
@@ -28,13 +28,13 @@
                     <ul class="progressline-phases">
                         <li class="progressline-phase" ng-repeat="m in milestones">
                             <h4 class="progressline-phase-title">
-                                <a ng-class="m.componentInstanceMilestoneId === milestoneID ? 'selected' : ''"
-                                   ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{m.componentInstanceMilestoneId}}">
+                                <a ng-class="m.componentMilestoneId === milestoneID ? 'selected' : ''"
+                                   ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{m.componentMilestoneId}}">
                                     {{m.title}}
-                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue > 1">(due in {{mDaysToDue}} days)</span>
-                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && milestoneStarted && mDaysToDue === 1">(due in {{mDaysToDue}} day)</span>
-                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && !milestoneStarted && mDaysToDue > 1">(starts in {{mDaysToDue}} days)</span>
-                                    <span ng-if="m.componentInstanceMilestoneId === milestoneID && !milestoneStarted && mDaysToDue === 1">(starts in {{mDaysToDue}} day)</span>
+                                    <span ng-if="m.componentMilestoneId === milestoneID && milestoneStarted && mDaysToDue > 1">(due in {{mDaysToDue}} days)</span>
+                                    <span ng-if="m.componentMilestoneId === milestoneID && milestoneStarted && mDaysToDue === 1">(due in {{mDaysToDue}} day)</span>
+                                    <span ng-if="m.componentMilestoneId === milestoneID && !milestoneStarted && mDaysToDue > 1">(starts in {{mDaysToDue}} days)</span>
+                                    <span ng-if="m.componentMilestoneId === milestoneID && !milestoneStarted && mDaysToDue === 1">(starts in {{mDaysToDue}} day)</span>
                                 </a>
                             </h4>
 
@@ -145,8 +145,8 @@
                                   contribution="contribution" assemblyid="assemblyID"
                                   assemblyid="assembly.assemblyId"
                                   campaignid="campaign.campaignId"
-                                  componentid="component.componentInstanceId"
-                                  milestoneid="milestone.componentInstanceMilestoneId"
+                                  componentid="component.componentId"
+                                  milestoneid="milestone.componentMilestoneId"
                                   container="contributions"
                                   containerid="component.resourceSpaceId"
                                   containerindex="$index"
@@ -159,8 +159,8 @@
                             contribution="contribution"
                             assemblyid="assembly.assemblyId"
                             campaignid="campaign.campaignId"
-                            componentid="component.componentInstanceId"
-                            milestoneid="milestone.componentInstanceMilestoneId"
+                            componentid="component.componentId"
+                            milestoneid="milestone.componentMilestoneId"
                             container="contributions"
                             containerid="component.resourceSpaceId"
                             containerindex="$index"

@@ -36,6 +36,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.currentStep = 1;
 		$scope.prevStep = 2;
+
 		// Campaign creation steps and templates for each step
 		$scope.steps = [
 			{
@@ -201,6 +202,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 		/**
 		 * Populates the list of optional themes according to the linked campaign themes
+		 * Additionally, it includes linked components in the new campaign
 		 */
 		$scope.initializeLinkedCampaignOptionThemes = function(campaign) {
 			$scope.campaignThemes = [];
@@ -225,9 +227,6 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 						$scope.newCampaign.linkedComponents.push(component);
 					}
 				}
-				//$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[2]);
-				//$scope.newCampaign.linkedComponents.push($scope.newCampaign.linkedCampaign.campaign.components[3]);
-
 			} else {
 				for(var i=0; i<$scope.newCampaign.linkedCampaign.campaign.components.length; i+=1) {
 					var component = $scope.newCampaign.linkedCampaign.campaign.components[i];
@@ -238,11 +237,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 						$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[i];
 					}
 				}
-				//$scope.newCampaign.linkedComponents[0] = $scope.newCampaign.linkedCampaign.campaign.components[2];
-				//$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[3];
 			}
-			$scope.newCampaign.proposalComponents[4].componentInstanceId = $scope.newCampaign.linkedComponents[0].componentInstanceId;
-			$scope.newCampaign.proposalComponents[5].componentInstanceId = $scope.newCampaign.linkedComponents[1].componentInstanceId;
+			$scope.newCampaign.proposalComponents[4].componentId = $scope.newCampaign.linkedComponents[0].componentId;
+			$scope.newCampaign.proposalComponents[5].componentId = $scope.newCampaign.linkedComponents[1].componentId;
 		}
 
 		/**
@@ -437,24 +434,30 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	}
 
 	function prepareCampaignToCreate() {
-		var newCampaign = $scope.newCampaign;
+		var newCampaign = {};
+		newCampaign.title = $scope.newCampaign.title;
+		newCampaign.goal = $scope.newCampaign.goal;
+		newCampaign.listed = $scope.newCampaign.listed;
+		newCampaign.themes = $scope.newCampaign.themes;
+
 		var requiredFields = newCampaign.title!=undefined && newCampaign.goal!=undefined;
 
 		if (requiredFields) {
-			var components = newCampaign.proposalComponents;
-			var milestones = newCampaign.milestones;
+			var components = $scope.newCampaign.proposalComponents;
+			var milestones = $scope.newCampaign.milestones;
 
 			// Setup existing themes
+			newCampaign.existingThemes = [];
 			addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);
-			if (newCampaign.template.value === 'LINKED') {
+
+			if ($scope.newCampaign.template.value === 'LINKED') {
 				addToExistingThemes(newCampaign.existingThemes, $scope.campaignThemes);
 			}
 
-			// Setup existing components (from linkedCampaigns)
-			addToExistingComponents(newCampaign.existingComponents, newCampaign.proposalComponents, newCampaign.linkedCampaign)
-
 			// setup milestones in components
 			// TODO: setup milestones already inside components when creation
+			newCampaign.components = [];
+			newCampaign.existingComponents = [];
 			for (var i = 0; i<milestones.length; i+=1) {
 				var m = milestones[i];
 				m.start = m.date;
@@ -465,12 +468,26 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				components[m.componentIndex].milestones.push(m);
 			}
 
+			var timelineOrder = [];
 			for (var i = 0; i<components.length; i+=1) {
 				var component = components[i];
 				if(component.enabled) {
-					newCampaign.components.push(component)
+					//timelineOrder.push({"name":component.name, "position": component.position});
+					newCampaign.components.push(component);
+					//if(component.linked) {
+					//	newCampaign.existingComponents.push(component);
+					//} else {
+					//	newCampaign.components.push(component);
+					//}
 				}
 			}
+
+			// Setup configurations
+			newCampaign.configs = $scope.newCampaign.configs;
+			newCampaign.configs[0].value = $scope.newCampaign.config.budget;
+			newCampaign.configs[1].value = $scope.newCampaign.config.budgetCurrency;
+			newCampaign.configs[2].value = $scope.newCampaign.config.discussionReplyTo;
+			newCampaign.configs[3].value = $scope.newCampaign.config.upDownVoting;
 		} else {
 			newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
 		}
@@ -494,9 +511,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			for (var i = 0; i<addedComponents.length; i+=1) {
 				var c = addedComponents[i];
 				if(c.linked) {
-					c.componentInstanceId = getComponentIdByKey(linkedCampaign.components, c.key);
-					if (c.componentInstanceId > 0) {
-						existingComponents.push(c);
+					c.componentId = getComponentIdByKey(linkedCampaign.campaign.components, c.key);
+					if (c.componentId > 0) {
+						existingComponents.push(c.componentId);
 					}
 				}
 			}
@@ -508,7 +525,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		for (var i = 0; i<components.length; i+=1) {
 			var c = components[i];
 			if (c.key === key) {
-				return c.componentInstanceId;
+				return c.componentId;
 			}
 		}
 		return -1;
@@ -534,8 +551,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				var campaignRes = Campaigns.newCampaign($scope.assemblyID).save(postCampaign);
 				campaignRes.$promise.then(
 						function(data) {
-							newCampaign = data;
-							$location.url('/#/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
+							$scope.newCampaign = data;
+							console.log("Redirecting to /#/assembly/"+$scope.assemblyID+"/campaign/"+$scope.newCampaign.campaignId);
+							$location.url('/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
 						},
 						function(error) {
 							console.log("Error in the creation of the Campaign: "+JSON.stringify(error.statusMessage));
@@ -709,22 +727,22 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.components = $scope.campaign.components;
 		if ($scope.componentID === null || $scope.componentID===0) {
 			$scope.component = $scope.components[0];
-			$scope.componentID = $scope.component.componentInstanceId;
+			$scope.componentID = $scope.component.componentId;
 			localStorageService.set("currentComponent", $scope.component );
 			console.log("Setting current component to: "+ $scope.component.title );
 
 		} else {
 			$scope.component = localStorageService.get('currentComponent');
-			if($scope.component === null || $scope.component.componentInstanceId != $scope.componentID) {
+			if($scope.component === null || $scope.component.componentId != $scope.componentID) {
 				$scope.components.forEach(function(entry) {
-					if(entry.componentInstanceId === $scope.componentID) {
+					if(entry.componentId === $scope.componentID) {
 						localStorageService.set("currentComponent", entry);
 						$scope.component = entry;
-						console.log("Setting current component to: " + entry.componentInstanceId);
+						console.log("Setting current component to: " + entry.componentId);
 					}
 				});
 			} else {
-				console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentInstanceId);
+				console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentId);
 			}
 		}
 	}
@@ -741,14 +759,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.milestones = $scope.component.milestones;
 		if ($scope.milestoneID === null || $scope.milestoneID === 0) {
 			$scope.milestone = $scope.milestones[0];
-			$scope.milestoneID = $scope.milestone.componentInstanceMilestoneId;
+			$scope.milestoneID = $scope.milestone.componentMilestoneId;
 			localStorageService.set("currentMilestone", $scope.milestone);
 			console.log("Setting current milestone to: "+$scope.milestone.title);
 		} else {
 			$scope.milestone = localStorageService.get('currentMilestone');
-			if($scope.milestone === null || $scope.milestone.componentInstanceMilestoneId != $scope.milestoneID) {
+			if($scope.milestone === null || $scope.milestone.componentMilestoneId != $scope.milestoneID) {
 				$scope.milestones.forEach(function(entry) {
-					if(entry.componentInstanceMilestoneId === $scope.milestoneID) {
+					if(entry.componentMilestoneId === $scope.milestoneID) {
 						localStorageService.set("currentMilestone", entry);
 						$scope.milestone = entry;
 						console.log("Setting current milestone to: " + entry.title);
@@ -781,8 +799,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		console.log("Loading {assembly,campaign,component,milestone}: "
 			+$scope.assembly.assemblyId+", "
 			+$scope.campaign.campaignId+", "
-			+$scope.component.componentInstanceId+", "
-			+$scope.milestone.componentInstanceMilestoneId
+			+$scope.component.componentId+", "
+			+$scope.milestone.componentMilestoneId
 		);
 
 

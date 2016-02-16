@@ -11,7 +11,7 @@
                 <a ng-href="{{att.url}}">{{(att.name && att.name != "" ? att.name : att.url) | limitTo: 25}}{{(att.url.length > 25) ? '...' : ''}}</a>
             </span>
             <span ng-if="att.resourceType==='PICTURE'">
-                <img src="{{att.url}}" height="25" width="25"> <a ng-href="{{att.url}}">{{(att.name && att.name != "" ? att.name : att.url) | limitTo: 25}}{{(att.url.length > 25) ? '...' : ''}}</a>
+                <img ng-src="{{att.url}}" height="25" width="25"> <a ng-href="{{att.url}}">{{(att.name && att.name != "" ? att.name : att.url) | limitTo: 25}}{{(att.url.length > 25) ? '...' : ''}}</a>
             </span>
         </li>
     </ul>

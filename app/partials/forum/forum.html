@@ -5,7 +5,7 @@
                 <div id="assemblyInfo" class="row">
                     <div class="col-md-12 col-sm-12" ng-if="currentAssembly.profile">
                         <div class="thumbnail assembly">
-                            <img alt="100x100" src="{{currentAssembly.profile.icon}}"
+                            <img alt="100x100" ng-src="{{currentAssembly.profile.icon}}"
                                  data-holder-rendered="true" class="image-circle">
                             <div class="caption">
                                 <h4><strong>{{currentAssembly.name}}</strong></h4>

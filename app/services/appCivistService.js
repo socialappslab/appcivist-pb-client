@@ -908,8 +908,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                             defaultSection: true
                         }
                     ],
-                    component: {
-                        componentId:23
+                    definition: {
+                        componentDefId:1
                     },
                     milestones: []
                 },
@@ -926,8 +926,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     configs: configDict['Versioning'],
                     template: "/app/partials/campaign/creation/components/versioning.html",
                     descriptionTemplate: "/app/partials/campaign/creation/components/versioningDescription.html",
-                    component: {
-                        componentId:24
+                    definition: {
+                        componentDefId:2
                     },
                     milestones: []
                 },
@@ -944,8 +944,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     configs: configDict['Deliberation'],
                     template: "/app/partials/campaign/creation/components/deliberation.html",
                     descriptionTemplate: "/app/partials/campaign/creation/components/deliberationDescription.html",
-                    component: {
-                        componentId:25
+                    definition: {
+                        componentDefId:3
                     },
                     milestones: []
                 },
@@ -962,8 +962,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     configs: configDict['Voting'],
                     template: "/app/partials/campaign/creation/components/voting.html",
                     descriptionTemplate: "/app/partials/campaign/creation/components/votingDescription.html",
-                    component: {
-                        componentId:26
+                    definition: {
+                        componentDefId:4
                     },
                     milestones: []
                 },
@@ -977,8 +977,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     active: false,
                     state: "",
                     linked: true,
-                    component: {
-                        componentId:25
+                    definition: {
+                        componentDefId:3
                     },
                     milestones: []
                 },
@@ -992,8 +992,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     active: false,
                     state: "",
                     linked: true,
-                    component: {
-                        componentId:26
+                    definition: {
+                        componentDefId:4
                     },
                     milestones: []
                 }

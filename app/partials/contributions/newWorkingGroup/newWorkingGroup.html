@@ -37,7 +37,7 @@
                 <div ng-repeat="icon in defaultIcons">
                     <div class="col-md-4">
                         <div class="image-capsule">
-                            <img alt="100x100" src="{{icon.url}}"
+                            <img alt="100x100" ng-src="{{icon.url}}"
                                  class="image-circle"
                                  ng-click="setNewWorkingGroupIcon(icon.url, icon.name)">
                         </div>

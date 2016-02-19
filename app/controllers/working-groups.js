@@ -148,8 +148,12 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             function (response) {
                 $scope.campaign = response;
                 $scope.campaignThemes = $scope.campaign.themes;
+                if (!$scope.campaignThemes) {
+                    $scope.campaignThemes = [];
+                }
             },
             function (error) {
+                $scope.campaignThemes = [];
                 $scope.errors.push(error);
             }
         );
@@ -158,7 +162,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal, $location,
                                                      Upload, localStorageService, Contributions, WorkingGroups,
-                                                     Memberships, Assemblies, Invitations, FlashService) {
+                                                     Memberships, Assemblies, Invitations, FlashService, $translate) {
     init();
     function init() {
         $scope.startSpinner = function(){
@@ -174,7 +178,10 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
 
         // 0. Initalize general scope variables
         $scope.startSpinner();
-        //$scope.user = localStorageService.get("user");
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
         $scope.assemblyID = $routeParams.aid;
         $scope.workingGroupID = $routeParams.wid;
         $scope.newForumPost = Contributions.defaultNewContribution();
@@ -235,24 +242,25 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 !$scope.userIsMember && $scope.wGroup.profile != undefined
                 && ( ($scope.wGroup.profile.supportedMembership === "OPEN")
                     || ($scope.wGroup.profile.supportedMembership === "INVITATION_AND_REQUEST")
+                    || ($scope.wGroup.profile.supportedMembership === "REQUEST")
                 ),
                 inviteButton:
                 $scope.userIsMember
                 && $scope.wGroup.profile != undefined
-                && ( ( $scope.wGroup.profile.supportedMembership === "OPEN")
-                    || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED")
+                && ( ( $scope.wGroup.profile.managementType === "OPEN")
+                    || ( ($scope.wGroup.profile.managementType === "COORDINATED")
                         && ($scope.isRightRole("COORDINATOR") )
-                        || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                        || ( ($scope.wGroup.profile.managementType === "COORDINATED_AND_MODERATED")
                         && ($scope.isRightRole("COORDINATOR")) )
                     )
                 ),
                 campaignButton:
                 $scope.userIsMember
                 && $scope.wGroup.profile != undefined
-                && ( ($scope.wGroup.profile.supportedMembership === "OPEN")
-                    || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED")
+                && ( ($scope.wGroup.profile.managementType === "OPEN")
+                    || ( ($scope.wGroup.profile.managementType === "COORDINATED")
                         && ($scope.isRightRole("COORDINATOR") )
-                        || ( ($scope.wGroup.profile.supportedMembership === "COORDINATED_AND_MODERATED")
+                        || ( ($scope.wGroup.profile.managementType === "COORDINATED_AND_MODERATED")
                             && ($scope.isRightRole("COORDINATOR"))
                         )
                     )

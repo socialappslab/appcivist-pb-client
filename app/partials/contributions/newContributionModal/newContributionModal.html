@@ -29,9 +29,7 @@
                                 ng-change="changeWorkingGroupAuthor(newContribution.workingGroupAuthor)">
                         </select>
                     </div>
-                    <a  ng-href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/wgroup/create">
-                        <button ng-if="!createNewGroup" class="btn btn-primary col-md-4 col-sm-4 col-xs-4" type="button">Create a new group</button>
-                    </a>
+                    <button ng-if="!createNewGroup" ng-click="redirectToNewGroupForm()" class="btn btn-primary col-md-4 col-sm-4 col-xs-4" type="button">Create a new group</button>
                 </div>
                 <div class="voffset3"></div>
                 <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>

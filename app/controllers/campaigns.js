@@ -603,7 +603,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			if (!cType) cType = "BRAINSTORMING";
 			var modalInstance = $uibModal.open({
 				animation: true,
-				templateUrl: '/app/partials/contributions/newView/newView.html',
+				templateUrl: '/app/partials/contributions/newContributionModal/newContributionModal.html',
 				controller: 'NewContributionModalCtrl',
 				size: size,
 				resolve: {

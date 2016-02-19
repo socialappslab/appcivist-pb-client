@@ -53,7 +53,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, component, milestone, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
-                  $translate) {
+                   $translate, $location) {
 			init();
 
 			function init() {
@@ -63,9 +63,13 @@ appCivistApp.controller('NewContributionModalCtrl',
 
                 $scope.userIsAuthor = true;
 				$scope.assembly = assembly;
+                $scope.assemblyID = assembly.assemblyId;
 				$scope.campaign = campaign;
+                $scope.campaignID = campaign.campaignId;
 				$scope.component = component;
+                $scope.componentID = component.componentId;
 				$scope.milestone = milestone;
+                $scope.milestoneID = milestone.componentMilestoneId;
 				$scope.contributions = contributions;
 				$scope.themes = themes;
 				$scope.newContribution = newContribution;
@@ -79,14 +83,19 @@ appCivistApp.controller('NewContributionModalCtrl',
                 $scope.createNewGroup = false;
                 if($scope.newContribution.type === "PROPOSAL") {
                     if ($scope.userWorkingGroups && $scope.userWorkingGroups.length > 0 ) {
-                        $scope.newContribution.workingGroupAuthor = $scope.userWorkingGroups[0];
-                        $scope.newContribution.workingGroupAuthors[0] = $scope.userWorkingGroups[0];
+                        $scope.newContribution.workingGroupAuthors[0] = {groupId : $scope.userWorkingGroups[0].groupId};
                     }
                 }
 
 				$scope.clearContribution = function () {
 					clearNewContributionObject($scope.newContribution, Contributions);
 				};
+
+                $scope.redirectToNewGroupForm = function () {
+                    $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/wgroup/create");
+                    console.log("redirecting to a new working group form")
+                    $uibModalInstance.dismiss('cancel');
+                };
 
 				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
 					$scope.newContribution = newContribution;
@@ -111,7 +120,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 				};
 
                 $scope.changeWorkingGroupAuthor = function (workingAuthor) {
-                    $scope.newContribution.workingGroupAuthors[0] = workingAuthor;
+                    $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor.groupId};
                 }
 			}
 		});

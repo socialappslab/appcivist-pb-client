@@ -177,7 +177,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             $scope.selectedAssemblies[assemblyId] = !$scope.selectedAssemblies[assemblyId];
 
             if($scope.selectedAssemblies[assemblyId]){
-                var linked = {"assemblyId":assemblyId};
+                var linked = {"assemblyId" : assemblyId};
                 $scope.newAssembly.linkedAssemblies.push(linked);
             } else {
                 $scope.removeLinkedAssemblyById(assemblyId);

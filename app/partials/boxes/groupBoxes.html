@@ -1,10 +1,12 @@
 <div>
-    <!-- Working Groups -->
+    <!-- Assemblies -->
     <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <h3><strong>Working Groups</strong></h3>
-        </div>
-        <div class="col-md-6 col-sm-6">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3>
+                <strong>
+                    <span ng-if="isHome">{{'My' | translate}}</span> {{'Working Groups' | translate}}
+                </strong>
+            </h3>
         </div>
     </div>
     <side-box box="sideBoxes['groups']"></side-box>

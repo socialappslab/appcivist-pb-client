@@ -996,12 +996,14 @@ button#second-vote {
   padding: 5px;
   height: 150px;
   background-color: #f3f3f3;
+  overflow-y: scroll;
 }
 .forum .infoBox .row {
   margin-left: 0px;
 }
 .forum .infoBox .list-item {
   margin-top: 5px;
+  margin-right: 5px;
 }
 .forum .infoBox button {
   float: right;
@@ -1733,6 +1735,7 @@ button#second-vote {
   padding: 5px;
   height: 150px;
   background-color: #f3f3f3;
+  overflow-y: scroll;
 }
 .home .infoBox .row {
   margin-left: 0px;

@@ -27,31 +27,48 @@
 
     function initializeSideBoxes() {
         $scope.sideBoxes = [];
+        $scope.translations = [
+            'Assembly', 'Assemblies', 'Campaign', 'Campaigns',
+            'Working Group', 'Working Groups', 'Member', 'Members',
+            'New Assembly', 'New Campaign', 'New Working Group',
+            'My Assemblies', 'My Campaigns', 'My Working Groups',
+            'No assemblies to show.', 'No current campaigns to show.',
+            'No working groups to show.'
+        ];
 
-        $scope.sideBoxes['assemblies'] = {
-            title: "My Assemblies",
-            type: "ASSEMBLIES",
-            addAction: {
-                title: "New Assembly",
-                href: "/#/assembly/create"
-            },
-            itemList: [],
-            errorMessage: "User has no assemblies yet. Go ahead and create or join one!"
-        };
+        $translate($scope.translations).then (
+            function (translations) {
+                $scope.translations = translations;
+                $scope.sideBoxes['assemblies'] = {
+                    title: $scope.translations["My Assemblies"],
+                    type: "ASSEMBLIES",
+                    addAction: {
+                        title: $scope.translations["New Assembly"],
+                        href: "/#/assembly/create"
+                    },
+                    itemList: [],
+                    errorMessage: $scope.translations["No assemblies to show."]
+                };
 
-        $scope.sideBoxes['campaigns'] = {
-            title: "My Campaigns",
-            type: "CAMPAIGNS",
-            itemList: [],
-            errorMessage: "The user is not participating in a campaign yet."
-        };
+                $scope.sideBoxes['campaigns'] = {
+                    title: $scope.translations["My Campaigns"],
+                    type: "CAMPAIGNS",
+                    addAction: {
+                        title: $scope.translations["New Campaign"],
+                        href: "/#/assembly/"+$scope.assemblyID+"/campaign/create"
+                    },
+                    itemList: [],
+                    errorMessage: $scope.translations["No current campaigns to show."]
+                };
 
-        $scope.sideBoxes['groups'] = {
-            title: "My Working Groups",
-            type: "GROUPS",
-            itemList: [],
-            errorMessage: "The user is not participating in a working group yet."
-        };
+                $scope.sideBoxes['groups'] = {
+                    title: $scope.translations["My Working Groups"],
+                    type: "GROUPS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No working groups to show."]
+                };
+            }
+        );
     }
 
     function getUserAssemblies() {

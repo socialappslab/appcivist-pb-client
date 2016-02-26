@@ -1,0 +1,92 @@
+<div><!-- Memberships -->
+    <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <h3><strong>{{'Members' | translate}}</strong></h3>
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <button ng-if="checkShow('inviteButton')" class="btn btn-primary col-md-12"
+                    ng-click="openNewInvitationModal()">
+                <h5><strong>{{'Invite participants' | translate}}</strong></h5>
+            </button>
+        </div>
+    </div>
+
+    <!-- Accepted Members Box-->
+    <div id="members" class="row infoBox">
+        <div class="row col-md-12 col-sm-12">
+            <h4><strong>{{'Accepted' | translate}} {{'Members' | translate}}</strong></h4>
+        </div>
+        <div class="row list-item">
+            <div class="col-md-6 col-sm-12 col-xs-12"
+                 ng-repeat="member in members | orderBy:'status':false | filter: {status:'ACCEPTED'}">
+                <div class="col-md-2 col-sm-1 col-xs-1">
+                    <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}"
+                         class="image-circle" err-src="../assets/images/woman1.jpg"/>
+                </div>
+                <div class="caption col-md-9 col-sm-8 col-xs-8">
+                    <h4 class="text" title="{{member.user.name}}">{{member.user.name}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Membership Requests -->
+    <div id="memberRequests" class="row infoBox"
+         ng-if="(members | filter: {status: 'REQUESTED'}).length>0">
+        <div class="row col-md-12 col-sm-12">
+            <h4>
+                <strong>
+                    {{'Pending' | translate}} {{'Requests' | translate}}
+                </strong>
+            </h4>
+        </div>
+        <div class="row list-item">
+            <div class="col-md-12"
+                 ng-repeat="member in members | orderBy:'status':false | filter: {status:'REQUESTED'}">
+                <div ng-if="checkShow('inviteButton')" class="btn btn-sm btn-info col-md-3 col-sm-4 col-xs-4">
+                    {{'Approve' | translate}}
+                </div>
+                <div ng-if="!checkShow('inviteButton')" class="btn btn-sm btn-info col-md-3 col-sm-4 col-xs-4"
+                     disabled="true">
+                    {{'Approval' | translate}}
+                </div>
+                <div class="col-md-1 col-sm-1 col-xs-1">
+                    <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}"
+                         class="image-circle" err-src="../assets/images/woman1.jpg"/>
+                </div>
+                <div class="col-md-7 col-sm-6 col-xs-6">
+                    <h4 class="text" title="{{member.user.name}}">{{member.user.name}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Invitations -->
+    <div id="memberInvitations" class="row infoBox" ng-if="pendingInvitations.length>0">
+        <div class="col-md-12 col-sm-12">
+            <h4><strong>{{'Pending' | translate}} {{'Invitations' | translate}}</strong></h4>
+        </div>
+        <div class="row list-item">
+            <div class="row col-md-12" ng-repeat="invitation in pendingInvitations">
+                <!--<div class="image-capsule">-->
+                <!--<div class="caption col-md-12">-->
+                <div ng-if="checkShow('inviteButton')" class="btn btn-sm btn-info col-md-3 col-xs-4 col-sm-4"
+                     ng-click="resendInvitation(invitation)">
+                    {{'Re-send' | translate}}
+                </div>
+                <div class="col-md-8 hidden-xs hidden-sm">
+                    <h4 class="text" title="{{invitation.email}}">
+                        {{invitation.email}}
+                    </h4>
+                </div>
+                <div class="col-sm-5 col-xs-5 hidden-md hidden-lg">
+                    <h4 class="text" title="{{invitation.email}}">
+                        {{invitation.email | limitTo:15}}...
+                    </h4>
+                </div>
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>

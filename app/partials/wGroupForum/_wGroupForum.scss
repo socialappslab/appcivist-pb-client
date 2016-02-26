@@ -72,6 +72,7 @@
     padding:5px;
     height: 150px;
     background-color: $forum-infoBox-background;
+    overflow-y: scroll;
 
     .row{
       margin-left:0px;
@@ -80,9 +81,9 @@
     .list-item{
       margin-top: 0.5rem;
       margin-right: 0.5rem;
-      overflow-y: auto;
-      overflow-x:hidden;
-      height: 8.5rem;
+      //overflow-y: auto;
+      //overflow-x:hidden;
+      //height: 8.5rem;
     }
 
     button{

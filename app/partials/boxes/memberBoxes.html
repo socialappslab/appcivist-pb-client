@@ -46,10 +46,6 @@
                 <div ng-if="checkShow('inviteButton')" class="btn btn-sm btn-info col-md-3 col-sm-4 col-xs-4">
                     {{'Approve' | translate}}
                 </div>
-                <div ng-if="!checkShow('inviteButton')" class="btn btn-sm btn-info col-md-3 col-sm-4 col-xs-4"
-                     disabled="true">
-                    {{'Approval' | translate}}
-                </div>
                 <div class="col-md-1 col-sm-1 col-xs-1">
                     <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}"
                          class="image-circle" err-src="../assets/images/woman1.jpg"/>

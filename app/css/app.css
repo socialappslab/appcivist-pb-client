@@ -995,7 +995,7 @@ button#second-vote {
   border-radius: 5px;
   padding: 5px;
   height: 150px;
-  background-color: #f3f3f3;
+  background-color: #f9f9f9;
   overflow-y: scroll;
 }
 .forum .infoBox .row {
@@ -2584,6 +2584,7 @@ button#second-vote {
   padding: 5px;
   height: 150px;
   background-color: #f9f9f9;
+  overflow-y: scroll;
 }
 .wGroupForum .infoBox .row {
   margin-left: 0px;
@@ -2591,9 +2592,6 @@ button#second-vote {
 .wGroupForum .infoBox .list-item {
   margin-top: 0.5rem;
   margin-right: 0.5rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 8.5rem;
 }
 .wGroupForum .infoBox button {
   float: right;

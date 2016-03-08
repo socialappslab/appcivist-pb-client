@@ -510,3 +510,16 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
     }
 
 });
+
+appCivistApp.controller('WGroupDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
+                                                              localStorageService, Etherpad, Contributions, $translate) {
+
+    init();
+
+    function init() {
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+    }
+
+});

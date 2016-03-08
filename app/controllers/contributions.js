@@ -107,7 +107,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 				};
 
 				$scope.postContributionFromModal = function () {
-					$scope.targetSpaceId = $scope.component.resourceSpaceId;
+					$scope.targetSpaceId = $scope.campaign.resourceSpaceId;
 					$scope.targetSpace = $scope.contributions;
 					$scope.response = $scope.newContributionResponse;
 					$scope.modalInstance = $uibModalInstance;

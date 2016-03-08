@@ -1348,45 +1348,35 @@ button#second-vote {
   list-style: none;
   display: inline-block;
   width: 100%;
+  padding: 0rem 0rem 0rem 0rem;
 }
 .timeline li {
   position: relative;
   display: inline-block;
-  padding: 15px 30px;
+  padding: 15px 15px;
   background-color: #F4F4F4;
   color: #524D4D;
-  opacity: 0.1;
-  width: 25%;
-}
-.timeline li:first-child {
-  width: 30%;
-}
-.timeline li:last-child {
-  width: 15%;
-}
-.timeline li :only-child {
-  margin-left: 5%;
-}
-.timeline li#proposalMakingPhase {
-  width: 30%;
-}
-.timeline li#versioningPhase {
-  width: 25%;
-}
-.timeline li#deliberationPhase {
-  width: 25%;
-}
-.timeline li#votingPhase {
-  width: 15%;
+  border-color: #524D4D;
+  opacity: 1;
 }
 .timeline li.selected {
   color: white;
   background-color: #524D4D;
-  opacity: 1;
   z-index: 5 !important;
+}
+.timeline li.selected a {
+  color: #FFFFFF;
 }
 .timeline li.selected:before {
   border-left-color: #524D4D;
+}
+.timeline li.disabled {
+  color: white;
+  background-color: #B7B2B2;
+  z-index: -1 !important;
+}
+.timeline li.disabled:before {
+  border-left-color: #B7B2B2;
 }
 .timeline li.active {
   opacity: 1;
@@ -1402,124 +1392,15 @@ button#second-vote {
   pointer-events: none;
 }
 .timeline li:after {
-  border-color: rgba(136, 183, 213, 0);
   border-left-color: white;
-  border-width: 30px;
-  margin-top: -30px;
+  border-width: 29px;
+  margin-top: -29px;
   z-index: -1;
 }
 .timeline li:before {
-  border-color: rgba(194, 225, 245, 0);
   border-left-color: #F4F4F4;
-  border-width: 27px;
-  margin-top: -27px;
-}
-.timeline #proposalMakingPhase {
-  z-index: 4;
-}
-.timeline #versioningPhase {
-  z-index: 3;
-}
-.timeline #deliberationPhase {
-  z-index: 2;
-}
-.timeline #votingPhase {
-  z-index: 1;
-}
-
-.timelineedit {
-  list-style: none;
-  display: inline-block;
-  width: 100%;
-  padding: 0rem 0rem 0rem 0rem;
-}
-.timelineedit li {
-  position: relative;
-  display: inline-block;
-  padding: 15px 15px;
-  background-color: #F4F4F4;
-  color: #524D4D;
-  opacity: 1;
-  width: 25%;
-  border-color: #524D4D;
-}
-.timelineedit li:first-child {
-  width: 25%;
-}
-.timelineedit li:last-child {
-  width: 15%;
-}
-.timelineedit li :only-child {
-  margin-left: 5%;
-}
-.timelineedit li#proposalMakingPhase {
-  width: 30%;
-}
-.timelineedit li#versioningPhase {
-  width: 25%;
-}
-.timelineedit li#deliberationPhase {
-  width: 25%;
-}
-.timelineedit li#votingPhase {
-  width: 15%;
-}
-.timelineedit li.selected {
-  color: white;
-  background-color: #524D4D;
-  opacity: 1;
-  z-index: 5 !important;
-}
-.timelineedit li.selected:before {
-  border-left-color: #524D4D;
-}
-.timelineedit li.disabled {
-  color: white;
-  background-color: #524D4D;
-  opacity: 0.5;
-  z-index: 5 !important;
-}
-.timelineedit li.disabled:before {
-  border-left-color: #524D4D;
-  opacity: 0.5;
-}
-.timelineedit li.active {
-  opacity: 1;
-}
-.timelineedit li:before, .timelineedit li:after {
-  left: 100%;
-  top: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-.timelineedit li:after {
-  border-color: rgba(136, 183, 213, 0);
-  border-left-color: white;
-  border-width: 30px;
-  margin-top: -30px;
-  z-index: -1;
-}
-.timelineedit li:before {
-  border-color: rgba(194, 225, 245, 0);
-  border-left-color: #F4F4F4;
-  border-width: 25px;
-  margin-top: -25px;
-}
-.timelineedit #proposalMakingPhase {
-  z-index: 4;
-}
-.timelineedit #versioningPhase {
-  z-index: 3;
-}
-.timelineedit #deliberationPhase {
-  z-index: 2;
-}
-.timelineedit #votingPhase {
-  z-index: 1;
+  border-width: 29px;
+  margin-top: -29px;
 }
 
 .progressline .progressline-phases {

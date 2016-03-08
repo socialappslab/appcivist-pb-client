@@ -25,93 +25,28 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 													   moment, modelFormatConfig, $translate) {
 
 	init();
-	initializeNewCampaignModel();
-	setListOfLinkedAssemblies();
 
 	function init() {
-		$scope.user = localStorageService.get("user");
-		if ($scope.user && $scope.user.language)
-			$translate.use($scope.user.language);
-		$scope.forms = {};
-		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-		$scope.currentStep = 1;
-		$scope.prevStep = 2;
+		initScopeFunctions();
+		initScopeContent();
+		initializeNewCampaignModel();
+		setListOfLinkedAssemblies();
+	}
 
-		// Campaign creation steps and templates for each step
-		$scope.steps = [
-			{
-				step: 1,
-				title: "Campaign description",
-				template: "app/partials/campaign/creation/newCampaign1.html",
-				info: "",
-				active: true,
-				disabled: false
-			},
-			{
-				step: 2,
-				title: "Campaign milestones",
-				template: "app/partials/campaign/creation/newCampaign2.html",
-				info: "",
-				active: false,
-				disabled: false
-			},
-			{
-				step: 3,
-				title: "Campaign stages",
-				template: "app/partials/campaign/creation/newCampaign3.html",
-				info: "",
-				active: false,
-				disabled: false
-			}
-		];
-
-		// Setting up help info tooltips
-		if ($scope.info === undefined || $scope.info === null) {
-			info = $scope.info = helpInfo;
-			info.configCommentsInDiscussion = "Enable reply-to comments in discussions";
-			info.configCommentsInDiscussion = "Enable up-votes and down-votes on contributions";
-			localStorageService.set("help", info);
-		}
-
-		$scope.errors = [];
-		$scope.templateErrors = [];
-		$scope.componentErrors = [];
-		$scope.campaigns = [];
-		$scope.templateOptions = [
-			{
-				description : "Link to another campaign and use its template",
-				value: "LINKED",
-				subTemplateTitle: "Select a campaign from the list or search by name"
-			},
-			{
-				description : "Select a predefined template",
-				value: "PREDEFINED",
-				subTemplateTitle: "Select a template from the list"
-			}
-		];
-		$scope.dateOptions = {
-			formatYear: 'yyyy',
-			startingDay: 1
-		};
-		$scope.oneAtATime = false;
-		$scope.section = {};
-
-		// TODO: enable additional tabs only when the first form is valid
-		//$scope.$watch("newCampaignForm1.$valid", function(validity) {
-		//	if(validity)
-		//		$scope.steps[1].disabled = $scope.steps[2].disabled = false;
-		//}, true);
-
+	function initScopeFunctions () {
 		$scope.changeCampaignTemplate = function(template) {
 			if(template.value==="LINKED") {
+				$scope.newCampaign.proposalComponents[3].enabled=true;
 				$scope.newCampaign.proposalComponents[4].enabled=true;
 				$scope.newCampaign.proposalComponents[5].enabled=true;
 			} else {
 				$scope.newCampaign.useLinkedCampaign=false;
+				$scope.newCampaign.proposalComponents[1].enabled=true;
 				$scope.newCampaign.proposalComponents[2].enabled=true;
-				$scope.newCampaign.proposalComponents[3].enabled=true;
+				$scope.newCampaign.proposalComponents[3].enabled=false;
 				$scope.newCampaign.proposalComponents[4].enabled=false;
 				$scope.newCampaign.proposalComponents[5].enabled=false;
+				$scope.newCampaign.proposalComponents[6].enabled=true;
 			}
 		}
 
@@ -223,8 +158,12 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			if($scope.newCampaign.linkedComponents[0]===undefined) {
 				for(var i=0; i<$scope.newCampaign.linkedCampaign.campaign.components.length; i+=1) {
 					var component = $scope.newCampaign.linkedCampaign.campaign.components[i];
-					if(component.title === 'Voting' || component.title === 'Deliberation') {
-						$scope.newCampaign.linkedComponents.push(component);
+					if(component.title === 'Deliberation') {
+						$scope.newCampaign.linkedComponents[0] = component;
+					} else if(component.title === 'Voting') {
+						$scope.newCampaign.linkedComponents[1] = component;
+					}else if(component.title === 'Implementation') {
+						$scope.newCampaign.linkedComponents[2] = component;
 					}
 				}
 			} else {
@@ -236,10 +175,22 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 					if(component.title === 'Voting') {
 						$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[i];
 					}
+					if(component.title === 'Implementation') {
+						$scope.newCampaign.linkedComponents[2] = $scope.newCampaign.linkedCampaign.campaign.components[i];
+					}
 				}
 			}
-			$scope.newCampaign.proposalComponents[4].componentId = $scope.newCampaign.linkedComponents[0].componentId;
-			$scope.newCampaign.proposalComponents[5].componentId = $scope.newCampaign.linkedComponents[1].componentId;
+
+			var linkedDeliberation = $scope.newCampaign.linkedComponents[0];
+			var linkedVoting = $scope.newCampaign.linkedComponents[1];
+			var linkedImplementation = $scope.newCampaign.linkedComponents[2];
+
+			if(linkedDeliberation)
+				$scope.newCampaign.proposalComponents[3].componentId = linkedDeliberation.componentId;
+			if(linkedVoting)
+				$scope.newCampaign.proposalComponents[4].componentId = linkedVoting.componentId;
+			if(linkedImplementation)
+				$scope.newCampaign.proposalComponents[5].componentId = linkedImplementation.componentId;
 		}
 
 		/**
@@ -310,6 +261,76 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		}
 	}
 
+	function initScopeContent () {
+		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);
+		$scope.forms = {};
+		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+		$scope.currentStep = 1;
+		$scope.prevStep = 2;
+
+		// Campaign creation steps and templates for each step
+		$scope.steps = [
+			{
+				step: 1,
+				title: "Campaign description",
+				template: "app/partials/campaign/creation/newCampaign1.html",
+				info: "",
+				active: true,
+				disabled: false
+			},
+			{
+				step: 2,
+				title: "Campaign milestones",
+				template: "app/partials/campaign/creation/newCampaign2.html",
+				info: "",
+				active: false,
+				disabled: false
+			},
+			{
+				step: 3,
+				title: "Campaign stages",
+				template: "app/partials/campaign/creation/newCampaign3.html",
+				info: "",
+				active: false,
+				disabled: false
+			}
+		];
+
+		// Setting up help info tooltips
+		if ($scope.info === undefined || $scope.info === null) {
+			info = $scope.info = helpInfo;
+			info.configCommentsInDiscussion = "Enable reply-to comments in discussions";
+			info.configCommentsInDiscussion = "Enable up-votes and down-votes on contributions";
+			localStorageService.set("help", info);
+		}
+
+		$scope.errors = [];
+		$scope.templateErrors = [];
+		$scope.componentErrors = [];
+		$scope.campaigns = [];
+		$scope.templateOptions = [
+			{
+				description : "Link to another campaign and use its template",
+				value: "LINKED",
+				subTemplateTitle: "Select a campaign from the list or search by name"
+			},
+			{
+				description : "Select a predefined template",
+				value: "PREDEFINED",
+				subTemplateTitle: "Select a template from the list"
+			}
+		];
+		$scope.dateOptions = {
+			formatYear: 'yyyy',
+			startingDay: 1
+		};
+		$scope.oneAtATime = false;
+		$scope.section = {};
+
+	}
+
 	/**
 	 * Initialize the model for the New Campaign with default values
 	 */
@@ -317,7 +338,75 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.newCampaign = Campaigns.defaultNewCampaign();
 		$scope.newCampaign.template = $scope.templateOptions[0];
 		$scope.newCampaign.proposalComponents = Components.defaultProposalComponents();
+
+		var translationStrings = [
+			"Proposal making",
+			"Deliberation",
+			"Voting",
+			"Implementation",
+			"All assembly members",
+			"Only Working Groups of this Campaign",
+			"Randomly selected jury",
+			"From all assembly members",
+			"From Working Groups of this Campaign",
+			"Range",
+			"Ranked",
+			"Distribution",
+			"Plurality",
+			"Only YES votes",
+			"YES and NO votes",
+			"YES, NO, and Abstain votes",
+			"YES, NO, Abstain and Block votes",
+			"Fixed regardless of budget",
+			"Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
+			"Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
+			"Block percentage threshold",
+			"Configure number of winners",
+			"Disable additional rounds of versioning and deliberation",
+			"Enable comments in proposals by members of non-authoring Working Groups",
+			"Enable comments in proposals by members of non-authoring Working Groups",
+			"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+			"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+			"Enable Quorum threshold",
+			"Enable technical assessment of proposals",
+			"From where are members of the jury randomly selected?",
+			"How many points can a voter distribute?",
+			"How many proposals can a voter select?",
+			"Maximum score for range voting",
+			"Minimum score for range voting",
+			"Number of Winners",
+			"Quorum percentage",
+			"Select the type of plurality voting",
+			"Select the voting system",
+			"What percentage of people should be on the Jury?",
+			"Who deliberates?"
+		];
+
+		// TODO: check why the translations are NOT working
+		$translate(translationStrings,'es-ES','es-ES').then (
+				function (translated) {
+					for(var i=0;i<$scope.newCampaign.proposalComponents.length;i++) {
+						$scope.newCampaign.proposalComponents[i].name = translated[$scope.newCampaign.proposalComponents[i].name];
+						$scope.newCampaign.proposalComponents[i].title = translated[$scope.newCampaign.proposalComponents[i].title];
+						var configDict = $scope.newCampaign.proposalComponents[i].configs;
+						if (configDict && configDict.length > 0) {
+							for (var x = 0; x < configDict.length; x++) {
+								configDict[x].description = translated[configDict[x].description];
+								var optionsDict = configDict.options;
+								if (optionsDict && optionsDict.length>0) {
+									for (var j= 0; j < optionsDict.length; j++) {
+										optionsDict[j].name = translated[optionsDict[j].name];
+									}
+								}
+							}
+						}
+					}
+				}
+		);
+
+
 		$scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
+		$scope.newCampaign.milestones = Components.defaultProposalComponentMilestones();
 		$scope.newCampaign.linkedComponents = [];
 		initializeMilestonesTimeframe();
 	}
@@ -460,12 +549,15 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			newCampaign.existingComponents = [];
 			for (var i = 0; i<milestones.length; i+=1) {
 				var m = milestones[i];
+				// TODO: change in API "start" to just "date"
 				m.start = m.date;
-				if (i!=(milestones.length-1))
-					m.days = duration(moment(m.date),moment(milestones[i+1])).days;
-				else
-					m.days = 0;
+				// TODO: remove days from milestones s
+				//if (i!=(milestones.length-1))
+				//	m.days = duration(moment(m.date),moment(milestones[i+1])).days;
+				//else
+				//	m.days = 0;
 				components[m.componentIndex].milestones.push(m);
+
 			}
 
 			for (var i = 0; i<components.length; i+=1) {
@@ -568,7 +660,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies,
-														  Campaigns, Contributions, $translate){
+														  Campaigns, Contributions, $translate, $filter){
 
 	init();
 
@@ -652,6 +744,18 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				$scope.orderProperty = property;
 			}
 		};
+
+		$scope.random = function(){
+			return 0.5 - Math.random();
+		};
+
+		$scope.filterContributionsByTheme = function (t) {
+			if (t==="all") {
+				$scope.campaignContributionThemeFilter = "";
+			} else {
+				$scope.campaignContributionThemeFilter = t.title;
+			}
+		}
 
 		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
@@ -774,19 +878,10 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 	function setContributionsAndGroups($scope, localStorageService) {
 		// TODO: always get the list of contributions from server
-		var contributionsRes = Contributions.contributionsInCampaignComponent($scope.assemblyID, $scope.campaignID, $scope.componentID).query();
-		$scope.contributions = $scope.component.contributions;
-		contributionsRes.$promise.then(
-				function(data) {
-					$scope.component.contributions = data;
-					$scope.contributions = $scope.component.contributions;
-				},
-				function(error) {
-
-				}
-		)
-
+		$scope.contributions = $scope.campaign.contributions;
 		$scope.workingGroups = $scope.campaign.workingGroups;
+		if ($scope.campaign.ballots && $scope.campaign.ballots.length>0)
+			$scope.ballot = $scope.campaign.ballots[0];
 		$scope.themes = $scope.campaign.themes;
 		$scope.displayedContributionType = $scope.milestone.mainContributionType;
 

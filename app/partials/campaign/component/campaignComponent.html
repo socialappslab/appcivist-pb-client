@@ -6,169 +6,173 @@
                 component="component">
         </campaign-header>
         <br/>
+        <!-- The Campaign timeline-->
+        <timeline></timeline>
 
-        <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
-            <ul id="timeline" class="row timeline">
-                <li ng-class="component.componentId === componentID ? 'active selected' : 'active'"
-                    ng-repeat="component in components track by $index">
-                    <!--<h4 ng-if="component.timeline === 1">-->
-                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentId}}">
-                            <strong>
-                                {{component.title}}
-                            </strong>
-                        </a>
-                    </h4>
-                </li>
-            </ul>
-        </div>
+        <!-- The campaign milestones -->
         <div class="row col-md-12 col-sm-12">
-            <div class="progressline col-md-12 col-sm-12">
-                <div class="col-md-8 col-sm-8">
-                    <ul class="progressline-phases">
-                        <li class="progressline-phase" ng-repeat="m in milestones">
-                            <h4 class="progressline-phase-title">
-                                <a ng-class="m.componentMilestoneId === milestoneID ? 'selected' : ''"
-                                   ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{componentID}}/{{m.componentMilestoneId}}">
-                                    {{m.title}}
-                                    <span ng-if="m.componentMilestoneId === milestoneID && milestoneStarted && mDaysToDue > 1">(due in {{mDaysToDue}} days)</span>
-                                    <span ng-if="m.componentMilestoneId === milestoneID && milestoneStarted && mDaysToDue === 1">(due in {{mDaysToDue}} day)</span>
-                                    <span ng-if="m.componentMilestoneId === milestoneID && !milestoneStarted && mDaysToDue > 1">(starts in {{mDaysToDue}} days)</span>
-                                    <span ng-if="m.componentMilestoneId === milestoneID && !milestoneStarted && mDaysToDue === 1">(starts in {{mDaysToDue}} day)</span>
-                                </a>
-                            </h4>
-
-                            <div class="progressline-phase-line"></div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <div class="counter-box">
-                        <h3 class="counter-title"><strong>{{component.title}} ends in </strong></h3>
-                        <ul class="counter">
-                            <li class="counter-section" ng-if="daysToDue > 1">
-                                <h5 class="text-muted"><strong>Days</strong></h5>
-
-                                <div>{{daysToDue}}</div>
-                            </li>
-                            <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue > 1">
-                                <h5 class="text-muted"><strong>Hours</strong></h5>
-
-                                <div>{{hoursToDue}}</div>
-                            </li>
-                            <li class="counter-section" ng-if="daysToDue === 1 && hoursToDue === 1">
-                                <h5 class="text-muted"><strong>Minutes</strong></h5>
-
-                                <div>{{minutesToDue}}</div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row col-md-12 col-sm-12">
-            <h1><strong>{{milestone.title}}</strong><strong>: </strong>
-                <span>{{milestone.description}}</span>
-            </h1>
-        </div>
-        <div class="row col-md-12 col-sm-12">
-            <div class="col-md-2 col-sm-2">
-                <div class="row container-inline">
-                    <h2><strong class="text-muted">Contributions</strong></h2>
-                </div>
-            </div>
-            <div class="col-md-7 col-sm-7">
-                <div class="row col-md-12 col-sm-12">
-                    <ul class="tags tags-filter">
-                        <li class="tag tag-filter"><strong>All</strong></li>
-                        <li class="vertical-divider">
-                            &nbsp;
-                        </li>
-                        <li class="tag tag-filter" ng-repeat="t in themes">
-                            <strong>{{t.title}}</strong>
-                        </li>
-                    </ul>
-                </div>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="col-md-7 col-sm-7 no-padding">
-                        <input type="text" class="form-control" placeholder="Search existing contributions..."
-                               ng-model="campaignContributionFilter">
-                    </div>
-                    <div class="col-md-3 col-sm-3 dropdown">
-                        <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
-                                id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Order by:<span class="caret"></span>
-                        </button>
-                        <ul class="ol-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li><a ng-click="orderContributions('creation')">Ordery by date</a></li>
-                            <li><a ng-click="orderContributions('random')">Random Order</a></li>
-                            <li><a ng-click="orderContributions('stats.points')">Popularity</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2 col-sm-2">
-                        <button class="btn btn-success col-md-12 col-sm-12">Search</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-3">
-                <div class="row">
-                    <span ng-if="(milestone.title | uppercase) === 'BRAINSTORMING'">
-                        <button class="btn btn-success col-md-12"
-                                ng-click="openNewContributionModal('lg','BRAINSTORMING')">Contribute
-                        </button>
-                    </span>
-                    <span ng-if="(milestone.title | uppercase) === 'WORKING GROUP FORMATION' || (milestone.title | uppercase) === 'WORKING GROUPS FORMATION'">
-                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create">
-                            <button class="btn btn-success col-md-12">Create New Group</button>
-                        </a>
-                    </span>
-                    <span ng-if="(milestone.title | uppercase) === 'PROPOSAL DRAFTING' || (milestone.title | uppercase) === 'PROPOSAL EDITING'">
-                        <button class="btn btn-success col-md-12" ng-click="openNewContributionModal('lg','PROPOSAL')">
-                            New Proposal Draft
-                        </button>
-                    </span>
-                    <span ng-if="(milestone.title | uppercase) === 'VOTING PERIOD' || (milestone.title | uppercase) === 'VOTING ON PROPOSALS' || (milestone.title | uppercase) === 'VOTING PERIOD ENDING'">
-                        <a ng-if="component.ballots[0]" ng-href="#/ballot/{{component.ballots[0].uuid}}/start">
-                            <button class="btn btn-success col-md-12">Open Voting Ballot</button>
-                        </a>
-                        <button ng-if="!component.ballots[0]" class="btn btn-success disabled col-md-12">No voting ballot available yet</button>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid col-md-12 col-sm-12">
             <div class="row">
-                <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                     style="height:500px;" ng-if="milestone.mainContributionType==='PROPOSAL'"
-                     ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType} track by $index ">
-                    <contribution ng-click="openContributionModal(contribution,'lg')"
-                                  contribution="contribution" assemblyid="assemblyID"
-                                  assemblyid="assembly.assemblyId"
-                                  campaignid="campaign.campaignId"
-                                  componentid="component.componentId"
-                                  milestoneid="milestone.componentMilestoneId"
-                                  container="contributions"
-                                  containerid="component.resourceSpaceId"
-                                  containerindex="$index"
-                    ></contribution>
-                </div>
-                <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                     style="height:300px;" ng-if="milestone.mainContributionType==='BRAINSTORMING'"
-                     ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:milestone.mainContributionType} track by $index ">
-                    <contribution ng-click="openContributionModal(contribution,'lg')"
-                            contribution="contribution"
-                            assemblyid="assembly.assemblyId"
-                            campaignid="campaign.campaignId"
-                            componentid="component.componentId"
-                            milestoneid="milestone.componentInstanceMilestoneId"
-                            container="contributions"
-                            containerid="component.resourceSpaceId"
-                            containerindex="$index"
-                    ></contribution>
-                </div>
-
+                <!-- TODO: enable/disable buttons according to milestones dates -->
+                <!-- TODO: Add information about milestone dates -->
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                ng-click="openNewContributionModal('lg','BRAINSTORMING')">
+                            <strong>{{'Contribute' | translate}}</strong>
+                        </button>
+                    </span>
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create">
+                            <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <strong>{{'Create New Group' | translate}}</strong>
+                            </button>
+                        </a>
+                    </span>
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                ng-click="openNewContributionModal('lg','PROPOSAL')">
+                            <strong>{{'New Proposal Draft' | translate}}</strong>
+                        </button>
+                    </span>
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <a ng-if="ballot" ng-href="#/ballot/{{ballot.uuid}}/start">
+                            <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <strong>{{'Vote on Proposals' | translate}}</strong>
+                            </button>
+                        </a>
+                        <button ng-if="!ballot" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <strong>{{'Voting ballot not yet available' | translate}}</strong>
+                        </button>
+                    </span>
             </div>
         </div>
+
+        <!-- The Campaign Content-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row container-inline">
+                <h2><strong class="text-muted">Campaign Contributions, Proposals and Working Groups</strong></h2>
+            </div>
+        </div>
+        <!-- Filters and Search -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <!-- Search box -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 no-padding">
+                <input type="text" class="form-control" placeholder="Search existing contributions..."
+                       ng-model="campaignContributionFilter">
+            </div>
+            <!-- Themes filters TODO: NOT WORKING-->
+            <div class="col-md-3 col-sm-3 dropdown">
+                <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
+                        id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <strong>Filter by Theme:<span class="caret"></span></strong>
+                </button>
+                <ul class="col-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a ng-click="filterByTheme('all')"><strong>All</strong></a></li>
+                    <li ng-repeat="t in themes">
+                        <a ng-click="filterContributionByTheme(t)"><strong>{{t.title}}</strong></a>
+                    </li>
+                </ul>
+            </div>
+            <!--Order select TODO: random and popularity not working-->
+            <div class="col-md-3 col-sm-3 dropdown">
+                <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
+                        id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <strong>Order by:<span class="caret"></span></strong>
+                </button>
+                <ul class="ol-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a ng-click="orderContributions('creation')">Ordery by date</a></li>
+                    <li><a ng-click="orderContributions('random')">Random Order</a></li>
+                    <li><a ng-click="orderContributions('stats.points')">Popularity</a></li>
+                </ul>
+            </div>
+            <div class="voffset6"></div>
+        </div>
+        <!-- Contribution tabs -->
+        <uib-tabset>
+            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Brainstorming Contributions">
+                <uib-tab-heading>
+                    <h4>
+                        <strong>Brainstorming Contributions</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="right"
+                           uib-tooltip="Brainstorming issues and suggestions"></i>
+                    </h4>
+                </uib-tab-heading>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="container-fluid col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution" style="height:300px;"
+                                 ng-repeat="contribution in contributions |
+                                                orderBy: orderProperty : orderReverse |
+                                                filter: campaignContributionFilter |
+                                                filter: {type:'BRAINSTORMING'} track by $index ">
+                                <contribution ng-click="openContributionModal(contribution,'lg')"
+                                              contribution="contribution"
+                                              assemblyid="assembly.assemblyId"
+                                              campaignid="campaign.campaignId"
+                                              componentid="component.componentId"
+                                              milestoneid="milestone.componentInstanceMilestoneId"
+                                              container="contributions"
+                                              containerid="campaign.resourceSpaceId"
+                                              containerindex="$index"></contribution>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Working Groups">
+                <uib-tab-heading>
+                    <h4>
+                        <strong>Working Groups</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="right"
+                           uib-tooltip="Working Groups developing proposals based on brainstorming contributions"></i>
+                    </h4>
+                </uib-tab-heading>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="container-fluid col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                                 style="height:150px;"
+                                 ng-repeat="group in workingGroups | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter track by $index ">
+                                <working-group group="group"
+                                               assemblyid="assemblyID"
+                                               campaignid="campaign.campaignId"
+                                               container="workingGroups"
+                                               containerid="campaign.resourceSpaceId"
+                                               containerindex="$index"></working-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals">
+                <uib-tab-heading>
+                    <h4>
+                        <strong>Proposals</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="right"
+                           uib-tooltip="Solution proposals developed by groups"></i>
+                    </h4>
+                </uib-tab-heading>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="container-fluid col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                                 style="height:500px;"
+                                 ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:'PROPOSAL'} track by $index ">
+                                <contribution ng-click="openContributionModal(contribution,'lg')"
+                                              contribution="contribution" assemblyid="assemblyID"
+                                              assemblyid="assembly.assemblyId"
+                                              campaignid="campaign.campaignId"
+                                              componentid="component.componentId"
+                                              milestoneid="milestone.componentMilestoneId"
+                                              container="contributions"
+                                              containerid="campaign.resourceSpaceId"
+                                              containerindex="$index"
+                                ></contribution>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
     </div>
-    <!--<ng-include src="'app/partials/contributions/contribution/contributionView.html'"></ng-include>-->
 </div>
 

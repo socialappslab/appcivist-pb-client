@@ -65,12 +65,13 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 
         $scope.createWorkingGroup = function() {
             // 1. process themes
-            for (var i = 0; i < $scope.campaignThemes.length; i++) {
-                if ($scope.campaignThemes[i].selected) {
-                    $scope.newWorkingGroup.existingThemes.push($scope.campaignThemes[i]);
+            if ($scope.campaignThemes) {
+                for (var i = 0; i < $scope.campaignThemes.length; i++) {
+                    if ($scope.campaignThemes[i].selected) {
+                        $scope.newWorkingGroup.existingThemes.push($scope.campaignThemes[i]);
+                    }
                 }
             }
-
             // 2. process membership
 
             if($scope.newWorkingGroup.profile.membership === 'OPEN') {
@@ -103,7 +104,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                 $scope.newWorkingGroup.profile.managementType = "COORDINATED";
             }
 
-            var newGroup = WorkingGroups.workingGroup($scope.assemblyID).save($scope.newWorkingGroup);
+            var newGroup = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).save($scope.newWorkingGroup);
             newGroup.$promise.then(
                 function (response) {
                     $scope.newWorkingGroup = response;

@@ -665,6 +665,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	init();
 
 	function init() {
+		initScopeFunctions();
+		initScopeContent();
+		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
+		setCurrentAssembly($scope, localStorageService);
+		setCurrentCampaign($scope, localStorageService);
+	}
+
+	function initScopeContent(){
 		$scope.user = localStorageService.get("user");
 		if ($scope.user && $scope.user.language)
 			$translate.use($scope.user.language);
@@ -679,8 +687,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.newContributionResponse = {hasErrors:false};
 		$scope.orderProperty = 'creation';
 		$scope.orderReverse = true;
+	}
 
-
+	function initScopeFunctions(){
 		$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
 			var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
 			console.log("Contribution Read Only Etherpad URL: "+url);
@@ -756,12 +765,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				$scope.campaignContributionThemeFilter = t.title;
 			}
 		}
-
-		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
-		setCurrentAssembly($scope, localStorageService);
-		setCurrentCampaign($scope, localStorageService);
 	}
-
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
 	 * If the route ID is different, updates the current assembly in local storage
@@ -793,7 +797,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 */
 	function setCurrentCampaign($scope, localStorageService) {
 		$scope.campaign = localStorageService.get('currentCampaign');
-		if($scope.campaign === null || $scope.campaign.campaignId != $scope.campaignID) {
+		if(!$scope.campaign || $scope.campaign.campaignId != $scope.campaignID) {
 			var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
 			res.$promise.then(function(data) {
 				$scope.campaign = data;
@@ -877,8 +881,16 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	}
 
 	function setContributionsAndGroups($scope, localStorageService) {
-		// TODO: always get the list of contributions from server
-		$scope.contributions = $scope.campaign.contributions;
+		if ($scope.contributions && $scope.campaign.contributions
+				&& $scope.contributions.length != $scope.campaign.contributions.length) {
+			// Get list of contributions from server
+			$scope.contributions = Contributions.contributionInResourceSpace($scope.campaign.resourceSpaceId);
+			$scope.contributions.$promi
+		} else {
+			$scope.contributions = $scope.campaign.contributions;
+		}
+
+
 		$scope.workingGroups = $scope.campaign.workingGroups;
 		if ($scope.campaign.ballots && $scope.campaign.ballots.length>0)
 			$scope.ballot = $scope.campaign.ballots[0];

@@ -363,10 +363,22 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         workingGroup: function(assemblyId, groupId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', {aid: assemblyId, gid: groupId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid',
+                {aid: assemblyId, gid: groupId});
+        },
+        workingGroupInCampaign: function(assemblyId, campaignId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group/:gid',
+                {aid: assemblyId, cid: campaignId, gid: groupId});
         },
         workingGroups: function(assemblyId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group',
+                {aid: assemblyId},
+                { 'update' : {method:'PUT'}, 'delete' : {method: 'DELETE'}}
+            );
+        },
+        workingGroupsInCampaign: function(assemblyId, campaignId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group',
+                {aid: assemblyId, cid: campaignId});
         },
         workingGroupMembers: function(assemblyId, groupId, stat) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/membership/:status',

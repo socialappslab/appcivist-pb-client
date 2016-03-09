@@ -659,8 +659,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 });
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
-														  localStorageService, Assemblies,
-														  Campaigns, Contributions, $translate, $filter){
+														  localStorageService, Assemblies, WorkingGroups, Campaigns,
+														  Contributions, FlashService, $translate, $filter){
 
 	init();
 
@@ -740,6 +740,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 			modalInstance.result.then(function (newContribution) {
 				$scope.newContribution = newContribution;
+				///$scope.contributions.push(newContribution);
 				console.log('New Contribution with Title: ' + newContribution.title);
 			}, function () {
 				console.log('Modal dismissed at: ' + new Date());
@@ -797,7 +798,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 */
 	function setCurrentCampaign($scope, localStorageService) {
 		$scope.campaign = localStorageService.get('currentCampaign');
+		$scope.loadedLocally = true;
 		if(!$scope.campaign || $scope.campaign.campaignId != $scope.campaignID) {
+			$scope.loadedLocally = false;
 			var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
 			res.$promise.then(function(data) {
 				$scope.campaign = data;
@@ -881,17 +884,39 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	}
 
 	function setContributionsAndGroups($scope, localStorageService) {
-		if ($scope.contributions && $scope.campaign.contributions
-				&& $scope.contributions.length != $scope.campaign.contributions.length) {
+		if ($scope.loadedLocally) {
 			// Get list of contributions from server
-			$scope.contributions = Contributions.contributionInResourceSpace($scope.campaign.resourceSpaceId);
-			$scope.contributions.$promi
+			$scope.contributions = Contributions.contributionInResourceSpace($scope.campaign.resourceSpaceId).query();
+			$scope.contributions.$promise.then(
+					function (data) {
+						$scope.contributions = data;
+					},
+					function (error) {
+						console.log(JSON.stringify(error));
+						FlashService.Error("Error loading campaign contributions from server");
+					}
+			);
 		} else {
 			$scope.contributions = $scope.campaign.contributions;
 		}
 
+		if ($scope.loadedLocally) {
+			// Get list of working groups from server
+			$scope.workingGroups = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).query();
+			$scope.workingGroups.$promise.then(
+					function (data) {
+						$scope.workingGroups = data;
+					},
+					function (error) {
+						console.log(JSON.stringify(error));
+						FlashService.Error("Error loading campaign contributions from server");
+					}
+			);
+		} else {
+			$scope.workingGroups = $scope.campaign.workingGroups;
+		}
 
-		$scope.workingGroups = $scope.campaign.workingGroups;
+
 		if ($scope.campaign.ballots && $scope.campaign.ballots.length>0)
 			$scope.ballot = $scope.campaign.ballots[0];
 		$scope.themes = $scope.campaign.themes;

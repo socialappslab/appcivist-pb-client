@@ -8,14 +8,12 @@
         <div class="themes-container-content optionThemes">
             <input type="checkbox" value="" ng-model="newCampaign.useLinkedCampaign"
             ng-click="updateLinkedCampaign()">
-            <span>Use the linked campaign's <strong>Deliberation</strong> and <strong>Voting</strong> components.</span>
+            <span>Use only linked campaign's <strong>Deliberation, Voting </strong> and <strong>Implementation</strong></span>
         </div>
-        <div class="row col-md-12 col-sm-12 box descriptionBox">
-            <p>If enabled, deliberating and voting will proceed according to the rules set by the parent Assembly
-                of the linked campaign, <strong>'{{newCampaign.linkedCampaign.title}}'</strong>. Therefore,
-                users will only deliberate and vote once, within that linked campaign. If disabled, users will
-                deliberate and vote within their our Assembly Campaign and again within the Linked Assembly
-                Campaign.</p>
+
+        <div class="row col-md-12 col-sm-12 box descriptionBox"
+             translate="campaign.creation.linkedCampaignExplanation"
+             translate-values="{ title : '{{newCampaign.linkedCampaign.title}}'}">
         </div>
     </div>
 
@@ -24,8 +22,10 @@
             <div class="form-group">
                 <h4>
                     <label for="timeline" class="control-label">
-                        Proposal Development Timeline:
-                        <i class="fa fa-question-circle" uib-tooltip="{{info.proposalTimeline}}" tooltip-placement="right"></i>
+                        {{'Proposal Development Timeline' | translate}}:
+                        <i class="fa fa-question-circle"
+                           uib-tooltip="{{'help.proposalTimeline' | translate}}"
+                           tooltip-placement="right"></i>
                     </label></h4>
                 </h4>
                 <timelineedit id="timeline"></timelineedit>

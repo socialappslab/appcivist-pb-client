@@ -106,84 +106,14 @@
                         containerid="currentAssembly.forumResourceSpaceId"></appcivist-comments>
             </div>
             <div id="assemblyResourceBoxes" class="col-md-4 col-sm-4 info-lateral" ng-if="userIsMember">
-                <div id="assemblyMembers" class="row infoBox">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-4">
-                            <h4><strong>Members</strong></h4>
-                        </div>
-                        <div class="col-md-8 col-sm-8">
-                            <button ng-if="checkShow('inviteButton')" class="btn btn-primary" ng-click="openNewInvitationModal()"><h5><strong>Invite participants</strong></h5></button>
-                        </div>
-                    </div>
+                <!-- Members -->
+                <ng-include src="'app/partials/boxes/memberBoxes.html'"></ng-include>
 
-                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
-                        <div class="col-md-6" ng-repeat="member in assemblyMembers">
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
-                                    <div class="caption" style="text-align: center">
-                                        <h5 class="text" title="{{member.user.name}}">{{member.user.name}} <span ng-if="member.status!='ACCEPTED'">({{member.status}})</span></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row list-item">
-                            <h4 ng-if="pendingInvitations.length>0"><stron>Pending Invitations</stron></h4>
-                            <div class="col-md-6" ng-repeat="invitation in pendingInvitations">
-                                <div style="display: inline-block;">
-                                    <div class="image-capsule">
-                                        <div class="caption" style="text-align: center">
-                                            <h5 class="text" title="{{invitation.email}}">{{invitation.email}}({{invitation.status}})</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="assemblyCampaigns" class="row infoBox">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <h4><strong>Campaigns</strong></h4>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                            <a ng-if="checkShow('campaignButton')" ng-href="#/assembly/{{currentAssembly.assemblyId}}/campaign/create"><button class="btn btn-primary"><h5><strong>New campaign</strong></h5></button></a>
-                        </div>
-                    </div>
-                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
-                        <div class="row">
-                            <div style="display: inline-block;" ng-repeat="campaign in campaigns">
-                                <div class="image-capsule">
-                                    <a href="#/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaign.campaignId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>{{campaign.title}}</h5>
-                                    </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="assemblyWorkingGroups" class="row infoBox">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <h4><strong>Working Groups</strong></h4>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                        </div>
-                    </div>
-                    <div class="row list-item" style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
-                        <div style="display: inline-block;" ng-repeat="group in currentAssembly.workingGroups">
-                            <div class="image-capsule">
-                                <a ng-click="selectGroup(group)" href="#/assembly/{{assemblyID}}/group/{{group.groupId}}"><img data-src="holder.js/100x100" alt="100x100" src="../assets/images/tabacalera-140.png" data-holder-rendered="true" class="image-circle">
-                                    <div class="caption" style="text-align: center">
-                                        <h5>{{group.name}}</h5>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Campaigns -->
+                <ng-include src="'app/partials/boxes/campaignBoxes.html'"></ng-include>
+
+                <!-- Working Groups -->
+                <ng-include src="'app/partials/boxes/groupBoxes.html'"></ng-include>
             </div>
         </div>
     </div>

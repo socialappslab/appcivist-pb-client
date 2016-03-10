@@ -1,5 +1,5 @@
 ﻿appCivistApp.controller('HomeCtrl', function ($scope, $routeParams, $resource, $location, Campaigns, Memberships,
-                                              Notifications, loginService, localStorageService, $translate) {
+                                              Notifications, loginService, localStorageService, $translate, $filter) {
     init();
     initializeSideBoxes();
     getUserAssemblies();
@@ -11,7 +11,7 @@
         $scope.user = localStorageService.get("user");
         if ($scope.user && $scope.user.language)
             $translate.use($scope.user.language);
-
+        $scope.isHome=true;
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
         console.log("serverBaseUrl: " + $scope.serverBaseUrl);
         $scope.assemblies = [];
@@ -27,31 +27,66 @@
 
     function initializeSideBoxes() {
         $scope.sideBoxes = [];
+        $scope.translations = [
+            'Assembly', 'Assemblies', 'Campaign', 'Campaigns',
+            'Upcoming', 'Ongoing', 'Past', 'My',
+            'Working Group', 'Working Groups', 'Member', 'Members',
+            'New Assembly', 'New Campaign', 'New Working Group',
+            'My Assemblies', 'My Campaigns', 'My Working Groups',
+            'No assemblies to show.', 'No current campaigns to show.',
+            'No working groups to show.'
+        ];
 
-        $scope.sideBoxes['assemblies'] = {
-            title: "My Assemblies",
-            type: "ASSEMBLIES",
-            addAction: {
-                title: "New Assembly",
-                href: "/#/assembly/create"
-            },
-            itemList: [],
-            errorMessage: "User has no assemblies yet. Go ahead and create or join one!"
-        };
+        $translate($scope.translations).then (
+            function (translations) {
+                $scope.translations = translations;
+                $scope.sideBoxes['assemblies'] = {
+                    title: "",
+                    type: "ASSEMBLIES",
+                    itemList: [],
+                    errorMessage: $scope.translations["No assemblies to show."]
+                };
 
-        $scope.sideBoxes['campaigns'] = {
-            title: "My Campaigns",
-            type: "CAMPAIGNS",
-            itemList: [],
-            errorMessage: "The user is not participating in a campaign yet."
-        };
+                //$scope.sideBoxes['campaigns'] = {
+                //    title: $scope.translations["My Campaigns"],
+                //    type: "CAMPAIGNS",
+                //    addAction: {
+                //        title: $scope.translations["New Campaign"],
+                //        href: "/#/assembly/"+$scope.assemblyID+"/campaign/create"
+                //    },
+                //    itemList: [],
+                //    errorMessage: $scope.translations["No current campaigns to show."]
+                //};
 
-        $scope.sideBoxes['groups'] = {
-            title: "My Working Groups",
-            type: "GROUPS",
-            itemList: [],
-            errorMessage: "The user is not participating in a working group yet."
-        };
+                $scope.sideBoxes['upCampaigns'] = {
+                    title: $scope.translations["Upcoming"]+" "+$scope.translations["Campaigns"],
+                    type: "CAMPAIGNS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No campaigns to show."]
+                };
+
+                $scope.sideBoxes['onCampaigns'] = {
+                    title: $scope.translations["Ongoing"]+" "+$scope.translations["Campaigns"],
+                    type: "CAMPAIGNS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No campaigns to show."]
+                };
+
+                $scope.sideBoxes['pastCampaigns'] = {
+                    title: $scope.translations["Past"]+" "+$scope.translations["Campaigns"],
+                    type: "CAMPAIGNS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No campaigns to show."]
+                };
+
+                $scope.sideBoxes['groups'] = {
+                    title: "",
+                    type: "GROUPS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No working groups to show."]
+                };
+            }
+        );
     }
 
     function getUserAssemblies() {
@@ -73,15 +108,20 @@
     }
 
     function getUserCampaigns() {
-        $scope.campaigns = Campaigns.campaigns($scope.user.uuid, 'ongoing').query();
+        $scope.campaigns = Campaigns.campaigns($scope.user.uuid, 'all').query();
         $scope.campaigns.$promise.then(
             function (data) {
                 $scope.campaigns = data;
                 localStorageService.set("campaigns", $scope.campaigns);
-                $scope.sideBoxes['campaigns'].itemList = $scope.campaigns;
+                //$scope.sideBoxes['campaigns'].itemList = $scope.campaigns;
+                $scope.sideBoxes['onCampaigns'].itemList = $filter('filter')($scope.campaigns, { active: true });
+                $scope.sideBoxes['upCampaigns'].itemList = $filter('filter')($scope.campaigns, { upcoming: true });
+                $scope.sideBoxes['pastCampaigns'].itemList = $filter('filter')($scope.campaigns, { past: true });
             },
             function (error) {
-                $scope.sideBoxes['campaigns'].error = error;
+                $scope.sideBoxes['onCampaigns'].error = error;
+                $scope.sideBoxes['upCampaigns'].error = error;
+                $scope.sideBoxes['pastCampaigns'].error = error;
             }
         );
     }

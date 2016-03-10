@@ -25,93 +25,28 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 													   moment, modelFormatConfig, $translate) {
 
 	init();
-	initializeNewCampaignModel();
-	setListOfLinkedAssemblies();
 
 	function init() {
-		$scope.user = localStorageService.get("user");
-		if ($scope.user && $scope.user.language)
-			$translate.use($scope.user.language);
-		$scope.forms = {};
-		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-		$scope.currentStep = 1;
-		$scope.prevStep = 2;
+		initScopeFunctions();
+		initScopeContent();
+		initializeNewCampaignModel();
+		setListOfLinkedAssemblies();
+	}
 
-		// Campaign creation steps and templates for each step
-		$scope.steps = [
-			{
-				step: 1,
-				title: "Campaign description",
-				template: "app/partials/campaign/creation/newCampaign1.html",
-				info: "",
-				active: true,
-				disabled: false
-			},
-			{
-				step: 2,
-				title: "Campaign milestones",
-				template: "app/partials/campaign/creation/newCampaign2.html",
-				info: "",
-				active: false,
-				disabled: false
-			},
-			{
-				step: 3,
-				title: "Campaign stages",
-				template: "app/partials/campaign/creation/newCampaign3.html",
-				info: "",
-				active: false,
-				disabled: false
-			}
-		];
-
-		// Setting up help info tooltips
-		if ($scope.info === undefined || $scope.info === null) {
-			info = $scope.info = helpInfo;
-			info.configCommentsInDiscussion = "Enable reply-to comments in discussions";
-			info.configCommentsInDiscussion = "Enable up-votes and down-votes on contributions";
-			localStorageService.set("help", info);
-		}
-
-		$scope.errors = [];
-		$scope.templateErrors = [];
-		$scope.componentErrors = [];
-		$scope.campaigns = [];
-		$scope.templateOptions = [
-			{
-				description : "Link to another campaign and use its template",
-				value: "LINKED",
-				subTemplateTitle: "Select a campaign from the list or search by name"
-			},
-			{
-				description : "Select a predefined template",
-				value: "PREDEFINED",
-				subTemplateTitle: "Select a template from the list"
-			}
-		];
-		$scope.dateOptions = {
-			formatYear: 'yyyy',
-			startingDay: 1
-		};
-		$scope.oneAtATime = false;
-		$scope.section = {};
-
-		// TODO: enable additional tabs only when the first form is valid
-		//$scope.$watch("newCampaignForm1.$valid", function(validity) {
-		//	if(validity)
-		//		$scope.steps[1].disabled = $scope.steps[2].disabled = false;
-		//}, true);
-
+	function initScopeFunctions () {
 		$scope.changeCampaignTemplate = function(template) {
 			if(template.value==="LINKED") {
+				$scope.newCampaign.proposalComponents[3].enabled=true;
 				$scope.newCampaign.proposalComponents[4].enabled=true;
 				$scope.newCampaign.proposalComponents[5].enabled=true;
 			} else {
 				$scope.newCampaign.useLinkedCampaign=false;
+				$scope.newCampaign.proposalComponents[1].enabled=true;
 				$scope.newCampaign.proposalComponents[2].enabled=true;
-				$scope.newCampaign.proposalComponents[3].enabled=true;
+				$scope.newCampaign.proposalComponents[3].enabled=false;
 				$scope.newCampaign.proposalComponents[4].enabled=false;
 				$scope.newCampaign.proposalComponents[5].enabled=false;
+				$scope.newCampaign.proposalComponents[6].enabled=true;
 			}
 		}
 
@@ -223,8 +158,12 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			if($scope.newCampaign.linkedComponents[0]===undefined) {
 				for(var i=0; i<$scope.newCampaign.linkedCampaign.campaign.components.length; i+=1) {
 					var component = $scope.newCampaign.linkedCampaign.campaign.components[i];
-					if(component.title === 'Voting' || component.title === 'Deliberation') {
-						$scope.newCampaign.linkedComponents.push(component);
+					if(component.title === 'Deliberation') {
+						$scope.newCampaign.linkedComponents[0] = component;
+					} else if(component.title === 'Voting') {
+						$scope.newCampaign.linkedComponents[1] = component;
+					}else if(component.title === 'Implementation') {
+						$scope.newCampaign.linkedComponents[2] = component;
 					}
 				}
 			} else {
@@ -236,10 +175,22 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 					if(component.title === 'Voting') {
 						$scope.newCampaign.linkedComponents[1] = $scope.newCampaign.linkedCampaign.campaign.components[i];
 					}
+					if(component.title === 'Implementation') {
+						$scope.newCampaign.linkedComponents[2] = $scope.newCampaign.linkedCampaign.campaign.components[i];
+					}
 				}
 			}
-			$scope.newCampaign.proposalComponents[4].componentId = $scope.newCampaign.linkedComponents[0].componentId;
-			$scope.newCampaign.proposalComponents[5].componentId = $scope.newCampaign.linkedComponents[1].componentId;
+
+			var linkedDeliberation = $scope.newCampaign.linkedComponents[0];
+			var linkedVoting = $scope.newCampaign.linkedComponents[1];
+			var linkedImplementation = $scope.newCampaign.linkedComponents[2];
+
+			if(linkedDeliberation)
+				$scope.newCampaign.proposalComponents[3].componentId = linkedDeliberation.componentId;
+			if(linkedVoting)
+				$scope.newCampaign.proposalComponents[4].componentId = linkedVoting.componentId;
+			if(linkedImplementation)
+				$scope.newCampaign.proposalComponents[5].componentId = linkedImplementation.componentId;
 		}
 
 		/**
@@ -310,6 +261,76 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		}
 	}
 
+	function initScopeContent () {
+		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);
+		$scope.forms = {};
+		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+		$scope.currentStep = 1;
+		$scope.prevStep = 2;
+
+		// Campaign creation steps and templates for each step
+		$scope.steps = [
+			{
+				step: 1,
+				title: "Campaign description",
+				template: "app/partials/campaign/creation/newCampaign1.html",
+				info: "",
+				active: true,
+				disabled: false
+			},
+			{
+				step: 2,
+				title: "Campaign milestones",
+				template: "app/partials/campaign/creation/newCampaign2.html",
+				info: "",
+				active: false,
+				disabled: false
+			},
+			{
+				step: 3,
+				title: "Campaign stages",
+				template: "app/partials/campaign/creation/newCampaign3.html",
+				info: "",
+				active: false,
+				disabled: false
+			}
+		];
+
+		// Setting up help info tooltips
+		if ($scope.info === undefined || $scope.info === null) {
+			info = $scope.info = helpInfo;
+			info.configCommentsInDiscussion = "Enable reply-to comments in discussions";
+			info.configCommentsInDiscussion = "Enable up-votes and down-votes on contributions";
+			localStorageService.set("help", info);
+		}
+
+		$scope.errors = [];
+		$scope.templateErrors = [];
+		$scope.componentErrors = [];
+		$scope.campaigns = [];
+		$scope.templateOptions = [
+			{
+				description : "Link to another campaign and use its template",
+				value: "LINKED",
+				subTemplateTitle: "Select a campaign from the list or search by name"
+			},
+			{
+				description : "Select a predefined template",
+				value: "PREDEFINED",
+				subTemplateTitle: "Select a template from the list"
+			}
+		];
+		$scope.dateOptions = {
+			formatYear: 'yyyy',
+			startingDay: 1
+		};
+		$scope.oneAtATime = false;
+		$scope.section = {};
+
+	}
+
 	/**
 	 * Initialize the model for the New Campaign with default values
 	 */
@@ -317,7 +338,75 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.newCampaign = Campaigns.defaultNewCampaign();
 		$scope.newCampaign.template = $scope.templateOptions[0];
 		$scope.newCampaign.proposalComponents = Components.defaultProposalComponents();
+
+		var translationStrings = [
+			"Proposal making",
+			"Deliberation",
+			"Voting",
+			"Implementation",
+			"All assembly members",
+			"Only Working Groups of this Campaign",
+			"Randomly selected jury",
+			"From all assembly members",
+			"From Working Groups of this Campaign",
+			"Range",
+			"Ranked",
+			"Distribution",
+			"Plurality",
+			"Only YES votes",
+			"YES and NO votes",
+			"YES, NO, and Abstain votes",
+			"YES, NO, Abstain and Block votes",
+			"Fixed regardless of budget",
+			"Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
+			"Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
+			"Block percentage threshold",
+			"Configure number of winners",
+			"Disable additional rounds of versioning and deliberation",
+			"Enable comments in proposals by members of non-authoring Working Groups",
+			"Enable comments in proposals by members of non-authoring Working Groups",
+			"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+			"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+			"Enable Quorum threshold",
+			"Enable technical assessment of proposals",
+			"From where are members of the jury randomly selected?",
+			"How many points can a voter distribute?",
+			"How many proposals can a voter select?",
+			"Maximum score for range voting",
+			"Minimum score for range voting",
+			"Number of Winners",
+			"Quorum percentage",
+			"Select the type of plurality voting",
+			"Select the voting system",
+			"What percentage of people should be on the Jury?",
+			"Who deliberates?"
+		];
+
+		// TODO: check why the translations are NOT working
+		$translate(translationStrings,'es-ES','es-ES').then (
+				function (translated) {
+					for(var i=0;i<$scope.newCampaign.proposalComponents.length;i++) {
+						$scope.newCampaign.proposalComponents[i].name = translated[$scope.newCampaign.proposalComponents[i].name];
+						$scope.newCampaign.proposalComponents[i].title = translated[$scope.newCampaign.proposalComponents[i].title];
+						var configDict = $scope.newCampaign.proposalComponents[i].configs;
+						if (configDict && configDict.length > 0) {
+							for (var x = 0; x < configDict.length; x++) {
+								configDict[x].description = translated[configDict[x].description];
+								var optionsDict = configDict.options;
+								if (optionsDict && optionsDict.length>0) {
+									for (var j= 0; j < optionsDict.length; j++) {
+										optionsDict[j].name = translated[optionsDict[j].name];
+									}
+								}
+							}
+						}
+					}
+				}
+		);
+
+
 		$scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
+		$scope.newCampaign.milestones = Components.defaultProposalComponentMilestones();
 		$scope.newCampaign.linkedComponents = [];
 		initializeMilestonesTimeframe();
 	}
@@ -460,12 +549,15 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			newCampaign.existingComponents = [];
 			for (var i = 0; i<milestones.length; i+=1) {
 				var m = milestones[i];
+				// TODO: change in API "start" to just "date"
 				m.start = m.date;
-				if (i!=(milestones.length-1))
-					m.days = duration(moment(m.date),moment(milestones[i+1])).days;
-				else
-					m.days = 0;
+				// TODO: remove days from milestones s
+				//if (i!=(milestones.length-1))
+				//	m.days = duration(moment(m.date),moment(milestones[i+1])).days;
+				//else
+				//	m.days = 0;
 				components[m.componentIndex].milestones.push(m);
+
 			}
 
 			for (var i = 0; i<components.length; i+=1) {
@@ -567,12 +659,20 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 });
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
-														  localStorageService, Assemblies,
-														  Campaigns, Contributions, $translate){
+														  localStorageService, Assemblies, WorkingGroups, Campaigns,
+														  Contributions, FlashService, $translate, $filter, moment){
 
 	init();
 
 	function init() {
+		initScopeFunctions();
+		initScopeContent();
+		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
+		setCurrentAssembly($scope, localStorageService);
+		setCurrentCampaign($scope, localStorageService);
+	}
+
+	function initScopeContent(){
 		$scope.user = localStorageService.get("user");
 		if ($scope.user && $scope.user.language)
 			$translate.use($scope.user.language);
@@ -580,15 +680,15 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
 		$scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
-		$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.newComment = $scope.newContribution = Contributions.defaultNewContribution();
 		$scope.newContributionResponse = {hasErrors:false};
 		$scope.orderProperty = 'creation';
 		$scope.orderReverse = true;
+	}
 
-
+	function initScopeFunctions(){
 		$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
 			var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
 			console.log("Contribution Read Only Etherpad URL: "+url);
@@ -596,7 +696,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		};
 
 		$scope.openContributionPage = function(cID, edit)  {
-			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID+"?edit="+edit);
+			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
 		};
 
 		$scope.openNewContributionModal = function(size, cType)  {
@@ -612,12 +712,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 					},
 					campaign: function () {
 						return $scope.campaign;
-					},
-					component: function () {
-						return $scope.component;
-					},
-					milestone: function () {
-						return $scope.milestone;
 					},
 					contributions: function () {
 						return $scope.contributions;
@@ -653,9 +747,21 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			}
 		};
 
-		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
-		setCurrentAssembly($scope, localStorageService);
-		setCurrentCampaign($scope, localStorageService);
+		$scope.random = function(){
+			return 0.5 - Math.random();
+		};
+
+		$scope.filterContributionsByTheme = function (t) {
+			if (t==="all") {
+				$scope.campaignContributionThemeFilter = "";
+			} else {
+				$scope.campaignContributionThemeFilter = t.title;
+			}
+		}
+
+		$scope.isButtonDisabled = function (button) {
+			return $scope.disableButton[button];
+		}
 	}
 
 	/**
@@ -689,22 +795,22 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 */
 	function setCurrentCampaign($scope, localStorageService) {
 		$scope.campaign = localStorageService.get('currentCampaign');
-		if($scope.campaign === null || $scope.campaign.campaignId != $scope.campaignID) {
+		$scope.loadedLocally = true;
+		if(!$scope.campaign || $scope.campaign.campaignId != $scope.campaignID) {
+			$scope.loadedLocally = false;
 			var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
 			res.$promise.then(function(data) {
 				$scope.campaign = data;
 				localStorageService.set("currentCampaign", $scope.campaign);
-				setCurrentComponent($scope,localStorageService);
-				setCurrentMilestone($scope,localStorageService);
+				setCurrentComponentAndMilestones($scope,localStorageService);
+				setMilestonesMap();
 				setContributionsAndGroups($scope,localStorageService);
-				setupDaysToDue();
 			});
 		} else {
 			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
-			setCurrentComponent($scope,localStorageService);
-			setCurrentMilestone($scope,localStorageService);
+			setCurrentComponentAndMilestones($scope,localStorageService);
+			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
-			setupDaysToDue();
 		}
 	}
 
@@ -716,19 +822,48 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 * @param localStorageService service to access the local web storage
 	 * @returns assembly
 	 */
-	function setCurrentComponent($scope, localStorageService) {
+	function setCurrentComponentAndMilestones($scope, localStorageService) {
 		$scope.components = $scope.campaign.components;
+		$scope.milestones = localStorageService.get("currentMilestones");
+		$scope.buildMilestones = false;
+		if (!$scope.loadedLocally || !$scope.milestones) {
+			$scope.milestones = [];
+			$scope.buildMilestones = true;
+		}
 
-		if ($scope.componentID === null || $scope.componentID===0) {
-			$scope.component = $scope.components[0];
+
+		if ($scope.components && ($scope.componentID === null || $scope.componentID === 0)) {
+			for(var i=0; i<$scope.components.length; i++) {
+				var c = $scope.components[i];
+
+				// add milestones of component to array of milestones
+				if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(c.milestones);
+
+				// check if this component is current
+				var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm:ss');
+				var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm:ss');
+				console.log("Checking dates for component: "+ c.title);
+				console.log("=> Today is: "+ moment().format());
+				console.log("=> Component starts: "+ startMoment.format());
+				console.log("=> Component ends: "+ endMoment.format());
+				if (moment().isBetween(startMoment, endMoment)) {
+					console.log("=> Today is in this date range! Choosing as current "+ c.title);
+					$scope.component = c;
+				}
+			}
+			if (!$scope.component) {
+				$scope.component = $scope.components[0];
+			}
 			$scope.componentID = $scope.component.componentId;
-			localStorageService.set("currentComponent", $scope.component );
+			localStorageService.set("currentComponent", $scope.component);
 			console.log("Setting current component to: "+ $scope.component.title );
-
-		} else {
+		} else if ($scope.components) {
 			$scope.component = localStorageService.get('currentComponent');
 			if($scope.component === null || $scope.component.componentId != $scope.componentID) {
 				$scope.components.forEach(function(entry) {
+					// add milestones of component to array of milestones
+					if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(entry.milestones);
+
 					if(entry.componentId === $scope.componentID) {
 						localStorageService.set("currentComponent", entry);
 						$scope.component = entry;
@@ -739,107 +874,142 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentId);
 			}
 		}
-	}
-
-	/**
-	 * Returns the current milestone in local storage if its ID matches with the requested ID on the route
-	 * If the route ID is different, updates the current milestone in local storage
-	 * @param mID id of requested milestone in route
-	 * @param milestone list of milestones that belong to milestones of the current component
-	 * @param localStorageService service to access the local web storage
-	 * @returns milestone
-	 */
-	function setCurrentMilestone($scope, localStorageService) {
-		$scope.milestones = $scope.component.milestones;
-		if ($scope.milestoneID === null || $scope.milestoneID === 0) {
-			$scope.milestone = $scope.milestones[0];
-			$scope.milestoneID = $scope.milestone.componentMilestoneId;
-			localStorageService.set("currentMilestone", $scope.milestone);
-			console.log("Setting current milestone to: "+$scope.milestone.title);
-		} else {
-			$scope.milestone = localStorageService.get('currentMilestone');
-			if($scope.milestone === null || $scope.milestone.componentMilestoneId != $scope.milestoneID) {
-				$scope.milestones.forEach(function(entry) {
-					if(entry.componentMilestoneId === $scope.milestoneID) {
-						localStorageService.set("currentMilestone", entry);
-						$scope.milestone = entry;
-						console.log("Setting current milestone to: " + entry.title);
-					}
-				});
-			} else {
-				console.log("Route milestone ID is the same as the current milestone in local storage");
-			}
+		if ($scope.buildMilestones) {
+			localStorageService.set("currentMilestones", $scope.milestones);
 		}
 	}
 
+	function setMilestonesMap () {
+		if ($scope.buildMilestones) {
+			$scope.milestonesMap = $scope.milestones.reduce(
+					function (map, obj) {
+						map[obj.key] = obj;
+						return map;
+					},
+					{}
+			);
+			localStorageService.set("currentMilestonesMap", $scope.milestonesMap);
+		} else {
+			$scope.milestonesMap = localStorageService.get("currentMilestonesMap");
+		}
+
+		var campaignStart = moment($scope.campaign.startDate, 'YYYY-MM-DD HH:mm:ss');
+		var brainstormingEnd = moment($scope.milestonesMap['end_brainstorming'].date, 'YYYY-MM-DD HH:mm:ss');
+		var wGroupFormationEnd = moment($scope.milestonesMap['end_wgroups_creation'].date, 'YYYY-MM-DD HH:mm:ss');
+		var proposalsEnd = moment($scope.milestonesMap['end_proposals'].date, 'YYYY-MM-DD HH:mm:ss');
+		var voteStart = moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm:ss');
+		var voteEnd = moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm:ss');
+		var assessmentEnd = moment($scope.milestonesMap['end_assessment'].date, 'YYYY-MM-DD HH:mm:ss');
+
+		$scope.disableButton = {
+				contribute: !moment().isBetween(campaignStart, brainstormingEnd),
+				newGroup: !moment().isBetween(campaignStart, wGroupFormationEnd),
+				newProposal: !moment().isBetween(campaignStart, proposalsEnd),
+				vote: !moment().isBetween(voteStart, voteEnd),
+				assess: !moment().isBetween(campaignStart,assessmentEnd)
+				//TODO
+				// editCampaign: $scope.userIsMember
+				//	&& $scope.currentAssembly.profile != undefined
+				//	&& ( ( $scope.currentAssembly.profile.managementType === "OPEN")
+				//			|| ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
+				//					&& ($scope.isRightRole("COORDINATOR") )
+				//					|| ( ($scope.currentAssembly.profile.managementType === "COORDINATED_AND_MODERATED")
+				//					&& ($scope.isRightRole("COORDINATOR")) )
+				//			)
+				//	)
+
+			};
+
+	}
+
 	function setContributionsAndGroups($scope, localStorageService) {
-		// TODO: always get the list of contributions from server
-		var contributionsRes = Contributions.contributionsInCampaignComponent($scope.assemblyID, $scope.campaignID, $scope.componentID).query();
-		$scope.contributions = $scope.component.contributions;
-		contributionsRes.$promise.then(
-				function(data) {
-					$scope.component.contributions = data;
-					$scope.contributions = $scope.component.contributions;
-				},
-				function(error) {
+		if ($scope.loadedLocally) {
+			// Get list of contributions from server
+			$scope.contributions = Contributions.contributionInResourceSpace($scope.campaign.resourceSpaceId).query();
+			$scope.contributions.$promise.then(
+					function (data) {
+						$scope.contributions = data;
+					},
+					function (error) {
+						console.log(JSON.stringify(error));
+						FlashService.Error("Error loading campaign contributions from server");
+					}
+			);
+		} else {
+			$scope.contributions = $scope.campaign.contributions;
+		}
 
-				}
-		)
+		if ($scope.loadedLocally) {
+			// Get list of working groups from server
+			$scope.workingGroups = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).query();
+			$scope.workingGroups.$promise.then(
+					function (data) {
+						$scope.workingGroups = data;
+					},
+					function (error) {
+						console.log(JSON.stringify(error));
+						FlashService.Error("Error loading campaign contributions from server");
+					}
+			);
+		} else {
+			$scope.workingGroups = $scope.campaign.workingGroups;
+		}
 
-		$scope.workingGroups = $scope.campaign.workingGroups;
+
+		if ($scope.campaign.ballots && $scope.campaign.ballots.length>0)
+			$scope.ballot = $scope.campaign.ballots[0];
 		$scope.themes = $scope.campaign.themes;
-		$scope.displayedContributionType = $scope.milestone.mainContributionType;
 
-		console.log("Loading {assembly,campaign,component,milestone}: "
+		console.log("Loading {assembly,campaign,component}: "
 			+$scope.assemblyID+", "
 			+$scope.campaignID+", "
-			+$scope.componentID+", "
-			+$scope.milestoneID
+			+$scope.componentID
 		);
 
-		console.log("Loading {# of components, # of components}: "
+		console.log("Loading {# of components, # of milestones}: "
 				+$scope.components.length+", "
 				+$scope.milestones.length
 		);
 	}
 
-	function setupDaysToDue() {
-		// Days, hours, minutes to end date of this component phase
-		var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
-		var now = moment();
-		var diff = endDate.diff(now, 'minutes');
-		$scope.minutesToDue = diff%60;
-		$scope.hoursToDue = Math.floor(diff/60) % 24;
-		$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
-
-		// Days, hours, minutes to end date of this milestone stage
-		var mStartDate = moment($scope.milestone.start, 'YYYY-MM-DD HH:mm:ss');
-		var mDays = $scope.milestone.days;
-
-		$scope.milestoneStarted = mStartDate.isBefore(now);
-		if($scope.milestoneStarted) {
-			mDiff = now.diff(mStartDate, 'days');
-			$scope.mDaysToDue = $scope.milestone.days - mDiff;
-
-		} else {
-			mDiff = mStartDate.diff(now, 'days');
-			$scope.mDaysToDue = mDiff;
-		}
-		$scope.themes= [];
-		angular.forEach($scope.component.contributions, function(contribution){
-			angular.forEach(contribution.themes, function(theme) {
-				var isInList = false;
-				angular.forEach($scope.themes, function(actualTheme) {
-					if(theme.title === actualTheme.title){
-						isInList = true;
-					}
-				});
-				if(isInList === false) {
-					$scope.themes.push(theme);
-				}
-			});
-		});
-	}
+	//function setupDaysToDue() {
+	//	// Days, hours, minutes to end date of this component phase
+	//	var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var now = moment();
+	//	var diff = endDate.diff(now, 'minutes');
+	//	$scope.minutesToDue = diff%60;
+	//	$scope.hoursToDue = Math.floor(diff/60) % 24;
+	//	$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
+    //
+	//	// Days, hours, minutes to end date of this component stage
+	//	var mStartDate = moment($scope.component.startDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var mEndDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var mDays = endDate.diff(startDate,'days');
+    //
+	//	$scope.componentStarted = mStartDate.isBefore(now);
+	//	if($scope.componentStarted) {
+	//		mDiff = now.diff(mStartDate, 'days');
+	//		$scope.mDaysToDue = mDays - mDiff;
+    //
+	//	} else {
+	//		mDiff = mStartDate.diff(now, 'days');
+	//		$scope.mDaysToDue = mDiff;
+	//	}
+	//	$scope.themes= [];
+	//	angular.forEach($scope.component.contributions, function(contribution){
+	//		angular.forEach(contribution.themes, function(theme) {
+	//			var isInList = false;
+	//			angular.forEach($scope.themes, function(actualTheme) {
+	//				if(theme.title === actualTheme.title){
+	//					isInList = true;
+	//				}
+	//			});
+	//			if(isInList === false) {
+	//				$scope.themes.push(theme);
+	//			}
+	//		});
+	//	});
+	//}
 });
 
 

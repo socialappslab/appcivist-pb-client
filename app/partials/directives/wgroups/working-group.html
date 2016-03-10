@@ -1,0 +1,14 @@
+<div class="contribution-content">
+    <div class="row col-md-12 col-sm-12 no-padding contribution-info-user">
+        <div class="col-md-11 col-sm-11 no-padding no-margin">
+            <!-- For PROPOSAL contributions or comments, show the Group author -->
+            <div class="image-profile-contribution">
+                <img ng-src="{{workingGroup.profile.icon}}" alt="" src="../assets/images/unknown.jpg">
+            </div>
+            <div class="info-block">
+                <a ng-href="#/assembly/{{assemblyID}}/group/{{workingGroup.groupId}}"><em>{{workingGroup.name}}</em></a>
+                <time datetime="{{workingGroup.creation}}">{{workingGroup.creation}}</time>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,14 +1,15 @@
-<div class="row col-md-12 col-sm-12 box settingsBox infoBox">
+<div class="row infoBox">
     <div class="row">
         <!-- Box Title -->
-        <div id="boxTitle" class="col-md-6 col-sm-6"><h4><strong>{{box.title}}</strong></h4></div>
+        <div id="boxTitle" class="col-md-6 col-sm-6" ng-if="box.addAction"><h4><strong>{{box.title}}</strong></h4></div>
+        <div id="boxTitleNoAction" class="col-md-12 col-sm-12" ng-if="!box.addAction"><h4><strong>{{box.title}}</strong></h4></div>
         <!-- Box Action -->
         <div id="boxAction"  class="col-md-6 col-sm-6" ng-if="box.addAction">
             <a ng-href="{{box.addAction.href}}">
                 <div class="col-md-2">
                         <img class="image-circle-sidebox" alt="100x100" src="../assets/images/addIcon.png">
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 hidden-xs hidden-sm">
                     <h5>{{box.addAction.title}}</h5>
                 </div>
             </a>
@@ -27,14 +28,18 @@
                     <img ng-src="{{item.profile.icon}}" alt="100x100"
                          class="image-circle">
                     <div class="caption">
-                        <h4 class="text" title="{{item.name}}">{{item.name}}</h4>
+                        <h4 class="text hidden-sm hidden-xs" title="{{item.name}}">{{item.name}}</h4>
+                        <h4 class="text visible-xs visible-sm" title="{{item.name}}">{{item.name | limitTo:20}}...</h4>
                     </div>
                 </a>
                 <!-- Links if items are Campaigns-->
                 <a ng-if="box.type==='CAMPAIGNS'"
-                   ng-click="selectCampaign(item)" ng-href="#/assembly/{{item.assemblies[0]}}/campaign/{{item.campaignId}}"><img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
+                   ng-click="selectCampaign(item)"
+                   ng-href="#/assembly/{{item.assemblies[0]}}/campaign/{{item.campaignId}}">
+                    <img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
                     <div class="caption">
-                        <h4 class="text" title="{{item.title}}">{{item.title}}</h4>
+                        <h4 class="text hidden-xs hidden-sm" title="{{item.title}}">{{item.title}}</h4>
+                        <h4 class="text visible-xs visible-sm" title="{{item.title}}">{{item.title | limitTo:20}}...</h4>
                     </div>
                 </a>
 
@@ -45,7 +50,8 @@
                          data-holder-rendered="true"
                          class="image-circle">
                     <div class="caption">
-                        <h4 class="text" title="{{item.name}}">{{item.name}}</h4>
+                        <h4 class="text hidden-sm hidden-xs" title="{{item.name}}">{{item.name}}</h4>
+                        <h4 class="text visible-xs visible-sm" title="{{item.name}}">{{item.name | limitTo:20}}...</h4>
                     </div>
                 </a>
             </div>

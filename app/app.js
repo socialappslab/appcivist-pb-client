@@ -162,6 +162,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
+        .when('/assembly/:aid/campaign/:cid/contribution/:coid',{
+            controller: 'ContributionPageCtrl',
+            templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
+        })
         .when('/assembly/:aid/campaign/:cid/:ciid/:mid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
@@ -173,10 +177,6 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         .when('/assembly/:aid/campaign/:cid/:ciid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
-        })
-        .when('/assembly/:aid/campaign/:cid/:ciid/:mid/:coid',{
-            controller: 'ContributionPageCtrl',
-            templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
         })
         .when('/assembly/:aid/group/:wid',{
             controller: 'WorkingGroupCtrl',

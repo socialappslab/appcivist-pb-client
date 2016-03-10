@@ -17,26 +17,29 @@
         <div ng-if="assemblies.length > 0">
             <div class="col-sm-6 col-md-6 col-xs-12"
                  ng-repeat="assembly in assemblies | filter:assemblyFilter">
-                <div class="thumbnail assembly"
-                     id="assembly{{assembly.assemblyId}}">
-                    <a ng-class="selectedAssemblies[assembly.assemblyId] ? 'assemblySelected' : '' "
-                       ng-click="selectAssembly(assembly.assemblyId)">
-                        <img data-src="{{assembly.profile.icon}}"
-                             alt="{{assembly.name | limitTo: 10}}" src="../assets/images/dublin.jpg"
-                             data-holder-rendered="true" class="image-circle"/>
-                    </a>
+                <div class="thumbnail assembly col-lg-2 col-md-2 col-sm-2 col-xs-4" id="assembly{{assembly.assemblyId}}">
+                    <div class="image-circle">
+                        <a ng-class="selectedAssemblies[assembly.assemblyId] ? 'assemblySelected' : '' "
+                           ng-click="selectAssembly(assembly.assemblyId)">
+                            <img data-src="{{assembly.profile.icon}}"
+                                 alt="{{assembly.name | limitTo: 10}}" src="../assets/images/dublin.jpg"
+                                 data-holder-rendered="true" class="image-circle"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="thumbnail assembly col-lg-10 col-md-10 col-sm-10 col-xs-8">
                     <div class="caption">
-                        <h4><strong>{{assembly.name}}</strong></h4>
-                        <h5 class="text-muted">
-                            <strong>
-                                <i>
-                                    <div ng-show="assembly.location.placeName != null">
-                                        {{assembly.location.placeName}}
-                                    </div>
-                                </i>
-                            </strong>
-                        </h5>
-                        <p>{{assembly.description}}</p>
+                    <h4><strong>{{assembly.name}}</strong></h4>
+                    <h5 class="text-muted">
+                        <strong>
+                            <i>
+                                <div ng-show="assembly.location.placeName != null">
+                                    {{assembly.location.placeName}}
+                                </div>
+                            </i>
+                        </strong>
+                    </h5>
+                    <p>{{assembly.description}}</p>
                     </div>
                 </div>
             </div>

@@ -159,117 +159,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                 components: [], // [{...}]
                 existingComponents: [],
                 useLinkedCampaign: true,
-                milestones: [
-                    {
-                        date: today().toDate(),
-                        value: 1,
-                        title: "Brainstorming",
-                        description: "Identify problems and make suggestions for proposals.",
-                        component: "Proposal Making",
-                        symbol: $sce.trustAsHtml("1"),
-                        opened:true,
-                        componentIndex: 0,
-                        position: 1,
-                        mainContributionType: "BRAINSTORMING"
-                    },
-                    {
-                        date: today().add(15, 'days').toDate(),
-                        value: 15,
-                        title: "Working groups formation",
-                        description: "Join or create a group to develop proposals.",
-                        component: "Proposal Making",
-                        componentKey: "Proposalmaking",
-                        symbol: $sce.trustAsHtml("2"),
-                        opened:true,
-                        componentIndex: 0,
-                        position: 2,
-                        mainContributionType: "BRAINSTORMING"
-                    },
-                    {
-                        date: today().add(20, 'days').toDate(),
-                        value: 20,
-                        title: "Proposal drafting",
-                        description: "Explore existing proposals or start one with your working group.",
-                        component: "Proposal Making",
-                        componentKey: "Proposalmaking",
-                        symbol: $sce.trustAsHtml("3"),
-                        opened:true,
-                        componentIndex: 0,
-                        position: 3,
-                        mainContributionType: "PROPOSAL"
-                    },
-                    {
-                        date: today().add(30, 'days').toDate(),
-                        value: 30,
-                        title: "Proposal editing",
-                        description: "Versioning of existing proposals.",
-                        component: "Versioning",
-                        componentKey: "Versioning",
-                        symbol: $sce.trustAsHtml("4"),
-                        opened:true,
-                        componentIndex: 1,
-                        position: 4,
-                        mainContributionType: "PROPOSAL"
-                    },
-                    {
-                        date: today().add(45, 'days').toDate(),
-                        value: 45,
-                        title: "Proposal selection",
-                        description: "Versioning period over. Working Groups must now select the proposals they want to put forward to the Assembly for deliberation and voting. While this process is ongoing, proposals will be available in read only mode, open to comments from the Assembly.",
-                        component: "Versioning",
-                        componentKey: "Versioning",
-                        symbol: $sce.trustAsHtml("5"),
-                        opened:true,
-                        componentIndex: 1,
-                        position: 5,
-                        mainContributionType: "PROPOSAL"
-                    },
-                    {
-                        date: today().add(60, 'days').toDate(),
-                        value: 60,
-                        title: "Discussion of proposals",
-                        description: "Explore and discuss published proposals for deliberation.",
-                        component: "Deliberation",
-                        symbol: $sce.trustAsHtml("6"),
-                        opened:true,
-                        componentIndex: 2,
-                        position: 6,
-                        mainContributionType: "PROPOSAL"
-                    },
-                    {
-                        date: today().add(90, 'days').toDate(),
-                        value: 90, title: "Technical assessment",
-                        description: "Published proposals for deliberation are now being technically evaluated by volunteers, to assess feasibility and provide expert feedback. You can still freely explore and discuss published proposals. When evaluations are ready, they will appear above of each proposal.",
-                        component: "Deliberation",
-                        symbol: $sce.trustAsHtml("7"),
-                        opened:true,
-                        componentIndex: 2,
-                        position: 7,
-                        mainContributionType: "PROPOSAL"
-                    },
-                    {
-                        date: today().add(120, 'days').toDate(),
-                        value: 120, title: "Voting on proposals",
-                        description: "Explore and evaluate published proposals. When you are ready, open the voting ballot and cast your vote. You will be provided with a secret code to recover your voting ballot and update it anytime until the voting period is over.",
-                        component: "Voting",
-                        symbol: $sce.trustAsHtml("8"),
-                        opened:true,
-                        componentIndex: 3,
-                        position: 8,
-                        mainContributionType: "PROPOSAL"
-                    },
-                    {
-                        date: today().add(130, 'days').toDate(),
-                        value: 130, title: "Voting period ending",
-                        description: "Explore and evaluate published proposals. When you are ready, open the voting ballot and cast your vote. You will be provided with a secret code to recover your voting ballot and update it anytime until the voting period is over.",
-                        component: "Voting",
-                        symbol: $sce.trustAsHtml("8"),
-                        opened:true,
-                        componentIndex: 3,
-                        position: 9,
-                        mainContributionType: "PROPOSAL"
-                    }
-                ]
+                milestones: []
             };
             return campaign;
         }
@@ -381,8 +271,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 "existingThemes" : [],
                 "parentThemes" : [],
                 "hashtags": [],
-                "attachments": [],
-                "associatedMilestones": []
+                "attachments": []
             };
             return newC;
         },
@@ -466,7 +355,6 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             oldC.themes = newC.themes;
             oldC.hashtags = newC.hashtags;
             oldC.attachments = newC.attachments;
-            oldC.associatedMilestones = newC.associatedMilestones;
         }
     };
 });
@@ -475,10 +363,22 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         workingGroup: function(assemblyId, groupId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', {aid: assemblyId, gid: groupId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid',
+                {aid: assemblyId, gid: groupId});
+        },
+        workingGroupInCampaign: function(assemblyId, campaignId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group/:gid',
+                {aid: assemblyId, cid: campaignId, gid: groupId});
         },
         workingGroups: function(assemblyId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group', {aid: assemblyId});
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group',
+                {aid: assemblyId},
+                { 'update' : {method:'PUT'}, 'delete' : {method: 'DELETE'}}
+            );
+        },
+        workingGroupsInCampaign: function(assemblyId, campaignId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group',
+                {aid: assemblyId, cid: campaignId});
         },
         workingGroupMembers: function(assemblyId, groupId, stat) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/membership/:status',
@@ -549,7 +449,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 "blockMajority" : false
             };
 
-            var inviationEmail = $translate('wgroup.invitation.email.text',
+            var invitationEmail = $translate('wgroup.invitation.email.text',
                 { group: "[Group's Name]" }).then(
                 function (text) {
                     newWGroup.invitationEmail = text;
@@ -583,12 +483,14 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
     };
 });
 
-appCivistApp.factory('Components', function ($resource, $sce, localStorageService) {
+appCivistApp.factory('Components', function ($resource, $sce, localStorageService, $translate, $filter) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
+
     return {
-        defaultProposalComponents: function() {
+        defaultProposalComponents: function () {
             // Options Dictionary
             var optionsDict = {};
+
             optionsDict['component.deliberation.who-deliberates'] = [
                     {
                         name: "All assembly members",
@@ -682,10 +584,9 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
 
             // Config Dictionary
             var configDict = {};
-            configDict['Proposalmaking'] = [];
-            configDict['Versioning'] =  [
+            configDict['Proposalmaking'] = [
                 {
-                    key: "component.versioning.enable.proposal.merge-split",
+                    key: "component.proposalmaking.enable.proposal.merge-split",
                     description: "Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
                     type: "checkbox",
                     tooltipKey: "versioningMergeSplitTooltip",
@@ -693,7 +594,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
 
                 },
                 {
-                    key: "component.versioning.enable.working-groups.comments.external",
+                    key: "component.proposalmaking.enable.working-groups.comments.external",
                     description: "Enable comments in proposals by members of non-authoring Working Groups",
                     type: "checkbox",
                     tooltipKey: "versioningCommentsByExtGroupsTooltip",
@@ -859,147 +760,177 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 }
             ];
 
-            // TODO: get component definitions from server
-            return [
-                {
-                    position: 1,
-                    timeline: 1,
-                    name: 'Proposal making',
-                    title: 'Proposal making',
-                    key: "Proposalmaking",
-                    enabled: true,
-                    active: true,
-                    state: "",
-                    linked: false,
-                    template: "/app/partials/campaign/creation/components/proposal.html",
-                    descriptionTemplate: "/app/partials/campaign/creation/components/proposalDescription.html",
-                    // TODO: transform the contribution template into just another config
-                    contributionTemplate:[
-                        {
-                            title: "Title",
-                            description: "A sentence that describes the proposal's main idea",
-                            length: 30,
-                            position: 1,
-                            defaultSection: true
-                        },
-                        {
-                            title: "Theme/s",
-                            description: "The list of themes that apply to this proposal",
-                            position: 2,
-                            defaultSection: true
-                        },
-                        {
-                            title: "Summary ",
-                            description: "A short summary that explains the proposal's key idea in less than 250 words",
-                            length: 250,
-                            position: 3,
-                            defaultSection: true
-                        },
-                        {
-                            title: "Location",
-                            description: "If applies, the name of a location or zone where the proposal will be realized",
-                            position: 4,
-                            defaultSection: true
-                        },
-                        {
-                            title: "Attachments",
-                            description: "A list of additional resources that give support to the proposal (images, files, datasets, websites, etc.)",
-                            position: 5,
-                            defaultSection: true
-                        }
-                    ],
-                    definition: {
-                        componentDefId:1
+            var proposalMaking = {
+                position: 1,
+                timeline: 1,
+                name: 'Proposal making',
+                title:'Proposal making',
+                key: "Proposalmaking",
+                enabled: true,
+                active: true,
+                linked: false,
+                configs: configDict['Proposalmaking'],
+                template: "/app/partials/campaign/creation/components/proposal.html",
+                descriptionTemplate: "/app/partials/campaign/creation/components/proposalDescription.html",
+                // TODO: transform the contribution template into just another config
+                contributionTemplate:[
+                    {
+                        title: "Title",
+                        description: "A sentence that describes the proposal's main idea",
+                        length: 30,
+                        position: 1,
+                        defaultSection: true
                     },
-                    milestones: []
+                    {
+                        title: "Theme/s",
+                        description: "The list of themes that apply to this proposal",
+                        position: 2,
+                        defaultSection: true
+                    },
+                    {
+                        title: "Summary ",
+                        description: "A short summary that explains the proposal's key idea in less than 250 words",
+                        length: 250,
+                        position: 3,
+                        defaultSection: true
+                    },
+                    {
+                        title: "Location",
+                        description: "If applies, the name of a location or zone where the proposal will be realized",
+                        position: 4,
+                        defaultSection: true
+                    },
+                    {
+                        title: "Attachments",
+                        description: "A list of additional resources that give support to the proposal (images, files, datasets, websites, etc.)",
+                        position: 5,
+                        defaultSection: true
+                    }
+                ],
+                definition: {
+                    componentDefId:1,
+                    key: "Proposalmaking"
                 },
-                {
-                    position: 2,
-                    timeline: 1,
-                    name: 'Versioning',
-                    title: 'Versioning',
-                    key: "Versioning",
-                    enabled: true,
-                    active: true,
-                    state: "",
-                    linked: false,
-                    configs: configDict['Versioning'],
-                    template: "/app/partials/campaign/creation/components/versioning.html",
-                    descriptionTemplate: "/app/partials/campaign/creation/components/versioningDescription.html",
-                    definition: {
-                        componentDefId:2
-                    },
-                    milestones: []
+                milestones: []
+            };
+            var deliberation = {
+                position: 2,
+                timeline: 1,
+                name: 'Deliberation',
+                title: 'Deliberation',
+                key: "Deliberation",
+                enabled: false,
+                active: false,
+                linked: false,
+                state: "",
+                configs: configDict['Deliberation'],
+                template: "/app/partials/campaign/creation/components/deliberation.html",
+                descriptionTemplate: "/app/partials/campaign/creation/components/deliberationDescription.html",
+                definition: {
+                    componentDefId:2,
+                    key: "Deliberation"
                 },
-                {
-                    position: 3,
-                    timeline: 1,
-                    name: 'Deliberation',
-                    title: 'Deliberation',
-                    key: "Deliberation",
-                    enabled: true,
-                    active: false,
-                    state: "",
-                    linked: false,
-                    configs: configDict['Deliberation'],
-                    template: "/app/partials/campaign/creation/components/deliberation.html",
-                    descriptionTemplate: "/app/partials/campaign/creation/components/deliberationDescription.html",
-                    definition: {
-                        componentDefId:3
-                    },
-                    milestones: []
+                milestones: []
+            };
+            var voting = {
+                position: 3,
+                timeline: 1,
+                name: 'Voting',
+                title: 'Voting',
+                key: "Voting",
+                enabled: false,
+                active: false,
+                linked: false,
+                state: "",
+                configs: configDict['Voting'],
+                template: "/app/partials/campaign/creation/components/voting.html",
+                descriptionTemplate: "/app/partials/campaign/creation/components/votingDescription.html",
+                definition: {
+                    componentDefId:3,
+                    key: "Voting"
                 },
-                {
-                    position: 4,
-                    timeline: 1,
-                    name: 'Voting',
-                    title: 'Voting',
-                    key: "Voting",
-                    enabled: true,
-                    active: false,
-                    state: "",
-                    linked: false,
-                    configs: configDict['Voting'],
-                    template: "/app/partials/campaign/creation/components/voting.html",
-                    descriptionTemplate: "/app/partials/campaign/creation/components/votingDescription.html",
-                    definition: {
-                        componentDefId:4
-                    },
-                    milestones: []
+                milestones: []
+            };
+            var implementation = {
+                position: 4,
+                timeline: 1,
+                name: 'Implementation',
+                title: 'Implementation',
+                key: "Implementation",
+                enabled: false,
+                active: false,
+                state: "",
+                linked: false,
+                configs: configDict['Implementation'],
+                template: "/app/partials/campaign/creation/components/implementation.html",
+                descriptionTemplate: "/app/partials/campaign/creation/components/implementationDescription.html",
+                definition: {
+                    componentDefId:4,
+                    key: "Implementation"
                 },
-                {
-                    position: 5,
-                    timeline: 1,
-                    name: 'Deliberation',
-                    title: 'Deliberation',
-                    key: "DeliberationLinked",
-                    enabled: true,
-                    active: false,
-                    state: "",
-                    linked: true,
-                    definition: {
-                        componentDefId:3
-                    },
-                    milestones: []
+                milestones: []
+            };
+
+            var linkedDeliberation = {
+                position: 5,
+                timeline: 1,
+                name: 'Deliberation',
+                title: 'Deliberation',
+                key: "DeliberationLinked",
+                enabled: true,
+                active: false,
+                linked: true,
+                state: "",
+                definition: {
+                    componentDefId:2,
+                    key: "Deliberation"
                 },
-                {
-                    position: 1,
-                    timeline: 1,
-                    name: 'Voting',
-                    title: 'Voting',
-                    key: "VotingLinked",
-                    enabled: true,
-                    active: false,
-                    state: "",
-                    linked: true,
-                    definition: {
-                        componentDefId:4
-                    },
-                    milestones: []
-                }
-            ];
+                milestones: []
+            };
+            var linkedVoting = {
+                position: 6,
+                timeline: 1,
+                name: 'Voting',
+                title: 'Voting',
+                key: "VotingLinked",
+                enabled: true,
+                active: false,
+                linked: true,
+                state: "",
+                definition: {
+                    componentDefId:3,
+                    key: "Voting"
+                },
+                milestones: []
+            };
+            var linkedImplementation = {
+                position: 7,
+                timeline: 1,
+                name: 'Implementation',
+                title: 'Implementation',
+                key: "Implementation",
+                enabled: true,
+                active: false,
+                linked: true,
+                state: "",
+                configs: configDict['Implementation'],
+                template: "/app/partials/campaign/creation/components/implementation.html",
+                descriptionTemplate: "/app/partials/campaign/creation/components/implementationDescription.html",
+                definition: {
+                    componentDefId:4,
+                    key: "Implementation"
+                },
+                milestones: []
+            };
+
+            var componentList = [
+                proposalMaking, deliberation, voting,
+                linkedDeliberation, linkedVoting, linkedImplementation,
+                implementation];
+
+            return componentList;
         },
-        defaultSupportingComponents: function() {
+        defaultSupportingComponents: function () {
             return [
                 {name: 'Working Groups', alias: 'workingGroups'},
                 {name: 'Visualization', alias: 'visualization'},
@@ -1008,8 +939,160 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 {name: 'Reporting', alias:'reporting'},
                 {name: 'Implementation', alias:'implementation'}
             ];
+        },
+        defaultProposalComponentMilestones: function () {
+            return [
+                {
+                    date: today().toDate(),
+                    value: 1,
+                    title: "Proposal Making start date",
+                    description: "Begin brainstorming, creating working groups and proposals.",
+                    component: "Proposal Making",
+                    componentKey: "Proposalmaking",
+                    key: "start_proposalmaking",
+                    symbol: $sce.trustAsHtml("0"),
+                    opened:true,
+                    componentIndex: 0,
+                    position: 0,
+                    mainContributionType: "BRAINSTORMING",
+                    type: "START"
+                },
+                {
+                    date: today().add(10, 'days').toDate(),
+                    value: 10,
+                    title: "Brainstorming end date",
+                    description: "Until this date, assembly members can identify problems and make suggestions for proposals.",
+                    component: "Proposal Making",
+                    componentKey: "Proposalmaking",
+                    key: "end_brainstorming",
+                    symbol: $sce.trustAsHtml("1"),
+                    opened:true,
+                    componentIndex: 0,
+                    position: 1,
+                    mainContributionType: "BRAINSTORMING",
+                    type: "END"
+                },
+                {
+                    date: today().add(15, 'days').toDate(),
+                    value: 15,
+                    title: "Working Groups formation end date",
+                    description: "Until this date, assembly members can join or create a working group to develop proposals.",
+                    component: "Proposal Making",
+                    componentKey: "Proposalmaking",
+                    key: "end_wgroups_create",
+                    symbol: $sce.trustAsHtml("2"),
+                    opened:true,
+                    componentIndex: 0,
+                    position: 2,
+                    mainContributionType: "BRAINSTORMING",
+                    type: "END"
+                },
+                {
+                    date: today().add(30, 'days').toDate(),
+                    value: 30,
+                    title: "Proposal submission and editing due date",
+                    description: "Until this date, assembly members can start and develop proposals in working groups.",
+                    component: "Proposal Making",
+                    componentKey: "Proposalmaking",
+                    key: "end_proposals",
+                    symbol: $sce.trustAsHtml("3"),
+                    opened:true,
+                    componentIndex: 0,
+                    position: 3,
+                    mainContributionType: "PROPOSAL",
+                    type: "END"
+                },
+                {
+                    date: today().add(45, 'days').toDate(),
+                    value: 45,
+                    title: "Proposals selection due date (within Working Groups)",
+                    description: "Until this date, working groups can select what proposals they want to put forward to the Assembly for deliberation and voting.",
+                    component: "Proposal Making",
+                    componentKey: "Proposalmaking",
+                    key: "end_internal_selection",
+                    symbol: $sce.trustAsHtml("4"),
+                    opened:true,
+                    componentIndex: 0,
+                    position: 4,
+                    mainContributionType: "PROPOSAL",
+                    type: "END"
+                },
+                {
+                    date: today().add(60, 'days').toDate(),
+                    value: 60,
+                    title: "Proposal discussions closing date",
+                    description: "Until this date, assembly members can explore and discuss published proposals for deliberation.",
+                    component: "Deliberation",
+                    componentKey: "Deliberation",
+                    key: "end_discussion",
+                    symbol: $sce.trustAsHtml("5"),
+                    opened:true,
+                    componentIndex: 1,
+                    position: 5,
+                    mainContributionType: "PROPOSAL",
+                    type: "END"
+                },
+                {
+                    date: today().add(90, 'days').toDate(),
+                    value: 90, title: "Technical assessments due date",
+                    description: "Until this date, published proposals for deliberation will be open for technical evaluation by volunteers, to assess feasibility and provide expert feedback. After this date, evaluations will appear above each proposal.",
+                    component: "Deliberation",
+                    componentKey: "Deliberation",
+                    key: "end_assessment",
+                    symbol: $sce.trustAsHtml("6"),
+                    opened:true,
+                    componentIndex: 1,
+                    position: 6,
+                    mainContributionType: "PROPOSAL",
+                    startWithPrevious: true,
+                    type: "END"
+                },
+                {
+                    date: today().add(120, 'days').toDate(),
+                    value: 120,
+                    title: "Voting period start date",
+                    description: "Starting on this date, assembly members can explore and evaluate published proposals. When you are ready, open the voting ballot and cast your vote. You will be provided with a secret code to recover your voting ballot and update it anytime until the voting period is over.",
+                    component: "Voting",
+                    componentKey: "Voting",
+                    key: "start_voting",
+                    symbol: $sce.trustAsHtml("7"),
+                    opened:true,
+                    componentIndex: 2,
+                    position: 7,
+                    mainContributionType: "PROPOSAL",
+                    startWithPrevious: true,
+                    type: "START"
+                },
+                {
+                    date: today().add(130, 'days').toDate(),
+                    value: 130, title: "Voting period end date",
+                    description: "Until this date, assembly members can edit their votes. After it, whatever vote has been casted will be considered final.",
+                    component: "Voting",
+                    componentKey: "Voting",
+                    key: "end_voting",
+                    symbol: $sce.trustAsHtml("8"),
+                    opened:true,
+                    componentIndex: 2,
+                    position: 8,
+                    mainContributionType: "PROPOSAL",
+                    type: "END"
+                },
+                {
+                    date: today().add(250, 'days').toDate(),
+                    value: 250, title: "Implementation start date",
+                    description: "Starting this date, winning proposals will be available on the website to follow up upon their implementations",
+                    component: "Implementation",
+                    componentKey: "Implementation",
+                    key: "start_implementation",
+                    symbol: $sce.trustAsHtml("8"),
+                    opened:true,
+                    componentIndex: 6,
+                    position: 9,
+                    mainContributionType: "PROPOSAL",
+                    type: "START"
+                }
+            ];
         }
-
     };
 });
 

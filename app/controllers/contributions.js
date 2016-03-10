@@ -51,7 +51,7 @@ appCivistApp.controller('NewContributionCtrl',
 
 appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
-				   assembly, campaign, component, milestone, contributions, themes, newContribution,
+				   assembly, campaign, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
                    $translate, $location) {
 			init();
@@ -66,10 +66,6 @@ appCivistApp.controller('NewContributionModalCtrl',
                 $scope.assemblyID = assembly.assemblyId;
 				$scope.campaign = campaign;
                 $scope.campaignID = campaign.campaignId;
-				$scope.component = component;
-                $scope.componentID = component.componentId;
-				$scope.milestone = milestone;
-                $scope.milestoneID = milestone.componentMilestoneId;
 				$scope.contributions = contributions;
 				$scope.themes = themes;
 				$scope.newContribution = newContribution;
@@ -107,7 +103,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 				};
 
 				$scope.postContributionFromModal = function () {
-					$scope.targetSpaceId = $scope.component.resourceSpaceId;
+					$scope.targetSpaceId = $scope.campaign.resourceSpaceId;
 					$scope.targetSpace = $scope.contributions;
 					$scope.response = $scope.newContributionResponse;
 					$scope.modalInstance = $uibModalInstance;
@@ -165,9 +161,6 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
                         componentID: function () {
                             return $scope.componentID;
                         },
-                        milestoneID: function () {
-                            return $scope.milestoneID;
-                        },
                         container: function () {
                             return $scope.container;
                         },
@@ -200,7 +193,7 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
         $scope.getEtherpadReadOnlyUrl = Etherpad.getEtherpadReadOnlyUrl;
 
         $scope.openContributionPage = function(cID, edit)  {
-            $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID+"?edit="+edit);
+            $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
         };
 
     }
@@ -209,7 +202,7 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
 
 appCivistApp.controller('ContributionModalCtrl',
     function ($scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
-              contribution, assemblyID, campaignID, componentID, milestoneID, container, containerID, containerIndex,
+              contribution, assemblyID, campaignID, componentID, container, containerID, containerIndex,
               localStorageService, Contributions, Etherpad, $translate) {
         init();
         verifyAuthorship($scope, localStorageService, Contributions);
@@ -221,7 +214,6 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.assemblyID = assemblyID;
             $scope.campaignID = campaignID;
             $scope.componentID = componentID;
-            $scope.milestoneID = milestoneID;
             $scope.newAttachment = Contributions.defaultContributionAttachment();
             $scope.container = container;
             $scope.containerID = containerID;
@@ -260,7 +252,7 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.getEtherpadReadOnlyUrl = Etherpad.getEtherpadReadOnlyUrl;
 
             $scope.openContributionPage = function(cID, edit)  {
-                $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID+"?edit="+edit);
+                $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
                 $uibModalInstance.dismiss('cancel');
             };
         }
@@ -335,8 +327,6 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         // 1. Setting up scope ID values
         $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
         $scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
-        $scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
-        $scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
         $scope.contributionID = ($routeParams.coid) ? parseInt($routeParams.coid) : 0;
         $scope.editContribution = ($routeParams.edit) ? ($routeParams.edit === "true") ? true : false : false;
         console.log("Editing contribution: "+$scope.editContribution);
@@ -390,78 +380,12 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
                 setCurrentComponent($scope,localStorageService);
                 setCurrentMilestone($scope,localStorageService);
                 setContributionAndGroup($scope,localStorageService);
-                setupDaysToDeadline();
+                //setupDaysToDeadline();
             });
         } else {
             console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
-            setCurrentComponent($scope,localStorageService);
-            setCurrentMilestone($scope,localStorageService);
             setContributionAndGroup($scope,localStorageService);
-            setupDaysToDeadline();
-        }
-    }
-
-    /**
-     * Sets the current component in local storage if its ID matches with the requested ID on the route
-     * If the route ID is different, updates the current component in local storage
-     * @param ciID id of requested component in route
-     * @param component list of components that belong to components of the current campaign
-     * @param localStorageService service to access the local web storage
-     * @returns assembly
-     */
-    function setCurrentComponent($scope, localStorageService) {
-        $scope.components = $scope.campaign.components;
-        if ($scope.componentID === null || $scope.componentID===0) {
-            $scope.component = $scope.components[0];
-            $scope.componentID = $scope.component.componentId;
-            localStorageService.set("currentComponent", $scope.component );
-            console.log("Setting current component to: "+ $scope.component.title );
-
-        } else {
-            $scope.component = localStorageService.get('currentComponent');
-            if($scope.component === null || $scope.component.componentId != $scope.componentID) {
-                $scope.components.forEach(function(entry) {
-                    if(entry.componentId === $scope.componentID) {
-                        localStorageService.set("currentComponent", entry);
-                        $scope.component = entry;
-                        console.log("Setting current component to: " + entry.componentId);
-                    }
-                });
-            } else {
-                console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentId);
-            }
-        }
-    }
-
-
-    /**
-     * Returns the current milestone in local storage if its ID matches with the requested ID on the route
-     * If the route ID is different, updates the current milestone in local storage
-     * @param mID id of requested milestone in route
-     * @param milestone list of milestones that belong to milestones of the current component
-     * @param localStorageService service to access the local web storage
-     * @returns milestone
-     */
-    function setCurrentMilestone($scope, localStorageService) {
-        $scope.milestones = $scope.component.milestones;
-        if ($scope.milestoneID === null || $scope.milestoneID === 0) {
-            $scope.milestone = $scope.milestones[0];
-            $scope.milestoneID = $scope.milestone.componentMilestoneId;
-            localStorageService.set("currentMilestone", $scope.milestone);
-            console.log("Setting current milestone to: "+$scope.milestone.title);
-        } else {
-            $scope.milestone = localStorageService.get('currentMilestone');
-            if($scope.milestone === null || $scope.milestone.componentMilestoneId != $scope.milestoneID) {
-                $scope.milestones.forEach(function(entry) {
-                    if(entry.componentMilestoneId === $scope.milestoneID) {
-                        localStorageService.set("currentMilestone", entry);
-                        $scope.milestone = entry;
-                        console.log("Setting current milestone to: " + entry.title);
-                    }
-                });
-            } else {
-                console.log("Route milestone ID is the same as the current milestone in local storage");
-            }
+            //setupDaysToDeadline();
         }
     }
 
@@ -496,59 +420,51 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
                     $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
                 });
             }
-            console.log("Loading {assembly,campaign,component,milestone,contribution}: "
+            console.log("Loading {assembly,campaign,contribution}: "
                 +$scope.assembly.assemblyId+", "
                 +$scope.campaign.campaignId+", "
-                +$scope.component.componentId+", "
-                +$scope.milestone.componentMilestoneId+", "
                 +$scope.contribution.contributionId
             );
-
-            console.log("Loading {# of components, # of components}: "
-                +$scope.components.length+", "
-                +$scope.milestones.length
-            );
-
         });
     }
 
-    function setupDaysToDeadline() {
-        // Days, hours, minutes to end date of this component phase
-        var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
-        var now = moment();
-        var diff = endDate.diff(now, 'minutes');
-        $scope.minutesToDue = diff%60;
-        $scope.hoursToDue = Math.floor(diff/60) % 24;
-        $scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
-
-        // Days, hours, minutes to end date of this milestone stage
-        var mStartDate = moment($scope.milestone.start, 'YYYY-MM-DD HH:mm:ss');
-        var mDays = $scope.milestone.days;
-
-        $scope.milestoneStarted = mStartDate.isBefore(now);
-        if($scope.milestoneStarted) {
-            mDiff = now.diff(mStartDate, 'days');
-            $scope.mDaysToDue = $scope.milestone.days - mDiff;
-
-        } else {
-            mDiff = mStartDate.diff(now, 'days');
-            $scope.mDaysToDue = mDiff;
-        }
-        $scope.themes= [];
-        angular.forEach($scope.component.contributions, function(contribution){
-            angular.forEach(contribution.themes, function(theme) {
-                var isInList = false;
-                angular.forEach($scope.themes, function(actualTheme) {
-                    if(theme.title === actualTheme.title){
-                        isInList = true;
-                    }
-                });
-                if(isInList === false) {
-                    $scope.themes.push(theme);
-                }
-            });
-        });
-    }
+    //function setupDaysToDeadline() {
+    //    // Days, hours, minutes to end date of this component phase
+    //    var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
+    //    var now = moment();
+    //    var diff = endDate.diff(now, 'minutes');
+    //    $scope.minutesToDue = diff%60;
+    //    $scope.hoursToDue = Math.floor(diff/60) % 24;
+    //    $scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
+    //
+    //    // Days, hours, minutes to end date of this milestone stage
+    //    var mStartDate = moment($scope.milestone.start, 'YYYY-MM-DD HH:mm:ss');
+    //    var mDays = $scope.milestone.days;
+    //
+    //    $scope.milestoneStarted = mStartDate.isBefore(now);
+    //    if($scope.milestoneStarted) {
+    //        mDiff = now.diff(mStartDate, 'days');
+    //        $scope.mDaysToDue = $scope.milestone.days - mDiff;
+    //
+    //    } else {
+    //        mDiff = mStartDate.diff(now, 'days');
+    //        $scope.mDaysToDue = mDiff;
+    //    }
+    //    $scope.themes= [];
+    //    angular.forEach($scope.component.contributions, function(contribution){
+    //        angular.forEach(contribution.themes, function(theme) {
+    //            var isInList = false;
+    //            angular.forEach($scope.themes, function(actualTheme) {
+    //                if(theme.title === actualTheme.title){
+    //                    isInList = true;
+    //                }
+    //            });
+    //            if(isInList === false) {
+    //                $scope.themes.push(theme);
+    //            }
+    //        });
+    //    });
+    //}
 });
 
 appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,

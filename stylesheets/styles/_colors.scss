@@ -15,6 +15,7 @@ $medium-blue: #4A90E2;
 $dark-blue: #9CC7D3;
 $dodger-blue:dodgerblue;
 $light-black: #524D4D;
+$light-pale-black: #B7B2B2;
 $light-pink: #F4E5E4;
 $white: #FFFFFF;
 $dark-grey: grey;
@@ -38,6 +39,7 @@ $tags-container-content-border: $light-grey;
 /****TIMELINE*****/
 $timeline-background: $light-grey;
 $timeline-selected-background: $light-black;
+$timeline-disabled-background: $light-pale-black;
 
 /*****PROGRESSLINE******/
 $progressline-background: $light-pink;

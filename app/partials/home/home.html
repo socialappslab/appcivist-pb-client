@@ -6,9 +6,23 @@
 			<ng-include src="'app/partials/home/other-updates.html'"></ng-include>
 		</div>
 		<div class="col-md-4 col-sm-4">
-			<side-box id="myAssemblies" box="sideBoxes['assemblies']"></side-box>
-			<side-box id="myCampaigns" box="sideBoxes['campaigns']"></side-box>
-			<side-box id="myGroups" box="sideBoxes['groups']"></side-box>
+			<!-- Assemblies -->
+			<ng-include src="'app/partials/boxes/assemblyBoxes.html'"></ng-include>
+
+			<!--<side-box id="myAssemblies" box="sideBoxes['assemblies']"></side-box>-->
+
+			<!-- Campaigns -->
+			<ng-include src="'app/partials/boxes/campaignBoxes.html'"></ng-include>
+
+			<!-- Working Groups -->
+			<div class="voffset4"></div>
+			<ng-include src="'app/partials/boxes/groupBoxes.html'"></ng-include>
+
+			<!--<side-box id="myCampaigns" box="sideBoxes['campaigns']"></side-box>-->
+			<!--<side-box id="myGroups" box="sideBoxes['groups']"></side-box>-->
+
+
+
 		</div>
 	</div>
 </div>

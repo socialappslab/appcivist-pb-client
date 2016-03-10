@@ -1,16 +1,17 @@
 ﻿// This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
-													 $resource, $location, Assemblies, loginService, localStorageService) {
-
-	$scope.assemblies = [];
-	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams, $resource, $location, Assemblies,
+                                                     loginService, localStorageService, $translate) {
 
 	init();
 
 	function init() {
-		$scope.assemblies = Assemblies.assemblies().query();
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
+        $scope.assemblies = Assemblies.assemblies().query();
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);
@@ -177,7 +178,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             $scope.selectedAssemblies[assemblyId] = !$scope.selectedAssemblies[assemblyId];
 
             if($scope.selectedAssemblies[assemblyId]){
-                var linked = {"assemblyId":assemblyId};
+                var linked = {"assemblyId" : assemblyId};
                 $scope.newAssembly.linkedAssemblies.push(linked);
             } else {
                 $scope.removeLinkedAssemblyById(assemblyId);
@@ -350,17 +351,18 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
                                                  $resource, $http, Assemblies, $location, Contributions, $uibModal,
                                                  loginService, localStorageService, Memberships, Invitations,
-                                                 FlashService, $translate) {
+                                                 FlashService, $translate, $filter) {
+
     init();
 
     function init() {
-        $scope.user = localStorageService.get("user");
-        if ($scope.user && $scope.user.language)
-            $translate.use($scope.user.language);
-        // Grab assemblyID off of the route
-        $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-        console.log("Loading Assembly: "+$routeParams.aid);
+        initScopeFunctions();
+        initScopeContent();
+        initializeSideBoxes();
+    }
 
+    function initScopeFunctions () {
+        // Scope Functions
         $scope.startSpinner = function(){
             $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
             usSpinnerService.spin('spinner-1');
@@ -371,23 +373,6 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $(angular.element.find('.spinner-container')).remove();
         }
 
-        if ($scope.assemblyID > 0) {
-            $scope.startSpinner();
-            // 0. Prepare scope variables to use and start loading spinner
-            $scope.currentAssembly = {};
-            $scope.campaigns = null;
-            $scope.pendingInvitations = [];
-            $scope.newContribution = Contributions.defaultNewContribution();
-
-            // 1. Verify if the user is member of this assembly and read get its membership detail
-            $scope.membership = Memberships.membershipInAssembly($scope.assemblyID, $scope.user.userId).get();
-            $scope.membership.$promise.then(userIsMemberSuccess, userIsMemberError);
-        }
-
-        $scope.selectCampaign = function(campaign) {
-            localStorageService.set("currentCampaign", campaign);
-        };
-
         $scope.selectCampaignById = function(cId) {
             $scope.campaigns = localStorageService.get("campaigns");
             campaign = campaigns.forEach(function(entry) {
@@ -395,6 +380,10 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                     return entry;
                 }
             });
+            localStorageService.set("currentCampaign", campaign);
+        };
+
+        $scope.selectCampaign = function(campaign) {
             localStorageService.set("currentCampaign", campaign);
         };
 
@@ -421,18 +410,18 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             buttonMap = {
                 joinButton:
                 !$scope.userIsMember && $scope.currentAssembly.profile != undefined
-                    && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
-                        || ($scope.currentAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST")
-                        || ($scope.currentAssembly.profile.supportedMembership === "REQUEST")
+                && ( ($scope.currentAssembly.profile.supportedMembership === "OPEN")
+                    || ($scope.currentAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST")
+                    || ($scope.currentAssembly.profile.supportedMembership === "REQUEST")
                 ),
                 inviteButton:
                 $scope.userIsMember
-                    && $scope.currentAssembly.profile != undefined
-                    && ( ( $scope.currentAssembly.profile.managementType === "OPEN")
-                        || ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
-                            && ($scope.isRightRole("COORDINATOR") )
+                && $scope.currentAssembly.profile != undefined
+                && ( ( $scope.currentAssembly.profile.managementType === "OPEN")
+                    || ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
+                        && ($scope.isRightRole("COORDINATOR") )
                         || ( ($scope.currentAssembly.profile.managementType === "COORDINATED_AND_MODERATED")
-                            && ($scope.isRightRole("COORDINATOR")) )
+                        && ($scope.isRightRole("COORDINATOR")) )
                     )
                 ),
                 campaignButton:
@@ -513,6 +502,90 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                 $location.url("/invitation/"+$scope.membership.invitationToken);
             }
         };
+
+        $scope.resendInvitation = function (invitation) {
+            // TODO: implement resend invitation endpoint
+        }
+    }
+
+    function initScopeContent () {
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+        // Grab assemblyID off of the route
+        $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+        console.log("Loading Assembly: "+$routeParams.aid);
+
+        if ($scope.assemblyID > 0) {
+            $scope.startSpinner();
+            // 0. Prepare scope variables to use and start loading spinner
+            $scope.currentAssembly = {};
+
+            $scope.campaigns = [];
+            $scope.workingGroups = [];
+            $scope.assemblyMembers = [];
+            $scope.contribution = [];
+            $scope.pendingInvitations = [];
+            $scope.newContribution = Contributions.defaultNewContribution();
+
+            // 1. Verify if the user is member of this assembly and read get its membership detail
+            $scope.membership = Memberships.membershipInAssembly($scope.assemblyID, $scope.user.userId).get();
+            $scope.membership.$promise.then(userIsMemberSuccess, userIsMemberError);
+        }
+    }
+
+    function initializeSideBoxes() {
+        $scope.sideBoxes = [];
+        $scope.translations = [
+            'Assembly', 'Assemblies', 'Campaign', 'Campaigns', 'Ongoing', 'Upcoming', 'Past',
+            'Working Group', 'Working Groups', 'Member', 'Members',
+            'New Assembly', 'New Campaign', 'New Working Group',
+            'My Assemblies', 'My Campaigns', 'My Working Groups',
+            'No assemblies to show.', 'No campaigns to show.',
+            'No working groups to show.', 'Invite participants'
+        ];
+
+        $translate($scope.translations).then (
+            function (translations) {
+                $scope.translations = translations;
+
+                $scope.sideBoxes['upCampaigns'] = {
+                    title: $scope.translations["Upcoming"]+" "+$scope.translations["Campaigns"],
+                    type: "CAMPAIGNS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No campaigns to show."]
+                };
+
+                $scope.sideBoxes['onCampaigns'] = {
+                    title: $scope.translations["Ongoing"]+" "+$scope.translations["Campaigns"],
+                    type: "CAMPAIGNS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No campaigns to show."]
+                };
+
+                $scope.sideBoxes['pastCampaigns'] = {
+                    title: $scope.translations["Past"]+" "+$scope.translations["Campaigns"],
+                    type: "CAMPAIGNS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No campaigns to show."]
+                };
+
+                $scope.sideBoxes['groups'] = {
+                    title: $scope.translations["Working Groups"],
+                    type: "GROUPS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No working groups to show."]
+                };
+
+                $scope.sideBoxes['members'] = {
+                    title: $scope.translations["Members"],
+                    type: "MEMBERS",
+                    itemList: [],
+                    errorMessage: $scope.translations["No working groups to show."]
+                };
+
+            }
+        );
     }
 
     /**
@@ -601,6 +674,11 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
 
     function initializeAssemblyResources () {
         $scope.campaigns = $scope.currentAssembly.campaigns;
+        $scope.sideBoxes['onCampaigns'].itemList = $filter('filter')($scope.campaigns, { active: true });
+        $scope.sideBoxes['upCampaigns'].itemList = $filter('filter')($scope.campaigns, { upcoming: true });
+        $scope.sideBoxes['pastCampaigns'].itemList = $filter('filter')($scope.campaigns, { past: true });
+        $scope.workingGroups = $scope.currentAssembly.workingGroups;
+        $scope.sideBoxes['groups'].itemList = $scope.workingGroups;
         $scope.contributions = Contributions.contributions($scope.assemblyID).query();
         $scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
         $scope.contributions.$promise.then(function(data){
@@ -609,6 +687,7 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
         $scope.assemblyMembers.$promise.then(
             function(data){
                 $scope.assemblyMembers = data;
+                $scope.members = data;
                 $scope.stopSpinner();
             },
             function(error) {

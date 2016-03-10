@@ -1,13 +1,13 @@
-<ul id="timeline" class="row timelineedit">
+<ul id="timeline" class="row timeline">
     <li id="phase"
         ng-repeat="component in proposalComponents track by $index"
-        class="{{component.state}}"
-        ng-class="!component.linked ? component.active ? 'selected' : '' : 'disabled'"
+        class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+        ng-class="!component.linked ? component.active ? 'active selected' : 'active' : 'disabled'"
         ng-click="changeComponentState($index,!component.active)"
         ng-if="component.enabled"
-        uib-tooltip="{{!component.linked ? component.name : 'Disabled'}}"
+        uib-tooltip="{{!component.linked ? component.name : 'Linked components cannot be edited'}}"
         tooltip-placement="right">
-       {{component.name | limitTo: 8 }}{{component.name.length > 8 ? '...' : ''}}
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ component.name | limitTo: 8  }}{{component.name.length > 8 ? '...' : ''}}
     </li>
     <!-- TODO: think of a better way of showing linked campaign phases -->
 </ul>

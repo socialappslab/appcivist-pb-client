@@ -36,14 +36,15 @@
     border-radius:5px;
     padding:5px;
     height: 150px;
-    background-color: #f3f3f3;
-
+    background-color: $forum-infoBox-background;
+    overflow-y: scroll;
     .row{
       margin-left:0px;
     }
 
     .list-item{
       margin-top: 5px;
+      margin-right: 5px;
     }
 
     button{

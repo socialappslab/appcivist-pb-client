@@ -63,73 +63,26 @@
                 </div>
             </div>
             <div class="col-md-5 col-sm-5 info-lateral" ng-if="userIsMember">
-                <div class="row no-padding no-margin">
-                    <button class="btn btn-success col-md-5 inline" ng-if="checkShow('sendMessage')">Send message</button>
-                    <button class="btn btn-success col-md-5 col-md-push-2 inline" ng-if="checkShow('organizeMeeting')">Organize meeting</button>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <button class="btn btn-primary col-md-12" ng-if="checkShow('sendMessage')">
+                            <i class="icon-chat-empty"></i>
+                            {{'Send' | translate}} {{'Message' | translate | lowercase}}
+                        </button>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <button class="btn btn-primary col-md-12" ng-if="checkShow('organizeMeeting')">
+                            <i class="icon-calendar"></i>
+                            {{'Organize' | translate}} {{'Meeting' | translate | lowercase}}
+                        </button>
+                    </div>
                 </div>
+                <div class="voffset4"></div>
                 <!-- Working Group Members -->
-                <div class="row infoBox">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-4">
-                            <h4><strong>Members</strong></h4>
-                        </div>
-                        <div class="col-md-8 col-sm-8 add-elements-box-button" ng-if="checkShow('inviteButton')">
-                            <div class="inline">
-                                <a ng-click="openNewInvitationModal()" class="addButton"><img data-src="holder.js/20x20" alt="20x20" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle"></a>
-                            </div>
-                            <h5 class="inline"><strong>Invite participants</strong></h5>
-                        </div>
-                    </div>
+                <ng-include src="'app/partials/boxes/memberBoxes.html'"></ng-include>
 
-                    <!-- TODO: turn style into class -->
-                    <div style="overflow-y: auto; overflow-x:hidden; height: 85px; margin-right: 5px;">
-                        <div class="row list-item">
-                            <div class="col-md-6" ng-repeat="member in wGroupMembers">
-                                <div style="display: inline-block;" class="">
-                                    <div class="image-capsule">
-                                        <img alt="100x100" ng-src="{{member.user.profilePic.urlAsString}}" class="image-circle" err-src="../assets/images/woman1.jpg"/>
-                                        <div class="caption " style="text-align: center">
-                                            <h5 class="text" title="{{member.user.name}}">{{member.user.name}} <span ng-if="member.status!='ACCEPTED'">({{member.status}})</span></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row list-item">
-                            <h4 ng-if="pendingInvitations.length>0"><strong>Pending Invitations</strong></h4>
-                            <div class="col-md-6" ng-repeat="invitation in pendingInvitations">
-                                <div style="display: inline-block;">
-                                    <div class="image-capsule">
-                                        <div class="caption" style="text-align: center">
-                                            <h5 class="text" title="{{invitation.email}}">{{invitation.email}}({{invitation.status}})</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Working Group Campaigns -->
-                <div class="row infoBox">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <h4><strong>Assembly Campaigns</strong></h4>
-                        </div>
-                    </div>
-
-                    <div class="row list-item">
-                        <div class="row" ng-repeat="campaign in assemblyCampaigns">
-                            <div style="display: inline-block;">
-                                <div class="image-capsule">
-                                    <div class="caption" style="text-align: center">
-                                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaign.campaignId}}"><h5 class="text" title="{{campaign.title}}">{{campaign.title}}</h5></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Campaigns -->
+                <ng-include src="'app/partials/boxes/campaignBoxes.html'"></ng-include>
 
                 <!-- Working Group Proposals -->
                 <div class="row">

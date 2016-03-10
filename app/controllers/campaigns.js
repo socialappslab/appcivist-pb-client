@@ -660,7 +660,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
-														  Contributions, FlashService, $translate, $filter){
+														  Contributions, FlashService, $translate, $filter, moment){
 
 	init();
 
@@ -680,7 +680,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
 		$scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
-		$scope.milestoneID = ($routeParams.mid) ? parseInt($routeParams.mid) : 0;
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.newComment = $scope.newContribution = Contributions.defaultNewContribution();
@@ -697,7 +696,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		};
 
 		$scope.openContributionPage = function(cID, edit)  {
-			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/"+$scope.componentID+"/"+$scope.milestoneID+"/"+cID+"?edit="+edit);
+			$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
 		};
 
 		$scope.openNewContributionModal = function(size, cType)  {
@@ -713,12 +712,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 					},
 					campaign: function () {
 						return $scope.campaign;
-					},
-					component: function () {
-						return $scope.component;
-					},
-					milestone: function () {
-						return $scope.milestone;
 					},
 					contributions: function () {
 						return $scope.contributions;
@@ -740,7 +733,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 			modalInstance.result.then(function (newContribution) {
 				$scope.newContribution = newContribution;
-				///$scope.contributions.push(newContribution);
 				console.log('New Contribution with Title: ' + newContribution.title);
 			}, function () {
 				console.log('Modal dismissed at: ' + new Date());
@@ -766,7 +758,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				$scope.campaignContributionThemeFilter = t.title;
 			}
 		}
+
+		$scope.isButtonDisabled = function (button) {
+			return $scope.disableButton[button];
+		}
 	}
+
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
 	 * If the route ID is different, updates the current assembly in local storage
@@ -805,17 +802,15 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			res.$promise.then(function(data) {
 				$scope.campaign = data;
 				localStorageService.set("currentCampaign", $scope.campaign);
-				setCurrentComponent($scope,localStorageService);
-				setCurrentMilestone($scope,localStorageService);
+				setCurrentComponentAndMilestones($scope,localStorageService);
+				setMilestonesMap();
 				setContributionsAndGroups($scope,localStorageService);
-				setupDaysToDue();
 			});
 		} else {
 			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
-			setCurrentComponent($scope,localStorageService);
-			setCurrentMilestone($scope,localStorageService);
+			setCurrentComponentAndMilestones($scope,localStorageService);
+			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
-			setupDaysToDue();
 		}
 	}
 
@@ -827,19 +822,48 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 * @param localStorageService service to access the local web storage
 	 * @returns assembly
 	 */
-	function setCurrentComponent($scope, localStorageService) {
+	function setCurrentComponentAndMilestones($scope, localStorageService) {
 		$scope.components = $scope.campaign.components;
+		$scope.milestones = localStorageService.get("currentMilestones");
+		$scope.buildMilestones = false;
+		if (!$scope.loadedLocally || !$scope.milestones) {
+			$scope.milestones = [];
+			$scope.buildMilestones = true;
+		}
 
-		if ($scope.componentID === null || $scope.componentID===0) {
-			$scope.component = $scope.components[0];
+
+		if ($scope.components && ($scope.componentID === null || $scope.componentID === 0)) {
+			for(var i=0; i<$scope.components.length; i++) {
+				var c = $scope.components[i];
+
+				// add milestones of component to array of milestones
+				if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(c.milestones);
+
+				// check if this component is current
+				var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm:ss');
+				var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm:ss');
+				console.log("Checking dates for component: "+ c.title);
+				console.log("=> Today is: "+ moment().format());
+				console.log("=> Component starts: "+ startMoment.format());
+				console.log("=> Component ends: "+ endMoment.format());
+				if (moment().isBetween(startMoment, endMoment)) {
+					console.log("=> Today is in this date range! Choosing as current "+ c.title);
+					$scope.component = c;
+				}
+			}
+			if (!$scope.component) {
+				$scope.component = $scope.components[0];
+			}
 			$scope.componentID = $scope.component.componentId;
-			localStorageService.set("currentComponent", $scope.component );
+			localStorageService.set("currentComponent", $scope.component);
 			console.log("Setting current component to: "+ $scope.component.title );
-
-		} else {
+		} else if ($scope.components) {
 			$scope.component = localStorageService.get('currentComponent');
 			if($scope.component === null || $scope.component.componentId != $scope.componentID) {
 				$scope.components.forEach(function(entry) {
+					// add milestones of component to array of milestones
+					if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(entry.milestones);
+
 					if(entry.componentId === $scope.componentID) {
 						localStorageService.set("currentComponent", entry);
 						$scope.component = entry;
@@ -850,37 +874,52 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentId);
 			}
 		}
+		if ($scope.buildMilestones) {
+			localStorageService.set("currentMilestones", $scope.milestones);
+		}
 	}
 
-	/**
-	 * Returns the current milestone in local storage if its ID matches with the requested ID on the route
-	 * If the route ID is different, updates the current milestone in local storage
-	 * @param mID id of requested milestone in route
-	 * @param milestone list of milestones that belong to milestones of the current component
-	 * @param localStorageService service to access the local web storage
-	 * @returns milestone
-	 */
-	function setCurrentMilestone($scope, localStorageService) {
-		$scope.milestones = $scope.component.milestones;
-		if ($scope.milestoneID === null || $scope.milestoneID === 0) {
-			$scope.milestone = $scope.milestones[0];
-			$scope.milestoneID = $scope.milestone.componentMilestoneId;
-			localStorageService.set("currentMilestone", $scope.milestone);
-			console.log("Setting current milestone to: "+$scope.milestone.title);
+	function setMilestonesMap () {
+		if ($scope.buildMilestones) {
+			$scope.milestonesMap = $scope.milestones.reduce(
+					function (map, obj) {
+						map[obj.key] = obj;
+						return map;
+					},
+					{}
+			);
+			localStorageService.set("currentMilestonesMap", $scope.milestonesMap);
 		} else {
-			$scope.milestone = localStorageService.get('currentMilestone');
-			if($scope.milestone === null || $scope.milestone.componentMilestoneId != $scope.milestoneID) {
-				$scope.milestones.forEach(function(entry) {
-					if(entry.componentMilestoneId === $scope.milestoneID) {
-						localStorageService.set("currentMilestone", entry);
-						$scope.milestone = entry;
-						console.log("Setting current milestone to: " + entry.title);
-					}
-				});
-			} else {
-				console.log("Route milestone ID is the same as the current milestone in local storage");
-			}
+			$scope.milestonesMap = localStorageService.get("currentMilestonesMap");
 		}
+
+		var campaignStart = moment($scope.campaign.startDate, 'YYYY-MM-DD HH:mm:ss');
+		var brainstormingEnd = moment($scope.milestonesMap['end_brainstorming'].date, 'YYYY-MM-DD HH:mm:ss');
+		var wGroupFormationEnd = moment($scope.milestonesMap['end_wgroups_creation'].date, 'YYYY-MM-DD HH:mm:ss');
+		var proposalsEnd = moment($scope.milestonesMap['end_proposals'].date, 'YYYY-MM-DD HH:mm:ss');
+		var voteStart = moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm:ss');
+		var voteEnd = moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm:ss');
+		var assessmentEnd = moment($scope.milestonesMap['end_assessment'].date, 'YYYY-MM-DD HH:mm:ss');
+
+		$scope.disableButton = {
+				contribute: !moment().isBetween(campaignStart, brainstormingEnd),
+				newGroup: !moment().isBetween(campaignStart, wGroupFormationEnd),
+				newProposal: !moment().isBetween(campaignStart, proposalsEnd),
+				vote: !moment().isBetween(voteStart, voteEnd),
+				assess: !moment().isBetween(campaignStart,assessmentEnd)
+				//TODO
+				// editCampaign: $scope.userIsMember
+				//	&& $scope.currentAssembly.profile != undefined
+				//	&& ( ( $scope.currentAssembly.profile.managementType === "OPEN")
+				//			|| ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
+				//					&& ($scope.isRightRole("COORDINATOR") )
+				//					|| ( ($scope.currentAssembly.profile.managementType === "COORDINATED_AND_MODERATED")
+				//					&& ($scope.isRightRole("COORDINATOR")) )
+				//			)
+				//	)
+
+			};
+
 	}
 
 	function setContributionsAndGroups($scope, localStorageService) {
@@ -920,58 +959,57 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		if ($scope.campaign.ballots && $scope.campaign.ballots.length>0)
 			$scope.ballot = $scope.campaign.ballots[0];
 		$scope.themes = $scope.campaign.themes;
-		$scope.displayedContributionType = $scope.milestone.mainContributionType;
 
-		console.log("Loading {assembly,campaign,component,milestone}: "
+		console.log("Loading {assembly,campaign,component}: "
 			+$scope.assemblyID+", "
 			+$scope.campaignID+", "
-			+$scope.componentID+", "
-			+$scope.milestoneID
+			+$scope.componentID
 		);
 
-		console.log("Loading {# of components, # of components}: "
+		console.log("Loading {# of components, # of milestones}: "
 				+$scope.components.length+", "
 				+$scope.milestones.length
 		);
 	}
 
-	function setupDaysToDue() {
-		// Days, hours, minutes to end date of this component phase
-		var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
-		var now = moment();
-		var diff = endDate.diff(now, 'minutes');
-		$scope.minutesToDue = diff%60;
-		$scope.hoursToDue = Math.floor(diff/60) % 24;
-		$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
-
-		// Days, hours, minutes to end date of this milestone stage
-		var mStartDate = moment($scope.milestone.start, 'YYYY-MM-DD HH:mm:ss');
-		var mDays = $scope.milestone.days;
-
-		$scope.milestoneStarted = mStartDate.isBefore(now);
-		if($scope.milestoneStarted) {
-			mDiff = now.diff(mStartDate, 'days');
-			$scope.mDaysToDue = $scope.milestone.days - mDiff;
-
-		} else {
-			mDiff = mStartDate.diff(now, 'days');
-			$scope.mDaysToDue = mDiff;
-		}
-		$scope.themes= [];
-		angular.forEach($scope.component.contributions, function(contribution){
-			angular.forEach(contribution.themes, function(theme) {
-				var isInList = false;
-				angular.forEach($scope.themes, function(actualTheme) {
-					if(theme.title === actualTheme.title){
-						isInList = true;
-					}
-				});
-				if(isInList === false) {
-					$scope.themes.push(theme);
-				}
-			});
-		});
-	}
+	//function setupDaysToDue() {
+	//	// Days, hours, minutes to end date of this component phase
+	//	var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var now = moment();
+	//	var diff = endDate.diff(now, 'minutes');
+	//	$scope.minutesToDue = diff%60;
+	//	$scope.hoursToDue = Math.floor(diff/60) % 24;
+	//	$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
+    //
+	//	// Days, hours, minutes to end date of this component stage
+	//	var mStartDate = moment($scope.component.startDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var mEndDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var mDays = endDate.diff(startDate,'days');
+    //
+	//	$scope.componentStarted = mStartDate.isBefore(now);
+	//	if($scope.componentStarted) {
+	//		mDiff = now.diff(mStartDate, 'days');
+	//		$scope.mDaysToDue = mDays - mDiff;
+    //
+	//	} else {
+	//		mDiff = mStartDate.diff(now, 'days');
+	//		$scope.mDaysToDue = mDiff;
+	//	}
+	//	$scope.themes= [];
+	//	angular.forEach($scope.component.contributions, function(contribution){
+	//		angular.forEach(contribution.themes, function(theme) {
+	//			var isInList = false;
+	//			angular.forEach($scope.themes, function(actualTheme) {
+	//				if(theme.title === actualTheme.title){
+	//					isInList = true;
+	//				}
+	//			});
+	//			if(isInList === false) {
+	//				$scope.themes.push(theme);
+	//			}
+	//		});
+	//	});
+	//}
 });
 
 

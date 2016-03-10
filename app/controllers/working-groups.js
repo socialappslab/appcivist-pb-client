@@ -108,6 +108,9 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             newGroup.$promise.then(
                 function (response) {
                     $scope.newWorkingGroup = response;
+                    $scope.workingGroups = localStorageService.get("workingGroups");
+                    $scope.workingGroups.push($scope.newWorkingGroup);
+                    localStorageService.set("workingGroups", $scope.workingGroups);
                     $location.url("/assembly/"+$scope.assemblyID+"/group/"+$scope.newWorkingGroup.groupId);
                 },
                 function (error) {

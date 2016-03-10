@@ -106,7 +106,6 @@ appCivistApp.directive('contribution', function(){
             assemblyID: '=assemblyid',
             campaignID: '=campaignid',
             componentID: '=componentid',
-            milestoneID: '=milestoneid',
             inModal: '=inmodal',
             container : '=container',
             containerID : '=containerid',

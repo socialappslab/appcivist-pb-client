@@ -1,16 +1,17 @@
 ﻿// This controller retrieves data from the Assemblies and associates it
 // with the $scope
 // The $scope is bound to the order view
-appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams,
-													 $resource, $location, Assemblies, loginService, localStorageService) {
-
-	$scope.assemblies = [];
-	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
+appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams, $resource, $location, Assemblies,
+                                                     loginService, localStorageService, $translate) {
 
 	init();
 
 	function init() {
-		$scope.assemblies = Assemblies.assemblies().query();
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
+        $scope.assemblies = Assemblies.assemblies().query();
 		$scope.assemblies.$promise.then(function(data) {
 			$scope.assemblies = data;
 			localStorageService.set("assemblies", $scope.assemblies);

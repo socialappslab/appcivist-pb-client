@@ -64,6 +64,7 @@
   "Idea" : "Idea",
   "Ideas" : "Ideas",
   "Proposal Making" : "Proposal Making",
+  "Proposal making" : "Proposal making",
   "Working Groups" : "Working Groups",
   "Mobilizing" : "Mobilizing",
   "Deliberating" : "Deliberating",
@@ -94,6 +95,10 @@
   "Send" : "Send",
   "Sent" : "Sent",
   "Re-send" : "Re-send",
+  "Deliberation": "Deliberation",
+  "Voting": "Voting",
+  "Implementation": "Implementation",
+
 
   "Other common strings" : "Other common strings",
   "Email" : "Email",
@@ -182,5 +187,14 @@
   "Invite user to be a moderator" : "Invite the user to be a moderator",
   "Invite user to be a coordinator" : "Invite user to be a coordinator",
   "Send" : "Send",
-  "Send invitation for" : "Send invitation for"
+  "Send invitation for" : "Send invitation for",
+
+  "Campaign creation" : "Campaign creation",
+  "Proposal Development Timeline" : "Proposal Development Timeline",
+  "campaign.creation.linkedExplanation" : "<p>If enabled, deliberation, voting  and implementation will proceed according to the rules set by the parent Assembly of the linked campaign, <strong>'{{newCampaign.linkedCampaign.title}}'</strong>. Therefore, users will only deliberate and vote once, within that linked campaign. If disabled, users will deliberate and vote within their our Assembly Campaign and again within the Linked Assembly Campaign.</p>",
+  "component.proposal.about" : "is about raising issues, brainstorming ideas, forming working groups, and starting proposals",
+  "component.deliberation.about" : "is the careful consideration of proposals through comments and evidence. In this stage, proposals can only be discussed, praised or criticized, but not edited.",
+  "component.voting.about" : "determines the winning proposal/s, based on the voting system selected and the number of winners allowed.",
+  "component.implementation.about" : "allows assembly members to follow the progress of winning proposals or to find new opportunites for proposals that were not selected durin the voting stage."
+
 }

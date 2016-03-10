@@ -15,7 +15,7 @@
 /*****UPLOAD********/
 /*****CAMPAIGN CREATION*****/
 body {
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -146,7 +146,7 @@ a {
 .tag {
   padding: 0.3rem 0.8rem;
   border-radius: 0.25rem;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   cursor: pointer;
   display: inline-block;
   border: none;
@@ -173,6 +173,10 @@ textarea {
 .form-group {
   margin-left: 0px !important;
   margin-right: 0px !important;
+}
+
+.form-control {
+  font-size: 1.8rem;
 }
 
 .center {
@@ -1093,7 +1097,7 @@ button#second-vote {
   margin-right: 0;
 }
 .campaign-creation label {
-  font-size: 1.8rem;
+  font-size: 2.2rem;
 }
 .campaign-creation .template-configuration {
   margin-top: -10px;

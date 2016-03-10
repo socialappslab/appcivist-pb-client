@@ -195,6 +195,6 @@
   "component.proposal.about" : "is about raising issues, brainstorming ideas, forming working groups, and starting proposals",
   "component.deliberation.about" : "is the careful consideration of proposals through comments and evidence. In this stage, proposals can only be discussed, praised or criticized, but not edited.",
   "component.voting.about" : "determines the winning proposal/s, based on the voting system selected and the number of winners allowed.",
-  "component.implementation.about" : "allows assembly members to follow the progress of winning proposals or to find new opportunites for proposals that were not selected durin the voting stage."
-
+  "component.implementation.about" : "allows assembly members to follow the progress of winning proposals or to find new opportunites for proposals that were not selected durin the voting stage.",
+  "campaign.creation.linkedCampaignExplanation" : "<p>If enabled, deliberation, voting and implementation will take place according to the rules established by the linked campaign organizing assembly, <strong>'{{title}}'</strong>. Therefore, users will only deliberate and vote once, within that linked campaign. If disabled, users will deliberate and vote within their our Assembly Campaign and again within the Linked Assembly Campaign.</p>"
 }

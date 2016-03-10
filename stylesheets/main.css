@@ -114,7 +114,7 @@ a {
 .tag {
   padding: 0.3rem 0.8rem;
   border-radius: 0.25rem;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   cursor: pointer;
   display: inline-block;
   border: none;
@@ -136,6 +136,10 @@ textarea {
 .form-group {
   margin-left: 0px !important;
   margin-right: 0px !important; }
+
+.form-control {
+  font-size: 1.8rem;
+}
 
 .vertical-space-little {
   margin: 5px 0; }
@@ -436,7 +440,7 @@ button#second-vote {
     vertical-align: sub;
     display: inline-block; }
   .assemblyCreation label {
-    font-size: 1.6rem; }
+    font-size: 1.8rem; }
   .assemblyCreation ul {
     list-style: none; }
   .assemblyCreation .row {
@@ -954,7 +958,7 @@ button#second-vote {
     margin: 0 2px;
     padding: 0.2em 0.6em;
     border-radius: 4px;
-    font-size: 0.8em;
+    font-size:1.8em;
     cursor: pointer;
     display: inline-block;
     border: none;

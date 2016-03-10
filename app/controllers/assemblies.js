@@ -503,8 +503,27 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             }
         };
 
+        $scope.approveMember = function (member) {
+            var res = Memberships.updateStatus(member.membershipId, "ACCEPTED").update(member);
+            res.$promise.then(
+                function (data) {
+                    member.status = "ACCEPTED";
+                },
+                function (error) {
+                    FlashService.Error("membership approval failed");
+                }
+            );
+        }
         $scope.resendInvitation = function (invitation) {
-            // TODO: implement resend invitation endpoint
+            var res = Memberships.reSendInvitation(invitation.id).save();
+            res.$promise.then(
+                function (data) {
+                    FlashService.Success("Membership email to "+invitation.email+" was Re-Sent");
+                },
+                function (error) {
+                    FlashService.Error("membership approval failed");
+                }
+            );
         }
     }
 

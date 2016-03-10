@@ -200,6 +200,17 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
         },
         membershipInGroup: function(groupId, userId) {
             return $resource(getServerBaseUrl(localStorageService) + '/membership/group/:gid/user/:uid', {gid: groupId, uid: userId});
+        },
+        updateStatus: function (membershipId, newStatus) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/:mid/:status',
+                {mid: membershipId, status: newStatus},
+                {
+                    'update' : {method:'PUT'}
+                });
+        },
+        reSendInvitation: function (invitationId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email',
+                {iid: invitationId});
         }
 
     };

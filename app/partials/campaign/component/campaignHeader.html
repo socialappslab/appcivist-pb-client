@@ -1,7 +1,10 @@
-<div class="row text-center">
-    <span class="h4"><strong>Assembly: </strong></span>
-    <span class="h4">{{assembly.name}}</span>
-    <span class="h4" ng-if="campaign!=null && campaign!=undefined"> / </span>
-    <span class="h4" ng-if="campaign!=null && campaign!=undefined"><strong>Campaign: </strong></span>
-    <span class="h4" ng-if="campaign!=null && campaign!=undefined">{{campaign.title}}</span>
+<div class="campaignHeader">
+    <span><strong>Assembly: </strong></span>
+    <span>{{assembly.name}}</span>
+    <span ng-if="campaign!=null && campaign!=undefined"> / </span>
+    <span ng-if="campaign!=null && campaign!=undefined"><strong>Campaign: </strong></span>
+    <span ng-if="campaign!=null && campaign!=undefined">{{campaign.title}}</span>
+
+    <span class="edit-button"><a href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/edit">Edit Campaign</a></span>
+
 </div>

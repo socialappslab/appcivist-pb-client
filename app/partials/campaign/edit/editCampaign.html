@@ -1,0 +1,91 @@
+<div class="view campaign-creation" id="prePhase">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="campaign-title">
+                  <h1>Edit Campaign: <a href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}">{{campaign.title}}</a></h1>
+                </div>
+                <form class="edit-campaign-form">
+                  <div class="form-section">
+                    <div class="row form-row">
+                      <div class="col-sm-2 col-md-2">
+                        <label for="campaignGoal">Campaign Goal</label>
+                      </div>
+                      <div class="col-sm-5 col-md-5">
+                        <textarea name="campaignGoal" class="form-control edit-campaign-text-area">{{!campaign.goal ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." : campaign.goal}}</textarea>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-sm-2 col-md-2">
+                          <label for="campaignBudget">Budget</label>
+                      </div>
+                      <div class="col-sm-5 col-md-5">
+                        <div class="input-group">
+                          <span class="input-group-addon">$</span>
+                          <input class="form-control" value="{{!campaign.budget ? 20000 : campaign.budget}}"></input>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- edit components -->
+                  <div class="edit-campaign-section-title">
+                    <h3>Modify Components</h3>
+                  </div>
+                  <div class="form-section" ng-repeat="component in campaign.components track by $index">
+                    <div class="row form-row">
+                      <div class="col-sm-2 col-md-2">
+                          <label for="title">Title</label>
+                      </div>
+                      <div class="col-sm-5 col-md-5">
+                        <div class="input-group edit-campaign-input">
+                          <input class="form-control" value="{{campaign.components[$index].title}}"></input>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-sm-2 col-md-2">
+                          <label for="desc">Description</label>
+                      </div>
+                      <div class="col-sm-5 col-md-5">
+                          <textarea name="campaignGoal" class="form-control edit-campaign-text-area">{{campaign.components[$index].description}}</textarea>
+                      </div>
+                    </div>
+
+                    <div class="row form-row">
+                      <div class="col-sm-2 col-md-2">
+                        <label for="milestones">Milestones</label>
+                      </div>
+                    </div>
+                    <!--
+                      <div>
+                          <div class="col-md-6 col-sm-6"><strong>{{$index+1}}. </strong><span>{{milestone.title}}</span></div>
+                          <div class="col-md-6 col-sm-6">
+                              <p class="input-group">
+                                  <input type="text" class="form-control"
+                                         uib-datepicker-popup="yyyy-MM-dd"
+                                         ng-model="campaign.components[$index].date"
+                                         is-open="component.calOpened"
+                                         min-date="newCampaign.campaignTimeframeStartDate"
+                                         max-date="newCampaign.campaignTimeframeEndDate"
+                                         datepicker-options="dateOptions"
+                                         date-disabled="disabled(date, mode)"
+                                         ng-change="updateMilestoneValue(newCampaign.milestones[$index].date, $index)"
+                                         ng-required="true"
+                                         close-text="Close"/>
+
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="open($event, milestone)">
+                                          <i class="glyphicon glyphicon-calendar"></i></button>
+                                  </span>
+                              </p>
+                          </div>
+                      </div>
+                      -->
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

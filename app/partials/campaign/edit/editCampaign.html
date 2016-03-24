@@ -57,6 +57,29 @@
                       <div class="col-sm-2 col-md-2">
                         <label for="milestones">Milestones</label>
                       </div>
+
+                      <div class="col-sm-5 col-md-5">
+                        <div ng-repeat="milestone in campaign.components[$index].milestones track by $index">
+                          <p class="input-group">
+                            <input type="text" class="form-control"
+                                  uib-datepicker-popup="yyyy-MM-dd"
+                                   ng-model="moment(campaign.components[$index].milestones[$index].date)._d"
+                                   is-open="milestone.calOpened"
+                                   min-date="campaign.components[$index].startDate"
+                                   max-date="campaign.components[$index].endDate"
+                                   datepicker-options="dateOptions"
+                                   date-disabled="disabled(date, mode)"
+                                   ng-change="updateMilestoneValue(campaign.components[$index].milestones[$index].date, $index)"
+                                   ng-required="true"
+                                   close-text="Close"/>
+
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="open($event, milestone)">
+                                <i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                          </p>
+                        </div>
+                      </div>
                     </div>
                     <!--
                       <div>
@@ -83,6 +106,12 @@
                           </div>
                       </div>
                       -->
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-12 col-sm-12">
+                      <button class="btn btn-primary">Save Changes</button>
+                      <a href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/" class="btn">Cancel</a>
+                    </div>
                   </div>
                 </form>
             </div>

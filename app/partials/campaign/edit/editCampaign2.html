@@ -73,13 +73,11 @@
                         overlapping="false">
                 </multi-slider-dates>
             </section>
-
             <section class="col-sm-12 col-md-12" ng-repeat="milestone in newCampaign.milestones track by $index">
                 <div ng-if="newCampaign.proposalComponents[milestone.componentIndex].enabled && newCampaign.proposalComponents[milestone.componentIndex].active">
                     <div class="col-md-6 col-sm-6"><strong>{{$index+1}}. </strong><span>{{milestone.title}}</span></div>
                     <div class="col-md-6 col-sm-6">
                         <p class="input-group">
-                          {{newCampaign.milestones[$index].date}}
                             <input type="text" class="form-control"
                                    uib-datepicker-popup="yyyy-MM-dd"
                                    ng-model="newCampaign.milestones[$index].date"

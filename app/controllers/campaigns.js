@@ -1012,6 +1012,29 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	//}
 });
 
+appCivistApp.controller('EditCampaignCtrl', function($scope, $controller, $sce, $http, $templateCache, $routeParams,
+													   $resource, $location, $timeout, localStorageService,
+													   Campaigns, Assemblies, Components, Contributions,
+													   moment, modelFormatConfig, $translate){
+
+
+		angular.extend(this, $controller('CampaignComponentCtrl', {$scope: $scope}));
+
+		init();
+
+		function init() {
+			initScopeFunctions();
+		}
+
+		function initScopeFunctions () {
+
+			$scope.open = function($event,m) {
+				m.calOpened = true;
+			};
+		}
+
+});
+/* Edit Campaign Controller */
 
 // General functions
 /**

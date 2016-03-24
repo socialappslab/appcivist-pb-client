@@ -19,6 +19,7 @@
             <div class="image-profile-contribution" ng-if="contribution.type==='PROPOSAL'">
                 <img ng-src="{{contribution.workingGroupAuthors[0].profile.icon}}" alt="" src="../assets/images/unknown.jpg">
             </div>
+
             <div class="info-block"  ng-if="contribution.type==='PROPOSAL'">
                 <a ng-href="#/assembly/{{assemblyID}}/group/{{contribution.workingGroupAuthors[0].groupId}}"><em>{{contribution.workingGroupAuthors[0].name}}</em></a>
                 <time datetime="{{contribution.creation}}">{{contribution.creation}}</time>
@@ -27,5 +28,9 @@
         <div class="col-lg-1 col-md-1 col-sm-1 pull-right no-padding no-margin">
             <votes-counter contribution="contribution"></votes-counter>
         </div>
+
+    </div>
+    <div class="row col-md-12 col-sm-12">
+      <consensus-controls contribution="contribution"></consensus-controls>
     </div>
 </div>

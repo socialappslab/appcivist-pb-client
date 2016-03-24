@@ -96,6 +96,19 @@ appCivistApp.directive('votesCounter', function(){
    }
 });
 
+/* Consensus Voting */
+appCivistApp.directive('consensusControls', function(){
+  return {
+    restrict: 'E',
+    replace: true,
+    templateUrl: "/app/partials/directives/consensusVoting/consensusControls.html",
+    scope: {
+      contribution: '='
+    },
+    controller: "ConsensusVotingCtrl"
+  }
+});
+
 appCivistApp.directive('contribution', function(){
     return{
         restrict: 'E',
@@ -165,7 +178,7 @@ appCivistApp.directive('newContribution', function() {
         link: newContributionLink
     }
 });
-    
+
 appCivistApp.directive('backgroundImage', function(){
     return function(scope, element, attrs){
         var url = attrs.backgroundImage;

@@ -990,7 +990,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     description: "Until this date, assembly members can join or create a working group to develop proposals.",
                     component: "Proposal Making",
                     componentKey: "Proposalmaking",
-                    key: "end_wgroups_create",
+                    key: "end_wgroups_creation",
                     symbol: $sce.trustAsHtml("2"),
                     opened:true,
                     componentIndex: 0,

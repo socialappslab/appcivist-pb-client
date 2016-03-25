@@ -157,7 +157,8 @@
                                               componentid="component.componentId"
                                               container="contributions"
                                               containerid="campaign.resourceSpaceId"
-                                              containerindex="$index"></contribution>
+                                              containerindex="$index"
+                                              enablevoting="enableVoting"></contribution>
                             </div>
                         </div>
                     </div>
@@ -205,7 +206,7 @@
                                  
                                  ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:'PROPOSAL'} track by $index ">
                                 <contribution ng-click="openContributionModal(contribution,'lg')"
-                                              contribution="contribution" assemblyid="assemblyID"
+                                              contribution="contribution"
                                               assemblyid="assembly.assemblyId"
                                               campaignid="campaign.campaignId"
                                               componentid="component.componentId"
@@ -213,7 +214,7 @@
                                               container="contributions"
                                               containerid="campaign.resourceSpaceId"
                                               containerindex="$index"
-                                ></contribution>
+                                              enablevoting="enableVoting"></contribution>
 
                             </div>
                         </div>
@@ -236,13 +237,14 @@
                                  style="height:500px;"
                                  ng-repeat="contribution in winningContributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:'PROPOSAL'} track by $index ">
                                 <contribution ng-click="openContributionModal(contribution,'lg')"
-                                              contribution="contribution" assemblyid="assemblyID"
+                                              contribution="contribution"
                                               assemblyid="assembly.assemblyId"
                                               campaignid="campaign.campaignId"
                                               componentid="component.componentId"
                                               container="contributions"
                                               containerid="campaign.resourceSpaceId"
-                                              containerindex="$index"></contribution>
+                                              containerindex="$index"
+                                              enablevoting="enableVoting"></contribution>
                             </div>
                         </div>
                     </div>

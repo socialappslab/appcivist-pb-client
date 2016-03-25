@@ -831,7 +831,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.buildMilestones = true;
 		}
 
-
 		if ($scope.components && ($scope.componentID === null || $scope.componentID === 0)) {
 			for(var i=0; i<$scope.components.length; i++) {
 				var c = $scope.components[i];
@@ -877,6 +876,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		if ($scope.buildMilestones) {
 			localStorageService.set("currentMilestones", $scope.milestones);
 		}
+
+		$scope.enableVoting = ($scope.component.key && $scope.component.key.toLowerCase() === 'voting');
 	}
 
 	function setMilestonesMap () {

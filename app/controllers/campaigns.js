@@ -19,6 +19,18 @@
 	}
 });
 
+/**
+ * CreateCampaignCtrl - controls the logic for creating a campaign, managing its components and milestones
+ * TODO: needs a complete re-engineering to make it much more simple
+ * - The complicated part, as it is now, is the workflow of components with their associated milestones.
+ * - As it is, it was done to support a generic list of components, but we actually just have a fixed list
+ * - Simplify the componen-milestone component to make it clear which milestones signals the start date of the component
+ * - Also, intead of using array for components and milestones, we need to have associated dictionaries/hashtables
+ *   to minimize the time of search/retrieve procedures.
+ * - Right now, this is all over the place
+ * - Also, we need to replace the Milestones and Component config views to follow a more Question/Answer walktrough
+ *   style
+ */
 appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, $timeout, localStorageService,
 													   Campaigns, Assemblies, Components, Contributions,
@@ -417,9 +429,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	function initializeMilestonesTimeframe() {
 		$scope.newCampaign.campaignTimeframeInMonths=12;
 		$scope.newCampaign.campaignTimeframeInDays = 183;
-		$scope.newCampaign.campaignTimeframeStartDate = moment().toDate();
+		$scope.newCampaign.campaignTimeframeStartDate = moment().local().toDate();
 		$scope.newCampaign.triggerTimeframeUpdate = false;
-		$scope.newCampaign.noOverlapping = true;
+		$scope.newCampaign.noOverlapping = false;
 		privateRefreshTimeframe(6);
 	}
 
@@ -442,7 +454,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	 * @param months
      */
 	function privateRefreshTimeframe(months) {
-		var start = moment($scope.newCampaign.milestones[0].start);
+		var start = moment($scope.newCampaign.milestones[0].date);
 		var end = moment(start).add(months,'M');
 		var d = duration(start, end);
 		$scope.newCampaign.campaignTimeframeInDays = d.days;
@@ -558,6 +570,29 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				//	m.days = 0;
 				components[m.componentIndex].milestones.push(m);
 
+				if(m.type==="START") {
+					// Set component start date to the the date of the first milestone of type "START"
+					if (components[m.componentIndex].startDate) {
+						var milestoneIsBefore = moment(m.date).isBefore(components[m.componentIndex].startDate);
+						components[m.componentIndex].startDate =
+								milestoneIsBefore ?
+										m.date : components[m.componentIndex].startDate;
+					} else {
+						components[m.componentIndex].startDate = m.date;
+					}
+				} else if(m.type==="END") {
+					// Set component end date to the the date of last milestone of type "END"
+					if (components[m.componentIndex].endDate) {
+						var milestoneIsAfter = moment(m.date).isAfter(components[m.componentIndex].endDate);
+						components[m.componentIndex].endDate =
+								milestoneIsAfter ?
+										m.date : components[m.componentIndex].endDate;
+					} else {
+						components[m.componentIndex].endDate = m.date;
+					}
+				}
+				// Make sure date is in format "YYYY-MM-DD HH:mm"
+				m.date = moment(m.date).format("YYYY-MM-DD HH:mm");
 			}
 
 			for (var i = 0; i<components.length; i+=1) {
@@ -565,6 +600,18 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				if((component.enabled && component.active)||(component.enabled && component.linked)) {
 					newCampaign.components.push(component);
 				}
+				// Make sure start dates are not null
+				component.startDate = component.startDate ?
+						component.startDate : i-1>0 ?
+						components[i-1].endDate : today().toDate();
+
+				component.endDate = component.endDate ?
+						component.endDate : i+1<components.length ?
+						components[i+1].startDate : moment(component.startDate).add(30,"days");
+
+				// Make sure date is in format "YYYY-MM-DD HH:mm a z"
+				component.startDate = moment(component.startDate).format("YYYY-MM-DD HH:mm");
+				component.endDate = moment(component.endDate).format("YYYY-MM-DD HH:mm");
 			}
 
 			// Setup configurations
@@ -839,8 +886,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(c.milestones);
 
 				// check if this component is current
-				var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm:ss');
-				var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm:ss');
+				var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm');
+				var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm');
 				console.log("Checking dates for component: "+ c.title);
 				console.log("=> Today is: "+ moment().format());
 				console.log("=> Component starts: "+ startMoment.format());
@@ -894,20 +941,26 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.milestonesMap = localStorageService.get("currentMilestonesMap");
 		}
 
-		var campaignStart = moment($scope.campaign.startDate, 'YYYY-MM-DD HH:mm:ss');
-		var brainstormingEnd = moment($scope.milestonesMap['end_brainstorming'].date, 'YYYY-MM-DD HH:mm:ss');
-		var wGroupFormationEnd = moment($scope.milestonesMap['end_wgroups_creation'].date, 'YYYY-MM-DD HH:mm:ss');
-		var proposalsEnd = moment($scope.milestonesMap['end_proposals'].date, 'YYYY-MM-DD HH:mm:ss');
-		var voteStart = moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm:ss');
-		var voteEnd = moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm:ss');
-		var assessmentEnd = moment($scope.milestonesMap['end_assessment'].date, 'YYYY-MM-DD HH:mm:ss');
+		var campaignStart = moment($scope.campaign.startDate, 'YYYY-MM-DD HH:mm');
+		var brainstormingEnd = $scope.milestonesMap['end_brainstorming'] ?
+				moment($scope.milestonesMap['end_brainstorming'].date, 'YYYY-MM-DD HH:mm') : null;
+		var wGroupFormationEnd = $scope.milestonesMap['end_wgroups_creation'] ?
+				moment($scope.milestonesMap['end_wgroups_creation'].date, 'YYYY-MM-DD HH:mm') : null;
+		var proposalsEnd = $scope.milestonesMap['end_proposals'] ?
+				moment($scope.milestonesMap['end_proposals'].date, 'YYYY-MM-DD HH:mm') : null;
+		var voteStart = $scope.milestonesMap['start_voting'] ?
+				moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm') : null;
+		var voteEnd = $scope.milestonesMap['end_voting'] ?
+				moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm') : null;
+		var assessmentEnd = $scope.milestonesMap['end_assessment'] ?
+				moment($scope.milestonesMap['end_assessment'].date, 'YYYY-MM-DD HH:mm') : null;
 
 		$scope.disableButton = {
-				contribute: !moment().isBetween(campaignStart, brainstormingEnd),
-				newGroup: !moment().isBetween(campaignStart, wGroupFormationEnd),
-				newProposal: !moment().isBetween(campaignStart, proposalsEnd),
-				vote: !moment().isBetween(voteStart, voteEnd),
-				assess: !moment().isBetween(campaignStart,assessmentEnd)
+				contribute: !moment().local().isBetween(campaignStart, brainstormingEnd),
+				newGroup: !moment().local().isBetween(campaignStart, wGroupFormationEnd),
+				newProposal: !moment().local().isBetween(campaignStart, proposalsEnd),
+				vote: !moment().local().isBetween(voteStart, voteEnd),
+				assess: !moment().local().isBetween(campaignStart,assessmentEnd)
 				//TODO
 				// editCampaign: $scope.userIsMember
 				//	&& $scope.currentAssembly.profile != undefined
@@ -975,7 +1028,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 	//function setupDaysToDue() {
 	//	// Days, hours, minutes to end date of this component phase
-	//	var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm');
 	//	var now = moment();
 	//	var diff = endDate.diff(now, 'minutes');
 	//	$scope.minutesToDue = diff%60;
@@ -983,8 +1036,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	//	$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
     //
 	//	// Days, hours, minutes to end date of this component stage
-	//	var mStartDate = moment($scope.component.startDate, 'YYYY-MM-DD HH:mm:ss');
-	//	var mEndDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
+	//	var mStartDate = moment($scope.component.startDate, 'YYYY-MM-DD HH:mm');
+	//	var mEndDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm');
 	//	var mDays = endDate.diff(startDate,'days');
     //
 	//	$scope.componentStarted = mStartDate.isBefore(now);
@@ -1020,7 +1073,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
  * @returns {*}
  */
 function today() {
-	return moment();
+	return moment().local();
 }
 
 /**

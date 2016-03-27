@@ -1,12 +1,15 @@
 <div class="view campaign-pmaking">
     <div class="col-md-12 col-sm-12">
-        <campaign-header
-                assembly="assembly"
-                campaign="campaign"
-                component="component">
-        </campaign-header>
-        <br/>
-
+        <!-- Campaign Title -->
+        <div class="row container-inline col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h2>
+                <campaign-header
+                        assembly="assembly"
+                        campaign="campaign"
+                        component="component">
+                </campaign-header>
+            </h2>
+        </div>
         <!-- The Campaign timeline-->
         <timeline></timeline>
         <!-- The campaign milestones and functions -->
@@ -86,19 +89,9 @@
                     </span>
             </div>
         </div>
-
-        <!-- The Campaign Content-->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="row container-inline">
-                <h2><strong class="text-muted">
-                    Campaign <div ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">Contributions,</div>
-                    <div ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">Working Groups, and</div>
-                    <div>Proposals</div>
-                </strong></h2>
-            </div>
-        </div>
+        <!-- Campaign Content -->
         <!-- Filters and Search -->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <!-- Search box -->
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 no-padding">
                 <input type="text" class="form-control" placeholder="Search existing contributions..."
@@ -132,9 +125,9 @@
             <div class="voffset6"></div>
         </div>
         <!-- Contribution tabs -->
-        <uib-tabset>
-            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Brainstorming Contributions"
-                     ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">
+        <uib-tabset class="row" active="1">
+            <uib-tab class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Brainstorming Contributions"
+                     ng-if="component.title.toLowerCase()==='proposal making'">
                 <uib-tab-heading>
                     <h4>
                         <strong>Brainstorming Contributions</strong>
@@ -142,7 +135,7 @@
                            uib-tooltip="Brainstorming issues and suggestions"></i>
                     </h4>
                 </uib-tab-heading>
-                <div class="row col-md-12 col-sm-12">
+                <div class="col-md-12 col-sm-12">
                     <div class="container-fluid col-md-12 col-sm-12">
                         <div class="row">
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution" style="height:300px;"
@@ -165,7 +158,7 @@
                 </div>
             </uib-tab>
             <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Working Groups"
-                     ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">
+                     ng-if="component.title.toLowerCase()==='proposal making'">
                 <uib-tab-heading>
                     <h4>
                         <strong>Working Groups</strong>

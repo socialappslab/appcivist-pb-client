@@ -174,6 +174,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         })
+        .when('/assembly/:aid/campaign/:cid/edit',{ //edit
+            controller: "EditCampaignCtrl",
+            templateUrl: 'app/partials/campaign/edit/editCampaign.html'
+        })
         .when('/assembly/:aid/campaign/:cid/:ciid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
@@ -341,5 +345,5 @@ function selectBackendServer(hostname, apis) {
     } else {
         return apis.testing;
     }
-    
+
 }

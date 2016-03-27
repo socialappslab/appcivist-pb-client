@@ -108,7 +108,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
         campaigns: function(userUUID, state) {
-            return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', {uuid:userUUID, status : state});
+            return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', {uuid:userUUID, filter : state});
         },
         campaign: function(assemblyId, campaignId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/'+assemblyId+'/campaign/'+campaignId);

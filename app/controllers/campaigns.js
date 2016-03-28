@@ -879,22 +879,27 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		}
 
 		if ($scope.components && ($scope.componentID === null || $scope.componentID === 0)) {
+			// check which component is the current
 			for(var i=0; i<$scope.components.length; i++) {
 				var c = $scope.components[i];
 
 				// add milestones of component to array of milestones
 				if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(c.milestones);
 
-				// check if this component is current
-				var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm');
-				var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm');
-				console.log("Checking dates for component: "+ c.title);
-				console.log("=> Today is: "+ moment().format());
-				console.log("=> Component starts: "+ startMoment.format());
-				console.log("=> Component ends: "+ endMoment.format());
-				if (moment().isBetween(startMoment, endMoment)) {
-					console.log("=> Today is in this date range! Choosing as current "+ c.title);
-					$scope.component = c;
+				// if a $scope.component has not been selected yet, check if this component (c) is current
+				if (!$scope.component) {
+					var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm');
+					var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm');
+					console.log("Checking dates for component: " + c.title);
+					console.log("=> Today is: " + moment().format());
+					console.log("=> Component starts: " + startMoment.format());
+					console.log("=> Component ends: " + endMoment.format());
+					//, and we are in the right dates,
+					// this component to current
+					if (moment().local().isBetween(startMoment, endMoment)) {
+						console.log("=> Today is in this date range! Choosing as current " + c.title);
+						$scope.component = c;
+					}
 				}
 			}
 			if (!$scope.component) {

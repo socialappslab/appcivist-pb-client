@@ -714,7 +714,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	function init() {
 		initScopeFunctions();
 		initScopeContent();
-		// TODO: 	improve efficiency by using angularjs filters instead of iterating through arrays
+		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
 	}
@@ -733,6 +733,61 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.newContributionResponse = {hasErrors:false};
 		$scope.orderProperty = 'creation';
 		$scope.orderReverse = true;
+
+		$scope.contentTabs = [
+			{
+				title : 'Brainstorming (issues and suggestions)',
+				tooltip: 'Brainstorming (issues and suggestions)',
+				ctype : 'BRAINSTORMING',
+				//contentArray : 'contributions',
+				showInComponent : {
+					'proposal making' : true,
+					'deliberation' : false,
+					'voting' : false,
+					'implementation' : false
+				},
+				active : true,
+			},
+			{
+				title : 'Working Groups',
+				tooltip : 'Working Groups developing proposals based on brainstorming contributions',
+				ctype : 'WORKING_GROUP',
+				//contentArray : 'workingGroups',
+				showInComponent : {
+					'proposal making' : true,
+					'deliberation' : false,
+					'voting' : false,
+					'implementation' : false
+				},
+				active : false,
+			},
+			{
+				title : 'Proposals',
+				tooltip : 'Solution proposals developed by groups',
+				ctype : 'PROPOSAL',
+				//contentArray : 'contributions',
+				showInComponent : {
+					'proposal making' : true,
+					'deliberation' : true,
+					'voting' : true,
+					'implementation' : true
+				},
+				active : false,
+			},
+			{
+				title : 'Winning Proposals',
+				tooltip : 'Solution proposals selected for implementation by the assembly',
+				ctype : 'PROPOSAL',
+				//contentArray : 'winningContributions',
+				showInComponent : {
+					'proposal making' : false,
+					'deliberation' : false,
+					'voting' : false,
+					'implementation' : false
+				},
+				active : false,
+			}
+		];
 	}
 
 	function initScopeFunctions(){
@@ -930,6 +985,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		}
 
 		$scope.enableVoting = ($scope.component.key && $scope.component.key.toLowerCase() === 'voting');
+		if ($scope.component && $scope.component.key!="Proposalmaking") {
+			$scope.contentTabs[2].active=true;
+		}
 	}
 
 	function setMilestonesMap () {
@@ -988,6 +1046,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.contributions.$promise.then(
 					function (data) {
 						$scope.contributions = data;
+						$scope.contentTabs[0].contentArray = $scope.contributions;
+						$scope.contentTabs[2].contentArray = $scope.contributions;
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
@@ -996,6 +1056,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			);
 		} else {
 			$scope.contributions = $scope.campaign.contributions;
+			$scope.contentTabs[0].contentArray = $scope.contributions;
+			$scope.contentTabs[2].contentArray = $scope.contributions;
 		}
 
 		if ($scope.loadedLocally) {
@@ -1004,6 +1066,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.workingGroups.$promise.then(
 					function (data) {
 						$scope.workingGroups = data;
+						$scope.contentTabs[1].contentArray = $scope.workingGroups;
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
@@ -1012,6 +1075,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			);
 		} else {
 			$scope.workingGroups = $scope.campaign.workingGroups;
+			$scope.contentTabs[1].contentArray = $scope.workingGroups;
 		}
 
 

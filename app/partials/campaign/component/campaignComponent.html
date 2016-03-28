@@ -124,118 +124,52 @@
         </div>
         <!-- Contribution tabs -->
         <uib-tabset class="row" active="0">
-            <uib-tab index="0" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Brainstorming (Issues and Suggestions)"
-                     ng-if="component.title.toLowerCase()==='proposal making'">
+            <uib-tab class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                     ng-repeat="tab in contentTabs"
+                     heading="tab.title"
+                     active="tab.active"
+                     ng-if="tab.showInComponent[component.title.toLowerCase()]">
                 <uib-tab-heading>
                     <h4>
-                        <strong>Brainstorming (Issues and Suggestions)</strong>
-                        <i class="fa fa-question-circle" tooltip-placement="bottom"
-                           uib-tooltip="Brainstorming (Issues and Suggestions)"></i>
+                        <strong>{{tab.title}}</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="top"
+                           uib-tooltip="{{tab.tooltip}}"></i>
                     </h4>
                 </uib-tab-heading>
                 <div class="col-md-12 col-sm-12">
                     <div class="container-fluid col-md-12 col-sm-12">
                         <div class="row">
-                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution" style="height:300px;"
-                                 ng-repeat="contribution in contributions |
+                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                                 ng-if="tab.ctype!='WORKING_GROUP'"
+                                 ng-style="tab.ctype==='BRAINSTORMING' ? 'height:300px;' : ''"
+                                 ng-repeat="contribution in tab.contentArray |
                                                 orderBy: orderProperty : orderReverse |
                                                 filter: campaignContributionFilter |
-                                                filter: {type:'BRAINSTORMING'} track by $index ">
+                                                filter: {type:tab.ctype} track by $index ">
                                 <contribution ng-click="openContributionModal(contribution,'lg')"
                                               contribution="contribution"
                                               assemblyid="assembly.assemblyId"
                                               campaignid="campaign.campaignId"
                                               componentid="component.componentId"
-                                              container="contributions"
+                                              container="tab.contentArray"
                                               containerid="campaign.resourceSpaceId"
                                               containerindex="$index"
                                               enablevoting="enableVoting"></contribution>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </uib-tab>
-            <uib-tab index="$index+1" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Working Groups"
-                     ng-if="component.title.toLowerCase()==='proposal making'">
-                <uib-tab-heading>
-                    <h4>
-                        <strong>Working Groups</strong>
-                        <i class="fa fa-question-circle" tooltip-placement="bottom"
-                           uib-tooltip="Working Groups developing proposals based on brainstorming contributions"></i>
-                    </h4>
-                </uib-tab-heading>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="container-fluid col-md-12 col-sm-12">
-                        <div class="row">
+
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                                 style="height:150px;"
-                                 ng-repeat="group in workingGroups | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter track by $index ">
+                                 ng-if="tab.ctype==='WORKING_GROUP'"
+                                style="height:150px;"
+                                ng-repeat="group in tab.contentArray |
+                                                orderBy: orderProperty : orderReverse |
+                                                filter:campaignContributionFilter track by $index ">
                                 <working-group group="group"
                                                assemblyid="assemblyID"
                                                campaignid="campaign.campaignId"
-                                               container="workingGroups"
+                                               container="tab.contentArray"
                                                containerid="campaign.resourceSpaceId"
-                                               containerindex="$index"></working-group>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </uib-tab>
-            <uib-tab index="$index+1" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals">
-                <uib-tab-heading>
-                    <h4>
-                        <strong>Proposals</strong>
-                        <i class="fa fa-question-circle" tooltip-placement="bottom"
-                           uib-tooltip="Solution proposals developed by groups"></i>
-                    </h4>
-                </uib-tab-heading>
-                <!-- proposals -->
-                <div class="row col-md-12 col-sm-12">
-                    <div class="container-fluid col-md-12 col-sm-12">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                                 
-                                 ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:'PROPOSAL'} track by $index ">
-                                <contribution ng-click="openContributionModal(contribution,'lg')"
-                                              contribution="contribution"
-                                              assemblyid="assembly.assemblyId"
-                                              campaignid="campaign.campaignId"
-                                              componentid="component.componentId"
-                                              milestoneid="milestone.componentMilestoneId"
-                                              container="contributions"
-                                              containerid="campaign.resourceSpaceId"
-                                              containerindex="$index"
-                                              enablevoting="enableVoting"></contribution>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </uib-tab>
-            <uib-tab index="$index+1" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals"
-                     ng-if="component.title==='IMPLEMENTATION' || component.title==='Implementation'">
-                <uib-tab-heading>
-                    <h4>
-                        <strong>Winning Proposals</strong>
-                        <i class="fa fa-question-circle" tooltip-placement="bottom"
-                           uib-tooltip="Solution proposals developed by groups"></i>
-                    </h4>
-                </uib-tab-heading>
-                <div class="row col-md-12 col-sm-12">
-                    <div class="container-fluid col-md-12 col-sm-12">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                                 style="height:500px;"
-                                 ng-repeat="contribution in winningContributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:'PROPOSAL'} track by $index ">
-                                <contribution ng-click="openContributionModal(contribution,'lg')"
-                                              contribution="contribution"
-                                              assemblyid="assembly.assemblyId"
-                                              campaignid="campaign.campaignId"
-                                              componentid="component.componentId"
-                                              container="contributions"
-                                              containerid="campaign.resourceSpaceId"
-                                              containerindex="$index"
-                                              enablevoting="enableVoting"></contribution>
+                                               containerindex="$index">
+                                </working-group>
                             </div>
                         </div>
                     </div>

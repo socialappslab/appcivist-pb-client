@@ -15,78 +15,76 @@
         <!-- The campaign milestones and functions -->
         <div class="row col-md-12 col-sm-12">
             <div class="row">
-                <!-- TODO: enable/disable buttons according to milestones dates -->
-                <!-- TODO: Add information about milestone dates -->
-                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                ng-click="openNewContributionModal('lg','BRAINSTORMING')"
-                                ng-disabled="disableButton['contribute']">
-                            <strong>
-                                {{'Brainstorm' | translate}}
-                                <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                   uib-tooltip="Brainstorming {{disableButton['contribute'] ? 'was' : 'will be'}} possible until {{milestonesMap['end_brainstorming'].date}}">
-                                </i>
-                            </strong>
-                        </button>
-                    </span>
-                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create"
-                           ng-if="!disableButton['newGroup']">
-                            <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <strong>
-                                    {{'Create New Group' | translate}}
-                                    <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                       uib-tooltip="Working groups can be formed until {{milestonesMap['end_wgroups_creation'].date}}">
-                                    </i>
-                                </strong>
-                            </button>
-                        </a>
-                        <button ng-if="disableButton['newGroup']"
-                                ng-disabled="disableButton['newGroup']" class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            ng-click="openNewContributionModal('lg','BRAINSTORMING')"
+                            ng-disabled="disableButton['contribute']">
+                        <strong>
+                            {{'Brainstorm' | translate}}
+                            <i class="fa fa-info-circle" tooltip-placement="top"
+                               uib-tooltip="Brainstorming {{disableButton['contribute'] ? 'was' : 'will be'}} possible until {{milestonesMap['end_brainstorming'].date}}">
+                            </i>
+                        </strong>
+                    </button>
+                </span>
+                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create"
+                       ng-if="!disableButton['newGroup']">
+                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <strong>
                                 {{'Create New Group' | translate}}
                                 <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                   uib-tooltip="Forming Working groups was possible before {{milestonesMap['end_wgroups_creation'].date}}">
+                                   uib-tooltip="Working groups can be formed until {{milestonesMap['end_wgroups_creation'].date}}">
                                 </i>
                             </strong>
                         </button>
-                    </span>
-                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    </a>
+                    <button ng-if="disableButton['newGroup']"
+                            ng-disabled="disableButton['newGroup']" class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <strong>
+                            {{'Create New Group' | translate}}
+                            <i class="fa fa-info-circle" tooltip-placement="top"
+                               uib-tooltip="Forming Working groups was possible before {{milestonesMap['end_wgroups_creation'].date}}">
+                            </i>
+                        </strong>
+                    </button>
+                </span>
+                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            ng-disabled="buttonDisabled['newProposal']"
+                            ng-click="openNewContributionModal('lg','PROPOSAL')">
+                        <strong>
+                            {{'New Proposal' | translate}}
+                            <i class="fa fa-info-circle" tooltip-placement="top"
+                               uib-tooltip="Proposals due date {{disableButton['newProposal'] ? 'was' : 'is'}}
+                               {{milestonesMap['end_proposals'].date}}">
+                            </i>
+                        </strong>
+                    </button>
+                </span>
+                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <a ng-if="ballot" ng-href="#/ballot/{{ballot.uuid}}/start">
                         <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                ng-disabled="buttonDisabled['newProposal']"
-                                ng-click="openNewContributionModal('lg','PROPOSAL')">
+                                ng-disabled="disableButton['vote']">
                             <strong>
-                                {{'New Proposal' | translate}}
-                                <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                   uib-tooltip="Proposals due date {{disableButton['newProposal'] ? 'was' : 'is'}}
-                                   {{milestonesMap['end_proposals'].date}}">
-                                </i>
-                            </strong>
-                        </button>
-                    </span>
-                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                        <a ng-if="ballot" ng-href="#/ballot/{{ballot.uuid}}/start">
-                            <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                    ng-disabled="disableButton['vote']">
-                                <strong>
-                                    {{'Vote on Proposals' | translate}}
-                                    <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                       uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
-                                       {{milestonesMap['end_voting'].date}}">
-                                    </i>
-                                </strong>
-                            </button>
-                        </a>
-                        <button ng-if="!ballot" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <strong>
-                                {{'Voting ballot not yet available' | translate}}
-                                <i class="fa fa-info-circle" tooltip-placement="bottom"
+                                {{'Vote on Proposals' | translate}}
+                                <i class="fa fa-info-circle" tooltip-placement="top"
                                    uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
-                                       {{milestonesMap['end_voting'].date}}">
+                                   {{milestonesMap['end_voting'].date}}">
                                 </i>
                             </strong>
                         </button>
-                    </span>
+                    </a>
+                    <button ng-if="!ballot" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <strong>
+                            {{'Voting ballot not yet available' | translate}}
+                            <i class="fa fa-info-circle" tooltip-placement="top"
+                               uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
+                                   {{milestonesMap['end_voting'].date}}">
+                            </i>
+                        </strong>
+                    </button>
+                </span>
             </div>
         </div>
         <!-- Campaign Content -->
@@ -125,14 +123,14 @@
             <div class="voffset6"></div>
         </div>
         <!-- Contribution tabs -->
-        <uib-tabset class="row" active="1">
-            <uib-tab class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Brainstorming Contributions"
+        <uib-tabset class="row" active="0">
+            <uib-tab index="0" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Brainstorming (Issues and Suggestions)"
                      ng-if="component.title.toLowerCase()==='proposal making'">
                 <uib-tab-heading>
                     <h4>
-                        <strong>Brainstorming Contributions</strong>
+                        <strong>Brainstorming (Issues and Suggestions)</strong>
                         <i class="fa fa-question-circle" tooltip-placement="bottom"
-                           uib-tooltip="Brainstorming issues and suggestions"></i>
+                           uib-tooltip="Brainstorming (Issues and Suggestions)"></i>
                     </h4>
                 </uib-tab-heading>
                 <div class="col-md-12 col-sm-12">
@@ -157,7 +155,7 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Working Groups"
+            <uib-tab index="$index+1" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Working Groups"
                      ng-if="component.title.toLowerCase()==='proposal making'">
                 <uib-tab-heading>
                     <h4>
@@ -183,7 +181,7 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals">
+            <uib-tab index="$index+1" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals">
                 <uib-tab-heading>
                     <h4>
                         <strong>Proposals</strong>
@@ -214,7 +212,7 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals"
+            <uib-tab index="$index+1" class="col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals"
                      ng-if="component.title==='IMPLEMENTATION' || component.title==='Implementation'">
                 <uib-tab-heading>
                     <h4>

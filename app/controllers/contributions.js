@@ -612,6 +612,17 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 	}
 });
 
+appCivistApp.controller('ConsensusVotingCtrl', function($scope, $http, $routeParams, localStorageService,
+                                                      FileUploader, Contributions, $translate) {
+
+  init();
+
+  function init() {
+    $scope.user = localStorageService.get('user');
+  
+  }
+});
+
 appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,
                                                       FileUploader, Contributions, $translate) {
 

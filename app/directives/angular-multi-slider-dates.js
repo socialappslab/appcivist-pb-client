@@ -119,7 +119,7 @@ appCivistApp.directive('multiSliderDates', function ($compile, $timeout) {
             if (scope.precision === undefined) scope.precision = 0;
             if (scope.bubbles === undefined) scope.bubbles = false;
             if (scope.overlapping === undefined) scope.overlapping = true;
-            if (scope.floorDate === undefined) scope.floorDate = moment().add(scope.floor, 'd').toDate();
+            if (scope.floorDate === undefined) scope.floorDate = moment().local().add(scope.floor, 'd').toDate();
             if (scope.ceilingDate === undefined) scope.ceilingDate = moment(scope.floorDate).add(scope.ceiling, 'd').toDate();
 
             scope.floorDateMoment = moment(scope.floorDate);
@@ -129,7 +129,7 @@ appCivistApp.directive('multiSliderDates', function ($compile, $timeout) {
             var updateCalculations = function () {
                 scope.floor = roundStep(parseFloat(scope.floor), parseInt(scope.precision), parseFloat(scope.step), parseFloat(scope.floor));
                 scope.ceiling = roundStep(parseFloat(scope.ceiling), parseInt(scope.precision), parseFloat(scope.step), parseFloat(scope.floor));
-                scope.floorDate = moment().add(scope.floor, 'd').toDate();
+                scope.floorDate = moment().local().add(scope.floor, 'd').toDate();
                 scope.ceilingDate = moment(scope.floorDate).add(scope.ceiling, 'd').toDate();
                 scope.floorDateMoment = moment(scope.floorDate);
                 scope.ceilingDateMoment = moment(scope.ceilingDate);
@@ -137,7 +137,7 @@ appCivistApp.directive('multiSliderDates', function ($compile, $timeout) {
                 angular.forEach(scope.sliders, function (slider) {
                     // prevent handles to have a value bigger than the next in the array
                     slider.value = roundStep(parseFloat(slider.value), parseInt(scope.precision), parseFloat(scope.step), parseFloat(scope.floor));
-                    slider.date = moment(slider.floorDate).add(slider.value, 'd').toDate();
+                    slider.date = moment(scope.floorDate).add(slider.value, 'd').toDate();
                     slider.dateMoment = moment(slider.date);
                 });
 

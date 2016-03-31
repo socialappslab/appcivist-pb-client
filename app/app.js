@@ -338,7 +338,9 @@ function pathIsNotRestricted(path) {
 function selectBackendServer(hostname, apis) {
     var possibleHosts = ["localhost", "appcivist.littlemacondo.com"];
 
-    /*return apis.testing;*/
+    //uncomment for dev
+    //return apis.testing;
+
 
     if(hostname.match(possibleHosts[0])) {
         return apis.development;

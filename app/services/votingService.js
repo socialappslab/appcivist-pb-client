@@ -50,7 +50,7 @@ appCivistApp.factory('VotesByUser', function($http, $resource, localStorageServi
   );
 });
 
-appCivistApp.factory('NewBallot', function($http, $resource, localStorageService){
+appCivistApp.factory('NewBallotPaper', function($http, $resource, localStorageService){
   var url = getVotingApiURL(localStorageService);
   return $resource(
     url + '/ballot/:uuid/vote/:signature',

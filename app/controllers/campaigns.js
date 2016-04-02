@@ -707,7 +707,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
-														  Contributions, FlashService, $translate, $filter, moment){
+														  Contributions, FlashService, $translate, $filter, moment, Ballot, Candidate, VotesByUser, NewBallot){
 
 	init();
 
@@ -717,6 +717,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
+		setCurrentBallot($scope, localStorageService);
 	}
 
 	function initScopeContent(){
@@ -914,6 +915,31 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
 		}
+	}
+
+	// register user to vote if ballot does not exist
+	/*
+	if (Ballot.get({uuid: $scope.campaign.bindingBallot}).status == '500'){
+		Ballot.put({uuid: $scope.campaign.bindingBallot, signature: $scope.user.uuid})
+		var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
+		console.log(VoteByUser);
+	}*/
+
+	//var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
+	function setCurrentBallot($scope, localStorageService){
+		var currentBallot = $scope.campaign.bindingBallot;
+		var currentUserID = $scope.user.uuid;
+		//var ballot = Ballot.get({uuid: currentBallot});
+
+		var votes = VotesByUser.get({uuid: currentBallot, signature: currentUserID}).$promise;
+		votes.then(function(data){
+
+		}, function(error){
+			if (error.status == "400" || error.status == "404") { //no votes under this signature
+				var newBallot = NewBallot.save({uuid: currentBallot, signature: currentUserID}).$promise;
+			}
+		});
+
 	}
 
 	/**

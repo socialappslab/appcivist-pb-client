@@ -51,8 +51,9 @@
   ],
   "author": "socialapplab",
   "devDependencies": {
+    "grunt": "^0.4.5",
     "grunt-contrib-haml": "~0.2.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-haml2html": "^0.3.0"
+    "grunt-haml2html": "^0.3.1"
   }
 }

@@ -1,13 +1,14 @@
 <div class="view campaign-pmaking" ng-controller="CampaignComponentCtrl">
     <div class="col-md-12 col-sm-12">
-        <div class="row text-center">
-            <span class="h4"><strong>Assembly: </strong></span>
-            <span class="h4">{{assembly.name}}</span>
-            <span class="h4"> / </span>
-            <span class="h4"><strong>Campaign: </strong></span>
-            <span class="h4">{{campaign.title}}</span>
+        <div class="row col-md-12 col-sm-12">
+          <div class="assemblyTitle">
+              <span class="h4"><strong>Assembly: </strong></span>
+              <span class="h4">{{assembly.name}}</span>
+              <span class="h4"> / </span>
+              <span class="h4"><strong>Campaign: </strong></span>
+              <span class="h4">{{campaign.title}}</span>
+          </div>
         </div>
-        <br/>
         <div class="row col-md-8 col-md-push-2 col-sm-8 col-sm-push-2">
             <ul id="timeline" class="row timeline">
                 <li id="proposalMakingPhase" class="{{proposalMakingState}} selected active">

@@ -174,6 +174,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
         })
+        .when('/assembly/:aid/campaign/:cid/edit',{ //edit
+            controller: "EditCampaignCtrl",
+            templateUrl: 'app/partials/campaign/edit/editCampaign.html'
+        })
         .when('/assembly/:aid/campaign/:cid/:ciid',{
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/campaign/component/campaignComponent.html'
@@ -334,9 +338,12 @@ function pathIsNotRestricted(path) {
 function selectBackendServer(hostname, apis) {
     var possibleHosts = ["localhost", "appcivist.littlemacondo.com"];
 
+    /*return apis.testing;*/
+
     if(hostname.match(possibleHosts[0])) {
         return apis.development;
     } else {
         return apis.testing;
     }
+
 }

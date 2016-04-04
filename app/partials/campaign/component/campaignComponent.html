@@ -1,95 +1,104 @@
 <div class="view campaign-pmaking">
     <div class="col-md-12 col-sm-12">
-        <!-- Campaign Title -->
-        <div class="row container-inline col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h2>
-                <campaign-header
-                        assembly="assembly"
-                        campaign="campaign"
-                        component="component">
-                </campaign-header>
-            </h2>
-        </div>
+        <campaign-header
+                assembly="assembly"
+                campaign="campaign"
+                component="component">
+        </campaign-header>
+        <br/>
+
         <!-- The Campaign timeline-->
         <timeline></timeline>
         <!-- The campaign milestones and functions -->
         <div class="row col-md-12 col-sm-12">
             <div class="row">
-                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                            ng-click="openNewContributionModal('lg','BRAINSTORMING')"
-                            ng-disabled="disableButton['contribute']">
-                        <strong>
-                            {{'Brainstorm' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Brainstorming {{disableButton['contribute'] ? 'was' : 'will be'}} possible until {{milestonesMap['end_brainstorming'].date}}">
-                            </i>
-                        </strong>
-                    </button>
-                </span>
-                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create"
-                       ng-if="!disableButton['newGroup']">
-                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- TODO: enable/disable buttons according to milestones dates -->
+                <!-- TODO: Add information about milestone dates -->
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                ng-click="openNewContributionModal('lg','BRAINSTORMING')"
+                                ng-disabled="disableButton['contribute']">
+                            <strong>
+                                {{'Brainstorm' | translate}}
+                                <i class="fa fa-info-circle" tooltip-placement="bottom"
+                                   uib-tooltip="Brainstorming {{disableButton['contribute'] ? 'was' : 'will be'}} possible until {{milestonesMap['end_brainstorming'].date}}">
+                                </i>
+                            </strong>
+                        </button>
+                    </span>
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create"
+                           ng-if="!disableButton['newGroup']">
+                            <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <strong>
+                                    {{'Create New Group' | translate}}
+                                    <i class="fa fa-info-circle" tooltip-placement="bottom"
+                                       uib-tooltip="Working groups can be formed until {{milestonesMap['end_wgroups_creation'].date}}">
+                                    </i>
+                                </strong>
+                            </button>
+                        </a>
+                        <button ng-if="disableButton['newGroup']"
+                                ng-disabled="disableButton['newGroup']" class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <strong>
                                 {{'Create New Group' | translate}}
                                 <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                   uib-tooltip="Working groups can be formed until {{milestonesMap['end_wgroups_creation'].date}}">
+                                   uib-tooltip="Forming Working groups was possible before {{milestonesMap['end_wgroups_creation'].date}}">
                                 </i>
                             </strong>
                         </button>
-                    </a>
-                    <button ng-if="disableButton['newGroup']"
-                            ng-disabled="disableButton['newGroup']" class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <strong>
-                            {{'Create New Group' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Forming Working groups was possible before {{milestonesMap['end_wgroups_creation'].date}}">
-                            </i>
-                        </strong>
-                    </button>
-                </span>
-                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                            ng-disabled="buttonDisabled['newProposal']"
-                            ng-click="openNewContributionModal('lg','PROPOSAL')">
-                        <strong>
-                            {{'New Proposal' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Proposals due date {{disableButton['newProposal'] ? 'was' : 'is'}}
-                               {{milestonesMap['end_proposals'].date}}">
-                            </i>
-                        </strong>
-                    </button>
-                </span>
-                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <a ng-if="ballot" ng-href="#/ballot/{{ballot.uuid}}/start">
+                    </span>
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                         <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                ng-disabled="disableButton['vote']">
+                                ng-disabled="buttonDisabled['newProposal']"
+                                ng-click="openNewContributionModal('lg','PROPOSAL')">
                             <strong>
-                                {{'Vote on Proposals' | translate}}
-                                <i class="fa fa-info-circle" tooltip-placement="top"
-                                   uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
-                                   {{milestonesMap['end_voting'].date}}">
+                                {{'New Proposal' | translate}}
+                                <i class="fa fa-info-circle" tooltip-placement="bottom"
+                                   uib-tooltip="Proposals due date {{disableButton['newProposal'] ? 'was' : 'is'}}
+                                   {{milestonesMap['end_proposals'].date}}">
                                 </i>
                             </strong>
                         </button>
-                    </a>
-                    <button ng-if="!ballot" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <strong>
-                            {{'Voting ballot not yet available' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
-                                   {{milestonesMap['end_voting'].date}}">
-                            </i>
-                        </strong>
-                    </button>
-                </span>
+                    </span>
+                    <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                        <a ng-if="ballot" ng-href="#/ballot/{{ballot.uuid}}/start">
+                            <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                    ng-disabled="disableButton['vote']">
+                                <strong>
+                                    {{'Vote on Proposals' | translate}}
+                                    <i class="fa fa-info-circle" tooltip-placement="bottom"
+                                       uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
+                                       {{milestonesMap['end_voting'].date}}">
+                                    </i>
+                                </strong>
+                            </button>
+                        </a>
+                        <button ng-if="!ballot" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <strong>
+                                {{'Voting ballot not yet available' | translate}}
+                                <i class="fa fa-info-circle" tooltip-placement="bottom"
+                                   uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
+                                       {{milestonesMap['end_voting'].date}}">
+                                </i>
+                            </strong>
+                        </button>
+                    </span>
             </div>
         </div>
-        <!-- Campaign Content -->
+
+        <!-- The Campaign Content-->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row container-inline">
+                <h2><strong class="text-muted">
+                    Campaign <div ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">Contributions,</div>
+                    <div ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">Working Groups, and</div>
+                    <div>Proposals</div>
+                </strong></h2>
+            </div>
+        </div>
         <!-- Filters and Search -->
-        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <!-- Search box -->
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 no-padding">
                 <input type="text" class="form-control" placeholder="Search existing contributions..."
@@ -123,53 +132,115 @@
             <div class="voffset6"></div>
         </div>
         <!-- Contribution tabs -->
-        <uib-tabset class="row" active="0">
-            <uib-tab class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
-                     ng-repeat="tab in contentTabs"
-                     heading="tab.title"
-                     active="tab.active"
-                     ng-if="tab.showInComponent[component.title.toLowerCase()]">
+        <uib-tabset>
+            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Brainstorming Contributions"
+                     ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">
                 <uib-tab-heading>
                     <h4>
-                        <strong>{{tab.title}}</strong>
-                        <i class="fa fa-question-circle" tooltip-placement="top"
-                           uib-tooltip="{{tab.tooltip}}"></i>
+                        <strong>Brainstorming Contributions</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="bottom"
+                           uib-tooltip="Brainstorming issues and suggestions"></i>
                     </h4>
                 </uib-tab-heading>
-                <div class="col-md-12 col-sm-12">
+                <div class="row col-md-12 col-sm-12">
                     <div class="container-fluid col-md-12 col-sm-12">
                         <div class="row">
-                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                                 ng-if="tab.ctype!='WORKING_GROUP'"
-                                 ng-style="tab.ctype==='BRAINSTORMING' ? 'height:300px;' : ''"
-                                 ng-repeat="contribution in tab.contentArray |
+                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution" style="height:300px;"
+                                 ng-repeat="contribution in contributions |
                                                 orderBy: orderProperty : orderReverse |
                                                 filter: campaignContributionFilter |
-                                                filter: {type:tab.ctype} track by $index ">
+                                                filter: {type:'BRAINSTORMING'} track by $index ">
                                 <contribution ng-click="openContributionModal(contribution,'lg')"
                                               contribution="contribution"
                                               assemblyid="assembly.assemblyId"
                                               campaignid="campaign.campaignId"
                                               componentid="component.componentId"
-                                              container="tab.contentArray"
+                                              container="contributions"
                                               containerid="campaign.resourceSpaceId"
-                                              containerindex="$index"
-                                              enablevoting="enableVoting"></contribution>
+                                              containerindex="$index"></contribution>
                             </div>
-
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Working Groups"
+                     ng-if="component.title==='PROPOSAL MAKING' || component.title==='Proposal Making'">
+                <uib-tab-heading>
+                    <h4>
+                        <strong>Working Groups</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="bottom"
+                           uib-tooltip="Working Groups developing proposals based on brainstorming contributions"></i>
+                    </h4>
+                </uib-tab-heading>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="container-fluid col-md-12 col-sm-12">
+                        <div class="row">
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
-                                 ng-if="tab.ctype==='WORKING_GROUP'"
-                                style="height:150px;"
-                                ng-repeat="group in tab.contentArray |
-                                                orderBy: orderProperty : orderReverse |
-                                                filter:campaignContributionFilter track by $index ">
+                                 style="height:150px;"
+                                 ng-repeat="group in workingGroups | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter track by $index ">
                                 <working-group group="group"
                                                assemblyid="assemblyID"
                                                campaignid="campaign.campaignId"
-                                               container="tab.contentArray"
+                                               container="workingGroups"
                                                containerid="campaign.resourceSpaceId"
-                                               containerindex="$index">
-                                </working-group>
+                                               containerindex="$index"></working-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals">
+                <uib-tab-heading>
+                    <h4>
+                        <strong>Proposals</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="bottom"
+                           uib-tooltip="Solution proposals developed by groups"></i>
+                    </h4>
+                </uib-tab-heading>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="container-fluid col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                                 style="height:500px;"
+                                 ng-repeat="contribution in contributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:'PROPOSAL'} track by $index ">
+                                <contribution ng-click="openContributionModal(contribution,'lg')"
+                                              contribution="contribution" assemblyid="assemblyID"
+                                              assemblyid="assembly.assemblyId"
+                                              campaignid="campaign.campaignId"
+                                              componentid="component.componentId"
+                                              milestoneid="milestone.componentMilestoneId"
+                                              container="contributions"
+                                              containerid="campaign.resourceSpaceId"
+                                              containerindex="$index"
+                                ></contribution>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab class="row col-lg-3 col-md-3 col-sm-4 col-xs-12" heading="Proposals"
+                     ng-if="component.title==='IMPLEMENTATION' || component.title==='Implementation'">
+                <uib-tab-heading>
+                    <h4>
+                        <strong>Winning Proposals</strong>
+                        <i class="fa fa-question-circle" tooltip-placement="bottom"
+                           uib-tooltip="Solution proposals developed by groups"></i>
+                    </h4>
+                </uib-tab-heading>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="container-fluid col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
+                                 style="height:500px;"
+                                 ng-repeat="contribution in winningContributions | orderBy: orderProperty : orderReverse | filter:campaignContributionFilter | filter: {type:'PROPOSAL'} track by $index ">
+                                <contribution ng-click="openContributionModal(contribution,'lg')"
+                                              contribution="contribution" assemblyid="assemblyID"
+                                              assemblyid="assembly.assemblyId"
+                                              campaignid="campaign.campaignId"
+                                              componentid="component.componentId"
+                                              container="contributions"
+                                              containerid="campaign.resourceSpaceId"
+                                              containerindex="$index"></contribution>
                             </div>
                         </div>
                     </div>

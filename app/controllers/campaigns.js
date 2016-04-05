@@ -845,7 +845,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.orderContributions = function(property) {
 			if($scope.orderProperty === property) {
 				$scope.orderReverse = !$scope.orderReverse;
-			} else {
+			} else if (property === 'random') {
+				$scope.orderProperty = $scope.random;
+		    } else {
 				$scope.orderProperty = property;
 			}
 		};

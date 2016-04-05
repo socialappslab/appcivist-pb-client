@@ -707,7 +707,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
-														  Contributions, FlashService, $translate, $filter, moment){
+														  Contributions, FlashService, $translate, $filter, moment, Ballot, Candidate, VotesByUser, NewBallotPaper){
 
 	init();
 
@@ -717,6 +717,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
+		setCurrentBallot($scope, localStorageService);
 	}
 
 	function initScopeContent(){
@@ -844,20 +845,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.orderContributions = function(property) {
 			if($scope.orderProperty === property) {
 				$scope.orderReverse = !$scope.orderReverse;
-			} else if (property === 'random'){
-				$scope.orderProperty = $scope.random;
 			} else {
-				$scope.orderProperty = $scope.votes;
+				$scope.orderProperty = property;
 			}
 		};
 
 		$scope.random = function(){
 			return 0.5 - Math.random();
 		};
-
-		////////////////////////////////////////////////
-		///////////   FILTER WORK   ////////////////////
-		////////////////////////////////////////////////
 
 		$scope.filterContributionsByTheme = function (t) {
 			if (t==="all") {
@@ -866,39 +861,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				$scope.campaignContributionThemeFilter = t.title;
 			}
 		}
-
-		/*
-		$scope.campaignContributionThemeFilter = function(t){
-			if (t==""){
-
-			}
-		} 	9-5 work
-		*/
-
-		//call this function below
-		/*
-		app.filter('filterByTags', function () {
-    		return function (items, tags) {
-        	var filtered = []; // Put here only items that match
-        	(items || []).forEach(function (item) { // Check each item
-            var matches = tags.some(function (tag) {          // If there is some tag
-                return (item.data1.indexOf(tag.text) > -1) || // that is a substring
-                       (item.data2.indexOf(tag.text) > -1);   // of any property's value
-            		});                                               // we have a match
-            if (matches) {           // If it matches
-                filtered.push(item); // put it into the `filtered` array
-            }
-        	});
-        	return filtered; // Return the array with items that match any tag
-    		};
-		});
-
-		http://plnkr.co/edit/xVzwlOlwaYuo7K37QURD?p=preview
-
-<tr ng-repeat="t in tableData | filterByTags:tags">
-
-	*/
-
 
 		$scope.isButtonDisabled = function (button) {
 			return $scope.disableButton[button];
@@ -953,6 +915,31 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
 		}
+	}
+
+	// register user to vote if ballot does not exist
+	/*
+	if (Ballot.get({uuid: $scope.campaign.bindingBallot}).status == '500'){
+		Ballot.put({uuid: $scope.campaign.bindingBallot, signature: $scope.user.uuid})
+		var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
+		console.log(VoteByUser);
+	}*/
+
+	//var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
+	function setCurrentBallot($scope, localStorageService){
+		var currentBallot = $scope.campaign.bindingBallot;
+		var currentUserID = $scope.user.uuid;
+		//var ballot = Ballot.get({uuid: currentBallot});
+
+		var votes = VotesByUser.get({uuid: currentBallot, signature: currentUserID}).$promise;
+		votes.then(function(data){
+
+		}, function(error){
+			if (error.status == "400" || error.status == "404") { //no votes under this signature
+				var newBallot = NewBallotPaper.save({uuid: currentBallot, signature: currentUserID}).$promise;
+			}
+		});
+
 	}
 
 	/**

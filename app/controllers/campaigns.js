@@ -717,7 +717,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
-		setCurrentBallot($scope, localStorageService);
 	}
 
 	function initScopeContent(){
@@ -910,12 +909,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				setCurrentComponentAndMilestones($scope,localStorageService);
 				setMilestonesMap();
 				setContributionsAndGroups($scope,localStorageService);
+				setCurrentBallot($scope, localStorageService);
 			});
 		} else {
 			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
 			setCurrentComponentAndMilestones($scope,localStorageService);
 			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
+			setCurrentBallot($scope, localStorageService);
 		}
 	}
 

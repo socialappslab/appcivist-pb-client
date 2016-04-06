@@ -21,7 +21,7 @@ var appcivist = {
         voting: {
             production: "http://appcivist-voting-api.herokuapp.com/api/v0",
             testing: "http://appcivist-voting-api.herokuapp.com/api/v0",
-            development: "http://127.0.0.1:5000/api/v0"
+            development: "http://localhost:5000/api/v0"
         },
         core: {
             production: "http://appcivist.littlemacondo.com/backend/api",

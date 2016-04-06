@@ -707,7 +707,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
-														  Contributions, FlashService, $translate, $filter, moment, Ballot, Candidate, VotesByUser, NewBallotPaper){
+														  Contributions, FlashService, $translate, $filter, moment,
+														  Ballot, Candidate, VotesByUser, NewBallotPaper){
 
 	init();
 
@@ -939,7 +940,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 		}, function(error){
 			if (error.status == "400" || error.status == "404") { //no votes under this signature
-				var newBallot = NewBallotPaper.save({uuid: currentBallot, signature: currentUserID}).$promise;
+				var newBallot = NewBallotPaper.ballot(currentBallot).save({signature: currentUserID}).$promise;
 			}
 		});
 

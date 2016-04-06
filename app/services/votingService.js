@@ -52,16 +52,24 @@ appCivistApp.factory('VotesByUser', function($http, $resource, localStorageServi
 
 appCivistApp.factory('NewBallotPaper', function($http, $resource, localStorageService){
   var url = getVotingApiURL(localStorageService);
-  return $resource(
-    url + '/ballot/:uuid/vote/:signature',
-    { "uuid": "@id", "signature": "@id"},
-    {
-      "complete": {
-        method: "POST",
-        url: url + '/ballot/:uuid/vote/:signature'
-      }
+  return {
+    ballot: function(id) {
+      return $resource(url + '/ballot/:uuid/vote',
+          {
+            uuid: id
+          },
+          {
+            "save": { method: "POST" }
+          }
+      );
     }
-  );
+  }
+
+  //$resource(
+  //  url + '/ballot/:uuid/vote/:signature',
+  //  { "uuid": "@id", "signature": "@id"},
+  //
+  //);
 });
 
 appCivistApp.factory("Candidate", function($http, $resource, localStorageService) {

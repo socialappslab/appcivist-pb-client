@@ -621,6 +621,8 @@ appCivistApp.controller('ConsensusVotingCtrl', function($scope, $http, $routePar
     $scope.user = localStorageService.get('user');
     //console.log($scope.user);
 
+    $scope.contribution.gaytest = "dooblddobla";
+    return($scope.contribution.gaytest);
 
   }
 });

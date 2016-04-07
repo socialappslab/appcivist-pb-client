@@ -1,10 +1,10 @@
 <div class="consensus-controls">
   <div class="btn-group" role="group">
-    <button class="btn btn-default">Yes</button>
-    <button class="btn btn-default">No</button>
-    <button class="btn btn-default">Abstain</button>
-    <button class="btn btn-default">Block</buttom>
+    <button class="btn btn-default" ng-click="contributionVote('YES')">Yes</button>
+    <button class="btn btn-default" ng-click="contributionVote('NO')">No</button>
+    <button class="btn btn-default" ng-click="contributionVote('ABSTAIN')">Abstain</button>
+    <button class="btn btn-default" ng-click="contributionVote('BLOCK')">Block</buttom>
   </div>
+  <br />
 
-  {{contribution.gaytest}}
 </div>

@@ -105,7 +105,7 @@ appCivistApp.directive('consensusControls', function(){
     scope: {
       contribution: '='
     },
-    controller: "ConsensusVotingCtrl"
+    controller: "ContributionVotesCtrl"
   }
 });
 

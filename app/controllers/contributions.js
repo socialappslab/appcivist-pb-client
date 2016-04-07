@@ -597,7 +597,11 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 				);
 			}
 		};
-	}
+
+    $scope.contributionVote = function(choice) {
+      console.log(choice, $scope.contribution);
+    }
+  }
 
 	function userAlreadyVotedInContribution() {
 		$scope.userVotes = localStorageService.get("userVotes");
@@ -610,21 +614,6 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 		localStorageService.set("userVotes", $scope.userVotes);
 		userAlreadyVotedInContribution();
 	}
-});
-
-appCivistApp.controller('ConsensusVotingCtrl', function($scope, $http, $routeParams, localStorageService,
-                                                      FileUploader, Contributions, $translate) {
-
-  init();
-
-  function init() {
-    $scope.user = localStorageService.get('user');
-    //console.log($scope.user);
-
-    $scope.contribution.gaytest = "dooblddobla";
-    return($scope.contribution.gaytest);
-
-  }
 });
 
 appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,

@@ -940,7 +940,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 		}, function(error){
 			if (error.status == "400" || error.status == "404") { //no votes under this signature
-				var newBallot = NewBallotPaper.ballot(currentBallot).save({signature: currentUserID}).$promise;
+				var newBallot = NewBallotPaper.ballot(currentBallot).save({vote : {signature: currentUserID}}).$promise;
 			}
 		});
 

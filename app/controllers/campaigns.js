@@ -931,16 +931,16 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 	//var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
 	function setCurrentBallot($scope, localStorageService){
-		var currentBallot = $scope.campaign.bindingBallot;
-		var currentUserID = $scope.user.uuid;
+		var ballotId = $scope.campaign.bindingBallot;
+		var userId = $scope.user.uuid;
 		//var ballot = Ballot.get({uuid: currentBallot});
 
-		var votes = VotesByUser.get({uuid: currentBallot, signature: currentUserID}).$promise;
+		var votes = VotesByUser.get({uuid: ballotId, signature: userId}).$promise;
 		votes.then(function(data){
 
 		}, function(error){
 			if (error.status == "400" || error.status == "404") { //no votes under this signature
-				var newBallot = NewBallotPaper.ballot(currentBallot).save({vote : {signature: currentUserID}}).$promise;
+				var newBallot = NewBallotPaper.ballot(ballotId).save({vote : {signature: userId}}).$promise;
 			}
 		});
 

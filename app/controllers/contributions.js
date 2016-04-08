@@ -535,15 +535,22 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 });
 
 appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
-														  Contributions, $translate ) {
+														  Contributions, $translate, MakeVote, Ballot ) {
 	init();
 
 	function init() {
         $scope.user = localStorageService.get('user');
+        $scope.currentCampaign = localStorageService.get('currentCampaign');
         if ($scope.user && $scope.user.language)
             $translate.use($scope.user.language);
 
         $scope.votes = $scope.contribution.stats.points;
+
+        // $scope.ballotResults.then(function(data){
+        //   $scope.results = data.results;
+        //
+        // });
+
 		userAlreadyVotedInContribution();
 
 		$scope.upVote = function () {
@@ -598,8 +605,28 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 			}
 		};
 
-    $scope.contributionVote = function(choice) {
-      console.log(choice, $scope.contribution);
+    $scope.contributionVote = function(c) {
+      var userId = $scope.user.uuid;
+      var ballotId = $scope.currentCampaign.bindingBallot;
+      var choice = c;
+      var contributionId = $scope.contribution.uuidAsString;
+      $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
+      //var candidateId = $scope.results.index[contribution_uuid].vote.candidate_id;
+
+      console.log(userId, ballotId, choice, contributionId);
+      $scope.ballotResults.then(function(data){
+        var candidateId = data.index[contributionId].vote.candidate_id;
+
+        var newVote = MakeVote.newVote(ballotId, userId).save({
+          vote: {
+            votes: [
+              {candidate_id: candidateId, value: choice}
+            ]
+          }
+        }).$promise;
+      });
+
+
     }
   }
 

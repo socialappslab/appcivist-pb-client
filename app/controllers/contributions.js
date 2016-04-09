@@ -539,17 +539,37 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 	init();
 
 	function init() {
-        $scope.user = localStorageService.get('user');
-        $scope.currentCampaign = localStorageService.get('currentCampaign');
-        if ($scope.user && $scope.user.language)
-            $translate.use($scope.user.language);
+    $scope.user = localStorageService.get('user');
+    $scope.currentCampaign = localStorageService.get('currentCampaign');
+    if ($scope.user && $scope.user.language)
+        $translate.use($scope.user.language);
 
-        $scope.votes = $scope.contribution.stats.points;
+    $scope.votes = $scope.contribution.stats.points;
 
-        // $scope.ballotResults.then(function(data){
-        //   $scope.results = data.results;
-        //
-        // });
+    $scope.yesToggle = "";
+    $scope.noToggle = "";
+    $scope.abstainToggle = "";
+    $scope.blockToggle = "";
+
+    $scope.clearToggle = function() {
+      $scope.yesToggle = "";
+      $scope.noToggle = "";
+      $scope.abstainToggle = "";
+      $scope.blockToggle = "";
+    }
+
+    $scope.setToggle = function(choice) {
+      $scope.clearToggle();
+      if (choice == "YES") {
+        $scope.yesToggle = "btn-success";
+      } else if (choice == "NO") {
+        $scope.noToggle = "btn-danger";
+      } else if (choice == "ABSTAIN") {
+        $scope.abstainToggle = "btn-info";
+      } else if (choice == "BLOCK") {
+        $scope.blockToggle = "btn-warning";
+      }
+    }
 
 		userAlreadyVotedInContribution();
 
@@ -610,6 +630,9 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
       var ballotId = $scope.currentCampaign.bindingBallot;
       var choice = c;
       var contributionId = $scope.contribution.uuidAsString;
+
+      $scope.setToggle(choice);
+
       $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
       //var candidateId = $scope.results.index[contribution_uuid].vote.candidate_id;
 
@@ -625,8 +648,6 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
           }
         }).$promise;
       });
-
-
     }
   }
 

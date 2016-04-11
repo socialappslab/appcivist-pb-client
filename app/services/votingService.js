@@ -64,12 +64,23 @@ appCivistApp.factory('NewBallotPaper', function($http, $resource, localStorageSe
       );
     }
   }
+});
 
-  //$resource(
-  //  url + '/ballot/:uuid/vote/:signature',
-  //  { "uuid": "@id", "signature": "@id"},
-  //
-  //);
+appCivistApp.factory('MakeVote', function($http, $resource, localStorageService){
+  var url = getVotingApiURL(localStorageService);
+  return {
+    newVote: function(id, sign) {
+      return $resource(url + '/ballot/:uuid/vote/:signature',
+        {
+          uuid: id,
+          signature: sign
+        },
+        {
+          "save": {method: "PUT"}
+        }
+      );
+    }
+  }
 });
 
 appCivistApp.factory("Candidate", function($http, $resource, localStorageService) {

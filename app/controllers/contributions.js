@@ -535,15 +535,42 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 });
 
 appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
-														  Contributions, $translate ) {
+														  Contributions, $translate, MakeVote, Ballot ) {
 	init();
 
 	function init() {
-        $scope.user = localStorageService.get('user');
-        if ($scope.user && $scope.user.language)
-            $translate.use($scope.user.language);
+    $scope.user = localStorageService.get('user');
+    $scope.currentCampaign = localStorageService.get('currentCampaign');
+    if ($scope.user && $scope.user.language)
+        $translate.use($scope.user.language);
 
-        $scope.votes = $scope.contribution.stats.points;
+    $scope.votes = $scope.contribution.stats.points;
+
+    $scope.yesToggle = "";
+    $scope.noToggle = "";
+    $scope.abstainToggle = "";
+    $scope.blockToggle = "";
+
+    $scope.clearToggle = function() {
+      $scope.yesToggle = "";
+      $scope.noToggle = "";
+      $scope.abstainToggle = "";
+      $scope.blockToggle = "";
+    }
+
+    $scope.setToggle = function(choice) {
+      $scope.clearToggle();
+      if (choice == "YES") {
+        $scope.yesToggle = "btn-success";
+      } else if (choice == "NO") {
+        $scope.noToggle = "btn-danger";
+      } else if (choice == "ABSTAIN") {
+        $scope.abstainToggle = "btn-info";
+      } else if (choice == "BLOCK") {
+        $scope.blockToggle = "btn-warning";
+      }
+    }
+
 		userAlreadyVotedInContribution();
 
 		$scope.upVote = function () {
@@ -597,7 +624,32 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 				);
 			}
 		};
-	}
+
+    $scope.contributionVote = function(c) {
+      var userId = $scope.user.uuid;
+      var ballotId = $scope.currentCampaign.bindingBallot;
+      var choice = c;
+      var contributionId = $scope.contribution.uuidAsString;
+
+      $scope.setToggle(choice);
+
+      $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
+      //var candidateId = $scope.results.index[contribution_uuid].vote.candidate_id;
+
+      console.log(userId, ballotId, choice, contributionId);
+      $scope.ballotResults.then(function(data){
+        var candidateId = data.index[contributionId].vote.candidate_id;
+
+        var newVote = MakeVote.newVote(ballotId, userId).save({
+          vote: {
+            votes: [
+              {candidate_id: candidateId, value: choice}
+            ]
+          }
+        }).$promise;
+      });
+    }
+  }
 
 	function userAlreadyVotedInContribution() {
 		$scope.userVotes = localStorageService.get("userVotes");
@@ -610,19 +662,6 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 		localStorageService.set("userVotes", $scope.userVotes);
 		userAlreadyVotedInContribution();
 	}
-});
-
-appCivistApp.controller('ConsensusVotingCtrl', function($scope, $http, $routeParams, localStorageService,
-                                                      FileUploader, Contributions, $translate) {
-
-  init();
-
-  function init() {
-    $scope.user = localStorageService.get('user');
-    //console.log($scope.user);
-
-
-  }
 });
 
 appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,

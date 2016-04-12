@@ -324,12 +324,12 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.campaigns = [];
 		$scope.templateOptions = [
 			{
-				description : "Link to another campaign and use its template",
+				description : "Yes, link to another campaign and use its template",
 				value: "LINKED",
 				subTemplateTitle: "Select a campaign from the list or search by name"
 			},
 			{
-				description : "Select a predefined template",
+				description : "No, use a predefined template",
 				value: "PREDEFINED",
 				subTemplateTitle: "Select a template from the list"
 			}
@@ -348,9 +348,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	 */
 	function initializeNewCampaignModel() {
 		$scope.newCampaign = Campaigns.defaultNewCampaign();
-		$scope.newCampaign.template = $scope.templateOptions[0];
+		$scope.newCampaign.template = $scope.templateOptions[1];
 		$scope.newCampaign.proposalComponents = Components.defaultProposalComponents();
-
+		$scope.newCampaign.enableBudget="yes";
 		var translationStrings = [
 			"Proposal making",
 			"Deliberation",
@@ -427,8 +427,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	 * Initializes the timeframe models for milestones
 	 */
 	function initializeMilestonesTimeframe() {
-		$scope.newCampaign.campaignTimeframeInMonths=12;
-		$scope.newCampaign.campaignTimeframeInDays = 183;
+		$scope.newCampaign.campaignTimeframeInMonths=1;
+		$scope.newCampaign.campaignTimeframeInDays = 32;
 		$scope.newCampaign.campaignTimeframeStartDate = moment().local().toDate();
 		$scope.newCampaign.triggerTimeframeUpdate = false;
 		$scope.newCampaign.noOverlapping = false;
@@ -536,7 +536,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 	function prepareCampaignToCreate() {
 		var newCampaign = {};
-		newCampaign.title = $scope.newCampaign.title;
+		newCampaign.title = $scope.newCampaign.goal; // campaign and goal are now the same, title will be removed from API
 		newCampaign.goal = $scope.newCampaign.goal;
 		newCampaign.listed = $scope.newCampaign.listed;
 		newCampaign.themes = $scope.newCampaign.themes;

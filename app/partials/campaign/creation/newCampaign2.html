@@ -31,57 +31,56 @@
                        uib-tooltip="{{'help.tooltip.campaignTimeframe' | translate}}">
                     </i>
                 </div>
-                <div id="inputCampaignTimeframe" class="btn-group" class="col-md-12 col-sm-12">
-                    <label class="btn btn-primary col-md-3 col-sm-3"
-                           ng-model="newCampaign.campaignTimeframeInMonths"
-                           uib-btn-radio="1"
-                           ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">
-                        1 month
-                    </label>
-                    <label class="btn btn-primary col-md-3 col-sm-3"
-                           ng-model="newCampaign.campaignTimeframeInMonths"
-                           uib-btn-radio="3"
-                           ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">
-                        3 months
-                    </label>
-                    <label class="btn btn-primary col-md-3 col-sm-3"
-                           ng-model="newCampaign.campaignTimeframeInMonths"
-                           uib-btn-radio="6"
-                           ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">
-                        6 months
-                    </label>
-                    <label class="btn btn-primary col-md-3 col-sm-3"
-                           ng-model="newCampaign.campaignTimeframeInMonths"
-                           uib-btn-radio="12"
-                           ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">
-                        12 months
-                    </label>
-                </div>
+                <!--<div id="inputCampaignTimeframe" class="btn-group" class="col-md-12 col-sm-12">-->
+                    <!--<label class="btn btn-primary col-md-3 col-sm-3"-->
+                           <!--ng-model="newCampaign.campaignTimeframeInMonths"-->
+                           <!--uib-btn-radio="1"-->
+                           <!--ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">-->
+                        <!--1 month-->
+                    <!--</label>-->
+                    <!--<label class="btn btn-primary col-md-3 col-sm-3"-->
+                           <!--ng-model="newCampaign.campaignTimeframeInMonths"-->
+                           <!--uib-btn-radio="3"-->
+                           <!--ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">-->
+                        <!--3 months-->
+                    <!--</label>-->
+                    <!--<label class="btn btn-primary col-md-3 col-sm-3"-->
+                           <!--ng-model="newCampaign.campaignTimeframeInMonths"-->
+                           <!--uib-btn-radio="6"-->
+                           <!--ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">-->
+                        <!--6 months-->
+                    <!--</label>-->
+                    <!--<label class="btn btn-primary col-md-3 col-sm-3"-->
+                           <!--ng-model="newCampaign.campaignTimeframeInMonths"-->
+                           <!--uib-btn-radio="12"-->
+                           <!--ng-click="refreshTimeframe(newCampaign.campaignTimeframeInMonths)">-->
+                        <!--12 months-->
+                    <!--</label>-->
+                <!--</div>-->
             </section>
 
             <!-- todo: only include milestones of components that are enabled-->
-            <section id="campaignMilestoneSlider" class="col-md-12 col-sm-12">
-                <multi-slider-dates
-                        floor="-1"
-                        step="1"
-                        precision="1"
-                        ceiling="{{newCampaign.campaignTimeframeInDays}}"
-                        bubbles="false"
-                        ng-model="newCampaign.milestones"
-                        ng-if="steps[currentStep-1].active"
-                        update="newCampaign.triggerTimeframeUpdate"
-                        overlapping="false">
-                </multi-slider-dates>
-            </section>
+            <!--<section id="campaignMilestoneSlider" class="col-md-12 col-sm-12">-->
+                <!--<multi-slider-dates-->
+                        <!--floor="-1"-->
+                        <!--step="1"-->
+                        <!--precision="1"-->
+                        <!--ceiling="{{newCampaign.campaignTimeframeInDays}}"-->
+                        <!--bubbles="false"-->
+                        <!--ng-model="newCampaign.milestones"-->
+                        <!--ng-if="steps[currentStep-1].active"-->
+                        <!--update="newCampaign.triggerTimeframeUpdate"-->
+                        <!--overlapping="false">-->
+                <!--</multi-slider-dates>-->
+            <!--</section>-->
 
             <section class="col-sm-12 col-md-12" ng-repeat="milestone in newCampaign.milestones track by $index">
                 <div ng-if="newCampaign.proposalComponents[milestone.componentIndex].enabled && newCampaign.proposalComponents[milestone.componentIndex].active">
-                    <div class="col-md-6 col-sm-6"><strong>{{$index+1}}. </strong><span>{{milestone.title}}</span></div>
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-8 col-sm-8"><strong>{{$index+1}}. </strong><span>{{milestone.title}}</span></div>
+                    <div class="col-md-4 col-sm-4">
                         <p class="input-group">
-                          {{newCampaign.milestones[$index].date}}
                             <input type="text" class="form-control"
-                                   uib-datepicker-popup="yyyy-MM-dd"
+                                   uib-datepicker-popup="yyyy-MM-dd HH:mm"
                                    ng-model="newCampaign.milestones[$index].date"
                                    is-open="milestone.calOpened"
                                    min-date="newCampaign.campaignTimeframeStartDate"

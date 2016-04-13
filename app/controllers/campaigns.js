@@ -899,7 +899,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 * @returns assembly
 	 */
 	function setCurrentCampaign($scope, localStorageService) {
-		$scope.campaign = localStorageService.get('currentCampaign');
+		// TODO: find a better way of caching results
+		//$scope.campaign = localStorageService.get('currentCampaign');
+		$scope.campaign = null;
 		$scope.loadedLocally = true;
 		if(!$scope.campaign || $scope.campaign.campaignId != $scope.campaignID) {
 			$scope.loadedLocally = false;

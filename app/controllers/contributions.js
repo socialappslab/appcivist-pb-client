@@ -127,6 +127,7 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
     init();
 
     function init() {
+
         $scope.user = localStorageService.get("user");
         if ($scope.user && $scope.user.language)
             $translate.use($scope.user.language);
@@ -535,7 +536,7 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 });
 
 appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
-														  Contributions, $translate, MakeVote, Ballot ) {
+														  Contributions, $translate, MakeVote, Ballot, VotesByUser) {
 	init();
 
 	function init() {
@@ -546,16 +547,8 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 
     $scope.votes = $scope.contribution.stats.points;
 
-    $scope.yesToggle = "";
-    $scope.noToggle = "";
-    $scope.abstainToggle = "";
-    $scope.blockToggle = "";
-
     $scope.clearToggle = function() {
-      $scope.yesToggle = "";
-      $scope.noToggle = "";
-      $scope.abstainToggle = "";
-      $scope.blockToggle = "";
+      $scope.yesToggle = $scope.noToggle = $scope.abstainToggle = $scope.blockToggle = "";
     }
 
     $scope.setToggle = function(choice) {
@@ -569,6 +562,10 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
       } else if (choice == "BLOCK") {
         $scope.blockToggle = "btn-warning";
       }
+    }
+
+    if(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
+      $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
     }
 
 		userAlreadyVotedInContribution();
@@ -630,13 +627,10 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
       var ballotId = $scope.currentCampaign.bindingBallot;
       var choice = c;
       var contributionId = $scope.contribution.uuidAsString;
-
       $scope.setToggle(choice);
 
       $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
-      //var candidateId = $scope.results.index[contribution_uuid].vote.candidate_id;
-
-      console.log(userId, ballotId, choice, contributionId);
+      //console.log(userId, ballotId, choice, contributionId);
       $scope.ballotResults.then(function(data){
         var candidateId = data.index[contributionId].vote.candidate_id;
 

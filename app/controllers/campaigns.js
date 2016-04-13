@@ -939,7 +939,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		userVotes.then(function(data){
 			listOfVotesByUser = data.vote.votes;
 			candidatesIndex = data.ballot.candidatesIndex;
-
 		}, function(error){
 			if (error.status == "400" || error.status == "404") { //no votes under this signature
 				var newBallot = NewBallotPaper.ballot(ballotId).save({vote : {signature: userId}}).$promise;

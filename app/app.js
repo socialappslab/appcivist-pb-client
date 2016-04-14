@@ -11,6 +11,11 @@
  */
 
 console.log("Welcome to AppCivist!");
+logActions = true;
+
+var logAction = function() {
+  alert("SUCCESS");
+}
 
 var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll'];
@@ -339,7 +344,7 @@ function selectBackendServer(hostname, apis) {
     var possibleHosts = ["localhost", "appcivist.littlemacondo.com"];
 
     //uncomment for dev
-    //return apis.testing;
+    return apis.testing;
 
 
     if(hostname.match(possibleHosts[0])) {

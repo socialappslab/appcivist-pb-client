@@ -5,7 +5,7 @@
 	this.getUser = function() {
 		return $resource(localStorageService.get("serverBaseUrl")+"/user/:id/loggedin", {id: '@id'});
 	};
-	
+
 	this.getLogintState = function() {
 		return this.userIsAuthenticated();
 	};
@@ -41,7 +41,7 @@
 		);
 	}
 
-	this.signIn = function(email, password, scope) {
+	this.signIn = function(email, password, scope, callback) {
 		var user = {};
 		user.email = email;
 		user.password = password;
@@ -76,6 +76,7 @@
 					});
 				}
 		);
+		if(callback){callback();}
 	};
 
 	this.signOut = function(username) {

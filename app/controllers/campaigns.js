@@ -912,14 +912,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				setCurrentComponentAndMilestones($scope,localStorageService);
 				setMilestonesMap();
 				setContributionsAndGroups($scope,localStorageService);
-				setCurrentBallot($scope, localStorageService);
+				ballotInit($scope, localStorageService);
 			});
 		} else {
 			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
 			setCurrentComponentAndMilestones($scope,localStorageService);
 			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
-			setCurrentBallot($scope, localStorageService);
+			ballotInit($scope, localStorageService);
 		}
 	}
 
@@ -931,21 +931,21 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		console.log(VoteByUser);
 	}*/
 
-	//var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
-	function setCurrentBallot($scope, localStorageService){
+	function ballotInit($scope, localStorageService){
 		var ballotId = $scope.campaign.bindingBallot;
 		var userId = $scope.user.uuid;
-		//var ballot = Ballot.get({uuid: currentBallot});
 
-		var votes = VotesByUser.get({uuid: ballotId, signature: userId}).$promise;
-		votes.then(function(data){
+		$scope.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
 
+		var userVotes = VotesByUser.getVotes(ballotId, userId).votes().$promise;
+		userVotes.then(function(data){
+			listOfVotesByUser = data.vote.votes;
+			candidatesIndex = data.ballot.candidatesIndex;
 		}, function(error){
 			if (error.status == "400" || error.status == "404") { //no votes under this signature
 				var newBallot = NewBallotPaper.ballot(ballotId).save({vote : {signature: userId}}).$promise;
 			}
 		});
-
 	}
 
 	/**

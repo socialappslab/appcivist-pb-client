@@ -178,7 +178,7 @@
   "wgroups.name.example" : "e.g., Urban Infrastucture Interest Group",
   "wgroups.text.example" : "(Max. 250 words) e.g., Group developing Urban Infrastucture proposals for Parc de Belleville",
   "wgroups.select.campaign.themes" : "Select one or more Campaign Themes for the group",
-  "wgroups.select.icon" : "Pick an icon or upload an image to represent your Group",
+  "wgroups.select.icon" : "Pick an icon or upload an image to represent your Group (or upload a picture < 2Mb)*",
 
   "Invitation page strings" : "Invitation page strings",
   "Invitation text" : "Invitation text",
@@ -210,5 +210,9 @@
   "Edit":"Edit",
   "brainstorming.deadline": "Brainstorming deadline",
   "working.groups.can.be.formed.until":"Working groups can be formed until",
-  "forming.working.groups.was.possible.before":"Forming Working groups was possible before"
+  "forming.working.groups.was.possible.before":"Forming Working groups was possible before",
+  "assembly.select.icon" : "Pick an icon or upload an image to represent your Assembly (or upload a picture < 2Mb)*",
+  "Description":"Description",
+  "selected.icon":"Selected icon",
+  "Add to list":"Add to list"
 }

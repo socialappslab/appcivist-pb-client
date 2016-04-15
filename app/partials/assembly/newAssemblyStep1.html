@@ -122,9 +122,7 @@
                 </div>
             </div>
             <div id="assemblyIcon" class="col-md-12 form-group">
-                <label class="control-label">Pick an icon to represent your assembly (or upload a picture < 2Mb)*
-                    <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.iconTooltip}}"></i>
-                </label>
+                <label class="control-label">{{'assembly.select.icon' | translate}}</label>
                 <div class="picsList">
                     <div ng-repeat="icon in defaultIcons">
                         <div class="col-md-4">
@@ -146,7 +144,7 @@
                 </div>
             </div>
             <div id="assemblyIconProgress" class="col-md-12 progress-section">
-                <strong>Selected icon: </strong><a ng-href="{{f.url}}">{{f.name}}</a> {{f.$error}} {{f.$errorParam}}
+                <strong>{{''selected.icon'|translate}}: </strong><a ng-href="{{f.url}}">{{f.name}}</a> {{f.$error}} {{f.$errorParam}}
                 <span class="progress-line-container" ng-show="f.progress >= 0">
                     <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
                 </span>

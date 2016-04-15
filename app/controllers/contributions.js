@@ -116,7 +116,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 				};
 
                 $scope.changeWorkingGroupAuthor = function (workingAuthor) {
-                    $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor.groupId};
+                    $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor};
                 }
 			}
 		});

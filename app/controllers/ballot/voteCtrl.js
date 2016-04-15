@@ -9,7 +9,12 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $routeParams, $locati
 	$scope.scores = {};
 
   $scope.signature = localStorageService.get("voteSignature");
+  $scope.user = localStorageService.get("user");
   console.log($scope.signature)
+
+  if (!$scope.signature) {
+    $scope.signature = $scope.user.uuid;
+  }
 
   console.log("Fetching the ballot paper")
   var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: $scope.signature}).$promise;

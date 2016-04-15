@@ -11,6 +11,11 @@
  */
 
 console.log("Welcome to AppCivist!");
+logActions = true;
+
+var logAction = function() {
+  alert("SUCCESS");
+}
 
 var logAction = function() {
   alert("success")

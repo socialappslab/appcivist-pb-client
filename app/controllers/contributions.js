@@ -630,7 +630,7 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
       $scope.setToggle(choice);
 
       $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
-      //console.log(userId, ballotId, choice, contributionId);
+      //consolex§.log(userId, ballotId, choice, contributionId);
       $scope.ballotResults.then(function(data){
         var candidateId = data.index[contributionId].vote.candidate_id;
 

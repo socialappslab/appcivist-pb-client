@@ -196,5 +196,15 @@
   "component.deliberation.about" : "is the careful consideration of proposals through comments and evidence. In this stage, proposals can only be discussed, praised or criticized, but not edited.",
   "component.voting.about" : "determines the winning proposal/s, based on the voting system selected and the number of winners allowed.",
   "component.implementation.about" : "allows assembly members to follow the progress of winning proposals or to find new opportunites for proposals that were not selected durin the voting stage.",
-  "campaign.creation.linkedCampaignExplanation" : "<p>If enabled, deliberation, voting and implementation will take place according to the rules established by the linked campaign organizing assembly, <strong>'{{title}}'</strong>. Therefore, users will only deliberate and vote once, within that linked campaign. If disabled, users will deliberate and vote within their our Assembly Campaign and again within the Linked Assembly Campaign.</p>"
+  "campaign.creation.linkedCampaignExplanation" : "<p>If enabled, deliberation, voting and implementation will take place according to the rules established by the linked campaign organizing assembly, <strong>'{{title}}'</strong>. Therefore, users will only deliberate and vote once, within that linked campaign. If disabled, users will deliberate and vote within their our Assembly Campaign and again within the Linked Assembly Campaign.</p>",
+  "What's the goal of the campaign?" : "What's the goal of the campaign?",
+  "Will the campaign allocate a budget?": "Will the campaign allocate a budget?",
+  "What's the budget to allocate?": "What's the budget to allocate?",
+  "select.campaign.template": "Will the campaign link to another campaign?",
+  "campaign.create.themes": "What are the themes of the campaign?",
+  "campaign.create.themes.linked": "Themes of the Linked Campaign",
+  "campaign.create.themes.assembly":"Themes of the Organizing Assembly",
+  "add.new.themes" : "Add New Themes",
+  "Fastrack" : "Fastrack",
+  "Next":"Next"
 }

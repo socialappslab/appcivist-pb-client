@@ -22,7 +22,7 @@
                         <strong>
                             {{'Brainstorm' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Brainstorming {{disableButton['contribute'] ? 'was' : 'will be'}} possible until {{milestonesMap['end_brainstorming'].date}}">
+                               uib-tooltip="{{'brainstorming.deadline'|translate}}: {{milestonesMap['end_brainstorming'].date|date:'medium'}}">
                             </i>
                         </strong>
                     </button>
@@ -34,7 +34,7 @@
                             <strong>
                                 {{'Create New Group' | translate}}
                                 <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                   uib-tooltip="Working groups can be formed until {{milestonesMap['end_wgroups_creation'].date}}">
+                                   uib-tooltip="{{'working.groups.can.be.formed.until'|translate}}: {{milestonesMap['end_wgroups_creation'].date|date:'medium'}}">
                                 </i>
                             </strong>
                         </button>
@@ -44,7 +44,7 @@
                         <strong>
                             {{'Create New Group' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Forming Working groups was possible before {{milestonesMap['end_wgroups_creation'].date}}">
+                               uib-tooltip="{{'forming.working.groups.was.possible.before'|translate}}: {{milestonesMap['end_wgroups_creation'].date|date:'medium'}}">
                             </i>
                         </strong>
                     </button>
@@ -79,7 +79,7 @@
                         <strong>
                             {{'Voting ballot not yet available' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
+                               uib-tooltip="'{{Voting|translate}}' starts on {{milestonesMap['start_voting'].date}} and ends on
                                    {{milestonesMap['end_voting'].date}}">
                             </i>
                         </strong>

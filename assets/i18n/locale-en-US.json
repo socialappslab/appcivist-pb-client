@@ -206,5 +206,9 @@
   "campaign.create.themes.assembly":"Themes of the Organizing Assembly",
   "add.new.themes" : "Add New Themes",
   "Fastrack" : "Fastrack",
-  "Next":"Next"
+  "Next":"Next",
+  "Edit":"Edit",
+  "brainstorming.deadline": "Brainstorming deadline",
+  "working.groups.can.be.formed.until":"Working groups can be formed until",
+  "forming.working.groups.was.possible.before":"Forming Working groups was possible before"
 }

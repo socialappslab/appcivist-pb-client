@@ -564,9 +564,9 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
       }
     }
 
-    if(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
-      $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
-    }
+        if(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
+          $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
+        }
 
 		userAlreadyVotedInContribution();
 

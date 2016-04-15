@@ -344,7 +344,7 @@ function selectBackendServer(hostname, apis) {
     var possibleHosts = ["localhost", "appcivist.littlemacondo.com"];
 
     //uncomment for dev
-    return apis.testing;
+    //return apis.testing;
 
 
     if(hostname.match(possibleHosts[0])) {

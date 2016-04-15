@@ -59,9 +59,26 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             $scope.invalidEmails.splice(index, 1);
         };
 
+        $scope.removeInvtedAssemblyMemberFromInvitees = function(email) {
+            for( i=$scope.assemblyMembers.length-1; i>=0; i--) {
+                if( $scope.assemblyMembers[i].user.email == email)
+                    $scope.assemblyMembers[i].invite=false;
+            }
+        };
+
         $scope.removeInvitee = function(index) {
+            var email = $scope.newWorkingGroup.invitations[index].email;
+            if($scope.invitedAssemblyMembers && $scope.invitedAssemblyMembers[email])
+                $scope.removeInvtedAssemblyMemberFromInvitees(email);
             $scope.newWorkingGroup.invitations.splice(index,1);
-        }
+        };
+
+        $scope.removeInviteeByEmail = function(email) {
+            for( i=$scope.newWorkingGroup.invitations.length-1; i>=0; i--) {
+                if( $scope.newWorkingGroup.invitations[i].email == email)
+                    $scope.newWorkingGroup.invitations.splice(i,1);
+            }
+        };
 
         $scope.createWorkingGroup = function() {
             // 1. process themes
@@ -118,9 +135,25 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                 }
             );
         }
+
+        $scope.addAssemblyMemberToInvitationList = function(member, index) {
+            var email = member.user.email;
+            if (!member.invite) {
+                if (!$scope.invitedAssemblyMembers) $scope.invitedAssemblyMembers = {}
+                $scope.invitedAssemblyMembers[email] = false;
+                $scope.removeInviteeByEmail(email);
+            } else {
+                $scope.addEmailsToList(email);
+                if (!$scope.invitedAssemblyMembers) $scope.invitedAssemblyMembers = {}
+                $scope.invitedAssemblyMembers[email] = true;
+            }
+        }
     }
 
     function initScopeContent() {
+        $scope.user = localStorageService.get("user");
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
         $scope.errors = [];
         $scope.assemblyID = $routeParams.aid;
         $scope.campaignID = $routeParams.cid;
@@ -149,6 +182,15 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             },
             function (error) {
                 $scope.errors.push(error);
+            }
+        );
+        $scope.assemblyMembers = Assemblies.assemblyMembers($scope.assemblyID).query();
+        $scope.assemblyMembers.$promise.then(
+            function(data){
+                $scope.assemblyMembers = data;
+                $scope.members = data;
+            },
+            function(error) {
             }
         );
     }

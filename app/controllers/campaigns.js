@@ -977,10 +977,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				if (!$scope.component) {
 					var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm');
 					var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm');
-					console.log("Checking dates for component: " + c.title);
-					console.log("=> Today is: " + moment().format());
-					console.log("=> Component starts: " + startMoment.format());
-					console.log("=> Component ends: " + endMoment.format());
 					//, and we are in the right dates,
 					// this component to current
 					if (moment().local().isBetween(startMoment, endMoment)) {
@@ -1078,6 +1074,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.contributions.$promise.then(
 					function (data) {
 						$scope.contributions = data;
+						if(!$scope.contributions){
+							$scope.contributions = [];
+						}
 						$scope.contentTabs[0].contentArray = $scope.contributions;
 						$scope.contentTabs[2].contentArray = $scope.contributions;
 					},
@@ -1088,6 +1087,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			);
 		} else {
 			$scope.contributions = $scope.campaign.contributions;
+			if(!$scope.contributions){
+				$scope.contributions = [];
+			}
 			$scope.contentTabs[0].contentArray = $scope.contributions;
 			$scope.contentTabs[2].contentArray = $scope.contributions;
 		}

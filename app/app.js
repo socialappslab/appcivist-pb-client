@@ -11,15 +11,6 @@
  */
 
 console.log("Welcome to AppCivist!");
-logActions = true;
-
-var logAction = function() {
-  alert("SUCCESS");
-}
-
-var logAction = function() {
-  alert("success")
-}
 
 var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll'];
@@ -293,7 +284,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
  * Services that are injected to the main method of the app to make them available when it starts running
  * @type {string[]}
  */
-run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'loginService'];
+run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logService'];
 
 /**
  * The function that runs the App on the browser
@@ -302,7 +293,7 @@ run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'login
  * @param $http
  * @param localStorageService
  */
-function run($rootScope, $location, $http, localStorageService) {
+function run($rootScope, $location, $http, localStorageService, logService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -322,6 +313,10 @@ function run($rootScope, $location, $http, localStorageService) {
             $location.path('/');
         }
     });
+    // set to true to log actions
+    $rootScope.logActions = true;
+    $rootScope.logService = logService;
+
 }
 
 /**

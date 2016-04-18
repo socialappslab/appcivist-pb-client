@@ -1,5 +1,5 @@
 appCivistApp.controller('CampaignListCtrl', function($scope, $routeParams,$resource, $location, Campaigns, loginService,
-													 localStorageService, $translate) {
+													 localStorageService, $translate, logService) {
 	$scope.campaigns = [];
 	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 	$scope.etherpadServer = localStorageService.get("etherpadServer");
@@ -708,7 +708,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
-														  Ballot, Candidate, VotesByUser, NewBallotPaper){
+														  Ballot, Candidate, VotesByUser, NewBallotPaper, logService){
 
 	init();
 
@@ -840,6 +840,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			}, function () {
 				console.log('Modal dismissed at: ' + new Date());
 			});
+
+			if (cType="PROPOSAL") {
+				logService.logAction("CREATING_PROPOSAL");
+			} else if (cType="BRAINSTORMING") {
+				logService.logAction("CREATING_CONTRIBUTION");
+			}
 		};
 
 		$scope.orderContributions = function(property) {
@@ -921,6 +927,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			setContributionsAndGroups($scope,localStorageService);
 			ballotInit($scope, localStorageService);
 		}
+		logService.logAction("READ_CAMPAIGN");
 	}
 
 	// register user to vote if ballot does not exist
@@ -1170,7 +1177,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 appCivistApp.controller('EditCampaignCtrl', function($scope, $controller, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, $timeout, localStorageService,
 													   Campaigns, Assemblies, Components, Contributions,
-													   moment, modelFormatConfig, $translate){
+													   moment, modelFormatConfig, $translate, logService){
 
 
 		angular.extend(this, $controller('CampaignComponentCtrl', {$scope: $scope}));

@@ -10,7 +10,7 @@
 		return this.userIsAuthenticated();
 	};
 
-	this.signUp = function(user, scope, modalInstance) {
+	this.signUp = function(user, scope, modalInstance, callback) {
 		if (user.password && user.password.localeCompare(user.repeatPassword) != 0) {
 			FlashService.Error("Your passwords don't match.");
 			//$location.url('/');
@@ -39,6 +39,7 @@
 					FlashService.Error(errorString);
 				}
 		);
+		if(callback){callback();}
 	}
 
 	this.signIn = function(email, password, scope, callback) {
@@ -79,9 +80,10 @@
 		if(callback){callback();}
 	};
 
-	this.signOut = function(username) {
+	this.signOut = function(username, scope, callback) {
 		var authRes = AppCivistAuth.signOut().save();
 		authRes.$promise.then(clearDataAndRedirectToHome,clearDataAndRedirectToHome);
+		if(callback){callback()}
 	};
 
 	function clearDataAndRedirectToHome() {

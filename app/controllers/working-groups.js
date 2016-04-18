@@ -5,7 +5,7 @@
 
 appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routeParams, localStorageService,
                                                         Assemblies, Campaigns, WorkingGroups, Contributions,
-                                                        FileUploader, $translate, $location) {
+                                                        FileUploader, $translate, $location, logService) {
 
     init();
 
@@ -134,6 +134,8 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                     $scope.errors.push(error);
                 }
             );
+
+            logService.logAction("CREATE_WORKING_GROUP");
         }
 
         $scope.addAssemblyMemberToInvitationList = function(member, index) {
@@ -216,7 +218,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal,
                                                      $location, Upload, localStorageService, Contributions,
                                                      WorkingGroups, Memberships, Assemblies, Invitations, FlashService,
-                                                     $translate, $filter) {
+                                                     $translate, $filter, logService) {
     init();
     function init() {
         initScopeFunctions();
@@ -241,6 +243,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                     console.log("Created contribution wGroup: "+newContribution);
                     localStorageService.set("currentContributionWGroup", newContribution);
                 });
+            logService.logAction("CREATE_COMMENT");
         }
         $scope.openNewInvitationModal = function(size)  {
             var modalInstance = $uibModal.open({

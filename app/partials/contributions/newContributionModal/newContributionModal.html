@@ -28,9 +28,9 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select ng-if="!createNewGroup" id="selectGroupAuthor" name="workingGroupAuthors"
                                 class="form-control"
-                                ng-model="newContribution.workingGroupAuthor"
-                                ng-options="group.name for group in userWorkingGroups track by option.groupId"
-                                ng-change="changeWorkingGroupAuthor(newContribution.workingGroupAuthor)">
+                                ng-model="groupId"
+                                ng-options="group.groupId as group.name for group in userWorkingGroups track by group.groupId"
+                                ng-change="changeWorkingGroupAuthor(groupId)">
                         </select>
                     </div>
                     <button ng-if="!createNewGroup" ng-click="redirectToNewGroupForm()" class="btn btn-primary col-md-4 col-sm-4 col-xs-4" type="button">Create a new group</button>

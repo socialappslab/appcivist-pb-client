@@ -83,10 +83,12 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		searchAssemblies(query);
 	}
 
-	$scope.login = function() {
-		console.log("Signing in with email = " + $scope.email);
-		loginService.signIn($scope.user.email, $scope.user.password, $scope);
-	}
+
+	// DUPLICATE IN accounts.js
+	// $scope.login = function() {
+	// 	console.log("Signing in with email = " + $scope.user.email);
+	// 	loginService.signIn($scope.user.email, $scope.user.password);
+	// }
 
 	$scope.signup = function() {
 		loginService.signUp($scope.newUser, $scope);

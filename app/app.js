@@ -21,7 +21,7 @@ var appcivist = {
         voting: {
             production: "http://appcivist-voting-api.herokuapp.com/api/v0",
             testing: "http://appcivist-voting-api.herokuapp.com/api/v0",
-            development: "http://127.0.0.1:5000/api/v0"
+            development: "http://localhost:5000/api/v0"
         },
         core: {
             production: "http://appcivist.littlemacondo.com/backend/api",
@@ -284,7 +284,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
  * Services that are injected to the main method of the app to make them available when it starts running
  * @type {string[]}
  */
-run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'loginService'];
+run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logService'];
 
 /**
  * The function that runs the App on the browser
@@ -293,7 +293,7 @@ run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'login
  * @param $http
  * @param localStorageService
  */
-function run($rootScope, $location, $http, localStorageService) {
+function run($rootScope, $location, $http, localStorageService, logService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -313,6 +313,10 @@ function run($rootScope, $location, $http, localStorageService) {
             $location.path('/');
         }
     });
+    // set to true to log actions
+    $rootScope.logActions = true;
+    $rootScope.logService = logService;
+
 }
 
 /**

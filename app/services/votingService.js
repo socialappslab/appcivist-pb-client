@@ -36,32 +36,58 @@ appCivistApp.factory('BallotPaper', function($http, $resource, localStorageServi
   );
 });
 
+
 appCivistApp.factory('VotesByUser', function($http, $resource, localStorageService){
   var url = getVotingApiURL(localStorageService);
-  return $resource(
-    url + '/ballot/:uuid/vote/:signature',
-    { "uuid": "@id", "signature": "@id"},
-    {
-      "results": {
-        method: "GET",
-        url: url + '/ballot/:uuid/vote/:signature'
-      }
+  return {
+    getVotes: function(id, sign) {
+      return $resource(url + '/ballot/:uuid/vote/:signature',
+        {
+          uuid: id,
+          signature: sign
+        },
+        {
+          "votes": {
+            method: "GET",
+            url: url + '/ballot/:uuid/vote/:signature'
+          }
+        }
+      );
     }
-  );
+  }
 });
 
 appCivistApp.factory('NewBallotPaper', function($http, $resource, localStorageService){
   var url = getVotingApiURL(localStorageService);
-  return $resource(
-    url + '/ballot/:uuid/vote/:signature',
-    { "uuid": "@id", "signature": "@id"},
-    {
-      "complete": {
-        method: "POST",
-        url: url + '/ballot/:uuid/vote/:signature'
-      }
+  return {
+    ballot: function(id) {
+      return $resource(url + '/ballot/:uuid/vote',
+          {
+            uuid: id
+          },
+          {
+            "save": { method: "POST" }
+          }
+      );
     }
-  );
+  }
+});
+
+appCivistApp.factory('MakeVote', function($http, $resource, localStorageService){
+  var url = getVotingApiURL(localStorageService);
+  return {
+    newVote: function(id, sign) {
+      return $resource(url + '/ballot/:uuid/vote/:signature',
+        {
+          uuid: id,
+          signature: sign
+        },
+        {
+          "save": {method: "PUT"}
+        }
+      );
+    }
+  }
 });
 
 appCivistApp.factory("Candidate", function($http, $resource, localStorageService) {

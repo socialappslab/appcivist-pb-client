@@ -1,4 +1,4 @@
-﻿/**
+/**
  * The NewContributionCtrl controls how to display and create new contributions to
  * AppCivist's backend. Contributions can be created in the following spaces:
  * - On the assembly forum space (type = FORUM_POST)
@@ -11,7 +11,7 @@
 var postingContributionFlag = false;
 
 appCivistApp.controller('NewContributionCtrl',
-        function ($scope, $http, $routeParams, localStorageService, Contributions, $translate) {
+        function ($scope, $http, $routeParams, localStorageService, Contributions, $translate, logService) {
             init();
 
             function init() {
@@ -44,7 +44,7 @@ appCivistApp.controller('NewContributionCtrl',
                     }
                     $scope.response = {};
                     $scope.modalInstance = undefined;
-                    createNewContribution($scope, Contributions);
+                    createNewContribution($scope, Contributions, logService);
                 };
             }
         });
@@ -53,7 +53,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
-                   $translate, $location) {
+                   $translate, $location, logService) {
 			init();
 
 			function init() {
@@ -99,16 +99,16 @@ appCivistApp.controller('NewContributionModalCtrl',
 					$scope.targetSpace = targetSpace;
 					$scope.response = {};
 					$scope.modalInstance = undefined;
-					createNewContribution($scope, Contributions);
+					createNewContribution($scope, Contributions, logService);
 				};
 
-				$scope.postContributionFromModal = function () {
-					$scope.targetSpaceId = $scope.campaign.resourceSpaceId;
-					$scope.targetSpace = $scope.contributions;
-					$scope.response = $scope.newContributionResponse;
-					$scope.modalInstance = $uibModalInstance;
-					createNewContribution($scope, Contributions);
-				};
+                $scope.postContributionFromModal = function () {
+                    $scope.targetSpaceId = $scope.campaign.resourceSpaceId;
+                    $scope.targetSpace = $scope.contributions;
+                    $scope.response = $scope.newContributionResponse;
+                    $scope.modalInstance = $uibModalInstance;
+                    createNewContribution($scope, Contributions, logService);
+                };
 
 				$scope.cancel = function () {
 					$scope.newContribution = Contributions.defaultNewContribution();
@@ -116,13 +116,13 @@ appCivistApp.controller('NewContributionModalCtrl',
 				};
 
                 $scope.changeWorkingGroupAuthor = function (workingAuthor) {
-                    $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor.groupId};
+                    $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor};
                 }
 			}
 		});
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
-                                                              localStorageService, Etherpad, Contributions, $translate) {
+                                                              localStorageService, Etherpad, Contributions, $translate, logService) {
 
     init();
 
@@ -178,6 +178,13 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
                 }, function () {
                     console.log('Modal dismissed at: ' + new Date());
                 });
+
+                if($scope.contribution.type=="PROPOSAL") {
+                  logService.logAction("READ_PROPOSAL");
+                }
+                if($scope.contribution.type=="BRAINSTORMING"){
+                  logService.logAction("READ_CONTRIBUTION");
+                }
             }
         };
 
@@ -186,14 +193,29 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
         };
 
         $scope.delete = function () {
-            deleteContribution($scope,localStorageService, Contributions);
+            if($scope.contribution.type == "PROPOSAL") {
+              logService.logAction("DELETE_PROPOSAL");
+            }
+            if($scope.contribution.type == "BRAINSTORMING") {
+              logService.logAction("DELETE_CONTRIBUTION");
+            }
+            deleteContribution($scope,localStorageService, Contributions, logService);
             $uibModalInstance.dismiss('cancel');
+
         };
 
         $scope.getEtherpadReadOnlyUrl = Etherpad.getEtherpadReadOnlyUrl;
 
         $scope.openContributionPage = function(cID, edit)  {
             $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+            if (edit) {
+              if ($scope.contribution.type=="PROPOSAL") {
+                logService.logAction("OPEN_EDIT_PROPOSAL");
+              }
+              if ($scope.contribution.type=="BRAINSTORMING") {
+                logService.logAction("OPEN_EDIT_CONTRIBUTION");
+              }
+            }
         };
 
     }
@@ -203,7 +225,7 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
 appCivistApp.controller('ContributionModalCtrl',
     function ($scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
               contribution, assemblyID, campaignID, componentID, container, containerID, containerIndex,
-              localStorageService, Contributions, Etherpad, $translate) {
+              localStorageService, Contributions, Etherpad, $translate, logService) {
         init();
         verifyAuthorship($scope, localStorageService, Contributions);
         function init() {
@@ -224,7 +246,13 @@ appCivistApp.controller('ContributionModalCtrl',
             };
 
             $scope.delete = function () {
-                deleteContribution($scope,localStorageService, Contributions);
+                if($scope.contribution.type == "PROPOSAL") {
+                  logService.logAction("DELETE_PROPOSAL");
+                }
+                if($scope.contribution.type == "BRAINSTORMING") {
+                  logService.logAction("DELETE_CONTRIBUTION");
+                }
+                deleteContribution($scope,localStorageService, Contributions, logService);
                 $uibModalInstance.dismiss('cancel');
             };
 
@@ -234,7 +262,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.targetSpace = targetSpace;
                 $scope.response = {};
                 $scope.modalInstance = undefined;
-                createNewContribution($scope, Contributions);
+                createNewContribution($scope, Contributions, logService);
             };
 
             $scope.postContributionFromModal = function () {
@@ -242,7 +270,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.targetSpace = $scope.contributions;
                 $scope.response = $scope.newContributionResponse;
                 $scope.modalInstance = $uibModalInstance;
-                createNewContribution($scope, Contributions);
+                createNewContribution($scope, Contributions, logService);
             };
 
             $scope.cancel = function () {
@@ -338,6 +366,12 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
 
         $scope.update = function () {
             updateContribution($scope,Contributions);
+            if($scope.contribution.type == "PROPOSAL") {
+              logService.logAction("UPDATE_PROPOSAL");
+            }
+            if($scope.contribution.type == "BRAINSTORMING") {
+              logService.logAction("UPDATE_CONTRIBUTION");
+            }
         }
     }
 
@@ -468,7 +502,7 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
 });
 
 appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
-													   Contributions, $translate) {
+													   Contributions, $translate, logService) {
 	init();
 	initializeNewReplyModel();
 
@@ -524,7 +558,7 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 		}
 
         $scope.delete = function () {
-			deleteContribution($scope, localStorageService, Contributions);
+			deleteContribution($scope, localStorageService, Contributions, logService);
 		};
 	}
 
@@ -535,15 +569,39 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 });
 
 appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
-														  Contributions, $translate ) {
+														  Contributions, $translate, MakeVote, Ballot, VotesByUser, $rootScope) {
 	init();
 
 	function init() {
-        $scope.user = localStorageService.get('user');
-        if ($scope.user && $scope.user.language)
-            $translate.use($scope.user.language);
 
-        $scope.votes = $scope.contribution.stats.points;
+    $scope.user = localStorageService.get('user');
+    $scope.currentCampaign = localStorageService.get('currentCampaign');
+    if ($scope.user && $scope.user.language)
+        $translate.use($scope.user.language);
+
+    $scope.votes = $scope.contribution.stats.points;
+
+    $scope.clearToggle = function() {
+      $scope.yesToggle = $scope.noToggle = $scope.abstainToggle = $scope.blockToggle = "";
+    }
+
+    $scope.setToggle = function(choice) {
+      $scope.clearToggle();
+      if (choice == "YES") {
+        $scope.yesToggle = "btn-success";
+      } else if (choice == "NO") {
+        $scope.noToggle = "btn-danger";
+      } else if (choice == "ABSTAIN") {
+        $scope.abstainToggle = "btn-info";
+      } else if (choice == "BLOCK") {
+        $scope.blockToggle = "btn-warning";
+      }
+    }
+
+        if(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
+          $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
+        }
+
 		userAlreadyVotedInContribution();
 
 		$scope.upVote = function () {
@@ -597,7 +655,29 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 				);
 			}
 		};
-	}
+
+    $scope.contributionVote = function(c) {
+      var userId = $scope.user.uuid;
+      var ballotId = $scope.currentCampaign.bindingBallot;
+      var choice = c;
+      var contributionId = $scope.contribution.uuidAsString;
+      $scope.setToggle(choice);
+
+      $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
+      //consolex§.log(userId, ballotId, choice, contributionId);
+      $scope.ballotResults.then(function(data){
+        var candidateId = data.index[contributionId].vote.candidate_id;
+
+        var newVote = MakeVote.newVote(ballotId, userId).save({
+          vote: {
+            votes: [
+              {candidate_id: candidateId, value: choice}
+            ]
+          }
+        }).$promise;
+      });
+    }
+  }
 
 	function userAlreadyVotedInContribution() {
 		$scope.userVotes = localStorageService.get("userVotes");
@@ -610,19 +690,6 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 		localStorageService.set("userVotes", $scope.userVotes);
 		userAlreadyVotedInContribution();
 	}
-});
-
-appCivistApp.controller('ConsensusVotingCtrl', function($scope, $http, $routeParams, localStorageService,
-                                                      FileUploader, Contributions, $translate) {
-
-  init();
-
-  function init() {
-    $scope.user = localStorageService.get('user');
-    //console.log($scope.user);
-
-
-  }
 });
 
 appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,
@@ -669,7 +736,7 @@ appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParam
  *
  */
 
-function createNewContribution (scope, Contributions) {
+function createNewContribution (scope, Contributions, logService) {
 	postingContributionFlag = true;
 	if (!scope.newContribution.title || !scope.newContribution.title === "") {
 		var maxlength = 250;
@@ -680,7 +747,6 @@ function createNewContribution (scope, Contributions) {
 		scope.newContribution.title = scope.newContribution.text.substring(0, trimlength);
 	}
 
-	// TODO: fix this, targetSpace must be part of an object in order to be initialized
 	// If the target space is undefined, it means it was empty an this contribution is the first
 	if (!scope.targetSpace) {
 		scope.targetSpace = [];
@@ -690,6 +756,7 @@ function createNewContribution (scope, Contributions) {
 	scope.newContribution.themes = [];
 	addSelectedThemes(scope.newContribution.parentThemes, scope.newContribution.existingThemes);
 
+    var type = scope.newContribution.type;
 	var newContributionRes = Contributions.contributionInResourceSpace(scope.targetSpaceId).save(scope.newContribution);
 	newContributionRes.$promise.then(
 			function (data) {
@@ -703,6 +770,14 @@ function createNewContribution (scope, Contributions) {
 					scope.replyParent.boxIsOpen = false;
 				}
 				postingContributionFlag = false;
+
+                // Logging Usage
+                var resourceId = data.uuid;
+                var action = type == 'PROPOSAL' ?
+                    'CREATE_PROPOSAL' : type == 'BRAINSTORMING' ?
+                    'CREATE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
+                    'CREATE_COMMENT' : 'CREATE_CONTRIBUTION';
+                logService.logAction(action, "CONTRIBUTION", resourceId);
 			},
 			function (error) {
 				console.log("Error creating the contribution: " + angular.toJson(error.statusText));
@@ -710,11 +785,17 @@ function createNewContribution (scope, Contributions) {
 				scope.response.errors = error;
 				scope.response.touched = !scope.response.touched;
 				postingContributionFlag = false;
+                // Logging Usage
+                var action = type == 'PROPOSAL' ?
+                    'CREATE_PROPOSAL' : type == 'BRAINSTORMING' ?
+                    'CREATE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
+                    'CREATE_COMMENT' : 'CREATE_CONTRIBUTION';
+                logService.logAction(action, "CONTRIBUTION", null);
 			}
 	);
 }
 
-function updateContribution(scope, Contributions) {
+function updateContribution(scope, Contribution, logService) {
     if(scope.userIsAuthor) {
         var updateRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId)
             .update(scope.contribution);
@@ -820,16 +901,34 @@ function verifyAuthorship (scope, localStorageService, Contributions) {
 	}
 }
 
-function deleteContribution (scope, localStorageService, Contributions) {
-	if(scope.userIsAuthor) {
-		var deleteRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId).delete();
+function deleteContribution (scope, localStorageService, Contributions, logService) {
+	var confirmed = confirm("Are you sure you want to delete this contribution?");
+    if(scope.userIsAuthor && confirmed) {
+		var deleteRes = Contributions.contributionSoftRemoval(scope.assemblyID, scope.contribution.contributionId).update();
+        var type = scope.contribution.type;
+        var resourceId = scope.contribution.uuid;
+        var localScope = scope;
 		deleteRes.$promise.then(
 				function (response) {
-					scope.container.splice(scope.containerIndex,1);
+                    localScope.container.splice(localScope.containerIndex,1);
 					console.log("Contribution deleted");
-				},
+                    // Log Actions
+                    var action = type == 'PROPOSAL' ?
+                        'DELETE_PROPOSAL' : type == 'BRAINSTORMING' ?
+                        'DELETE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
+                        'DELETE_COMMENT' : 'DELETE_CONTRIBUTION';
+
+                    logService.logAction(action, "CONTRIBUTION", resourceId);
+                },
 				function (error) {
 					console.log("Contribution cannot be deleted: "+error.statusMessage);
+                    // Log Actions
+                    var action = type == 'PROPOSAL' ?
+                        'DELETE_PROPOSAL' : type == 'BRAINSTORMING' ?
+                        'DELETE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
+                        'DELETE_COMMENT' : 'DELETE_CONTRIBUTION';
+
+                    logService.logAction(action, "CONTRIBUTION", null);
 				}
 		);
 	}

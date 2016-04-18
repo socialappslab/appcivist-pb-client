@@ -2,25 +2,14 @@
     <form name="newCampaignForm1">
     <div class="col-lg-6 col-md-6 col-xs-12">
         <div id="campaignDefinition" class="box descriptionBox row col-md-12 col-sm-12 col-xs-12">
-            <p>{{info.campaignDefinition}}</p>
+            <p>{{'definition.campaign' | translate}}</p>
         </div>
         <div class="row vertical-space-medium"></div>
-        <div id="campaignTitle" class="row col-md-12 col-sm-12 form-horizontal">
-            <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.title.$touched && newCampaignForm1.title.$invalid }">
-                <label for="inputCampaignTitle" class="control-label">Title*</label>
-                <input id="inputCampaignTitle" name="title"
-                       class="form-control" placeholder="Belleville - Paris PB 2016"
-                       ng-model="newCampaign.title" ng-required="true" />
-                <div class="help-block" ng-messages="newCampaignForm1.title.$error" ng-if="newCampaignForm1.title.$touched">
-                    <p ng-message="required">A title is required for the campaign</p>
-                </div>
-
-            </div>
-        </div>
+        <!-- Goal -->
         <div id="campaignGoal" class="row col-md-12 col-sm-12 form-horizontal">
             <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched && newCampaignForm1.goal.$invalid }">
-                <label for="inputDefineCampaignGoals" class="control-label">Define campaign goals*</label>
-                <textarea id="inputDefineCampaignGoals" name="goal"
+                <label for="inputDefineCampaignGoals" class="control-label">{{"What's the goal of the campaign?" | translate}}*</label>
+                <input id="inputDefineCampaignGoals" name="goal"
                           class="form-control"
                           placeholder="e.g., Develop proposals for PB Paris 2015"
                           ng-model="newCampaign.goal" ng-required="true" />
@@ -29,24 +18,35 @@
                 </div>
             </div>
         </div>
-        <div id="campaignConfigs" class="row col-md-12 col-sm-12">
+        <!-- Enable Budget? -->
+        <div id="campaignBudgetQuestion" class="row col-md-12 col-sm-12">
+            <div class="form-group">
+                <label for="selectCampaignBudget" class="control-label">{{"Will the campaign allocate a budget?" | translate}}</label>
+                <select id="selectCampaignBudget" name="budgetSelect"
+                        class="form-control"
+                        ng-model="newCampaign.enableBudget">
+                    <option value="yes" selected>Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </div>
+        <!-- Budget Amount -->
+        <div id="campaignConfigs" class="row col-md-12 col-sm-12" ng-if="newCampaign.enableBudget=='yes'">
             <div class="form-horizontal">
-                <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.budget.$touched && newCampaignForm1.budget.$invalid }">
-                    <label for="inputBudget" class="control-label">Total Budget*</label>
+                <div class="form-group">
+                    <label for="inputBudget" class="control-label">{{"What's the budget to allocate?" | translate}}</label>
                     <input id="inputBudget" name="budget" class="form-control"
                            ng-model="newCampaign.config.budget"
                            model-format="currency"
                            placeholder="{{newCampaign.config.budget}}">
-                    <div class="help-block" ng-messages="newCampaignForm1.budget.$error" ng-if="newCampaignForm1.budget.$touched">
-                        <p ng-message="required">A budget to be allocated is required for the campaign</p>
-                    </div>
                 </div>
             </div>
         </div>
+        <!-- Campaign Template -->
         <div id="campaignTemplate" class="row col-md-12 col-sm-12">
             <div class="form-group">
-                <label for="selectCampaignTemplate" class="control-label">Select campaign template*</label>
-                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignTemplateTooltip}}"></i></h3>
+                <label for="selectCampaignTemplate" class="control-label">{{"select.campaign.template" | translate}}</label>
+                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.campaignTemplate' | translate}}"></i></h3>
                 <select id="selectCampaignTemplate" name="template"
                         class="form-control"
                         ng-model="newCampaign.template"
@@ -55,6 +55,7 @@
                 </select>
             </div>
         </div>
+        <!-- Link Campaign Template: existing campaigns -->
         <div id="campaignTemplateLinked" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='LINKED'">
             <div class="form-group">
                 <label for="selectLinkedCampaign" class="control-label">{{newCampaign.template.subTemplateTitle}}</label>
@@ -65,6 +66,7 @@
                 </select>
             </div>
         </div>
+        <!-- Predefined Campaign Template: existing templates -->
         <div id="campaignTemplatePredefined" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='PREDEFINED'">
             <div class="form-group">
                 <label for="selectPredefinedTemplate" class="control-label">{{newCampaign.template.subTemplateTitle}}</label>
@@ -75,13 +77,14 @@
                 </select>
             </div>
         </div>
+        <!-- Campaign themes-->
         <div id="campaignOptionalThemes" class="row col-md-12 col-sm-12">
             <div class="form-group">
-                <label for="checkConfirmCampaignGoals" class="control-label">Review campaign themes</label>
+                <label for="checkConfirmCampaignGoals" class="control-label">{{"campaign.create.themes" | translate}}</label>
                 <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
                     <div class="themes-container-title"
                          ng-show="newCampaign.template.value==='LINKED' && campaignThemes.length>0">
-                        <h4><strong>Themes of the Linked Campaign</strong></h4>
+                        <h4><strong>{{'campaign.create.themes.linked' | translate}}</strong></h4>
                     </div>
                     <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index"
                          ng-show="newCampaign.template.value==='LINKED'">
@@ -91,7 +94,7 @@
                     </div>
 
                     <div class="themes-container-title">
-                        <h4><strong>Themes of the Organizing Assembly</strong></h4>
+                        <h4><strong>{{'campaign.create.themes.assembly' | translate}}</strong></h4>
                     </div>
                     <div class="themes-container-content optionThemes" ng-repeat="theme in assemblyThemes track by $index">
                          <input type="checkbox"
@@ -100,7 +103,7 @@
                      </div>
 
                     <div class="themes-container-title">
-                        <h4><strong> Add New Themes</strong></h4>
+                        <h4><strong>{{"add.new.themes" | translate}}</strong></h4>
                     </div>
                     <div class="col-md-8 col-md-8">
                         <input id="newTheme" class="form-control"
@@ -122,6 +125,7 @@
             </div>
         </div>
         <div class="col-md-12 voffset3"></div>
+        <!-- Template configuration -->
         <div id="campaignTemplatePreview" class="row col-md-12 col-sm-12">
             <!-- template-configuration class directive -->
             <div class="row col-md-12 col-sm-12 template-configuration"></div>
@@ -130,11 +134,11 @@
         <div id="campaignButtons1" class="row col-md-12 col-sm-12">
             <div class="col-md-6">
                 <button class="btn btn-success col-md-12"
-                        uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter"
+                        uib-popover="{{'help.tooltip.campaignFastrack' | translate}}" popover-trigger="mouseenter"
                         ng-disabled="!newCampaignForm1.$valid"
                         ng-click="createCampaign({step:4}, {fastrack:true})">
                     <h3>
-                        <strong>Fastrack</strong>
+                        <strong>{{"Fastrack" | translate }}</strong>
                     </h3>
                 </button>
             </div>
@@ -142,7 +146,7 @@
                 <button class="btn btn-primary col-md-12"
                         ng-click="createCampaign({step:2}, {fastrack:false})"
                         ng-disabled="!newCampaignForm1.$valid">
-                    <h3><strong>Next</strong></h3>
+                    <h3><strong>{{"Next" | translate}}</strong></h3>
                 </button>
             </div>
         </div>

@@ -158,7 +158,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                 existingThemes: [], // [ 1, 89, ... ]
                 components: [], // [{...}]
                 existingComponents: [],
-                useLinkedCampaign: true,
+                useLinkedCampaign: false,
                 milestones: []
             };
             return campaign;
@@ -237,6 +237,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 {
                     'update' : {method:'PUT'},
                     'delete' : {method: 'DELETE'}
+                });
+        },
+        contributionSoftRemoval: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval',
+                {aid: assemblyId, coid: contributionId},
+                {
+                    'update' : {method:'PUT'}
                 });
         },
         contributionAttachment: function (assemblyId, contributionId) {
@@ -830,8 +837,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 name: 'Deliberation',
                 title: 'Deliberation',
                 key: "Deliberation",
-                enabled: false,
-                active: false,
+                enabled: true,
+                active: true,
                 linked: false,
                 state: "",
                 configs: configDict['Deliberation'],
@@ -849,8 +856,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 name: 'Voting',
                 title: 'Voting',
                 key: "Voting",
-                enabled: false,
-                active: false,
+                enabled: true,
+                active: true,
                 linked: false,
                 state: "",
                 configs: configDict['Voting'],
@@ -868,8 +875,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 name: 'Implementation',
                 title: 'Implementation',
                 key: "Implementation",
-                enabled: false,
-                active: false,
+                enabled: true,
+                active: true,
                 state: "",
                 linked: false,
                 configs: configDict['Implementation'],
@@ -888,7 +895,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 name: 'Deliberation',
                 title: 'Deliberation',
                 key: "DeliberationLinked",
-                enabled: true,
+                enabled: false,
                 active: false,
                 linked: true,
                 state: "",
@@ -904,7 +911,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 name: 'Voting',
                 title: 'Voting',
                 key: "VotingLinked",
-                enabled: true,
+                enabled: false,
                 active: false,
                 linked: true,
                 state: "",
@@ -920,7 +927,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 name: 'Implementation',
                 title: 'Implementation',
                 key: "Implementation",
-                enabled: true,
+                enabled: false,
                 active: false,
                 linked: true,
                 state: "",
@@ -969,7 +976,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "START"
                 },
                 {
-                    date: moment().local().add(10, 'days').toDate(),
+                    date: moment().local().add(7, 'days').toDate(),
                     value: 10,
                     title: "Brainstorming end date",
                     description: "Until this date, assembly members can identify problems and make suggestions for proposals.",
@@ -999,7 +1006,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "END"
                 },
                 {
-                    date: moment().local().add(30, 'days').toDate(),
+                    date: moment().local().add(15, 'days').toDate(),
                     value: 30,
                     title: "Proposal submission and editing due date",
                     description: "Until this date, assembly members can start and develop proposals in working groups.",
@@ -1014,7 +1021,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "END"
                 },
                 {
-                    date: moment().local().add(45, 'days').toDate(),
+                    date: moment().local().add(21, 'days').toDate(),
                     value: 45,
                     title: "Proposals selection due date (within Working Groups)",
                     description: "Until this date, working groups can select what proposals they want to put forward to the Assembly for deliberation and voting.",
@@ -1029,7 +1036,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "END"
                 },
                 {
-                    date: moment().local().add(60, 'days').toDate(),
+                    date: moment().local().add(21, 'days').toDate(),
                     value: 60,
                     title: "Proposal discussions closing date",
                     description: "Until this date, assembly members can explore and discuss published proposals for deliberation.",
@@ -1044,7 +1051,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "END"
                 },
                 {
-                    date: moment().local().add(90, 'days').toDate(),
+                    date: moment().local().add(21, 'days').toDate(),
                     value: 90, title: "Technical assessments due date",
                     description: "Until this date, published proposals for deliberation will be open for technical evaluation by volunteers, to assess feasibility and provide expert feedback. After this date, evaluations will appear above each proposal.",
                     component: "Deliberation",
@@ -1059,7 +1066,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "END"
                 },
                 {
-                    date: moment().local().add(120, 'days').toDate(),
+                    date: moment().local().add(22, 'days').toDate(),
                     value: 120,
                     title: "Voting period start date",
                     description: "Starting on this date, assembly members can explore and evaluate published proposals. When you are ready, open the voting ballot and cast your vote. You will be provided with a secret code to recover your voting ballot and update it anytime until the voting period is over.",
@@ -1075,7 +1082,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "START"
                 },
                 {
-                    date: moment().local().add(130, 'days').toDate(),
+                    date: moment().local().add(30, 'days').toDate(),
                     value: 130, title: "Voting period end date",
                     description: "Until this date, assembly members can edit their votes. After it, whatever vote has been casted will be considered final.",
                     component: "Voting",
@@ -1089,7 +1096,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     type: "END"
                 },
                 {
-                    date: moment().local().add(250, 'days').toDate(),
+                    date: moment().local().add(31, 'days').toDate(),
                     value: 250, title: "Implementation start date",
                     description: "Starting this date, winning proposals will be available on the website to follow up upon their implementations",
                     component: "Implementation",

@@ -854,7 +854,8 @@ function verifyAuthorship (scope, localStorageService, Contributions) {
 }
 
 function deleteContribution (scope, localStorageService, Contributions) {
-	if(scope.userIsAuthor) {
+	var confirmed = confirm("Are you sure you want to delete this contribution?");
+    if(scope.userIsAuthor && confirmed) {
 		var deleteRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId).delete();
 		deleteRes.$promise.then(
 				function (response) {

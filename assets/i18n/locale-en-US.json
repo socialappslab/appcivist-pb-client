@@ -214,5 +214,9 @@
   "assembly.select.icon" : "Pick an icon or upload an image to represent your Assembly (or upload a picture < 2Mb)*",
   "Description":"Description",
   "selected.icon":"Selected icon",
-  "Add to list":"Add to list"
+  "Add to list":"Add to list",
+  "Close":"Close",
+  "Delete":"Delete",
+  "Comment":"Comment",
+  "Comments":"Comments"
 }

@@ -2,10 +2,10 @@
     <!--<h5 class="contribution-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)"><strong>{{contribution.title}}. </strong></h5><p class="contribution-description"> {{contribution.text}}</p>-->
     <h4 class="contribution-title">
         <strong>
-            {{contribution.title|limitTo:47}}{{(contribution.title.length) > 47 ? '...' : '.' }}
+            {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
         </strong></h4>
     <p class="contribution-description">
-        {{contribution.text|limitTo:47}}{{(contribution.text.length) > 47 ? '...' : '.' }}
+        {{contribution.text|limitTo:97}}{{(contribution.text.length) > 97 ? '...' : '.' }}
     </p>
 </div>
 

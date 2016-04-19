@@ -112,8 +112,9 @@
                 </div>
             </div>
             <div class="row voffset4"></div>
-            <div class="row col-md-12 col-sm-12 box settingsBox">
+            <div class="row col-md-12 col-sm-12 box settingsBox" ng-if="contribution">
                 <attachments attachments="contribution.attachments"
+                             newattach="newAttachment"
                              contribution="contribution"
                              assemblyid="assemblyID"
                              showtitle="true"></attachments>

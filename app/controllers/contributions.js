@@ -313,8 +313,8 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 			$scope.newAttachment = Contributions.defaultContributionAttachment();
 		}
 
-		if(!$scope.contribution.attachments) {
-            $scope.contribution.attachments = [];
+		if(!$scope.attachments) {
+            $scope.attachments = [];
 		}
 
 		$scope.contribution.assemblyId = $scope.assemblyID;
@@ -366,16 +366,10 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
         $scope.etherpadServer = localStorageService.get("etherpadServer");
 
-        if(!$scope.newContribution) {
-            $scope.newContribution = Contributions.defaultNewContribution();
-        }
-        if(!$scope.contribution) {
-            $scope.contribution = $scope.newContribution;
-        }
         if(!$scope.newAttachment) {
             $scope.newAttachment = Contributions.defaultContributionAttachment();
         }
-        if(!$scope.contribution.attachments) {
+        if($scope.contribution && !$scope.contribution.attachments) {
             $scope.contribution.attachments = [];
         }
 
@@ -441,6 +435,9 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
             $scope.comments = $scope.contribution.comments;
             $scope.stats = $scope.contribution.stats;
             $scope.workingGroup = {};
+            if(!$scope.contribution.attachments) {
+                $scope.contribution.attachments = [];
+            }
 
             verifyAuthorship($scope, localStorageService, Contributions);
 

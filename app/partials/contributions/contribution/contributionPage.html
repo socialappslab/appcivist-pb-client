@@ -1,6 +1,12 @@
 <div class="view col-md-12 col-sm-12" id="contributionPage">
         <div id="contributionSummary" class="row col-md-9 col-sm-9">
-            <h3><strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read '}}Proposal Version</strong></h3>
+            <h3>
+                <strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read '}}{{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution'}}</strong>
+                <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="update()">
+                    Update {{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution'}}
+                </button>
+
+            </h3>
             <div class="voffset4"></div>
             <div class="col-md-12 col-sm-12">
                 <ul class="contribution-header-list col-md-12 col-sm-12">
@@ -22,15 +28,15 @@
                             <textarea ng-if="editContribution && userIsAuthor" class="form-control" rows="3" ng-model="contribution.text"></textarea>
                         </span>
                     </li>
-                    <li class="contribution-header-list-element col-md-12 col-sm-12">
-                        <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Location</strong></h4>
-                        </span>
-                        <span class="list-description col-md-10 col-sm-10">
-                            <h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.location.placeName}}</strong></h4>
-                            <input ng-if="editContribution && userIsAuthor" class="form-control" ng-model="contribution.location.placeName"/>
-                        </span>
-                    </li>
+                    <!--<li class="contribution-header-list-element col-md-12 col-sm-12">-->
+                        <!--<span class="list-title col-md-1 col-sm-1">-->
+                            <!--<h4><strong>Location</strong></h4>-->
+                        <!--</span>-->
+                        <!--<span class="list-description col-md-10 col-sm-10">-->
+                            <!--<h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.location.placeName}}</strong></h4>-->
+                            <!--<input ng-if="editContribution && userIsAuthor" class="form-control" ng-model="contribution.location.placeName"/>-->
+                        <!--</span>-->
+                    <!--</li>-->
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
                             <h4><strong>Themes</strong></h4>
@@ -88,8 +94,7 @@
                     <strong ng-if="contribution.type==='PROPOSAL'">{{workingGroup.name}}</strong>
                 </h4>
                 <div class="voffset2"></div>
-                <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="openInvitationModal">Invite people to join</button>
-                <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="update()">Update Proposal</button>
+                <button ng-if="editContribution && userIsAuthor && contribution.type==='PROPOSAL'" class="btn btn-success center" ng-click="openInvitationModal">Invite people to join</button>
                 <div class="voffset2"></div>
                 <h4 class="center" ng-if="contribution.type==='PROPOSAL'"><strong>WG Members</strong></h4>
                 <div class="voffset2"></div>

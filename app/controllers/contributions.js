@@ -312,11 +312,11 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 		if(!$scope.newAttachment) {
 			$scope.newAttachment = Contributions.defaultContributionAttachment();
 		}
-		if(!$scope.attachments) {
-			$scope.attachments =$scope.newContribution.attachments;
+
+		if(!$scope.contribution.attachments) {
+            $scope.contribution.attachments = [];
 		}
 
-		console.log("The assemblyId available in the Attachments Directive: "+$scope.assemblyID);
 		$scope.contribution.assemblyId = $scope.assemblyID;
 
 		$scope.clearContribution = function () {
@@ -346,7 +346,7 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 
 appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routeParams, localStorageService,
                                                              Contributions, Campaigns, Assemblies, Etherpad,
-                                                             WorkingGroups, $translate) {
+                                                             WorkingGroups, $translate, logService) {
     init();
 
     // TODO: improve efficiency by using angularjs filters instead of iterating through arrays
@@ -363,21 +363,24 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         $scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
         $scope.contributionID = ($routeParams.coid) ? parseInt($routeParams.coid) : 0;
         $scope.editContribution = ($routeParams.edit) ? ($routeParams.edit === "true") ? true : false : false;
-        console.log("Editing contribution: "+$scope.editContribution);
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
         $scope.etherpadServer = localStorageService.get("etherpadServer");
 
-        console.log("API Server = " + $scope.serverBaseUrl);
-        console.log("Etherpad Server = " + $scope.etherpadServer);
+        if(!$scope.newContribution) {
+            $scope.newContribution = Contributions.defaultNewContribution();
+        }
+        if(!$scope.contribution) {
+            $scope.contribution = $scope.newContribution;
+        }
+        if(!$scope.newAttachment) {
+            $scope.newAttachment = Contributions.defaultContributionAttachment();
+        }
+        if(!$scope.contribution.attachments) {
+            $scope.contribution.attachments = [];
+        }
 
         $scope.update = function () {
-            updateContribution($scope,Contributions);
-            if($scope.contribution.type == "PROPOSAL") {
-              logService.logAction("UPDATE_PROPOSAL");
-            }
-            if($scope.contribution.type == "BRAINSTORMING") {
-              logService.logAction("UPDATE_CONTRIBUTION");
-            }
+            updateContribution($scope,Contributions, logService);
         }
     }
 
@@ -467,44 +470,6 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
             );
         });
     }
-
-    //function setupDaysToDeadline() {
-    //    // Days, hours, minutes to end date of this component phase
-    //    var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm:ss');
-    //    var now = moment();
-    //    var diff = endDate.diff(now, 'minutes');
-    //    $scope.minutesToDue = diff%60;
-    //    $scope.hoursToDue = Math.floor(diff/60) % 24;
-    //    $scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
-    //
-    //    // Days, hours, minutes to end date of this milestone stage
-    //    var mStartDate = moment($scope.milestone.start, 'YYYY-MM-DD HH:mm:ss');
-    //    var mDays = $scope.milestone.days;
-    //
-    //    $scope.milestoneStarted = mStartDate.isBefore(now);
-    //    if($scope.milestoneStarted) {
-    //        mDiff = now.diff(mStartDate, 'days');
-    //        $scope.mDaysToDue = $scope.milestone.days - mDiff;
-    //
-    //    } else {
-    //        mDiff = mStartDate.diff(now, 'days');
-    //        $scope.mDaysToDue = mDiff;
-    //    }
-    //    $scope.themes= [];
-    //    angular.forEach($scope.component.contributions, function(contribution){
-    //        angular.forEach(contribution.themes, function(theme) {
-    //            var isInList = false;
-    //            angular.forEach($scope.themes, function(actualTheme) {
-    //                if(theme.title === actualTheme.title){
-    //                    isInList = true;
-    //                }
-    //            });
-    //            if(isInList === false) {
-    //                $scope.themes.push(theme);
-    //            }
-    //        });
-    //    });
-    //}
 });
 
 appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
@@ -803,7 +768,7 @@ function createNewContribution (scope, Contributions, logService) {
 	);
 }
 
-function updateContribution(scope, Contribution, logService) {
+function updateContribution(scope, Contributions, logService) {
     if(scope.userIsAuthor) {
         var updateRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId)
             .update(scope.contribution);
@@ -811,9 +776,27 @@ function updateContribution(scope, Contribution, logService) {
         updateRes.$promise.then(
             function (response) {
                 scope.contribution = response;
+                if(scope.contribution.type == "PROPOSAL") {
+                    logService.logAction("UPDATE_PROPOSAL", "PROPOSAL", scope.contribution.uuid, scope.user.email);
+                }
+                if(scope.contribution.type == "BRAINSTORMING") {
+                    logService.logAction("UPDATE_CONTRIBUTION", "CONTRIBUTION", scope.contribution.uuid, scope.user.email);
+                }
+                if(scope.contribution.type == "COMMENT") {
+                    logService.logAction("UPDATE_COMMENT", "COMMENT",  scope.contribution.uuid, scope.user.email);
+                }
             },
             function (error) {
                 console.log("Error in update");
+                if(scope.contribution.type == "PROPOSAL") {
+                    logService.logAction("UPDATE_PROPOSAL", "PROPOSAL", null, scope.user.email);
+                }
+                if(scope.contribution.type == "BRAINSTORMING") {
+                    logService.logAction("UPDATE_CONTRIBUTION", "CONTRIBUTION", null, scope.user.email);
+                }
+                if(scope.contribution.type == "COMMENT") {
+                    logService.logAction("UPDATE_COMMENT", "COMMENT", null, scope.user.email);
+                }
             }
         );
     }
@@ -842,7 +825,7 @@ function addSelectedThemes (parentThemes, contributionThemes) {
 }
 
 function addNewAttachmentToContribution (contribution, newAttachment, Contributions) {
-	var att = Contributions.newAttachmentObject(newAttachment);
+   var att = Contributions.newAttachmentObject(newAttachment);
 	if(!contribution.attachments) {
 		contribution.attachments = [];
 	}

@@ -21,12 +21,14 @@ var appcivist = {
         voting: {
             production: "http://appcivist-voting-api.herokuapp.com/api/v0",
             testing: "http://appcivist-voting-api.herokuapp.com/api/v0",
-            development: "http://localhost:5000/api/v0"
+            development: "http://localhost:5000/api/v0",
+            sage: "http://appcivist.littlemacondo.com/sage-voting/api/v0"
         },
         core: {
             production: "http://appcivist.littlemacondo.com/backend/api",
             testing: "http://appcivist.littlemacondo.com/backend/api",
-            development: "http://localhost:9000/api"
+            development: "http://localhost:9000/api",
+            sage: "http://appcivist.littlemacondo.com/sage-backend/api"
         }
     },
     handleError: function (error) {
@@ -349,7 +351,11 @@ function selectBackendServer(hostname, apis) {
     if(hostname.match(possibleHosts[0])) {
         return apis.development;
     } else {
-        return apis.testing;
+        var path = window.location.pathname;
+        if (path.indexOf("sage")>-1)
+            return apis.sage;
+        else
+            return apis.testing;
     }
 
 }

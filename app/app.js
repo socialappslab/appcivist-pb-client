@@ -22,13 +22,13 @@ var appcivist = {
             production: "http://appcivist-voting-api.herokuapp.com/api/v0",
             testing: "http://appcivist-voting-api.herokuapp.com/api/v0",
             development: "http://localhost:5000/api/v0",
-            sage: "http://appcivist.littlemacondo.com/sage-voting/api/v0"
+            sage: "http://appcivist-sage.littlemacondo.com/voting/api/v0"
         },
         core: {
             production: "http://appcivist.littlemacondo.com/backend/api",
             testing: "http://appcivist.littlemacondo.com/backend/api",
             development: "http://localhost:9000/api",
-            sage: "http://appcivist.littlemacondo.com/sage-backend/api"
+            sage: "http://appcivist-sage.littlemacondo.com/backend/api"
         }
     },
     handleError: function (error) {

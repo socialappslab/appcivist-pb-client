@@ -575,122 +575,124 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 
 	function init() {
 
-    $scope.user = localStorageService.get('user');
-    $scope.currentCampaign = localStorageService.get('currentCampaign');
-    if ($scope.user && $scope.user.language)
-        $translate.use($scope.user.language);
+        $scope.user = localStorageService.get('user');
+        $scope.currentCampaign = localStorageService.get('currentCampaign');
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
 
-    $scope.votes = $scope.contribution.stats.points;
+        $scope.votes = $scope.contribution.stats.points;
 
-    $scope.clearToggle = function() {
-      $scope.yesToggle = $scope.noToggle = $scope.abstainToggle = $scope.blockToggle = "";
-    }
-
-    $scope.setToggle = function(choice) {
-      $scope.clearToggle();
-      if (choice == "YES") {
-        $scope.yesToggle = "btn-success";
-      } else if (choice == "NO") {
-        $scope.noToggle = "btn-danger";
-      } else if (choice == "ABSTAIN") {
-        $scope.abstainToggle = "btn-info";
-      } else if (choice == "BLOCK") {
-        $scope.blockToggle = "btn-warning";
-      }
-    }
-
-        if(listOfVotesByUser && listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
-          $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
+        $scope.clearToggle = function () {
+            $scope.yesToggle = $scope.noToggle = $scope.abstainToggle = $scope.blockToggle = "";
         }
 
-		userAlreadyVotedInContribution();
+        $scope.setToggle = function (choice) {
+            $scope.clearToggle();
+            if (choice == "YES") {
+                $scope.yesToggle = "btn-success";
+            } else if (choice == "NO") {
+                $scope.noToggle = "btn-danger";
+            } else if (choice == "ABSTAIN") {
+                $scope.abstainToggle = "btn-info";
+            } else if (choice == "BLOCK") {
+                $scope.blockToggle = "btn-warning";
+            }
+        }
 
-		$scope.upVote = function () {
-			if (!$scope.userAlreadyUpVoted) {
-				if ($scope.userAlreadyDownVoted) {
-					$scope.contribution.stats.downs -= 1;
-				} else {
-					$scope.contribution.stats.ups += 1;
-				}
+        if (listOfVotesByUser && candidatesIndex && $scope.contribution) {
+            if (listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
+                $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
+            }
+        }
 
-				var stats = $scope.contribution.stats;
-				var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
-				voteRes.$promise.then(
-						function (newStats) {
-							$scope.contribution.stats = newStats;
-							$scope.votes = $scope.contribution.stats.points;
-							if ($scope.userAlreadyDownVoted) {
-								saveUserVote(0);
-							} else {
-								saveUserVote(1);
-							}
-						},
-						function (error) {
-							$scope.contribution.stats.ups-=1;
-						}
-				);
-			}
-		};
-		$scope.downVote = function () {
-			if (!$scope.userAlreadyDownVoted) {
-				if ($scope.userAlreadyUpVoted) {
-					$scope.contribution.stats.ups -= 1;
-				} else {
-					$scope.contribution.stats.downs += 1;
-				}
-				var stats = $scope.contribution.stats;
-				var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
-				voteRes.$promise.then(
-						function (newStats) {
-							$scope.contribution.stats = newStats;
-							$scope.votes = $scope.contribution.stats.points;
-							if ($scope.userAlreadyUpVoted) {
-								saveUserVote(0);
-							} else {
-								saveUserVote(-1);
-							}
-						},
-						function (error) {
-							$scope.contribution.stats.downs -= 1;
-						}
-				);
-			}
-		};
+        userAlreadyVotedInContribution();
 
-    $scope.contributionVote = function(c) {
-      var userId = $scope.user.uuid;
-      var ballotId = $scope.currentCampaign.bindingBallot;
-      var choice = c;
-      var contributionId = $scope.contribution.uuidAsString;
-      $scope.setToggle(choice);
+        $scope.upVote = function () {
+            if (!$scope.userAlreadyUpVoted) {
+                if ($scope.userAlreadyDownVoted) {
+                    $scope.contribution.stats.downs -= 1;
+                } else {
+                    $scope.contribution.stats.ups += 1;
+                }
 
-      $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
-      //consolex§.log(userId, ballotId, choice, contributionId);
-      $scope.ballotResults.then(function(data){
-        var candidateId = data.index[contributionId].vote.candidate_id;
+                var stats = $scope.contribution.stats;
+                var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+                voteRes.$promise.then(
+                    function (newStats) {
+                        $scope.contribution.stats = newStats;
+                        $scope.votes = $scope.contribution.stats.points;
+                        if ($scope.userAlreadyDownVoted) {
+                            saveUserVote(0);
+                        } else {
+                            saveUserVote(1);
+                        }
+                    },
+                    function (error) {
+                        $scope.contribution.stats.ups -= 1;
+                    }
+                );
+            }
+        };
+        $scope.downVote = function () {
+            if (!$scope.userAlreadyDownVoted) {
+                if ($scope.userAlreadyUpVoted) {
+                    $scope.contribution.stats.ups -= 1;
+                } else {
+                    $scope.contribution.stats.downs += 1;
+                }
+                var stats = $scope.contribution.stats;
+                var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
+                voteRes.$promise.then(
+                    function (newStats) {
+                        $scope.contribution.stats = newStats;
+                        $scope.votes = $scope.contribution.stats.points;
+                        if ($scope.userAlreadyUpVoted) {
+                            saveUserVote(0);
+                        } else {
+                            saveUserVote(-1);
+                        }
+                    },
+                    function (error) {
+                        $scope.contribution.stats.downs -= 1;
+                    }
+                );
+            }
+        };
 
-        var newVote = MakeVote.newVote(ballotId, userId).save({
-          vote: {
-            votes: [
-              {candidate_id: candidateId, value: choice}
-            ]
-          }
-        }).$promise;
-      });
+        $scope.contributionVote = function (c) {
+            var userId = $scope.user.uuid;
+            var ballotId = $scope.currentCampaign.bindingBallot;
+            var choice = c;
+            var contributionId = $scope.contribution.uuidAsString;
+            $scope.setToggle(choice);
+
+            $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
+            //consolex§.log(userId, ballotId, choice, contributionId);
+            $scope.ballotResults.then(function (data) {
+                var candidateId = data.index[contributionId].vote.candidate_id;
+
+                var newVote = MakeVote.newVote(ballotId, userId).save({
+                    vote: {
+                        votes: [
+                            {candidate_id: candidateId, value: choice}
+                        ]
+                    }
+                }).$promise;
+            });
+        }
     }
-  }
 
-	function userAlreadyVotedInContribution() {
-		$scope.userVotes = localStorageService.get("userVotes");
-		$scope.userAlreadyUpVoted = $scope.userVotes[$scope.contribution.contributionId] === 1;
-		$scope.userAlreadyDownVoted = $scope.userVotes[$scope.contribution.contributionId] === -1;
-	}
+    function userAlreadyVotedInContribution() {
+        $scope.userVotes = localStorageService.get("userVotes");
+        $scope.userAlreadyUpVoted = $scope.userVotes[$scope.contribution.contributionId] === 1;
+        $scope.userAlreadyDownVoted = $scope.userVotes[$scope.contribution.contributionId] === -1;
+    }
 
-	function saveUserVote (vote) {
-		$scope.userVotes[$scope.contribution.contributionId] = vote;
-		localStorageService.set("userVotes", $scope.userVotes);
-		userAlreadyVotedInContribution();
-	}
+    function saveUserVote(vote) {
+        $scope.userVotes[$scope.contribution.contributionId] = vote;
+        localStorageService.set("userVotes", $scope.userVotes);
+        userAlreadyVotedInContribution();
+    }
 });
 
 appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,

@@ -245,6 +245,7 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.container = container;
             $scope.containerID = containerID;
             $scope.containerIndex = containerIndex;
+            $scope.doNotSummarizeText = true;
 
             $scope.clearContribution = function () {
                 clearNewContributionObject($scope.newContribution, Contributions);

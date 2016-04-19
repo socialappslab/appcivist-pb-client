@@ -342,20 +342,13 @@ function pathIsNotRestricted(path) {
  * - TODO: when production version are ready, add a rule for selecting the production server
  */
 function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "appcivist.littlemacondo.com"];
-
-    //uncomment for dev
-    //return apis.testing;
-
-
-    if(hostname.match(possibleHosts[0])) {
+    var possibleHosts = ["localhost", "appcivist-sage.littlemacondo.com", "appcivist.littlemacondo.com"];
+    if (hostname.match(possibleHosts[0])) {
         return apis.development;
+    } else if (hostname.match(possibleHosts[1])) {
+        return apis.sage;
     } else {
-        var path = window.location.pathname;
-        if (path.indexOf("sage")>-1)
-            return apis.sage;
-        else
-            return apis.testing;
+        return apis.testing;
     }
 
 }

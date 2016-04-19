@@ -45,7 +45,8 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 	$scope.login = function() {
 		console.log("Signing in with email = " + $scope.user.email);
-		loginService.signIn($scope.user.email, $scope.user.password, $scope,logService.logAction("LOGIN"));
+		loginService.signIn($scope.user.email, $scope.user.password,
+				$scope,logService.logAction("LOGIN", null, null, $scope.user.email));
 	}
 
 

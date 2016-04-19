@@ -122,7 +122,8 @@ appCivistApp.controller('NewContributionModalCtrl',
 		});
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
-                                                              localStorageService, Etherpad, Contributions, $translate, logService) {
+                                                              localStorageService, Etherpad, Contributions, $translate,
+                                                              logService) {
 
     init();
 
@@ -598,7 +599,7 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
       }
     }
 
-        if(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
+        if(listOfVotesByUser && listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
           $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
         }
 

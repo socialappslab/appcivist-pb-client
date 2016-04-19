@@ -123,7 +123,9 @@ appCivistApp.directive('contribution', function(){
             container : '=container',
             containerID : '=containerid',
             containerIndex : '=containerindex',
-            enableVoting: '=enablevoting'
+            enableVoting: '=enablevoting',
+            bindingResults: '=bindingresults',
+            consultiveResults: '=consultiveresults'
         },
         controller: "ContributionDirectiveCtrl",
     }

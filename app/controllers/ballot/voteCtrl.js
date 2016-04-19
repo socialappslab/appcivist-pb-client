@@ -83,7 +83,7 @@ appCivistApp.controller('ballotVoteCtrl', function($scope, $routeParams, $locati
       return 234234234;
   }
 
-	$scope.saveBallot = function() {
+  $scope.saveBallot = function() {
     console.log("Candidates: ")
     console.log($scope.candidates)
 

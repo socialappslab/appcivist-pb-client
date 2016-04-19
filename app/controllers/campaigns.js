@@ -940,10 +940,15 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 	function ballotInit($scope, localStorageService){
 		var ballotId = $scope.campaign.bindingBallot;
+		var consultiveBallotId = $scope.campaign.consultiveBallot;
 		var userId = $scope.user.uuid;
 
-		$scope.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
+		// Read the current results of the voting
+		$scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
+		// Read the current results of up and downs consultive votes
+		$scope.campaign.consultiveBallotResults = Ballot.results({uuid: $scope.campaign.consultiveBallot}).$promise;
 
+		// Read the binding votes of this user
 		var userVotes = VotesByUser.getVotes(ballotId, userId).votes().$promise;
 		userVotes.then(function(data){
 			listOfVotesByUser = data.vote.votes;
@@ -1019,7 +1024,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			localStorageService.set("currentMilestones", $scope.milestones);
 		}
 
-		$scope.enableVoting = ($scope.component.key && $scope.component.key.toLowerCase() === 'voting');
+		$scope.enableVoting = ($scope.component && $scope.component.key && $scope.component.key.toLowerCase() === 'voting');
 		if ($scope.component && $scope.component.key!="Proposalmaking") {
 			$scope.contentTabs[2].active=true;
 		}

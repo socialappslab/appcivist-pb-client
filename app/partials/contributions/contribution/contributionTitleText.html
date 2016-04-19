@@ -8,7 +8,7 @@
 
     </h4>
     <p class="contribution-description" ng-if="!doNotSummarizeText">
-        {{contribution.text|limitTo:97}}{{(contribution.text.length) > 97 ? '...' : '.' }}
+        {{contribution.text|limitTo:152}}{{(contribution.text.length) > 152 ? '...' : '.' }}
     </p>
 
     <p class="contribution-description" ng-if="doNotSummarizeText">{{contribution.text}}</p>

@@ -1,5 +1,11 @@
-<div class="row">
+<div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <!--<h5 class="contribution-title" data-toggle="modal" data-target="#contributionView" ng-click="selectContribution(contribution)"><strong>{{contribution.title}}. </strong></h5><p class="contribution-description"> {{contribution.text}}</p>-->
-    <h4 class="contribution-title"><strong>{{contribution.title}}. </strong></h4>
-    <p class="contribution-description"> {{contribution.text}}</p>
+    <h4 class="contribution-title">
+        <strong>
+            {{contribution.title|limitTo:47}}{{(contribution.title.length) > 47 ? '...' : '.' }}
+        </strong></h4>
+    <p class="contribution-description">
+        {{contribution.text|limitTo:47}}{{(contribution.text.length) > 47 ? '...' : '.' }}
+    </p>
 </div>
+

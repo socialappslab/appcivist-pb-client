@@ -219,6 +219,10 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
             }
         };
 
+        $scope.getBoxHeight = function () {
+            return $scope.contribution.type === 'BRAINSTORMING' ? "'300px;'" : "''";
+        }
+
     }
 
 });

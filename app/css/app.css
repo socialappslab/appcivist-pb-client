@@ -1581,6 +1581,7 @@ button#second-vote {
   margin-bottom: 2rem;
   margin-left: 2rem;
   display: inline-flex;
+  position: relative;
 }
 .contribution .row {
   margin-left: 0;
@@ -1607,11 +1608,15 @@ button#second-vote {
 }
 .contribution .contribution-title {
   display: inline-block;
-  margin: 0;
+  margin-top: 15px;
   cursor: pointer;
 }
 .contribution .contribution-description {
   display: inline;
+}
+.contribution .contribution-meta {
+  position: absolute;
+  bottom: 0;
 }
 .contribution .contribution-background {
   background-size: 100%;

@@ -141,23 +141,38 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
                                  ng-if="tab.ctype!='WORKING_GROUP'"
-                                 ng-style="tab.ctype==='BRAINSTORMING' ? 'height:300px;' : ''"
                                  ng-repeat="contribution in tab.contentArray |
                                                 orderBy: orderProperty : orderReverse |
                                                 filter: campaignContributionFilter |
                                                 filter: {type:tab.ctype} track by $index ">
-                                <contribution ng-click="openContributionModal(contribution,'lg')"
-                                              contribution="contribution"
-                                              assemblyid="assembly.assemblyId"
-                                              campaignid="campaign.campaignId"
-                                              componentid="component.componentId"
-                                              container="tab.contentArray"
-                                              containerid="campaign.resourceSpaceId"
-                                              containerindex="$index"
-                                              enablevoting="enableVoting"
-                                              bindingresults="campaign.ballotResults"
-                                              consultiveResults="campaign.consultiveBallotResults">
-                                </contribution>
+                                <div style="height: 300px;" ng-if="tab.ctype==='BRAINSTORMING'">
+                                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                                                  contribution="contribution"
+                                                  assemblyid="assembly.assemblyId"
+                                                  campaignid="campaign.campaignId"
+                                                  componentid="component.componentId"
+                                                  container="tab.contentArray"
+                                                  containerid="campaign.resourceSpaceId"
+                                                  containerindex="$index"
+                                                  enablevoting="enableVoting"
+                                                  bindingresults="campaign.ballotResults"
+                                                  consultiveResults="campaign.consultiveBallotResults">
+                                    </contribution>
+                                </div>
+                                <div style="height: 500px;" ng-if="tab.ctype!='BRAINSTORMING'">
+                                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                                                  contribution="contribution"
+                                                  assemblyid="assembly.assemblyId"
+                                                  campaignid="campaign.campaignId"
+                                                  componentid="component.componentId"
+                                                  container="tab.contentArray"
+                                                  containerid="campaign.resourceSpaceId"
+                                                  containerindex="$index"
+                                                  enablevoting="enableVoting"
+                                                  bindingresults="campaign.ballotResults"
+                                                  consultiveResults="campaign.consultiveBallotResults">
+                                    </contribution>
+                                </div>
                             </div>
 
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"

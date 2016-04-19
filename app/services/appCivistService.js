@@ -268,7 +268,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             }
         },
         verifyGroupAuthorship: function (user, c, group) {
-            var assemblyId = group.assemblies[0];
+            var assemblyId = group.assemblies ? group.assemblies[0] : 0;
             var groupId = group.groupId;
             var status = 'ACCEPTED';
             return WorkingGroups.verifyMembership(assemblyId, groupId, user.userId);

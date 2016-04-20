@@ -4,16 +4,35 @@
      role="dialog"
      aria-labelledby="myLargeModalLabel"
      aria-hidden="true">
-    <div class="modal-content col-md-12 col-sm-12">
-        <div class="modal-header">
-            <button type="button" class="close" ng-click="cancel()" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
+    <div class="modal-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+        <div class="modal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="row col-md-12 col-sm-12">
-                <h1><strong>{{contribution.type | capitalize}} Contribution</strong></h1>
+                <h1 class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <strong>
+                        {{contribution.type | capitalize}} {{'Contribution'|translate}}
+                    </strong>
+                </h1>
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <button class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            ng-if="userIsAuthor" ng-click="openContributionPage(contribution.contributionId, true)">
+                        {{'Edit'|translate}}
+                    </button>
+                    <button class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            ng-if="!userIsAuthor && contribution.type=='PROPOSAL'"
+                            ng-click="openContributionPage(contribution.contributionId, false)">
+                        {{'Open'|translate}}
+                    </button>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <button class="btn btn-warning col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            type="button" ng-click="cancel()">
+                        {{'Close'|translate}}
+                    </button>
+                </div>
             </div>
         </div>
+
         <div class="modal-body view col-md-12 col-sm-12">
             <div class="row contribution no-padding no-margin">
                 <div class="row contribution-content">
@@ -22,7 +41,9 @@
                         <ng-include class="row" src="'app/partials/contributions/contribution/contributionTitleText.html'"></ng-include>
                     </div>
                     <!-- Meta information of contribution: themes, authors, date, votes-->
-                    <ng-include class="row" src="'app/partials/contributions/contribution/contributionMeta.html'"></ng-include>
+                    <div class="row contribution-meta-relative">
+                        <ng-include class="row" src="'app/partials/contributions/contribution/contributionMeta.html'"></ng-include>
+                    </div>
                 </div>
             </div>
 
@@ -39,7 +60,7 @@
                 <div class="row forum">
 
                     <div class="row no-margin">
-                        <h4><strong>Comments ({{(contribution.comments && contribution.comments.length > 0) ? contribution.comments.length : 0}})</strong></h4>
+                        <h4><strong>{{'Comments'|translate}} ({{(contribution.comments && contribution.comments.length > 0) ? contribution.comments.length : 0}})</strong></h4>
                     </div>
                     <div class="voffset2"></div>
 
@@ -74,21 +95,13 @@
                     </attachments>
                 </div>
                 <div class="row voffset4"></div>
-                <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
-                    <div class="box descriptionBox">
-                        <p>If you get inspired by this discussion, add a new contribution.</p>
-                    </div>
-                    <button class="btn btn-success btn-half-size" ng-if="userIsAuthor" ng-click="openContributionPage(contribution.contributionId, true)">Edit</button>
-                    <button class="btn btn-success btn-half-size" ng-if="!userIsAuthor" ng-click="openContributionPage(contribution.contributionId, false)">Open</button>
-                </div>
             </div>
 
         </div>
 
         <div class="modal-footer view col-md-12 col-sm-12">
             <spinner name="mySpinner" show="postingContribution"></spinner>
-            <button class="btn btn-danger" type="button" ng-if="userIsAuthor" ng-click="delete()">Delete</button>
-            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-danger" type="button" ng-if="userIsAuthor" ng-click="delete()">{{'Delete'|translate}}</button>
         </div>
     </div>
 </div>

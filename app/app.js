@@ -21,12 +21,14 @@ var appcivist = {
         voting: {
             production: "http://appcivist-voting-api.herokuapp.com/api/v0",
             testing: "http://appcivist-voting-api.herokuapp.com/api/v0",
-            development: "http://localhost:5000/api/v0"
+            development: "http://localhost:5000/api/v0",
+            sage: "http://appcivist-sage.littlemacondo.com/voting/api/v0"
         },
         core: {
             production: "http://appcivist.littlemacondo.com/backend/api",
             testing: "http://appcivist.littlemacondo.com/backend/api",
-            development: "http://localhost:9000/api"
+            development: "http://localhost:9000/api",
+            sage: "http://appcivist-sage.littlemacondo.com/backend/api"
         }
     },
     handleError: function (error) {
@@ -284,7 +286,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
  * Services that are injected to the main method of the app to make them available when it starts running
  * @type {string[]}
  */
-run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'loginService'];
+run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logService'];
 
 /**
  * The function that runs the App on the browser
@@ -293,7 +295,7 @@ run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'login
  * @param $http
  * @param localStorageService
  */
-function run($rootScope, $location, $http, localStorageService) {
+function run($rootScope, $location, $http, localStorageService, logService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -313,6 +315,10 @@ function run($rootScope, $location, $http, localStorageService) {
             $location.path('/');
         }
     });
+    // set to true to log actions
+    $rootScope.logActions = true;
+    $rootScope.logService = logService;
+
 }
 
 /**
@@ -336,14 +342,11 @@ function pathIsNotRestricted(path) {
  * - TODO: when production version are ready, add a rule for selecting the production server
  */
 function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "appcivist.littlemacondo.com"];
-
-    //uncomment for dev
-    //return apis.testing;
-
-
-    if(hostname.match(possibleHosts[0])) {
+    var possibleHosts = ["localhost", "appcivist-sage.littlemacondo.com", "appcivist.littlemacondo.com"];
+    if (hostname.match(possibleHosts[0])) {
         return apis.development;
+    } else if (hostname.match(possibleHosts[1])) {
+        return apis.sage;
     } else {
         return apis.testing;
     }

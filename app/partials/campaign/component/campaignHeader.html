@@ -1,10 +1,8 @@
 <div class="campaignHeader">
-    <span><strong>Assembly: </strong></span>
+    <span><strong>{{'Assembly'|translate}}: </strong></span>
     <span>{{assembly.name}}</span>
     <span ng-if="campaign!=null && campaign!=undefined"> / </span>
-    <span ng-if="campaign!=null && campaign!=undefined"><strong>Campaign: </strong></span>
+    <span ng-if="campaign!=null && campaign!=undefined"><strong>{{'Campaign'|translate}}: </strong></span>
     <span ng-if="campaign!=null && campaign!=undefined">{{campaign.title}}</span>
-
-    <span class="edit-button"><a href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/edit">Edit Campaign</a></span>
-
+    <span class="edit-button"><a href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/edit">{{'Edit'|translate}} {{'Campaign'|translate}}</a></span>
 </div>

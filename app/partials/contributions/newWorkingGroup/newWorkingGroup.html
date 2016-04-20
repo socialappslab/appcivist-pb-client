@@ -16,7 +16,7 @@
         </div>
         <div id="workingGroupDescription" class="row col-md-12 col-sm-12">
             <label for="inputDescriptionNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">
-                Description*
+                {{'Description'|translate}}*
             </label>
             <textarea id="inputDescriptionNewWorkingGroup" class="form-control"
                       maxlength="400" placeholder="{{'wgroups.text.example' | translate}}"
@@ -37,24 +37,26 @@
                 <div ng-repeat="icon in defaultIcons">
                     <div class="col-md-4">
                         <div class="image-capsule">
-                            <img alt="100x100" ng-src="{{icon.url}}"
+                            <img alt="{{icon.name}}" ng-src="{{icon.url}}"
                                  class="image-circle"
                                  ng-click="setNewWorkingGroupIcon(icon.url, icon.name)">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-                         accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
-                        <img data-src="holder.js/100x100" alt="100x100"
-                             src="../assets/images/addIcon.png" data-holder-rendered="true"
-                             class="image-circle"/>
+                    <div class="col-md-4">
+                        <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                             accept="image/*" ngf-max-size="2MB">
+                            <img data-src="holder.js/100x100" alt="Upload a picture"
+                                 src="../assets/images/addIcon.png" data-holder-rendered="true"
+                                 class="image-circle"/>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="groupIconProgress" class="row col-md-12 progress-section">
-            {{f.name}} {{f.url}} {{f.$error}} {{f.$errorParam}}
+        <div id="groupIconProgress" class="col-md-12 progress-section">
+            <strong>{{'selected.icon'|translate}}: </strong><a ng-href="{{f.url}}">{{f.name}}</a> {{f.$error}} {{f.$errorParam}}
                 <span class="progress-line-container" ng-show="f.progress >= 0">
                     <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
                 </span>
@@ -138,11 +140,69 @@
                 </div>
             </div>
         </div>
+
+        <!-- TODO: Add brainstorming contributions -->
+        <div id="brainstormingContributions" class="row col-md-12">
+            <label class="control-label">
+                {{'Select brainstorming contributions to develop' | translate}}
+                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.select.brainstorming' | translate}}"></i>
+            </label>
+
+            <!--TODO: FIX PAGINATION
+            <div ng-if="contribsPageSize<contributions.length" class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                <!--<button ng-disabled="contribsCurrentPg === 0" ng-click="contribsCurrentPg=contribsCurrentPg-1">-->
+                    <!--Previous contributions-->
+                <!--</button>-->
+                <!--{{contribsCurrentPg+1}}/{{contribsNumberOfPages()}}-->
+                <!--<button ng-disabled="contribsCurrentPg >= contributions.length/contribsPageSize - 1" ng-click="contribsCurrentPg=contribsCurrentPg+1">-->
+                    <!--Next contributions-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div ng-repeat="contribution in contributions | startFrom:contribsCurrentPg*contribsPageSize | limitTo:contribsPageSize track by $index">-->
+            <div ng-repeat="contribution in contributions track by $index">
+                <div class="checkbox" ng-if="contribution.type === 'BRAINSTORMING'">
+                    <label>
+                        <input type="checkbox" ng-model="contribution.addToGroup"/>
+                    </label>
+                    <span>{{contribution.title | limitTo:46}}{{contribution.title.length > 46 ? '...' : '.'}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invitations for members -->
         <div id="groupInvitations" class="row col-md-12">
             <label class="control-label">
                 {{'Invite people to join' | translate}}
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitations' | translate}}"></i>
             </label>
+
+            <div class="col-lg-12col-md-12 col-sm-12">
+                <label class="control-label">{{'Choose from the list of members of the assembly' | translate}}</label>
+            </div>
+            <!-- TODO: FIX PAGINATION
+            <div ng-if="membersPageSize<assemblyMembers.length" class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                <!--<button ng-disabled="membersCurrentPg === 0" ng-click="membersCurrentPg=membersCurrentPg-1;">-->
+                    <!--Previous members-->
+                <!--</button>-->
+                <!--{{membersCurrentPg+1}}/{{membersNumberOfPages()}}-->
+                <!--<button ng-disabled="membersCurrentPg >= assemblyMembers.length/membersPageSize - 1" ng-click="membersCurrentPg=membersCurrentPg+1;">-->
+                    <!--Next members-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div ng-repeat="member in assemblyMembers | startFrom:membersCurrentPg*membersPageSize | limitTo:membersPageSize track by $index">-->
+            <div ng-repeat="member in assemblyMembers track by $index">
+                <div class="checkbox" ng-if="member.user.email!=user.email">
+                    <label>
+                        <input type="checkbox" ng-model="member.invite"
+                               ng-click="addAssemblyMemberToInvitationList(member,$index)"/>
+                    </label>
+                    <span><strong>{{member.user.name}}</strong> ({{member.user.email}})</span>
+                </div>
+            </div>
+
+            <div class="col-lg-12col-md-12 col-sm-12">
+                <label class="control-label">{{'Add emails of new members who are not in the assembly yet' | translate}}</label>
+            </div>
             <textarea class="form-control" id="invitees" rows="4" ng-model="inviteesEmails"></textarea>
 
             <div class="col-md-12 voffset3"></div>
@@ -152,7 +212,7 @@
                     <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
                          data-holder-rendered="true" class="image-circle image-circle-25">
                 </a>
-                <h4 class="add-button-text">Add to list</h4>
+                <h4 class="add-button-text">{{'Add to list'|translate}}</h4>
             </div>
             <div class="col-md-12 voffset3"></div>
             <table class="table table-hover">

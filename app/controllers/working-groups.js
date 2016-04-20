@@ -90,7 +90,6 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                 }
             }
             // 2. process membership
-
             if($scope.newWorkingGroup.profile.membership === 'OPEN') {
                 $scope.newWorkingGroup.profile.supportedMembership="OPEN";
             } else if ($scope.newWorkingGroup.profile.membership === 'REGISTRATION') {
@@ -106,21 +105,29 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                 }
             }
             // 3. process management
-
             console.log("Creating assembly with membership = "+$scope.newWorkingGroup.profile.supportedMembership);
             if($scope.newWorkingGroup.profile.moderators === 'none' && $scope.newWorkingGroup.profile.coordinators === 'none' ) {
                 $scope.newWorkingGroup.profile.managementType="OPEN";
             } else if ($scope.newWorkingGroup.profile.moderators === 'two' || $scope.newWorkingGroup.profile.moderators === 'all') {
                 if($scope.newWorkingGroup.profile.coordinators === 'two' || $scope.newWorkingGroup.profile.coordinators === 'all') {
                     $scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED";
-                } else if(! $scope.newWorkingGroup.profile.role.coordinators &&
-                    $scope.newWorkingGroup.profile.role.moderators ) {
+                } else if(! $scope.newWorkingGroup.profile.coordinators &&
+                    $scope.newWorkingGroup.profile.moderators ) {
                     $scope.newWorkingGroup.profile.managementType = "MODERATED";
                 }
             } else {
                 $scope.newWorkingGroup.profile.managementType = "COORDINATED";
             }
 
+            // 4. process brainstorming contributions
+            if($scope.contributions) {
+                for (var i = 0; i<$scope.contributions.length; i++) {
+                    if($scope.contributions[i].addToGroup) {
+                        if(!$scope.newWorkingGroup.existingContributions) $scope.newWorkingGroup.existingContributions = [];
+                        $scope.newWorkingGroup.existingContributions.push($scope.contributions[i]);
+                    }
+                }
+            }
             var newGroup = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).save($scope.newWorkingGroup);
             newGroup.$promise.then(
                 function (response) {
@@ -150,6 +157,14 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                 $scope.invitedAssemblyMembers[email] = true;
             }
         }
+
+        $scope.contribsNumberOfPages=function(){
+            return Math.ceil($scope.contributions.length/$scope.contribsPageSize);
+        }
+
+        $scope.membersNumberOfPages=function(){
+            return Math.ceil($scope.assemblyMembers.length/$scope.membersPageSize);
+        }
     }
 
     function initScopeContent() {
@@ -168,6 +183,16 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             {"name": "Passe Livre Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png"},
             {"name": "Skyline Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"}
         ];
+        $scope.newWorkingGroup.profile.icon = $scope.defaultIcons[0].url;
+        $scope.f = {"name" : $scope.defaultIcons[0].name, "url" : $scope.defaultIcons[0].url}
+
+        $scope.contribsCurrentPg = 0;
+        $scope.contribsPageSize = 5;
+        $scope.contributions = [];
+
+        $scope.membersCurrentPg = 0;
+        $scope.membersPageSize = 5;
+        $scope.assemblyMembers = [];
 
         $scope.$watch("newWorkingGroup.name",function(newVal, oldval){
             $translate('wgroup.invitation.email.text', { group: $scope.newWorkingGroup.name }).then(function (text) {
@@ -202,6 +227,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
         $scope.campaign.$promise.then(
             function (response) {
                 $scope.campaign = response;
+                $scope.contributions = $scope.campaign.contributions;
                 $scope.campaignThemes = $scope.campaign.themes;
                 if (!$scope.campaignThemes) {
                     $scope.campaignThemes = [];
@@ -378,6 +404,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.wGroupMembers = [];
         $scope.members = [];
         $scope.proposals = [];
+        $scope.contributions = [];
         $scope.pendingInvitations = [];
 
         if ($scope.assemblyID > 0 && $scope.workingGroupID > 0) {
@@ -473,6 +500,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 $scope.stopSpinner();
                 getWorkingGroupMembers($scope.assemblyID, $scope.workingGroupID);
                 getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
+                getWorkingGroupContributions($scope.assemblyID, $scope.workingGroupID);
                 getInvitations($scope.workingGroupID);
             },
             function (error) {
@@ -493,6 +521,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 if ($scope.userIsInvitedMember) {
                     getWorkingGroupMembers($scope.assemblyID, $scope.workingGroupID);
                     getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
+                    getWorkingGroupContributions($scope.assemblyID, $scope.workingGroupID);
                     getInvitations($scope.workingGroupID);
                 }
             },
@@ -545,6 +574,19 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             }
         );
     }
+
+    function getWorkingGroupContributions() {
+        var res = WorkingGroups.workingGroupContributions($scope.assemblyID, $scope.workingGroupID).query();
+        res.$promise.then(
+            function (data) {
+                $scope.contributions = data;
+            },
+            function (error) {
+                $scope.errors.unshift(error);
+            }
+        );
+    }
+
 
     function getInvitations(target) {
         $scope.pendingInvitations = Invitations.invitations(target,"INVITED").query();

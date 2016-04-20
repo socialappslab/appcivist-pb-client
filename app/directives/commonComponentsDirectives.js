@@ -103,7 +103,10 @@ appCivistApp.directive('consensusControls', function(){
     replace: true,
     templateUrl: "/app/partials/directives/consensusVoting/consensusControls.html",
     scope: {
-      contribution: '='
+      contribution: '=',
+      bindingResults: '=bindingresults',
+      consultiveResults: '=consultiveresults',
+      ballotPaper: "=ballotpaper"
     },
     controller: "ContributionVotesCtrl"
   }
@@ -125,7 +128,8 @@ appCivistApp.directive('contribution', function(){
             containerIndex : '=containerindex',
             enableVoting: '=enablevoting',
             bindingResults: '=bindingresults',
-            consultiveResults: '=consultiveresults'
+            consultiveResults: '=consultiveresults',
+            ballotPaper: "=ballotpaper"
         },
         controller: "ContributionDirectiveCtrl",
     }

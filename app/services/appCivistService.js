@@ -413,6 +413,13 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                     gid: groupId
                 });
         },
+        workingGroupContributions: function(assemblyId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contributions',
+                {
+                    aid: assemblyId,
+                    gid: groupId
+                });
+        },
         verifyMembership: function(assemblyId, groupId, userId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/user/:uid',
                 {
@@ -446,6 +453,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 //},
                 "themes": [],
                 "existingThemes": [],
+                "existingContributions": [],
                 //"config" : {
                 //    "majority":"66%",
                 //    "blocking":false
@@ -464,7 +472,10 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 "invitationEmail" : "",
                 "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
                 "majorityThreshold" : "simple",
-                "blockMajority" : false
+                "blockMajority" : false,
+                "profile" : {
+                    "icon" : ""
+                }
             };
 
             var invitationEmail = $translate('wgroup.invitation.email.text',

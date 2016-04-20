@@ -145,18 +145,14 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
                                  ng-if="tab.ctype!='WORKING_GROUP'"
-<<<<<<< HEAD
-                                 ng-repeat="contribution in tab.contentArray |
-                                                orderBy: orderProperty : orderReverse |
-                                                filter: campaignContributionFilter |
-                                                filter: {type:tab.ctype} track by $index ">
-=======
+
+
                                  ng-repeat="contribution in tab.contentArray
                                                 | orderBy: orderProperty : orderReverse
                                                 | filter: campaignContributionFilter
                                                 | filter: {type:tab.ctype}
                                                 track by $index ">
->>>>>>> 3a3e595710f72ec4eec8dde201a54533a3d4a9b5
+
                                 <div style="height: 400px;" ng-if="tab.ctype==='BRAINSTORMING'">
                                     <contribution ng-click="openContributionModal(contribution,'lg')"
                                                   contribution="contribution"
@@ -168,18 +164,12 @@
                                                   containerindex="$index"
                                                   enablevoting="enableVoting"
                                                   bindingresults="campaign.ballotResults"
-<<<<<<< HEAD
+
                                                   consultiveResults="campaign.consultiveBallotResults">
                                     </contribution>
                                 </div>
                                 <div style="height: 550px;" ng-if="tab.ctype!='BRAINSTORMING'">
-=======
-                                                  consultiveresults="campaign.consultiveBallotResults"
-                                                  ballotpaper="campaign.ballotPaper">
-                                    </contribution>
-                                </div>
-                                <div style="height: 600px;" ng-if="tab.ctype!='BRAINSTORMING'">
->>>>>>> 3a3e595710f72ec4eec8dde201a54533a3d4a9b5
+
                                     <contribution ng-click="openContributionModal(contribution,'lg')"
                                                   contribution="contribution"
                                                   assemblyid="assembly.assemblyId"
@@ -190,21 +180,19 @@
                                                   containerindex="$index"
                                                   enablevoting="enableVoting"
                                                   bindingresults="campaign.ballotResults"
-<<<<<<< HEAD
-                                                  consultiveResults="campaign.consultiveBallotResults">
-=======
+                                   
+
                                                   consultiveresults="campaign.consultiveBallotResults"
                                                   ballotpaper="campaign.ballotPaper">
->>>>>>> 3a3e595710f72ec4eec8dde201a54533a3d4a9b5
+
                                     </contribution>
                                 </div>
                             </div>
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 3a3e595710f72ec4eec8dde201a54533a3d4a9b5
+
+
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
                                  ng-if="tab.ctype==='WORKING_GROUP'"
                                  style="height:150px;"
@@ -223,24 +211,22 @@
                     </div>
                 </div>
             </uib-tab>
-<<<<<<< HEAD
+
         </uib-tabset>  
 
 
         <table ng-repeat="contribution in contributions" align="center" style="color:black;" width="80%" border="1px" bordercolor="white">
-        <tr>  
+          <tr>  
             <td align="center" width="15%" bgcolor="green" class="white">Yes</td>     
             <td align="center" width="15%" bgcolor="#FF0000" class="white">No</td>
             <td align="center" width="15%">Abs.</td>  
             <td align="center" width="15%" bgcolor="#800000" class="white">Blk</td>  
             <td align="left" width="40%">{{contribution.title}}</td>  
-        </tr>    
-    </table> 
+          </tr>    
+        </table> 
 
-    <br>
+        <br>
 
-=======
         </uib-tabset>
->>>>>>> 3a3e595710f72ec4eec8dde201a54533a3d4a9b5
     </div>
 </div>

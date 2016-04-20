@@ -32,6 +32,9 @@
 
     </div>
     <div class="col-md-12 col-sm-12" ng-if="enableVoting">
-      <consensus-controls contribution="contribution"></consensus-controls>
+      <consensus-controls contribution="contribution"
+                          bindingresults="campaign.ballotResults"
+                          consultiveresults="campaign.consultiveBallotResults"
+                          ballotpaper="campaign.ballotPaper"></consensus-controls>
     </div>
 </div>

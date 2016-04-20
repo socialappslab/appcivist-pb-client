@@ -413,6 +413,13 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                     gid: groupId
                 });
         },
+        workingGroupContributions: function(assemblyId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contributions',
+                {
+                    aid: assemblyId,
+                    gid: groupId
+                });
+        },
         verifyMembership: function(assemblyId, groupId, userId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/user/:uid',
                 {

@@ -566,9 +566,12 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
             }
         }
 
-        if (listOfVotesByUser && candidatesIndex && $scope.contribution) {
-            if (listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]]) {
-                $scope.setToggle(listOfVotesByUser[candidatesIndex[$scope.contribution.uuidAsString]].value);
+        $scope.listOfVotesByUser = $scope.ballotPaper ? $scope.ballotPaper.vote.votes : undefined;
+        $scope.candidatesIndex = $scope.ballotPaper ? $scope.ballotPaper.ballot.candidatesIndex : undefined;
+
+        if ($scope.listOfVotesByUser && $scope.candidatesIndex && $scope.contribution) {
+            if ($scope.listOfVotesByUser[$scope.candidatesIndex[$scope.contribution.uuidAsString]]) {
+                $scope.setToggle($scope.listOfVotesByUser[$scope.candidatesIndex[$scope.contribution.uuidAsString]].value);
             }
         }
 

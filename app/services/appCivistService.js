@@ -446,6 +446,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 //},
                 "themes": [],
                 "existingThemes": [],
+                "existingContributions": [],
                 //"config" : {
                 //    "majority":"66%",
                 //    "blocking":false
@@ -464,7 +465,10 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 "invitationEmail" : "",
                 "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
                 "majorityThreshold" : "simple",
-                "blockMajority" : false
+                "blockMajority" : false,
+                "profile" : {
+                    "icon" : ""
+                }
             };
 
             var invitationEmail = $translate('wgroup.invitation.email.text',

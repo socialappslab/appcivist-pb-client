@@ -111,8 +111,8 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             } else if ($scope.newWorkingGroup.profile.moderators === 'two' || $scope.newWorkingGroup.profile.moderators === 'all') {
                 if($scope.newWorkingGroup.profile.coordinators === 'two' || $scope.newWorkingGroup.profile.coordinators === 'all') {
                     $scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED";
-                } else if(! $scope.newWorkingGroup.profile.role.coordinators &&
-                    $scope.newWorkingGroup.profile.role.moderators ) {
+                } else if(! $scope.newWorkingGroup.profile.coordinators &&
+                    $scope.newWorkingGroup.profile.moderators ) {
                     $scope.newWorkingGroup.profile.managementType = "MODERATED";
                 }
             } else {

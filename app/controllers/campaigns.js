@@ -956,16 +956,17 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
         // Read the current results of up and downs consultive votes
 		$scope.campaign.consultiveBallotResults = Ballot.results({uuid: $scope.campaign.consultiveBallot}).$promise;
-        $scope.campaign.consultiveBallotResults.then(
-            function(data) {
-                $scope.campaign.consultiveBallotResults = data;
-            },
-            function(error) {
-                $scope.campaign.consultiveBallotResults = null;
-            }
-        );
+    $scope.campaign.consultiveBallotResults.then(
+        function(data) {
+            $scope.campaign.consultiveBallotResults = data;
+        },
+        function(error) {
+            $scope.campaign.consultiveBallotResults = null;
+        }
+    );
 
         $scope.listOfVotesByUser = {};
+				$scope.listOfConsultiveVotesByUser = {};
         $scope.candidatesIndex = {};
         $scope.campaign.ballotPaper = {};
 
@@ -980,6 +981,18 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				var newBallot = NewBallotPaper.ballot(ballotId).save({vote : {signature: userId}}).$promise;
 			}
 		});
+
+		// Read the consultive votes of this user
+		var userConsultiveVotes = VotesByUser.getVotes($scope.campaign.consultiveBallot, userId).votes().$promise;
+		userConsultiveVotes.then(function(data){
+			// $scope.listOfConsultiveVotesByUser = data.vote.votes;
+		}, function(error){
+			if (error.status == "400" || error.status == "404") { //no votes under this signature
+				var newConsultiveBallot = NewBallotPaper.ballot($scope.campaign.consultiveBallot).save({vote : {signature: userId}}).$promise;
+			}
+		});
+
+
 	}
 
 	/**

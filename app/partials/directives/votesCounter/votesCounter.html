@@ -1,7 +1,7 @@
 <div class="votes-counter">
-    <i class="fa fa-caret-up add-vote" ng-click="upVote()"></i>
+    <i class="fa fa-caret-up add-vote" ng-click="upVote(); contributionVote('YES','CONSULTIVE')"></i>
     <div class="total-votes">
         <strong>{{contribution.stats.points}}</strong>
     </div>
-    <i class="fa fa-caret-down substract-vote" ng-click="downVote()"></i>
+    <i class="fa fa-caret-down substract-vote" ng-click="downVote(); contributionVote('NO', 'CONSULTIVE')"></i>
 </div>

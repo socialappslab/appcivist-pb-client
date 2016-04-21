@@ -629,15 +629,15 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
             }
         };
 
-        $scope.contributionVote = function (c) {
+        $scope.contributionVote = function (c, type) {
             var userId = $scope.user.uuid;
-            var ballotId = $scope.currentCampaign.bindingBallot;
+            var ballotId = type=="BINDING" ? $scope.currentCampaign.bindingBallot : $scope.currentCampaign.consultiveBallot;
             var choice = c;
             var contributionId = $scope.contribution.uuidAsString;
             $scope.setToggle(choice);
 
             $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
-            //consolex§.log(userId, ballotId, choice, contributionId);
+            console.log(userId, type, ballotId, choice, contributionId);
             $scope.ballotResults.then(function (data) {
                 var candidateId = data.index[contributionId].vote.candidate_id;
 
@@ -648,6 +648,7 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
                         ]
                     }
                 }).$promise;
+            }, function(error){
             });
         }
     }

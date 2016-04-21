@@ -1,9 +1,9 @@
 <div class="consensus-controls row col-md-12 col-sm-12 no-padding">
   <div class="btn-group" role="group">
-    <button class="btn btn-default {{yesToggle}}" ng-click="contributionVote('YES')">Yes</button>
-    <button class="btn btn-default {{noToggle}}" ng-click="contributionVote('NO')">No</button>
-    <button class="btn btn-default {{abstainToggle}}" ng-click="contributionVote('ABSTAIN')">Abstain</button>
-    <button class="btn btn-default {{blockToggle}}" ng-click="contributionVote('BLOCK')">Block</buttom>
+    <button class="btn btn-default {{yesToggle}}" ng-click="contributionVote('YES', 'BINDING')">Yes</button>
+    <button class="btn btn-default {{noToggle}}" ng-click="contributionVote('NO', 'BINDING')">No</button>
+    <button class="btn btn-default {{abstainToggle}}" ng-click="contributionVote('ABSTAIN', 'BINDING')">Abstain</button>
+    <button class="btn btn-default {{blockToggle}}" ng-click="contributionVote('BLOCK', 'BINDING')">Block</buttom>
   </div>
   <br />
 

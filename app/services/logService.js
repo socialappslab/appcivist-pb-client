@@ -12,7 +12,7 @@ appCivistApp.service('logService', function($resource, $rootScope, $http, $locat
         "resourceType": rType ? rType : "",
         "resourceUuid": rId ? rId : ""
       }
-      
+
       $http.post(url, data).then(function(){
         console.log(action + " Logged");
       });

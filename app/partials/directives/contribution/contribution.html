@@ -4,23 +4,10 @@
                 ng-click="openContributionModal(contribution)"
                 src="'app/partials/contributions/contribution/attachmentBackground.html'"></ng-include>
     <br>
-
-<div class="wrapper">
-    <button class="button" type="button" id="yes">YES </button>
-    <button class="button" type="button" id="no">NO </button>
-    <button class="button" type="button" id="abs">ABS.</button>
-    <button class="button" type="button" id="block">BLOCK</button>
-</div>     
-     
-
-
     <!-- Title and Text of Contribution -->
     <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'"
                 ng-click="openContributionModal(contribution)"
                 src="'app/partials/contributions/contribution/contributionTitleText.html'"></ng-include>
-
-    
-
     <!-- Meta information of contribution: themes, authors, date, votes-->
     <div class="row push-to-bottom no-padding">
         <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL'"

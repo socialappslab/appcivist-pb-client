@@ -536,22 +536,91 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 	}
 });
 
+
+appCivistApp.controller('ContributionFeedbackCtrl', function($scope, $http, $routeParams, localStorageService,
+                                                          Contributions, $translate, MakeVote, Ballot, BallotPaper,
+                                                          VotesByUser, $rootScope) {
+
+    init();
+
+    function init () {
+        $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+            $translate.use($scope.user.language);
+
+        // Set contribution stats
+        $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
+        $scope.contributionID = $scope.contribution.contributionId;
+
+        // Read user contribution feedback
+        $scope.userFeedback = $scope.userFeedback != null ?
+            $scope.userFeedback : {"up":false, "down":false, "fav": false, "flag": false};
+
+        var feedback = Contributions.userFeedback($scope.assemblyID, $scope.contributionID).get();
+        feedback.$promise.then(
+            function (feedback) {
+                $scope.userFeedback = feedback;
+            },
+            function (error) {
+                console.log(error);
+            }
+        );
+
+        // Feedback update
+        $scope.updateFeedback = function (value) {
+            if (value === "up") {
+                $scope.userFeedback.up = true;
+                $scope.userFeedback.down = false;
+
+            } else if (value === "down") {
+                $scope.userFeedback.up = false;
+                $scope.userFeedback.down = true;
+            } else if (value === "fav") {
+                $scope.userFeedback.fav = true;
+            } else if (value === "flag") {
+                $scope.userFeedback.flag = true;
+            }
+
+            // TODO send feedback update
+
+            //var stats = $scope.contribution.stats;
+            var feedback = Contributions.userFeedback($scope.assemblyID, $scope.contributionID).update($scope.userFeedback);
+            feedback.$promise.then(
+                function (newStats) {
+                    $scope.contribution.stats = newStats;
+                },
+                function (error) {
+                    console.log("Error when updating user feedback");
+                }
+            );
+        };
+    }
+});
+
 appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
-														  Contributions, $translate, MakeVote, Ballot, VotesByUser, $rootScope) {
+														  Contributions, $translate, MakeVote, Ballot, BallotPaper,
+                                                          VotesByUser, $rootScope) {
+    /**
+     * Directive Scope
+     * contribution: '=',
+     * bindingResults: '=bindingresults',
+     * consultiveResults: '=consultiveresults',
+     * ballotPaper: "=ballotpaper",
+     * consultiveBallotPaper: "=cballotpaper",
+     * bindingBallotId: "=bballot",
+     * consultiveBallotId: "=cballot"
+     */
 	init();
 
 	function init() {
-
         $scope.user = localStorageService.get('user');
         $scope.currentCampaign = localStorageService.get('currentCampaign');
         if ($scope.user && $scope.user.language)
             $translate.use($scope.user.language);
 
-        $scope.votes = $scope.contribution.stats.points;
-
         $scope.clearToggle = function () {
             $scope.yesToggle = $scope.noToggle = $scope.abstainToggle = $scope.blockToggle = "";
-        }
+        };
 
         $scope.setToggle = function (choice) {
             $scope.clearToggle();
@@ -564,105 +633,179 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
             } else if (choice == "BLOCK") {
                 $scope.blockToggle = "btn-warning";
             }
-        }
+        };
 
-        $scope.listOfVotesByUser = $scope.ballotPaper ? $scope.ballotPaper.vote.votes : undefined;
-        $scope.candidatesIndex = $scope.ballotPaper ? $scope.ballotPaper.ballot.candidatesIndex : undefined;
+        // Cast vote on a single contribution
+        $scope.contributionVote = function (c, type) {
+            var userId = $scope.user.uuid;
+            var ballotId = type=="BINDING" ? $scope.bindingBallotId : $scope.consultiveBallotId;
+            var ballotPaper = type=="BINDING" ? $scope.ballotPaper : $scope.consultiveBallotPaper;
+            var choice = c;
+            var contributionId = $scope.contribution.uuidAsString;
+            updateUserContributionVote(ballotId, ballotPaper, userId, choice, contributionId, type);
+            console.log(type, ballotId, userId, choice, contributionId);
+        };
+
+        if ($scope.contribution.type === 'PROPOSAL') initUserBindingVotes();
+        if ($scope.contribution.type === 'PROPOSAL') initBindingResults();
+    }
+
+    function initUserBindingVotes() {
+        // Make sure the Binding Votes of the user are available in the scope
+        $scope.listOfVotesByUser = $scope.ballotPaper ? $scope.ballotPaper.vote ? $scope.ballotPaper.vote.votes : null : null;
+        $scope.candidatesIndex = $scope.ballotPaper ? $scope.ballotPaper.ballot ? $scope.ballotPaper.ballot.candidatesIndex : null : null;
+        if (!$scope.listOfVotesByUser && !$scope.candidatesIndex)
+            readBallotPaper($scope.bindingBallotId, "BINDING");
 
         if ($scope.listOfVotesByUser && $scope.candidatesIndex && $scope.contribution) {
             if ($scope.listOfVotesByUser[$scope.candidatesIndex[$scope.contribution.uuidAsString]]) {
                 $scope.setToggle($scope.listOfVotesByUser[$scope.candidatesIndex[$scope.contribution.uuidAsString]].value);
             }
         }
+    }
 
-        userAlreadyVotedInContribution();
-
-        $scope.upVote = function () {
-            if (!$scope.userAlreadyUpVoted) {
-                if ($scope.userAlreadyDownVoted) {
-                    $scope.contribution.stats.downs -= 1;
+    // Read the BallotPaper
+    // - If already in scope, use existing, otherwise, read from server
+    function readBallotPaper(ballotId, type) {
+        var bp = BallotPaper.read({uuid: ballotId, signature: $scope.user.uuid});
+        bp.$promise.then(
+            function (data) {
+                // Update the BallotPaper in the scope
+                if (type==="BINDING") {
+                    $scope.ballotPaper = data;
+                    initUserBindingVotes();
                 } else {
-                    $scope.contribution.stats.ups += 1;
+                    $scope.consultiveBallotPaper = data;
+                    initUserConsultiveVotes();
                 }
-
-                var stats = $scope.contribution.stats;
-                var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
-                voteRes.$promise.then(
-                    function (newStats) {
-                        $scope.contribution.stats = newStats;
-                        $scope.votes = $scope.contribution.stats.points;
-                        if ($scope.userAlreadyDownVoted) {
-                            saveUserVote(0);
-                        } else {
-                            saveUserVote(1);
-                        }
-                    },
-                    function (error) {
-                        $scope.contribution.stats.ups -= 1;
-                    }
-                );
+            },
+            function(error){
+                // BallotPaper creation when reading fails is limited to the campaignComponentCtrl (to avoid multiple creations)
+                console.log("BallotPaper is not available yet for this user. Reload the Campaign page to ensure its creation");
             }
-        };
-        $scope.downVote = function () {
-            if (!$scope.userAlreadyDownVoted) {
-                if ($scope.userAlreadyUpVoted) {
-                    $scope.contribution.stats.ups -= 1;
-                } else {
-                    $scope.contribution.stats.downs += 1;
-                }
-                var stats = $scope.contribution.stats;
-                var voteRes = Contributions.updateStats(stats.contributionStatisticsId).update(stats);
-                voteRes.$promise.then(
-                    function (newStats) {
-                        $scope.contribution.stats = newStats;
-                        $scope.votes = $scope.contribution.stats.points;
-                        if ($scope.userAlreadyUpVoted) {
-                            saveUserVote(0);
-                        } else {
-                            saveUserVote(-1);
-                        }
-                    },
-                    function (error) {
-                        $scope.contribution.stats.downs -= 1;
-                    }
-                );
+        );
+    }
+
+    function initBindingResults () {
+        var cUUID = $scope.contribution.uuidAsString;
+
+        if ($scope.bindingResults && $scope.bindingResults.index) {
+            var resultIndex = $scope.bindingResults.index[cUUID];
+            if (resultIndex) {
+                $scope.bindingVoteScore = resultIndex.vote.score;
+            } else {
+                $scope.bindingVoteScore = "";
             }
-        };
-
-        $scope.contributionVote = function (c, type) {
-            var userId = $scope.user.uuid;
-            var ballotId = type=="BINDING" ? $scope.currentCampaign.bindingBallot : $scope.currentCampaign.consultiveBallot;
-            var choice = c;
-            var contributionId = $scope.contribution.uuidAsString;
-            $scope.setToggle(choice);
-
-            $scope.ballotResults = Ballot.results({uuid: $scope.currentCampaign.bindingBallot}).$promise;
-            console.log(userId, type, ballotId, choice, contributionId);
-            $scope.ballotResults.then(function (data) {
-                var candidateId = data.index[contributionId].vote.candidate_id;
-
-                var newVote = MakeVote.newVote(ballotId, userId).save({
-                    vote: {
-                        votes: [
-                            {candidate_id: candidateId, value: choice}
-                        ]
-                    }
-                }).$promise;
-            }, function(error){
-            });
+        } else {
+            readBallotResults($scope.bindingBallotId, "BINDING");
         }
     }
 
-    function userAlreadyVotedInContribution() {
-        $scope.userVotes = localStorageService.get("userVotes");
-        $scope.userAlreadyUpVoted = $scope.userVotes[$scope.contribution.contributionId] === 1;
-        $scope.userAlreadyDownVoted = $scope.userVotes[$scope.contribution.contributionId] === -1;
+    function readBallotResults (ballotId, type) {
+        var ballotResults = Ballot.results({uuid: ballotId});
+        ballotResults.$promise.then(
+            function (data) {
+                if(type==="BINDING") $scope.bindingResults = data;
+                else $scope.consultiveResults = data;
+            },
+            function (error) {
+                console.log("Error reading the ballot results");
+                if(type==="BINDING") $scope.bindingResults = null;
+                else $scope.consultiveResults = null;
+            }
+        );
     }
 
-    function saveUserVote(vote) {
-        $scope.userVotes[$scope.contribution.contributionId] = vote;
-        localStorageService.set("userVotes", $scope.userVotes);
-        userAlreadyVotedInContribution();
+    function updateUserContributionVote (ballotId, ballotPaper, userId, choice, contributionId, type) {
+        var ballot = ballotPaper.ballot;
+        var userVotes = ballotPaper.vote;
+
+        // Find the ID of the candidate in the ballot associated to the contribution
+        var candidateIndex = ballot.candidatesIndex[contributionId];
+        var candidateId = null;
+        if (candidateIndex != null && candidateIndex !=undefined && candidateIndex > -1) {
+            candidateId = ballot.candidates[candidateIndex].id;
+        } else {
+            console.log("Error: there is no candidate associated to contribution: "+contributionId);
+            return;
+        }
+
+        // Find the current vote of the user for that candidate
+        var voteIndex = userVotes.votesIndex ? userVotes.votesIndex[candidateId] : null;
+        var vote = null;
+        var voteIsNew = false;
+        if(voteIndex != null && voteIndex !=undefined && voteIndex > -1) { // If the vote is there, update it
+            vote = userVotes.votes[voteIndex];
+        } else { // If the vote is not there, it means it has to be added
+            vote = {
+                "candidate_id" : candidateId,
+                "value" : choice
+            };
+            voteIsNew = true;
+        }
+
+        // Update the single vote
+        var singleVote = BallotPaper.single({uuid: ballotId, signature: $scope.user.uuid},{"candidate_id":candidateId, "value": choice});
+        singleVote.$promise.then(
+            function (data) {
+                // Vote updated in the server with success
+                vote.value = choice;
+                if (voteIsNew) { // If vote is new, add it to the votes array in the ballot paper and to the votesIndex
+                    var index = userVotes.votes.push(vote) - 1;
+                    if (userVotes.votesIndex) {
+                        userVotes.votesIndex[candidateId] = index;
+                    } else {
+                        userVotes.votesIndex = {};
+                        userVotes.votesIndex[candidateId] = index;
+                    }
+                }
+                if (type==="BINDING") {
+                    //$scope.ballotPaper = data;
+                    initUserBindingVotes();
+                } else {
+                    //$scope.consultiveBallotPaper = data;
+                    initUserConsultiveVotes();
+                }
+            },
+            function (error) {
+                console.log("Update single vote failed: "+JSON.stringify(error));
+            }
+        );
+    }
+
+    function userAlreadyVotedInContribution() {
+        if ($scope.contribution.type === 'PROPOSAL') userAlreadyVotedBinding();
+    }
+
+    function userAlreadyVotedBinding() {
+        var contributionId = $scope.contribution.uuidAsString;
+        if ($scope.ballotPaper) {
+            var ballot = $scope.ballotPaper.ballot;
+            var userVotes = $scope.ballotPaper.vote;
+
+            // Find the ID of the candidate in the ballot associated to the contribution
+            var candidateIndex = ballot.candidatesIndex[contributionId];
+            var candidateId = null;
+            if (candidateIndex != null && candidateIndex !=undefined && candidateIndex > -1) {
+                candidateId = ballot.candidates[candidateIndex].id;
+            } else {
+                console.log("Error: there is no candidate associated to contribution: "+contributionId);
+                return;
+            }
+
+            // Find the current vote of the user for that candidate
+            var voteIndex = userVotes.votesIndex ? userVotes.votesIndex[candidateId] : null;
+            var vote = null;
+            if(voteIndex != null && voteIndex !=undefined && voteIndex > -1) { // If the vote is there, update it
+                vote = userVotes.votes.votesIndex[voteIndex];
+            } else { // If the vote is not there, it means it has to be added
+                console.log("Error: there is no candidate associated to contribution: "+contributionId);
+                return;
+            }
+
+            $scope.bindingVote = vote;
+            $scope.setToggle(vote.value);
+        }
     }
 });
 

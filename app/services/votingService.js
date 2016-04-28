@@ -23,14 +23,18 @@ appCivistApp.factory('Ballot', function($http, $resource, localStorageService) {
 
 appCivistApp.factory('BallotPaper', function($http, $resource, localStorageService) {
   var url = getVotingApiURL(localStorageService);
-  return $resource(
-    url + '/ballot/:uuid/vote/:signature',
+  return $resource(url + '/ballot/:uuid/vote/:signature',
     { "uuid": "@id", "signature": "@id" },
     {
+      "read" : {"method" : "GET"},
       "update": {method: "PUT"},
       "complete": {
         method: "PUT",
         url: url + "/ballot/:uuid/vote/:signature/complete"
+      },
+      "single": {
+        method: "PUT",
+        url: url + "/ballot/:uuid/vote/:signature/single"
       }
     }
   );

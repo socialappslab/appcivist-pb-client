@@ -305,10 +305,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     ciid: componentID
                 })
         },
-        updateStats: function (statsId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid',
-                {stid: statsId},
-                {'update': {method:'PUT'}}
+        userFeedback: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback',
+                { aid: assemblyId, cid: contributionId},
+                { 'update': { method: 'PUT'}}
             );
         },
         defaultContributionAttachment: function () {

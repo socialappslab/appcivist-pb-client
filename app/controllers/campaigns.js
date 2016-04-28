@@ -938,62 +938,66 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		console.log(VoteByUser);
 	}*/
 
-	function ballotInit($scope, localStorageService){
-		var ballotId = $scope.campaign.bindingBallot;
-		var consultiveBallotId = $scope.campaign.consultiveBallot;
-		var userId = $scope.user.uuid;
+    function ballotInit($scope, localStorageService) {
+        var ballotId = $scope.campaign.bindingBallot;
+        var consultiveBallotId = $scope.campaign.consultiveBallot;
+        var userId = $scope.user.uuid;
 
-		// Read the current results of the voting
-		$scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
+        // Read the current results of the voting
+        $scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
         $scope.campaign.ballotResults.then(
-            function(data) {
+            function (data) {
                 $scope.campaign.ballotResults = data;
             },
-            function(error) {
+            function (error) {
                 $scope.campaign.ballotResults = null;
             }
         );
 
         // Read the current results of up and downs consultive votes
-		$scope.campaign.consultiveBallotResults = Ballot.results({uuid: $scope.campaign.consultiveBallot}).$promise;
-    $scope.campaign.consultiveBallotResults.then(
-        function(data) {
-            $scope.campaign.consultiveBallotResults = data;
-        },
-        function(error) {
-            $scope.campaign.consultiveBallotResults = null;
-        }
-    );
+        $scope.campaign.consultiveBallotResults = Ballot.results({uuid: $scope.campaign.consultiveBallot}).$promise;
+        $scope.campaign.consultiveBallotResults.then(
+            function (data) {
+                $scope.campaign.consultiveBallotResults = data;
+            },
+            function (error) {
+                $scope.campaign.consultiveBallotResults = null;
+            }
+        );
 
+        // User binding votes
         $scope.listOfVotesByUser = {};
-				$scope.listOfConsultiveVotesByUser = {};
         $scope.candidatesIndex = {};
         $scope.campaign.ballotPaper = {};
 
-		// Read the binding votes of this user
-		var userVotes = VotesByUser.getVotes(ballotId, userId).votes().$promise;
-		userVotes.then(function(data){
-			$scope.listOfVotesByUser = data.vote.votes;
+        // Read user's binding votes
+        var userVotes = VotesByUser.getVotes(ballotId, userId).votes().$promise;
+        userVotes.then(function (data) {
+            $scope.listOfVotesByUser = data.vote.votes;
             $scope.candidatesIndex = data.ballot.candidatesIndex;
             $scope.campaign.ballotPaper = data;
-		}, function(error){
-			if (error.status == "400" || error.status == "404") { //no votes under this signature
-				var newBallot = NewBallotPaper.ballot(ballotId).save({vote : {signature: userId}}).$promise;
-			}
-		});
+        }, function (error) {
+            if (error.status == "400" || error.status == "404") { //no votes under this signature
+                var newBallot = NewBallotPaper.ballot(ballotId).save({vote: {signature: userId}}).$promise;
+            }
+        });
 
-		// Read the consultive votes of this user
-		var userConsultiveVotes = VotesByUser.getVotes($scope.campaign.consultiveBallot, userId).votes().$promise;
-		userConsultiveVotes.then(function(data){
-			// $scope.listOfConsultiveVotesByUser = data.vote.votes;
-		}, function(error){
-			if (error.status == "400" || error.status == "404") { //no votes under this signature
-				var newConsultiveBallot = NewBallotPaper.ballot($scope.campaign.consultiveBallot).save({vote : {signature: userId}}).$promise;
-			}
-		});
+        $scope.listOfConsultiveVotesByUser = {};
+        $scope.consultiveCandidatesIndex = {};
+        $scope.campaign.consultiveBallotPaper = {};
 
-
-	}
+        // Read the consultive votes of this user
+        var userConsultiveVotes = VotesByUser.getVotes($scope.campaign.consultiveBallot, userId).votes().$promise;
+        userConsultiveVotes.then(function (data) {
+            $scope.listOfConsultiveVotesByUser = data.vote.votes;
+            $scope.consultiveCandidatesIndex = data.ballot.candidatesIndex;
+            $scope.campaign.consultiveBallotPaper = data;
+        }, function (error) {
+            if (error.status == "400" || error.status == "404") { //no votes under this signature
+                var newConsultiveBallot = NewBallotPaper.ballot($scope.campaign.consultiveBallot).save({vote: {signature: userId}}).$promise;
+            }
+        });
+    }
 
 	/**
 	 * Sets the current component in local storage if its ID matches with the requested ID on the route

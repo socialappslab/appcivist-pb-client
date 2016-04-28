@@ -136,6 +136,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             templateUrl: 'app/partials/home/home.html',
             activetab: 'home'
         })
+        .when('/profile',{
+            controller: 'ProfileCtrl',
+            templateUrl: 'app/partials/profile/profile.html'
+        })
         .when('/assemblies',{
             controller: 'AssemblyListCtrl',
             templateUrl: 'app/partials/assemblies/assemblies.html',
@@ -340,7 +344,6 @@ function selectBackendServer(hostname, apis) {
 
     //uncomment for dev
     //return apis.testing;
-
 
     if(hostname.match(possibleHosts[0])) {
         return apis.development;

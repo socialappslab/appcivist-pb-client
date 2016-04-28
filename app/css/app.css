@@ -2593,6 +2593,15 @@ button#second-vote {
   padding-left: 5px;
 }
 
+.profile form {
+  margin-top: 40px;
+}
+.profile form .profilePic {
+  margin: 20px auto;
+  width: 100px;
+  height: auto;
+}
+
 html, body {
   height: 100%;
   /* The html and body elements cannot have any padding or margin. */

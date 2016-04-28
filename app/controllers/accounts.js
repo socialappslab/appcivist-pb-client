@@ -154,3 +154,45 @@ appCivistApp.controller('NewInvitationModalCtrl', function($scope, $resource, $l
 		}
 	}
 });
+
+appCivistApp.controller('ProfileCtrl', function($scope,$resource,$location, localStorageService, $http){
+	$scope.user = localStorageService.get("user");
+
+	$scope.profile = {
+		"firstname": $scope.user.name.split(" ")[0],
+		"lastname": $scope.user.name.split(" ")[1],
+		"email": $scope.user.email,
+		"username":$scope.user.username
+	};
+
+	$scope.blurReset = function() {
+		if (!$scope.profile.firstname) {
+			$scope.profile.firstname = $scope.user.name.split(" ")[0]
+		}
+		if (!$scope.profile.lastname) {
+			$scope.profile.lastname = $scope.user.name.split(" ")[1]
+		}
+		if (!$scope.profile.email) {
+			$scope.profile.email = $scope.user.email
+		}
+		if (!$scope.profile.username) {
+			$scope.profile.username  = $scope.user.username
+		}
+
+	}
+
+	$scope.updateProfile = function() {
+
+		$scope.user.username = $scope.profile.username
+
+		var url = localStorageService.get("serverBaseUrl") + "/user/" + $scope.user.userId
+		var data = $scope.user
+
+		$http.put(url, data).then(function(){
+
+		 	console.log("Profile Updated");
+		});
+
+	}
+
+});

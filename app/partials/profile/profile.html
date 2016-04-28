@@ -1,0 +1,58 @@
+<div class="view profile">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<div class="col-md-12 col-sm-12">
+					<h3><strong>Edit Profile</strong></h3>
+				</div>
+			</div>
+		</div>
+
+		<form ng-controller="ProfileCtrl">
+			<div class="row">
+				<div class="col-md-8 col-sm-8">
+					<div class="form-group row ">
+						<div class="col-xs-8 ">
+						  <label for="profileEmail">Email address</label>
+						  <input type="email" class="form-control" name="profileEmail" placeholder="Email" ng-blur="blurReset()" ng-model="profile.email">
+						</div>
+				  </div>
+				  <div class="form-group row">
+						<div class="col-xs-4">
+					  	<label for="profileFirstName">First Name</label>
+				 			<input type="text" class="form-control" id="profileFirstName" placeholder="First" ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.firstname">
+						</div>
+						<div class="col-xs-4">
+							<label for="profileLastName">Last Name</label>
+					 		<input type="text" class="form-control" id="profileLastName" placeholder="Last" ng-blur="blurReset()" ng-model="profile.lastname">
+						</div>
+				  </div>
+					<div class="form-group row">
+						<div class="col-xs-8">
+						  <label for="profileUsername">Username</label>
+						  <input type="text" class="form-control" id="profileUsername" placeholder="Username" ng-blur="blurReset()" ng-model="profile.username">
+						</div>
+				  </div>
+				</div>
+
+				<div class="col-md-4 col-sm-4">
+		      <!--Profile Picture -->
+					<div class="form-group">
+						  <label for="profilePicUpload">Change Profile Picture</label>
+							<br>
+							<img class="profilePic" src="{{user.profilePic.urlLargeString}}" />
+					  	<input type="file" id="profilePicUpload">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 col-sm-12">
+					<div class="col-md-12 col-sm-12">
+						<button type="submit" class="btn btn-primary" ng-click="updateProfile()">Update Profile</button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</div>

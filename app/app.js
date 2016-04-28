@@ -138,6 +138,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             templateUrl: 'app/partials/home/home.html',
             activetab: 'home'
         })
+        .when('/profile',{
+            controller: 'ProfileCtrl',
+            templateUrl: 'app/partials/profile/profile.html'
+        })
         .when('/assemblies',{
             controller: 'AssemblyListCtrl',
             templateUrl: 'app/partials/assemblies/assemblies.html',

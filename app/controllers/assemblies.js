@@ -351,7 +351,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
                                                  $resource, $http, Assemblies, $location, Contributions, $uibModal,
                                                  loginService, localStorageService, Memberships, Invitations,
-                                                 FlashService, $translate, $filter) {
+                                                 FlashService, $translate, $filter, logService) {
 
     init();
 
@@ -551,6 +551,8 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             $scope.membership = Memberships.membershipInAssembly($scope.assemblyID, $scope.user.userId).get();
             $scope.membership.$promise.then(userIsMemberSuccess, userIsMemberError);
         }
+        // log read assembly
+        logService.logAction("READ_ASSEMBLY");
     }
 
     function initializeSideBoxes() {

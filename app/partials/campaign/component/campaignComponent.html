@@ -22,7 +22,7 @@
                         <strong>
                             {{'Brainstorm' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Brainstorming {{disableButton['contribute'] ? 'was' : 'will be'}} possible until {{milestonesMap['end_brainstorming'].date}}">
+                               uib-tooltip="{{'brainstorming.deadline'|translate}}: {{milestonesMap['end_brainstorming'].date|date:'medium'}}">
                             </i>
                         </strong>
                     </button>
@@ -34,7 +34,7 @@
                             <strong>
                                 {{'Create New Group' | translate}}
                                 <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                   uib-tooltip="Working groups can be formed until {{milestonesMap['end_wgroups_creation'].date}}">
+                                   uib-tooltip="{{'working.groups.can.be.formed.until'|translate}}: {{milestonesMap['end_wgroups_creation'].date|date:'medium'}}">
                                 </i>
                             </strong>
                         </button>
@@ -44,7 +44,7 @@
                         <strong>
                             {{'Create New Group' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Forming Working groups was possible before {{milestonesMap['end_wgroups_creation'].date}}">
+                               uib-tooltip="{{'forming.working.groups.was.possible.before'|translate}}: {{milestonesMap['end_wgroups_creation'].date|date:'medium'}}">
                             </i>
                         </strong>
                     </button>
@@ -79,7 +79,7 @@
                         <strong>
                             {{'Voting ballot not yet available' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
+                               uib-tooltip="'{{Voting|translate}}' starts on {{milestonesMap['start_voting'].date}} and ends on
                                    {{milestonesMap['end_voting'].date}}">
                             </i>
                         </strong>
@@ -122,6 +122,21 @@
             </div>
             <div class="voffset6"></div>
         </div>
+
+        <!-- TODO: introduce partial results of voting if the campaign current component is "voting" and viewVotingResults === true
+             TODO: instead of using a table here, make sure you implement the results as a directive. See the contribution directive for an example
+        <table ng-repeat="contribution in contributions" align="center" style="color:black;" width="80%" border="1px" bordercolor="white">-->
+            <!--<tr>-->
+                <!--<td align="center" width="15%" bgcolor="green" class="white">Yes</td>-->
+                <!--<td align="center" width="15%" bgcolor="#FF0000" class="white">No</td>-->
+                <!--<td align="center" width="15%">Abs.</td>-->
+                <!--<td align="center" width="15%" bgcolor="#800000" class="white">Blk</td>-->
+                <!--<td align="left" width="40%">{{contribution.title}}</td>-->
+            <!--</tr>-->
+        <!--</table>-->
+
+        <!--<br>-->
+
         <!-- Contribution tabs -->
         <uib-tabset>
             <uib-tab class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
@@ -141,22 +156,48 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
                                  ng-if="tab.ctype!='WORKING_GROUP'"
-                                 ng-style="tab.ctype==='BRAINSTORMING' ? 'height:300px;' : ''"
-                                 ng-repeat="contribution in tab.contentArray |
-                                                orderBy: orderProperty : orderReverse |
-                                                filter: campaignContributionFilter |
-                                                filter: {type:tab.ctype} track by $index ">
-                                <contribution ng-click="openContributionModal(contribution,'lg')"
-                                              contribution="contribution"
-                                              assemblyid="assembly.assemblyId"
-                                              campaignid="campaign.campaignId"
-                                              componentid="component.componentId"
-                                              container="tab.contentArray"
-                                              containerid="campaign.resourceSpaceId"
-                                              containerindex="$index"
-                                              enablevoting="enableVoting"></contribution>
+                                 ng-repeat="contribution in tab.contentArray
+                                                | orderBy: orderProperty : orderReverse
+                                                | filter: campaignContributionFilter
+                                                | filter: {type:tab.ctype}
+                                                track by $index ">
+                                <div style="height: 400px;" ng-if="tab.ctype==='BRAINSTORMING'">
+                                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                                                  contribution="contribution"
+                                                  assemblyid="assembly.assemblyId"
+                                                  campaignid="campaign.campaignId"
+                                                  componentid="component.componentId"
+                                                  container="tab.contentArray"
+                                                  containerid="campaign.resourceSpaceId"
+                                                  containerindex="$index"
+                                                  enablevoting="enableVoting"
+                                                  bballot="campaign.bindingBallot"
+                                                  cballot="campaign.consultiveBallot"
+                                                  bindingresults="campaign.ballotResults"
+                                                  consultiveResults="campaign.consultiveBallotResults"
+                                                  ballotpaper="campaign.ballotPaper"
+                                                  cballotpaper="campaign.consultiveBallotPaper">
+                                    </contribution>
+                                </div>
+                                <div style="height: 550px;" ng-if="tab.ctype!='BRAINSTORMING'">
+                                    <contribution ng-click="openContributionModal(contribution,'lg')"
+                                                  contribution="contribution"
+                                                  assemblyid="assembly.assemblyId"
+                                                  campaignid="campaign.campaignId"
+                                                  componentid="component.componentId"
+                                                  container="tab.contentArray"
+                                                  containerid="campaign.resourceSpaceId"
+                                                  containerindex="$index"
+                                                  enablevoting="enableVoting"
+                                                  bballot="campaign.bindingBallot"
+                                                  cballot="campaign.consultiveBallot"
+                                                  bindingresults="campaign.ballotResults"
+                                                  consultiveresults="campaign.consultiveBallotResults"
+                                                  ballotpaper="campaign.ballotPaper"
+                                                  cballotpaper="campaign.consultiveBallotPaper">
+                                    </contribution>
+                                </div>
                             </div>
-
                             <div class="col-md-4 col-sm-6 col-lg-3 col-xs-12 no-padding contribution"
                                  ng-if="tab.ctype==='WORKING_GROUP'"
                                  style="height:150px;"

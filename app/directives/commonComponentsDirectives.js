@@ -91,8 +91,9 @@ appCivistApp.directive('votesCounter', function(){
        templateUrl: "/app/partials/directives/votesCounter/votesCounter.html",
        scope: {
            contribution: '='
+
        },
-       controller: "ContributionVotesCtrl"
+       controller: "ContributionFeedbackCtrl"
    }
 });
 
@@ -103,7 +104,13 @@ appCivistApp.directive('consensusControls', function(){
     replace: true,
     templateUrl: "/app/partials/directives/consensusVoting/consensusControls.html",
     scope: {
-      contribution: '='
+        contribution: '=',
+        bindingResults: '=bindingresults',
+        consultiveResults: '=consultiveresults',
+        ballotPaper: "=ballotpaper",
+        consultiveBallotPaper: "=cballotpaper",
+        bindingBallotId: "=bballot",
+        consultiveBallotId: "=cballot"
     },
     controller: "ContributionVotesCtrl"
   }
@@ -123,7 +130,13 @@ appCivistApp.directive('contribution', function(){
             container : '=container',
             containerID : '=containerid',
             containerIndex : '=containerindex',
-            enableVoting: '=enablevoting'
+            enableVoting: '=enablevoting',
+            bindingResults: '=bindingresults',
+            consultiveResults: '=consultiveresults',
+            ballotPaper: "=ballotpaper",
+            consultiveBallotPaper: "=cballotpaper",
+            bindingBallotId: "=bballot",
+            consultiveBallotId: "=cballot"
         },
         controller: "ContributionDirectiveCtrl",
     }

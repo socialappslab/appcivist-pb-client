@@ -5,21 +5,19 @@ appCivistApp.filter('capitalize', function() {
 });
 
 
-appCivistApp.filter("ContributionsByTheme", function ()
-{
-    return function (contributions, themeTitle)
-    {
+appCivistApp.filter("ContributionsByTheme", function () {
+    return function (contributions, themeTitle) {
         if(themeTitle === "") {
             return contributions;
         }
         var result  = [];
         for(var i=0;i<contributions.length;i++){
             var c = contributions[i];
-            var themes = contributions.themes;
+            var themes = c.themes;
             if (themes) {
                 for (var j = 0; j < themes.length; j++) {
-                    var t = theme[j];
-                    if (t.title = themeTitle) {
+                    var t = themes[j];
+                    if (t.title === themeTitle) {
                         result.push(contributions);
                         break;
                     }
@@ -28,4 +26,13 @@ appCivistApp.filter("ContributionsByTheme", function ()
         }
         return result;
     };
+});
+
+//We already have a limitTo filter built-in to angular,
+//let's make a startFrom filter
+appCivistApp.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
 });

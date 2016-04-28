@@ -1,5 +1,5 @@
 appCivistApp.controller('CampaignListCtrl', function($scope, $routeParams,$resource, $location, Campaigns, loginService,
-													 localStorageService, $translate) {
+													 localStorageService, $translate, logService) {
 	$scope.campaigns = [];
 	$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
 	$scope.etherpadServer = localStorageService.get("etherpadServer");
@@ -708,7 +708,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
-														  Ballot, Candidate, VotesByUser, NewBallotPaper){
+														  Ballot, Candidate, VotesByUser, NewBallotPaper, logService){
 
 	init();
 
@@ -840,6 +840,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			}, function () {
 				console.log('Modal dismissed at: ' + new Date());
 			});
+
+			if (cType="PROPOSAL") {
+				logService.logAction("CREATING_PROPOSAL");
+			} else if (cType="BRAINSTORMING") {
+				logService.logAction("CREATING_CONTRIBUTION");
+			}
 		};
 
 		$scope.orderContributions = function(property) {
@@ -912,15 +918,16 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				setCurrentComponentAndMilestones($scope,localStorageService);
 				setMilestonesMap();
 				setContributionsAndGroups($scope,localStorageService);
-				setCurrentBallot($scope, localStorageService);
+				ballotInit($scope, localStorageService);
 			});
 		} else {
 			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
 			setCurrentComponentAndMilestones($scope,localStorageService);
 			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
-			setCurrentBallot($scope, localStorageService);
+			ballotInit($scope, localStorageService);
 		}
+		logService.logAction("READ_CAMPAIGN");
 	}
 
 	// register user to vote if ballot does not exist
@@ -931,22 +938,66 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		console.log(VoteByUser);
 	}*/
 
-	//var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
-	function setCurrentBallot($scope, localStorageService){
-		var ballotId = $scope.campaign.bindingBallot;
-		var userId = $scope.user.uuid;
-		//var ballot = Ballot.get({uuid: currentBallot});
+    function ballotInit($scope, localStorageService) {
+        var ballotId = $scope.campaign.bindingBallot;
+        var consultiveBallotId = $scope.campaign.consultiveBallot;
+        var userId = $scope.user.uuid;
 
-		var votes = VotesByUser.get({uuid: ballotId, signature: userId}).$promise;
-		votes.then(function(data){
+        // Read the current results of the voting
+        $scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
+        $scope.campaign.ballotResults.then(
+            function (data) {
+                $scope.campaign.ballotResults = data;
+            },
+            function (error) {
+                $scope.campaign.ballotResults = null;
+            }
+        );
 
-		}, function(error){
-			if (error.status == "400" || error.status == "404") { //no votes under this signature
-				var newBallot = NewBallotPaper.ballot(ballotId).save({vote : {signature: userId}}).$promise;
-			}
-		});
+        // Read the current results of up and downs consultive votes
+        $scope.campaign.consultiveBallotResults = Ballot.results({uuid: $scope.campaign.consultiveBallot}).$promise;
+        $scope.campaign.consultiveBallotResults.then(
+            function (data) {
+                $scope.campaign.consultiveBallotResults = data;
+            },
+            function (error) {
+                $scope.campaign.consultiveBallotResults = null;
+            }
+        );
 
-	}
+        // User binding votes
+        $scope.listOfVotesByUser = {};
+        $scope.candidatesIndex = {};
+        $scope.campaign.ballotPaper = {};
+
+        // Read user's binding votes
+        var userVotes = VotesByUser.getVotes(ballotId, userId).votes().$promise;
+        userVotes.then(function (data) {
+            $scope.listOfVotesByUser = data.vote.votes;
+            $scope.candidatesIndex = data.ballot.candidatesIndex;
+            $scope.campaign.ballotPaper = data;
+        }, function (error) {
+            if (error.status == "400" || error.status == "404") { //no votes under this signature
+                var newBallot = NewBallotPaper.ballot(ballotId).save({vote: {signature: userId}}).$promise;
+            }
+        });
+
+        $scope.listOfConsultiveVotesByUser = {};
+        $scope.consultiveCandidatesIndex = {};
+        $scope.campaign.consultiveBallotPaper = {};
+
+        // Read the consultive votes of this user
+        var userConsultiveVotes = VotesByUser.getVotes($scope.campaign.consultiveBallot, userId).votes().$promise;
+        userConsultiveVotes.then(function (data) {
+            $scope.listOfConsultiveVotesByUser = data.vote.votes;
+            $scope.consultiveCandidatesIndex = data.ballot.candidatesIndex;
+            $scope.campaign.consultiveBallotPaper = data;
+        }, function (error) {
+            if (error.status == "400" || error.status == "404") { //no votes under this signature
+                var newConsultiveBallot = NewBallotPaper.ballot($scope.campaign.consultiveBallot).save({vote: {signature: userId}}).$promise;
+            }
+        });
+    }
 
 	/**
 	 * Sets the current component in local storage if its ID matches with the requested ID on the route
@@ -977,10 +1028,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				if (!$scope.component) {
 					var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm');
 					var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm');
-					console.log("Checking dates for component: " + c.title);
-					console.log("=> Today is: " + moment().format());
-					console.log("=> Component starts: " + startMoment.format());
-					console.log("=> Component ends: " + endMoment.format());
 					//, and we are in the right dates,
 					// this component to current
 					if (moment().local().isBetween(startMoment, endMoment)) {
@@ -1016,7 +1063,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			localStorageService.set("currentMilestones", $scope.milestones);
 		}
 
-		$scope.enableVoting = ($scope.component.key && $scope.component.key.toLowerCase() === 'voting');
+		$scope.enableVoting = ($scope.component && $scope.component.key && $scope.component.key.toLowerCase() === 'voting');
 		if ($scope.component && $scope.component.key!="Proposalmaking") {
 			$scope.contentTabs[2].active=true;
 		}
@@ -1078,6 +1125,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.contributions.$promise.then(
 					function (data) {
 						$scope.contributions = data;
+						if(!$scope.contributions){
+							$scope.contributions = [];
+						}
 						$scope.contentTabs[0].contentArray = $scope.contributions;
 						$scope.contentTabs[2].contentArray = $scope.contributions;
 					},
@@ -1088,6 +1138,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			);
 		} else {
 			$scope.contributions = $scope.campaign.contributions;
+			if(!$scope.contributions){
+				$scope.contributions = [];
+			}
 			$scope.contentTabs[0].contentArray = $scope.contributions;
 			$scope.contentTabs[2].contentArray = $scope.contributions;
 		}
@@ -1170,7 +1223,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 appCivistApp.controller('EditCampaignCtrl', function($scope, $controller, $sce, $http, $templateCache, $routeParams,
 													   $resource, $location, $timeout, localStorageService,
 													   Campaigns, Assemblies, Components, Contributions,
-													   moment, modelFormatConfig, $translate){
+													   moment, modelFormatConfig, $translate, logService){
 
 
 		angular.extend(this, $controller('CampaignComponentCtrl', {$scope: $scope}));

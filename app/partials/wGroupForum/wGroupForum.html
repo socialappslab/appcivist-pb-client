@@ -88,18 +88,19 @@
                 <div class="row">
                     <h3><strong>Our Proposals</strong></h3>
                     <div class="box descriptionBox">
-                        <p>To create a new proposal, visit the page of one of the Assembly campaigns, and then move to the Versioning Stage</p>
+                        <p>To create a new proposal, visit the page of one of the Assembly campaigns</p>
                     </div>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in proposals | orderBy: 'creation' | filter:{type:'PROPOSALS'} track by $index">
-                                <contribution contribution="contribution"
-                                              assemblyid="assemblyID"
-                                              container="proposals"
-                                              containerid="wgroup.resourcesResourceSpaceId"
-                                              containerindex="$index"></contribution>
-
+                            <li class="contribution" ng-repeat="contribution in proposals | orderBy: 'creation' | filter:{type:'PROPOSAL'} track by $index">
+                                <div style="height: 500px;">
+                                    <contribution contribution="contribution"
+                                                  assemblyid="assemblyID"
+                                                  container="proposals"
+                                                  containerid="wgroup.resourcesResourceSpaceId"
+                                                  containerindex="$index"></contribution>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -110,11 +111,13 @@
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
                             <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'BRAINSTORMING'} track by $index">
-                                <contribution contribution="contribution"
-                                              assemblyid="assemblyID"
-                                              container="contributions"
-                                              containerid="wGroup.forumResourceSpaceId"
-                                              containerindex="$index"></contribution>
+                                <div style="height: 350px;">
+                                    <contribution contribution="contribution"
+                                                  assemblyid="assemblyID"
+                                                  container="contributions"
+                                                  containerid="wGroup.forumResourceSpaceId"
+                                                  containerindex="$index"></contribution>
+                                </div>
                             </li>
                         </ul>
                     </div>

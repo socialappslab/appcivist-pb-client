@@ -42,6 +42,7 @@
   margin-bottom: 2rem;
   margin-left: 2rem;
   display: inline-flex;
+  position: relative;
 
   & .row{
     margin-left: 0;
@@ -72,12 +73,25 @@
 
   & .contribution-title{
     display: inline-block;
-    margin: 0;
+    margin-top: 15px;
     cursor: pointer;
   }
 
   & .contribution-description{
     display: inline;
+  }
+
+
+  & .contribution-meta{
+    position:absolute;
+    bottom:0;
+  }
+
+
+  & .contribution-meta-relative{
+    & .contribution-meta{
+      position:relative;
+    }
   }
 
   .contribution-background{

@@ -239,6 +239,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     'delete' : {method: 'DELETE'}
                 });
         },
+        contributionSoftRemoval: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval',
+                {aid: assemblyId, coid: contributionId},
+                {
+                    'update' : {method:'PUT'}
+                });
+        },
         contributionAttachment: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/attachment',
                 {aid: assemblyId, coid: contributionId});
@@ -261,7 +268,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             }
         },
         verifyGroupAuthorship: function (user, c, group) {
-            var assemblyId = group.assemblies[0];
+            var assemblyId = group.assemblies ? group.assemblies[0] : 0;
             var groupId = group.groupId;
             var status = 'ACCEPTED';
             return WorkingGroups.verifyMembership(assemblyId, groupId, user.userId);
@@ -298,10 +305,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     ciid: componentID
                 })
         },
-        updateStats: function (statsId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/stats/:stid',
-                {stid: statsId},
-                {'update': {method:'PUT'}}
+        userFeedback: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback',
+                { aid: assemblyId, cid: contributionId},
+                { 'update': { method: 'PUT'}}
             );
         },
         defaultContributionAttachment: function () {
@@ -406,6 +413,13 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                     gid: groupId
                 });
         },
+        workingGroupContributions: function(assemblyId, groupId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contributions',
+                {
+                    aid: assemblyId,
+                    gid: groupId
+                });
+        },
         verifyMembership: function(assemblyId, groupId, userId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/user/:uid',
                 {
@@ -439,6 +453,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 //},
                 "themes": [],
                 "existingThemes": [],
+                "existingContributions": [],
                 //"config" : {
                 //    "majority":"66%",
                 //    "blocking":false
@@ -457,7 +472,10 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 "invitationEmail" : "",
                 "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
                 "majorityThreshold" : "simple",
-                "blockMajority" : false
+                "blockMajority" : false,
+                "profile" : {
+                    "icon" : ""
+                }
             };
 
             var invitationEmail = $translate('wgroup.invitation.email.text',

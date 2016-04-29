@@ -247,6 +247,18 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.containerIndex = containerIndex;
             $scope.doNotSummarizeText = true;
 
+            if (!$scope.contribution.comments || $scope.contribution.comments.length === 0) {
+                var getComments = Contributions.getContributionComments($scope.assemblyID, $scope.contribution.contributionId).query();
+                getComments.$promise.then(
+                    function (data) {
+                        $scope.contribution.comments = data;
+                    },
+                    function (error) {
+                        $scope.contribution.comments = [];
+                    }
+                )
+            }
+
             $scope.clearContribution = function () {
                 clearNewContributionObject($scope.newContribution, Contributions);
             };

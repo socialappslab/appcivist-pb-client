@@ -311,6 +311,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 { 'update': { method: 'PUT'}}
             );
         },
+        getContributionComments: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/comment',
+                { aid: assemblyId, cid: contributionId}
+            );
+        },
         defaultContributionAttachment: function () {
             var att = {
                 name: "",

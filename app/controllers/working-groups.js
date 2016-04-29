@@ -407,7 +407,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.contributions = [];
         $scope.pendingInvitations = [];
 
-        if ($scope.assemblyID > 0 && $scope.workingGroupID > 0) {
+        if ($scope.assemblyID >= 0 && $scope.workingGroupID >= 0) {
             $scope.membership = Memberships.membershipInGroup($scope.workingGroupID, $scope.user.userId).get();
             $scope.membership.$promise.then(userIsMemberSuccess, userIsMemberError);
         }

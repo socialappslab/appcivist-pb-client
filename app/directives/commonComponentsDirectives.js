@@ -91,7 +91,6 @@ appCivistApp.directive('votesCounter', function(){
        templateUrl: "/app/partials/directives/votesCounter/votesCounter.html",
        scope: {
            contribution: '='
-
        },
        controller: "ContributionFeedbackCtrl"
    }

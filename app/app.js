@@ -201,7 +201,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         .when('/ballot/',{ // TODO: this redirect is just temporal
             redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
         })
-        // TODO: finalize voting UIs
+        // TODO: finalize voting UIs #Issue #231
         .when('/ballot/:uuid/start',{
           controller: 'ballotStartCtrl',
           templateUrl: 'public/ballot/start.html'

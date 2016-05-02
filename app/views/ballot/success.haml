@@ -1,4 +1,8 @@
-
+.container
+  .row.text-center
+    %h2
+      %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot
+      {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
 
 .container.instructions.text-center
   .jumbotron
@@ -7,7 +11,7 @@
       .text-center{:style => "font-weight: bold; margin-top: 10px; margin-bottom: 10px;"}
         {{signature}}
     %h2.title
-      Please write this down to access your votes in the future.
+      Please, copy and paste this in a local file to access your votes in the future.
     .show
       %a.btn.btn-default.btn-lg.pull-left{"ng-click" => "returnToRegister()", :type => "button", :style => "margin-top: 20px;"} Back to Registration
       %button.btn-lg.btn.btn-success{"ng-click" => "createBallotPaper()", :type => "button", :style => "margin-top: 20px;"} Begin Voting

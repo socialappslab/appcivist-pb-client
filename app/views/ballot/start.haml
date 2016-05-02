@@ -1,8 +1,6 @@
 .container
   .row.text-center
     %h2
-      -#%b> Assembly:
-      -#PB Belleville Paris/
       %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot
       {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
   #rangeLanding.jumbotron
@@ -13,12 +11,12 @@
         %h1
           %b Voting Ballot
       .container
-        %h1#small {{ballot.starts_at | date:'yyyy'}} {{ballot.starts_at | date:'MM'}}
+        %h1#small {{ballot.ballot.starts_at | date:'yyyy'}}/{{ballot.ballot.starts_at | date:'MMMM'}}
     %br
       .container.instructions
         %h2.title
           %strong Voting Instructions
-          %button.btn.btn-success{"ng-click" => "transitionToRegistration()", :type => "button"} Register to Vote
+          %button.btn.btn-success{"ng-click" => "transitionToRegistration()", :type => "button"} {{user ? "Continue to vote" : "Register to vote" }}
         %ul
           %li{:type => "circle"} {{ballot.ballot.instructions}}
           %li{:type => "circle"}

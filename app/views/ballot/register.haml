@@ -1,19 +1,13 @@
 .container
-  .row.text-center
-    %h2
-      %b> Assembly:
-      PB Belleville Paris/
-      %b> Campaign:
-      Belleville - Paris PB 2016
-  %br
-  .titles
-    .container
-      %h3 Paris PB 2016
-    .container
-      %h1
-        %b Voting Ballot
-    .container
-      %h1#small 2016 August
+  #rangeLanding.jumbotron
+    .titles
+      .container
+        %h3 {{campaigns.length < 1 ? "" : campaigns[0].title }}
+      .container
+        %h1
+          %b Voting Ballot
+      .container
+        %h1#small {{ballot.ballot.starts_at | date:'yyyy'}}/{{ballot.ballot.starts_at | date:'MMMM'}}
   %br
     %form
       .fields{"ng-repeat" => "field in ballot.ballot_registration_fields"}

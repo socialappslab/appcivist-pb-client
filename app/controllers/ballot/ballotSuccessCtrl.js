@@ -1,7 +1,8 @@
 /**
  * Voting Landing Page
  */
-appCivistApp.controller('ballotSuccessCtrl', function($scope, $routeParams, $location, BallotPaper, localStorageService){
+appCivistApp.controller('ballotSuccessCtrl', function($scope, $routeParams, $location, BallotPaper,
+                                                      BallotCampaign, localStorageService){
 	$scope.signature = localStorageService.get("voteSignature");
 
   $scope.createBallotPaper = function() {
@@ -22,4 +23,15 @@ appCivistApp.controller('ballotSuccessCtrl', function($scope, $routeParams, $loc
   $scope.returnToRegister = function() {
     $location.url("/ballot/" + $routeParams.uuid + "/register");
   }
+
+  $scope.campaigns = [];
+  var campaign = BallotCampaign.query({uuid: $routeParams.uuid}).$promise;
+  campaign.then(
+      function (data) {
+        $scope.campaigns = data;
+      },
+      function (error) {
+        console.log("No campaigns associated with ballot: " + $scope.ballotUUID);
+      }
+  );
 });

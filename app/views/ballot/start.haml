@@ -18,13 +18,13 @@
           %strong Voting Instructions
           %button.btn.btn-success{"ng-click" => "transitionToRegistration()", :type => "button"} {{user ? "Continue to vote" : "Register to vote" }}
         %ul
-          %li{:type => "circle"} {{ballot.ballot.instructions}}
           %li{:type => "circle"}
             The voting system your Assembly selected and configured for this campaign is
             %b {{ballot.ballot.voting_system_type}}
-          %li{:type => "none"}
-            %ul
-              %li{"ng-repeat" => "config in ballot.ballot_configurations", :type => "circle"} The {{config.key}} of this voting ballot is {{config.value}}.
+          %li{:type => "circle"} {{ballot.ballot.instructions}}
+          -#%li{:type => "none"}
+          -#  %ul
+          -#    %li{"ng-repeat" => "config in ballot.ballot_configurations", :type => "circle"} The {{config.key}} of this voting ballot is {{config.value}}.
           %li{:type => "circle"} When you are ready to vote, click the button "Start voting".
       %br
         .container.additional-info

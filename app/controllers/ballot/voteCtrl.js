@@ -27,11 +27,13 @@ appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $locat
         $scope.signature = $scope.user.uuid;
     }
 
+    $scope.ballotUUID = $routeParams.uuid;
     console.log("Fetching the ballot paper")
     var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: $scope.signature}).$promise;
     ballotPaper.then(function (data) {
             console.log(data)
             console.log("Retreived voting ballot from server.");
+            $scope.ballotPaper = data;
             $scope.ballot = data.ballot;
             $scope.vote = data.vote;
 

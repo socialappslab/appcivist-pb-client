@@ -1,8 +1,7 @@
 #rangeVotingVote.container
   .row.text-center
     %h2
-      %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot
-      {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
+      %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
   %br
     %br
       .row.voting-content
@@ -18,9 +17,7 @@
           .buttons
             %ul.list-unstyled.list-inline
               %li
-                %input.form-control{"ng-model" => "query", :placeholder => "Enter keyword", :type => "text"}/
-              %li
-                %button.btn.btn-success{:type => "button"} Search
+                %input.form-control{"ng-model" => "query", :placeholder => "Enter keyword", :type => "text"}
               %li
                 %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} Voting Instructions
               %li
@@ -41,22 +38,12 @@
                       %li{:type => "circle"} {{ballot.instructions}}
                       %li{:type => "circle"}
                         The voting system your Assembly selected and configured for this campaign is
-                        %b {{ballot.systemType}}
-                      %li{:type => "none"}
-                        %ul
-                          %li{"ng-repeat" => "pair in ballot.ballot_configurations", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
+                        %b {{ballot.voting_system_type}}
+                      -#%li{:type => "none"}
+                      -#  %ul
+                      -#    %li{"ng-repeat" => "pair in ballot.ballot_configurations", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
                       %li{:type => "circle"} When you are ready to vote, close the instruction window and start voting.
                   %br
-                    .container.additional-info
-                      %h2
-                        %strong Additional Information
-                      %p.info{:style => "white-space: pre-wrap;"} {{ballot.notes}}
-                      %br
-                        %h3
-                          %strong Technical Issues
-                        %br
-                          %ul.list-unstyled
-                            %li Contact Cristhian at cristhian@example.com/ +1 999 999 9999
                 .modal-footer
                   %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
           %ul.list-unstyled.voted-proposals
@@ -71,14 +58,16 @@
                   %h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
                     %b> Estimated Cost:
                     {{proposal.budget|currency}}
-                  %h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
-                    %b> Location:
-                    Berkeley, CA 94720
+                  -#%h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
+                  -#  %b> Location:
+                  -#  Berkeley, CA 94720
                   %p.description
                     %span{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"} {{proposal.text}}
-                    %span.rate
+                    %span.rate{"ng-if" => "ballot.voting_system_type==='RANGE'"}
                       %input.form-control{:id => "{{proposal.uuid}}", "ng-model" => "proposal.value", :placeholder => "{{scores[proposal.uuid]}}", :type => "number", :min => "{{minimumPossibleScore()}}", :max => "{{maximumPossibleScore()}}"}/
-              / Modal for information of the candidate
+                    %span.rate{"ng-if" => "ballot.voting_system_type==='PLURALITY'"}
+                      %consensus-controls{:id => "{{proposal.uuid}}", :bballot => "ballotUUID", :ballotpaper => "ballotPaper", :contribution => "proposal"}/
+              -#/ Modal for information of the candidate
               .modal.fade{"aria-labelledby" => "{{proposal.uuid}}Label", :id => "{{proposal.uuid}}modal", :role => "dialog", :tabindex => "-1"}
                 .modal-dialog{:role => "document"}
                   .modal-content

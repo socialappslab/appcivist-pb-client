@@ -197,14 +197,13 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'NewWorkingGroupCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
-         // TODO: finalize voting UIs s
-        .when('/ballot/',{ // TODO: this redirect is just temporal
-            redirectTo: '/ballot/abcd-efgh-ijkl-mnop/register'
-        })
         // TODO: finalize voting UIs #Issue #231
+        .when('/ballot/:uuid',{
+          redirectTo: '/ballot/:uuid/start'
+        })
         .when('/ballot/:uuid/start',{
-          controller: 'ballotStartCtrl',
-          templateUrl: 'public/ballot/start.html'
+            controller: 'ballotStartCtrl',
+            templateUrl: 'public/ballot/start.html'
         })
         .when('/ballot/:uuid/register',{
           controller: 'ballotRegisterCtrl',

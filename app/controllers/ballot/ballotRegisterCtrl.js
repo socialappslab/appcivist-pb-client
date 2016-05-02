@@ -28,4 +28,23 @@ appCivistApp.controller('ballotRegisterCtrl', function($scope, $routeParams, $lo
       $location.url("/ballot/" + $routeParams.uuid + "/vote");
     }, function(error){ window.appcivist.handleError(error); });
   }
+
+    $scope.campaigns = [];
+    var campaign = BallotCampaign.query({uuid:$routeParams.uuid}).$promise;
+    campaign.then(
+        function (data) {
+            $scope.campaigns = data;
+        },
+        function (error) {
+            console.log("No campaigns associated with ballot: "+$scope.ballotUUID);
+        }
+    );
+
+    $scope.user = localStorageService.get("user");
+    if ($scope.user && $scope.user.language) {
+        $translate.use($scope.user.language);
+        $scope.signature = $scope.user.uuid;
+        localStorageService.set("voteSignature",$scope.signature);
+        $location.url("/ballot/" + $routeParams.uuid + "/vote");
+    }
 });

@@ -40,7 +40,6 @@ appCivistApp.factory('BallotPaper', function($http, $resource, localStorageServi
   );
 });
 
-
 appCivistApp.factory('VotesByUser', function($http, $resource, localStorageService){
   var url = getVotingApiURL(localStorageService);
   return {
@@ -163,8 +162,6 @@ appCivistApp.factory("Candidate", function($http, $resource, localStorageService
   }
 
 })
-
-
 //
 // appCivistApp.factory('VotingTally', function($http, $resource, localStorageService) {
 //     var url = getVotingApiURL(localStorageService);

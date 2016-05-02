@@ -1,19 +1,19 @@
 .container
   .row.text-center
     %h2
-      %b> Assembly:
-      PB Belleville Paris/
-      %b> Campaign:
-      Belleville - Paris PB 2016
+      -#%b> Assembly:
+      -#PB Belleville Paris/
+      %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot
+      {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
   #rangeLanding.jumbotron
     .titles
       .container
-        %h3 Paris PB 2016
+        %h3 {{campaigns.length < 1 ? "" : campaigns[0].title }}
       .container
         %h1
           %b Voting Ballot
       .container
-        %h1#small 2016 August
+        %h1#small {{ballot.starts_at | date:'yyyy'}} {{ballot.starts_at | date:'MM'}}
     %br
       .container.instructions
         %h2.title

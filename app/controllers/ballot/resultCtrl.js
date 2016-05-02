@@ -27,8 +27,24 @@ appCivistApp.controller('ballotResultCtrl', function($scope, $routeParams, Ballo
     $scope.candidates.sort( (w1, w2) => w1.score < w2.score ? 1 : -1 )
   }, (error) => window.appcivist.handleError(error) );
 
-
   $scope.calculateTotalBudget = function() {
     return $scope.candidates.slice(0, 3).reduce( (prev, curr) => prev + parseInt(curr.budget), 0);
+  }
+
+  $scope.campaigns = [];
+  var campaign = BallotCampaign.query({uuid:$routeParams.uuid}).$promise;
+  campaign.then(
+      function (data) {
+        $scope.campaigns = data;
+      },
+      function (error) {
+        console.log("No campaigns associated with ballot: "+$scope.ballotUUID);
+      }
+  );
+
+  $scope.user = localStorageService.get("user");
+  if ($scope.user && $scope.user.language) {
+    $translate.use($scope.user.language);
+    $scope.signature = $scope.user.uuid;
   }
 });

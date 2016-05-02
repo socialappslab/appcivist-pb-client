@@ -1233,3 +1233,11 @@ appCivistApp.factory('Invitations', function ($resource, localStorageService) {
         },
     }
 });
+
+appCivistApp.factory('BallotCampaign', function($http, $resource, localStorageService) {
+    var url = getServerBaseUrl(localStorageService);
+    return $resource(
+        url + '/ballot/:uuid/campaign',
+        {"uuid": "@id"}
+    );
+});

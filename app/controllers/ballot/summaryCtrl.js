@@ -40,4 +40,22 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function($scope, $routeParams, 
       $location.url("/ballot/" + $routeParams.uuid + "/result");
     }, function(error) { window.appcivist.handleError(error); })
 	}
+
+
+  $scope.campaigns = [];
+  var campaign = BallotCampaign.query({uuid:$routeParams.uuid}).$promise;
+  campaign.then(
+      function (data) {
+        $scope.campaigns = data;
+      },
+      function (error) {
+        console.log("No campaigns associated with ballot: "+$scope.ballotUUID);
+      }
+  );
+
+  $scope.user = localStorageService.get("user");
+  if ($scope.user && $scope.user.language) {
+    $translate.use($scope.user.language);
+    $scope.signature = $scope.user.uuid;
+  }
 });

@@ -27,5 +27,6 @@ appCivistApp.controller('ballotRegisterCtrl', function($scope, $routeParams, $lo
       localStorageService.set("voteSignature", $scope.signature);
       $location.url("/ballot/" + $routeParams.uuid + "/vote");
     }, function(error){ window.appcivist.handleError(error); });
+
   }
 });

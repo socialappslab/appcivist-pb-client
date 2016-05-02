@@ -347,6 +347,7 @@ function pathIsNotRestricted(path) {
  */
 function selectBackendServer(hostname, apis) {
     var possibleHosts = ["localhost", "appcivist-sage.littlemacondo.com", "appcivist.littlemacondo.com"];
+
     if (hostname.match(possibleHosts[0])) {
         return apis.development;
     } else if (hostname.match(possibleHosts[1])) {

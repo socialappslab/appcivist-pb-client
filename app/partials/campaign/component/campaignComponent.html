@@ -63,9 +63,9 @@
                     </button>
                 </span>
                 <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <a ng-if="ballot" ng-href="#/ballot/{{ballot.uuid}}/start">
+                    <a ng-if="ballot">
                         <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                ng-disabled="disableButton['vote']">
+                                ng-disabled="disableButton['vote']" ng-click="loadBallotPaper()">
                             <strong>
                                 {{'Vote on Proposals' | translate}}
                                 <i class="fa fa-info-circle" tooltip-placement="top"

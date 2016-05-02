@@ -708,7 +708,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
-														  Ballot, Candidate, VotesByUser, NewBallotPaper, logService){
+														  Ballot, Candidate, VotesByUser, NewBallotPaper, BallotPaper, logService){
 
 	init();
 
@@ -1180,6 +1180,14 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		);
 	}
 
+	$scope.loadBallotPaper = function(){
+		//console.log($scope.campaign, $scope.user.uuid);
+		var ballotPaper = BallotPaper.get({uuid: $scope.campaign.bindingBallot, signature: $scope.user.uuid}).$promise;
+		ballotPaper.then(function(data){
+			localStorageService.set("voteSignature", $scope.user.uuid);
+			$location.url("/ballot/" + $scope.campaign.bindingBallot + "/vote");
+		}, function(error){ window.appcivist.handleError(error); });
+	}
 	//function setupDaysToDue() {
 	//	// Days, hours, minutes to end date of this component phase
 	//	var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm');

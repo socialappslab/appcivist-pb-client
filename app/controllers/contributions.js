@@ -666,12 +666,13 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
         // Make sure the Binding Votes of the user are available in the scope
         $scope.listOfVotesByUser = $scope.ballotPaper ? $scope.ballotPaper.vote ? $scope.ballotPaper.vote.votes : null : null;
         $scope.candidatesIndex = $scope.ballotPaper ? $scope.ballotPaper.ballot ? $scope.ballotPaper.ballot.candidatesIndex : null : null;
-        if (!$scope.listOfVotesByUser && !$scope.candidatesIndex)
+        $scope.votesIndex = $scope.ballotPaper ? $scope.ballotPaper.vote ? $scope.ballotPaper.vote.votesIndex : null : null;
+        if (!$scope.listOfVotesByUser && !$scope.votesIndex)
             readBallotPaper($scope.bindingBallotId, "BINDING");
 
-        if ($scope.listOfVotesByUser && $scope.candidatesIndex && $scope.contribution) {
-            if ($scope.listOfVotesByUser[$scope.candidatesIndex[$scope.contribution.uuidAsString]]) {
-                $scope.setToggle($scope.listOfVotesByUser[$scope.candidatesIndex[$scope.contribution.uuidAsString]].value);
+        if ($scope.listOfVotesByUser && $scope.votesIndex && $scope.contribution) {
+            if ($scope.listOfVotesByUser[$scope.votesIndex[$scope.contribution.uuidAsString]]) {
+                $scope.setToggle($scope.listOfVotesByUser[$scope.votesIndex[$scope.contribution.uuidAsString]].value);
             }
         }
     }

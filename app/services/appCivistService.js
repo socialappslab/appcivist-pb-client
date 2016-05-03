@@ -316,6 +316,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                 { aid: assemblyId, cid: contributionId}
             );
         },
+        getContributionByUUID: function (uuid) {
+            return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid',
+                {uuid: uuid}
+            );
+        },
         defaultContributionAttachment: function () {
             var att = {
                 name: "",

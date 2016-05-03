@@ -93,67 +93,12 @@ appCivistApp.factory('MakeVote', function($http, $resource, localStorageService)
   }
 });
 
-appCivistApp.factory("Candidate", function($http, $resource, localStorageService) {
-/*
-  var mockCandidates = [
-    {
-      "uuid":1,
-      "title":"Appcivist Voting Service",
-      "text":"Appcivist will provide activists users with a voting service that implements multiple voting systems and enables voting visualization.",
-      "budget":"5000",
-      "authors":["Cristhian Parra"],
-      "workingGroupAuthors":["Voting Section Team"],
-      "themes":["Computer Science", "Urban Infrastructure"],
-      "attachments":[],
-      "comments":["This is a very well made website.", "Except for a lot of issues in CSS"],
-      "assessmentSummary":"This project seems feasible, if all of the team members have professional knowledge of Angular JS, Bootstrap and web development in general.",
-      "assessments":[]
-    },
-    {
-      "uuid":2,
-      "title":"Playground in Square Marcel Mouioudji",
-      "text":"Random description goes here as an example. I do not have anything particular in mind, so I am just going to say something like this.",
-      "budget":"25000",
-      "authors":["Passionés du Parc de Belleville"],
-      "workingGroupAuthors":["Playground team"],
-      "themes":["Urban Infrastructure","Streets and Transportation"],
-      "attachments":[],
-      "comments":["The playground will be very attractive to children living in the neighborhood.", "There may be some safety concerns for the address of the playground."],
-      "assessmentSummary":"This project seems pratical.",
-      "assessments":[]
-    },
-    {
-      "uuid":3,
-      "title":"Organic Garden in Parc de Belleville",
-      "text":"Random description goes here as an example. I do not have anything particular in mind, so I am just going to say something like this.",
-      "budget":"40000",
-      "authors":["Passionés du Parc de Belleville"],
-      "workingGroupAuthors":["Organic Garden team"],
-      "themes":["Urban Infrastructure"],
-      "attachments":[],
-      "comments":["The playground will be very attractive to children living in the neighborhood.", "There may be some safety concerns for the address of the playground."],
-      "assessmentSummary":"This project seems pratical.",
-      "assessments":[]
-    },
-    {
-      "uuid":4,
-      "title":"Smart Traffic lights on Rue de Ménilmontant",
-      "text":"Random description goes here as an example. I do not have anything particular in mind, so I am just going to say something like this.",
-      "budget":"100000",
-      "authors":["Conseil Belleville"],
-      "workingGroupAuthors":["Smart Traffic Light team"],
-      "themes":["Streets and Transportation"],
-      "attachments":[],
-      "comments":["The playground will be very attractive to children living in the neighborhood.", "There may be some safety concerns for the address of the playground."],
-      "assessmentSummary":"This project seems pratical.",
-      "assessments":[]
-    }
-  ]
-  */
+appCivistApp.factory("Candidate", function($http, $resource, localStorageService, Contributions) {
+  var currentCampaign = localStorageService.get("currentCampaign");
+  var contributions = [];
+  if (currentCampaign)
+    contributions = currentCampaign.contributions;
 
-
-  console.log(localStorageService.get("currentCampaign").contributions);
-  var contributions = localStorageService.get("currentCampaign").contributions
   var candidates = []
 
   for (var i = 0; i < contributions.length; i++) {
@@ -180,13 +125,15 @@ appCivistApp.factory("Candidate", function($http, $resource, localStorageService
 
   return {
     get: function(params) {
-      var match = candidates.filter(function(el) { return el.uuid == params.uuid; })[0];
+      if (candidates.length > 0) {
+        var match = candidates.filter(function(el) { return el.uuid == params.uuid; })[0];
 
-      if (params.value)
-        match.value = parseInt(params.value);
-      if (params.score)
-        match.score = parseInt(params.score);
-      return match;
+        if (params.value)
+          match.value = parseInt(params.value);
+        if (params.score)
+          match.score = parseInt(params.score);
+        return match;
+      }
     }
   }
 

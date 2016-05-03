@@ -3,7 +3,7 @@
  */
     // The ballot UUID to use: 68643fbf-9a30-4b81-83d1-439947711a46
 appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $location, BallotPaper, Candidate,
-                                                    BallotCampaign, localStorageService, Ballot) {
+                                                    BallotCampaign, localStorageService, Ballot, Contributions) {
     $scope.candidates = [];
     $scope.themeMap = {};
     $scope.themes = [];
@@ -57,23 +57,50 @@ appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $locat
             //Get Candidate IDs
             //candidateIDs = [60]
             $scope.campaign = localStorageService.get("currentCampaign");
-            $scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
+            if (!$scope.campaign) {
+                $scope.campaign = {};
+            }
+            $scope.campaign.ballotResults = Ballot.results({uuid: $routeParams.uuid}).$promise;
             $scope.campaign.ballotResults.then(
                 function (data) {
                     $scope.campaign.ballotResults = data;
+                    var candidatesIndex = $scope.campaign.ballotResults.ballot.candidatesIndex;
+                    var candidatesArr = []
+
+                    for(key in candidatesIndex){
+                        candidatesArr.push(candidatesIndex[key])
+                    }
+                    for(var i =0; i< candidatesArr.length; i++){
+                        var contributionRes = Contributions.getContributionByUUID(candidatesArr[i]).get();
+                        contributionRes.$promise.then(
+                            function (contribution) {
+                                $scope.candidates.push(contribution);
+                            },
+                            function (error) {
+                                console.log("No contribution for candidate: "+candidatesArr[i]);
+                            }
+                        );
+                        //$scope.candidates.push(Candidate.get({uuid: candidatesArr[i], value: null}));
+                    }
+
+                    for (var i = 0; i < $scope.candidates.length; i++) {
+                        var candidate = $scope.candidates[i];
+                        for (var j = 0; j < candidate.themes.length; j++) {
+                            var theme = candidate.themes[j].title;
+                            if (theme in $scope.themeMap) {
+                                $scope.themeMap[theme][$scope.themeMap[theme].length] = candidate.title;
+                            } else {
+                                $scope.themeMap[theme] = [];
+                                $scope.themeMap[theme][0] = candidate.title;
+                                $scope.themes[$scope.themes.length] = theme;
+                            }
+                        }
+                    }
                 },
                 function (error) {
                     $scope.campaign.ballotResults = null;
                 }
             );
-            var candidatesIndex = $scope.campaign.ballotResults.candidatesIndex;
-            var candidatesArr = []
-            for(keys in candidatesIndex){
-              candidatesArr.push(candidatesIndex[key])
-            }
-            for(var i =0; i< candidatesArr.length; i++){
-              $scope.candidates.push(Candidate.get({uuid: candidatesArr[i], value: null}));
-            }
 
             //for testing purposes
             // $scope.candidates.push(Candidate.get({uuid: "20", value: null}));
@@ -81,19 +108,7 @@ appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $locat
             // $scope.candidates.push(Candidate.get({uuid: "22", value: null}));
             // $scope.candidates.push(Candidate.get({uuid: "23", value: null}));
 
-            for (var i = 0; i < $scope.candidates.length; i++) {
-                var candidate = $scope.candidates[i];
-                for (var j = 0; j < candidate.themes.length; j++) {
-                    var theme = candidate.themes[j].title;
-                    if (theme in $scope.themeMap) {
-                        $scope.themeMap[theme][$scope.themeMap[theme].length] = candidate.title;
-                    } else {
-                        $scope.themeMap[theme] = [];
-                        $scope.themeMap[theme][0] = candidate.title;
-                        $scope.themes[$scope.themes.length] = theme;
-                    }
-                }
-            }
+
 
             // if ($scope.vote){
             //   for(var i=0;i<$scope.vote.voteValues.length;i++){

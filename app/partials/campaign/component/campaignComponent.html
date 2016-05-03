@@ -63,27 +63,27 @@
                     </button>
                 </span>
                 <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <a ng-if="ballot">
-                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                ng-disabled="disableButton['vote']" ng-click="loadBallotPaper()">
-                            <strong>
-                                {{'Vote on Proposals' | translate}}
-                                <i class="fa fa-info-circle" tooltip-placement="top"
-                                   uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
-                                   {{milestonesMap['end_voting'].date}}">
-                                </i>
-                            </strong>
-                        </button>
-                    </a>
-                    <button ng-if="!ballot" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <strong>
-                            {{'Voting ballot not yet available' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="'{{Voting|translate}}' starts on {{milestonesMap['start_voting'].date}} and ends on
-                                   {{milestonesMap['end_voting'].date}}">
-                            </i>
-                        </strong>
-                    </button>
+                    <!--<a ng-if="ballot">-->
+                        <!--<button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"-->
+                                <!--ng-disabled="disableButton['vote']" ng-click="loadBallotPaper()">-->
+                            <!--<strong>-->
+                                <!--{{'Vote on Proposals' | translate}}-->
+                                <!--<i class="fa fa-info-circle" tooltip-placement="top"-->
+                                   <!--uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on-->
+                                   <!--{{milestonesMap['end_voting'].date}}">-->
+                                <!--</i>-->
+                            <!--</strong>-->
+                        <!--</button>-->
+                    <!--</a>-->
+                    <!--<button ng-if="!ballot" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                        <!--<strong>-->
+                            <!--{{'Voting ballot not yet available' | translate}}-->
+                            <!--<i class="fa fa-info-circle" tooltip-placement="top"-->
+                               <!--uib-tooltip="'{{Voting|translate}}' starts on {{milestonesMap['start_voting'].date}} and ends on-->
+                                   <!--{{milestonesMap['end_voting'].date}}">-->
+                            <!--</i>-->
+                        <!--</strong>-->
+                    <!--</button>-->
                 </span>
             </div>
         </div>

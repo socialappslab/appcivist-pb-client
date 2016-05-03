@@ -47,7 +47,7 @@
                 .modal-footer
                   %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
           %ul.list-unstyled.voted-proposals
-            %li.voted-proposal.container{"ng-repeat" => "proposal in candidates | filter:query"}
+            %li.voted-proposal.container{"ng-repeat" => "proposal in candidates | filter:query track by $index"}
               .proposal-content
                 .col-md-2.col-sm-2.proposal-img-holder{"background-image" => "/../assets/images/image78.jpg", "data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
                   %img.proposal-img{:src => "/../assets/images/image78.jpg"}
@@ -66,7 +66,7 @@
                     %span.rate{"ng-if" => "ballot.voting_system_type==='RANGE'"}
                       %input.form-control{:id => "{{proposal.uuid}}", "ng-model" => "proposal.value", :placeholder => "{{scores[proposal.uuid]}}", :type => "number", :min => "{{minimumPossibleScore()}}", :max => "{{maximumPossibleScore()}}"}/
                     %span.rate{"ng-if" => "ballot.voting_system_type==='PLURALITY'"}
-                      %consensus-controls{:id => "{{proposal.uuid}}", :bballot => "ballotUUID", :ballotpaper => "ballotPaper", :contribution => "proposal"}/
+                      %consensus-controls{:id => "{{proposal.uuid}}", :bballot => "ballotUUID", :ballotpaper => "ballotPaper", :bindingresults => "ballotResults", :contribution => "proposal"}/
               -#/ Modal for information of the candidate
               .modal.fade{"aria-labelledby" => "{{proposal.uuid}}Label", :id => "{{proposal.uuid}}modal", :role => "dialog", :tabindex => "-1"}
                 .modal-dialog{:role => "document"}

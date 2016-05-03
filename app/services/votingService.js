@@ -94,6 +94,7 @@ appCivistApp.factory('MakeVote', function($http, $resource, localStorageService)
 });
 
 appCivistApp.factory("Candidate", function($http, $resource, localStorageService) {
+/*
   var mockCandidates = [
     {
       "uuid":1,
@@ -148,10 +149,38 @@ appCivistApp.factory("Candidate", function($http, $resource, localStorageService
       "assessments":[]
     }
   ]
+  */
+
+
+  console.log(localStorageService.get("currentCampaign").contributions);
+  var contributions = localStorageService.get("currentCampaign").contributions
+  var candidates = []
+
+  for (var i = 0; i < contributions.length; i++) {
+    if(contributions[i].type == "PROPOSAL"){
+      candidate = {
+        "uuid": contributions[i].contributionId,
+        "text": contributions[i].text,
+        "budget": "10000", //temporary
+        "authors": contributions[i].authors,
+        "workingGroupAuthors": contributions[i].workingGroupAuthors,
+        "themes": contributions[i].themes,
+        "attachments": contributions[i].attachments,
+        "comments": [],
+        "assessmentSummary": "",
+        "assessments": []
+      }
+      candidates.push(candidate);
+    }
+  }
+
+  console.log(candidates);
+
+
 
   return {
     get: function(params) {
-      var match = mockCandidates.filter(function(el) { return el.uuid == params.uuid; })[0];
+      var match = candidates.filter(function(el) { return el.uuid == params.uuid; })[0];
 
       if (params.value)
         match.value = parseInt(params.value);

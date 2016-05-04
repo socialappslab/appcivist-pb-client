@@ -99,6 +99,9 @@ appCivistApp.factory("Candidate", function($http, $resource, localStorageService
   if (currentCampaign)
     contributions = currentCampaign.contributions;
 
+  if (!contributions)
+    contributions = [];
+
   var candidates = []
 
   for (var i = 0; i < contributions.length; i++) {

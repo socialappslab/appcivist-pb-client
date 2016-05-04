@@ -5,23 +5,23 @@
   %br
     %br
       .row.voting-content
-        .col-md-4.col-sm-4.left
-          %h3
-            %b Campaign Themes and Proposals
-          .theme-proposals{"ng-repeat" => "theme in themes"}
-            %h4.theme
-              %b {{theme}}
-            %ul.list-unstyled.proposals
-              %li.proposal-names{"ng-repeat" => "proposal in themeMap[theme]"} {{proposal}}
-        .col-md-8.col-sm-8.right
+        -#.col-md-4.col-sm-4.left
+        -#  %h3
+        -#    %b Campaign Themes and Proposals
+        -#  .theme-proposals{"ng-repeat" => "theme in themes"}
+        -#    %h4.theme
+        -#      %b {{theme}}
+        -#    %ul.list-unstyled.proposals
+        -#      %li.proposal-names{"ng-repeat" => "proposal in themeMap[theme]"} {{proposal}}
+        .col-lg-12.col-md-12.col-sm-12.col-xs-12.right
           .buttons
             %ul.list-unstyled.list-inline
               %li
-                %input.form-control{"ng-model" => "query", :placeholder => "Enter keyword", :type => "text"}
+                %input.form-control{"ng-model" => "query", :placeholder => "Filter proposal by keywords", :type => "text"}
               %li
                 %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} Voting Instructions
-              %li
-                %button#save.btn.btn-success{"ng-click" => "saveBallot()", :type => "button"} Save
+              -#%li
+              -#  %button#save.btn.btn-success{"ng-click" => "saveBallot()", :type => "button"} Save
           / Modal for voting instructions
           #instructions.modal.fade{"aria-labelledby" => "instrLabel", :role => "dialog", :tabindex => "-1"}
             .modal-dialog{:role => "document"}
@@ -49,15 +49,20 @@
           %ul.list-unstyled.voted-proposals
             %li.voted-proposal.container{"ng-repeat" => "proposal in candidates | filter:query track by $index"}
               .proposal-content
-                .col-md-2.col-sm-2.proposal-img-holder{"background-image" => "/../assets/images/image78.jpg", "data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
+                .col-md-2.col-sm-2.proposal-img-holder( ng-if = "proposal.attachments && proposal.attachments.length > 0"
+                                                        background-image = "{{proposal.attachments[0].url}}"
+                                                        data-target = "\#{{proposal.uuid}}modal"
+                                                        data-toggle = "modal")
+                  %img.proposal-img(ng-src = "{{proposal.attachments[0].url}}")
+                .col-md-2.col-sm-2.proposal-img-holder{"ng-if"=> "!proposal.attachments || proposal.attachments.length == 0", "background-image" => "/../assets/images/image78.jpg", "data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
                   %img.proposal-img{:src => "/../assets/images/image78.jpg"}
                 .col-md-6.col-sm-6.data
                   %h4.title{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
                     %b {{proposal.title}}
-                    %img.img-circle{:src => "/../assets/images/image71.tiff"}/
+                    -#%img.img-circle{"ng-if"=> "proposal.attachments && proposal.attachments.length > 0", :src => "proposal.attachments[0].url"}/
+                    -#%img.img-circle{"ng-if"=> "!proposal.attachments && proposal.attachments.length == 0", :src => "/assets/images/logotype.svg"}/
                   %h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
-                    %b> Estimated Cost:
-                    {{proposal.budget|currency}}
+                    %b{"ng-if" => "proposal.budget"}> Estimated Cost: {{proposal.budget|currency}}
                   -#%h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
                   -#  %b> Location:
                   -#  Berkeley, CA 94720
@@ -79,20 +84,21 @@
                       %h3
                         %b {{proposal.title}}
                       %h5
-                        %b Authors:
-                        %span{"ng-repeat" => "author in proposal.authors"} {{author}}
+                        %b{"ng-if" => "proposal.authors"} Authors:
+                        %span{"ng-if" => "proposal.authors", "ng-repeat" => "author in proposal.authors"} {{author.name}}
                       %h5
-                        %b Working Group Authors:
-                        %span{"ng-repeat" => "author in proposal.workingGroupAuthors"} {{author}}
+                        %b{"ng-if" => "proposal.workingGroupAuthors"} Working Group Authors:
+                        %span{"ng-if" => "proposal.workingGroupAuthors", "ng-repeat" => "author in proposal.workingGroupAuthors"} {{author.name}}
                       %h5.theme-holder
                         %b Themes:
-                        %span.themes{"ng-repeat" => "theme in proposal.themes"} {{theme}}
+                        %span.themes{"ng-repeat" => "theme in proposal.themes"} {{theme.title}}
                       %br
-                        %img.pull-right{:src => "/../assets/images/image78.jpg"}
+                        %img.pull-right{"ng-if"=> "!proposal.attachments || proposal.attachments.length === 0", :src => "/../assets/images/image78.jpg"}
+                        %img.pull-right(ng-if = "proposal.attachments && proposal.attachments.length > 0" ng-src = "{{proposal.attachments[0].url}}")
                           %p {{proposal.text}}
                           %br
                             %h5
                               %b Comments:
-                            %p.comments{"ng-repeat" => "comment in proposal.comments"} {{comment}}
+                            %p.comments{"ng-repeat" => "comment in proposal.comments"} {{comment.title}} {{comment.text}}
                     .modal-footer
                       %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

@@ -97,7 +97,7 @@ appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $locat
         var ballot_paper = BallotPaper.update({
             uuid: $routeParams.uuid,
             signature: $scope.signature
-        }, {vote: {votes: $scope.candidates}}).$promise;
+        }, {vote: $scope.vote}).$promise;
         ballot_paper.then(function (data) {
             console.log(data);
             $location.url("/ballot/" + $routeParams.uuid + "/summary");

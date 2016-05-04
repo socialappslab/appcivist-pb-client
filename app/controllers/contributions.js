@@ -649,7 +649,7 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
 
         // Cast vote on a single contribution
         $scope.contributionVote = function (c, type) {
-            var userId = $scope.user.uuid;
+            var userId = $scope.user ? $scope.user.uuid : localStorageService.get("voteSignature");
             var ballotId = type=="BINDING" ? $scope.bindingBallotId : $scope.consultiveBallotId;
             var ballotPaper = type=="BINDING" ? $scope.ballotPaper : $scope.consultiveBallotPaper;
             var choice = c;
@@ -766,7 +766,8 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
         }
 
         // Update the single vote
-        var singleVote = BallotPaper.single({uuid: ballotId, signature: $scope.user.uuid},{"candidate_id":candidateId, "value": choice});
+        var sign = $scope.user ? $scope.user.uuid : localStorageService.get('voteSignature');
+        var singleVote = BallotPaper.single({uuid: ballotId, signature: sign},{"candidate_id":candidateId, "value": choice});
         singleVote.$promise.then(
             function (data) {
                 // Vote updated in the server with success

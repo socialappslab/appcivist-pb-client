@@ -47,7 +47,7 @@
                 .modal-footer
                   %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
           %ul.list-unstyled.voted-proposals
-            %li.voted-proposal.container{"ng-repeat" => "proposal in candidates | filter:query | filter:(proposal.type==='PROPOSAL') track by $index"}
+            %li.voted-proposal.container(ng-repeat = "proposal in candidates | filter:query | filter:{type:'PROPOSAL'} track by $index")
               .proposal-content
                 .col-md-2.col-sm-2.proposal-img-holder( ng-if = "proposal.attachments && proposal.attachments.length > 0"
                                                         background-image = "{{proposal.attachments[0].url}}"

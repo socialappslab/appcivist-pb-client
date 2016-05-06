@@ -123,19 +123,11 @@
             <div class="voffset6"></div>
         </div>
 
-        <!-- TODO: introduce partial results of voting if the campaign current component is "voting" and viewVotingResults === true
-             TODO: instead of using a table here, make sure you implement the results as a directive. See the contribution directive for an example
-        <table ng-repeat="contribution in contributions" align="center" style="color:black;" width="80%" border="1px" bordercolor="white">-->
-            <!--<tr>-->
-                <!--<td align="center" width="15%" bgcolor="green" class="white">Yes</td>-->
-                <!--<td align="center" width="15%" bgcolor="#FF0000" class="white">No</td>-->
-                <!--<td align="center" width="15%">Abs.</td>-->
-                <!--<td align="center" width="15%" bgcolor="#800000" class="white">Blk</td>-->
-                <!--<td align="left" width="40%">{{contribution.title}}</td>-->
-            <!--</tr>-->
-        <!--</table>-->
-
-        <!--<br>-->
+        <!-- Results from Voting -->
+        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-controller="ResultsCtrl">
+          <div id="chartContainer" style="height: 400px; width: 100%; display: block;">
+          </div>
+        </div>
 
         <!-- Contribution tabs -->
         <uib-tabset>

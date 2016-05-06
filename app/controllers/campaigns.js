@@ -1252,6 +1252,141 @@ appCivistApp.controller('EditCampaignCtrl', function($scope, $controller, $sce, 
 });
 /* Edit Campaign Controller */
 
+appCivistApp.controller('ResultsCtrl', function($scope, $controller, $http, localStorageService, Ballot){
+	$scope.ballotId = localStorageService.get('currentCampaign').bindingBallot;
+
+	var resultsData = [
+		{
+      type: "stackedBar100",
+      showInLegend: true,
+      name: "YES",
+      dataPoints: [
+      // {y: 350, label: "Georga lsjfd klsakka sdjfals jflskfj sae" },
+      // {y: 350, label: "Alex" },
+      // {y: 350, label: "Mike" },
+      // {y: 374, label: "Jake" },
+      // {y: 320, label: "Shah" },
+      // {y: 300, label: "Joe" },
+      // {y: 400, label: "Fin" },
+      // {y: 220, label: "Larry" }
+
+      ]
+    },
+
+    {
+      type: "stackedBar100",
+      showInLegend: true,
+      name: "NO",
+      dataPoints: [
+      // {y: 250, label: "Georga lsjfd klsakka sdjfals jflskfj sae" },
+      // {y: 280, label: "Alex" },
+      // {y: 350, label: "Mike" },
+      // {y: 274, label: "Jake" },
+      // {y: 320, label: "Shah" },
+      // {y: 320, label: "Joe" },
+      // {y: 280, label: "Fin" },
+      // {y: 420, label: "Larry" }
+
+      ]
+    },
+    {
+      type: "stackedBar100",
+      showInLegend: true,
+      name: "ABSTAIN",
+      dataPoints: [
+      // {y: 350, label: "Georga lsjfd klsakka sdjfals jflskfj sae" },
+      // {y: 2, label: "Alex" },
+      // {y: 350, label: "Mike" },
+      // {y: 374, label: "Jake" },
+      // {y: 120, label: "Shah" },
+      // {y: 120, label: "Joe" },
+      // {y: 400, label: "Fin" },
+      // {y: 120, label: "Larry" }
+
+      ]
+    },
+
+    {
+      type: "stackedBar100",
+      showInLegend: true,
+      name: "BLOCK",
+      dataPoints: [
+      // {y: 250, label: "Georga lsjfd klsakka sdjfals jflskfj sae" },
+      // {y: 250, label: "Alex" },
+      // {y: 250, label: "Mike" },
+      // {y: 274, label: "Jake" },
+      // {y: 320, label: "Shah" },
+      // {y: 220, label: "Joe" },
+      // {y: 100, label: "Fin" },
+      // {y: 420, label: "Larry" }
+
+      ]
+    }
+
+	];
+
+	CanvasJS.addColorSet("voteColors",
+                [//colorSet Array
+
+                "#18BE43",
+                "#FE3920",
+                "#2353A9",
+                "#FEB020",
+                ]);
+
+	var results = Ballot.results({uuid: $scope.ballotId}).$promise;
+	results.then(function (data) {
+			$scope.results = data.results;
+			$scope.ballot = data.ballot;
+			for(var i=0; i < $scope.results.length; i++){
+				console.log($scope.results[i])
+				var dataYes = {
+					y: $scope.results[i].summary.yes,
+					label: $scope.results[i].contribution_uuid
+				}
+				var dataNo = {
+					y: $scope.results[i].summary.no,
+					label: $scope.results[i].contribution_uuid
+				}
+				var dataAbstain = {
+					y: $scope.results[i].summary.abstain,
+					label: $scope.results[i].contribution_uuid
+				}
+				var dataBlock = {
+					y: $scope.results[i].summary.block,
+					label: $scope.results[i].contribution_uuid
+				}
+				resultsData[0].dataPoints.push(dataYes);
+				resultsData[1].dataPoints.push(dataNo);
+				resultsData[2].dataPoints.push(dataAbstain);
+				resultsData[3].dataPoints.push(dataBlock);
+			}
+			$scope.chart = new CanvasJS.Chart("chartContainer",
+		  {
+				colorSet: "voteColors",
+		    theme: 'theme2',
+		    title:{
+		      text: "Ballot Results"
+
+		    },
+		    animationEnabled: true,
+		    axisY:{
+		    },
+		    toolTip: {
+		      shared: true
+		    },
+		    data: resultsData
+
+		  });
+
+			$scope.chart.render();
+	}, function (error) {
+			window.appcivist.handleError(error)
+	});
+
+	console.log(resultsData);
+});
+
 // General functions
 /**
  * Returns a moment.js object representing Today

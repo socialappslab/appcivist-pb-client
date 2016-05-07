@@ -1052,20 +1052,22 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			console.log("Setting current component to: "+ $scope.component.title );
 		} else if ($scope.components) {
 			$scope.component = localStorageService.get('currentComponent');
-			if($scope.component === null || $scope.component.componentId != $scope.componentID) {
-				$scope.components.forEach(function(entry) {
-					// add milestones of component to array of milestones
-					if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(entry.milestones);
+            if ($scope.component === null || $scope.component.componentId != $scope.componentID || $scope.buildMilestones) {
+                $scope.components.forEach(function(entry) {
+                    // add milestones of component to array of milestones
+                    if ($scope.buildMilestones) $scope.milestones = $scope.milestones.concat(entry.milestones);
 
-					if(entry.componentId === $scope.componentID) {
-						localStorageService.set("currentComponent", entry);
-						$scope.component = entry;
-						console.log("Setting current component to: " + entry.componentId);
-					}
-				});
-			} else {
-				console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentId);
-			}
+                    if ($scope.component === null || $scope.component.componentId != $scope.componentID) {
+                        if(entry.componentId === $scope.componentID) {
+                            localStorageService.set("currentComponent", entry);
+                            $scope.component = entry;
+                            console.log("Setting current component to: " + entry.componentId);
+                        }
+                    }
+                });
+            } else {
+                console.log("Route component ID is the same as the current component in local storage: "+$scope.component.componentId);
+            }
 		}
 		if ($scope.buildMilestones) {
 			localStorageService.set("currentMilestones", $scope.milestones);
@@ -1078,14 +1080,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	}
 
 	function setMilestonesMap () {
-		if ($scope.buildMilestones) {
-			$scope.milestonesMap = $scope.milestones.reduce(
-					function (map, obj) {
-						map[obj.key] = obj;
-						return map;
-					},
-					{}
-			);
+		if ($scope.buildMilestones && $scope.milestones) {
+			$scope.milestonesMap = [];
+            for (var i = 0; i< $scope.milestones.length; i++) {
+                var m = $scope.milestones[i];
+                $scope.milestonesMap[m.key] = m;
+            }
 			localStorageService.set("currentMilestonesMap", $scope.milestonesMap);
 		} else {
 			$scope.milestonesMap = localStorageService.get("currentMilestonesMap");

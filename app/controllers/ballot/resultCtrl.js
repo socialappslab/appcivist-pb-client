@@ -62,7 +62,8 @@ appCivistApp.controller('ConsensusResultsCtrl', function($scope, $controller, $h
     $scope.bindingBallotId = $scope.bindingBallotId ? $scope.bindingBallotId : $scope.campaign.bindingBallot;
     $scope.contributions = $scope.contributions ? $scope.contributions : $scope.campaign.contributions;
     $scope.contributionsIndex = $scope.contributionsIndex ? $scope.contributionsIndex : buildContributionsIndex();
-
+    $scope.currentType = "stackedBar100";
+    $scope.chartType = $scope.currentType;
     var resultsData = [
         {
             type: "stackedBar100",
@@ -159,7 +160,21 @@ appCivistApp.controller('ConsensusResultsCtrl', function($scope, $controller, $h
         window.appcivist.handleError(error)
     });
 
-    console.log(resultsData);
+    $scope.changeChartType = function() {
+        var changeType = false;
+        var newType = "";
+        if ($scope.chartType != $scope.currentType) {
+            $scope.currentType = newType = $scope.chartType;
+            changeType = true;
+        }
+
+        if (changeType) {
+            for (var i = 0; i < $scope.chart.options.data.length; i++ ) {
+                $scope.chart.options.data[i].type = newType;
+            }
+            $scope.chart.render();
+        }
+    }
 
     function buildContributionsIndex () {
         var contributionsIndex = {};

@@ -115,6 +115,20 @@ appCivistApp.directive('consensusControls', function(){
   }
 });
 
+/* Consensus Voting */
+appCivistApp.directive('consensusResultList', function(){
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: "/app/partials/directives/consensusVoting/consensusResultList.html",
+        scope: {
+            contributions: '=contributions',
+            bindingBallotId: "=ballotuuid"
+        },
+        controller: "ConsensusResultsCtrl"
+    }
+});
+
 appCivistApp.directive('contribution', function(){
     return{
         restrict: 'E',

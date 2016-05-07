@@ -63,23 +63,23 @@
                     </button>
                 </span>
                 <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <a ng-if="finalResults">
+                    <a ng-if="ballotResultsAreAvailable">
                         <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                ng-disabled="disableButton['vote']" ng-click="showFinalResults()">
+                                ng-disabled="disableButton['results']" ng-click="showFinalResults()">
                             <strong>
-                                {{'View Results' | translate}}
+                                {{showVotingResults ? 'Hide' : 'Show' | translate}} {{'Results' | translate}}
                                 <i class="fa fa-info-circle" tooltip-placement="top"
-                                   uib-tooltip="Voting starts on {{milestonesMap['start_voting'].date}} and ends on
+                                   uib-tooltip="Voting dates: from {{milestonesMap['start_voting'].date}} to
                                    {{milestonesMap['end_voting'].date}}">
                                 </i>
                             </strong>
                         </button>
                     </a>
-                    <button ng-if="!finalResults" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <button ng-if="!ballotResultsAreAvailable" class="btn btn-lg btn-primary disabled col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <strong>
                             {{'Results are not available yet' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="'{{Voting|translate}}' starts on {{milestonesMap['start_voting'].date}} and ends on
+                               uib-tooltip="'{{ 'Voting' |translate}}' starts on {{milestonesMap['start_voting'].date}} and ends on
                                    {{milestonesMap['end_voting'].date}}">
                             </i>
                         </strong>
@@ -123,11 +123,14 @@
             <div class="voffset6"></div>
         </div>
 
-        <!-- Results from Voting -->
-        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-controller="ResultsCtrl">
-          <div id="chartContainer" style="height: 400px; width: 100%; display: block;">
-          </div>
-        </div>
+        <!-- Voting Results -->
+        <consensus-result-list
+                ng-if="showVotingResults"
+                contributions="contributions"
+                ballotuuid="campaign.bindingBallot"></consensus-result-list>
+
+        <!-- TODO: add other type of voting results -->
+        <!-- TODO: add only show Winning Proposals -->
 
         <!-- Contribution tabs -->
         <uib-tabset>

@@ -1110,7 +1110,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				newGroup: !moment().local().isBetween(campaignStart, wGroupFormationEnd),
 				newProposal: !moment().local().isBetween(campaignStart, proposalsEnd),
 				vote: !moment().local().isBetween(voteStart, voteEnd),
-                results: !moment().local().isBetween(voteStart, voteEnd) || !moment().local().isAfter(voteEnd),
+                results: !moment().local().isAfter(voteStart),
 				assess: !moment().local().isBetween(campaignStart,assessmentEnd)
 				//TODO
 				// editCampaign: $scope.userIsMember

@@ -49,7 +49,7 @@
 
             <div class="row col-md-8 col-sm-8">    <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
                 <div class="row etherpad">
-                    <iframe class="" ng-if="contribution.type === 'PROPOSAL'"
+                    <iframe class="" ng-if="contribution.type === 'PROPOSAL' || contribution.type === 'NOTE'"
                             name="embed_readonly"
                             ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}"
                             width="100%"

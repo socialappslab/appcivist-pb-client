@@ -17,45 +17,35 @@
             <div class="row">
                 <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                     <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                            ng-click="openNewContributionModal('lg','BRAINSTORMING')"
-                            ng-disabled="disableButton['contribute']">
+                            ng-click="openNewContributionModal('lg','NOTE')"
+                            ng-disabled="disableButton['note']">
                         <strong>
-                            {{'Brainstorm' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="{{'brainstorming.deadline'|translate}}: {{milestonesMap['end_brainstorming'].date|date:'medium'}}">
-                            </i>
-                        </strong>
-                    </button>
-                </span>
-                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-                    <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/wgroup/create"
-                       ng-if="!disableButton['newGroup']">
-                        <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <strong>
-                                {{'Create New Group' | translate}}
-                                <i class="fa fa-info-circle" tooltip-placement="bottom"
-                                   uib-tooltip="{{'working.groups.can.be.formed.until'|translate}}: {{milestonesMap['end_wgroups_creation'].date|date:'medium'}}">
-                                </i>
-                            </strong>
-                        </button>
-                    </a>
-                    <button ng-if="disableButton['newGroup']"
-                            ng-disabled="disableButton['newGroup']" class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <strong>
-                            {{'Create New Group' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
-                               uib-tooltip="{{'forming.working.groups.was.possible.before'|translate}}: {{milestonesMap['end_wgroups_creation'].date|date:'medium'}}">
+                            {{'New' | translate}} {{'Note' | translate}}
+                            <i class="fa fa-info-circle" tooltip-placement="left"
+                               uib-tooltip="{{'notes.deadline'|translate}}: {{campaign.endDate|date:'medium'}}">
                             </i>
                         </strong>
                     </button>
                 </span>
                 <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                     <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                            ng-disabled="buttonDisabled['newProposal']"
+                            ng-click="openNewContributionModal('lg','BRAINSTORMING')"
+                            ng-disabled="disableButton['contribute']">
+                        <strong>
+                            {{'Brainstorm' | translate}}
+                            <i class="fa fa-info-circle" tooltip-placement="left"
+                               uib-tooltip="{{'brainstorming.deadline'|translate}}: {{milestonesMap['end_brainstorming'].date|date:'medium'}}">
+                            </i>
+                        </strong>
+                    </button>
+                </span>
+                <span class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                    <button class="btn btn-lg btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            ng-disabled="disableButton['newProposal']"
                             ng-click="openNewContributionModal('lg','PROPOSAL')">
                         <strong>
                             {{'New Proposal' | translate}}
-                            <i class="fa fa-info-circle" tooltip-placement="top"
+                            <i class="fa fa-info-circle" tooltip-placement="left"
                                uib-tooltip="Proposals due date {{disableButton['newProposal'] ? 'was' : 'is'}}
                                {{milestonesMap['end_proposals'].date}}">
                             </i>
@@ -141,9 +131,9 @@
                      ng-if="tab.showInComponent[component.title.toLowerCase()]">
                 <uib-tab-heading>
                     <h4>
-                        <strong>{{tab.title}}</strong>
-                        <i class="fa fa-question-circle" tooltip-placement="top"
-                           uib-tooltip="{{tab.tooltip}}"></i>
+                        <strong translate="{{tab.title}}"></strong>
+                        <i class="fa fa-question-circle" tooltip-placement="left"
+                           uib-tooltip="{{tab.tooltip | translate}}"></i>
                     </h4>
                 </uib-tab-heading>
                 <div class="col-md-12 col-sm-12">

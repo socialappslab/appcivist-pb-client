@@ -53,56 +53,59 @@ appCivistApp.controller('NewContributionModalCtrl',
 		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
-                   $translate, $location, logService) {
+                   $translate, $location, logService, usSpinnerService) {
 			init();
 
 			function init() {
+                initScopeContent();
+                initScopeFunctions();
+			}
+
+            /**
+             * Init scope variables
+             */
+            function initScopeContent () {
                 $scope.user = localStorageService.get("user");
                 if ($scope.user && $scope.user.language)
                     $translate.use($scope.user.language);
 
                 $scope.userIsAuthor = true;
-				$scope.assembly = assembly;
+                $scope.assembly = assembly;
                 $scope.assemblyID = assembly.assemblyId;
-				$scope.campaign = campaign;
+                $scope.campaign = campaign;
                 $scope.campaignID = campaign.campaignId;
-				$scope.contributions = contributions;
-				$scope.themes = themes;
-				$scope.newContribution = newContribution;
-				$scope.newContribution.parentThemes = $scope.themes;
-				$scope.newContributionResponse = newContributionResponse;
-				$scope.postingContribution = postingContributionFlag;
-				$scope.cType = cType;
-				$scope.newContribution.type = cType;
-				$scope.newAttachment = Contributions.defaultContributionAttachment();
+                $scope.contributions = contributions;
+                $scope.themes = themes;
+                $scope.newContribution = newContribution;
+                $scope.newContribution.parentThemes = $scope.themes;
+                $scope.newContributionResponse = newContributionResponse;
+                $scope.postingContribution = postingContributionFlag;
+                $scope.cType = cType;
+                $scope.newContribution.type = cType;
+                $scope.newAttachment = Contributions.defaultContributionAttachment();
                 $scope.userWorkingGroups = localStorageService.get("workingGroups");
                 $scope.createNewGroup = false;
-                if($scope.newContribution.type === "PROPOSAL") {
-                    if ($scope.userWorkingGroups && $scope.userWorkingGroups.length > 0 ) {
-                        $scope.newContribution.workingGroupAuthors[0] = {groupId : $scope.userWorkingGroups[0].groupId};
-                    }
-                }
+            }
 
-				$scope.clearContribution = function () {
-					clearNewContributionObject($scope.newContribution, Contributions);
-				};
-
-                $scope.redirectToNewGroupForm = function () {
-                    $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/wgroup/create");
-                    console.log("redirecting to a new working group form")
-                    $uibModalInstance.dismiss('cancel');
+            /**
+             * Init scope functions
+             */
+            function initScopeFunctions () {
+                $scope.clearContribution = function () {
+                    clearNewContributionObject($scope.newContribution, Contributions);
+                };
+                $scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
+                    $scope.postingContributionFlag = true;
+                    $scope.newContribution = newContribution;
+                    $scope.targetSpaceId = targetSpaceId;
+                    $scope.targetSpace = targetSpace;
+                    $scope.response = {};
+                    $scope.modalInstance = undefined;
+                    createNewContribution($scope, Contributions, logService);
                 };
 
-				$scope.postContribution = function (newContribution, targetSpaceId, targetSpace) {
-					$scope.newContribution = newContribution;
-					$scope.targetSpaceId = targetSpaceId;
-					$scope.targetSpace = targetSpace;
-					$scope.response = {};
-					$scope.modalInstance = undefined;
-					createNewContribution($scope, Contributions, logService);
-				};
-
                 $scope.postContributionFromModal = function () {
+                    $scope.postingContributionFlag = true;
                     $scope.targetSpaceId = $scope.campaign.resourceSpaceId;
                     $scope.targetSpace = $scope.contributions;
                     $scope.response = $scope.newContributionResponse;
@@ -110,15 +113,26 @@ appCivistApp.controller('NewContributionModalCtrl',
                     createNewContribution($scope, Contributions, logService);
                 };
 
-				$scope.cancel = function () {
-					$scope.newContribution = Contributions.defaultNewContribution();
-					$uibModalInstance.dismiss('cancel');
-				};
+                $scope.cancel = function () {
+                    $scope.newContribution = Contributions.defaultNewContribution();
+                    $uibModalInstance.dismiss('cancel');
+                };
 
                 $scope.changeWorkingGroupAuthor = function (workingAuthor) {
                     $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor};
                 }
-			}
+
+                $scope.startSpinner = function(){
+                    $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+                    usSpinnerService.spin('spinner-1');
+                }
+
+                $scope.stopSpinner = function(){
+                    usSpinnerService.stop('spinner-1');
+                    $(angular.element.find('.spinner-container')).remove();
+                }
+            }
+
 		});
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
@@ -872,12 +886,11 @@ appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParam
 
 /**
  * Functions common to all Contribution Controllers
- *
  */
-
 function createNewContribution (scope, Contributions, logService) {
-	postingContributionFlag = true;
-	if (!scope.newContribution.title || !scope.newContribution.title === "") {
+	scope.postingContributionFlag  = postingContributionFlag = true;
+    if(scope.startSpinner) scope.startSpinner();
+    if (!scope.newContribution.title || !scope.newContribution.title === "") {
 		var maxlength = 250;
 		var trimlength = maxlength;
 		if(scope.newContribution.text.length < maxlength) {
@@ -908,8 +921,8 @@ function createNewContribution (scope, Contributions, logService) {
 				if(scope.replyParent) {
 					scope.replyParent.boxIsOpen = false;
 				}
-				postingContributionFlag = false;
-
+                scope.postingContributionFlag = postingContributionFlag = false;
+                if(scope.stopSpinner) scope.stopSpinner();
                 // Logging Usage
                 var resourceId = data.uuid;
                 var action = type == 'PROPOSAL' ?
@@ -923,7 +936,9 @@ function createNewContribution (scope, Contributions, logService) {
 				scope.response.hasErrors = true;
 				scope.response.errors = error;
 				scope.response.touched = !scope.response.touched;
-				postingContributionFlag = false;
+                scope.postingContributionFlag = postingContributionFlag = false;
+                if(scope.stopSpinner) scope.stopSpinner();
+
                 // Logging Usage
                 var action = type == 'PROPOSAL' ?
                     'CREATE_PROPOSAL' : type == 'BRAINSTORMING' ?

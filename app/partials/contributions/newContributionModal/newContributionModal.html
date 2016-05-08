@@ -4,45 +4,32 @@
     <div class="modal-content col-md-12 col-sm-12">
         <div class="modal-header">
             <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+            <h1 ng-if="cType === 'NOTE'"><strong>{{'New' | translate}} {{'Note' | translate}}</strong></h1>
+            <p ng-if="cType === 'NOTE'">{{'new.contribution.note' | translate}}</p>
             <h1 ng-if="cType === 'BRAINSTORMING'">
-                <strong>New Issue or Suggestion</strong>
+                <strong>
+                    {{'New' | translate}} {{'Issue' | translate}} {{'or' | translate}} {{'Suggestion' | translate}}
+                </strong>
             </h1>
-            <p ng-if="cType === 'BRAINSTORMING'">
-                Identify an issue or make a suggestion
-            </p>
-            <h1 ng-if="cType === 'PROPOSAL'">
-                <strong>New Proposal</strong>
-            </h1>
-            <p ng-if="cType === 'PROPOSAL'">
-                Start a proposal based on brainstorming issues and suggestions
-            </p>
+            <p ng-if="cType === 'BRAINSTORMING'">{{'new.contribution.brainstorming' | translate}}</p>
+            <h1 ng-if="cType === 'PROPOSAL'"><strong>{{'New' | translate}} {{'Proposal' | translate}}</strong></h1>
+            <p ng-if="cType === 'PROPOSAL'">{{'new.contribution.proposal' | translate}}</p>
             <span ng-if="newContributionResponse!=undefined && newContributionResponse.hasErrors">
-                <label class="alert-danger">Contribution not created. An error occurred:
-                    {{newContributionResponse.errors.statusMessage}}</label>
+                <label class="alert-danger" translate="{{'error.creation.contribution'}}"></label>
+                <label class="alert-danger">{{newContributionResponse.errors.statusMessage}}</label>
             </span>
         </div>
         <div class="modal-body view col-md-12 col-sm-12">
             <div class="row col-md-12 col-sm-12">
-                <div class="form-horizontal form-group" ng-if="cType === 'PROPOSAL'">
-                    <label for="selectGroupAuthor" class="col-sm-2 col-md-2 control-label">Authoring Group</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select ng-if="!createNewGroup" id="selectGroupAuthor" name="workingGroupAuthors"
-                                class="form-control"
-                                ng-model="groupId"
-                                ng-options="group.groupId as group.name for group in userWorkingGroups track by group.groupId"
-                                ng-change="changeWorkingGroupAuthor(groupId)">
-                        </select>
-                    </div>
-                    <button ng-if="!createNewGroup" ng-click="redirectToNewGroupForm()" class="btn btn-primary col-md-4 col-sm-4 col-xs-4" type="button">Create a new group</button>
-                </div>
-                <div class="voffset3"></div>
                 <ng-include src="'app/partials/contributions/newContribution/newContribution.html'"></ng-include>
             </div>
         </div>
         <div class="modal-footer view col-md-12 col-sm-12">
-            <spinner name="mySpinner" show="postingContribution"></spinner>
-            <button class="btn btn-primary" type="button" ng-click="postContributionFromModal()">Create contribution</button>
-            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            <spinner name="mySpinner" show="postingContributionFlag"></spinner>
+            <button class="btn btn-primary" type="button" ng-click="postContributionFromModal()">
+                {{'Create'|translate}} {{'Contribution'|translate|lowercase}}
+            </button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">{{'Cancel'|translate}} </button>
         </div>
     </div>
 </div>

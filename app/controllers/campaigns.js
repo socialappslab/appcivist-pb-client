@@ -715,7 +715,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	function init() {
 		initScopeFunctions();
 		initScopeContent();
-		// TODO: improve efficiency by using angularjs filters instead of iterating through arrays
 		setCurrentAssembly($scope, localStorageService);
 		setCurrentCampaign($scope, localStorageService);
 	}
@@ -724,7 +723,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.user = localStorageService.get("user");
 		if ($scope.user && $scope.user.language)
 			$translate.use($scope.user.language);
-		// 1. Setting up scope ID values
 		$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 		$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
 		$scope.componentID = ($routeParams.ciid) ? parseInt($routeParams.ciid) : 0;
@@ -740,7 +738,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.contentTabs = [
 			{
 				title : 'Brainstorming (issues and suggestions)',
-				tooltip: 'Brainstorming (issues and suggestions)',
+				tooltip: 'help.tooltip.brainstorming',
 				ctype : 'BRAINSTORMING',
 				//contentArray : 'contributions',
 				showInComponent : {
@@ -753,11 +751,11 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			},
 			{
 				title : 'Working Groups',
-				tooltip : 'Working Groups developing proposals based on brainstorming contributions',
+                tooltip: 'help.tooltip.working-groups',
 				ctype : 'WORKING_GROUP',
 				//contentArray : 'workingGroups',
 				showInComponent : {
-					'proposal making' : true,
+					'proposal making' : false,
 					'deliberation' : false,
 					'voting' : false,
 					'implementation' : false
@@ -766,7 +764,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			},
 			{
 				title : 'Proposals',
-				tooltip : 'Solution proposals developed by groups',
+                tooltip: 'help.tooltip.proposals',
 				ctype : 'PROPOSAL',
 				//contentArray : 'contributions',
 				showInComponent : {
@@ -779,25 +777,46 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			},
 			{
 				title : 'Winning Proposals',
-				tooltip : 'Solution proposals selected for implementation by the assembly',
+                tooltip: 'help.tooltip.winning-proposals',
 				ctype : 'PROPOSAL',
 				//contentArray : 'winningContributions',
 				showInComponent : {
 					'proposal making' : false,
 					'deliberation' : false,
 					'voting' : false,
-					'implementation' : false
+					'implementation' : true
 				},
 				active : false,
-			}
+			},
+            {
+                title : 'Notes',
+                tooltip: 'help.tooltip.notes',
+                ctype : 'NOTE',
+                //contentArray : 'winningContributions',
+                showInComponent : {
+                    'proposal making' : true,
+                    'deliberation' : true,
+                    'voting' : true,
+                    'implementation' : true
+                },
+                active : false,
+            }
 		];
+        $scope.contentTabsIndex = {
+            "brainstorming" : $scope.contentTabs[0],
+            "working_groups" : $scope.contentTabs[1],
+            "proposals" : $scope.contentTabs[2],
+            "winning_proposals" : $scope.contentTabs[3],
+            "notes" : $scope.contentTabs[4]
+        }
 	}
 
+    /**
+     * Functions that are available to be called from view partials
+     */
 	function initScopeFunctions(){
 		$scope.getEtherpadReadOnlyUrl = function (readOnlyPadId) {
-			var url = localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
-			console.log("Contribution Read Only Etherpad URL: "+url);
-			return url;
+			return localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
 		};
 
 		$scope.openContributionPage = function(cID, edit)  {
@@ -911,16 +930,16 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 	 * @returns assembly
 	 */
 	function setCurrentCampaign($scope, localStorageService) {
-		// TODO: find a better way of caching results
-		//$scope.campaign = localStorageService.get('currentCampaign');
+		// TODO: find a better way of caching results, explore they use of memoization
 		$scope.campaign = null;
 		$scope.loadedLocally = true;
 		if(!$scope.campaign || $scope.campaign.campaignId != $scope.campaignID) {
 			$scope.loadedLocally = false;
-			var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
+			var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get(); // GET /assembly/:aid/campaign/:cid
 			res.$promise.then(function(data) {
 				$scope.campaign = data;
 				localStorageService.set("currentCampaign", $scope.campaign);
+                // now that we have a campaign, process its components, milestones, contributions and ballots
 				setCurrentComponentAndMilestones($scope,localStorageService);
 				setMilestonesMap();
 				setContributionsAndGroups($scope,localStorageService);
@@ -928,6 +947,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			});
 		} else {
 			console.log("Route campaign ID is the same as the current campaign in local storage: "+$scope.campaign.campaignId);
+            // now that we have a campaign, process its components, milestones, contributions and ballots
 			setCurrentComponentAndMilestones($scope,localStorageService);
 			setMilestonesMap();
 			setContributionsAndGroups($scope,localStorageService);
@@ -936,18 +956,15 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		logService.logAction("READ_CAMPAIGN");
 	}
 
-	// register user to vote if ballot does not exist
-	/*
-	if (Ballot.get({uuid: $scope.campaign.bindingBallot}).status == '500'){
-		Ballot.put({uuid: $scope.campaign.bindingBallot, signature: $scope.user.uuid})
-		var VoteByUser = VoteByUser.get({uuid: "test", signature: "lol"});
-		console.log(VoteByUser);
-	}*/
-
+    /**
+     * Read User's BallotPaper related to the campaign binding ballot
+     * Read BallotResults related to the campaign binding ballot
+     * @param $scope
+     * @param localStorageService
+     */
     function ballotInit($scope, localStorageService) {
-        var ballotId = $scope.campaign.bindingBallot;
-        var consultiveBallotId = $scope.campaign.consultiveBallot;
-        var userId = $scope.user.uuid;
+        var ballotId = $scope.campaign.bindingBallot; // campaign binding ballot's uuid
+        var userId = $scope.user.uuid; // user's uuid is also the signature used for voting by logged in users
 
         // Read the current results of the voting
         $scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
@@ -959,17 +976,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
             function (error) {
                 $scope.campaign.ballotResults = null;
                 $scope.ballotResultsAreAvailable = false;
-            }
-        );
-
-        // Read the current results of up and downs consultive votes
-        $scope.campaign.consultiveBallotResults = Ballot.results({uuid: $scope.campaign.consultiveBallot}).$promise;
-        $scope.campaign.consultiveBallotResults.then(
-            function (data) {
-                $scope.campaign.consultiveBallotResults = data;
-            },
-            function (error) {
-                $scope.campaign.consultiveBallotResults = null;
             }
         );
 
@@ -985,24 +991,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
             $scope.candidatesIndex = data.ballot.candidatesIndex;
             $scope.campaign.ballotPaper = data;
         }, function (error) {
-            if (error.status == "400" || error.status == "404") { //no votes under this signature
+            if (error.status == "400" || error.status == "404") { // no votes under this signature
                 var newBallot = NewBallotPaper.ballot(ballotId).save({vote: {signature: userId}}).$promise;
-            }
-        });
-
-        $scope.listOfConsultiveVotesByUser = {};
-        $scope.consultiveCandidatesIndex = {};
-        $scope.campaign.consultiveBallotPaper = {};
-
-        // Read the consultive votes of this user
-        var userConsultiveVotes = VotesByUser.getVotes($scope.campaign.consultiveBallot, userId).votes().$promise;
-        userConsultiveVotes.then(function (data) {
-            $scope.listOfConsultiveVotesByUser = data.vote.votes;
-            $scope.consultiveCandidatesIndex = data.ballot.candidatesIndex;
-            $scope.campaign.consultiveBallotPaper = data;
-        }, function (error) {
-            if (error.status == "400" || error.status == "404") { //no votes under this signature
-                var newConsultiveBallot = NewBallotPaper.ballot($scope.campaign.consultiveBallot).save({vote: {signature: userId}}).$promise;
             }
         });
     }
@@ -1075,7 +1065,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 		$scope.enableVoting = ($scope.component && $scope.component.key && $scope.component.key.toLowerCase() === 'voting');
 		if ($scope.component && $scope.component.key!="Proposalmaking") {
-			$scope.contentTabs[2].active=true;
+			$scope.contentTabsIndex["proposals"].active=true;
 		}
 	}
 
@@ -1137,8 +1127,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 						if(!$scope.contributions){
 							$scope.contributions = [];
 						}
-						$scope.contentTabs[0].contentArray = $scope.contributions;
-						$scope.contentTabs[2].contentArray = $scope.contributions;
+                        $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
+						$scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
+                        $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
@@ -1150,8 +1141,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			if(!$scope.contributions){
 				$scope.contributions = [];
 			}
-			$scope.contentTabs[0].contentArray = $scope.contributions;
-			$scope.contentTabs[2].contentArray = $scope.contributions;
+            $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
+            $scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
+            $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
 		}
 
 		if ($scope.loadedLocally) {
@@ -1160,7 +1152,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.workingGroups.$promise.then(
 					function (data) {
 						$scope.workingGroups = data;
-						$scope.contentTabs[1].contentArray = $scope.workingGroups;
+						$scope.contentTabsIndex["working_groups"].contentArray = $scope.workingGroups;
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
@@ -1169,7 +1161,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			);
 		} else {
 			$scope.workingGroups = $scope.campaign.workingGroups;
-			$scope.contentTabs[1].contentArray = $scope.workingGroups;
+            $scope.contentTabsIndex["working_groups"].contentArray = $scope.workingGroups;
 		}
 
 

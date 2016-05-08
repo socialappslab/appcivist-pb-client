@@ -1,33 +1,34 @@
 <div id="newContribution" class="row col-md-12 col-sm-12">
     <div class="col-md-12 col-sm-12">
+        <div class="row form-horizontal form-group" ng-if="cType === 'PROPOSAL'">
+            <label for="selectGroupAuthor" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Working Group'|translate}}</label>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                <select ng-if="!createNewGroup" id="selectGroupAuthor" name="workingGroupAuthors"
+                        class="form-control"
+                        ng-model="groupId"
+                        ng-options="group.groupId as group.name for group in userWorkingGroups track by group.groupId"
+                        ng-change="changeWorkingGroupAuthor(groupId)">
+                </select>
+            </div>
+        </div>
         <div class="row form-horizontal form-group">
-            <label for="inputTitleNewContribution" class="col-sm-2 col-md-2 control-label">Title</label>
-            <div class="col-sm-10 col-md-10">
+            <label for="inputTitleNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Title'|translate}}</label>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-md-10">
                 <input class="form-control" id="inputTitleNewContribution" placeholder=""
                         ng-model="newContribution.title">
             </div>
         </div>
         <div class="row form-horizontal form-group">
-            <label for="inputTextNewContribution" class="col-sm-2 col-md-2 control-label">Text</label>
-            <div class="col-sm-10 col-md-10">
+            <label for="inputTextNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Summary'|translate}}</label>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-md-10">
                 <textarea class="form-control" rows="5" id="inputTextNewContribution"
                           maxlength="400" placeholder="Max. 250 words"
                           ng-model="newContribution.text"/>
             </div>
         </div>
-        <!--<div class="row form-horizontal form-group">-->
-            <!--<label for="inputLocationNewContribution" class="col-sm-2 col-md-2 control-label">Location</label>-->
-
-            <!--<div class="col-sm-10 col-md-10">-->
-                <!--<input ng-model="newContribution.location.placeName" class="form-control"-->
-                       <!--id="inputLocationNewContribution" placeholder="Name a location">-->
-                <!--<i class="fa fa-question-circle"></i>-->
-            <!--</div>-->
-        <!--</div>-->
-
         <div class="row form-horizontal form-group">
-            <label for="selectThemeNewContribution" class="col-sm-2 col-md-2 control-label">Select theme(s)</label>
-            <div id="selectThemeNewContribution" class="col-md-10 col-sm-10 optionsBox">
+            <label for="selectThemeNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Select'|translate}} {{'Theme/s'|translate|lowercase}}</label>
+            <div id="selectThemeNewContribution" class="col-lg-10 col-md-10 col-md-10 col-sm-10 optionsBox">
                 <div class="checkbox" ng-repeat="t in themes track by $index">
                     <label>
                         <input type="checkbox"
@@ -38,28 +39,6 @@
             </div>
         </div>
     </div>
-
-
-    <!--TODO: Add contributors/authors-->
-    <!--<div class="row voffset4"></div>-->
-    <!--&lt;!&ndash;<div class="row col-md-12 col-sm-12">&ndash;&gt;-->
-    <!--<h4>Contributor/s</h4>-->
-    <!--</div>-->
-    <!--<div class="row voffset4"></div>-->
-    <!--<div class="row col-md-12 col-sm-12">-->
-
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--<div class="row voffset4"></div>-->
-    <!--<div class="row col-md-12 col-sm-12">-->
-    <!--<div class="form-horizontal">-->
-    <!--<div class="form-group">-->
-    <!--<div class="col-sm-8 col-md-8">-->
-    <!--<input class="form-control" id="inputTitleNewContribution" placeholder="" ng-model="newContribution.title">-->
-    <!--</div>-->
-    <!--<a href="/#/"><button class="btn btn-success col-sm-4 col-md-4"><h5><strong>Add attachment</strong></h5></button></a>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
     <div class="col-md-12 col-sm-12 box settingsBox infoBox">
         <attachments
                 attachments="newContribution.attachments"

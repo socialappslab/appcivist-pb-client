@@ -482,10 +482,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
                 "invitationEmail" : "",
                 "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
                 "majorityThreshold" : "simple",
-                "blockMajority" : false,
-                "profile" : {
-                    "icon" : ""
-                }
+                "blockMajority" : false
             };
 
             var invitationEmail = $translate('wgroup.invitation.email.text',

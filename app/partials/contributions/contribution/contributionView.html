@@ -10,7 +10,7 @@
             <div class="row col-md-12 col-sm-12">
                 <h1 class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <strong>
-                        {{contribution.type | capitalize}} {{'Contribution'|translate}}
+                        {{contribution.title | capitalize }}
                     </strong>
                 </h1>
                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
@@ -33,20 +33,28 @@
             </div>
         </div>
 
-        <div class="modal-body view col-md-12 col-sm-12">
-            <div class="row contribution no-padding no-margin">
-                <div class="row contribution-content">
-                    <!-- Title and Text of Contribution -->
-                    <div class="row">
-                        <ng-include class="row" src="'app/partials/contributions/contribution/contributionTitleText.html'"></ng-include>
+        <div class="modal-body view col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button nf-if="contribution.type==='BRAINSTORMING'"
+                        class="btn btn-info col-lg-4 col-lg-offset-8 col-md-4 col-md-offset-8 col-sm-12 col-xs-12"
+                        type="button" ng-click="brainstormingToProposal()">
+                    {{'Turn into Proposal'|translate}}
+                </button>
+            </div>
+            <div class="row contribution col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="contribution-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <strong>{{'Summary'|translate}}:</strong>
+                    <p>{{contribution.text}}</p>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                        <div class="tag tag-info" ng-repeat="theme in contribution.themes">
+                            <strong class="text-muted">{{theme.title}}</strong>
+                        </div>
                     </div>
-                    <!-- Meta information of contribution: themes, authors, date, votes-->
-                    <div class="row contribution-meta-relative">
-                        <ng-include class="row" src="'app/partials/contributions/contribution/contributionMeta.html'"></ng-include>
+                    <div class="contribution-meta-relative col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <ng-include src="'app/partials/contributions/contribution/contributionMetaAuthors.html'"></ng-include>
                     </div>
                 </div>
             </div>
-
             <div class="row col-md-8 col-sm-8">    <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
                 <div class="row etherpad">
                     <iframe class="" ng-if="contribution.type === 'PROPOSAL' || contribution.type === 'NOTE'"

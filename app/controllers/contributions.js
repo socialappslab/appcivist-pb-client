@@ -305,6 +305,19 @@ appCivistApp.controller('ContributionModalCtrl',
                 createNewContribution($scope, Contributions, logService);
             };
 
+            $scope.brainstormingToProposal = function () {
+                $scope.newContribution = Contributions.defaultNewContribution();
+                $scope.newContribution.type = 'PROPOSAL';
+                $scope.newContribution.title = $scope.contribution.title;
+                $scope.newContribution.text = $scope.contribution.text;
+                $scope.targetSpaceId = $scope.containerID;
+                $scope.targetSpace = $scope.container;
+                $scope.response = {};
+                $scope.modalInstance = $uibModalInstance;
+                // TODO: add invitations to commenters for the new group that will be created
+                createNewContribution($scope, Contributions, logService);
+            };
+
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };

@@ -856,9 +856,23 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				}
 			});
 
+            var createdContributionType = cType;
 			modalInstance.result.then(function (newContribution) {
 				$scope.newContribution = newContribution;
 				console.log('New Contribution with Title: ' + newContribution.title);
+                if(createdContributionType==="PROPOSAL") {
+                    $scope.contentTabsIndex["brainstorming"].active=false;
+                    $scope.contentTabsIndex["proposals"].active=true;
+                    $scope.contentTabsIndex["notes"].active=false;
+                } else if (createdContributionType==="NOTE") {
+                    $scope.contentTabsIndex["brainstorming"].active=false;
+                    $scope.contentTabsIndex["proposals"].active=false;
+                    $scope.contentTabsIndex["notes"].active=true;
+                } else {
+                    $scope.contentTabsIndex["brainstorming"].active=true;
+                    $scope.contentTabsIndex["proposals"].active=false;
+                    $scope.contentTabsIndex["notes"].active=false;
+                }
 			}, function () {
 				console.log('Modal dismissed at: ' + new Date());
 			});

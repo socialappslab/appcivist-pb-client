@@ -21,13 +21,15 @@ var appcivist = {
         voting: {
             production: "http://appcivist.littlemacondo.com/voting/api/v0",
             testing: "http://appcivist.littlemacondo.com/voting/api/v0",
-            development: "http://localhost:5000/api/v0",
+            development: "http://appcivist-dev.littlemacondo.com/voting/api/v0",
+            local: "http://localhost:5000/api/v0",
             sage: "http://appcivist-sage.littlemacondo.com/voting/api/v0"
         },
         core: {
             production: "http://appcivist.littlemacondo.com/backend/api",
             testing: "http://appcivist.littlemacondo.com/backend/api",
-            development: "http://localhost:9000/api",
+            development: "http://appcivist-dev.littlemacondo.com/backend/api",
+            local: "http://localhost:9000/api",
             sage: "http://appcivist-sage.littlemacondo.com/backend/api"
         }
     },
@@ -345,13 +347,15 @@ function pathIsNotRestricted(path) {
  * - TODO: when production version are ready, add a rule for selecting the production server
  */
 function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "appcivist-sage.littlemacondo.com", "appcivist.littlemacondo.com"];
+    var possibleHosts = ["localhost", "appcivist-sage.littlemacondo.com", "appcivist.littlemacondo.com",
+        "appcivist-dev.littlemacondo.com"];
     if (hostname.match(possibleHosts[0])) {
-        return apis.development;
+        return apis.local;
     } else if (hostname.match(possibleHosts[1])) {
         return apis.sage;
-    } else {
+    } else if (hostname.match(possibleHosts[2])) {
         return apis.testing;
+    } else {
+        return apis.development;
     }
-
 }

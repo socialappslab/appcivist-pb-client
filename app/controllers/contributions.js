@@ -11,7 +11,8 @@
 var postingContributionFlag = false;
 
 appCivistApp.controller('NewContributionCtrl',
-        function ($scope, $http, $routeParams, localStorageService, Contributions, $translate, logService) {
+        function ($scope, $http, $routeParams, localStorageService, Contributions, $translate, logService,
+                  usSpinnerService) {
             init();
 
             function init() {
@@ -46,6 +47,16 @@ appCivistApp.controller('NewContributionCtrl',
                     $scope.modalInstance = undefined;
                     createNewContribution($scope, Contributions, logService);
                 };
+
+                $scope.startSpinner = function(){
+                    $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+                    usSpinnerService.spin('spinner-1');
+                }
+
+                $scope.stopSpinner = function(){
+                    usSpinnerService.stop('spinner-1');
+                    $(angular.element.find('.spinner-container')).remove();
+                }
             }
         });
 
@@ -137,7 +148,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
                                                               localStorageService, Etherpad, Contributions, $translate,
-                                                              logService) {
+                                                              logService, usSpinnerService) {
 
     init();
 
@@ -237,6 +248,15 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
             return $scope.contribution.type === 'BRAINSTORMING' ? "'300px;'" : "''";
         }
 
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
     }
 
 });
@@ -509,7 +529,7 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
 });
 
 appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
-													   Contributions, $translate, logService) {
+													   Contributions, $translate, logService, usSpinnerService) {
 	init();
 	initializeNewReplyModel();
 
@@ -567,6 +587,15 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
         $scope.delete = function () {
 			deleteContribution($scope, localStorageService, Contributions, logService);
 		};
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
 	}
 
 	function initializeNewReplyModel() {

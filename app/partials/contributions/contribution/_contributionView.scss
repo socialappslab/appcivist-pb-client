@@ -4,15 +4,6 @@
     background: white;
   }
 
-  .optionsBox{
-    background-color: $assembly-optionsBox;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    .checkbox{
-      padding-left: 2rem;
-    }
-  }
-
   .forum{
     margin-left: 2rem;
 
@@ -32,9 +23,26 @@
     }
   }
 
-  .infoBox{
-    text-align: center;
+  .image-profile-contribution {
+    display: inline-block;
+    & img {
+      background-size: 100%;
+      height: 40px;
+      width: 40px;
+      border-radius: 20px;
+    }
   }
+
+    & .contribution-meta{
+      position:absolute;
+      bottom:0;
+    }
+
+    & .contribution-meta-relative{
+      & .contribution-meta{
+        position:relative;
+      }
+    }
 }
 
 .contribution{

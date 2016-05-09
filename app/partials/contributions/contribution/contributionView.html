@@ -34,15 +34,8 @@
         </div>
 
         <div class="modal-body view col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <button nf-if="contribution.type==='BRAINSTORMING'"
-                        class="btn btn-info col-lg-4 col-lg-offset-8 col-md-4 col-md-offset-8 col-sm-12 col-xs-12"
-                        type="button" ng-click="brainstormingToProposal()">
-                    {{'Turn into Proposal'|translate}}
-                </button>
-            </div>
-            <div class="row contribution col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="contribution-content col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <!--<div class="row contribution col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                <!--<div class="contribution-content col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
                     <strong>{{'Summary'|translate}}:</strong>
                     <p>{{contribution.text}}</p>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
@@ -53,7 +46,14 @@
                     <div class="contribution-meta-relative col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <ng-include src="'app/partials/contributions/contribution/contributionMetaAuthors.html'"></ng-include>
                     </div>
-                </div>
+                <!--</div>-->
+            <!--</div>-->
+            <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button ng-if="contribution.type==='BRAINSTORMING'"
+                        class="btn btn-primary col-lg-4 col-lg-offset-8 col-md-4 col-md-offset-8 col-sm-12 col-xs-12"
+                        type="button" ng-click="brainstormingToProposal()">
+                    {{'Turn into Proposal'|translate}}
+                </button>
             </div>
             <div class="row col-md-8 col-sm-8">    <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
                 <div class="row etherpad">
@@ -107,8 +107,8 @@
 
         </div>
 
+        <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
         <div class="modal-footer view col-md-12 col-sm-12">
-            <spinner name="mySpinner" show="postingContribution"></spinner>
             <button class="btn btn-danger" type="button" ng-if="userIsAuthor" ng-click="delete()">{{'Delete'|translate}}</button>
         </div>
     </div>

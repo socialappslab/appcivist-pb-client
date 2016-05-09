@@ -2158,14 +2158,6 @@ button#second-vote {
 #contributionView .view {
   background: white;
 }
-#contributionView .optionsBox {
-  background-color: #F4F4F4;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
-#contributionView .optionsBox .checkbox {
-  padding-left: 2rem;
-}
 #contributionView .forum {
   margin-left: 2rem;
 }
@@ -2181,8 +2173,21 @@ button#second-vote {
 #contributionView .forum .button.replyButton {
   margin-bottom: -3rem;
 }
-#contributionView .infoBox {
-  text-align: center;
+#contributionView .image-profile-contribution {
+  display: inline-block;
+}
+#contributionView .image-profile-contribution img {
+  background-size: 100%;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+#contributionView .contribution-meta {
+  position: absolute;
+  bottom: 0;
+}
+#contributionView .contribution-meta-relative .contribution-meta {
+  position: relative;
 }
 
 .contribution {

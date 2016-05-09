@@ -708,7 +708,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
-														  Ballot, Candidate, VotesByUser, NewBallotPaper, BallotPaper, logService){
+														  Ballot, Candidate, VotesByUser, NewBallotPaper, BallotPaper,
+                                                          logService, usSpinnerService){
 
 	init();
 
@@ -743,9 +744,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				//contentArray : 'contributions',
 				showInComponent : {
 					'proposal making' : true,
-					'deliberation' : false,
-					'voting' : false,
-					'implementation' : false
+					'deliberation' : true,
+					'voting' : true,
+					'implementation' : true
 				},
 				active : true,
 			},
@@ -898,7 +899,19 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
         $scope.showFinalResults = function () {
             $scope.showVotingResults = !$scope.showVotingResults;
         };
-	}
+
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
+
+        $scope.startSpinner();
+    }
 
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
@@ -942,7 +955,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
                 // now that we have a campaign, process its components, milestones, contributions and ballots
 				setCurrentComponentAndMilestones($scope,localStorageService);
 				setMilestonesMap();
-				setContributionsAndGroups($scope,localStorageService);
+                $scope.stopSpinner();
+                setContributionsAndGroups($scope,localStorageService);
 				ballotInit($scope, localStorageService);
 			});
 		} else {
@@ -950,6 +964,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
             // now that we have a campaign, process its components, milestones, contributions and ballots
 			setCurrentComponentAndMilestones($scope,localStorageService);
 			setMilestonesMap();
+            $scope.stopSpinner();
 			setContributionsAndGroups($scope,localStorageService);
 			ballotInit($scope, localStorageService);
 		}
@@ -1035,7 +1050,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				}
 			}
 			if (!$scope.component) {
-				$scope.component = $scope.components[0];
+				$scope.component = $scope.components[$scope.components.length-1];
 			}
 			$scope.componentID = $scope.component.componentId;
 			localStorageService.set("currentComponent", $scope.component);

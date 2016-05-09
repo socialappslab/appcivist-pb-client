@@ -60,7 +60,7 @@
                         <iframe ng-if="!userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
                                 width="100%" height="600px">
                         </iframe>
-                        <iframe ng-if="userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                        <iframe ng-if="(contribution.type === 'NOTE') || (userIsAuthor && contribution.type === 'PROPOSAL')" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
                                 width="100%" height="600px">
                         </iframe>
                     </div>

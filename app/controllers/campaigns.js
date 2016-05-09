@@ -1080,8 +1080,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 		$scope.enableVoting = ($scope.component && $scope.component.key && $scope.component.key.toLowerCase() === 'voting');
 		if ($scope.component && $scope.component.key!="Proposalmaking") {
+            $scope.contentTabsIndex["brainstorming"].active=false;
 			$scope.contentTabsIndex["proposals"].active=true;
-		}
+		} else {
+            $scope.contentTabsIndex["brainstorming"].active=true;
+            $scope.contentTabsIndex["proposals"].active=false;
+        }
 	}
 
 	function setMilestonesMap () {

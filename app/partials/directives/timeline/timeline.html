@@ -4,9 +4,9 @@
             ng-class="component.componentId === componentID ? 'active selected' : 'active'"
             ng-repeat="component in components track by $index">
             <h4 ng-if="component.timeline === 1">
-                <a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentId}}">
+                <!--<a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentId}}">-->
                     <strong>&nbsp;&nbsp;&nbsp;&nbsp;{{component.title}}</strong>
-                </a>
+                <!--</a>-->
             </h4>
         </li>
     </ul>

@@ -1,6 +1,6 @@
 <form name="newUserForm" id="signup_form" class="form-horizontal">
     <div class="form-group" ng-class="{ 'has-error': newUserForm.username.$touched && newUserForm.username.$invalid }">
-        <label for="username" class="col-md-4 control-label">Username*</label>
+        <label for="username" class="col-md-4 control-label">{{'Username'|translate}}*</label>
         <div class="col-md-8">
             <input type="text" class="form-control" id="username"
                    name="username" placeholder="Desired Username"
@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="form-group" ng-class="{ 'has-error': newUserForm.email.$touched && newUserForm.email.$invalid }">
-        <label for="email" class="col-md-4 control-label">Email*</label>
+        <label for="email" class="col-md-4 control-label">{{'Email'|translate}}*</label>
         <div class="col-md-8">
             <input type="text" class="form-control" id="email"
                    name="email" placeholder="Email"
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="form-group" ng-class="{ 'has-error': newUserForm.password.$touched && newUserForm.password.$invalid }">
-        <label for="password" class="col-md-4 control-label">Password* </label>
+        <label for="password" class="col-md-4 control-label">{{'Password'|translate}}* </label>
         <div class="col-md-8">
             <input type="password" class="form-control" id="password"
                    name="password" placeholder="Desired Password" ng-required="true"
@@ -26,11 +26,22 @@
         </div>
     </div>
     <div class="form-group" ng-class="{ 'has-error': newUserForm.repeatPassword.$touched && newUserForm.repeatPassword.$invalid }">
-        <label for="repeatPassword" class="col-md-4 control-label">Confirm Password*</label>
+        <label for="repeatPassword" class="col-md-4 control-label">{{'Confirm Password'|translate}}*</label>
         <div class="col-md-8">
             <input type="password" class="form-control" id="repeatPassword"
                    name="repeatPassword" placeholder="Confirm Password" ng-required="true"
                    ng-model="newUser.repeatPassword"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="repeatPassword" class="col-md-4 control-label">{{'Language'|translate}}*</label>
+        <div class="col-md-8">
+            <select id="selectLanguage" name="lang"
+                    class="form-control"
+                    ng-model="currentLocaleDisplayName"
+                    ng-options="localesDisplayName for localesDisplayName in localesDisplayNames"
+                    ng-change="changeLanguage(currentLocaleDisplayName)">
+            </select>
         </div>
     </div>
     <!-- Submit button when new user is created via Signup Button -->

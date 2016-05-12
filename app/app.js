@@ -13,7 +13,8 @@
 console.log("Welcome to AppCivist!");
 
 var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
-    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll'];
+    'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
+    'tmh.dynamicLocale'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var appcivist = {
@@ -84,6 +85,21 @@ var helpInfo = {
  * - Routes
  * - Libraries specifics (e.g., local storage, resource provider, etc.)
  */
+
+appCivistApp
+    .constant('DEBUG_MODE', /*DEBUG_MODE*/true/*DEBUG_MODE*/)
+    .constant('VERSION_TAG', /*VERSION_TAG_START*/new Date().getTime()/*VERSION_TAG_END*/)
+    .constant('LOCALES', {
+        'locales': {
+            'en-US': 'English',
+            'de-DE': 'Deutsch',
+            'es-ES': 'Español',
+            'fr-FR': 'Français',
+            'it-IT': 'Italiano'
+        },
+        'preferredLocale': 'en-US'
+    });
+
 appCivistApp.config(config);
 appCivistApp.run(run);
 
@@ -92,7 +108,7 @@ appCivistApp.run(run);
  * @type {string[]}
  */
 config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
-    'localStorageServiceProvider', '$translateProvider'];
+    'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider'];
 
 /**
  * Configuration of the app, executed before everything else.
@@ -104,7 +120,7 @@ config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$
  * @param localStorageServiceProvider
  */
 function config($routeProvider, $locationProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
-                localStorageServiceProvider, $translateProvider) {
+                localStorageServiceProvider, $translateProvider, tmhDynamicLocaleProvider) {
 
     /**
      * Whitelist of external domains/URLs allowed to be queried (e.g., the etherpad server)
@@ -285,6 +301,9 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             'de_DE' : 'de-DE'
         })
         .useSanitizeValueStrategy(null);
+
+    tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
+
 }
 
 /**

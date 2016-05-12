@@ -243,6 +243,7 @@
   "Select":"Select",
   "Theme":"Theme",
   "Themes":"Themes",
-  "Theme/s":"Theme(s)",
-  "Turn into Proposal": "Turn into Proposal"
+  "Theme-s":"Theme(s)",
+  "Turn into Proposal": "Turn into Proposal",
+  "directives.language-select.Language":"Choose a Language"
 }

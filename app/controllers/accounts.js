@@ -52,6 +52,11 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 
 	$scope.signup = function() {
+		if ($scope.newUser.lang) {
+			if ($scope.newUser.lang.value) {
+				$scope.newUser.lang = $scope.newUser.lang.value;
+			}
+		}
 		loginService.signUp($scope.newUser, $scope, $scope.logService.logAction("SIGNUP"));
 	}
 
@@ -113,13 +118,22 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 
 appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $location, $uibModalInstance, newUser,
-													 localStorageService, Assemblies, loginService, usSpinnerService) {
+													 localStorageService, Assemblies, loginService, usSpinnerService,
+													 LocaleService, LOCALES) {
 	init();
 	function init() {
 		$scope.newUser = newUser;
+		$scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName() ?
+				LocaleService.getLocaleDisplayName() : LOCALES.locales[LOCALES.preferredLocale];
+		$scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
+
+		$scope.changeLanguage = function (locale) {
+			LocaleService.setLocaleByDisplayName(locale);
+		};
 	}
 
 	$scope.signup = function() {
+		$scope.newUser.lang = LocaleService.getLocale();
 		loginService.signUp($scope.newUser, $scope, $uibModalInstance);
 	}
 

@@ -7,14 +7,19 @@
  *
  */
 appCivistApp.controller('MainCtrl', function($scope, $resource, $location, localStorageService, $translate,
-											 Assemblies, loginService, $route, $routeParams, usSpinnerService, $uibModal) {
+											 Assemblies, loginService, $route, $routeParams, usSpinnerService,
+											 $uibModal, LocaleService, LOCALES) {
 	init();
 
 	function init() {
 		$scope.route = $route;
 		$scope.user = localStorageService.get("user");
-		if ($scope.user && $scope.user.language)
-			$translate.use($scope.user.language);
+		if ($scope.user && $scope.user.language) {
+			LocaleService.setLocale($scope.user.language);
+		}
+
+		$scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName();
+		$scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
 
 		$scope.sessionKey = localStorageService.get("sessionKey");
 		$scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
@@ -31,6 +36,11 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 			"repeatPassword": "",
 			"password": "",
 			"email": ""
+		};
+
+
+		$scope.changeLanguage = function (locale) {
+			LocaleService.setLocaleByDisplayName(locale);
 		};
 
 		if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
@@ -83,16 +93,11 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		searchAssemblies(query);
 	}
 
-
-	// DUPLICATE IN accounts.js
-	// $scope.login = function() {
-	// 	console.log("Signing in with email = " + $scope.user.email);
-	// 	loginService.signIn($scope.user.email, $scope.user.password);
-	// }
-
 	$scope.signup = function() {
-		loginService.signUp($scope.newUser, $scope);
+		$scope.newUser.lang = LocaleService.getLocale();
+		loginService.signUp($scope.newUser, $scope, $uibModalInstance);
 	}
+
 
 	$scope.signout = function() {
 		loginService.signOut();

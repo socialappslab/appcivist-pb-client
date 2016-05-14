@@ -10,12 +10,12 @@ appCivistApp.directive('ngTranslateLanguageSelect', function (LocaleService, LOC
         template: ''+
         '<div class=language-select" ng-if="visible">'+
         '<label class="main-title">'+
-        '{{"directives.language-select.Language" | translate}}: '+
+        '{{"directives.language-select.Language" | translate}}:  '+
+        '</label>'+
         '<select ng-model="currentLocaleDisplayName"'+
         'ng-options="localesDisplayName for localesDisplayName in localesDisplayNames"'+
         'ng-change="changeLanguage(currentLocaleDisplayName)">'+
         '</select>'+
-        '</label>'+
         '</div>'+
         '',
         controller: function ($scope) {

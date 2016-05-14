@@ -4,7 +4,7 @@
             <div class="col-md-7 col-sm-7 discussion">
                 <div class="row col-md-12 col-sm-12" ng-if="wGroup.profile">
                     <img alt="100x100" ng-src="{{wGroup.profile.icon}}" data-holder-rendered="true" class="image-circle inline">
-                    <h2 class="inline"><strong>Working Group: </strong>{{wGroup.name}}</h2>
+                    <h2 class="inline"><strong>{{'Working Group'|translate}}: </strong>{{wGroup.name}}</h2>
                 </div>
                 <div class="row col-md-6 col-sm-6">
                     <h3 class="inline"><strong>Working Group Forum</strong></h3>
@@ -13,9 +13,9 @@
                     <h1 ng-if="checkShow('joinButton')" class="align-right">
                         <button class="btn btn-success btn-lg" ng-click="joinGroup()" ng-disabled="!userIsMember && userIsRequestedMember">
                             <h4 style="float:right;">
-                                <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">Join Working Group</strong>
-                                <strong ng-if="!userIsMember && userIsRequestedMember">Join request awaiting approval</strong>
-                                <strong ng-if="!userIsMember && userIsInvitedMember">Invitation awaiting your response</strong>
+                                <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">{{'Join'|translate}} {{'Working Group'|translate}}</strong>
+                                <strong ng-if="!userIsMember && userIsRequestedMember">{{'Join'|translate}} request awaiting approval</strong>
+                                <strong ng-if="!userIsMember && userIsInvitedMember">{{'Invitation'|translate}} awaiting your response</strong>
                             </h4>
                         </button>
                     </h1>

@@ -1,0 +1,30 @@
+<div class="row form-group">
+    <div class="row">
+        <label for="selectGroupAuthor" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">{{'Responsible Working Group:'|translate}} </label>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12"><select ng-if="!createNewGroup" id="selectGroupAuthor" name="workingGroupAuthors"
+                                                                  class="form-control"
+                                                                  ng-model="groupId"
+                                                                  ng-options="group.groupId as group.name for group in userWorkingGroups track by group.groupId"
+                                                                  ng-change="changeWorkingGroupAuthor(groupId)">
+        </select></div>
+    </div>
+    <div class="row">
+        <label ng-if="newWorkingGroupByName" for="selectGroupAuthor" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">{{'Name your new group:'|translate}} </label>
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+            <input ng-if="newWorkingGroupByName" class="form-control" id="inputTitleNewGroup" placeholder="" ng-model="newContribution.workingGroupAuthors[0].name">
+        </div>
+    </div>
+
+    <div class="row">
+        <button ng-if="contribution.type==='BRAINSTORMING' && userIsAuthor" ng-disabled="!groupSelected"
+                class="btn btn-danger col-lg-2 col-lg-offset-8 col-md-2 col-md-offset-8 col-sm-6 col-xs-6"
+                type="button" ng-click="brainstormingToProposalDisable()">
+            {{'Cancel'|translate}}
+        </button>
+        <button ng-if="contribution.type==='BRAINSTORMING' && userIsAuthor" ng-disabled="!groupSelected"
+                class="btn btn-primary col-lg-2 col-md-2 col-sm-6 col-xs-6"
+                type="button" ng-click="brainstormingToProposal()">
+            {{'Submit'|translate}}
+        </button>
+    </div>
+</div>

@@ -8,8 +8,8 @@ appCivistApp.directive('ngTranslateLanguageSelect', function (LocaleService, LOC
         restrict: 'A',
         replace: true,
         template: ''+
-        '<div class="main-title language-select" ng-if="visible">'+
-        '<label>'+
+        '<div class=language-select" ng-if="visible">'+
+        '<label class="main-title">'+
         '{{"directives.language-select.Language" | translate}}: '+
         '<select ng-model="currentLocaleDisplayName"'+
         'ng-options="localesDisplayName for localesDisplayName in localesDisplayNames"'+

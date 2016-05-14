@@ -95,7 +95,11 @@ appCivistApp.controller('NewContributionModalCtrl',
                 $scope.newContribution.type = cType;
                 $scope.newAttachment = Contributions.defaultContributionAttachment();
                 $scope.userWorkingGroups = localStorageService.get("workingGroups");
-                $scope.createNewGroup = false;
+                $scope.userWorkingGroups.unshift({groupId: "NOID", name:"Create a new group..."});
+                $scope.createNewGroup = false; // TODO: where is used?
+                $scope.newWorkingGroupName = "";
+                $scope.newWorkingGroupByName = false;
+                $scope.groupSelected = false;
             }
 
             /**
@@ -130,7 +134,15 @@ appCivistApp.controller('NewContributionModalCtrl',
                 };
 
                 $scope.changeWorkingGroupAuthor = function (workingAuthor) {
-                    $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor};
+                    if (workingAuthor === "NOID") {
+                        $scope.newContribution.workingGroupAuthors[0] = {name: $scope.newWorkingGroupName};
+                        $scope.newWorkingGroupByName = true;
+                        $scope.groupSelected = true;
+                    } else {
+                        $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor};
+                        $scope.newWorkingGroupByName = false;
+                        $scope.groupSelected = true;
+                    }
                 }
 
                 $scope.startSpinner = function(){
@@ -280,6 +292,13 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.containerID = containerID;
             $scope.containerIndex = containerIndex;
             $scope.doNotSummarizeText = true;
+            $scope.userWorkingGroups = localStorageService.get("workingGroups");
+            $scope.userWorkingGroups.unshift({groupId: "NOID", name:"Create a new group..."});
+            $scope.newContribution = Contributions.defaultNewContribution();
+            $scope.newWorkingGroupName = "";
+            $scope.newWorkingGroupByName = false;
+            $scope.groupSelected = false;
+
 
             if (!$scope.contribution.comments || $scope.contribution.comments.length === 0) {
                 var getComments = Contributions.getContributionComments($scope.assemblyID, $scope.contribution.contributionId).query();
@@ -325,11 +344,31 @@ appCivistApp.controller('ContributionModalCtrl',
                 createNewContribution($scope, Contributions, logService);
             };
 
+
+            $scope.changeWorkingGroupAuthor = function (workingAuthor) {
+                if (workingAuthor === "NOID") {
+                    $scope.newContribution.workingGroupAuthors[0] = {name: $scope.newWorkingGroupName};
+                    $scope.newWorkingGroupByName = true;
+                    $scope.groupSelected = true;
+                } else {
+                    $scope.newContribution.workingGroupAuthors[0] = {groupId: workingAuthor};
+                    $scope.newWorkingGroupByName = false;
+                    $scope.groupSelected = true;
+                }
+            }
+            $scope.brainstormingToProposalEnable = function () {
+                $scope.turnIntoProposal = true;
+            }
+            $scope.brainstormingToProposalDisable= function () {
+                $scope.turnIntoProposal = false;
+            }
             $scope.brainstormingToProposal = function () {
-                $scope.newContribution = Contributions.defaultNewContribution();
                 $scope.newContribution.type = 'PROPOSAL';
                 $scope.newContribution.title = $scope.contribution.title;
                 $scope.newContribution.text = $scope.contribution.text;
+                $scope.newContribution.inspirations = [
+                    $scope.contribution
+                ];
                 $scope.targetSpaceId = $scope.containerID;
                 $scope.targetSpace = $scope.container;
                 $scope.response = {};
@@ -492,6 +531,19 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
             localStorageService.set("currentContribution", $scope.contribution);
             $scope.themes = $scope.contribution.themes;
             $scope.comments = $scope.contribution.comments;
+
+            if (!$scope.contribution.comments || $scope.contribution.comments.length === 0) {
+                var getComments = Contributions.getContributionComments($scope.assemblyID, $scope.contribution.contributionId).query();
+                getComments.$promise.then(
+                    function (data) {
+                        $scope.contribution.comments = data;
+                    },
+                    function (error) {
+                        $scope.contribution.comments = [];
+                    }
+                )
+            }
+
             $scope.stats = $scope.contribution.stats;
             $scope.workingGroup = {};
             if(!$scope.contribution.attachments) {

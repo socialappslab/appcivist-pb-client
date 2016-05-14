@@ -1,34 +1,26 @@
 <div id="newContribution" class="row col-md-12 col-sm-12">
     <div class="col-md-12 col-sm-12">
-        <div class="row form-horizontal form-group" ng-if="cType === 'PROPOSAL'">
-            <label for="selectGroupAuthor" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Working Group'|translate}}</label>
-            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                <select ng-if="!createNewGroup" id="selectGroupAuthor" name="workingGroupAuthors"
-                        class="form-control"
-                        ng-model="groupId"
-                        ng-options="group.groupId as group.name for group in userWorkingGroups track by group.groupId"
-                        ng-change="changeWorkingGroupAuthor(groupId)">
-                </select>
-            </div>
-        </div>
+        <!-- Select/Name the Working Group for the Proposal -->
+        <ng-include src="'app/partials/contributions/contribution/select-group.html'"></ng-include>
+
         <div class="row form-horizontal form-group">
-            <label for="inputTitleNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Title'|translate}}</label>
-            <div class="col-lg-10 col-md-10 col-sm-10 col-md-10">
+            <label for="inputTitleNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">{{'Title'|translate}}</label>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                 <input class="form-control" id="inputTitleNewContribution" placeholder=""
                         ng-model="newContribution.title">
             </div>
         </div>
         <div class="row form-horizontal form-group">
-            <label for="inputTextNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Summary'|translate}}</label>
-            <div class="col-lg-10 col-md-10 col-sm-10 col-md-10">
+            <label for="inputTextNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">{{'Summary'|translate}}</label>
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
                 <textarea class="form-control" rows="5" id="inputTextNewContribution"
                           maxlength="400" placeholder="Max. 250 words"
                           ng-model="newContribution.text"/>
             </div>
         </div>
         <div class="row form-horizontal form-group">
-            <label for="selectThemeNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-md-2 control-label">{{'Select'|translate}} {{'Theme-s'|translate|lowercase}}</label>
-            <div id="selectThemeNewContribution" class="col-lg-10 col-md-10 col-md-10 col-sm-10 optionsBox">
+            <label for="selectThemeNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">{{'Select'|translate}} {{'Theme-s'|translate|lowercase}}</label>
+            <div id="selectThemeNewContribution" class="col-lg-10 col-md-10 col-sm-10 col-xs-12 optionsBox">
                 <div class="checkbox" ng-repeat="t in themes track by $index">
                     <label>
                         <input type="checkbox"

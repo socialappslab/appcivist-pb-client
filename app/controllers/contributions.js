@@ -23,6 +23,9 @@ appCivistApp.controller('NewContributionCtrl',
                 $scope.postingContribution = postingContributionFlag;
                 $scope.newContribution = Contributions.defaultContributionAttachment();
                 $scope.userWorkingGroups = localStorageService.get("workingGroups");
+                if (!$scope.userWorkingGroups) {
+                    $scope.userWorkingGroups = [];
+                }
                 $scope.createNewGroup = false;
 
                 if($scope.newContribution.type === "PROPOSAL") {
@@ -95,6 +98,7 @@ appCivistApp.controller('NewContributionModalCtrl',
                 $scope.newContribution.type = cType;
                 $scope.newAttachment = Contributions.defaultContributionAttachment();
                 $scope.userWorkingGroups = localStorageService.get("workingGroups");
+                if (!$scope.userWorkingGroups) { $scope.userWorkingGroups = []; }
                 $scope.userWorkingGroups.unshift({groupId: "NOID", name:"Create a new group..."});
                 $scope.createNewGroup = false; // TODO: where is used?
                 $scope.newWorkingGroupName = "";

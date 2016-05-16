@@ -434,6 +434,17 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
                             && ($scope.isRightRole("COORDINATOR"))
                         )
                     )
+                ),
+                groupButton:
+                $scope.userIsMember
+                && $scope.currentAssembly.profile != undefined
+                && ( ($scope.currentAssembly.profile.managementType === "OPEN")
+                    || ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
+                        && ($scope.isRightRole("COORDINATOR") )
+                        || ( ($scope.currentAssembly.profile.managementType === "COORDINATED_AND_MODERATED")
+                            && ($scope.isRightRole("COORDINATOR"))
+                        )
+                    )
                 )
             };
             if(buttonMap[button]){

@@ -165,6 +165,11 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
         $scope.membersNumberOfPages=function(){
             return Math.ceil($scope.assemblyMembers.length/$scope.membersPageSize);
         }
+
+        $scope.changeCampaign = function (campaignId) {
+            $scope.campaignID = campaignId;
+            initializeCampaign();
+        }
     }
 
     function initScopeContent() {
@@ -174,6 +179,11 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
         $scope.errors = [];
         $scope.assemblyID = $routeParams.aid;
         $scope.campaignID = $routeParams.cid;
+
+        if ($scope.campaignID === undefined || $scope.campaignID === null) {
+            $scope.selectCampaign = true;
+        }
+
         $scope.workingGroupID = $routeParams.wid;
         $scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
         $scope.defaultIcons = [
@@ -206,6 +216,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
         $scope.assembly.$promise.then(
             function (response) {
                 $scope.assembly = response;
+                $scope.assemblyCampaigns = $scope.assembly.campaigns;
             },
             function (error) {
                 $scope.errors.push(error);
@@ -220,6 +231,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             function(error) {
             }
         );
+
     }
 
     function initializeCampaign () {

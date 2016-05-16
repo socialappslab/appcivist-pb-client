@@ -7,6 +7,20 @@
         <div id="description" class="row col-md-12 col-sm-12 box descriptionBox">
             <p><strong>{{'Working groups' | translate}}</strong> {{'wgroups.purpose' | translate}}.</p>
         </div>
+
+        <!-- Campaign Select if no campaign has been selected -->
+        <div ng-if="selectCampaign" id="campaignSelect" class="row col-md-12 col-sm-12">
+            <label for="selectCampaignOfAssembly" class="no-padding col-sm-12 col-lg-12 col-md-12 col-xs-12 control-label">
+                {{'Main campaign of the Group:'|translate}}*</label>
+            <div class="voffset4"></div>
+                <select id="selectCampaignOfAssembly" name="workingGroupAuthors"
+                        class="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-model="campaignId"
+                        ng-options="campaign.campaignId as campaign.title for campaign in assemblyCampaigns track by campaign.campaignId"
+                        ng-change="changeCampaign(campaignId)">
+                </select>
+
+        </div>
+
         <div id="workingGroupName" class="row col-md-12 col-sm-12">
             <label for="inputNameNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">Name*</label>
             <div class="voffset4"></div>

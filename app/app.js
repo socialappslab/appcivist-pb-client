@@ -186,6 +186,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'CampaignComponentCtrl',
             templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
         })
+        .when('/assembly/:aid/wgroup/create',{
+            controller: 'NewWorkingGroupCtrl',
+            templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
+        })
         .when('/assembly/:aid/campaign/:cid/contribution/:coid',{
             controller: 'ContributionPageCtrl',
             templateUrl: 'app/partials/contributions/contribution/contributionPage.html'

@@ -45,7 +45,7 @@
 
                 <!-- Links if items are Working Groups-->
                 <a ng-if="box.type==='GROUPS'"
-                   ng-href="#/assembly/{{item.assemblies[0]}}/group/{{item.groupId}}">
+                   ng-href="#/assembly/{{(assemblyID!=undefined || assemblyID!=null ) ? assemblyID : item.assemblies[0]}}/group/{{item.groupId}}">
                     <img alt="100x100" src="../assets/images/dublin.jpg"
                          data-holder-rendered="true"
                          class="image-circle">

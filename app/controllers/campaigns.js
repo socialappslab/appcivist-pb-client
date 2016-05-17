@@ -1148,7 +1148,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 			};
 
-		$scope.enableVoting = $scope.disableButton.vote;
+		$scope.enableVoting = !$scope.disableButton.vote;
 	}
 
 	function setContributionsAndGroups($scope, localStorageService) {

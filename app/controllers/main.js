@@ -95,6 +95,9 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 
 	$scope.signup = function() {
 		$scope.newUser.lang = LocaleService.getLocale();
+		if (!$scope.newUser.lang) {
+			$scope.newUser.lang = LOCALES.preferredLocale;
+		}
 		loginService.signUp($scope.newUser, $scope, $uibModalInstance);
 	}
 

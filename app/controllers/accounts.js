@@ -4,7 +4,8 @@
  * AccountCtrl - functions to control authentication
  */
 appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $uibModal,
-		localStorageService, Assemblies, loginService, usSpinnerService, $translate, logService) {
+												localStorageService, Assemblies, loginService, usSpinnerService,
+												$translate, logService, LocaleService, LOCALES) {
 	init();
 	function init() {
 		// create a default newUser object for signup forms
@@ -49,13 +50,10 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 				$scope,logService.logAction("LOGIN", null, null, $scope.user.email));
 	}
 
-
-
 	$scope.signup = function() {
-		if ($scope.newUser.lang) {
-			if ($scope.newUser.lang.value) {
-				$scope.newUser.lang = $scope.newUser.lang.value;
-			}
+		$scope.newUser.lang = LocaleService.getLocale();
+		if (!$scope.newUser.lang) {
+			$scope.newUser.lang = LOCALES.preferredLocale;
 		}
 		loginService.signUp($scope.newUser, $scope, $scope.logService.logAction("SIGNUP"));
 	}
@@ -134,6 +132,9 @@ appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $locatio
 
 	$scope.signup = function() {
 		$scope.newUser.lang = LocaleService.getLocale();
+		if (!$scope.newUser.lang) {
+			$scope.newUser.lang = LOCALES.preferredLocale;
+		}
 		loginService.signUp($scope.newUser, $scope, $uibModalInstance);
 	}
 

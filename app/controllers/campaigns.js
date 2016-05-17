@@ -1092,7 +1092,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			localStorageService.set("currentMilestones", $scope.milestones);
 		}
 
-		$scope.enableVoting = ($scope.component && $scope.component.key && $scope.component.key.toLowerCase() === 'voting');
+		$scope.enableVoting = false;
 		if ($scope.component && $scope.component.key!="Proposalmaking") {
             $scope.contentTabsIndex["brainstorming"].active=false;
 			$scope.contentTabsIndex["proposals"].active=true;
@@ -1148,6 +1148,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 			};
 
+		$scope.enableVoting = $scope.disableButton.vote;
 	}
 
 	function setContributionsAndGroups($scope, localStorageService) {

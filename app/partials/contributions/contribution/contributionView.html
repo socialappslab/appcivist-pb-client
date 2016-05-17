@@ -15,8 +15,8 @@
                 </h1>
                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                     <button class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                            ng-if="userIsAuthor" ng-click="openContributionPage(contribution.contributionId, true)">
-                        {{'Edit'|translate}}
+                            ng-if="userIsAuthor || contribution.type === 'NOTE'" ng-click="openContributionPage(contribution.contributionId, true)">
+                        {{'Edit'|translate}} {{contribution.type != 'BRAINSTORMING' ? '(title+summary)' : ''}}
                     </button>
                     <button class="btn btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"
                             ng-if="!userIsAuthor && contribution.type=='PROPOSAL'"
@@ -57,11 +57,14 @@
 
             <div class="row col-md-8 col-sm-8">    <!-- If the contribution is of type PROPOSAL, display the associated etherpad -->
                 <div class="row etherpad">
-                    <iframe class="" ng-if="contribution.type === 'PROPOSAL' || contribution.type === 'NOTE'"
-                            name="embed_readonly"
-                            ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}"
-                            width="100%"
-                            height="600px">
+                    <!--<iframe class="" ng-if="contribution.type === 'PROPOSAL'"-->
+                            <!--name="embed_readonly"-->
+                            <!--ng-src="{{getEtherpadReadOnlyUrl(contribution.extendedTextPad.readOnlyPadId)}}"-->
+                            <!--width="100%"-->
+                            <!--height="600px">-->
+                    <!--</iframe>-->
+                    <iframe ng-if="(contribution.type === 'NOTE' || (contribution.type === 'PROPOSAL' && userIsAuthor))" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                            width="100%" height="600px">
                     </iframe>
                 </div>
 

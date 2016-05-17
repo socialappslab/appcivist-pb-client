@@ -177,6 +177,8 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
             $scope.contribution.comments = [];
         }
 
+        $scope.contributionID = $scope.contribution.contributionId;
+
         verifyAuthorship($scope, localStorageService, Contributions);
 
         $scope.selectContribution = function(contribution){
@@ -273,6 +275,14 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
             usSpinnerService.stop('spinner-1');
             $(angular.element.find('.spinner-container')).remove();
         }
+
+        if($scope.contribution.extendedTextPad) {
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
+            var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
+            etherpadRes.$promise.then(function(pad){
+                $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+            });
+        }
     }
 
 });
@@ -302,7 +312,7 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.newWorkingGroupName = "";
             $scope.newWorkingGroupByName = false;
             $scope.groupSelected = false;
-
+            $scope.contributionID = $scope.contribution.contributionId;
 
             if (!$scope.contribution.comments || $scope.contribution.comments.length === 0) {
                 var getComments = Contributions.getContributionComments($scope.assemblyID, $scope.contribution.contributionId).query();
@@ -348,7 +358,6 @@ appCivistApp.controller('ContributionModalCtrl',
                 createNewContribution($scope, Contributions, logService);
             };
 
-
             $scope.changeWorkingGroupAuthor = function (workingAuthor) {
                 if (workingAuthor === "NOID") {
                     $scope.newContribution.workingGroupAuthors[0] = {name: $scope.newWorkingGroupName};
@@ -360,12 +369,15 @@ appCivistApp.controller('ContributionModalCtrl',
                     $scope.groupSelected = true;
                 }
             }
+
             $scope.brainstormingToProposalEnable = function () {
                 $scope.turnIntoProposal = true;
             }
+
             $scope.brainstormingToProposalDisable= function () {
                 $scope.turnIntoProposal = false;
             }
+
             $scope.brainstormingToProposal = function () {
                 $scope.newContribution.type = 'PROPOSAL';
                 $scope.newContribution.title = $scope.contribution.title;
@@ -391,11 +403,19 @@ appCivistApp.controller('ContributionModalCtrl',
                 $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
                 $uibModalInstance.dismiss('cancel');
             };
+
+            if($scope.contribution.extendedTextPad) {
+                $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
+                var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
+                etherpadRes.$promise.then(function(pad){
+                    $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+                });
+            }
         }
     });
 
 appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams, localStorageService,
-													 FileUploader, Contributions, $translate) {
+													 FileUploader, Contributions, $translate, Etherpad, usSpinnerService) {
 
 	init();
 	verifyAuthorship($scope, localStorageService, Contributions);
@@ -407,11 +427,13 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 
         if(!$scope.newContribution) {
 			$scope.newContribution = Contributions.defaultNewContribution();
-		}
+		} else {
+            $scope.contributionID = $scope.contribution.contributionId;
+        }
 		if(!$scope.contribution) {
 			$scope.contribution = $scope.newContribution;
 		}
-		if(!$scope.newAttachment) {
+        if(!$scope.newAttachment) {
 			$scope.newAttachment = Contributions.defaultContributionAttachment();
 		}
 
@@ -443,12 +465,30 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
 		$scope.$root.$on('contribution:selected', function (event, data) {
 			$scope.contribution = data;
 		});
+
+        if($scope.contribution.extendedTextPad && $scope.contributionID != null && $scope.contributionID != undefined) {
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
+            var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
+            etherpadRes.$promise.then(function(pad){
+                $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+            });
+        }
+
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
 	}
 });
 
 appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routeParams, localStorageService,
                                                              Contributions, Campaigns, Assemblies, Etherpad,
-                                                             WorkingGroups, $translate, logService) {
+                                                             WorkingGroups, $translate, logService, usSpinnerService) {
     init();
 
     // TODO: improve efficiency by using angularjs filters instead of iterating through arrays
@@ -478,6 +518,18 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         $scope.update = function () {
             updateContribution($scope,Contributions, logService);
         }
+
+        $scope.startSpinner = function(){
+            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+            usSpinnerService.spin('spinner-1');
+        }
+
+        $scope.stopSpinner = function(){
+            usSpinnerService.stop('spinner-1');
+            $(angular.element.find('.spinner-container')).remove();
+        }
+
+        $scope.startSpinner();
     }
 
     /**
@@ -530,57 +582,64 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
 
     function setContributionAndGroup($scope, localStorageService) {
         var res = Contributions.contribution($scope.assemblyID, $scope.contributionID).get();
-        res.$promise.then(function(data) {
-            $scope.contribution = data;
-            localStorageService.set("currentContribution", $scope.contribution);
-            $scope.themes = $scope.contribution.themes;
-            $scope.comments = $scope.contribution.comments;
+        res.$promise.then(
+            function(data) {
+                $scope.contribution = data;
+                localStorageService.set("currentContribution", $scope.contribution);
+                $scope.themes = $scope.contribution.themes;
+                $scope.comments = $scope.contribution.comments;
 
-            if (!$scope.contribution.comments || $scope.contribution.comments.length === 0) {
-                var getComments = Contributions.getContributionComments($scope.assemblyID, $scope.contribution.contributionId).query();
-                getComments.$promise.then(
-                    function (data) {
-                        $scope.contribution.comments = data;
-                    },
-                    function (error) {
-                        $scope.contribution.comments = [];
-                    }
-                )
-            }
-
-            $scope.stats = $scope.contribution.stats;
-            $scope.workingGroup = {};
-            if(!$scope.contribution.attachments) {
-                $scope.contribution.attachments = [];
-            }
-
-            verifyAuthorship($scope, localStorageService, Contributions);
-
-            if($scope.workingGroup.groupId) {
-                var membersRes = WorkingGroups.workingGroupMembers($scope.assemblyID, $scope.workingGroup.groupId, "ALL").query();
-                membersRes.$promise.then(
+                if (!$scope.contribution.comments || $scope.contribution.comments.length === 0) {
+                    var getComments = Contributions.getContributionComments($scope.assemblyID, $scope.contribution.contributionId).query();
+                    getComments.$promise.then(
                         function (data) {
-                            $scope.workingGroupMembers = data;
+                            $scope.contribution.comments = data;
                         },
                         function (error) {
-                            console.log("Error getting working group members")
+                            $scope.contribution.comments = [];
                         }
-                );
-            }
+                    )
+                }
 
-            if($scope.contribution.extendedTextPad) {
-                $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
-                var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
-                etherpadRes.$promise.then(function(pad){
-                    $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
-                });
+                $scope.stats = $scope.contribution.stats;
+                $scope.workingGroup = {};
+                if(!$scope.contribution.attachments) {
+                    $scope.contribution.attachments = [];
+                }
+
+                verifyAuthorship($scope, localStorageService, Contributions);
+
+                if($scope.workingGroup.groupId) {
+                    var membersRes = WorkingGroups.workingGroupMembers($scope.assemblyID, $scope.workingGroup.groupId, "ALL").query();
+                    membersRes.$promise.then(
+                            function (data) {
+                                $scope.workingGroupMembers = data;
+                            },
+                            function (error) {
+                                console.log("Error getting working group members")
+                            }
+                    );
+                }
+
+                if($scope.contribution.extendedTextPad) {
+                    $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
+                    var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
+                    etherpadRes.$promise.then(function(pad){
+                        $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+                    });
+                }
+                console.log("Loading {assembly,campaign,contribution}: "
+                    +$scope.assembly.assemblyId+", "
+                    +$scope.campaign.campaignId+", "
+                    +$scope.contribution.contributionId
+                );
+                $scope.stopSpinner();
+            },
+            function (error) {
+                $scope.stopSpinner();
+                console.log("There was an error loading the contribution: "+error);
             }
-            console.log("Loading {assembly,campaign,contribution}: "
-                +$scope.assembly.assemblyId+", "
-                +$scope.campaign.campaignId+", "
-                +$scope.contribution.contributionId
-            );
-        });
+        );
     }
 });
 
@@ -1048,6 +1107,7 @@ function createNewContribution (scope, Contributions, logService) {
 }
 
 function updateContribution(scope, Contributions, logService) {
+    if(scope.startSpinner) scope.startSpinner();
     if(scope.userIsAuthor) {
         var updateRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId)
             .update(scope.contribution);
@@ -1064,6 +1124,7 @@ function updateContribution(scope, Contributions, logService) {
                 if(scope.contribution.type == "COMMENT") {
                     logService.logAction("UPDATE_COMMENT", "COMMENT",  scope.contribution.uuid, scope.user.email);
                 }
+                if(scope.startSpinner) scope.stopSpinner();
             },
             function (error) {
                 console.log("Error in update");
@@ -1076,6 +1137,7 @@ function updateContribution(scope, Contributions, logService) {
                 if(scope.contribution.type == "COMMENT") {
                     logService.logAction("UPDATE_COMMENT", "COMMENT", null, scope.user.email);
                 }
+                if(scope.startSpinner) scope.stopSpinner();
             }
         );
     }

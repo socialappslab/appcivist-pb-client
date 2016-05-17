@@ -1,7 +1,7 @@
 <div id="newContribution" class="row col-md-12 col-sm-12">
     <div class="col-md-12 col-sm-12">
         <!-- Select/Name the Working Group for the Proposal -->
-        <ng-include src="'app/partials/contributions/contribution/select-group.html'"></ng-include>
+        <ng-include ng-if="newContribution.type==='PROPOSAL'" src="'app/partials/contributions/contribution/select-group.html'"></ng-include>
 
         <div class="row form-horizontal form-group">
             <label for="inputTitleNewContribution" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 control-label">{{'Title'|translate}}</label>

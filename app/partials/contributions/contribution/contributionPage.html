@@ -12,7 +12,7 @@
                 <ul class="contribution-header-list col-md-12 col-sm-12">
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Title</strong></h4>
+                            <h4><strong>{{'Title' | translate}}</strong></h4>
                         </span>
                         <span class="list-description col-md-10 col-sm-10">
                             <h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.title}}</strong></h4>
@@ -125,4 +125,6 @@
             <button class="btn btn-success center">Propose split (coming soon)</button>
         </div>
     </div>
+
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
 </div>

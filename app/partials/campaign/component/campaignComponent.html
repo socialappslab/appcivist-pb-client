@@ -131,7 +131,8 @@
                      ng-if="tab.showInComponent[component.title.toLowerCase()]">
                 <uib-tab-heading>
                     <h4>
-                        <strong translate="{{tab.title}}"></strong>
+                        <strong ng-if="tab.title!='Winning Proposals'" translate="{{tab.title}}"></strong>
+                        <strong ng-if="tab.title==='Winning Proposals'"><strong translate="{{tab.title}}"></strong> (future feature)</strong>
                         <i class="fa fa-question-circle" tooltip-placement="left"
                            uib-tooltip="{{tab.tooltip | translate}}"></i>
                     </h4>

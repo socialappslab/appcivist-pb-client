@@ -307,6 +307,7 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.containerIndex = containerIndex;
             $scope.doNotSummarizeText = true;
             $scope.userWorkingGroups = localStorageService.get("workingGroups");
+            if (!$scope.userWorkingGroups) $scope.userWorkingGroups = [];
             $scope.userWorkingGroups.unshift({groupId: "NOID", name:"Create a new group..."});
             $scope.newContribution = Contributions.defaultNewContribution();
             $scope.newWorkingGroupName = "";

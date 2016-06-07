@@ -182,11 +182,8 @@
 
   "Invitation page strings" : "Invitation page strings",
   "Invitation text" : "Invitation text",
-  "Invitation" : "Invitation",
-  "Invitations" : "Invitations",
   "Invite user to be a moderator" : "Invite the user to be a moderator",
   "Invite user to be a coordinator" : "Invite user to be a coordinator",
-  "Send" : "Send",
   "Send invitation for" : "Send invitation for",
 
   "Campaign creation" : "Campaign creation",
@@ -216,7 +213,6 @@
   "selected.icon":"Selected icon",
   "Add to list":"Add to list",
   "Close":"Close",
-  "Delete":"Delete",
   "Comment":"Comment",
   "Comments":"Comments",
   "New":"New",

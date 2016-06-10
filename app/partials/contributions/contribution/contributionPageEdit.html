@@ -1,12 +1,12 @@
 <div class="view col-md-12 col-sm-12" id="contributionPage">
         <div class="row col-md-9 col-sm-9">
-            <h3><strong>Edit Proposal Version</strong></h3>
+            <h3><strong>{{'Edit' |translate}} {{'Proposal' | translate}} {{'Version' | translate}}</strong></h3>
             <div class="voffset4"></div>
             <div class="col-md-12 col-sm-12">
                 <ul class="contribution-header-list col-md-12 col-sm-12">
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Title</strong></h4>
+                            <h4><strong>{{'Title' | translate}}</strong></h4>
                         </span>
                         <span class="list-description col-md-10 col-sm-10">
                             <h4><strong>{{contribution.title}}</strong></h4>
@@ -14,7 +14,7 @@
                     </li>
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Summary</strong></h4>
+                            <h4><strong>{{'Summary'| translate}}</strong></h4>
                         </span>
                         <span class="list-description col-md-10 col-sm-10">
                             <h4>{{contribution.text}}</h4>
@@ -22,7 +22,7 @@
                     </li>
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Keywords</strong></h4>
+                            <h4><strong>{{'Keywords' | translate}}</strong></h4>
                         </span>
                         <span class="list-description col-md-10 col-sm-10">
                             <h4>{{contribution.keywords}}-</h4>
@@ -30,7 +30,7 @@
                     </li>
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Location</strong></h4>
+                            <h4><strong>{{'Location' | translate}}</strong></h4>
                         </span>
                         <span class="list-description col-md-10 col-sm-10">
                             <h4>{{assembly.location.placeName}} - {{assembly.location.city}} - <strong>{{assembly.location.country}}</strong></h4>
@@ -38,7 +38,7 @@
                     </li>
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Themes</strong></h4>
+                            <h4><strong>{{'Themes' | translate}}</strong></h4>
                         </span>
                         <span class="inline col-md-10 col-sm-10">
                             <div class="row col-md-12 col-sm-12">
@@ -68,16 +68,16 @@
             </div>
             <div class="col-md-10 col-sm-10">
                 <div class="col-md-6 col-sm-6">
-                    <h4><strong>Similar Proposals</strong></h4>
+                    <h4><strong>{{'Similar Proposals' | translate}}</strong></h4>
                 </div>
                 <div class="col-md-6 col-sm-6">
-                    <h4><strong>This proposal is based on</strong></h4>
+                    <h4><strong>{{'contribution.contributionpage.text1' | translate}}</strong></h4>
                     <div class="row col-md-12 col-sm-12">
                         <div class="col-md-10 col-sm-10 no-padding">
                             <input type="text" class="form-control " placeholder="Search oder contributions" ng-model="contributionBasedFilter">
                         </div>
                         <div class="col-md-2 col-sm-2">
-                            <button class="btn btn-success">Add</button>
+                            <button class="btn btn-success">{{'Add' | translate}}</button>
                         </div>
                     </div>
                 </div>
@@ -87,11 +87,11 @@
             <div class="row col-md-12 col-sm-12">
                 <img ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="100x100" data-holder-rendered="true" class="image-circle">
                 <div class="voffset2"></div>
-                <h4>Created by <strong>{{contribution.authors[0].name}}</strong></h4>
+                <h4>{{'Created by' | translate}} <strong>{{contribution.authors[0].name}}</strong></h4>
                 <div class="voffset2"></div>
-                <button class="btn btn-success center">Invite people to join</button>
+                <button class="btn btn-success center">{{'Invite people to join' | translate}}</button>
                 <div class="voffset2"></div>
-                <h4 class="center"><strong>WG Members</strong></h4>
+                <h4 class="center"><strong>{{'WG' | translate}} {{'Members' | translate}}</strong></h4>
                 <div class="voffset2"></div>
                 <div class="row list-item assembliesList">
                     <div class="row">
@@ -117,14 +117,14 @@
             <div class="row col-md-12 col-sm-12 box settingsBox infoBox">
 
                 <div class="box descriptionBox">
-                    <p>If you get inspired by this discussion, add a new contribution.</p>
+                    <p>{{'contribution.contributionpageedit.text1' | translate}}</p>
                 </div>
-                <button class="btn btn-success btn-half-size">Add</button>
+                <button class="btn btn-success btn-half-size">{{'Add' | translate}}</button>
             </div>
             <div class="voffset2"></div>
-            <h4 class="center"><strong>Merges & Splits </strong><i class="fa fa-question-circle"></i></h4>
-            <button class="btn btn-success center">Propose merge</button>
-            <button class="btn btn-success center">Propose split</button>
+            <h4 class="center"><strong>{{'Merges' | translate}} & {{'Splits' | translate}} </strong><i class="fa fa-question-circle"></i></h4>
+            <button class="btn btn-success center">{{'Propose merge' | translate}}</button>
+            <button class="btn btn-success center">{{'Propose split' | translate}}</button>
         </div>
     </div>
     <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />

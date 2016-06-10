@@ -34,15 +34,15 @@
                 </div>
                 <div id="assemblyActivity" class="row">
                     <div class="col-md-7 col-sm-7">
-                        <h1><strong>Assembly Forum</strong></h1>
+                        <h1><strong>{{'Assembly' | translate}} {{'Forum' | translate}}</strong></h1>
                     </div>
                     <div class="col-md-5 col-sm-5 align-right">
                         <h1 ng-if="checkShow('joinButton')" class="align-right">
                             <button class="btn btn-success btn-lg" ng-click="joinAssembly()" ng-disabled="!userIsMember && userIsRequestedMember">
                                 <h4 style="float:right;">
-                                    <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">Join Assembly</strong>
-                                    <strong ng-if="!userIsMember && userIsRequestedMember">Join request awaiting approval</strong>
-                                    <strong ng-if="!userIsMember && userIsInvitedMember">Invitation awaiting your response</strong>
+                                    <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">{{'Join' | translate}} {{'Assembly' | translate}}</strong>
+                                    <strong ng-if="!userIsMember && userIsRequestedMember">{{'forum.forum.text6' | translate}}</strong>
+                                    <strong ng-if="!userIsMember && userIsInvitedMember">{{'forum.forum.text1' | translate}}</strong>
                                 </h4>
                             </button>
                         </h1>
@@ -50,7 +50,7 @@
                 </div>
                 <div id="assemblyActivityThemes" class="row">
                     <div class="col-md-1 col-sm-1 forum-title">
-                        <h5><strong>Themes</strong></h5>
+                        <h5><strong>{{'Themes' | translate}}</strong></h5>
                     </div>
                     <div class="col-md-11 col-sm-11">
                         <ul class="tags tags-filter">
@@ -66,26 +66,19 @@
                 </div>
                 <!-- Alert message shown if User is not member -->
                 <uib-alert ng-if="!currentAssembly.profile" type="success">
-                    The Assembly you have requested is not listed as public. If you know people who are member, ask
-                    them to send you an invitation to join.
+                    {{'forum.forum.text2' | translate}}
                 </uib-alert>
                 <!-- Alert message shown if User is not member -->
                 <uib-alert ng-if="currentAssembly.profile && !userIsMember && !userIsRequestedMember && !userIsInvitedMember" type="success">
-                    You are not member of this Assembly but the assembly profile is public and you can send a request
-                    to join. Press "Join Assembly" to do so.
+                    {{'forum.forum.text3' | translate}}
                 </uib-alert>
                 <!-- Alert message shown if User is not member but has requested to join -->
                 <uib-alert ng-if="currentAssembly.profile && !userIsMember && userIsRequestedMember" type="success">
-                    You have requested to join this assembly. Once a member of the assembly approves your request you
-                    will be able to see the comments and discussions in the Assembly forum as well as the list of
-                    campaigns and working groups that are part of the Assembly.
+                   {{'forum.forum.text4' | translate}}
                 </uib-alert>
                 <!-- Alert message shown if User is not member but has been invited-->
                 <uib-alert ng-if="currentAssembly.profile && !userIsMember && userIsInvitedMember" type="success">
-                    You have been invited to join this assembly. Press the button to join the Assembly (above) to
-                    review this invitation. As long as the invitation is pending, you will be able to see comments and
-                    discussions in the Assembly Forum, but will not be able to participate nor see the list of campaigns
-                    and working groups
+                    {{'forum.forum.text5' | translate}}
                 </uib-alert>
                 <!-- New Post Box (visible only to members)-->
                 <new-forum-post

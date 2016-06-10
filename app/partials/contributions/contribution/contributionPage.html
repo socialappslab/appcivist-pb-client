@@ -21,7 +21,7 @@
                     </li>
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Summary</strong></h4>
+                            <h4><strong>{{'Summary' | translate}}</strong></h4>
                         </span>
                         <span class="list-description col-md-10 col-sm-10">
                             <h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.text}}</strong></h4>
@@ -39,7 +39,7 @@
                     <!--</li>-->
                     <li class="contribution-header-list-element col-md-12 col-sm-12">
                         <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>Themes</strong></h4>
+                            <h4><strong>{{'Themes' | translate}}</strong></h4>
                         </span>
                         <span class="inline col-md-10 col-sm-10">
                             <div class="row col-md-12 col-sm-12">
@@ -68,16 +68,16 @@
             </div>
             <div class="col-md-10 col-sm-10">
                 <div class="col-md-6 col-sm-6">
-                    <h4><strong>Similar Proposals (coming soon)</strong></h4>
+                    <h4><strong>{{'Similar Proposals' | translate}} ({{'coming soon'}})</strong></h4>
                 </div>
                 <div class="col-md-6 col-sm-6">
-                    <h4><strong>This proposal is based on</strong></h4>
+                    <h4><strong>{{'contribution.contributionpage.text1' | translate}}</strong></h4>
                     <div class="row col-md-12 col-sm-12">
                         <div class="col-md-10 col-sm-10 no-padding">
                             <input type="text" class="form-control " placeholder="Search oder contributions" ng-model="contributionBasedFilter">
                         </div>
                         <div class="col-md-2 col-sm-2">
-                            <button class="btn btn-success">Add</button>
+                            <button class="btn btn-success">{{'Add' | translate}}</button>
                         </div>
                     </div>
                 </div>
@@ -89,14 +89,14 @@
                 <img ng-if="contribution.type==='PROPOSAL'" ng-src="{{workingGroup.profile.icon}}" alt="100x100" data-holder-rendered="true" class="image-circle">
 
                 <div class="voffset2"></div>
-                <h4>Created by
+                <h4>{{'Created by' | translate}}
                     <strong ng-if="contribution.type!='PROPOSAL'">{{contribution.authors[0].name}}</strong>
                     <strong ng-if="contribution.type==='PROPOSAL'">{{workingGroup.name}}</strong>
                 </h4>
                 <div class="voffset2"></div>
-                <button ng-if="editContribution && userIsAuthor && contribution.type==='PROPOSAL'" class="btn btn-success center" ng-click="openInvitationModal">Invite people to join</button>
+                <button ng-if="editContribution && userIsAuthor && contribution.type==='PROPOSAL'" class="btn btn-success center" ng-click="openInvitationModal">{{'Invite people to join' | translate}}</button>
                 <div class="voffset2"></div>
-                <h4 class="center" ng-if="contribution.type==='PROPOSAL'"><strong>WG Members</strong></h4>
+                <h4 class="center" ng-if="contribution.type==='PROPOSAL'"><strong>{{'WG' | translate}} {{'Members' | translate}}</strong></h4>
                 <div class="voffset2"></div>
                 <div class="row list-item assembliesList ng-if="contribution.type==='PROPOSAL'"">
                     <div class="row">
@@ -120,9 +120,9 @@
                              showtitle="true"></attachments>
             </div>
             <div class="voffset2"></div>
-            <h4 class="center"><strong>Merges & Splits </strong><i class="fa fa-question-circle"></i></h4>
-            <button class="btn btn-success center">Propose merge (coming soon)</button>
-            <button class="btn btn-success center">Propose split (coming soon)</button>
+            <h4 class="center"><strong>{{'Merges' | translate}} & {{'Splits' | translate}}</strong><i class="fa fa-question-circle"></i></h4>
+            <button class="btn btn-success center">{{'Propose merge' | translate}} ({{'coming soon' | translate}})</button>
+            <button class="btn btn-success center">{{'Propose split' | translate}} ({{'coming soon' | translate}})</button>
         </div>
     </div>
 

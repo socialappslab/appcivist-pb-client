@@ -3,13 +3,13 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
             <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="modalUnauthorized">Login Error</h4>
+        <h4 class="modal-title" id="modalUnauthorized">{{'Login Error' | translate}}</h4>
     </div>
     <div class="modal-body">
-        <p>Something went wrong! Check your email or password.</p>
+        <p>{{'landing.LoginErrorModal.text1' | translate}}</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
-        <button type="button" class="btn btn-primary">Forgot your password?</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">{{'Close' | translate}}</button>
+        <button type="button" class="btn btn-primary">{{'landing.LoginErrorModal.text2' | translate}}</button>
     </div>
 </div>

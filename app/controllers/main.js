@@ -222,6 +222,7 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		$scope.newUser.lang = 'en';
 		$scope.newUser.invitationToken = $scope.token;
 
+
 		$scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName() ?
 				LocaleService.getLocaleDisplayName() : LOCALES.locales[LOCALES.preferredLocale];
 		$scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
@@ -233,6 +234,7 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		$scope.invitation.$promise.then(
 				function (response) {
 					$scope.invitation = response;
+					$scope.newUser.email = $scope.invitation.email;
 				},
 				function (error) {
 					$scope.errors.push(error.data);

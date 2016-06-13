@@ -109,16 +109,21 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
             if($scope.newWorkingGroup.profile.moderators === 'none' && $scope.newWorkingGroup.profile.coordinators === 'none' ) {
                 $scope.newWorkingGroup.profile.managementType="OPEN";
             } else if ($scope.newWorkingGroup.profile.moderators === 'two' || $scope.newWorkingGroup.profile.moderators === 'all') {
-                if($scope.newWorkingGroup.profile.coordinators === 'two' || $scope.newWorkingGroup.profile.coordinators === 'all') {
+                if($scope.newWorkingGroup.profile.coordinators === 'two') {
                     $scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED";
-                } else if(! $scope.newWorkingGroup.profile.coordinators &&
-                    $scope.newWorkingGroup.profile.moderators ) {
+                } else if($scope.newWorkingGroup.profile.coordinators === 'all') {
+                    $scope.newWorkingGroup.profile.managementType = "OPEN";
+                } else {
                     $scope.newWorkingGroup.profile.managementType = "MODERATED";
                 }
             } else {
-                $scope.newWorkingGroup.profile.managementType = "COORDINATED";
+                if($scope.newWorkingGroup.profile.coordinators === 'all') {
+                    $scope.newWorkingGroup.profile.managementType = "OPEN";
+                } else {
+                    $scope.newWorkingGroup.profile.managementType = "COORDINATED";
+                }
             }
-
+            
             // 4. process brainstorming contributions
             if($scope.contributions) {
                 for (var i = 0; i<$scope.contributions.length; i++) {

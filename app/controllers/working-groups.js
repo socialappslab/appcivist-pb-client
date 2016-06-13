@@ -51,7 +51,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
         }
 
         $scope.isValidEmail = function(email) {
-            var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            var re = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
             return re.test(email);
         }
 
@@ -123,7 +123,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                     $scope.newWorkingGroup.profile.managementType = "COORDINATED";
                 }
             }
-            
+
             // 4. process brainstorming contributions
             if($scope.contributions) {
                 for (var i = 0; i<$scope.contributions.length; i++) {

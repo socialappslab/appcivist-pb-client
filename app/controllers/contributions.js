@@ -223,11 +223,14 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
                     console.log('Modal dismissed at: ' + new Date());
                 });
 
-                if($scope.contribution.type=="PROPOSAL") {
+                if($scope.contribution.type==="PROPOSAL") {
                   logService.logAction("READ_PROPOSAL");
                 }
-                if($scope.contribution.type=="BRAINSTORMING"){
+                if($scope.contribution.type==="BRAINSTORMING"){
                   logService.logAction("READ_CONTRIBUTION");
+                }
+                if($scope.contribution.type==="NOTE"){
+                    logService.logAction("READ_NOTE");
                 }
             }
         };

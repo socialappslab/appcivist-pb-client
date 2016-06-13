@@ -300,9 +300,9 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
 	}
 
     function initializeNewAssembly() {
-        if($scope.newAssembly===null || $scope.newAssembly===undefined){
+        if($scope.newAssembly===null || $scope.newAssembly===undefined || $scope.newAssembly===""){
             $scope.newAssembly = localStorageService.get("temporaryNewAssembly");
-            if($scope.newAssembly===null || $scope.newAssembly===undefined) {
+            if($scope.newAssembly===null || $scope.newAssembly===undefined || $scope.newAssembly==="" ) {
                 $scope.newAssembly = Assemblies.defaultNewAssembly();
             }
         } else {
@@ -317,7 +317,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 themes: [] // same as assemblyThemes
             }
         }
-        $scope.newAssembly.profile.icon = $scope.defaultIcons[0].url
+        $scope.newAssembly.profile.icon = $scope.defaultIcons[0].url;
         var file = {};
         file.name = $scope.defaultIcons[0].name;
         file.url = $scope.defaultIcons[0].url;

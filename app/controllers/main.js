@@ -207,8 +207,9 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 
 
 appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location, localStorageService,
-												   Assemblies, loginService, $route, $routeParams, usSpinnerService, $uibModal,
-												   Invitations, WorkingGroups, Memberships, FlashService) {
+												   Assemblies, loginService, $route, $routeParams, usSpinnerService,
+												   $uibModal, Invitations, WorkingGroups, Memberships, FlashService,
+												   LocaleService, LOCALES) {
 	init();
 
 	function init() {
@@ -220,6 +221,14 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		$scope.newUser = {};
 		$scope.newUser.lang = 'en';
 		$scope.newUser.invitationToken = $scope.token;
+
+		$scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName() ?
+				LocaleService.getLocaleDisplayName() : LOCALES.locales[LOCALES.preferredLocale];
+		$scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
+
+		$scope.changeLanguage = function (locale) {
+			LocaleService.setLocaleByDisplayName(locale);
+		};
 
 		$scope.invitation.$promise.then(
 				function (response) {
@@ -243,6 +252,10 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		}
 
 		$scope.acceptInvitationAndSignup = function() {
+			$scope.newUser.lang = LocaleService.getLocale();
+			if (!$scope.newUser.lang) {
+				$scope.newUser.lang = LOCALES.preferredLocale;
+			}
 			loginService.signUp($scope.newUser, $scope);
 		}
 	}

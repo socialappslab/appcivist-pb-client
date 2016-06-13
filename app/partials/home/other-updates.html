@@ -1,9 +1,9 @@
 <ul class="row comments col-md-12 col-sm-12">
     <li class="row comment col-md-12 col-sm-12" ng-repeat="update in notifications.other_updates">
         <div class="row col-md-12 col-sm-12">
-            <h5 ng-if="update.containerType==='ASSEMBLY'" class="user-comment inline"><strong>Assembly Update</strong></h5>
-            <h5 ng-if="update.containerType==='CAMPAIGN'" class="user-comment inline"><strong>Campaign Update</strong></h5>
-            <h5 ng-if="update.containerType==='WORKING_GROUP'" class="user-comment inline"><strong>Working Group Update</strong></h5>
+            <h5 ng-if="update.containerType==='ASSEMBLY'" class="user-comment inline"><strong>{{'Assembly' | translate}} {{'Update' | translate}}</strong></h5>
+            <h5 ng-if="update.containerType==='CAMPAIGN'" class="user-comment inline"><strong>{{'Campaign' | translate}} {{'Update' | translate}}</strong></h5>
+            <h5 ng-if="update.containerType==='WORKING_GROUP'" class="user-comment inline"><strong>{{'WorkingGroup' | translate}} {{'Update' | translate}}</strong></h5>
 
             <div class="options-comment inline pull-right" ng-if="update.resource.themes">
                 <ul class="tags">
@@ -19,15 +19,17 @@
         <div class="row col-md-12 col-sm-12">
             <div class="col-md-12 col-sm-12 text-comment">
                 <p class="comment-comment">
-                    <strong>
-                        {{update.resource.author}} posted a new contribution in the {{update.containerType}} {{update.container.title}}
+                    <strong
+                        translate="home.other-updates.text1"
+                        translate-values=“{updateResourceAuthor:update.resource.author, updateContainerType:update.containerType, updateContainerTitle:update.container.title}”>
                     </strong>
                 </p>
                 <br/>
                 <p class="comment-comment">
                     <a class="text-muted"><i><strong>{{update.resource.title}}</strong> {{update.resource.text | limitTo: 61 }} {{update.resource.text.length > 61 ? '...' : ''}}</i></a></p>
                 <br/>
-                <a ng-href="#{{update.relativeUrl}}"><muted><i>Go to the {{update.containerType}} Page</i></muted></a>
+                <a ng-href="#{{update.relativeUrl}}"><muted><i  translate="home.other-updates.text2" 
+                                                                translate-values="{updateContainerType:update.containerType}" ></i></muted></a>
             </div>
         </div>
     </li>

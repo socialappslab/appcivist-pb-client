@@ -2,13 +2,13 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-5 col-md-5 col-sm-12 h1">
-				<h1><strong>Current Assemblies</strong></h1>
+				<h1><strong>{{'Current Assemblies' | translate}}</strong></h1>
 			</div><!-- /.col-lg-6 -->
 			<div class="col-lg-4 col-md-4 col-sm-6 h1">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Filter..." ng-model="assemblyFilter"/>
       				<span class="input-group-btn">
-        				<button class="btn btn-default" type="button" ng-click="searchAssembly(assemblyFilter)">Search</button>
+        				<button class="btn btn-default" type="button" ng-click="searchAssembly(assemblyFilter)">{{'Search' | translate}}</button>
 					</span>
 				</div><!-- /input-group -->
 			</div><!-- /.col-lg-6 -->
@@ -16,7 +16,7 @@
 				<a ng-href="/#/assembly/create">
 					<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="height: 34px; width:34px; display: inline-block; cursor: pointer;float:left;margin-right:12px;">
 					<div class="caption" style="align-content: center;vertical-align: middle;">
-						<h2 style="color:black;"><strong>New Assembly</strong></h2>
+						<h2 style="color:black;"><strong>{{'New Assembly' |translate}}</strong></h2>
 						<!--<p>Organize your community and start the discussion</p>-->
 					</div>
 				</a>

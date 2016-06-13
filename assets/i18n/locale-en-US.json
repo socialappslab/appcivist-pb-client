@@ -135,7 +135,7 @@
   "Make all group members moderators" : "Make all group members moderators",
   "Make all group members coordinators" : "Make all group members moderators",
   "Have no moderators" : "Have no moderators",
-  "Have no coordinators" : "Have no moderators",
+  "Have no coordinators" : "Have no coordinators",
   "Invite people to join" : "Invite people to join",
   "Invalid email(s)" : "Invalid email(s)",
   "Invitation Email" : "Invitation Email",
@@ -241,5 +241,83 @@
   "Themes":"Themes",
   "Theme-s":"Theme(s)",
   "Turn into Proposal": "Turn into Proposal",
-  "directives.language-select.Language":"Choose a Language"
+  "directives.language-select.Language":"Choose a Language",
+
+  "assembly.newAssemblystep1.text1":"What's your assembly about?",
+  "assembly.newAssemblystep1.text2":"Where is your assembly located?",
+  "assembly.newAssemblystep1.text3":"Who can join your assembly?",
+  "Residents":"Residents",
+  "Anyone":"Anyone",
+  "Primary contact":"Primary contact",
+  "assembly.newAssemblystep1.text4":"Define one or more assembly themes of interest",
+  "Added Themes":"Added Themes",
+  "assembly.newAssemblystep1.text5":"Hello! You have been invited to be a member of the Assembly {{newAssemblyName}} in AppCivist. If you are interested, follow the link attached to this invitation to accept it. If you are not interested, you can just ignore this message",
+  "assembly.newAssemblystep1.text6":"Enable face to face scheduling",
+  "Enable messaging":"Enable messaging",
+  "assembly.newAssemblystep2.text1":"Linking Assemblies is a quick way for gaining access to the resources and campaigns of other Assemblies of interest. If you want to link to other Assemblies, click on their icons.",
+  "Start the Assembly":"Start the Assembly",
+  "assembly.newAssemblystep3.text1":"Create User and Assembly",
+  "Upload File":"Upload File",
+  "Attachment":"Attachment",
+  "Add":"Add",
+  "contribution.attachments.text1":"No attachments added yet",
+  "Reply":"Reply",
+  "Cancel":"Cancel",
+  "Similar Proposals":"Similar Proposals",
+  "contribution.contributionpage.text1":"This proposal is based on", 
+  "Created by":"Created by",
+  "WG":"WG",
+  "Merges":"Merges",
+  "Splits":"Splits", 
+  "Propose merge":"Propose merge",
+  "Propose split":"Propose split",
+  "coming soon":"coming soon",
+  "Version":"Version",
+  "Keywords":"Keywords",
+  "Location":"Location",
+  "contribution.contributionpageedit.text1": "If you get inspired by this discussion, add a new contribution.", 
+  "Ordery by date": "Ordery by date",
+  "Random Order":"Random Order",
+  "Popularity":"Popularity",
+  "Forum":"Forum",
+  "Join":"Join",
+  "forum.forum.text1":"Invitation awaiting your response",
+  "forum.forum.text2":"The Assembly you have requested is not listed as public. If you know people who are member, ask them to send you an invitation to join.",
+  "forum.forum.text3":"You are not member of this Assembly but the assembly profile is public and you can send a request to join. Press \"Join Assembly\" to do so.",
+  "forum.forum.text4": "You have requested to join this assembly. Once a member of the assembly approves your request you will be able to see the comments and discussions in the Assembly forum as well as the list of campaigns and working groups that are part of the Assembly.",
+  "forum.forum.text5":"You have been invited to join this assembly. Press the button to join the Assembly (above) to review this invitation. As long as the invitation is pending, you will be able to see comments and discussions in the Assembly Forum, but will not be able to participate nor see the list of campaigns and working groups",
+  "forum.forum.text6":"Join request awaiting approval",
+  "home.other-updates.text1":"{{updateResourceAuthor}} posted a new contribution in the {{updateContainerType}} {{updateContainerTitle}}",
+  "home.other-updates.text2":"Go to the {{updateContainerType}} Page",
+  "Milestones":"Milestones",
+  "Go to campaign!": "Go to campaign!",
+  "Current":"Current",
+  "Search":"Search",
+  "Login Error":"Login Error",
+  "landing.LoginErrorModal.text1":"Something went wrong! Check your email or password.",
+  "landing.LoginErrorModal.text2":"Forgot your password?",
+  "address":"address", 
+  "Upcoming Milestones":"Upcoming Milestones",
+  "Current Assemblies":"Current Assemblies",
+  "New Assembly":"New Assembly"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -2,8 +2,7 @@
     <div class="col-lg-6 col-md-6 col-xs-12">
         <div class="box descriptionBox">
             <p>
-                Linking Assemblies is a quick way for gaining access to the resources and campaigns of other
-                Assemblies of interest. If you want to link to other Assemblies, click on their icons.
+                {{'assembly.newAssemblystep2.text1' | translate}}
             </p>
         </div>
     </div>
@@ -52,7 +51,7 @@
         <h3><strong>Back</strong></h3>
     </button>
     <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(2)">
-        <h3 ng-if="userIsNew"><strong>Next</strong></h3>
-        <h3 ng-if="!userIsNew"><strong>Start the Assembly</strong></h3>
+        <h3 ng-if="userIsNew"><strong>{{'Next' | translate}}</strong></h3>
+        <h3 ng-if="!userIsNew"><strong>{{'Start the Assembly' | translate}}</strong></h3>
     </button>
 </div>

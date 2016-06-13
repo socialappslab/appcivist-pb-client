@@ -203,18 +203,24 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                     }
                 }
 
+                // TODO: change moderation and coordination configurations to be stored differently
                 console.log("Creating assembly with membership = "+$scope.newAssembly.profile.supportedMembership);
                 if($scope.newAssembly.profile.moderators === 'none' && $scope.newAssembly.profile.coordinators === 'none' ) {
                     $scope.newAssembly.profile.managementType="OPEN";
                 } else if ($scope.newAssembly.profile.moderators === 'two' || $scope.newAssembly.profile.moderators === 'all') {
-                    if($scope.newAssembly.profile.coordinators === 'two' || $scope.newAssembly.profile.coordinators === 'all') {
+                    if($scope.newAssembly.profile.coordinators === 'two') {
                         $scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
-                    } else if(! $scope.newAssembly.profile.role.coordinators &&
-                        $scope.newAssembly.profile.role.moderators ) {
+                    } else if($scope.newAssembly.profile.coordinators === 'all') {
+                        $scope.newAssembly.profile.managementType = "OPEN";
+                    } else {
                         $scope.newAssembly.profile.managementType = "MODERATED";
                     }
                 } else {
-                    $scope.newAssembly.profile.managementType = "COORDINATED";
+                    if ($scope.newAssembly.profile.coordinators === 'all') {
+                        $scope.newAssembly.profile.managementType = "OPEN";
+                    } else {
+                        $scope.newAssembly.profile.managementType = "COORDINATED";
+                    }
                 }
 
                 $scope.newAssembly.configs[0].value = $scope.newAssembly.config.facetoface;

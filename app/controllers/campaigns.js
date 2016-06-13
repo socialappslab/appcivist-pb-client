@@ -709,7 +709,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
 														  Ballot, Candidate, VotesByUser, NewBallotPaper, BallotPaper,
-                                                          logService, usSpinnerService){
+                                                          logService, usSpinnerService, $timeout){
 
 	init();
 
@@ -925,6 +925,54 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
         }
 
         $scope.startSpinner();
+
+		$scope.reloadContributionsAndGroups = function() {
+			// Get list of contributions from server
+			$scope.contributions = Contributions.contributionInResourceSpace($scope.campaign.resourceSpaceId).query();
+			$scope.contributions.$promise.then(
+					function (data) {
+						$scope.contributions = data;
+						if(!$scope.contributions){
+							$scope.contributions = [];
+						}
+						$scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
+						$scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
+						$scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
+					},
+					function (error) {
+						console.log(JSON.stringify(error));
+						FlashService.Error("Error loading campaign contributions from server");
+					}
+			);
+
+			// Get list of working groups from server
+			$scope.workingGroups = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).query();
+			$scope.workingGroups.$promise.then(
+					function (data) {
+						$scope.workingGroups = data;
+						$scope.contentTabsIndex["working_groups"].contentArray = $scope.workingGroups;
+					},
+					function (error) {
+						console.log(JSON.stringify(error));
+						FlashService.Error("Error loading campaign contributions from server");
+					}
+			);
+
+			$timeout(function(){
+				$scope.reloadContributionsAndGroups();
+			},300000);
+		};
+
+		$scope.loadBallotPaper = function() {
+			//console.log($scope.campaign, $scope.user.uuid);
+			var ballotPaper = BallotPaper.get({uuid: $scope.campaign.bindingBallot, signature: $scope.user.uuid}).$promise;
+			ballotPaper.then(function (data) {
+				localStorageService.set("voteSignature", $scope.user.uuid);
+				$location.url("/ballot/" + $scope.campaign.bindingBallot + "/vote");
+			}, function (error) {
+				window.appcivist.handleError(error);
+			});
+		}
     }
 
 	/**
@@ -1213,54 +1261,11 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				+$scope.components.length+", "
 				+$scope.milestones.length
 		);
-	}
 
-	$scope.loadBallotPaper = function(){
-		//console.log($scope.campaign, $scope.user.uuid);
-		var ballotPaper = BallotPaper.get({uuid: $scope.campaign.bindingBallot, signature: $scope.user.uuid}).$promise;
-		ballotPaper.then(function(data){
-			localStorageService.set("voteSignature", $scope.user.uuid);
-			$location.url("/ballot/" + $scope.campaign.bindingBallot + "/vote");
-		}, function(error){ window.appcivist.handleError(error); });
+		$timeout(function(){
+			$scope.reloadContributionsAndGroups();
+		},300000);
 	}
-	//function setupDaysToDue() {
-	//	// Days, hours, minutes to end date of this component phase
-	//	var endDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm');
-	//	var now = moment();
-	//	var diff = endDate.diff(now, 'minutes');
-	//	$scope.minutesToDue = diff%60;
-	//	$scope.hoursToDue = Math.floor(diff/60) % 24;
-	//	$scope.daysToDue = Math.floor(Math.floor(diff/60) / 24);
-    //
-	//	// Days, hours, minutes to end date of this component stage
-	//	var mStartDate = moment($scope.component.startDate, 'YYYY-MM-DD HH:mm');
-	//	var mEndDate = moment($scope.component.endDate, 'YYYY-MM-DD HH:mm');
-	//	var mDays = endDate.diff(startDate,'days');
-    //
-	//	$scope.componentStarted = mStartDate.isBefore(now);
-	//	if($scope.componentStarted) {
-	//		mDiff = now.diff(mStartDate, 'days');
-	//		$scope.mDaysToDue = mDays - mDiff;
-    //
-	//	} else {
-	//		mDiff = mStartDate.diff(now, 'days');
-	//		$scope.mDaysToDue = mDiff;
-	//	}
-	//	$scope.themes= [];
-	//	angular.forEach($scope.component.contributions, function(contribution){
-	//		angular.forEach(contribution.themes, function(theme) {
-	//			var isInList = false;
-	//			angular.forEach($scope.themes, function(actualTheme) {
-	//				if(theme.title === actualTheme.title){
-	//					isInList = true;
-	//				}
-	//			});
-	//			if(isInList === false) {
-	//				$scope.themes.push(theme);
-	//			}
-	//		});
-	//	});
-	//}
 });
 
 appCivistApp.controller('EditCampaignCtrl', function($scope, $controller, $sce, $http, $templateCache, $routeParams,

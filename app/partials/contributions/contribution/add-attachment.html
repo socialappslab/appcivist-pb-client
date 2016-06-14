@@ -7,7 +7,7 @@
     </div>
     <button ng-show="!newAttachment.showForm" class="btn btn-info " ng-click="newAttachment.showForm=!newAttachment.showForm;"><h5><strong>{{'New'|translate}} {{'Attachment' | translate}}</strong></h5></button>
     <button ng-show="newAttachment.showForm" class="btn btn-success " ng-click="addNewAttachment()"><h5><strong>{{'Add' | translate}} {{'Attachment' | translate | lowercase}}</strong></h5></button>
-    <button ng-show="newAttachment.showForm" class="btn btn-danger " ng-click="cancelNewAttachment()"><h5><strong>Cancel</strong></h5></button>
+    <button ng-show="newAttachment.showForm" class="btn btn-danger " ng-click="cancelNewAttachment()"><h5><strong>{{'Cancel' | translate}}</strong></h5></button>
     <div id="attachmentProgress" class="col-md-12 progress-section">
         {{f.name}} {{f.url}} {{f.$error}} {{f.$errorParam}}
             <span class="progress-line-container" ng-show="f.progress >= 0">

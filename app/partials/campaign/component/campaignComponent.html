@@ -20,7 +20,7 @@
                             ng-click="openNewContributionModal('lg','NOTE')"
                             ng-disabled="disableButton['note']">
                         <strong>
-                            {{'New' | translate}} {{'Note' | translate}}
+                            {{'New Note' | translate}}
                             <i class="fa fa-info-circle" tooltip-placement="left"
                                uib-tooltip="{{'notes.deadline'|translate}}: {{campaign.endDate|date:'medium'}}">
                             </i>
@@ -89,7 +89,7 @@
             <div class="col-md-3 col-sm-3 dropdown">
                 <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
                         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <strong>Filter by Theme:<span class="caret"></span></strong>
+                    <strong>{{'Filter by Theme' | translate}}:<span class="caret"></span></strong>
                 </button>
                 <ul class="col-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
                     <li><a ng-click="filterByTheme('all')"><strong>All</strong></a></li>
@@ -102,12 +102,12 @@
             <div class="col-md-3 col-sm-3 dropdown">
                 <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
                         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <strong>Order by:<span class="caret"></span></strong>
+                    <strong>{{'Order by' | translate}}:<span class="caret"></span></strong>
                 </button>
                 <ul class="ol-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a ng-click="orderContributions('creation')">Ordery by date</a></li>
-                    <li><a ng-click="orderContributions('random')">Random Order</a></li>
-                    <li><a ng-click="orderContributions('stats.points')">Popularity</a></li>
+                    <li><a ng-click="orderContributions('creation')">{{'Ordery by date' | translate}}</a></li>
+                    <li><a ng-click="orderContributions('random')">{{'Random Order' | translate}}</a></li>
+                    <li><a ng-click="orderContributions('stats.points')">{{'Popularity' | translate}}</a></li>
                 </ul>
             </div>
             <div class="voffset6"></div>
@@ -132,7 +132,7 @@
                 <uib-tab-heading>
                     <h4>
                         <strong ng-if="tab.title!='Winning Proposals'" translate="{{tab.title}}"></strong>
-                        <strong ng-if="tab.title==='Winning Proposals'"><strong translate="{{tab.title}}"></strong> (future feature)</strong>
+                        <strong ng-if="tab.title==='Winning Proposals'"><strong translate="{{tab.title}}"></strong> ({{'future feature' | translate}})</strong>
                         <i class="fa fa-question-circle" tooltip-placement="left"
                            uib-tooltip="{{tab.tooltip | translate}}"></i>
                     </h4>

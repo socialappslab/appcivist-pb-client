@@ -22,7 +22,7 @@
                         name="commentTheme"
                         ng-options="theme.title for theme in themes track by theme.themeId"
                         ng-model="newContribution.theme">
-                    <option value="">Select Theme: </option>
+                    <option value="">{{'Select Theme:' | translate}} </option>
                 </select>
                 <!--<button class="btn btn-default dropdown-toggle"-->
                         <!--type="button" id="dropdownMenu2"-->
@@ -42,12 +42,12 @@
             <h4 class="text-info"
                 style="display: inline-block; vertical-align: middle; cursor:pointer"
                 ng-click="postContribution()">
-                <strong>Publish | </strong>
+                <strong>{{'Publish' | translate}} </strong>
             </h4>
             <h4 class="text-info"
                 style="display: inline-block; vertical-align: middle; cursor:pointer"
                 ng-click="clearContribution()">
-                <strong>Cancel</strong>
+                <strong>{{'Cancel' | translate}}</strong>
             </h4>
         </div>
     </form>

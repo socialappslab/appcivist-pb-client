@@ -2,22 +2,19 @@
     <div class="col-lg-6 col-md-6 col-xs-12">
         <div id="campaignMilestoneDefinition" class="row box descriptionBox row col-md-12 col-sm-12 col-xs-12">
             <p>
-                <strong>Campaign Milestones</strong> represent the concrete dates by which the assembly hopes to complete
-                specific goals (e.g., finish proposals, forming working groups, etc.). Setup the date of each milestone
-                of your campaign by using the slider below.
+                {{'creation.components.newCampaign2.text1' | translate}}
                 <ol>
                     <li>
-                        Each handle in the slider represents a milestone. Slide them in the timeline to change their dates.
+                        {{'creation.components.newCampaign2.text2' | translate}}
                     </li>
                     <li>
-                        The separation between circles represents the duration (in days).
+                        {{'creation.components.newCampaign2.text3' | translate}}
                     </li>
                     <li>
-                        Below the timeline, each milestones is described by number with its corresponding date,
-                        according to their positions in the timeline.
+                        {{'creation.components.newCampaign2.text4' | translate}}
                     </li>
                     <li>
-                        Milestones are organized within each component used in the campaign, as shown in the summary.
+                        {{'creation.components.newCampaign2.text5' | translate}}
                     </li>
                 </ol>
             </p>
@@ -25,7 +22,7 @@
         <form name="newCampaignForm2">
             <section id="campaignMilestoneLengthOptions" class="col-md-12 col-sm-12">
                 <div class="col-md-12 col-sm-12">
-                    <label for="campaignMilestoneSlider" class="control-label">Setup milestones for your campaign</label>
+                    <label for="campaignMilestoneSlider" class="control-label">{{'creation.components.newCampaign2.text6' | translate}}</label>
                     <i class="fa fa-question-circle"
                        tooltip-placement="right"
                        uib-tooltip="{{'help.tooltip.campaignTimeframe' | translate}}">
@@ -107,7 +104,7 @@
                             ng-disabled="!newCampaignForm2.$valid"
                             ng-click="createCampaign({step:3}, {fastrack:true})">
                         <h3>
-                            <strong>Fastrack</strong>
+                            <strong>{{'Fastrack' | translate}}</strong>
                             <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
                         </h3>
                     </button>
@@ -118,7 +115,7 @@
                             ng-disabled="!newCampaignForm2.$valid"
                             ng-click="createCampaign({step:2}, {fastrack:false})">
                         <h3>
-                            <strong>Back</strong>
+                            <strong>{{'Back' | translate}}</strong>
                             <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignFastrackTooltip}}"></i></h3>-->
                         </h3>
                     </button>
@@ -127,7 +124,7 @@
                     <button class="btn btn-primary col-md-12"
                             ng-click="createCampaign({step:3}, {fastrack:false})"
                             ng-disabled="!newCampaignForm2.$valid">
-                        <h3><strong>Next</strong></h3>
+                        <h3><strong>{{'Next' | translate}}</strong></h3>
                     </button>
                 </div>
             </div>

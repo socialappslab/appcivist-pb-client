@@ -3,7 +3,7 @@
  */
 
 
-appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routeParams, localStorageService,
+appCivistApp.controller('NewWorkingGroupCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
                                                         Assemblies, Campaigns, WorkingGroups, Contributions,
                                                         FileUploader, $translate, $location, logService) {
 
@@ -144,7 +144,8 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($scope, $http, $routePar
                     $location.url("/assembly/"+$scope.assemblyID+"/group/"+$scope.newWorkingGroup.groupId);
                 },
                 function (error) {
-                    $scope.errors.push(error);
+                    $scope.errors.push(error.data);
+                    $rootScope.showError(error.data, "WORKING_GROUP", null);
                 }
             );
 

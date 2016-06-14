@@ -1,5 +1,6 @@
 <div class="view col-md-12 col-sm-12" id="contributionPage">
-        <div id="contributionSummary" class="row col-md-9 col-sm-9">
+    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
+    <div id="contributionSummary" class="row col-md-9 col-sm-9">
             <h3>
                 <strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read '}}{{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution'}}</strong>
                 <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="update()">
@@ -125,6 +126,4 @@
             <button class="btn btn-success center">{{'Propose split' | translate}} ({{'coming soon' | translate}})</button>
         </div>
     </div>
-
-    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
 </div>

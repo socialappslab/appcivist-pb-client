@@ -314,7 +314,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
  * Services that are injected to the main method of the app to make them available when it starts running
  * @type {string[]}
  */
-run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logService'];
+run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal', 'usSpinnerService'];
 
 /**
  * The function that runs the App on the browser
@@ -323,7 +323,7 @@ run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logSe
  * @param $http
  * @param localStorageService
  */
-function run($rootScope, $location, $http, localStorageService, logService) {
+function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -347,6 +347,44 @@ function run($rootScope, $location, $http, localStorageService, logService) {
     $rootScope.logActions = true;
     $rootScope.logService = logService;
 
+    // set error modal
+    $rootScope.supportContact = "Cristhian Parra (cdparra [at] berkeley [dot] edu)";
+    $rootScope.showError = function(error, rType, rId) {
+        if(!$rootScope.inModal) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'app/partials/errorModal.html',
+                controller: 'ErrorModalCtrl',
+                size: 'lg',
+                resolve: {
+                    error: function () { return error;},
+                    resourceType: function () { return rType;},
+                    resourceId: function () { return rId},
+                    supportContact: function () {return $rootScope.supportContact }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                console.log('Closed contribution modal');
+            }, function () {
+                console.log('Modal dismissed at: ' + new Date());
+            });
+
+            logService.logAction("ERROR", rType, rId);
+
+        }
+    };
+
+    // global spinner
+    $rootScope.startSpinner = function(){
+        $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+        usSpinnerService.spin('spinner-1');
+    }
+
+    $rootScope.stopSpinner = function(){
+        usSpinnerService.stop('spinner-1');
+        $(angular.element.find('.spinner-container')).remove();
+    }
 }
 
 /**

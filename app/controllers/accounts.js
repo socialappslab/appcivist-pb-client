@@ -140,7 +140,7 @@ appCivistApp.controller('NewUserModalCtrl', function($scope, $resource, $locatio
 
 });
 
-appCivistApp.controller('NewInvitationModalCtrl', function($scope, $resource, $location, $uibModalInstance,
+appCivistApp.controller('NewInvitationModalCtrl', function($rootScope, $scope, $resource, $location, $uibModalInstance,
 														   target, type, defaultEmail, Invitations, localStorageService, Assemblies,
 														   loginService, usSpinnerService) {
 	init();
@@ -151,6 +151,7 @@ appCivistApp.controller('NewInvitationModalCtrl', function($scope, $resource, $l
 		$scope.newInvitation = Invitations.defaultInvitation($scope.targetId, $scope.type, $scope.defaultEmail);
 
 		$scope.sendInvitation = function() {
+			$rootScope.startSpinner();
 			var invitation;
 			if(type === 'ASSEMBLY') {
 				invitation = Invitations.assemblyInvitation($scope.targetId).save($scope.newInvitation);
@@ -161,9 +162,11 @@ appCivistApp.controller('NewInvitationModalCtrl', function($scope, $resource, $l
 			invitation.$promise.then(
 					function (response){
 						$uibModalInstance.close(response);
+						$rootScope.stopSpinner();
 					},
 					function (error) {
-						$uibModalInstance.dismiss('cancel');
+						$rootScope.showError(error.data, "INVITATION_GROUP", $scope.targetId);
+						$rootScope.stopSpinner();
 					}
 			);
 		}

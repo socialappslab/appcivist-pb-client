@@ -11,7 +11,7 @@
 var postingContributionFlag = false;
 
 appCivistApp.controller('NewContributionCtrl',
-        function ($scope, $http, $routeParams, localStorageService, Contributions, $translate, logService,
+        function ($rootScope, $scope, $http, $routeParams, localStorageService, Contributions, $translate, logService,
                   usSpinnerService) {
             init();
 
@@ -48,23 +48,13 @@ appCivistApp.controller('NewContributionCtrl',
                     }
                     $scope.response = {};
                     $scope.modalInstance = undefined;
-                    createNewContribution($scope, Contributions, logService);
+                    createNewContribution($scope, Contributions, logService, $rootScope);
                 };
-
-                $scope.startSpinner = function(){
-                    $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
-                    usSpinnerService.spin('spinner-1');
-                }
-
-                $scope.stopSpinner = function(){
-                    usSpinnerService.stop('spinner-1');
-                    $(angular.element.find('.spinner-container')).remove();
-                }
             }
         });
 
 appCivistApp.controller('NewContributionModalCtrl',
-		function ($scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
+		function ($rootScope, $scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
                    $translate, $location, logService, usSpinnerService) {
@@ -120,7 +110,7 @@ appCivistApp.controller('NewContributionModalCtrl',
                     $scope.targetSpace = targetSpace;
                     $scope.response = {};
                     $scope.modalInstance = undefined;
-                    createNewContribution($scope, Contributions, logService);
+                    createNewContribution($scope, Contributions, logService, $rootScope);
                 };
 
                 // Post contributions from Modal Window
@@ -130,7 +120,7 @@ appCivistApp.controller('NewContributionModalCtrl',
                     $scope.targetSpace = $scope.contributions;
                     $scope.response = $scope.newContributionResponse;
                     $scope.modalInstance = $uibModalInstance;
-                    createNewContribution($scope, Contributions, logService);
+                    createNewContribution($scope, Contributions, logService, $rootScope);
                 };
 
                 $scope.cancel = function () {
@@ -149,21 +139,11 @@ appCivistApp.controller('NewContributionModalCtrl',
                         $scope.groupSelected = true;
                     }
                 }
-
-                $scope.startSpinner = function(){
-                    $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
-                    usSpinnerService.spin('spinner-1');
-                }
-
-                $scope.stopSpinner = function(){
-                    usSpinnerService.stop('spinner-1');
-                    $(angular.element.find('.spinner-container')).remove();
-                }
             }
 
 		});
 
-appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routeParams, $uibModal, $location,
+appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope, $routeParams, $uibModal, $location,
                                                               localStorageService, Etherpad, Contributions, $translate,
                                                               logService, usSpinnerService) {
 
@@ -270,16 +250,6 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
             return $scope.contribution.type === 'BRAINSTORMING' ? "'300px;'" : "''";
         }
 
-        $scope.startSpinner = function(){
-            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
-            usSpinnerService.spin('spinner-1');
-        }
-
-        $scope.stopSpinner = function(){
-            usSpinnerService.stop('spinner-1');
-            $(angular.element.find('.spinner-container')).remove();
-        }
-
         if($scope.contribution.extendedTextPad) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
             var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
@@ -292,12 +262,13 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($scope, $routePara
 });
 
 appCivistApp.controller('ContributionModalCtrl',
-    function ($scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
+    function ($rootScope, $scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
               contribution, assemblyID, campaignID, componentID, container, containerID, containerIndex,
               localStorageService, Contributions, Etherpad, $translate, logService) {
         init();
         verifyAuthorship($scope, localStorageService, Contributions);
         function init() {
+            $rootScope.startSpinner();
             $scope.user = localStorageService.get("user");
             if ($scope.user && $scope.user.language)
                 $translate.use($scope.user.language);
@@ -352,7 +323,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.targetSpace = targetSpace;
                 $scope.response = {};
                 $scope.modalInstance = undefined;
-                createNewContribution($scope, Contributions, logService);
+                createNewContribution($scope, Contributions, logService, $rootScope);
             };
 
             $scope.postContributionFromModal = function () {
@@ -360,7 +331,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.targetSpace = $scope.contributions;
                 $scope.response = $scope.newContributionResponse;
                 $scope.modalInstance = $uibModalInstance;
-                createNewContribution($scope, Contributions, logService);
+                createNewContribution($scope, Contributions, logService, $rootScope);
             };
 
             $scope.changeWorkingGroupAuthor = function (workingAuthor) {
@@ -395,7 +366,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.response = {};
                 $scope.modalInstance = $uibModalInstance;
                 // TODO: add invitations to commenters for the new group that will be created
-                createNewContribution($scope, Contributions, logService);
+                createNewContribution($scope, Contributions, logService, $rootScope);
             };
 
             $scope.cancel = function () {
@@ -412,20 +383,28 @@ appCivistApp.controller('ContributionModalCtrl',
             if($scope.contribution.extendedTextPad) {
                 $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
                 var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
-                etherpadRes.$promise.then(function(pad){
-                    $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
-                });
+                etherpadRes.$promise.then(
+                    function(pad) {
+                        $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+                        $rootScope.stopSpinner();
+                    }, function (error) {
+                        $rootScope.stopSpinner();
+                        $rootScope.showError(error.data);
+                    });
+            } else {
+                $rootScope.stopSpinner();
             }
         }
     });
 
-appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams, localStorageService,
+appCivistApp.controller('ContributionCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
 													 FileUploader, Contributions, $translate, Etherpad, usSpinnerService) {
 
 	init();
 	verifyAuthorship($scope, localStorageService, Contributions);
 
 	function init() {
+        $rootScope.startSpinner();
         $scope.user = localStorageService.get("user");
         if ($scope.user && $scope.user.language)
             $translate.use($scope.user.language);
@@ -474,24 +453,22 @@ appCivistApp.controller('ContributionCtrl', function($scope, $http, $routeParams
         if($scope.contribution.extendedTextPad && $scope.contributionID != null && $scope.contributionID != undefined) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
             var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
-            etherpadRes.$promise.then(function(pad){
-                $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+            etherpadRes.$promise.then(
+                function(pad) {
+                    $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+                    $rootScope.stopSpinner();
+                }, function (error) {
+                    $rootScope.stopSpinner();
+                    $rootScope.showError(error.data);
             });
+        } else {
+            $rootScope.stopSpinner();
         }
 
-        $scope.startSpinner = function(){
-            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
-            usSpinnerService.spin('spinner-1');
-        }
-
-        $scope.stopSpinner = function(){
-            usSpinnerService.stop('spinner-1');
-            $(angular.element.find('.spinner-container')).remove();
-        }
 	}
 });
 
-appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routeParams, localStorageService,
+appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
                                                              Contributions, Campaigns, Assemblies, Etherpad,
                                                              WorkingGroups, $translate, logService, usSpinnerService) {
     init();
@@ -521,20 +498,10 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
         }
 
         $scope.update = function () {
-            updateContribution($scope,Contributions, logService);
+            updateContribution($scope,Contributions, logService, $rootScope);
         }
 
-        $scope.startSpinner = function(){
-            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
-            usSpinnerService.spin('spinner-1');
-        }
-
-        $scope.stopSpinner = function(){
-            usSpinnerService.stop('spinner-1');
-            $(angular.element.find('.spinner-container')).remove();
-        }
-
-        $scope.startSpinner();
+        $rootScope.startSpinner();
     }
 
     /**
@@ -648,7 +615,7 @@ appCivistApp.controller('ContributionPageCtrl', function($scope, $http, $routePa
     }
 });
 
-appCivistApp.controller('CommentsController', function($scope, $http, $routeParams, localStorageService,
+appCivistApp.controller('CommentsController', function($rootScope, $scope, $http, $routeParams, localStorageService,
 													   Contributions, $translate, logService, usSpinnerService) {
 	init();
 	initializeNewReplyModel();
@@ -707,15 +674,6 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
         $scope.delete = function () {
 			deleteContribution($scope, localStorageService, Contributions, logService);
 		};
-        $scope.startSpinner = function(){
-            $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
-            usSpinnerService.spin('spinner-1');
-        }
-
-        $scope.stopSpinner = function(){
-            usSpinnerService.stop('spinner-1');
-            $(angular.element.find('.spinner-container')).remove();
-        }
 	}
 
 	function initializeNewReplyModel() {
@@ -725,7 +683,7 @@ appCivistApp.controller('CommentsController', function($scope, $http, $routePara
 });
 
 
-appCivistApp.controller('ContributionFeedbackCtrl', function($scope, $http, $routeParams, localStorageService,
+appCivistApp.controller('ContributionFeedbackCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
                                                           Contributions, $translate, MakeVote, Ballot, BallotPaper,
                                                           VotesByUser, $rootScope) {
 
@@ -785,7 +743,7 @@ appCivistApp.controller('ContributionFeedbackCtrl', function($scope, $http, $rou
     }
 });
 
-appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeParams, localStorageService,
+appCivistApp.controller('ContributionVotesCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
 														  Contributions, $translate, MakeVote, Ballot, BallotPaper,
                                                           VotesByUser, $rootScope) {
     /**
@@ -1007,7 +965,7 @@ appCivistApp.controller('ContributionVotesCtrl', function($scope, $http, $routeP
     }
 });
 
-appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParams, localStorageService,
+appCivistApp.controller('AddAttachmentCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
                                                       FileUploader, Contributions, $translate) {
 
     init();
@@ -1049,9 +1007,9 @@ appCivistApp.controller('AddAttachmentCtrl', function($scope, $http, $routeParam
 /**
  * Functions common to all Contribution Controllers
  */
-function createNewContribution (scope, Contributions, logService) {
+function createNewContribution (scope, Contributions, logService, rootScope) {
 	scope.postingContributionFlag  = postingContributionFlag = true;
-    if(scope.startSpinner) scope.startSpinner();
+    if(rootScope.startSpinner) rootScope.startSpinner();
     if (!scope.newContribution.title || !scope.newContribution.title === "") {
 		var maxlength = 250;
 		var trimlength = maxlength;
@@ -1084,7 +1042,7 @@ function createNewContribution (scope, Contributions, logService) {
 					scope.replyParent.boxIsOpen = false;
 				}
                 scope.postingContributionFlag = postingContributionFlag = false;
-                if(scope.stopSpinner) scope.stopSpinner();
+                if(rootScope.stopSpinner) rootScope.stopSpinner();
                 // Logging Usage
                 var resourceId = data.uuid;
                 var action = type == 'PROPOSAL' ?
@@ -1099,7 +1057,7 @@ function createNewContribution (scope, Contributions, logService) {
 				scope.response.errors = error;
 				scope.response.touched = !scope.response.touched;
                 scope.postingContributionFlag = postingContributionFlag = false;
-                if(scope.stopSpinner) scope.stopSpinner();
+                if(rootScope.stopSpinner) rootScope.stopSpinner();
 
                 // Logging Usage
                 var action = type == 'PROPOSAL' ?
@@ -1111,8 +1069,8 @@ function createNewContribution (scope, Contributions, logService) {
 	);
 }
 
-function updateContribution(scope, Contributions, logService) {
-    if(scope.startSpinner) scope.startSpinner();
+function updateContribution(scope, Contributions, logService, rootScope) {
+    if(rootScope.startSpinner) rootScope.startSpinner();
     if(scope.userIsAuthor) {
         var updateRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId)
             .update(scope.contribution);
@@ -1129,7 +1087,7 @@ function updateContribution(scope, Contributions, logService) {
                 if(scope.contribution.type == "COMMENT") {
                     logService.logAction("UPDATE_COMMENT", "COMMENT",  scope.contribution.uuid, scope.user.email);
                 }
-                if(scope.startSpinner) scope.stopSpinner();
+                if(rootScope.startSpinner) rootScope.stopSpinner();
             },
             function (error) {
                 console.log("Error in update");
@@ -1142,7 +1100,7 @@ function updateContribution(scope, Contributions, logService) {
                 if(scope.contribution.type == "COMMENT") {
                     logService.logAction("UPDATE_COMMENT", "COMMENT", null, scope.user.email);
                 }
-                if(scope.startSpinner) scope.stopSpinner();
+                if(rootScope.startSpinner) rootScope.stopSpinner();
             }
         );
     }

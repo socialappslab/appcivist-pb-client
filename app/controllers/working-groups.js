@@ -81,6 +81,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($rootScope, $scope, $htt
         };
 
         $scope.createWorkingGroup = function() {
+            $scope.newWorkingGroup.existingThemes = [];
             // 1. process themes
             if ($scope.campaignThemes) {
                 for (var i = 0; i < $scope.campaignThemes.length; i++) {

@@ -1281,58 +1281,6 @@ button#second-vote {
   font-weight: bold;
 }
 
-.campaign-pmaking .contributions {
-  list-style: none;
-  -webkit-column-count: 3;
-  -moz-column-count: 3;
-  column-count: 3;
-}
-.campaign-pmaking .proposals {
-  list-style: none;
-  -webkit-column-count: 3;
-  -moz-column-count: 3;
-  column-count: 3;
-}
-.campaign-pmaking .row {
-  margin-bottom: 0.5rem;
-}
-.campaign-pmaking nav {
-  display: inline-block;
-  float: right;
-}
-.campaign-pmaking nav .pagination {
-  margin: 0 0;
-}
-
-.campaign-wGroups .row {
-  margin-bottom: 0.5rem;
-}
-.campaign-wGroups .optionsBox {
-  background-color: #F4F4F4;
-  padding: 1rem;
-  border-radius: 0.5rem;
-}
-.campaign-wGroups .optionsBox .optionsBox-title {
-  color: dodgerblue;
-  display: inline-block;
-}
-.campaign-wGroups .optionsBox .checkbox {
-  padding-left: 2rem;
-}
-.campaign-wGroups .optionsBox:before {
-  right: 100%;
-  top: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border-right-color: #F4F4F4;
-  border-width: 1rem;
-  margin-top: -2.3rem;
-}
-
 /** form  elements **/
 .campaign-title {
   margin: 20px 15px;

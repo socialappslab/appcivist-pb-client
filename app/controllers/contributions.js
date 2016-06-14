@@ -123,6 +123,7 @@ appCivistApp.controller('NewContributionModalCtrl',
                     createNewContribution($scope, Contributions, logService);
                 };
 
+                // Post contributions from Modal Window
                 $scope.postContributionFromModal = function () {
                     $scope.postingContributionFlag = true;
                     $scope.targetSpaceId = $scope.campaign.resourceSpaceId;

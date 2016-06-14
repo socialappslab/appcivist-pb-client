@@ -314,7 +314,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
  * Services that are injected to the main method of the app to make them available when it starts running
  * @type {string[]}
  */
-run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal'];
+run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal', 'usSpinnerService'];
 
 /**
  * The function that runs the App on the browser
@@ -323,7 +323,7 @@ run.$inject = ['$rootScope', '$location', '$http', 'localStorageService', 'logSe
  * @param $http
  * @param localStorageService
  */
-function run($rootScope, $location, $http, localStorageService, logService, $uibModal) {
+function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -374,6 +374,17 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
 
         }
     };
+
+    // global spinner
+    $rootScope.startSpinner = function(){
+        $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
+        usSpinnerService.spin('spinner-1');
+    }
+
+    $rootScope.stopSpinner = function(){
+        usSpinnerService.stop('spinner-1');
+        $(angular.element.find('.spinner-container')).remove();
+    }
 }
 
 /**

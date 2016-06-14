@@ -206,6 +206,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 
 
 
+
 appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location, localStorageService,
 												   Assemblies, loginService, $route, $routeParams, usSpinnerService,
 												   $uibModal, Invitations, WorkingGroups, Memberships, FlashService,
@@ -262,3 +263,24 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 		}
 	}
 });
+
+appCivistApp.controller('ErrorModalCtrl', function($scope, $rootScope, $translate, $uibModalInstance,
+												   localStorageService, FlashService, LocaleService, LOCALES,
+												   error, resourceType, resourceId, supportContact) {
+		init();
+
+		function init() {
+
+			$scope.error = error;
+			$scope.resourceType = resourceType;
+			$scope.resourceId = resourceId;
+			$scope.supportContact = supportContact;
+			$scope.user = localStorageService.get("user");
+			if ($scope.user && $scope.user.language)
+				$translate.use($scope.user.language);
+
+			$scope.cancel = function () {
+				$uibModalInstance.dismiss('cancel');
+			};
+		}
+	});

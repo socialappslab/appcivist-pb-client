@@ -5,7 +5,7 @@
         %h3 {{campaigns.length < 1 ? "" : campaigns[0].title }}
       .container
         %h1
-          %b Voting Ballot
+          %b {{'Voting Ballot' | translate}}
       .container
         %h1#small {{ballot.ballot.starts_at | date:'yyyy'}}/{{ballot.ballot.starts_at | date:'MMMM'}}
   %br
@@ -15,14 +15,14 @@
           %label{:for => "exampleInputEmail1"} {{field.name}}
           %input.form-control{:id => "{{field.id}}", :placeholder => "{{field.description}}", :type => "text", "ng-model" => "field.user_input"}
       %button.btn.btn-default{"ng-click" => "generateSignature()", :type => "submit"}
-        Begin Voting
+        {{'Begin Voting' | translate}}
   %br
   %h1.text-center
     OR
   %form
     .form-group
       %label{:for => "signature"}
-        Signature
+        {{'Signature' | translate}}
       %input.form-control{:name => "signature", :placeholder => "Enter your ballot paper signature", "ng-model" => "signature", :required => true, :type => "text", "ng-minlength" => 1}
     %button.btn.btn-default{"ng-click" => "loadBallotPaper()", :type => "submit"}
-      Load my votes
+      {{'Load my votes' | translate}}

@@ -384,7 +384,9 @@
   "creation.components.versioningDescription.text2":"<strong>Versioning </strong>is the process by which Working Groups develop proposals to their final form.",
   "Select Theme:":"Select Theme:",
   "Publish":"Publish",
-  "Register":"Register"
+  "Register":"Register",
+  "component.deliberation.who-deliberates.ASSEMBLY":"Todos los miembros de la Asamblea",
+  "Proposal Making start date":"Fecha de inicio para el desarrollo propuestas"
 
 
 

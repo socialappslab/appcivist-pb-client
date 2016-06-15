@@ -89,7 +89,7 @@
                             <div class="col-md-2 col-sm-2 col-xs-2"></div>
                             <div class=" col-md-10 col-sm-11 col-xs-10">
                                 <select class="form-control"
-                                        ng-options="option.name for option in config.options track by option.value"
+                                        ng-options="option.name | translate for option in config.options track by option.value"
                                         ng-model="config.optionValue"
                                         ng-change="updateConfigOptionValue(config, config.optionValue)">
                                 </select>
@@ -111,7 +111,7 @@
                                             ng-checked="option.selected ? 'checked' : ''"
                                             ng-click="checkOption(config,option)">
                                 </div>
-                                <div class="col-md-11 col-sm-11 col-xs-11"><span>{{option.name}}</span></div>
+                                <div class="col-md-11 col-sm-11 col-xs-11"><span>{{option.name | translate}}</span></div>
                             </div>
                             <div class="col-md-12 voffset3"></div>
                         </div>

@@ -607,12 +607,12 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     selected: true
                 },
                 {
-                    name: "Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
+                    name: "component.voting.system.winners.DYNAMIC1",
                     value: "DYNAMIC1",
                     selected: false
                 },
                 {
-                    name: "Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
+                    name: "component.voting.system.winners.DYNAMIC2",
                     value: "DYNAMIC2",
                     selected: false
                 }
@@ -623,11 +623,10 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
             configDict['Proposalmaking'] = [
                 {
                     key: "component.proposalmaking.enable.proposal.merge-split",
-                    description: "Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+                    description: "Proposalmaking.component.proposalmaking.enable.proposal.merge-split",
                     type: "checkbox",
                     tooltipKey: "versioningMergeSplitTooltip",
                     value: false
-
                 },
                 {
                     key: "component.proposalmaking.enable.working-groups.comments.external",

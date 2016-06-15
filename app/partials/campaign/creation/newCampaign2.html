@@ -73,7 +73,7 @@
 
             <section class="col-sm-12 col-md-12" ng-repeat="milestone in newCampaign.milestones track by $index">
                 <div ng-if="newCampaign.proposalComponents[milestone.componentIndex].enabled && newCampaign.proposalComponents[milestone.componentIndex].active">
-                    <div class="col-md-8 col-sm-8"><strong>{{$index+1}}. </strong><span>{{milestone.title}}</span></div>
+                    <div class="col-md-8 col-sm-8"><strong>{{$index+1}}. </strong><span>{{milestone.title | translate}}</span></div>
                     <div class="col-md-4 col-sm-4">
                         <p class="input-group">
                             <input type="text" class="form-control"

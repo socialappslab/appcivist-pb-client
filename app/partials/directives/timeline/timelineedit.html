@@ -5,9 +5,9 @@
         ng-class="!component.linked ? component.active ? 'active selected' : 'active' : 'disabled'"
         ng-click="changeComponentState($index,!component.active)"
         ng-if="component.enabled"
-        uib-tooltip="{{!component.linked ? component.name : 'Linked components cannot be edited'}}"
+        uib-tooltip="{{!component.linked ? component.name : 'Linked components cannot be edited' | translate}}"
         tooltip-placement="right">
-        &nbsp;&nbsp;&nbsp;&nbsp;{{ component.name | limitTo: 8  }}{{component.name.length > 8 ? '...' : ''}}
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ component.name | translate | limitTo: 8  }}{{component.name.length > 8 ? '...' : ''}}
     </li>
     <!-- TODO: think of a better way of showing linked campaign phases -->
 </ul>

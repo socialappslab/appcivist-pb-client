@@ -5,7 +5,7 @@
 <div class="row">
     <uib-alert ng-if="flash && flash.type==='error'" type="danger">{{flash.message}} </uib-alert>
     <button class="col-md-push-2 col-md-2 btn btn-primary" ng-click="tabs[1].active=true">
-        <h3><strong>Back</strong></h3>
+        <h3><strong>{{'Back' | translate}}</strong></h3>
     </button>
     <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(3)"
             ng-disabled="!newUserForm.$valid">

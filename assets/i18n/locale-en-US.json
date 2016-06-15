@@ -450,7 +450,14 @@
   "Proposal Making start date":"Proposal Making start date",
   "component.voting.system.winners.DYNAMIC1":"Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
   "component.voting.system.winners.DYNAMIC2":"Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
-  "Proposalmaking.component.proposalmaking.enable.proposal.merge-split":"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)"
+  "Proposalmaking.component.proposalmaking.enable.proposal.merge-split":"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+  "Stacked":"Stacked",
+  "Stacked by Percentage":"Stacked by Percentage",
+  "directives.progressline.progressline.text1":"Working groups (in 20 days)",
+  "directives.progressline.progressline.text2":"Proposal Drafts (in 30 days)",
+  "directives.progressLine.progressline.text3":"Final drafts due",
+  "Template Review":"Template Review",
+  "directives.templateConfiguration.templateConfiguration.text1":"Use only linked campaign's"
 
 
 

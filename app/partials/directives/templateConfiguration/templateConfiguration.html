@@ -1,14 +1,14 @@
 <div class="box settingsBox">
     <div class="row header col-md-12 col-sm-12">
-        <h3><strong>Template Review: </strong> {{selectedTemplate.name}}</h3>
+        <h3><strong>{{'Template Review' | translate}}: </strong> {{selectedTemplate.name}}</h3>
     </div>
     <div id="campaignLinkedBox" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='LINKED'">
-        <label><strong>Linked Campaign: </strong> {{newCampaign.linkedCampaign.title}}</label>
+        <label><strong>{{'Linked Campaign' | translate}}: </strong> {{newCampaign.linkedCampaign.title}}</label>
 
         <div class="themes-container-content optionThemes">
             <input type="checkbox" value="" ng-model="newCampaign.useLinkedCampaign"
             ng-click="updateLinkedCampaign()">
-            <span>Use only linked campaign's <strong>Deliberation, Voting </strong> and <strong>Implementation</strong></span>
+            <span>{{'directives.templateConfiguration.templateConfiguration.text1' | translate}} <strong>{{'Deliberation' | translate}}, {{'Voting' | translate}} </strong> {{'and' | translate}} <strong>{{'Implementation' | translate}}</strong></span>
         </div>
 
         <div class="row col-md-12 col-sm-12 box descriptionBox"

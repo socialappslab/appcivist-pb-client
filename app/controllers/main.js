@@ -267,20 +267,45 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 appCivistApp.controller('ErrorModalCtrl', function($scope, $rootScope, $translate, $uibModalInstance,
 												   localStorageService, FlashService, LocaleService, LOCALES,
 												   error, resourceType, resourceId, supportContact) {
-		init();
+	init();
 
-		function init() {
+	function init() {
 
-			$scope.error = error;
-			$scope.resourceType = resourceType;
-			$scope.resourceId = resourceId;
-			$scope.supportContact = supportContact;
-			$scope.user = localStorageService.get("user");
-			if ($scope.user && $scope.user.language)
-				$translate.use($scope.user.language);
+		$scope.error = error;
+		$scope.resourceType = resourceType;
+		$scope.resourceId = resourceId;
+		$scope.supportContact = supportContact;
+		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);
 
-			$scope.cancel = function () {
-				$uibModalInstance.dismiss('cancel');
-			};
-		}
-	});
+		$scope.cancel = function () {
+			$uibModalInstance.dismiss('cancel');
+		};
+	}
+});
+
+appCivistApp.controller('AlertModalCtrl', function($scope, $rootScope, $translate, $uibModalInstance,
+												   localStorageService, FlashService, LocaleService, LOCALES,
+												   title, message, allowCancelOption, messageExtra) {
+	init();
+
+	function init() {
+
+		$scope.title = title;
+		$scope.message = message;
+		$scope.allowCancelOption = allowCancelOption;
+		$scope.messageExtra = messageExtra;
+		$scope.user = localStorageService.get("user");
+		if ($scope.user && $scope.user.language)
+			$translate.use($scope.user.language);
+
+		$scope.cancel = function () {
+			$uibModalInstance.dismiss('cancel');
+		};
+
+		$scope.ok = function () {
+			$uibModalInstance.dismiss('ok');
+		};
+	}
+});

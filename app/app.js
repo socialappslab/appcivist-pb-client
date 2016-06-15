@@ -369,7 +369,7 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
             });
 
             modalInstance.result.then(function () {
-                console.log('Closed contribution modal');
+                console.log('Closed error modal');
             }, function () {
                 console.log('Modal dismissed at: ' + new Date());
             });
@@ -379,6 +379,31 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
         }
     };
 
+    // set alert info modal
+    $rootScope.showAlert = function(title, message, messageExtra, allowCancelOption) {
+        if(!$rootScope.inModal) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'app/partials/alertModal.html',
+                controller: 'AlertModalCtrl',
+                size: 'lg',
+                resolve: {
+                    title: function () { return title;},
+                    message: function () { return message;},
+                    messageExtra: function () { return messageExtra;},
+                    allowCancelOption: function () { return allowCancelOption}
+                }
+            });
+
+            modalInstance.result.then(function () {
+                console.log('Closed alert modal');
+            }, function () {
+                console.log('Modal dismissed at: ' + new Date());
+            });
+        }
+    };
+
+
     // global spinner
     $rootScope.startSpinner = function(){
         $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
@@ -387,6 +412,18 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
 
     $rootScope.stopSpinner = function(){
         usSpinnerService.stop('spinner-1');
+        $(angular.element.find('.spinner-container')).remove();
+    }
+
+    // global spinner by key
+    $rootScope.startSpinnerByKey = function(key){
+        var element = '[spinner-key="'+key+'"]'
+        $(angular.element.find(key)[0]).addClass('spinner-container');
+        usSpinnerService.spin(key);
+    }
+
+    $rootScope.stopSpinnerByKey = function(key){
+        usSpinnerService.stop(key);
         $(angular.element.find('.spinner-container')).remove();
     }
 }

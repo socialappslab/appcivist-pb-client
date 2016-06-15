@@ -355,7 +355,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
     }
 });
 
-appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Upload, $timeout, $routeParams,
+appCivistApp.controller('AssemblyCtrl', function($rootScope, $scope, usSpinnerService, Upload, $timeout, $routeParams,
                                                  $resource, $http, Assemblies, $location, Contributions, $uibModal,
                                                  loginService, localStorageService, Memberships, Invitations,
                                                  FlashService, $translate, $filter, logService) {
@@ -533,13 +533,18 @@ appCivistApp.controller('AssemblyCtrl', function($scope, usSpinnerService, Uploa
             );
         }
         $scope.resendInvitation = function (invitation) {
+            $rootScope.startSpinnerByKey("spinner-invitations");
             var res = Memberships.reSendInvitation(invitation.id).save();
             res.$promise.then(
                 function (data) {
-                    FlashService.Success("Membership email to "+invitation.email+" was Re-Sent");
+                    $rootScope.stopSpinnerByKey("spinner-invitations");
+                    $rootScope.showAlert("Invitation sent!", "Invitation was sent to", invitation.email, false);
+                    FlashService.Success("Invitation was re-sent!");
                 },
                 function (error) {
-                    FlashService.Error("membership approval failed");
+                    $rootScope.stopSpinnerByKey("spinner-invitations");
+                    $rootScope.showError(error.data, "INVITATION", invitation.id);
+                    FlashService.Error("Invitation was not sent!");
                 }
             );
         }

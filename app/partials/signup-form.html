@@ -48,7 +48,7 @@
     <div class="form-group" ng-if="(!invitation) && (!newAssembly)">
         <div class="col-md-offset-3 col-md-8">
             <input type="submit" name="submit" class="btn btn-primary"
-                   id="submit_person" ng-click="signup()" value="Submit" ng-disabled="!newUserForm.$valid"/>
+                   id="submit_person" ng-click="signup()" value="{{'Submit'|translate}}" ng-disabled="!newUserForm.$valid"/>
         </div>
     </div>
     <!-- Submit button when new user is created via Membership Invitation -->
@@ -58,7 +58,7 @@
         <div class="col-md-offset-3 col-md-8">
             <input type="submit" name="submit" class="btn btn-success"
                    id="accept_invitation" ng-click="acceptInvitationAndSignup()"
-                   value="Accept invitation and create user" ng-disabled="!newUserForm.$valid"/>
+                   value="{{'Accept invitation and create user'|translate}}" ng-disabled="!newUserForm.$valid"/>
         </div>
     </div>
 
@@ -69,7 +69,7 @@
         <div class="col-md-offset-3 col-md-8">
             <input type="submit" name="submit" class="btn btn-danger"
                    id="reject_invitation" ng-click="sendResponse('REJECTED')"
-                   value="Decline invitation"/>
+                   value="{{'Decline invitation'|translate}}"/>
         </div>
     </div>
 </form>

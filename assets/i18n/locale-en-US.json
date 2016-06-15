@@ -492,26 +492,16 @@
   "directives.progressline.progressline.text2":"Proposal Drafts (in 30 days)",
   "directives.progressLine.progressline.text3":"Final drafts due",
   "Template Review":"Template Review",
-  "directives.templateConfiguration.templateConfiguration.text1":"Use only linked campaign's"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "directives.templateConfiguration.templateConfiguration.text1":"Use only linked campaign's",
+  "Your passwords don't match.":"Your passwords don't match.",
+  "errorModalText":"If this description is sufficient for you to take care of the problem, close this modal window and try again. We are sorry for the inconvenience and we will work hard to fix this issue as soon as possible. If the error message is not descriptive enough, please contact",
+  "Error description":"Error description",
+  "No Error description":"No Error description",
+  "Submit":"Submit",
+  "Accept invitation and create user":"Accept invitation and create user",
+  "Decline invitation":"Decline invitation",
+  "ESPECIAL PHRASES FROM BACKEND":"ESPECIAL PHRASES FROM BACKEND",
+  "This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.":"This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.",
+  "Your email is invalid":"Your email is invalid",
+  "Either your email, user or both are invalid":"Either your email, user or both are invalid"
 }

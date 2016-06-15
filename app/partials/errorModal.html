@@ -9,25 +9,16 @@
         </div>
         <div class="modal-body view col-md-12 col-sm-12">
             <div class="row col-md-12 col-sm-12">
-                <p>
-                    It appears as if something didn't quite work. Below is a description about what happen.
-                    If this description is sufficient for you to take care of the problem, close this modal window
-                    and try again.
-                </p>
-                <p>
-                    If the error message is not descriptive enough, please contact
-                    <strong>{{supportContact}}</strong>.
-                </p>
                 <div class="alert alert-danger" ng-if="error.statusMessage">
-                    <strong>Error description: </strong>
-                    {{error.statusMessage}}
+                    <strong>{{'Error description'|translate}}: </strong>
+                    {{error.statusMessage | translate}}
                 </div>
                 <div class="alert alert-danger" ng-if="!error.statusMessage">
-                    <strong>No Error description. </strong>
-                    Report this to the technical support
+                    <strong>{{'No Error description'|translate}}.</strong>
                 </div>
                 <p>
-                    We are sorry for the inconvenience and we will work hard to fix this issue as soon as possible
+                    <span translate="errorModalText"></span>
+                    <strong>{{supportContact}}</strong>.
                 </p>
             </div>
         </div>

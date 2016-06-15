@@ -26,7 +26,6 @@
   "landing.component.Voting.Final selection" : "Final selection of proposals",
   "landing.section3.button" : "Other features",
   "landing.section4.title" : "Customizable tools for democratic action",
-
   "Header and Footer Strings" : "Header and Footer Strings",
   "header.sign_in" : "Log In",
   "header.sign_up" : "Sign Up",
@@ -36,7 +35,6 @@
   "header.Forgot password" : "Forgot Password?",
   "footer.text" : "Created by the <a href='http://socialappslab.org/'>Social Apps Lab</a> at CITRIS, University of California, Berkeley.<br/> 2014-2016 &copy; Regents of the University of California <br/> In partnership with the <a href='https://mimove.inria.fr/'>MiMove Team</a> at <a href='http://www.inria.fr/'>INRIA</a>, France.",
   "footer.text.dev" : "[DEV] Change Backend Server: Currently Using ",
-
   "User Menus" : "User Menus",
   "header.menu.Send message" : "Send message",
   "header.menu.Profile" : "Profile",
@@ -44,7 +42,6 @@
   "header.menu.Notification" : "Notification",
   "header.menu.Notifications" : "Notifications",
   "Toggle navigation" : "Toggle navigation",
-
   "AppCivist Common Strings" : "AppCivist Common Strings",
   "appcivist" : "AppCivist",
   "Home" : "Home",
@@ -98,8 +95,6 @@
   "Deliberation": "Deliberation",
   "Voting": "Voting",
   "Implementation": "Implementation",
-
-
   "Other common strings" : "Other common strings",
   "Email" : "Email",
   "Open" : "Open",
@@ -124,7 +119,6 @@
   "Organize" : "Organize",
   "Meeting" : "Meeting",
   "Meetings" : "Meetings",
-
   "Common creation questions/phrases" : "Common creation questions/phrases",
   "How do people become members?" : "How do people become members?",
   "Who will be able to change settings and remove inappropriate comments?" : "Who will be able to change settings and remove inappropriate comments?",
@@ -148,15 +142,12 @@
   "Enable blocking" : "Enable blocking",
   "Do you want your Assembly to be listed?" : "Do you want your Assembly to be listed?",
   "Do you want your Working Group to be listed?" : "Do you want your Working Group to be listed?",
-
   "Definitions" : "Definitions",
   "definition.assembly" :"Assemblies are groups of people with shared concerns, like neighborhood safety or city budgets, who want to organize to take action.",
   "definition.campaign" :"Campaigns are initiatives that an assembly undertakes to achieve a specific goal. Each campaign has its own template that structures its components, working groups, and timeline.",
   "definition.proposal.development" :"Assembly members organize into Working Groups to brainstorm, develop, and select proposals democratically for collective action.",
-
   "Help Strings" : "Help Strings",
   "help.proposalTimeline" : "Click on the stage name to activate or deactivate the phases you wish to include in your campaign. Stages shown as disabled take place in the linked campaign.",
-
   "Help Tooltips" : "Help Tooltips",
   "help.tooltip.location" : "Can be the name of a specific place, address, city or country associated with your assembly",
   "help.tooltip.targetAudience" : "Describe who you want to participate",
@@ -170,7 +161,6 @@
   "help.tooltip.campaignFastrack" : "Fastrack uses default values for each stage of a campaign (e.g., default dates and duration, default configuration values)",
   "help.tooltip.campaignTimeframe" : "Select a period of time to represent in the timeline below.",
   "help.tooltip.componentContributionTemplate" : "A proposal template is the list of sections (with its descriptions) that are used to initialized proposal drafts",
-
   "Working Group Pages Strings" : "Working Group Pages Strings",
   "Working groups" : "Working Group",
   "Create Working Group" : "Create Working Group",
@@ -179,13 +169,11 @@
   "wgroups.text.example" : "(Max. 250 words) e.g., Group developing Urban Infrastucture proposals for Parc de Belleville",
   "wgroups.select.campaign.themes" : "Select one or more Campaign Themes for the group",
   "wgroups.select.icon" : "Pick an icon or upload an image to represent your Group (or upload a picture < 2Mb)*",
-
   "Invitation page strings" : "Invitation page strings",
   "Invitation text" : "Invitation text",
   "Invite user to be a moderator" : "Invite the user to be a moderator",
   "Invite user to be a coordinator" : "Invite user to be a coordinator",
   "Send invitation for" : "Send invitation for",
-
   "Campaign creation" : "Campaign creation",
   "Proposal Development Timeline" : "Proposal Development Timeline",
   "campaign.creation.linkedExplanation" : "<p>If enabled, deliberation, voting  and implementation will proceed according to the rules set by the parent Assembly of the linked campaign, <strong>'{{newCampaign.linkedCampaign.title}}'</strong>. Therefore, users will only deliberate and vote once, within that linked campaign. If disabled, users will deliberate and vote within their our Assembly Campaign and again within the Linked Assembly Campaign.</p>",
@@ -242,7 +230,6 @@
   "Theme-s":"Theme(s)",
   "Turn into Proposal": "Turn into Proposal",
   "directives.language-select.Language":"Choose a Language",
-
   "assembly.newAssemblystep1.text1":"What's your assembly about?",
   "assembly.newAssemblystep1.text2":"Where is your assembly located?",
   "assembly.newAssemblystep1.text3":"Who can join your assembly?",
@@ -299,7 +286,6 @@
   "address":"address", 
   "Upcoming Milestones":"Upcoming Milestones",
   "Current Assemblies":"Current Assemblies",
-  
   "New Assembly":"New Assembly",
   "My-plural":"My",
   "Accepted Members":"Accepted Members",
@@ -397,10 +383,6 @@
   "Publish":"Publish",
   "Register":"Register",
   "Accept Invitation":"Accept Invitation",
-
-  
-
-
   "Voting Ballot":"Voting Ballot",
   "Begin Voting":"Begin Voting",
   "Signature":"Signature",
@@ -439,9 +421,6 @@
   "Edit Campaign":"Edit Campaign",
   "Campaign Goal":"Campaign Goal",
   "Budget":"Budget",
-
-
-
   "All assembly members":"All assembly members",
   "Proposalmaking.component.proposalmaking.enable.proposal.merge-split":"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
   "Only Working Groups of this Campaign":"Only Working Groups of this Campaign",
@@ -490,7 +469,6 @@
   "defaultProposalComponentMilestones.endAssessment.text4":"Starting this date, winning proposals will be available on the website to follow up upon their implementations",
   "Voting period end date":"Voting period end date",
   "Implementation start date":"Implementation start date",
-
   "Campaign description":"Campaign description",
   "Campaign milestones":"Campaign milestones",
   "Enable reply-to comments in discussions":"Enable reply-to comments in discussions",
@@ -503,24 +481,11 @@
   "Error loading campaign contributions from server":"Error loading campaign contributions from server",
   "Invitation sent!":"Invitation sent!",
   "Invitation was sent to":"Invitation was sent to",
-
-
-
-
-
-
-
-
-
-
-
   "1 month":"1 month",
   "3 months":"3 months",
   "6 months":"6 months",
   "12 months":"12 months",
   "Start":"Start",
- 
-  
   "Stacked":"Stacked",
   "Stacked by Percentage":"Stacked by Percentage",
   "directives.progressline.progressline.text1":"Working groups (in 20 days)",

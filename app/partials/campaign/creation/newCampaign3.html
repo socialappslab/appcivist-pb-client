@@ -70,7 +70,7 @@
                     <section id="{{config.key}}" ng-repeat="config in component.configs track by $index">
                         <!--The config is of type title (no value, just to separate sections) -->
                         <div ng-if="config.type==='title'">
-                            <label class="control-label col-md-12 col-sm-12 col-xs-12">{{config.description}}</label>
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">{{config.description | translate}}</label>
                             <div class="col-md-12 voffset3"></div>
                         </div>
 
@@ -79,13 +79,13 @@
                             <label class="col-md-1 col-sm-1 col-xs-1">
                                 <input type="checkbox" ng-model="config.value"/>
                             </label>
-                            <span class="control-label col-md-11 col-sm-11 col-xs-11">{{config.description}}</span>
+                            <span class="control-label col-md-11 col-sm-11 col-xs-11">{{config.description | translate}}</span>
                             <div class="col-md-12 voffset3"></div>
                         </div>
 
                         <!--The config is of type select -->
                         <div ng-if="configIsEnabled(config,component.configs, 'select')">
-                            <label class="control-label col-md-12 col-sm-12 col-xs-12">{{config.description}}</label>
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12">{{config.description | translate}}</label>
                             <div class="col-md-2 col-sm-2 col-xs-2"></div>
                             <div class=" col-md-10 col-sm-11 col-xs-10">
                                 <select class="form-control"
@@ -99,7 +99,7 @@
 
                         <!--The config is of type radio -->
                         <div ng-if="configIsEnabled(config,component.configs, 'radio')">
-                            <label class="control-label col-md-12 col-sm-12 col-xs-12"><strong>{{config.description}}</strong></label>
+                            <label class="control-label col-md-12 col-sm-12 col-xs-12"><strong>{{config.description | translate}}</strong></label>
                             <div class="radio col-md-12 col-sm-12 col-xs-12" ng-repeat="option in config.options track by $index">
                                 <div class="col-md-1 col-sm-1 col-xs-1">
                                     <input
@@ -118,7 +118,7 @@
 
                         <!--The config is of type input -->
                         <div ng-if="configIsEnabled(config,component.configs, 'input')">
-                            <span class="control-label col-md-8 col-sm-8 col-xs-12">{{config.description}}</span>
+                            <span class="control-label col-md-8 col-sm-8 col-xs-12">{{config.description | translate}}</span>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <input type="{{config.inputType === 'percentage' ? 'number' : config.inputType === 'number' ? 'number' : ''}}"
                                        step="{{config.inputType === 'percentage' ? '0.1' : '1'}}"

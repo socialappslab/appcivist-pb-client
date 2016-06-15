@@ -1,5 +1,5 @@
 ﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
-											  FlashService) {
+											  FlashService, $rootScope) {
 
 
 	this.getUser = function() {
@@ -11,35 +11,39 @@
 	};
 
 	this.signUp = function(user, scope, modalInstance, callback) {
+		$rootScope.startSpinner();
 		if (user.password && user.password.localeCompare(user.repeatPassword) != 0) {
-			FlashService.Error("Your passwords don't match.");
-			//$location.url('/');
+			$rootScope.stopSpinner();
+			FlashService.ErrorWithModal("Your passwords don't match.", "USER", null, "BADREQUEST", false);
 		} else if (user === '0') {
-			FlashService.Error("You are already registered.");
-			//$location.url('/');
-		}
-		console.log(user);
-		var authRes = AppCivistAuth.signUp().save(user);
-		authRes.$promise.then(
-				function(user) {
-					if(modalInstance) {
-						modalInstance.dismiss('cancel');
+			$rootScope.stopSpinner();
+			FlashService.ErrorWithModal("You are already registered.", "USER", null, "BADREQUEST", false);
+		} else {
+			console.log(user);
+			var authRes = AppCivistAuth.signUp().save(user);
+			authRes.$promise.then(
+					function (user) {
+						if (modalInstance) {
+							modalInstance.dismiss('cancel');
+						}
+						localStorageService.set('sessionKey', user.sessionKey);
+						localStorageService.set('authenticated', true);
+						console.log("User get from API: " + user.userId);
+						localStorageService.set("user", user);
+						scope.user = user;
+						$rootScope.stopSpinner();
+						$location.url('/home');
+					},
+					function (error) {
+						var data = error.data;
+						scope.user = null;
+						$rootScope.stopSpinner();
+						FlashService.ErrorWithModal(data.statusMessage, "USER", null, data.responseStatus, false);
 					}
-					localStorageService.set('sessionKey',user.sessionKey);
-					localStorageService.set('authenticated',true);
-					console.log("User get from API: " + user.userId);
-					localStorageService.set("user",user);
-					scope.user = user;
-					$location.url('/home');
-				},
-				function(error) {
-					var data = error.data;
-					var errorString = "There was an error with your sign up: " + JSON.stringify(data);
-					scope.user = null;
-					FlashService.Error(errorString);
-				}
-		);
-		if(callback){callback();}
+			);
+		}
+
+		if (callback) { callback(); }
 	}
 
 	this.signIn = function(email, password, scope, callback) {
@@ -59,22 +63,22 @@
 						$location.url('/home');
 					} else { // Not Authenticated
 						scope.user = null;
-						$rootScope.message = 'You need to log in.';
-						// $timeout(function(){deferred.reject();}, 0);
-						//deferred.reject();
 						$location.url('/');
+						FlashService.ErrorWithModal('You need to log in.', "USER", null, "UNAUTHORIZED", false);
 					}
 				},
 				function(error) {
-					$uibModal.open({
-						templateUrl: 'app/partials/landing/loginErrorModal.html',
-						size: 'sm',
-						controller: ['$scope', function($scope){
-							$scope.close = function(){
-								this.$close();
-							}
-						}]
-					});
+					var data = error.data;
+					FlashService.ErrorWithModal(data.statusMessage, "USER", null, data.responseStatus, false);
+					//$uibModal.open({
+					//	templateUrl: 'app/partials/landing/loginErrorModal.html',
+					//	size: 'sm',
+					//	controller: ['$scope', function($scope){
+					//		$scope.close = function(){
+					//			this.$close();
+					//		}
+					//	}]
+					//});
 				}
 		);
 		if(callback){callback();}

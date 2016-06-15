@@ -12,6 +12,8 @@ function FlashService($rootScope) {
 
     service.Success = Success;
     service.Error = Error;
+    service.ErrorWithModal = ErrorWithModal;
+    service.SuccessWithModal = SuccessWithModal;
 
     initService();
 
@@ -49,5 +51,24 @@ function FlashService($rootScope) {
             type: 'error',
             keepAfterLocationChange: keepAfterLocationChange
         };
+    }
+
+    function SuccessWithModal(title, message, messageExtra, allowCancelOption, keepAfterLocationChange) {
+        $rootScope.flash = {
+            message: message,
+            type: 'success',
+            keepAfterLocationChange: keepAfterLocationChange
+        };
+        $rootScope.showAlert(title, message, messageExtra, allowCancelOption);
+    }
+
+    function ErrorWithModal(message, resourceType, resourceId, statusCode, keepAfterLocationChange) {
+        $rootScope.flash = {
+            message: message,
+            type: 'error',
+            keepAfterLocationChange: keepAfterLocationChange
+        };
+        var error = {responseStatus: statusCode, statusMessage: message};
+        $rootScope.showError(error, resourceType, resourceId);
     }
 }

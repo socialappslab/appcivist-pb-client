@@ -33,7 +33,7 @@
   "header.sign_up_individual": "Inscription individuelle",
   "header.sign_out": "Se déconnecter",
   "header.Forgot password": "Mot de passe oublié?",
-  "footer.text": "Créé par le <a href='http://socialappslab.org/'>Social Apps Lab</a> du CITRIS, University of California, Berkeley.<br/> 2014-2016 &copy; Regents of the University of California <br/> In collaboration avec l'equipe <a href='https://mimove.inria.fr/'>MiMove</a> du <a href='http://www.inria.fr/'>INRIA</a>, France.",
+  "footer.text": "Créé par le <a href='http://socialappslab.org/'>Social Apps Lab</a> at CITRIS, University of California, Berkeley.<br/> 2014-2016 &copy; Regents of the University of California <br/> In partnership with the <a href='https://mimove.inria.fr/'>MiMove Team</a> at <a href='http://www.inria.fr/'>INRIA</a>, France.",
   "footer.text.dev": "[DEV] Changer le serveur Backend",
   "User Menus": "Menus de l'utilisateur",
   "header.menu.Send message": "Envoyer le message",

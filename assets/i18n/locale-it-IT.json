@@ -297,7 +297,7 @@
   "Publish":"Publish",
   "Register":"Register",
 
-  "Accept Invitation":"Accept Invitation",
+    "Accept Invitation":"Accept Invitation",
   "Voting Ballot":"Voting Ballot",
   "Begin Voting":"Begin Voting",
   "Signature":"Signature",
@@ -408,5 +408,4 @@
   "directives.progressLine.progressline.text3":"Final drafts due",
   "Template Review":"Template Review",
   "directives.templateConfiguration.templateConfiguration.text1":"Use only linked campaign's"
-
 }

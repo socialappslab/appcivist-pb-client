@@ -1070,7 +1070,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 {
                     date: moment().local().add(21, 'days').toDate(),
                     value: 90, title: "Technical assessments due date",
-                    description: "Until this date, published proposals for deliberation will be open for technical evaluation by volunteers, to assess feasibility and provide expert feedback. After this date, evaluations will appear above each proposal.",
+                    description: "defaultProposalComponentMilestones.endAssessment.text1",
                     component: "Deliberation",
                     componentKey: "Deliberation",
                     key: "end_assessment",
@@ -1086,7 +1086,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                     date: moment().local().add(22, 'days').toDate(),
                     value: 120,
                     title: "Voting period start date",
-                    description: "Starting on this date, assembly members can explore and evaluate published proposals. When you are ready, open the voting ballot and cast your vote. You will be provided with a secret code to recover your voting ballot and update it anytime until the voting period is over.",
+                    description: "defaultProposalComponentMilestones.endAssessment.text2",
                     component: "Voting",
                     componentKey: "Voting",
                     key: "start_voting",
@@ -1101,7 +1101,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 {
                     date: moment().local().add(30, 'days').toDate(),
                     value: 130, title: "Voting period end date",
-                    description: "Until this date, assembly members can edit their votes. After it, whatever vote has been casted will be considered final.",
+                    description: "defaultProposalComponentMilestones.endAssessment.text3",
                     component: "Voting",
                     componentKey: "Voting",
                     key: "end_voting",
@@ -1115,7 +1115,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
                 {
                     date: moment().local().add(31, 'days').toDate(),
                     value: 250, title: "Implementation start date",
-                    description: "Starting this date, winning proposals will be available on the website to follow up upon their implementations",
+                    description: "defaultProposalComponentMilestones.endAssessment.text4",
                     component: "Implementation",
                     componentKey: "Implementation",
                     key: "start_implementation",

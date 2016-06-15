@@ -59,8 +59,8 @@
 
         <form class="navbar-form navbar-right" role="login" ng-submit="login()" ng-if='!userIsAuthenticated()'>
             <div class="form-group">
-                <input type="text" placeholder="Email" class="form-control" ng-model="user.email">
-                <input type="password" placeholder="Password" class="form-control" ng-model="user.password"/>
+                <input type="text" placeholder="Email" class="form-control" ng-model="user.email" autocorrect="off" autocapitalize="off">
+                <input type="password" placeholder="Password" class="form-control" ng-model="user.password" autocorrect="off" autocapitalize="off"/>
             </div>
             <button type="submit" class="btn btn-success">{{'header.sign_in' | translate}}</button>
             <!--<button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>-->

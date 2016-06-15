@@ -343,9 +343,13 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
             $location.path('/');
         }
     });
+    // TODO: move configurations to config file and angular constants
     // set to true to log actions
     $rootScope.logActions = true;
     $rootScope.logService = logService;
+
+    // devModeOn controls some functionalities that are useful for debugging and testing
+    $rootScope.devModeOn = false;
 
     // set error modal
     $rootScope.supportContact = "Cristhian Parra (cdparra [at] berkeley [dot] edu)";

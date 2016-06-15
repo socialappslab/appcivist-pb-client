@@ -16,8 +16,8 @@
             <h1 ng-if="cType === 'PROPOSAL'"><strong>{{'New' | translate}} {{'Proposal' | translate}}</strong></h1>
             <p ng-if="cType === 'PROPOSAL'">{{'new.contribution.proposal' | translate}}</p>
             <span ng-if="newContributionResponse!=undefined && newContributionResponse.hasErrors">
-                <label class="alert-danger" translate="{{'error.creation.contribution'}}"></label>
-                <label class="alert-danger">{{newContributionResponse.errors.statusMessage}}</label>
+                <label class="alert alert-danger" translate="{{'error.creation.contribution'}}"></label>
+                <label class="alert alert-danger">{{newContributionResponse.errors.statusMessage}}</label>
             </span>
         </div>
         <div class="modal-body view col-md-12 col-sm-12">

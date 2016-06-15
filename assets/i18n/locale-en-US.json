@@ -440,17 +440,87 @@
   "Campaign Goal":"Campaign Goal",
   "Budget":"Budget",
 
+
+
   "All assembly members":"All assembly members",
   "Proposalmaking.component.proposalmaking.enable.proposal.merge-split":"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+  "Only Working Groups of this Campaign":"Only Working Groups of this Campaign",
+  "Randomly selected jury":"Randomly selected jury",
+  "From all assembly members":"From all assembly members",
+  "From Working Groups of this Campaign":"From Working Groups of this Campaign",
+  "Plurality":"Plurality",
+  "Only YES votes":"Only YES votes",
+  "YES and NO votes":"YES and NO votes",
+  "YES, NO, and Abstain votes":"YES, NO, and Abstain votes",
+  "YES, NO, Abstain and Block votes":"YES, NO, Abstain and Block votes",
+  "Fixed regardless of budget":"Fixed regardless of budget",
+  "component.voting.system.winners.DYNAMIC1":"Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
+  "component.voting.system.winners.DYNAMIC2":"Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
+  "Enable comments in proposals by members of non-authoring Working Groups":"Enable comments in proposals by members of non-authoring Working Groups",
+  "Enable technical assessment of proposals":"Enable technical assessment of proposals",
+  "Disable additional rounds of versioning and deliberation":"Disable additional rounds of versioning and deliberation",
+  "Who deliberates?":"Who deliberates?",
+  "From where are members of the jury randomly selected?":"From where are members of the jury randomly selected?",
+  "What percentage of people should be on the Jury?":"What percentage of people should be on the Jury?",
+  "Who deliberates?":"Who deliberates?",
+  "Select the voting system":"Select the voting system",
+  "Minimum score for range voting":"Minimum score for range voting",
+  "Maximum score for range voting":"Maximum score for range voting",
+  "How many proposals can a voter select?":"How many proposals can a voter select?",
+  "How many points can a voter distribute?":"How many points can a voter distribute?",
+  "Select the type of plurality voting":"Select the type of plurality voting",
+  "Block percentage threshold":"Block percentage threshold",
+  "Configure number of winners":"Configure number of winners",
+  "Number of Winners":"Number of Winners",
+  "Quorum percentage":"Quorum percentage",
+  "Proposal Making start date":"Proposal Making start date",
+  "Begin brainstorming, creating working groups and proposals.":"Begin brainstorming, creating working groups and proposals.",
+  "Working Groups formation end date":"Working Groups formation end date",
+  "Until this date, assembly members can join or create a working group to develop proposals.":"Until this date, assembly members can join or create a working group to develop proposals.",
+  "Proposal submission and editing due date":"Proposal submission and editing due date",
+  "Until this date, assembly members can start and develop proposals in working groups.":"Until this date, assembly members can start and develop proposals in working groups.",
+  "Proposals selection due date (within Working Groups)":"Proposals selection due date (within Working Groups)",
+  "Until this date, working groups can select what proposals they want to put forward to the Assembly for deliberation and voting.":"Until this date, working groups can select what proposals they want to put forward to the Assembly for deliberation and voting.",
+  "Proposal discussions closing date":"Proposal discussions closing date",
+  "Until this date, assembly members can explore and discuss published proposals for deliberation.":"Until this date, assembly members can explore and discuss published proposals for deliberation.",
+  "Technical assessments due date":"Technical assessments due date",
+  "defaultProposalComponentMilestones.endAssessment.text1":"Until this date, published proposals for deliberation will be open for technical evaluation by volunteers, to assess feasibility and provide expert feedback. After this date, evaluations will appear above each proposal.",
+  "defaultProposalComponentMilestones.endAssessment.text2":"Starting on this date, assembly members can explore and evaluate published proposals. When you are ready, open the voting ballot and cast your vote. You will be provided with a secret code to recover your voting ballot and update it anytime until the voting period is over.",
+  "defaultProposalComponentMilestones.endAssessment.text3":"Until this date, assembly members can edit their votes. After it, whatever vote has been casted will be considered final.",
+  "defaultProposalComponentMilestones.endAssessment.text4":"Starting this date, winning proposals will be available on the website to follow up upon their implementations",
+  "Voting period end date":"Voting period end date",
+  "Implementation start date":"Implementation start date",
+
+  "Campaign description":"Campaign description",
+  "Campaign milestones":"Campaign milestones",
+  "Enable reply-to comments in discussions":"Enable reply-to comments in discussions",
+  "Enable up-votes and down-votes on contributions":"Enable up-votes and down-votes on contributions",
+  "Yes, link to another campaign and use its template":"Yes, link to another campaign and use its template",
+  "Select a campaign from the list or search by name":"Select a campaign from the list or search by name",
+  "No, use a predefined template":"No, use a predefined template",
+  "Select a template from the list":"Select a template from the list",
+  "Validation Errors in the new Campaign. No title or goal was established":"Validation Errors in the new Campaign. No title or goal was established",
+  "Error loading campaign contributions from server":"Error loading campaign contributions from server",
+  "Invitation sent!":"Invitation sent!",
+  "Invitation was sent to":"Invitation was sent to",
+
+
+
+
+
+
+
+
+
+
+
   "1 month":"1 month",
   "3 months":"3 months",
   "6 months":"6 months",
   "12 months":"12 months",
   "Start":"Start",
-  "Proposal Making start date":"Proposal Making start date",
-  "component.voting.system.winners.DYNAMIC1":"Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
-  "component.voting.system.winners.DYNAMIC2":"Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
-  "Proposalmaking.component.proposalmaking.enable.proposal.merge-split":"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+ 
+  
   "Stacked":"Stacked",
   "Stacked by Percentage":"Stacked by Percentage",
   "directives.progressline.progressline.text1":"Working groups (in 20 days)",

@@ -5,7 +5,8 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <h3>
                 <strong>
-                    <span ng-if="isHome">{{'My Campaigns' | translate}}</span>
+                    <span ng-if="isHome" translate='My Campaigns'></span>
+                    <span ng-if="!isHome">{{'Campaigns' | translate}}</span>
                 </strong>
             </h3>
         </div>

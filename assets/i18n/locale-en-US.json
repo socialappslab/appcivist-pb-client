@@ -395,6 +395,81 @@
   "creation.components.versioningDescription.text2":"<strong>Versioning </strong>is the process by which Working Groups develop proposals to their final form.",
   "Select Theme:":"Select Theme:",
   "Publish":"Publish",
-  "Register":"Register"
+  "Register":"Register",
+  "Accept Invitation":"Accept Invitation",
+
+  
+
+
+  "Voting Ballot":"Voting Ballot",
+  "Begin Voting":"Begin Voting",
+  "Signature":"Signature",
+  "Load my votes":"Load my votes",
+  "views.ballot.result.text1":" Assembly:PB Belleville Paris/",
+  "views.ballot.result.text2":"Campaign:Belleville - Paris PB 2016",
+  "Making":"Making",
+  "Instructions":"Instructions",
+  "Result":"Result",
+  "Days":"Days",
+  "Hours":"Hours",
+  "Minutes":"Minutes",
+  "views.ballot.result.text3":"Paris PB 2016",
+  "views.ballot.result.text4":"2016 August",
+  "views.ballot.result.text5":"Congratulations to our 3 winning winners",
+  "Campaign Winners":"Campaign Winners",
+  "Budget:":"Budget:",
+  "times;":"times;",
+  "Authors":"Authors:",
+  "Working Group Authors":"Working Group Authors",
+  "Allocated budget":"Allocated budget",
+  "Assembly Voting Results":"Assembly Voting Results",
+  "Voting Instructions":"Voting Instructions",
+  "views.ballot.start.text1":"The voting system your Assembly selected and configured for this campaign is", 
+  "views.ballot.start.text2":"When you are ready to vote, click the button \"Start voting\".",
+  "views.ballot.success.text1":"Congratulations on registering to vote. Your unique signature is",
+  "views.ballot.success.text2":"Please, copy and paste this in a local file to access your votes in the future.",
+  "views.ballot.success.text3":"Back to Registration",
+  "views.ballot.summary.text1":"Your Voting Summary",
+  "views.ballot.summary.text2":"Assigned scores (range)",
+  "views.ballot.summary.text3":"You have scored",
+  "Back to Ballot":"Back to Ballot",
+  "views.ballot.summary.text4":"CONFIRM AND SUBMIT",
+  "views.ballot.vote.text1":"When you are ready to vote, close the instruction window and start voting.",
+  "Estimated Cost":"Estimated Cost",
+  "Edit Campaign":"Edit Campaign",
+  "Campaign Goal":"Campaign Goal",
+  "Budget":"Budget",
+
+  "All assembly members":"All assembly members",
+  "Proposalmaking.component.proposalmaking.enable.proposal.merge-split":"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)",
+  "1 month":"1 month",
+  "3 months":"3 months",
+  "6 months":"6 months",
+  "12 months":"12 months",
+  "Start":"Start",
+  "Proposal Making start date":"Proposal Making start date",
+  "component.voting.system.winners.DYNAMIC1":"Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
+  "component.voting.system.winners.DYNAMIC2":"Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
+  "Proposalmaking.component.proposalmaking.enable.proposal.merge-split":"Enable proposal merge/split (if enabled, multiple proposals can be combined or a single proposal can be split into several)"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

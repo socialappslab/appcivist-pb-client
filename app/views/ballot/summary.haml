@@ -1,29 +1,29 @@
 .container
   .row.text-center
     %h2
-      %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot
+      %b> {{campaigns.length < 1 ? "" : "Campaign" }} {{'Voting Ballot' | translate}}
       {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
   %h1
-    %strong Voting Ballot
+    %strong {{'Voting Ballot' | translate}}
   %img.checkmark{:src => "/assets/images/black_tick.png"}/
   .date 2015-08
   .container
     .summary-container{:style => "width: 480px;"}
       #voting-summary
-        %strong Your Voting Summary
+        %strong {{'views.ballot.summary.text1' | translate}}
       %p.scored
-        %strong Assigned scores (range)
+        %strong {{'views.ballot.summary.text2' | translate}}
       %ol.individual-scores.list-unstyled{"ng-repeat" => "candidate in candidates"}
         %li
           %p.score-box {{candidate.value || ""}}
           .campaign-name {{candidate.title}}
       %p.total-scored-text
-        %strong You have scored
+        %strong {{'views.ballot.summary.text3' | translate }}
       %span.score-box {{scoredCandidates.length}}
       %strong /
       %span.score-box {{candidates.length}}
       %p.total-scored-text
-        %strong proposals.
+        %strong {{'Proposals' | translate | lowercase}}.
   .buttons
-    %button.btn.btn-success{"ng-click" => "transitionToVoting()", :type => "button"} Back to Ballot
-    %button.btn.btn-primary{"ng-click" => "submitBallotPaper()", :type => "submit"} CONFIRM AND SUBMIT
+    %button.btn.btn-success{"ng-click" => "transitionToVoting()", :type => "button"} {{'Back to Ballot' | translate}}
+    %button.btn.btn-primary{"ng-click" => "submitBallotPaper()", :type => "submit"} {{'views.ballot.summary.text4' | translate}}

@@ -7,39 +7,39 @@
         <div class="row vertical-space-medium"></div>
         <div id="campaignTitle" class="row col-md-12 col-sm-12 form-horizontal">
             <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.title.$touched && newCampaignForm1.title.$invalid }">
-                <label for="inputCampaignTitle" class="control-label">Title</label>
+                <label for="inputCampaignTitle" class="control-label">{{'Title' | translate}}</label>
                 <h4>ajfdlajflakjfla</h4>
             </div>
         </div>
         <div id="campaignGoal" class="row col-md-12 col-sm-12 form-horizontal">
             <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched && newCampaignForm1.goal.$invalid }">
-                <label for="inputDefineCampaignGoals" class="control-label">Define campaign goals*</label>
+                <label for="inputDefineCampaignGoals" class="control-label">{{'creation.components.campaignPartOne.text2' | translate}}*</label>
                 <textarea id="inputDefineCampaignGoals" name="goal"
                           class="form-control"
                           placeholder="e.g., Develop proposals for PB Paris 2015"
                           ng-model="newCampaign.goal" ng-required="true" />
                 <div class="help-block" ng-messages="newCampaignForm1.goal.$error" ng-if="newCampaignForm1.goal.$touched">
-                    <p ng-message="required">A goal is required for the campaign</p>
+                    <p ng-message="required">{{'creation.components.newCampaign1.text1' | translate}}</p>
                 </div>
             </div>
         </div>
         <div id="campaignConfigs" class="row col-md-12 col-sm-12">
             <div class="form-horizontal">
                 <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.budget.$touched && newCampaignForm1.budget.$invalid }">
-                    <label for="inputBudget" class="control-label">Total Budget*</label>
+                    <label for="inputBudget" class="control-label">{{'Total Budget' | translate}}*</label>
                     <input id="inputBudget" name="budget" class="form-control"
                            ng-model="newCampaign.config.budget"
                            model-format="currency"
                            placeholder="{{newCampaign.config.budget}}">
                     <div class="help-block" ng-messages="newCampaignForm1.budget.$error" ng-if="newCampaignForm1.budget.$touched">
-                        <p ng-message="required">A budget to be allocated is required for the campaign</p>
+                        <p ng-message="required">{{'A budget to be allocated is required for the campaign' | translate}}</p>
                     </div>
                 </div>
             </div>
         </div>
         <div id="campaignTemplate" class="row col-md-12 col-sm-12">
             <div class="form-group">
-                <label for="selectCampaignTemplate" class="control-label">Select campaign template*</label>
+                <label for="selectCampaignTemplate" class="control-label">{{'Select campaign template' | translate}}*</label>
                 <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignTemplateTooltip}}"></i></h3>
                 <select id="selectCampaignTemplate" name="template"
                         class="form-control"
@@ -71,11 +71,11 @@
         </div>
         <div id="campaignOptionalThemes" class="row col-md-12 col-sm-12">
             <div class="form-group">
-                <label for="checkConfirmCampaignGoals" class="control-label">Review campaign themes</label>
+                <label for="checkConfirmCampaignGoals" class="control-label">{{'Review campaign themes' | translate}}</label>
                 <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
                     <div class="themes-container-title"
                          ng-show="newCampaign.template.value==='LINKED' && campaignThemes.length>0">
-                        <h4><strong>Themes of the Linked Campaign</strong></h4>
+                        <h4><strong>{{'campaign.create.themes.linked' | translate}}</strong></h4>
                     </div>
                     <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index"
                          ng-show="newCampaign.template.value==='LINKED'">
@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="themes-container-title">
-                        <h4><strong>Themes of the Organizing Assembly</strong></h4>
+                        <h4><strong>{{'campaign.create.themes.assembly' | translate}}</strong></h4>
                     </div>
                     <div class="themes-container-content optionThemes" ng-repeat="theme in assemblyThemes track by $index">
                          <input type="checkbox"
@@ -94,7 +94,7 @@
                      </div>
 
                     <div class="themes-container-title">
-                        <h4><strong> Add New Themes</strong></h4>
+                        <h4><strong> {{'add.new.themes' | translate}}</strong></h4>
                     </div>
                     <div class="col-md-8 col-md-8">
                         <input id="newTheme" class="form-control"
@@ -102,7 +102,7 @@
                                ng-model="newTheme"/>
                     </div>
                     <div class="themes-container-content optionThemes col-md-4 col-md-4">
-                        <button class="btn btn-success" ng-click="addTheme(newTheme)">Add new</button>
+                        <button class="btn btn-success" ng-click="addTheme(newTheme)">{{'Add new' | translate}}</button>
                     </div>
                     <div class="themes-container-content optionThemes col-md-12 col-sm-12">
                         <ul class="tags" ng-repeat="t in newCampaign.themes track by $index">
@@ -128,7 +128,7 @@
                         ng-disabled="!newCampaignForm1.$valid"
                         ng-click="createCampaign({step:4}, {fastrack:true})">
                     <h3>
-                        <strong>Fastrack</strong>
+                        <strong>{{'Fastrack' | translate}}</strong>
                     </h3>
                 </button>
             </div>
@@ -136,7 +136,7 @@
                 <button class="btn btn-primary col-md-12"
                         ng-click="createCampaign({step:2}, {fastrack:false})"
                         ng-disabled="!newCampaignForm1.$valid">
-                    <h3><strong>Next</strong></h3>
+                    <h3><strong>{{'Next' | translate}}</strong></h3>
                 </button>
             </div>
         </div>

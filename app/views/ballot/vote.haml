@@ -19,7 +19,7 @@
               %li
                 %input.form-control{"ng-model" => "query", :placeholder => "Filter proposal by keywords", :type => "text"}
               %li
-                %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} Voting Instructions
+                %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} {{'Voting Instructions' | translate}}
               -#%li
               -#  %button#save.btn.btn-success{"ng-click" => "saveBallot()", :type => "button"} Save
           / Modal for voting instructions
@@ -28,24 +28,24 @@
               .modal-content
                 .modal-header
                   %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-                    %span{"aria-hidden" => "true"} &times;
-                  %h4#instrLabel.modal-title Voting Instructions
+                    %span{"aria-hidden" => "true"} &{{'times;' | translate}}
+                  %h4#instrLabel.modal-title {{'Voting Instructions' translate}}
                 .modal-body
                   .container.instructions
                     %h2.title
-                      %strong Voting Instructions
+                      %strong {{'Voting Instructions' | translate}}
                     %ul
                       %li{:type => "circle"} {{ballot.instructions}}
                       %li{:type => "circle"}
-                        The voting system your Assembly selected and configured for this campaign is
+                        {{'views.ballot.start.text1' | translate}}
                         %b {{ballot.voting_system_type}}
                       -#%li{:type => "none"}
                       -#  %ul
                       -#    %li{"ng-repeat" => "pair in ballot.ballot_configurations", :type => "circle"} The {{pair.key}} of this voting ballot is {{pair.value}}.
-                      %li{:type => "circle"} When you are ready to vote, close the instruction window and start voting.
+                      %li{:type => "circle"} {{'views.ballot.vote.text1' | translate}}
                   %br
                 .modal-footer
-                  %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+                  %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} {{'Close' | translate}}
           %ul.list-unstyled.voted-proposals
             %li.voted-proposal.container(ng-repeat = "proposal in candidates | filter:query | filter:{type:'PROPOSAL'} track by $index")
               .proposal-content
@@ -62,7 +62,7 @@
                     -#%img.img-circle{"ng-if"=> "proposal.attachments && proposal.attachments.length > 0", :src => "proposal.attachments[0].url"}/
                     -#%img.img-circle{"ng-if"=> "!proposal.attachments && proposal.attachments.length == 0", :src => "/assets/images/logotype.svg"}/
                   %h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
-                    %b{"ng-if" => "proposal.budget"}> Estimated Cost: {{proposal.budget|currency}}
+                    %b{"ng-if" => "proposal.budget"}> {{'Estimated Cost' | translate}}: {{proposal.budget|currency}}
                   -#%h5{"data-target" => "\#{{proposal.uuid}}modal", "data-toggle" => "modal"}
                   -#  %b> Location:
                   -#  Berkeley, CA 94720
@@ -78,19 +78,19 @@
                   .modal-content
                     .modal-header
                       %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-                        %span{"aria-hidden" => "true"} &times;
+                        %span{"aria-hidden" => "true"} &{{'times;' | translate}}
                       %h4.modal-title{:id => "{{proposal.uuid}}Label"} {{proposal.title}}
                     .modal-body
                       %h3
                         %b {{proposal.title}}
                       %h5
-                        %b{"ng-if" => "proposal.authors"} Authors:
+                        %b{"ng-if" => "proposal.authors"} {{'Authors' | translate}}
                         %span{"ng-if" => "proposal.authors", "ng-repeat" => "author in proposal.authors"} {{author.name}}
                       %h5
-                        %b{"ng-if" => "proposal.workingGroupAuthors"} Working Group Authors:
+                        %b{"ng-if" => "proposal.workingGroupAuthors"} {{'Working Group Authors' | translate}}:
                         %span{"ng-if" => "proposal.workingGroupAuthors", "ng-repeat" => "author in proposal.workingGroupAuthors"} {{author.name}}
                       %h5.theme-holder
-                        %b Themes:
+                        %b {{'Themes' | translate}}:
                         %span.themes{"ng-repeat" => "theme in proposal.themes"} {{theme.title}}
                       %br
                         %img.pull-right{"ng-if"=> "!proposal.attachments || proposal.attachments.length === 0", :src => "/../assets/images/image78.jpg"}
@@ -98,9 +98,9 @@
                           %p {{proposal.text}}
                           %br
                             %h5
-                              %b Comments:
+                              %b {{'Comments' | translate}}:
                             %p.comments{"ng-repeat" => "comment in proposal.comments"} {{comment.title}} {{comment.text}}
                     .modal-footer
-                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} {{'Close' | translate}}
     .col-lg-12.col-md-12.col-sm-12.col-xs-12.voffset5
     .col-lg-12.col-md-12.col-sm-12.col-xs-12.voffset5

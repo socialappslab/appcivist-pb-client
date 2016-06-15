@@ -7,7 +7,7 @@
         <div class="row vertical-space-medium"></div>
         <!-- Goal -->
         <div id="campaignGoal" class="row col-md-12 col-sm-12 form-horizontal">
-            <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched && newCampaignForm1.goal.$invalid }">
+            <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched &&newCampaignForm1.goal.$invalid }">
                 <label for="inputDefineCampaignGoals" class="control-label">{{"What's the goal of the campaign?" | translate}}*</label>
                 <input id="inputDefineCampaignGoals" name="goal"
                           class="form-control"
@@ -21,12 +21,12 @@
         <!-- Enable Budget? -->
         <div id="campaignBudgetQuestion" class="row col-md-12 col-sm-12">
             <div class="form-group">
-                <label for="selectCampaignBudget" class="control-label">{{"Will the campaign allocate a budget?" | translate}}</label>
+                <label for="selectCampaignBudget" class="control-label">{{'Will the campaign allocate a budget?' | translate}}</label>
                 <select id="selectCampaignBudget" name="budgetSelect"
                         class="form-control"
                         ng-model="newCampaign.enableBudget">
-                    <option value="yes" selected>Yes</option>
-                    <option value="no">No</option>
+                    <option value="yes" selected>{{'Yes' | translate}}</option>
+                    <option value="no">{{'No' | translate}}</option>
                 </select>
             </div>
         </div>
@@ -45,8 +45,11 @@
         <!-- Campaign Template -->
         <div id="campaignTemplate" class="row col-md-12 col-sm-12">
             <div class="form-group">
-                <label for="selectCampaignTemplate" class="control-label">{{"select.campaign.template" | translate}}</label>
-                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.campaignTemplate' | translate}}"></i></h3>
+                <label for="selectCampaignTemplate" class="control-label">
+                    {{"select.campaign.template" | translate}}
+                </label>
+                <i class="fa fa-question-circle" tooltip-placement="right" 
+                    uib-tooltip="{{help.tooltip.campaignTemplate}}"></i></h3>
                 <select id="selectCampaignTemplate" name="template"
                         class="form-control"
                         ng-model="newCampaign.template"

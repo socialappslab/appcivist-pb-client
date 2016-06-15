@@ -9,23 +9,23 @@
         %h3 {{campaigns.length < 1 ? "" : campaigns[0].title }}
       .container
         %h1
-          %b Voting Ballot
+          %b {{'Voting Ballot' | translate}}
       .container
         %h1#small {{ballot.ballot.starts_at | date:'yyyy'}}/{{ballot.ballot.starts_at | date:'MMMM'}}
     %br
       .container.instructions
         %h2.title
-          %strong Voting Instructions
+          %strong {{'Voting Instructions' | translate}}
           %button.btn.btn-success{"ng-click" => "transitionToRegistration()", :type => "button"} {{user ? "Continue to vote" : "Register to vote" }}
         %ul
           %li{:type => "circle"}
-            The voting system your Assembly selected and configured for this campaign is
+            {{'views.ballot.start.text1' | translate}}
             %b {{ballot.ballot.voting_system_type}}
           %li{:type => "circle"} {{ballot.ballot.instructions}}
           -#%li{:type => "none"}
           -#  %ul
           -#    %li{"ng-repeat" => "config in ballot.ballot_configurations", :type => "circle"} The {{config.key}} of this voting ballot is {{config.value}}.
-          %li{:type => "circle"} When you are ready to vote, click the button "Start voting".
+          %li{:type => "circle"} {{'views.ballot.start.text2' | translate}}
       -#%br
       -#  .container.additional-info
       -#    %h2

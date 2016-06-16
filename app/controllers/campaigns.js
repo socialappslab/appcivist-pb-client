@@ -643,7 +643,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
 														  Ballot, Candidate, VotesByUser, NewBallotPaper, BallotPaper,
-                                                          logService, usSpinnerService, $timeout){
+                                                          logService, usSpinnerService, $timeout, $window, Memberships){
 
 	init();
 
@@ -744,6 +744,23 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
             "winning_proposals" : $scope.contentTabs[3],
             "notes" : $scope.contentTabs[4]
         }
+		$scope.showVotingInstructions = false;
+		$scope.userIsCoordinator = false;
+		$scope.showLinkToBallot = false;
+
+		$scope.membership = localStorageService.get("currentAssemblyMembership");
+
+		if ($scope.membership && $scope.membership.assembly
+				&& $scope.membership.assembly.assemblyId === $scope.assemblyID) {
+			$scope.membershipRoles = $scope.membership.roles;
+			$scope.userIsMember = $scope.membership.status === "ACCEPTED";
+			$scope.userIsRequestedMember = $scope.membership.status === "REQUESTED";
+			$scope.userIsInvitedMember = $scope.membership.status === "INVITED";
+			$scope.userIsCoordinator = $scope.isRightRole("COORDINATOR");
+		} else {
+			$scope.membership = Memberships.membershipInAssembly($scope.assemblyID, $scope.user.userId).get();
+			$scope.membership.$promise.then(userIsMemberSuccess, userIsMemberError);
+		}
 	}
 
     /**
@@ -906,8 +923,59 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			}, function (error) {
 				window.appcivist.handleError(error);
 			});
+		};
+
+		$scope.toggleVotingInstructions = function () {
+			$scope.showVotingInstructions = !$scope.showVotingInstructions;
+		};
+
+		$scope.changeToTab = function (key) {
+			$scope.contentTabsIndex["brainstorming"].active = false;
+			$scope.contentTabsIndex["working_groups"].active = false;
+			$scope.contentTabsIndex["proposals"].active = false;
+			$scope.contentTabsIndex["winning_proposals"].active = false;
+			$scope.contentTabsIndex["notes"].active = false;
+			$scope.contentTabsIndex[key].active = true;
+		};
+
+		$scope.openCampaignBallot = function () {
+			$window.open("/#/ballot/"+$scope.campaign.bindingBallot+"/start", "_blank");
+		}
+
+		$scope.isRightRole = function(roleName) {
+			var result = false;
+			angular.forEach($scope.membershipRoles, function(role){
+				if(role.name === roleName) {
+					result = true;
+				}
+			});
+			return result;
+		};
+
+		$scope.toggleLinkToBallot = function () {
+			$scope.showLinkToBallot=!$scope.showLinkToBallot;
 		}
     }
+
+	function userIsMemberSuccess (data) {
+		$scope.membership = data;
+		$scope.membershipRoles = $scope.membership.roles;
+		$scope.userIsMember = $scope.membership.status === "ACCEPTED";
+		$scope.userIsRequestedMember = $scope.membership.status === "REQUESTED";
+		$scope.userIsInvitedMember = $scope.membership.status === "INVITED";
+		$scope.userIsCoordinator = $scope.isRightRole("COORDINATOR");
+	}
+
+	/**
+	 * Callback when the membership verification is an error
+	 * @param data
+	 */
+	function userIsMemberError (error) {
+		$scope.userIsMember = false;
+		$scope.userIsRequestedMember = false;
+		$scope.userIsInvitedMember = false;
+		$scope.userIsCoordinator = false;
+	}
 
 	/**
 	 * Returns the current assembly in local storage if its ID matches with the requested ID on the route
@@ -977,7 +1045,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
         var ballotId = $scope.campaign.bindingBallot; // campaign binding ballot's uuid
         var userId = $scope.user.uuid; // user's uuid is also the signature used for voting by logged in users
 
-        // Read the current results of the voting
+		$scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/ballot/"+$scope.campaign.bindingBallot+"/start";
+
+		// Read the current results of the voting
         $scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;
         $scope.campaign.ballotResults.then(
             function (data) {
@@ -1116,17 +1186,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 				newProposal: !moment().local().isBetween(campaignStart, proposalsEnd),
 				vote: !moment().local().isBetween(voteStart, voteEnd),
                 results: !moment().local().isAfter(voteStart),
-				assess: !moment().local().isBetween(campaignStart,assessmentEnd)
-				//TODO
-				// editCampaign: $scope.userIsMember
-				//	&& $scope.currentAssembly.profile != undefined
-				//	&& ( ( $scope.currentAssembly.profile.managementType === "OPEN")
-				//			|| ( ($scope.currentAssembly.profile.managementType === "COORDINATED")
-				//					&& ($scope.isRightRole("COORDINATOR") )
-				//					|| ( ($scope.currentAssembly.profile.managementType === "COORDINATED_AND_MODERATED")
-				//					&& ($scope.isRightRole("COORDINATOR")) )
-				//			)
-				//	)
+				assess: !moment().local().isBetween(campaignStart,assessmentEnd),
+				editCampaign: $scope.userIsMember
+					&& $scope.assembly.profile != undefined
+					&& ( ( $scope.assembly.profile.managementType === "OPEN")
+							|| ( $scope.isRightRole("COORDINATOR") )
+				       )
 
 			};
 

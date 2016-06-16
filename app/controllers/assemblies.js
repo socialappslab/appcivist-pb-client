@@ -654,6 +654,7 @@ appCivistApp.controller('AssemblyCtrl', function($rootScope, $scope, usSpinnerSe
         $scope.userIsRequestedMember = $scope.membership.status === "REQUESTED";
         $scope.userIsInvitedMember = $scope.membership.status === "INVITED";
 
+        localStorageService.set("currentAssemblyMembership",$scope.membership);
         // 2.
         // - If user is member of the Assembly, get the full information of the assembly.
         // - If the user is not a member of the Assembly, get public profile of the assembly

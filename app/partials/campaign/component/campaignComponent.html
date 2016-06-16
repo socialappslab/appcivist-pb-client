@@ -75,6 +75,7 @@
                         </strong>
                     </button>
                 </span>
+                <div class="voffset5"></div>
             </div>
         </div>
         <!-- Campaign Content -->
@@ -110,9 +111,70 @@
                     <li><a ng-click="orderContributions('stats.points')">{{'Popularity' | translate}}</a></li>
                 </ul>
             </div>
-            <div class="voffset6"></div>
+            <div class="voffset5"></div>
         </div>
+        <!-- voting instructions -->
+        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="enableVoting">
+                <span class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <strong>
+                        {{'The voting period has started'|translate}}!.
+                        <a ng-if="!showVotingInstructions" ng-click="toggleVotingInstructions()">
+                            {{'Show Voting Instructions'|translate}}
+                        </a>
+                    </strong>
+                    <span ng-if="showVotingInstructions">
+                        {{'There are two ways of voting'|translate}}.
+                        <a ng-click="toggleVotingInstructions()">
+                            {{'Hide Voting Instructions'|translate}}
+                        </a>
+                    </span>
+                </span>
 
+                <div class="panel panel-primary col-lg-6 col-md-6 col-sm-12 col-xs-12 no-padding" ng-if="showVotingInstructions">
+                    <div class="panel-heading col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h2 class="panel-title"><strong>{{'Voting in Campaign Page'|translate}}</strong></h2>
+                    </div>
+                    <div class="panel-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p translate="campaign.component.voting.instructions1"></p>
+                        <button class="btn btn-primary center-block" ng-click="changeToTab('proposals')">
+                            {{'Move to the Proposals Tab'|translate}}
+                        </button>
+                        <div class="panel-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <input ng-if="false" class="form-control form-horizontal" id="ballotUrlInput"
+                                   ng-model="ballotUrl" value="{{ballotUrl}}" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary col-lg-6 col-md-6 col-sm-12 col-xs-12 no-padding" ng-if="showVotingInstructions">
+                    <div class="panel-heading col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h2 class="panel-title"><strong>{{'Through the Voting Ballot'|translate}}</strong></h2>
+                    </div>
+                    <div class="panel-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p translate="campaign.component.voting.instructions2"></p>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 no-padding">
+                            <button class="btn btn-primary center-block"
+                                    ng-disabled="!userIsCoordinator"
+                                    ng-click="openCampaignBallot()">
+                                    {{userIsCoordinator ? 'Open the Voting Ballot' : 'Ask Coordinators the link to the Voting Ballot'|translate}}
+                            </button>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 no-padding">
+                            <button class="btn btn-primary center-block"
+                                    ng-disabled="!userIsCoordinator"
+                                    ng-click="toggleLinkToBallot()"
+                                    ng-if="userIsCoordinator">
+                                {{'Show Link to the Ballot'|translate}}
+                            </button>
+                        </div>
+                        <div class="panel-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <input ng-if="showLinkToBallot" class="form-control form-horizontal" id="ballotUrlInput"
+                                   ng-model="ballotUrl" value="{{ballotUrl}}" type="text">
+                        </div>
+                    </div>
+                </div>
+            <div class="voffset5"></div>
+        </div>
         <!-- Voting Results -->
         <consensus-result-list
                 ng-if="showVotingResults"
@@ -126,13 +188,16 @@
         <uib-tabset>
             <uib-tab class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
                      ng-repeat="tab in contentTabs"
-                     heading="tab.title"
+                     heading="tab.title | translate"
                      active="tab.active"
                      ng-if="tab.showInComponent[component.title.toLowerCase()]">
                 <uib-tab-heading>
                     <h4>
                         <strong ng-if="tab.title!='Winning Proposals'" translate="{{tab.title}}"></strong>
-                        <strong ng-if="tab.title==='Winning Proposals'"><strong translate="{{tab.title}}"></strong> ({{'future feature' | translate}})</strong>
+                        <strong ng-if="tab.title==='Winning Proposals'">
+                            <strong translate="{{tab.title}}"></strong>
+                            ({{'future feature' | translate}})
+                        </strong>
                         <i class="fa fa-question-circle" tooltip-placement="left"
                            uib-tooltip="{{tab.tooltip | translate}}"></i>
                     </h4>

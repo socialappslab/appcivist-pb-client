@@ -5,7 +5,7 @@
                  ng-class="{ 'has-error': newAssemblyForm1.name.$touched && newAssemblyForm1.name.$invalid }">
                 <label for="inputNameAssembly" class="control-label">{{'Name'|translate }}*</label>
                 <input id="inputNameAssembly" name="name" type="text" class="form-control"
-                       placeholder="e.g., Assemblée Belleville"
+                       placeholder="{{'e.g., Assemblée Belleville'|translate}}"
                        ng-model="newAssembly.name" ng-required="true">
             </div>
             <div id="assemmblyDescription" class="col-md-12 form-group"

@@ -412,7 +412,7 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
 
     $rootScope.stopSpinner = function(){
         usSpinnerService.stop('spinner-1');
-        $(angular.element.find('.spinner-container')).remove();
+        $(angular.element.find('[spinner-key="spinner-1"]')[0]).removeClass('spinner-container');
     }
 
     // global spinner by key
@@ -423,8 +423,9 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
     }
 
     $rootScope.stopSpinnerByKey = function(key){
+        var element = '[spinner-key="'+key+'"]'
         usSpinnerService.stop(key);
-        $(angular.element.find('.spinner-container')).remove();
+        $(angular.element.find(element)[0]).removeClass('spinner-container');
     }
 }
 

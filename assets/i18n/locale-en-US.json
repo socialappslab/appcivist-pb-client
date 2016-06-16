@@ -503,5 +503,12 @@
   "ESPECIAL PHRASES FROM BACKEND":"ESPECIAL PHRASES FROM BACKEND",
   "This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.":"This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.",
   "Your email is invalid":"Your email is invalid",
-  "Either your email, user or both are invalid":"Either your email, user or both are invalid"
+  "Either your email, user or both are invalid":"Either your email, user or both are invalid",
+  "Setup your User Account":"Setup your User Account",
+  "Introduce and email address and a password to use to sign in into AppCivist":"Introduce and email address and a password to use to sign in into AppCivist",
+  "Describe your assembly":"Describe your assembly",
+  "Assemblies are group of citizens with common interests":"Assemblies are group of citizens with common interests",
+  "Select assemblies to follow":"Select assemblies to follow",
+  "Following assemblies is a quick way for gaining access to the resources and campaigns of other assemblies.":"Following assemblies is a quick way for gaining access to the resources and campaigns of other assemblies.",
+  "Introduce and email address and a password to use to sign in into AppCivist":"Introduce and email address and a password to use to sign in into AppCivist"
 }

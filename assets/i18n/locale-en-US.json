@@ -397,7 +397,7 @@
   "Minutes":"Minutes",
   "views.ballot.result.text3":"Paris PB 2016",
   "views.ballot.result.text4":"2016 August",
-  "views.ballot.result.text5":"Congratulations to our 3 winning winners",
+  "views.ballot.result.text5":"Congratulations to our 3 winners",
   "Campaign Winners":"Campaign Winners",
   "Budget:":"Budget:",
   "times;":"times;",
@@ -501,7 +501,17 @@
   "Accept invitation and create user":"Accept invitation and create user",
   "Decline invitation":"Decline invitation",
   "Ups! Something went wrong...":"Ups! Something went wrong...",
-
+  "Setup your User Account":"Setup your User Account",
+  "Introduce and email address and a password to use to sign in into AppCivist":"Introduce and email address and a password to use to sign in into AppCivist",
+  "Describe your assembly":"Describe your assembly",
+  "Assemblies are group of citizens with common interests":"Assemblies are group of citizens with common interests",
+  "Select assemblies to follow":"Select assemblies to follow",
+  "Following assemblies is a quick way for gaining access to the resources and campaigns of other assemblies.":"Following assemblies is a quick way for gaining access to the resources and campaigns of other assemblies.",
+  "Introduce and email address and a password to use to sign in into AppCivist":"Introduce and email address and a password to use to sign in into AppCivist",
+  "Confirm Password":"Confirm Password",
+  "Desired Username":"Desired Username",
+  "Voting Ballot":"Voting Ballot",
+  " for ":" for ",
   "ESPECIAL PHRASES FROM BACKEND":"ESPECIAL PHRASES FROM BACKEND",
   "This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.":"This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.",
   "Your email is invalid":"Your email is invalid",
@@ -524,7 +534,6 @@
   "Password has been changed successfully.":"Password has been changed successfully.",
   "Unknown user or password.":"Unknown user or password.",
   "Missing language":"Missing language",
-
   "AppCivist: Complete your signup":"AppCivist: Complete your signup",
   "AppCivist: Confirm your e-mail address":"AppCivist: Confirm your e-mail address",
   "AppCivist: How to reset your password":"AppCivist: How to reset your password",
@@ -601,45 +610,4 @@
   "New Working Group Reply":"New Working Group Reply",
   "New Assembly Message":"New Assembly Message",
   "New Assembly Reply":"New Assembly Reply"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

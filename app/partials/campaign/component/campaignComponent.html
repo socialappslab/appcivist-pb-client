@@ -85,19 +85,19 @@
                 <input type="text" class="form-control" placeholder="Search existing contributions..."
                        ng-model="campaignContributionFilter">
             </div>
-            <!-- Themes filters TODO: NOT WORKING-->
-            <div class="col-md-3 col-sm-3 dropdown">
-                <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"
-                        id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <strong>{{'Filter by Theme' | translate}}:<span class="caret"></span></strong>
-                </button>
-                <ul class="col-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a ng-click="filterByTheme('all')"><strong>All</strong></a></li>
-                    <li ng-repeat="t in themes">
-                        <a ng-click="filterContributionsByTheme(t)"><strong>{{t.title}}</strong></a>
-                    </li>
-                </ul>
-            </div>
+            <!-- Themes filters TODO: NOT WORKING, UNCOMMENT WHEN FIXED-->
+            <!--<div class="col-md-3 col-sm-3 dropdown">-->
+                <!--<button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"-->
+                        <!--id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                    <!--<strong>{{'Filter by Theme' | translate}}:<span class="caret"></span></strong>-->
+                <!--</button>-->
+                <!--<ul class="col-md-12 col-sm-12 dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                    <!--<li><a ng-click="filterByTheme('all')"><strong>All</strong></a></li>-->
+                    <!--<li ng-repeat="t in themes">-->
+                        <!--<a ng-click="filterContributionsByTheme(t)"><strong>{{t.title}}</strong></a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
             <!--Order select TODO: random and popularity not working-->
             <div class="col-md-3 col-sm-3 dropdown">
                 <button class="col-md-12 col-sm-12 btn btn-default dropdown-toggle" type="button"

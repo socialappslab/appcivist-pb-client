@@ -1,7 +1,7 @@
 #rangeVotingVote.container
   .row.text-center
     %h2
-      %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
+      %b> {{campaigns.length < 1 ? "" : "Campaign" | translate }} {{'Voting Ballot'|translate}} {{campaigns.length < 1 ? "" : " for " |translate}} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
   %br
     %br
       .row.voting-content
@@ -29,7 +29,7 @@
                 .modal-header
                   %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
                     %span{"aria-hidden" => "true"} &{{'times;' | translate}}
-                  %h4#instrLabel.modal-title {{'Voting Instructions' translate}}
+                  %h4#instrLabel.modal-title {{'Voting Instructions' | translate}}
                 .modal-body
                   .container.instructions
                     %h2.title

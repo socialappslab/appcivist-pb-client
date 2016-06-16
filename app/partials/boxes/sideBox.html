@@ -59,9 +59,9 @@
     </div>
 
     <div class="row list-item" ng-if="box.error">
-        <div class="alert alert-info" role="alert">
-            {{box.errorMessage}}
-        </div>
+        <p class="text-center" role="alert">
+            {{box.errorMessage | translate}}
+        </p>
     </div>
 
 </div>

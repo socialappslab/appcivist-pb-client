@@ -1,6 +1,6 @@
 <div class="campaignHeader">
-    <span><strong>{{assembly.name}}</strong></span>
+    <span><strong><a href="#/assembly/{{assembly.assemblyId}}/forum">{{assembly.name}}</a></strong></span>
     <span ng-if="campaign!=null && campaign!=undefined">: </span>
     <span ng-if="campaign!=null && campaign!=undefined">{{campaign.title}}</span>
-    <span class="edit-button"><a href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/edit">{{'Edit'|translate}} {{'Campaign'|translate}}</a></span>
+    <!--TODO: uncomment when edit campaign actually works <span class="edit-button"><a href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}/edit">{{'Edit'|translate}} {{'Campaign'|translate}}</a></span>-->
 </div>

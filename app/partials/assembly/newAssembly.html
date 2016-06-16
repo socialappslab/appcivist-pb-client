@@ -11,15 +11,15 @@
             <div class="col-md-10">
                 <uib-tabset>
                     <uib-tab ng-repeat="tab in tabs"
-                             heading="{{tab.title}}"
+                             heading="{{tab.title | translate}}"
                              active="tab.active"
                              disable="tab.disabled"
                              ng-click="setCurrentStep(tab.step)"
                              ng-if="tab.step<3 || (tab.step===3 && userIsNew)">
                         <uib-tab-heading>
                             <h4>
-                                <strong>{{tab.title}}</strong>
-                                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{tab.info}}"></i>
+                                <strong>{{tab.title | translate}}</strong>
+                                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{tab.info | translate}}"></i>
                             </h4>
                         </uib-tab-heading>
                         <div ng-include="tab.template"></div>

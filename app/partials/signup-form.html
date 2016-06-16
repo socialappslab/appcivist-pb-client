@@ -3,7 +3,7 @@
         <label for="username" class="col-md-4 control-label">{{'Username'|translate}}*</label>
         <div class="col-md-8">
             <input type="text" class="form-control" id="username"
-                   name="username" placeholder="Desired Username"
+                   name="username" placeholder="{{'Desired Username'|translate}}"
                    ng-required="true"
                    ng-model="newUser.name"/>
         </div>
@@ -12,7 +12,7 @@
         <label for="email" class="col-md-4 control-label">{{'Email'|translate}}*</label>
         <div class="col-md-8">
             <input type="text" class="form-control" id="email"
-                   name="email" placeholder="Email"
+                   name="email" placeholder="{{'Email'|translate}}"
                    ng-required="true"
                    ng-model="newUser.email"/>
         </div>
@@ -21,7 +21,7 @@
         <label for="password" class="col-md-4 control-label">{{'Password'|translate}}* </label>
         <div class="col-md-8">
             <input type="password" class="form-control" id="password"
-                   name="password" placeholder="Desired Password" ng-required="true"
+                   name="password" placeholder="{{'Desired Password'|translate}}" ng-required="true"
                    ng-model="newUser.password"/>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <label for="repeatPassword" class="col-md-4 control-label">{{'Confirm Password'|translate}}*</label>
         <div class="col-md-8">
             <input type="password" class="form-control" id="repeatPassword"
-                   name="repeatPassword" placeholder="Confirm Password" ng-required="true"
+                   name="repeatPassword" placeholder="{{'Confirm Password'|translate}}" ng-required="true"
                    ng-model="newUser.repeatPassword"/>
         </div>
     </div>
@@ -48,7 +48,8 @@
     <div class="form-group" ng-if="(!invitation) && (!newAssembly)">
         <div class="col-md-offset-3 col-md-8">
             <input type="submit" name="submit" class="btn btn-primary"
-                   id="submit_person" ng-click="signup()" value="{{'Submit'|translate}}" ng-disabled="!newUserForm.$valid"/>
+                   id="submit_person" ng-click="signup()" value="{{'Submit'|translate}}"
+                   ng-disabled="!newUserForm.$valid"/>
         </div>
     </div>
     <!-- Submit button when new user is created via Membership Invitation -->

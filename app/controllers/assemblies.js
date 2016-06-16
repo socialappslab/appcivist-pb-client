@@ -32,7 +32,8 @@ appCivistApp.controller('AssemblyListCtrl', function($scope, $routeParams, $reso
  */
 appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinnerService, Upload, $timeout,
                                                     $routeParams, $resource, $http, Assemblies, Contributions,
-													FileUploader, loginService, localStorageService, $translate) {
+													FileUploader, loginService, localStorageService, $translate,
+                                                    LocaleService, LOCALES) {
 	init();
     initializeNewAssembly();
     initializeListOfAssembliesToFollow();
@@ -81,6 +82,14 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
         if($scope.userIsNew) {
             $scope.newUser = {};
         }
+
+        $scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName() ?
+            LocaleService.getLocaleDisplayName() : LOCALES.locales[LOCALES.preferredLocale];
+        $scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
+
+        $scope.changeLanguage = function (locale) {
+            LocaleService.setLocaleByDisplayName(locale);
+        };
 
         $scope.removeErrors = function(index) {
             $scope.errors.splice(index,1);
@@ -256,9 +265,11 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                 $scope.tabs[2].active=true;
             } else if (step === 3 && $scope.userIsNew) {
                 $scope.newUser.newAssembly = $scope.newAssembly;
-                if(!$scope.newUser.lang) {
-                    $scope.newUser.lang = $translate.proposedLanguage() || $translate.use();
+                $scope.newUser.lang = LocaleService.getLocale();
+                if (!$scope.newUser.lang) {
+                    $scope.newUser.lang = LOCALES.preferredLocale;
                 }
+
                 loginService.signUp($scope.newUser, $scope);
             }
         }

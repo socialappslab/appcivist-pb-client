@@ -609,5 +609,30 @@
   "New Working Group Message":"New Working Group Message",
   "New Working Group Reply":"New Working Group Reply",
   "New Assembly Message":"New Assembly Message",
-  "New Assembly Reply":"New Assembly Reply"
+  "New Assembly Reply":"New Assembly Reply",
+  "Working Group Forum":"Working Group Forum",
+  "request awaiting approval":"request awaiting approval",
+  "Back to assembly":"Back to assembly",
+  "awaiting your response":"awaiting your response",
+  "partials.directives.wGroupForum.wGroupForum.text1":"The Working Group you have requested is not listed as public. If you know people who are member, ask them to send you an invitation to join.",
+  "partials.directives.wGroupForum.wGroupForum.text2":"You are not member of this Working Group but the its profile is public and you can send a request to join. Press \"Join Working Group\" to do so.",
+  "partials.directives.wGroupForum.wGroupForum.text3":"You have requested to join this Working Group. Once a member approves your request you will be able to see the comments and discussions in the Working Group forum as well as the list of campaigns in which the working groups is participating.",
+  "partials.directives.wGroupForum.wGroupForum.text4":"You have been invited to join this Working Group. Press the button to Join the Working Group (above) to review this invitation. As long as the invitation is pending, you will be able to see comments and discussions in the Working Group Forum, but will not be able to participate nor see the list of campaigns.",
+  "Our Proposals":"Our Proposals",
+  "partials.directives.wGroupForum.wGroupForum.text5":"To create a new proposal, visit the page of one of the Assembly campaigns",
+  "Our Brainstorming Contributions":"Our Brainstorming Contributions",
+  "partials.directives.wGroupForum.wGroupForum.text6":"Other contributions on related themes",
+  "partials.directives.wGroupForum.wGroupForum.text7":"Collaboration with other groups",
+  "Find similar proposals":"Find similar proposals",
+  "Find similar contributions":"Find similar contributions",
+  "Invite groups to collaborate":"Invite groups to collaborate",
+  "Invite":"Invite"
+
+   
+  
+
+
+
+
+
 }

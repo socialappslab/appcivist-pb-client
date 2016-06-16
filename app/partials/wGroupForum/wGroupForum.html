@@ -4,18 +4,18 @@
             <div class="col-md-7 col-sm-7 discussion">
                 <div class="row col-md-12 col-sm-12" ng-if="wGroup.profile">
                     <img alt="100x100" ng-src="{{wGroup.profile.icon}}" data-holder-rendered="true" class="image-circle inline">
-                    <h2 class="inline"><strong>{{'Working Group'|translate}}: </strong>{{wGroup.name}} (<a href="#/assembly/{{assemblyID}}/forum">Back to assembly</a>)</h2>
+                    <h2 class="inline"><strong>{{'Working Group'|translate}}: </strong>{{wGroup.name}} (<a href="#/assembly/{{assemblyID}}/forum">{{'Back to assembly' | translate}}</a>)</h2>
                 </div>
                 <div class="row col-md-6 col-sm-6">
-                    <h3 class="inline"><strong>Working Group Forum</strong></h3>
+                    <h3 class="inline"><strong>{{'Working Group Forum' | translate}}</strong></h3>
                 </div>
                 <div class="row col-md-5 col-sm-5 align-right">
                     <h1 ng-if="checkShow('joinButton')" class="align-right">
                         <button class="btn btn-success btn-lg" ng-click="joinGroup()" ng-disabled="!userIsMember && userIsRequestedMember">
                             <h4 style="float:right;">
                                 <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">{{'Join'|translate}} {{'Working Group'|translate}}</strong>
-                                <strong ng-if="!userIsMember && userIsRequestedMember">{{'Join'|translate}} request awaiting approval</strong>
-                                <strong ng-if="!userIsMember && userIsInvitedMember">{{'Invitation'|translate}} awaiting your response</strong>
+                                <strong ng-if="!userIsMember && userIsRequestedMember">{{'Join'|translate}} {{'request awaiting approval' | translate}}</strong>
+                                <strong ng-if="!userIsMember && userIsInvitedMember">{{'Invitation'|translate}} {{'awaiting your response' | translate}}</strong>
                             </h4>
                         </button>
                     </h1>
@@ -23,25 +23,19 @@
                 <div class="row col-md-12">
                     <!-- Alert message shown if User is not member -->
                     <uib-alert ng-if="!wGroup.profile" type="success" class="row">
-                        The Working Group you have requested is not listed as public. If you know people who are member, ask
-                        them to send you an invitation to join.
+                        {{'partials.directives.wGroupForum.wGroupForum.text1' | translate}}
                     </uib-alert>
                     <!-- Alert message shown if User is not member -->
                     <uib-alert ng-if="wGroup.profile && !userIsMember && !userIsRequestedMember && !userIsInvitedMember" type="success" class="row">
-                        You are not member of this Working Group but the its profile is public and you can send a request
-                        to join. Press "Join Working Group" to do so.
+                        {{'partials.directives.wGroupForum.wGroupForum.text2' | translate}}
                     </uib-alert>
                     <!-- Alert message shown if User is not member but has requested to join -->
                     <uib-alert ng-if="wGroup.profile && !userIsMember && userIsRequestedMember" type="success" class="row">
-                        You have requested to join this Working Group. Once a member approves your request you
-                        will be able to see the comments and discussions in the Working Group forum as well as the list of
-                        campaigns in which the working groups is participating.
+                        {{'partials.directives.wGroupForum.wGroupForum.text3' | translate}}
                     </uib-alert>
                     <!-- Alert message shown if User is not member but has been invited-->
                     <uib-alert ng-if="wGroup.profile && !userIsMember && userIsInvitedMember" type="success" class="row">
-                        You have been invited to join this Working Group. Press the button to Join the Working Group (above) to
-                        review this invitation. As long as the invitation is pending, you will be able to see comments and
-                        discussions in the Working Group Forum, but will not be able to participate nor see the list of campaigns.
+                        {{'partials.directives.wGroupForum.wGroupForum.text4' | translate}}
                     </uib-alert>
                 </div>
                 <new-forum-post
@@ -86,9 +80,9 @@
 
                 <!-- Working Group Proposals -->
                 <div class="row">
-                    <h3><strong>Our Proposals</strong></h3>
+                    <h3><strong>{{'Our Proposals' | translate}}</strong></h3>
                     <div class="box descriptionBox">
-                        <p>To create a new proposal, visit the page of one of the Assembly campaigns</p>
+                        <p>{{'partials.directives.wGroupForum.wGroupForum.text5' | translate}}</p>
                     </div>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
@@ -106,7 +100,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h3><strong>Our Brainstorming Contributions</strong></h3>
+                    <h3><strong>{{'Our Brainstorming Contributions' | translate}}</strong></h3>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
@@ -123,7 +117,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h3><strong>Other contributions on related themes</strong></h3>
+                    <h3><strong>{{'partials.directives.wGroupForum.wGroupForum.text6' | translate}}</strong></h3>
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
@@ -138,21 +132,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h3><strong>Collaboration with other groups</strong></h3>
+                    <h3><strong>{{'partials.directives.wGroupForum.wGroupForum.text7' | translate}}</strong></h3>
                     <div class="voffset3"></div>
                     <div class="row no-margin no-padding title-button">
-                        <h4 class="inline">Find similar proposals</h4>
-                        <button class="btn btn-success inline">Search</button>
+                        <h4 class="inline">{{'Find similar proposals' | translate}}</h4>
+                        <button class="btn btn-success inline">{{'Search' | translate}}</button>
                     </div>
                     <div class="voffset3"></div>
                     <div class="row no-margin no-padding title-button">
-                        <h4 class="inline">Find similar contributions</h4>
-                        <button class="btn btn-success inline">Search</button>
+                        <h4 class="inline">{{'Find similar contributions' | translate}}</h4>
+                        <button class="btn btn-success inline">{{'Search' | translate}}</button>
                     </div>
                     <div class="voffset3"></div>
                     <div class="row no-margin no-padding title-button">
-                        <h4 class="inline">Invite groups to collaborate</h4>
-                        <button class="btn btn-success inline">Invite</button>
+                        <h4 class="inline">{{'Invite groups to collaborate' | translate}}</h4>
+                        <button class="btn btn-success inline">{{'Invite' | translate}}</button>
                     </div>
                 </div>
             </div>

@@ -48,7 +48,7 @@
 <div class="row">
     <uib-alert ng-repeat="error in errors track by $index" type="danger" close="removeErrors($index)">{{error.statusMessage}} </uib-alert>
     <button class="col-md-push-2 col-md-2 btn btn-primary" ng-click="tabs[0].active=true">
-        <h3><strong>Back</strong></h3>
+        <h3><strong>{{'Back' | translate}}</strong></h3>
     </button>
     <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(2)">
         <h3 ng-if="userIsNew"><strong>{{'Next' | translate}}</strong></h3>

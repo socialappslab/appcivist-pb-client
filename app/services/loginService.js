@@ -47,6 +47,7 @@
 	}
 
 	this.signIn = function(email, password, scope, callback) {
+		$rootScope.startSpinner();
 		var user = {};
 		user.email = email;
 		user.password = password;
@@ -54,6 +55,7 @@
 		var authRes = AppCivistAuth.signIn().save(user);
 		authRes.$promise.then(
 				function(user) {
+					$rootScope.stopSpinner();
 					if (user !== '0') {
 						localStorageService.set('sessionKey', user.sessionKey);
 						localStorageService.set('authenticated', true);
@@ -68,6 +70,7 @@
 					}
 				},
 				function(error) {
+					$rootScope.stopSpinner();
 					var data = error.data;
 					FlashService.ErrorWithModal(data.statusMessage, "USER", null, data.responseStatus, false);
 					//$uibModal.open({

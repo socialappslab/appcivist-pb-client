@@ -14,7 +14,7 @@ console.log("Welcome to AppCivist!");
 
 var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
-    'tmh.dynamicLocale'];
+    'tmh.dynamicLocale', 'ngclipboard'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var appcivist = {

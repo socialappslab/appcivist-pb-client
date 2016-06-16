@@ -1,8 +1,8 @@
 .container
   .row.text-center
     %h2
-      %b> {{campaigns.length < 1 ? "" : "Campaign" }} Voting Ballot
-      {{campaigns.length < 1 ? "" : " for " }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
+      %b> {{campaigns.length < 1 ? "" : "Campaign" | translate}} {{'Voting Ballot' | translate}}
+      {{campaigns.length < 1 ? "" : " for " | translate }} {{campaigns.length < 1 ? "" : "'"+campaigns[0].title+"'" }}
   #rangeLanding.jumbotron
     .titles
       .container

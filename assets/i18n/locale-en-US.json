@@ -500,8 +500,146 @@
   "Submit":"Submit",
   "Accept invitation and create user":"Accept invitation and create user",
   "Decline invitation":"Decline invitation",
+  "Ups! Something went wrong...":"Ups! Something went wrong...",
+
   "ESPECIAL PHRASES FROM BACKEND":"ESPECIAL PHRASES FROM BACKEND",
   "This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.":"This user already exists. An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.",
   "Your email is invalid":"Your email is invalid",
-  "Either your email, user or both are invalid":"Either your email, user or both are invalid"
+  "Either your email, user or both are invalid":"Either your email, user or both are invalid",
+  "Real number value expected":"Real number value expected",
+  "Required":"Required",
+  "Invalid value":"Invalid value",
+  "This field is required":"This field is required",
+  "Numeric value expected":"Numeric value expected",
+  "Real number value expected":"Real number value expected",
+  "Valid email required":"Valid email required",
+  "Account linked successfully":"Account linked successfully",
+  "Accounts merged successfully":"Accounts merged successfully",
+  "Your e-mail has already been validated.":"Your e-mail has already been validated.",
+  "ou need to set an e-mail address first.":"ou need to set an e-mail address first.",
+  "Your account has not been verified, yet. An e-mail including instructions on how to verify it has been sent out. Retry resetting your password afterwards.":"Your account has not been verified, yet. An e-mail including instructions on how to verify it has been sent out. Retry resetting your password afterwards.",
+  "Your user has not yet been set up for password usage.":"Your user has not yet been set up for password usage.",
+  "Your password has been reset. Please now log in using your new password.":"Your password has been reset. Please now log in using your new password.",
+  "Passwords do not match.":"Passwords do not match.",
+  "Password has been changed successfully.":"Password has been changed successfully.",
+  "Unknown user or password.":"Unknown user or password.",
+  "Missing language":"Missing language",
+
+  "AppCivist: Complete your signup":"AppCivist: Complete your signup",
+  "AppCivist: Confirm your e-mail address":"AppCivist: Confirm your e-mail address",
+  "AppCivist: How to reset your password":"AppCivist: How to reset your password",
+  "Your e-mail address":"Your e-mail address",
+  "Choose a password":"Choose a password",
+  "Repeat chosen password":"Repeat chosen password",
+  "Login":"Login",
+  "Password":"Password",
+  "Login now":"Login now",
+  "Forgot your password?":"Forgot your password?",
+  "or log in using one of the following providers:":"or log in using one of the following providers:",
+  "Signup":"Signup",
+  "Your name":"Your name",
+  "Sign up now":"Sign up now",
+  "or sign up using one of the following providers:":"or sign up using one of the following providers:",
+  "E-mail verification required":"E-mail verification required",
+  "Before setting a password, you need to":"Before setting a password, you need to",
+  "first verify your e-mail address":"first verify your e-mail address",
+  "Change your password here":"Change your password here",
+  "Change my password":"Change my password",
+  "Merge accounts":"Merge accounts",
+  "Yes, merge these two accounts":"Yes, merge these two accounts",
+  "No, exit my current session and log in as a new user":"No, exit my current session and log in as a new user",
+  "OK":"OK",
+  "Link account":"Link account",
+  "Yes, link this account":"Yes, link this account",
+  "No, log out and create a new user with this account":"No, log out and create a new user with this account",
+  "Verify your e-mail":"Verify your e-mail",
+  "Before you can use PlayAuthenticate, you first need to verify your e-mail address.":"Before you can use PlayAuthenticate, you first need to verify your e-mail address.",
+  "An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.":"An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.",
+  "Reset password":"Reset password",
+  "Reset my password":"Reset my password",
+  "Forgot password":"Forgot password",
+  "Send reset instructions":"Send reset instructions",
+  "OAuth access denied":"OAuth access denied",
+  "If you want to use PlayAuthenticate with OAuth, you must accept the connection.":"If you want to use PlayAuthenticate with OAuth, you must accept the connection.",
+  "If you rather not like to do this, you can also":"If you rather not like to do this, you can also",
+  "sign up with a username and password instead":"sign up with a username and password instead",
+  "Token error":"Token error",
+  "The given token has either expired or does not exist.":"The given token has either expired or does not exist.",
+  "User exists":"User exists",
+  "This user already exists.":"This user already exists.",
+  "Profile":"Profile",
+  "Link more providers":"Link more providers",
+  "Sign out":"Sign out",
+  "Log in":"Log in",
+  "Home":"Home",
+  "Restricted page":"Restricted page",
+  "Sign up":"Sign up",
+  "User profile":"User profile",
+  "unverified - click to verify":"unverified - click to verify",
+  "verified":"verified",
+  "There is one provider linked with your account:":"There is one provider linked with your account:",
+  "You are currently logged in with:":"You are currently logged in with:",
+  "Change/set a password for your account":"Change/set a password for your account",
+  "Welcome to Play Authenticate":"Welcome to Play Authenticate",
+  "Play Authenticate sample app":"Play Authenticate sample app",
+  "This is a template for a simple application with authentication.":"This is a template for a simple application with authentication.",
+  "Check the main navigation above for simple page examples including supported authentication features.":"Check the main navigation above for simple page examples including supported authentication features.",
+  "Heading":"Heading",
+  "View details":"View details",
+  "Secrets, everywhere!":"Secrets, everywhere!",
+  "The membership could not be created because user is not authorized":"The membership could not be created because user is not authorized",
+  "Membership invitation":"Membership invitation",
+  "To accept the invitation, follow this link":"To accept the invitation, follow this link",
+  "Assembly Update":"Assembly Update",
+  "Working Group Update":"Working Group Update",
+  "Contribution Update":"Contribution Update",
+  "Campaign Update":"Campaign Update",
+  "Upcoming Milestone":"Upcoming Milestone",
+  "New Message":"New Message",
+  "New Reply":"New Reply",
+  "New Working Group Message":"New Working Group Message",
+  "New Working Group Reply":"New Working Group Reply",
+  "New Assembly Message":"New Assembly Message",
+  "New Assembly Reply":"New Assembly Reply"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

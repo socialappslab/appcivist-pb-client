@@ -13,9 +13,9 @@
                     <h1 ng-if="checkShow('joinButton')" class="align-right">
                         <button class="btn btn-success btn-lg" ng-click="joinGroup()" ng-disabled="!userIsMember && userIsRequestedMember">
                             <h4 style="float:right;">
-                                <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">{{'Join'|translate}} {{'Working Group'|translate}}</strong>
-                                <strong ng-if="!userIsMember && userIsRequestedMember">{{'Join'|translate}} {{'request awaiting approval' | translate}}</strong>
-                                <strong ng-if="!userIsMember && userIsInvitedMember">{{'Invitation'|translate}} {{'awaiting your response' | translate}}</strong>
+                                <strong ng-if="!userIsMember && !userIsRequestedMember && !userIsInvitedMember">{{'Join Working Group'|translate}}</strong>
+                                <strong ng-if="!userIsMember && userIsRequestedMember">{{'forum.forum.text6' | translate}}</strong>
+                                <strong ng-if="!userIsMember && userIsInvitedMember">{{'forum.forum.text1' | translate}}</strong>
                             </h4>
                         </button>
                     </h1>
@@ -61,13 +61,13 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <button class="btn btn-primary col-md-12" ng-if="checkShow('sendMessage')">
                             <i class="icon-chat-empty"></i>
-                            {{'Send' | translate}} {{'Message' | translate | lowercase}}
+                            {{'header.menu.Send message' | translate | lowercase}}
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <button class="btn btn-primary col-md-12" ng-if="checkShow('organizeMeeting')">
                             <i class="icon-calendar"></i>
-                            {{'Organize' | translate}} {{'Meeting' | translate | lowercase}}
+                            {{'Organize meeting' | translate }}
                         </button>
                     </div>
                 </div>

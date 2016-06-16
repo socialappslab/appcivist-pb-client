@@ -1,7 +1,7 @@
 <div class="view container section first-section invitation">
     <div id="section1" ng-if="invitation.email">
         <h1 class="main-title text-center">
-            You have been invited to join AppCivist to participate in the {{invitation.targetType}}
+            {{'You have been invited to join AppCivist to participate in the' | translate}} {{invitation.targetType | translate}}
             <b>{{invitation.targetType === 'ASSEMBLY' ? invitation.targetAssembly.name : invitation.targetGroup.name}}</b>
         </h1>
         <h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
@@ -12,15 +12,15 @@
             <div class="col-md-3"></div>
         </div>
         <div class="main-title">
-            <button class="btn btn-success btn-lg" role="button" ng-if="invitation.userId > 0" type="button" ng-click="sendResponse('ACCEPT')">Accept Invitation</button>
-            <button class="btn btn-danger btn-lg" role="button" ng-if="invitation.userId > 0" type="button" ng-click="sendResponse('REJECT')">Reject Invitation</button>
+            <button class="btn btn-success btn-lg" role="button" ng-if="invitation.userId > 0" type="button" ng-click="sendResponse('ACCEPT')">{{'Accept Invitation' | translate}}</button>
+            <button class="btn btn-danger btn-lg" role="button" ng-if="invitation.userId > 0" type="button" ng-click="sendResponse('REJECT')">{{'Reject Invitation' | translate}}</button>
         </div>
         <h6 class="text-center bottom-info"></h6>
     </div>
     <div ng-if="!invitation.token && errors[0].responseStatus==='NOTAVAILABLE'">
         <h6 class="text-center bottom-info"></h6>
         <h1 class="main-title text-center">
-            The invitation you are trying to access has been removed or has already expired.
+            {{'The invitation you are trying to access has been removed or has already expired.' translate}}
         </h1>
         <div class="voffset6"></div>
         <h6 class="text-center bottom-info"></h6>

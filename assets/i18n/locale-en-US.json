@@ -628,14 +628,14 @@
   "Invite groups to collaborate":"Invite groups to collaborate",
   "Invite":"Invite",
   "Hide":"Hide",
-  "Show":"Show"
-
-
-   
-  
-
-
-
-
-
+  "Show":"Show",
+  "New Issue":"New Issue",
+  "New Issue or Suggestion":"New Issue or Suggestion",
+  "New Proposal":"New Proposal",
+  "Create contribution":"Create contribution",
+  "Join Working Group":"Join Working Group",
+  "Organize meeting":"Organize meeting",
+  "Reject Invitation":"Reject Invitation",
+  "The invitation you are trying to access has been removed or has already expired.":"The invitation you are trying to access has been removed or has already expired.",
+  "You have been invited to join AppCivist to participate in the":"You have been invited to join AppCivist to participate in the"
 }

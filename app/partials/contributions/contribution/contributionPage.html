@@ -2,9 +2,9 @@
     <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
     <div id="contributionSummary" class="row col-md-9 col-sm-9">
             <h3>
-                <strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read '}}{{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution'}}</strong>
+                <strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read' | translate }}{{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}</strong>
                 <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="update()">
-                    Update {{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution'}}
+                    {{'Update' | translate}} {{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}
                 </button>
 
             </h3>
@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-10 col-sm-10">
                 <div class="col-md-6 col-sm-6">
-                    <h4><strong>{{'Similar Proposals' | translate}} ({{'coming soon'}})</strong></h4>
+                    <h4><strong>{{'Similar Proposals' | translate}} ({{'coming soon' | translate}})</strong></h4>
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <h4><strong>{{'contribution.contributionpage.text1' | translate}}</strong></h4>

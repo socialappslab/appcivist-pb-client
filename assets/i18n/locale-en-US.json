@@ -621,5 +621,17 @@
   "Invite groups to collaborate":"Invite groups to collaborate",
   "Invite":"Invite",
   "Hide":"Hide",
-  "Show":"Show"
+  "Show":"Show",
+
+  "The voting period has started":"The voting period has started",
+  "There are two ways of voting":"There are two ways of voting",
+  "Show Voting Instructions":"Show Voting Instructions",
+  "Hide Voting Instructions":"Hide Voting Instructions",
+  "Voting in Campaign Page":"Voting in Campaign Page",
+  "campaign.component.voting.instructions1":"Just head over the <strong>Proposals</strong> tab and you will see the voting options under each proposal",
+  "Move to the Proposals Tab":"Move to the Proposals Tab",
+  "Through the Voting Ballot":"Through the Voting Ballot",
+  "campaign.component.voting.instructions2":"The Voting Ballot allows non-appcivist users to vote. They will have to first fill a Voting Registration form configured by the Assembly Coordinators.",
+  "Open the Voting Ballot":"Open the voting ballot",
+  "Show Link to the Ballot":"Show Link to the Ballot"
 }

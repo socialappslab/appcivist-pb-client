@@ -1526,9 +1526,10 @@ button#second-vote {
 }
 
 .contribution {
-  border: 0.1rem solid #F4F4F4;
+  border: 0.1rem solid black;
   margin-bottom: 2rem;
-  margin-left: 2rem;
+  margin-left: 0rem;
+  margin-right: 2rem;
   display: inline-flex;
   position: relative;
 }
@@ -2140,7 +2141,7 @@ button#second-vote {
 }
 
 .contribution {
-  border: 0.1rem solid #F4F4F4;
+  border: 0.1rem solid black;
   margin-bottom: 2rem;
   margin-left: 2rem;
   display: inline-flex;
@@ -2281,7 +2282,7 @@ button#second-vote {
 }
 #contributionPage .contribution-header-list .contribution-header-list-element .list-description {
   display: inline-block;
-  border-bottom: 0.1rem solid #F4F4F4;
+  border-bottom: 0.1rem solid black;
 }
 
 #newContribution {
@@ -2373,7 +2374,7 @@ button#second-vote {
 }
 
 .wGroupsSuggestion {
-  border: 0.1rem solid #F4F4F4;
+  border: 0.1rem solid black;
   margin-bottom: 2rem;
   margin-left: 2rem;
   display: inline-flex;
@@ -2950,6 +2951,20 @@ i {
 }
 .section.third-section .green4 {
   background: #134B3E;
+}
+
+.campaigntabs .nav-tabs {
+  border-bottom: 2px solid black;
+}
+.campaigntabs .nav-tabs .li .a {
+  margin-bottom: -2px;
+}
+.campaigntabs .nav-tabs li.active .a {
+  border-bottom-color: transparent;
+  margin-bottom: -2px;
+}
+.campaigntabs .nav-tabs .navs-justified .active a, .campaigntabs .nav-tabs .navs-justified .active a:hover, .campaigntabs .nav-tabs .navs-justified .active a:focus {
+  border: 3px solid black;
 }
 
 /*# sourceMappingURL=app.css.map */

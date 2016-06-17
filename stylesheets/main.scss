@@ -132,7 +132,8 @@ $dropDown       : false;
     > .open {
       > a, > a:hover, > a:focus {
         color: $colHighlight;
-        background-color: $bgHighlight; }}}
+        background-color: $bgHighlight; }}
+  }
   .navbar-toggle {
     border-color: $bgHighlight;
     &:hover, &:focus {
@@ -447,6 +448,30 @@ $dropDown       : false;
     }
     .green4 {
       background: $corporative-darker-green;
+    }
+  }
+}
+
+.campaigntabs {
+  .nav-tabs {
+    border-bottom: 2px solid $contribution-border;
+    .li {
+      .a {
+        margin-bottom: -2px;
+      }
+    }
+    li.active {
+      .a {
+        border-bottom-color: transparent;
+        margin-bottom: -2px;
+      }
+    }
+  }
+  .nav-tabs .navs-justified{
+    .active {
+      a, a:hover, a:focus {
+        border: 3px solid $contribution-border;
+      }
     }
   }
 }

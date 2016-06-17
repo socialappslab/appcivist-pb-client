@@ -213,7 +213,7 @@
   "new.contribution.brainstorming": "Identify an issue or make a suggestion",
   "new.contribution.proposal": "Start a proposal based on brainstorming issues and suggestions. A working group will be created automatically if one is not selected",
   "new.contribution.note": "Create a collaborative space to edit general notes (e.g., the agenda of meeting, meeting notes, etc.)",
-  "Brainstorming (issues and suggestions)":"Brainstorming (issues and suggestions)",
+  "Brainstorming (issues and suggestions)":"Ideas (issues and suggestions)",
   "help.tooltip.brainstorming" : "Ideas, issues or suggestions, made by assembly members, which can lead to the development of proposals",
   "help.tooltip.working-groups" : "Working Groups developing proposals based on brainstorming contributions",
   "help.tooltip.proposals" : "Solution proposals developed by working groups",
@@ -657,5 +657,7 @@
   "Search existing contributions...":"Search existing contributions...",
   "Add a public URL or upload a file":"Add a public URL or upload a file",
   "Search oder contributions":"Search oder contributions",
-  "Results":"Results"
+  "Results":"Results",
+  "Brainstorm":"New Idea",
+  "Organized by":"Organized by"
 }

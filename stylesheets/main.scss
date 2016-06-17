@@ -455,23 +455,23 @@ $dropDown       : false;
 .campaigntabs {
   .nav-tabs {
     border-bottom: 2px solid $contribution-border;
-    .li {
-      .a {
+    li {
+      a {
         margin-bottom: -2px;
       }
     }
     li.active {
-      .a {
+      a {
         border-bottom-color: transparent;
         margin-bottom: -2px;
       }
     }
-  }
-  .nav-tabs .navs-justified{
-    .active {
-      a, a:hover, a:focus {
-        border: 3px solid $contribution-border;
-      }
+    > .active > a,
+    > .active > a:hover,
+    > .active > a:focus {
+      border: 3px solid $contribution-border;
+      margin-bottom: -2px;
+      border-bottom-color: transparent;
     }
   }
 }

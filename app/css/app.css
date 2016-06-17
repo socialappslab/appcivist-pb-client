@@ -2956,15 +2956,19 @@ i {
 .campaigntabs .nav-tabs {
   border-bottom: 2px solid black;
 }
-.campaigntabs .nav-tabs .li .a {
+.campaigntabs .nav-tabs li a {
   margin-bottom: -2px;
 }
-.campaigntabs .nav-tabs li.active .a {
+.campaigntabs .nav-tabs li.active a {
   border-bottom-color: transparent;
   margin-bottom: -2px;
 }
-.campaigntabs .nav-tabs .navs-justified .active a, .campaigntabs .nav-tabs .navs-justified .active a:hover, .campaigntabs .nav-tabs .navs-justified .active a:focus {
+.campaigntabs .nav-tabs > .active > a,
+.campaigntabs .nav-tabs > .active > a:hover,
+.campaigntabs .nav-tabs > .active > a:focus {
   border: 3px solid black;
+  margin-bottom: -2px;
+  border-bottom-color: transparent;
 }
 
 /*# sourceMappingURL=app.css.map */

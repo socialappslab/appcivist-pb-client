@@ -12,7 +12,7 @@
                  ng-class="{ 'has-error': newAssemblyForm1.description.$touched && newAssemblyForm1.description.$invalid }">
                 <label for="inputAboutAssembly" class="control-label">{{'assembly.newAssemblystep1.text1'|translate}}*</label>
                 <textarea id="inputAboutAssembly" name="description" class="form-control"
-                          placeholder="e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015"
+                          placeholder="{{'e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015' | translate }}"
                           ng-model="newAssembly.description" ng-required="true"></textarea>
             </div>
             <div id="assemblyLocation" class="col-md-12 form-group">
@@ -21,7 +21,7 @@
                     <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.locationTooltip}}"></i>
                 </label>
                 <input class="form-control" id="inputLocationAssembly"
-                       placeholder="The name of a Place, an Address, City or Country associated to your assembly"
+                       placeholder="{{'The name of a Place, an Address, City or Country associated to your assembly' | translate}}"
                        ng-model="newAssembly.location.placeName">
             </div>
             <div id="assemblyTargetAudience" class="col-md-12 form-group">
@@ -153,17 +153,17 @@
             <div id="assemblyContactInfo" class="col-md-12 form-group">
                 <label for="inputContactNameAssembly" class="control-label">{{'Primary contact' | translate}}</label>
                 <div>
-                    <input class="form-control" id="inputContactNameAssembly" placeholder="Name"
+                    <input class="form-control" id="inputContactNameAssembly" placeholder="{{'Name' | translate}}"
                            ng-model="newAssembly.profile.primaryContactName">
-                    <input class="form-control" id="inputContactPhoneAssembly" placeholder="Phone"
+                    <input class="form-control" id="inputContactPhoneAssembly" placeholder="{{'Phone' | translate}}"
                            ng-model="newAssembly.profile.primaryContactPhone">
-                    <input class="form-control" id="inputContactEmailAssembly" placeholder="Email"
+                    <input class="form-control" id="inputContactEmailAssembly" placeholder="{{'Email' | translate}}"
                            ng-model="newAssembly.profile.primaryContactEmail">
                 </div>
             </div>
             <div id="assemblyThemes" class="col-md-12 form-group" >
                 <label for="inputTheme" class="control-label">{{'assembly.newAssemblystep1.text4' | translate}}*</label>
-                <input class="form-control" id="inputTheme" name="themes" placeholder="e.g, Housing" ng-model="themes"/>
+                <input class="form-control" id="inputTheme" name="themes" placeholder="{{e.g, Housing | translate}}" ng-model="themes"/>
                 <div class="col-md-12 voffset3"></div>
                 <div class="col-md-8 col-sm-8"></div>
                 <div class="col-md-4 col-sm-4">

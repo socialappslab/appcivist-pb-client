@@ -642,5 +642,29 @@
   "campaign.component.voting.instructions2":"The Voting Ballot allows non-appcivist users to vote. They will have to first fill a Voting Registration form configured by the Assembly Coordinators.",
   "Open the Voting Ballot":"Open the voting ballot",
   "Show Link to the Ballot":"Show Link to the Ballot",
-  "e.g., Assemblée Belleville":"e.g., Assemblée Belleville"
+  "e.g., Assemblée Belleville":"e.g., Assemblée Belleville",
+  "e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015": "e.g., This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
+  "The name of a Place, an Address, City or Country associated to your assembly":"The name of a Place, an Address, City or Country associated to your assembly",
+  "Phone":"Phone",
+  "e.g, Housing":"e.g, Housing",
+  "Search for...":"Search for..."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

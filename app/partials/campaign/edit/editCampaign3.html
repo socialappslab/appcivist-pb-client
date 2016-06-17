@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-md-8 col-sm-8 col-xs-12">
                             <input class="form-control" id="inputSectionTitle"
-                                   placeholder="e.g., Summary, Description, Attachments"
+                                   placeholder="{{'e.g., Summary, Description, Attachments' | translate}}"
                                    ng-model="section.title">
                         </div>
                         <div class="col-md-4 col-sm-4 col-xs-12">
@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-8 col-sm-8 col-xs-12">
                             <textarea class="form-control" id="inputSectionDescription"
-                                   placeholder="Describe expected content of section"
+                                   placeholder="{{'Describe expected content of section' | translate}}"
                                    ng-model="section.description"></textarea>
                         </div>
                         <div class="col-md-12 voffset3"></div>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-md-8 col-sm-8 col-xs-12">
                             <input class="form-control" id="inputSectionLength"
-                                      placeholder="Max length for this section (number of words)"
+                                      placeholder="{{'Max length for this section (number of words)' | translate}}"
                                       ng-model="section.length"
                                       type="number">
                         </div>
@@ -89,7 +89,7 @@
                             <div class="col-md-2 col-sm-2 col-xs-2"></div>
                             <div class=" col-md-10 col-sm-11 col-xs-10">
                                 <select class="form-control"
-                                        ng-options="option.name for option in config.options track by option.value"
+                                        ng-options="option.name | translate for option in config.options track by option.value"
                                         ng-model="config.optionValue"
                                         ng-change="updateConfigOptionValue(config, config.optionValue)">
                                 </select>
@@ -111,7 +111,7 @@
                                             ng-checked="option.selected ? 'checked' : ''"
                                             ng-click="checkOption(config,option)">
                                 </div>
-                                <div class="col-md-11 col-sm-11 col-xs-11"><span>{{option.name}}</span></div>
+                                <div class="col-md-11 col-sm-11 col-xs-11"><span>{{option.name | translate}}</span></div>
                             </div>
                             <div class="col-md-12 voffset3"></div>
                         </div>

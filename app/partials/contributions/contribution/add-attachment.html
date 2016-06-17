@@ -1,6 +1,6 @@
 <div ng-if="userIsAuthor">
     <div id="attachmentForm" class="" ng-show="newAttachment.showForm">
-        <input type="text" class="col-md-8 col-sm-8 col-xs-12" ng-model="newAttachment.url" placeholder="Add a public URL or upload a file"/>
+        <input type="text" class="col-md-8 col-sm-8 col-xs-12" ng-model="newAttachment.url" placeholder="{{'Add a public URL or upload a file' | translate}}"/>
         <button type="file" class="btn btn-default " ngf-select="uploadFiles($file, $invalidFiles)"
             accept="image/*" ngf-max-size="5MB">
             {{'Upload File' | translate}}</button>

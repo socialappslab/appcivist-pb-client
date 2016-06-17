@@ -11,7 +11,7 @@
                 <label for="inputDefineCampaignGoals" class="control-label">{{"What's the goal of the campaign?" | translate}}*</label>
                 <input id="inputDefineCampaignGoals" name="goal"
                           class="form-control"
-                          placeholder="e.g., Develop proposals for PB Paris 2015"
+                          placeholder="{{'e.g., Develop proposals for PB Paris 2015' | translate}}"
                           ng-model="newCampaign.goal" ng-required="true" />
                 <div class="help-block" ng-messages="newCampaignForm1.goal.$error" ng-if="newCampaignForm1.goal.$touched">
                     <p ng-message="required">{{'creation.components.newCampaign1.text1' | translate}}</p>
@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-md-8 col-md-8">
                         <input id="newTheme" class="form-control"
-                               placeholder="Housing"
+                               placeholder="{{'Housing' | translate}}"
                                ng-model="newTheme"/>
                     </div>
                     <div class="themes-container-content optionThemes col-md-4 col-md-4">

@@ -647,24 +647,15 @@
   "The name of a Place, an Address, City or Country associated to your assembly":"The name of a Place, an Address, City or Country associated to your assembly",
   "Phone":"Phone",
   "e.g, Housing":"e.g, Housing",
-  "Search for...":"Search for..."
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "Search for...":"Search for...",
+  "e.g., Develop proposals for PB Paris 2015":"e.g., Develop proposals for PB Paris 2015",
+  "Housing":"Housing",
+  "e.g., Summary, Description, Attachments":"e.g., Summary, Description, Attachments",
+  "Describe expected content of section":"Describe expected content of section",
+  "Max length for this section (number of words)":"Max length for this section (number of words)",
+  "Max. 250 words":"Max. 250 words",
+  "Search existing contributions...":"Search existing contributions...",
+  "Add a public URL or upload a file":"Add a public URL or upload a file",
+  "Search oder contributions":"Search oder contributions",
+  "Results":"Results"
 }

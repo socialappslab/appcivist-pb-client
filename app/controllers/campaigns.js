@@ -643,7 +643,8 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
 														  Ballot, Candidate, VotesByUser, NewBallotPaper, BallotPaper,
-                                                          logService, usSpinnerService, $timeout, $window, Memberships){
+                                                          logService, usSpinnerService, $timeout, $window, Memberships,
+														  ContributionDirectiveBroadcast){
 
 	init();
 
@@ -824,8 +825,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
                     $scope.contentTabsIndex["proposals"].active=false;
                     $scope.contentTabsIndex["notes"].active=false;
                 }
+				// reload contributions after closing modal windows
+				$scope.reloadContributionsAndGroups();
 			}, function () {
 				console.log('Modal dismissed at: ' + new Date());
+				// reload contributions after closing modal windows
+				$scope.reloadContributionsAndGroups();
 			});
 
 			if (cType="PROPOSAL") {
@@ -955,6 +960,10 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 		$scope.toggleLinkToBallot = function () {
 			$scope.showLinkToBallot=!$scope.showLinkToBallot;
 		}
+
+		$scope.$on('updateContributions', function() {
+			$scope.reloadContributionsAndGroups();
+		});
     }
 
 	function userIsMemberSuccess (data) {
@@ -1264,7 +1273,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 
 		$timeout(function(){
 			$scope.reloadContributionsAndGroups();
-		},300000);
+		},120000);
 	}
 });
 

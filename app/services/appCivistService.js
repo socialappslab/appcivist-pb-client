@@ -1242,3 +1242,20 @@ appCivistApp.factory('BallotCampaign', function($http, $resource, localStorageSe
         {"uuid": "@id"}
     );
 });
+
+appCivistApp.factory('ContributionDirectiveBroadcast', function($rootScope) {
+    var contributionDirective = {};
+
+    contributionDirective.message = '';
+
+    contributionDirective.prepForUpdateContributions = function(msg) {
+        this.message = msg;
+        this.broadcastUpdateContributions();
+    };
+
+    contributionDirective.broadcastUpdateContributions = function() {
+        $rootScope.$broadcast('updateContributions');
+    };
+
+    return contributionDirective;
+});

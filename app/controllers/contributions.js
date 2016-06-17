@@ -12,7 +12,7 @@ var postingContributionFlag = false;
 
 appCivistApp.controller('NewContributionCtrl',
         function ($rootScope, $scope, $http, $routeParams, localStorageService, Contributions, $translate, logService,
-                  usSpinnerService) {
+                  usSpinnerService, ContributionDirectiveBroadcast) {
             init();
 
             function init() {
@@ -50,6 +50,10 @@ appCivistApp.controller('NewContributionCtrl',
                     $scope.modalInstance = undefined;
                     createNewContribution($scope, Contributions, logService, $rootScope);
                 };
+
+                $scope.broadcastUpdateContributions = function () {
+                    ContributionDirectiveBroadcast.prepForUpdateContributions();
+                };
             }
         });
 
@@ -57,7 +61,7 @@ appCivistApp.controller('NewContributionModalCtrl',
 		function ($rootScope, $scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
 				   assembly, campaign, contributions, themes, newContribution,
 				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
-                   $translate, $location, logService, usSpinnerService) {
+                   $translate, $location, logService, usSpinnerService, ContributionDirectiveBroadcast) {
 			init();
 
 			function init() {
@@ -139,13 +143,17 @@ appCivistApp.controller('NewContributionModalCtrl',
                         $scope.groupSelected = true;
                     }
                 }
+
+                $scope.broadcastUpdateContributions = function () {
+                    ContributionDirectiveBroadcast.prepForUpdateContributions();
+                };
             }
 
 		});
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope, $routeParams, $uibModal, $location,
                                                               localStorageService, Etherpad, Contributions, $translate,
-                                                              logService, usSpinnerService) {
+                                                              logService, usSpinnerService, ContributionDirectiveBroadcast) {
 
     init();
 
@@ -227,7 +235,7 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope
             if($scope.contribution.type == "BRAINSTORMING") {
               logService.logAction("DELETE_CONTRIBUTION");
             }
-            deleteContribution($scope,localStorageService, Contributions, logService);
+            deleteContribution($scope,localStorageService, Contributions, logService, $rootScope);
             $uibModalInstance.dismiss('cancel');
 
         };
@@ -250,6 +258,10 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope
             return $scope.contribution.type === 'BRAINSTORMING' ? "'300px;'" : "''";
         }
 
+        $scope.broadcastUpdateContributions = function () {
+            ContributionDirectiveBroadcast.prepForUpdateContributions();
+        };
+
         if($scope.contribution.extendedTextPad) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl($scope.contribution.extendedTextPad.readOnlyPadId);
             var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID,$scope.contributionID).get();
@@ -264,7 +276,7 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope
 appCivistApp.controller('ContributionModalCtrl',
     function ($rootScope, $scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
               contribution, assemblyID, campaignID, componentID, container, containerID, containerIndex,
-              localStorageService, Contributions, Etherpad, $translate, logService) {
+              localStorageService, Contributions, Etherpad, $translate, logService, ContributionDirectiveBroadcast) {
         init();
         verifyAuthorship($scope, localStorageService, Contributions);
         function init() {
@@ -313,7 +325,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 if($scope.contribution.type == "BRAINSTORMING") {
                   logService.logAction("DELETE_CONTRIBUTION");
                 }
-                deleteContribution($scope,localStorageService, Contributions, logService);
+                deleteContribution($scope,localStorageService, Contributions, logService, $rootScope);
                 $uibModalInstance.dismiss('cancel');
             };
 
@@ -394,11 +406,16 @@ appCivistApp.controller('ContributionModalCtrl',
             } else {
                 $rootScope.stopSpinner();
             }
+
+            $scope.broadcastUpdateContributions = function () {
+                ContributionDirectiveBroadcast.prepForUpdateContributions();
+            };
         }
     });
 
 appCivistApp.controller('ContributionCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
-													 FileUploader, Contributions, $translate, Etherpad, usSpinnerService) {
+													 FileUploader, Contributions, $translate, Etherpad,
+                                                     usSpinnerService, ContributionDirectiveBroadcast) {
 
 	init();
 	verifyAuthorship($scope, localStorageService, Contributions);
@@ -465,12 +482,16 @@ appCivistApp.controller('ContributionCtrl', function($rootScope, $scope, $http, 
             $rootScope.stopSpinner();
         }
 
+        $scope.broadcastUpdateContributions = function () {
+            ContributionDirectiveBroadcast.prepForUpdateContributions();
+        };
 	}
 });
 
 appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
                                                              Contributions, Campaigns, Assemblies, Etherpad,
-                                                             WorkingGroups, $translate, logService, usSpinnerService) {
+                                                             WorkingGroups, $translate, logService,
+                                                         usSpinnerService, ContributionDirectiveBroadcast) {
     init();
 
     // TODO: improve efficiency by using angularjs filters instead of iterating through arrays
@@ -502,6 +523,10 @@ appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $ht
         }
 
         $rootScope.startSpinner();
+
+        $scope.broadcastUpdateContributions = function () {
+            ContributionDirectiveBroadcast.prepForUpdateContributions();
+        };
     }
 
     /**
@@ -616,7 +641,8 @@ appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $ht
 });
 
 appCivistApp.controller('CommentsController', function($rootScope, $scope, $http, $routeParams, localStorageService,
-													   Contributions, $translate, logService, usSpinnerService) {
+													   Contributions, $translate, logService,
+                                                       usSpinnerService, ContributionDirectiveBroadcast) {
 	init();
 	initializeNewReplyModel();
 
@@ -672,8 +698,12 @@ appCivistApp.controller('CommentsController', function($rootScope, $scope, $http
 		}
 
         $scope.delete = function () {
-			deleteContribution($scope, localStorageService, Contributions, logService);
+			deleteContribution($scope, localStorageService, Contributions, logService, $rootScope);
 		};
+
+        $scope.broadcastUpdateContributions = function () {
+            ContributionDirectiveBroadcast.prepForUpdateContributions();
+        };
 	}
 
 	function initializeNewReplyModel() {
@@ -1050,6 +1080,7 @@ function createNewContribution (scope, Contributions, logService, rootScope) {
                     'CREATE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
                     'CREATE_COMMENT' : 'CREATE_CONTRIBUTION';
                 logService.logAction(action, "CONTRIBUTION", resourceId);
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
 			},
 			function (error) {
 				console.log("Error creating the contribution: " + angular.toJson(error.statusText));
@@ -1065,6 +1096,7 @@ function createNewContribution (scope, Contributions, logService, rootScope) {
                     'CREATE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
                     'CREATE_COMMENT' : 'CREATE_CONTRIBUTION';
                 logService.logAction(action, "CONTRIBUTION", null);
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
 			}
 	);
 }
@@ -1088,6 +1120,7 @@ function updateContribution(scope, Contributions, logService, rootScope) {
                     logService.logAction("UPDATE_COMMENT", "COMMENT",  scope.contribution.uuid, scope.user.email);
                 }
                 if(rootScope.startSpinner) rootScope.stopSpinner();
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
             },
             function (error) {
                 console.log("Error in update");
@@ -1101,6 +1134,7 @@ function updateContribution(scope, Contributions, logService, rootScope) {
                     logService.logAction("UPDATE_COMMENT", "COMMENT", null, scope.user.email);
                 }
                 if(rootScope.startSpinner) rootScope.stopSpinner();
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
             }
         );
     }
@@ -1196,9 +1230,10 @@ function verifyAuthorship (scope, localStorageService, Contributions) {
 	}
 }
 
-function deleteContribution (scope, localStorageService, Contributions, logService) {
+function deleteContribution (scope, localStorageService, Contributions, logService, rootScope) {
 	var confirmed = confirm("Are you sure you want to delete this contribution?");
     if(scope.userIsAuthor && confirmed) {
+        if(rootScope.startSpinner) rootScope.startSpinner();
 		var deleteRes = Contributions.contributionSoftRemoval(scope.assemblyID, scope.contribution.contributionId).update();
         var type = scope.contribution.type;
         var resourceId = scope.contribution.uuid;
@@ -1214,6 +1249,8 @@ function deleteContribution (scope, localStorageService, Contributions, logServi
                         'DELETE_COMMENT' : 'DELETE_CONTRIBUTION';
 
                     logService.logAction(action, "CONTRIBUTION", resourceId);
+                    if(rootScope.startSpinner) rootScope.stopSpinner();
+                    if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
                 },
 				function (error) {
 					console.log("Contribution cannot be deleted: "+error.statusMessage);
@@ -1224,6 +1261,8 @@ function deleteContribution (scope, localStorageService, Contributions, logServi
                         'DELETE_COMMENT' : 'DELETE_CONTRIBUTION';
 
                     logService.logAction(action, "CONTRIBUTION", null);
+                    if(rootScope.startSpinner) rootScope.stopSpinner();
+                    if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
 				}
 		);
 	}

@@ -19,17 +19,17 @@
 				  </div>
 				  <div class="form-group row">
 						<div class="col-xs-4">
-					  	<label for="profileFirstName">First Name</label>
-				 			<input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | trnalate}}" ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.firstname">
+					  	<label for="profileFirstName">{{'First Name'|translate}}</label>
+				 			<input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | translate}}" ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.firstname">
 						</div>
 						<div class="col-xs-4">
-							<label for="profileLastName">Last Name</label>
+							<label for="profileLastName">{{'Last Name'|translate}}</label>
 					 		<input type="text" class="form-control" id="profileLastName" placeholder="{{'Last Name' | translate}}" ng-blur="blurReset()" ng-model="profile.lastname">
 						</div>
 				  </div>
 					<div class="form-group row">
 						<div class="col-xs-8">
-						  <label for="profileUsername">Username</label>
+						  <label for="profileUsername">{{'Username'|translate}}</label>
 						  <input type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}" ng-blur="blurReset()" ng-model="profile.username">
 						</div>
 				  </div>
@@ -38,7 +38,7 @@
 				<div class="col-md-4 col-sm-4">
 		      <!--Profile Picture -->
 					<div class="form-group">
-						  <label for="profilePicUpload">Change Profile Picture</label>
+						  <label for="profilePicUpload">{{'Change Profile Picture'|translate}}</label>
 							<br>
 							<img class="profilePic" src="{{user.profilePic.urlLargeString}}" />
 					  	<input type="file" id="profilePicUpload">
@@ -48,7 +48,7 @@
 			<div class="row">
 				<div class="col-md-12 col-sm-12">
 					<div class="col-md-12 col-sm-12">
-						<button type="submit" class="btn btn-primary" ng-click="updateProfile()">Update Profile</button>
+						<button type="submit" class="btn btn-primary" ng-click="updateProfile()">{{'Update Profile'|translate}</button>
 					</div>
 				</div>
 			</div>

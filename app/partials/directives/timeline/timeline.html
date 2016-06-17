@@ -5,7 +5,7 @@
             ng-repeat="component in components track by $index">
             <h4 ng-if="component.timeline === 1">
                 <!--<a ng-href="#/assembly/{{assemblyID}}/campaign/{{campaignID}}/{{component.componentId}}">-->
-                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;{{component.title}}</strong>
+                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;{{component.title | translate}}</strong>
                 <!--</a>-->
             </h4>
         </li>

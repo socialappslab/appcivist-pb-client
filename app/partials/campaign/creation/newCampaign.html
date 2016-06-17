@@ -11,15 +11,15 @@
             <div class="col-md-10">
                     <uib-tabset>
                         <uib-tab ng-repeat="step in steps track by $index"
-                                 heading="{{step.title}}"
+                                 heading="{{step.title | translate}}"
                                  active="step.active"
                                  disable="step.disabled"
                                  ng-click="createCampaign(step, { fastrack:false })">
                             <uib-tab-heading>
                                 <h4>
-                                    <strong>{{step.title}}</strong>
+                                    <strong>{{step.title | translate}}</strong>
                                     <i class="fa fa-question-circle" tooltip-placement="right"
-                                       uib-tooltip="{{tab.info}}" ng-show="step.info!=''"></i>
+                                       uib-tooltip="{{tab.info | translate}}" ng-show="step.info!=''"></i>
                                 </h4>
                             </uib-tab-heading>
                             <div ng-include="step.template"></div>

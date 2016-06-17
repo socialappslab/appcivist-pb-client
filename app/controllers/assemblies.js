@@ -195,6 +195,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             }
         }
 
+        // TODO: process selected assemblies
         $scope.createNewAssembly = function(step) {
             if (step === 1) {
                 console.log("Creating assembly with name = "+$scope.newAssembly.name);

@@ -2971,4 +2971,16 @@ i {
   border-bottom-color: transparent;
 }
 
+.modal-body {
+  max-height: 600px;
+}
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
 /*# sourceMappingURL=app.css.map */

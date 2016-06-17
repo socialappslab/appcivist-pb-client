@@ -50,7 +50,7 @@
                     <div class="radio">
                         <label>
                             <input type="radio" name="membership" id="openRadio" value="OPEN"
-                                   ng-model="newAssembly.profile.membership"> {{'Open'|translate}}
+                                   ng-model="newAssembly.profile.membership"> {{'Opened'|translate}}
                         </label>
                     </div>
                     <div class="radio">
@@ -163,7 +163,7 @@
             </div>
             <div id="assemblyThemes" class="col-md-12 form-group" >
                 <label for="inputTheme" class="control-label">{{'assembly.newAssemblystep1.text4' | translate}}*</label>
-                <input class="form-control" id="inputTheme" name="themes" placeholder="{{e.g, Housing | translate}}" ng-model="themes"/>
+                <input class="form-control" id="inputTheme" name="themes" placeholder="{{'e.g, Housing' | translate}}" ng-model="themes"/>
                 <div class="col-md-12 voffset3"></div>
                 <div class="col-md-8 col-sm-8"></div>
                 <div class="col-md-4 col-sm-4">
@@ -242,7 +242,7 @@
             <div id="assemblyInvitationsEmails" class="col-md-12">
                 <label class="control-label">
                     {{'Invitation Email' | translate}}
-                    <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsEmailTooltip}}"></i>
+                    <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail'|translate}}"></i>
                 </label>
                 <textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6"
                         translate="assembly.newAssemblystep1.text5"
@@ -265,8 +265,8 @@
                     <label>
                         <input type="checkbox" ng-model="newAssembly.listed"/>
                         <strong>
-                            {{'Do you want your assembly to be listed?' | translate}}
-                            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.listedAssemblyTooltip}}"></i>
+                            <span translate="Do you want your Assembly to be listed?"></span>
+                            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
                         </strong>
                     </label>
                 </div>

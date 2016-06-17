@@ -16,10 +16,10 @@
         <div ng-if="assemblies.length > 0">
             <div class="col-sm-6 col-md-6 col-xs-12"
                  ng-repeat="assembly in assemblies | filter:assemblyFilter">
-                <div class="thumbnail assembly col-lg-2 col-md-2 col-sm-2 col-xs-4" id="assembly{{assembly.assemblyId}}">
+                <div class="thumbnail assembly col-lg-2 col-md-2 col-sm-2 col-xs-4" id="assembly{{assembly.uuid}}">
                     <div class="image-circle">
-                        <a ng-class="selectedAssemblies[assembly.assemblyId] ? 'assemblySelected' : '' "
-                           ng-click="selectAssembly(assembly.assemblyId)">
+                        <a ng-class="selectedAssemblies[assembly.uuid] ? 'assemblySelected' : '' "
+                           ng-click="selectAssembly(assembly.uuid)">
                             <img data-src="{{assembly.profile.icon}}"
                                  alt="{{assembly.name | limitTo: 10}}" src="../assets/images/dublin.jpg"
                                  data-holder-rendered="true" class="image-circle"/>

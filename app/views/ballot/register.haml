@@ -23,6 +23,6 @@
     .form-group
       %label{:for => "signature"}
         {{'Signature' | translate}}
-      %input.form-control{:name => "signature", :placeholder => "Enter your ballot paper signature", "ng-model" => "signature", :required => true, :type => "text", "ng-minlength" => 1}
+      %input.form-control{:name => "signature", :placeholder => "{{'Enter your ballot paper signature' | translate}}", "ng-model" => "signature", :required => true, :type => "text", "ng-minlength" => 1}
     %button.btn.btn-default{"ng-click" => "loadBallotPaper()", :type => "submit"}
       {{'Load my votes' | translate}}

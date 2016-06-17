@@ -3,7 +3,7 @@
         <form name="newCampaignForm3">
             <uib-accordion close-others="oneAtATime">
                 <uib-accordion-group
-                        heading="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : '' }}"
+                        heading="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : '' | translate}}"
                         is-open="component.active"
                         ng-if="component.enabled"
                         is-disabled="component.linked"

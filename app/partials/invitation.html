@@ -12,7 +12,7 @@
                         <label for="email" class="col-md-3 control-label">{{'Email' | translate}}</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" id="email" name="email"
-                                   placeholder="Email" required ng-model="newInvitation.email"/>
+                                   placeholder="{{'Email' | translate}}" required ng-model="newInvitation.email"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -20,7 +20,7 @@
                         <div class="col-md-9">
                             <textarea class="form-control" id="text" rows="6"
                                       ng-model="newInvitation.invitationEmail"
-                                      placeholder="Hello! This is an invitation from AppCivist. Join us!">
+                                      placeholder="{{'Hello! This is an invitation from AppCivist. Join us!' | translate}}">
                             </textarea>
                         </div>
                     </div>

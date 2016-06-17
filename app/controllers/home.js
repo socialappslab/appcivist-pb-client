@@ -34,7 +34,8 @@
             'New Assembly', 'New Campaign', 'New Working Group',
             'My Assemblies', 'My Campaigns', 'My Working Groups',
             'No assemblies to show.', 'No current campaigns to show.',
-            'No working groups to show.'
+            'No working groups to show.', 'Upcoming Campaigns', 'Ongoing Campaigns',
+            'Past Campaigns'
         ];
 
         $translate($scope.translations).then (
@@ -59,21 +60,21 @@
                 //};
 
                 $scope.sideBoxes['upCampaigns'] = {
-                    title: $scope.translations["Upcoming"]+" "+$scope.translations["Campaigns"],
+                    title: $scope.translations["Upcoming Campaigns"],
                     type: "CAMPAIGNS",
                     itemList: [],
                     errorMessage: $scope.translations["No campaigns to show."]
                 };
 
                 $scope.sideBoxes['onCampaigns'] = {
-                    title: $scope.translations["Ongoing"]+" "+$scope.translations["Campaigns"],
+                    title: $scope.translations["Ongoing Campaigns"],
                     type: "CAMPAIGNS",
                     itemList: [],
                     errorMessage: $scope.translations["No campaigns to show."]
                 };
 
                 $scope.sideBoxes['pastCampaigns'] = {
-                    title: $scope.translations["Past"]+" "+$scope.translations["Campaigns"],
+                    title: $scope.translations["Past Campaigns"],
                     type: "CAMPAIGNS",
                     itemList: [],
                     errorMessage: $scope.translations["No campaigns to show."]

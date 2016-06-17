@@ -9,12 +9,35 @@
                         is-disabled="component.linked"
                         ng-repeat="component in newCampaign.proposalComponents track by $index">
 
+                    <uib-accordion-heading>
+                        <span translate="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : ''}}"></span>
+                    </uib-accordion-heading>
+
                     <div class="box descriptionBox" ng-include="component.descriptionTemplate"></div>
 
                     <section id="contributionTemplateSections"
                              class="form-group"
                              ng-if="component.contributionTemplate.length!=undefined">
                         <label class="control-label col-md-12 col-sm-12 col-xs-12">{{'creation.components.newCampaign3.text1' | translate}}</label>
+
+                        <div class="grayBox col-sm-12 col-md-12">
+                            <label class="label-control">{{'Added Sections' | translate}}</label>
+                            <div class="caption assembly-tags-container-content">
+                                <ul class="tags" ng-repeat="section in component.contributionTemplate track by $index">
+                                    <li class="tag"
+                                        ng-class="section.defaultSection ? 'tag-caution' : 'tag-filter'">
+                                        <span class="glyphicon glyphicon-remove"
+                                              aria-hidden="true"
+                                              ng-if="!section.defaultSection"
+                                              ng-click="removeContributionTemplateSection($index, component)"></span>
+                                        {{section.title}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <label class="control-label col-md-12 col-sm-12 col-xs-12">{{'Additional sections' | translate}}</label>
+
                         <div class="col-md-4 col-sm-4 col-xs-12">
                             <span for="inputSectionTitle">{{'Section Title' | translate}}</span></span>
                         </div>
@@ -50,21 +73,6 @@
                             </button>
                         </div>
                         <div class="col-md-12 voffset3"></div>
-                        <div class="grayBox col-sm-12 col-md-12">
-                            <label class="label-control">{{'Added Sections' | translate}}</label>
-                            <div class="caption assembly-tags-container-content">
-                                <ul class="tags" ng-repeat="section in component.contributionTemplate track by $index">
-                                    <li class="tag"
-                                        ng-class="section.defaultSection ? 'tag-caution' : 'tag-filter'">
-                                        <span class="glyphicon glyphicon-remove"
-                                              aria-hidden="true"
-                                              ng-if="!section.defaultSection"
-                                              ng-click="removeContributionTemplateSection($index, component)"></span>
-                                        {{section.title}}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </section>
 
                     <section id="{{config.key}}" ng-repeat="config in component.configs track by $index">

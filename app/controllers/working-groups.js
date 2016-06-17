@@ -438,7 +438,8 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.translations = [
             'Campaign', 'Campaigns', 'Ongoing', 'Upcoming', 'Past',
             'New Campaign', 'New Working Group',
-            'No campaigns to show.'
+            'No campaigns to show.', ,
+            'Upcoming Campaigns', 'Ongoing Campaigns', 'Past Campaigns'
         ];
 
         $translate($scope.translations).then (
@@ -446,21 +447,21 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 $scope.translations = translations;
 
                 $scope.sideBoxes['upCampaigns'] = {
-                    title: $scope.translations["Upcoming"]+" "+$scope.translations["Campaigns"],
+                    title: $scope.translations["Upcoming Campaigns"],
                     type: "CAMPAIGNS",
                     itemList: [],
                     errorMessage: $scope.translations["No campaigns to show."]
                 };
 
                 $scope.sideBoxes['onCampaigns'] = {
-                    title: $scope.translations["Ongoing"]+" "+$scope.translations["Campaigns"],
+                    title: $scope.translations["Ongoing Campaigns"],
                     type: "CAMPAIGNS",
                     itemList: [],
                     errorMessage: $scope.translations["No campaigns to show."]
                 };
 
                 $scope.sideBoxes['pastCampaigns'] = {
-                    title: $scope.translations["Past"]+" "+$scope.translations["Campaigns"],
+                    title: $scope.translations["Past Campaigns"],
                     type: "CAMPAIGNS",
                     itemList: [],
                     errorMessage: $scope.translations["No campaigns to show."]

@@ -188,18 +188,18 @@
         <uib-tabset justified="true" class="campaigntabs">
             <uib-tab class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
                      ng-repeat="tab in contentTabs"
-                     heading="tab.title | translate"
+                     heading="{{tab.title|translate}}"
                      active="tab.active"
                      ng-if="tab.showInComponent[component.title.toLowerCase()]">
                 <uib-tab-heading>
                     <h4>
-                        <strong ng-if="tab.title!='Winning Proposals'" translate="tab.title"></strong>
+                        <strong ng-if="tab.title!='Winning Proposals'" translate="{{tab.title}}"></strong>
                         <strong ng-if="tab.title==='Winning Proposals'">
-                            <strong translate="tab.title"></strong>
+                            <strong translate="{{tab.title}}"></strong>
                             ({{'future feature' | translate}})
                         </strong>
                         <i class="fa fa-question-circle" tooltip-placement="left"
-                           uib-tooltip="{{tab.tooltip | translate}}"></i>
+                           uib-tooltip="{{ tab.tooltip | translate}}"></i>
                     </h4>
                 </uib-tab-heading>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-md-12 col-xs-12 voffset4">

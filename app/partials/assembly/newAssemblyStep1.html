@@ -163,13 +163,17 @@
             </div>
             <div id="assemblyThemes" class="col-md-12 form-group" >
                 <label for="inputTheme" class="control-label">{{'assembly.newAssemblystep1.text4' | translate}}*</label>
-                <input class="form-control" id="inputTheme" name="themes" placeholder="{{'e.g, Housing' | translate}}" ng-model="themes"/>
+                <input class="form-control"
+                       id="inputTheme"
+                       placeholder="{{'e.g, Housing' | translate}}"
+                       ng-model="themes.list"/>
                 <div class="col-md-12 voffset3"></div>
                 <div class="col-md-8 col-sm-8"></div>
                 <div class="col-md-4 col-sm-4">
-                    <a ng-click="addTheme(themes)">
+                    <a ng-click="addTheme(themes.list)">
                         <img data-src="holder.js/100x100" alt="Add Theme" src="../assets/images/addIcon.png"
-                             style="cursor: pointer; height: 25px; width:25px; display: inline-block;" data-holder-rendered="true" class="image-circle">
+                             style="cursor: pointer; height: 25px; width:25px; display: inline-block;"
+                             data-holder-rendered="true" class="image-circle">
                     </a>
                     <h5 style="display: inline-block;">{{'Add to list' | translate}}</h5>
                 </div>
@@ -192,12 +196,12 @@
                     {{'Invite people to join' | translate}}
                     <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsTooltip}}"></i>
                 </label>
-                <textarea class="form-control" id="invitees" rows="4" ng-model="inviteesEmails"></textarea>
+                <textarea class="form-control" id="invitees" rows="4" ng-model="inviteesEmails.list"></textarea>
 
                 <div class="col-md-12 voffset3"></div>
                 <div class="col-md-8 col-sm-8"></div>
                 <div class="col-md-4 col-sm-4">
-                    <a ng-click="addEmailsToList(inviteesEmails)">
+                    <a ng-click="addEmailsToList(inviteesEmails.list)">
                         <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
                              style="cursor: pointer; height: 25px; width:25px; display: inline-block;" data-holder-rendered="true" class="image-circle">
                     </a>
@@ -209,8 +213,8 @@
                     <tr>
                         <th class="remove-column"></th>
                         <th class="email-column">{{'Email' | translate}}</th>
-                        <th class="coordinator-column">{{'Coordinator' | translate}}</th>
-                        <th class="moderator-column">{{'Moderator' | translate}}</th>
+                        <th ng-if="newAssembly.profile.coordinators==='two'" class="coordinator-column">{{'Coordinator' | translate}}</th>
+                        <th ng-if="newAssembly.profile.moderators==='two'" class="moderator-column">{{'Moderator' | translate}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -219,14 +223,14 @@
                             <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeInvitee($index)"></span>
                         </td>
                         <td class="email-column">{{invitee.email}}</td>
-                        <td class="coordinator-column">
+                        <td ng-if="newAssembly.profile.coordinators==='two'" class="coordinator-column">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" ng-model="invitee.coordinator"/>
                                 </label>
                             </div>
                         </td>
-                        <td class="moderator-column">
+                        <td ng-if="newAssembly.profile.moderators==='two'" class="moderator-column">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" ng-model="invitee.moderator"/>

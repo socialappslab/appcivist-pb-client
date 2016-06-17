@@ -1188,10 +1188,11 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
                 results: !moment().local().isAfter(voteStart),
 				assess: !moment().local().isBetween(campaignStart,assessmentEnd),
 				editCampaign: $scope.userIsMember
-					&& $scope.assembly.profile != undefined
-					&& ( ( $scope.assembly.profile.managementType === "OPEN")
-							|| ( $scope.isRightRole("COORDINATOR") )
-				       )
+						&& $scope.assembly
+						&& $scope.assembly.profile != undefined
+						&& ( ( $scope.assembly.profile.managementType === "OPEN")
+								|| ( $scope.isRightRole("COORDINATOR") )
+						   )
 
 			};
 

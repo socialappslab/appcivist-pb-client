@@ -58,7 +58,7 @@
                             <li class="vertical-divider">
                                 &nbsp;
                             </li>
-                            <li ng-if="currentAssembly.themes.length > 0" ng-repeat="theme in currentAssembly.themes|limitTo:2" class="tag tag-filter">
+                            <li ng-if="currentAssembly.themes.length > 0" ng-repeat="theme in currentAssembly.themes" class="tag tag-filter">
                                 <strong>{{theme.title}}</strong>
                             </li>
                         </ul>

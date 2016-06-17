@@ -17,7 +17,7 @@
           .buttons
             %ul.list-unstyled.list-inline
               %li
-                %input.form-control{"ng-model" => "query", :placeholder => "Filter proposal by keywords", :type => "text"}
+                %input.form-control{"ng-model" => "query", :placeholder => "{{'Filter proposal by keywords' | translate}}", :type => "text"}
               %li
                 %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} {{'Voting Instructions' | translate}}
               -#%li

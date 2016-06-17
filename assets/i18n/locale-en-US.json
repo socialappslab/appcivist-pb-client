@@ -656,8 +656,17 @@
   "Max. 250 words":"Max. 250 words",
   "Search existing contributions...":"Search existing contributions...",
   "Add a public URL or upload a file":"Add a public URL or upload a file",
-  "Search oder contributions":"Search oder contributions",
   "Results":"Results",
   "Brainstorm":"New Idea",
-  "Organized by":"Organized by"
+  "Organized by":"Organized by",
+  "Search other contributions":"Search other contributions",
+  "What's up? ...":"What's up? ...",
+  "Search Comments...":"Search Comments...",
+  "First Name":"First Name",
+  "Last Name":"Last Name",
+  "Username":"Username",
+  "Enter keyword":"Enter keyword",
+  "Hello! This is an invitation from AppCivist. Join us!":"Hello! This is an invitation from AppCivist. Join us!",
+  "Enter your ballot paper signature":"Enter your ballot paper signature",
+  "Filter proposal by keywords":"Filter proposal by keywords"
 }

@@ -5,6 +5,19 @@
             <p>{{'definition.campaign' | translate}}</p>
         </div>
         <div class="row vertical-space-medium"></div>
+        <!-- Title -->
+        <div id="campaignTitle" class="row col-md-12 col-sm-12 form-horizontal">
+            <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched &&newCampaignForm1.goal.$invalid }">
+                <label for="inputDefineCampaignTitle" class="control-label">{{"Name your campaign" | translate}}*</label>
+                <input id="inputDefineCampaignTitle" name="goal"
+                       class="form-control"
+                       placeholder="{{'e.g., Develop proposals for PB Paris 2015' | translate}}"
+                       ng-model="newCampaign.title" ng-required="true" />
+                <div class="help-block" ng-messages="newCampaignForm1.goal.$error" ng-if="newCampaignForm1.goal.$touched">
+                    <p ng-message="required">{{'creation.components.newCampaign1.text1' | translate}}</p>
+                </div>
+            </div>
+        </div>
         <!-- Goal -->
         <div id="campaignGoal" class="row col-md-12 col-sm-12 form-horizontal">
             <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched &&newCampaignForm1.goal.$invalid }">

@@ -1,7 +1,7 @@
 <div class="view container section first-section invitation">
     <div id="section1" ng-if="invitation.email">
         <h1 class="main-title text-center">
-            {{'You have been invited to join AppCivist to participate in the' | translate}} <span translate="{{invitation.targetType}}"></span>
+            {{'You have been invited to join AppCivist to participate in the' | translate}} <span>{{invitation.targetType | translate}}</span>
             <b>{{invitation.targetType === 'ASSEMBLY' ? invitation.targetAssembly.name : invitation.targetGroup.name}}</b>
         </h1>
         <h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>

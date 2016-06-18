@@ -673,5 +673,17 @@
   "Deliberation configurations (in linked campaign)":"Konfigurationen zur Bearbeitung (in verknüpfter Kampagne)",
   "Voting configurations (in linked campaign)":"Konfigurationen zum Wahlvorgang (in verknüpfter Kampagne)",
   "Implementation configurations (in linked campaign)":"Konfigurationen zur Umsetzung (in verknüpfter Kampagne)",
-  "Additional sections":"Zusätzliche Passagen"
+  "Additional sections":"Zusätzliche Passagen",
+  "Change Profile Picture":"Profilbild ändern",
+  "Update Profile":"Profil aktualisieren",
+  "New Working Group":"Neue Arbeitsgruppe",
+  "New Campaign":"Neue Kampagne",
+  "Invite participants":"Teilnehmer einladen",
+  "Invite Participants":"Teilnehmer einladen",
+  "Campaigns of the Group":"Kampagnen des Konzerns",
+  "Select brainstorming contributions to develop":"Wählen Sie Ideen zu entwickeln",
+  "Choose from the list of members of the assembly":"Wählen Sie aus der Liste der Mitglieder der Versammlung",
+  "Part of":"Teil von",
+  "ASSEMBLY":"Versammlung",
+  "GROUP":"Arbeitsgruppe"
 }

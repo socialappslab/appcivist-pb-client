@@ -503,7 +503,9 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.userIsMember = false;
         $scope.userIsRequestedMember = false;
         $scope.userIsInvitedMember = false;
-        if (error.data.responseStatus === "NODATA" || error.data.responseStatus === "UNAUTHORIZED") {
+        if (error.data && error.data.responseStatus &&
+            (error.data.responseStatus === "NODATA" || error.data.responseStatus === "UNAUTHORIZED")
+        ){
             initializeWorkingGroupForNonMembers();
             initializeAssemblyCampaigns();
         } else {

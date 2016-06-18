@@ -409,7 +409,7 @@
   "views.ballot.start.text1":"The voting system your Assembly selected and configured for this campaign is", 
   "views.ballot.start.text2":"When you are ready to vote, click the button \"Start voting\".",
   "views.ballot.success.text1":"Congratulations on registering to vote. Your unique signature is",
-  "views.ballot.success.text2":"Please, copy and paste this in a local file to access your votes in the future.",
+  "views.ballot.success.text2":"Please copy and save this unique signature to access your vote in the future.",
   "views.ballot.success.text3":"Back to Registration",
   "views.ballot.summary.text1":"Your Voting Summary",
   "views.ballot.summary.text2":"Assigned scores (range)",

@@ -50,7 +50,8 @@ appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $locat
                             function (contribution) {
                                 $scope.candidates.push(contribution);
                                 var candidate = contribution;
-                                for (var j = 0; j < candidate.themes.length; j++) {
+                                var themesLength = candidate.themes ? candidate.themes.length : 0;
+                                for (var j = 0; j < themesLength; j++) {
                                     var theme = candidate.themes[j].title;
                                     if (theme in $scope.themeMap) {
                                         $scope.themeMap[theme][$scope.themeMap[theme].length] = candidate.title;
@@ -62,7 +63,7 @@ appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $locat
                                 }
                             },
                             function (error) {
-                                console.log("No contribution for candidate: "+candidatesArr[i]);
+                                console.log("No contribution for candidate: "+candidates[i]);
                             }
                         );
                     }

@@ -16,9 +16,9 @@
         .col-lg-12.col-md-12.col-sm-12.col-xs-12.right
           .buttons
             %ul.list-unstyled.list-inline
-              %li
-                %input.form-control{"ng-model" => "query", :placeholder => "{{'Filter proposal by keywords' | translate}}", :type => "text"}
-              %li
+              %li.col-lg-6.col-md-6.col-sm-6.col-xs-12.right
+                %input.col-lg-12.col-md-12.col-sm-12.col-xs-12.right.form-control{"ng-model" => "query", :placeholder => "{{'Filter proposal by keywords' | translate}}", :type => "text"}
+              %li.col-lg-6.col-md-6.col-sm-6.col-xs-12.right
                 %button.btn.btn-secondary{"data-target" => "#instructions", "data-toggle" => "modal", :type => "button"} {{'Voting Instructions' | translate}}
               -#%li
               -#  %button#save.btn.btn-success{"ng-click" => "saveBallot()", :type => "button"} Save

@@ -1,7 +1,7 @@
 <div class="view container section first-section invitation">
     <div id="section1" ng-if="invitation.email">
         <h1 class="main-title text-center">
-            {{'You have been invited to join AppCivist to participate in the' | translate}} {{invitation.targetType | translate}}
+            {{'You have been invited to join AppCivist to participate in the' | translate}} <span translate="invitation.targetType"></span>
             <b>{{invitation.targetType === 'ASSEMBLY' ? invitation.targetAssembly.name : invitation.targetGroup.name}}</b>
         </h1>
         <h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
@@ -20,7 +20,7 @@
     <div ng-if="!invitation.token && errors[0].responseStatus==='NOTAVAILABLE'">
         <h6 class="text-center bottom-info"></h6>
         <h1 class="main-title text-center">
-            {{'The invitation you are trying to access has been removed or has already expired.' translate}}
+            {{'The invitation you are trying to access has been removed or has already expired.' | translate}}
         </h1>
         <div class="voffset6"></div>
         <h6 class="text-center bottom-info"></h6>

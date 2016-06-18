@@ -312,6 +312,12 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             usSpinnerService.stop('spinner-1');
             $(angular.element.find('.spinner-container')).remove();
         }
+
+        $scope.$watch("newAssembly.name",function(newVal, oldval){
+            $translate('assembly.newAssemblystep1.text5', { newAssemblyName: $scope.newAssembly.name }).then(function (text) {
+                $scope.newAssembly.invitationEmail = text;
+            });
+        },true);
 	}
 
     function initializeNewAssembly() {

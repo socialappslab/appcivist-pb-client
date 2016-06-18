@@ -1245,16 +1245,19 @@ appCivistApp.factory('BallotCampaign', function($http, $resource, localStorageSe
 
 appCivistApp.factory('ContributionDirectiveBroadcast', function($rootScope) {
     var contributionDirective = {};
-
-    contributionDirective.message = '';
-
+    contributionDirective.CONTRIBUTION_CREATED = 'contributionCreated';
+    contributionDirective.CONTRIBUTION_UPDATED = 'contributionUpdated';
+    contributionDirective.CONTRIBUTION_DELETED = 'contributionDeleted';
+    contributionDirective.CONTRIBUTION_CREATE_ERROR = 'contributionCreateError';
+    contributionDirective.CONTRIBUTION_UPDATE_ERROR = 'contributionUpdateError';
+    contributionDirective.CONTRIBUTION_DELETE_ERROR = 'contributionDeleteError';
     contributionDirective.prepForUpdateContributions = function(msg) {
-        this.message = msg;
-        this.broadcastUpdateContributions();
+        var message = msg ? msg : contributionDirective.CONTRIBUTION_UPDATED;
+        this.broadcastUpdateContributions(message);
     };
 
-    contributionDirective.broadcastUpdateContributions = function() {
-        $rootScope.$broadcast('updateContributions');
+    contributionDirective.broadcastUpdateContributions = function(msg) {
+        $rootScope.$broadcast(msg);
     };
 
     return contributionDirective;

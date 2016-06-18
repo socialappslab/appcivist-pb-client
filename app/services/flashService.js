@@ -41,15 +41,17 @@ function FlashService($rootScope) {
         $rootScope.flash = {
             message: message,
             type: 'success',
-            keepAfterLocationChange: keepAfterLocationChange
+            keepAfterLocationChange: keepAfterLocationChange,
+            responseStatus: "OK"
         };
     }
 
-    function Error(message, keepAfterLocationChange) {
+    function Error(message, keepAfterLocationChange, responseStatus) {
         $rootScope.flash = {
             message: message,
             type: 'error',
-            keepAfterLocationChange: keepAfterLocationChange
+            keepAfterLocationChange: keepAfterLocationChange,
+            responseStatus: responseStatus
         };
     }
 
@@ -57,7 +59,8 @@ function FlashService($rootScope) {
         $rootScope.flash = {
             message: message,
             type: 'success',
-            keepAfterLocationChange: keepAfterLocationChange
+            keepAfterLocationChange: keepAfterLocationChange,
+            responseStatus: "OK"
         };
         $rootScope.showAlert(title, message, messageExtra, allowCancelOption);
     }
@@ -66,7 +69,8 @@ function FlashService($rootScope) {
         $rootScope.flash = {
             message: message,
             type: 'error',
-            keepAfterLocationChange: keepAfterLocationChange
+            keepAfterLocationChange: keepAfterLocationChange,
+            responseStatus: statusCode
         };
         var error = {responseStatus: statusCode, statusMessage: message};
         $rootScope.showError(error, resourceType, resourceId);

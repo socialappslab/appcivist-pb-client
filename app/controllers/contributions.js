@@ -12,7 +12,7 @@ var postingContributionFlag = false;
 
 appCivistApp.controller('NewContributionCtrl',
         function ($rootScope, $scope, $http, $routeParams, localStorageService, Contributions, $translate, logService,
-                  usSpinnerService, ContributionDirectiveBroadcast) {
+                  usSpinnerService, ContributionDirectiveBroadcast, FlashService) {
             init();
 
             function init() {
@@ -48,20 +48,24 @@ appCivistApp.controller('NewContributionCtrl',
                     }
                     $scope.response = {};
                     $scope.modalInstance = undefined;
-                    createNewContribution($scope, Contributions, logService, $rootScope);
+                    createNewContribution($scope, Contributions, logService, $rootScope, FlashService);
                 };
 
-                $scope.broadcastUpdateContributions = function () {
-                    ContributionDirectiveBroadcast.prepForUpdateContributions();
+                $scope.broadcastUpdateContributions = function (msg) {
+                    ContributionDirectiveBroadcast.prepForUpdateContributions(msg);
                 };
+
+                $scope.$on(ContributionDirectiveBroadcast.CONTRIBUTION_CREATE_ERROR, function() {
+                    $rootScope.showError($rootScope.flash.message, "CONTRIBUTION", null);
+                });
             }
         });
 
 appCivistApp.controller('NewContributionModalCtrl',
 		function ($rootScope, $scope, $uibModalInstance, Upload, FileUploader, $timeout, $http,
-				   assembly, campaign, contributions, themes, newContribution,
-				   newContributionResponse, cType, localStorageService, Contributions, Memberships,
-                   $translate, $location, logService, usSpinnerService, ContributionDirectiveBroadcast) {
+                  assembly, campaign, contributions, themes, newContribution, newContributionResponse,
+                  cType, localStorageService, Contributions, Memberships, $translate, $location,
+                  logService, usSpinnerService, ContributionDirectiveBroadcast, FlashService) {
 			init();
 
 			function init() {
@@ -114,7 +118,7 @@ appCivistApp.controller('NewContributionModalCtrl',
                     $scope.targetSpace = targetSpace;
                     $scope.response = {};
                     $scope.modalInstance = undefined;
-                    createNewContribution($scope, Contributions, logService, $rootScope);
+                    createNewContribution($scope, Contributions, logService, $rootScope, FlashService);
                 };
 
                 // Post contributions from Modal Window
@@ -124,7 +128,7 @@ appCivistApp.controller('NewContributionModalCtrl',
                     $scope.targetSpace = $scope.contributions;
                     $scope.response = $scope.newContributionResponse;
                     $scope.modalInstance = $uibModalInstance;
-                    createNewContribution($scope, Contributions, logService, $rootScope);
+                    createNewContribution($scope, Contributions, logService, $rootScope, FlashService);
                 };
 
                 $scope.cancel = function () {
@@ -144,8 +148,8 @@ appCivistApp.controller('NewContributionModalCtrl',
                     }
                 }
 
-                $scope.broadcastUpdateContributions = function () {
-                    ContributionDirectiveBroadcast.prepForUpdateContributions();
+                $scope.broadcastUpdateContributions = function (msg) {
+                    ContributionDirectiveBroadcast.prepForUpdateContributions(msg);
                 };
             }
 
@@ -153,7 +157,8 @@ appCivistApp.controller('NewContributionModalCtrl',
 
 appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope, $routeParams, $uibModal, $location,
                                                               localStorageService, Etherpad, Contributions, $translate,
-                                                              logService, usSpinnerService, ContributionDirectiveBroadcast) {
+                                                              logService, usSpinnerService, FlashService,
+                                                              ContributionDirectiveBroadcast) {
 
     init();
 
@@ -235,7 +240,7 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope
             if($scope.contribution.type == "BRAINSTORMING") {
               logService.logAction("DELETE_CONTRIBUTION");
             }
-            deleteContribution($scope,localStorageService, Contributions, logService, $rootScope);
+            deleteContribution($scope,localStorageService, Contributions, logService, $rootScope, FlashService);
             $uibModalInstance.dismiss('cancel');
 
         };
@@ -276,7 +281,8 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope
 appCivistApp.controller('ContributionModalCtrl',
     function ($rootScope, $scope, $uibModalInstance, $location, Upload, FileUploader, $timeout,
               contribution, assemblyID, campaignID, componentID, container, containerID, containerIndex,
-              localStorageService, Contributions, Etherpad, $translate, logService, ContributionDirectiveBroadcast) {
+              localStorageService, Contributions, Etherpad, $translate, logService, ContributionDirectiveBroadcast,
+              FlashService) {
         init();
         verifyAuthorship($scope, localStorageService, Contributions);
         function init() {
@@ -325,7 +331,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 if($scope.contribution.type == "BRAINSTORMING") {
                   logService.logAction("DELETE_CONTRIBUTION");
                 }
-                deleteContribution($scope,localStorageService, Contributions, logService, $rootScope);
+                deleteContribution($scope,localStorageService, Contributions, logService, $rootScope, FlashService);
                 $uibModalInstance.dismiss('cancel');
             };
 
@@ -335,7 +341,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.targetSpace = targetSpace;
                 $scope.response = {};
                 $scope.modalInstance = undefined;
-                createNewContribution($scope, Contributions, logService, $rootScope);
+                createNewContribution($scope, Contributions, logService, $rootScope, FlashService);
             };
 
             $scope.postContributionFromModal = function () {
@@ -343,7 +349,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.targetSpace = $scope.contributions;
                 $scope.response = $scope.newContributionResponse;
                 $scope.modalInstance = $uibModalInstance;
-                createNewContribution($scope, Contributions, logService, $rootScope);
+                createNewContribution($scope, Contributions, logService, $rootScope, FlashService);
             };
 
             $scope.changeWorkingGroupAuthor = function (workingAuthor) {
@@ -378,7 +384,7 @@ appCivistApp.controller('ContributionModalCtrl',
                 $scope.response = {};
                 $scope.modalInstance = $uibModalInstance;
                 // TODO: add invitations to commenters for the new group that will be created
-                createNewContribution($scope, Contributions, logService, $rootScope);
+                createNewContribution($scope, Contributions, logService, $rootScope, FlashService);
             };
 
             $scope.cancel = function () {
@@ -407,15 +413,15 @@ appCivistApp.controller('ContributionModalCtrl',
                 $rootScope.stopSpinner();
             }
 
-            $scope.broadcastUpdateContributions = function () {
-                ContributionDirectiveBroadcast.prepForUpdateContributions();
+            $scope.broadcastUpdateContributions = function (msg) {
+                ContributionDirectiveBroadcast.prepForUpdateContributions(msg);
             };
         }
     });
 
 appCivistApp.controller('ContributionCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
 													 FileUploader, Contributions, $translate, Etherpad,
-                                                     usSpinnerService, ContributionDirectiveBroadcast) {
+                                                     usSpinnerService, ContributionDirectiveBroadcast, FlashService) {
 
 	init();
 	verifyAuthorship($scope, localStorageService, Contributions);
@@ -482,16 +488,16 @@ appCivistApp.controller('ContributionCtrl', function($rootScope, $scope, $http, 
             $rootScope.stopSpinner();
         }
 
-        $scope.broadcastUpdateContributions = function () {
-            ContributionDirectiveBroadcast.prepForUpdateContributions();
+        $scope.broadcastUpdateContributions = function (msg) {
+            ContributionDirectiveBroadcast.prepForUpdateContributions(msg);
         };
 	}
 });
 
 appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
-                                                             Contributions, Campaigns, Assemblies, Etherpad,
-                                                             WorkingGroups, $translate, logService,
-                                                         usSpinnerService, ContributionDirectiveBroadcast) {
+                                                         Contributions, Campaigns, Assemblies, Etherpad,WorkingGroups,
+                                                         $translate, logService, usSpinnerService, $location,
+                                                         ContributionDirectiveBroadcast, FlashService) {
     init();
 
     // TODO: improve efficiency by using angularjs filters instead of iterating through arrays
@@ -499,6 +505,7 @@ appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $ht
     setCurrentCampaign($scope, localStorageService);
 
     function init() {
+        $rootScope.startSpinner();
         $scope.user = localStorageService.get('user');
         if ($scope.user && $scope.user.language)
             $translate.use($scope.user.language);
@@ -519,13 +526,33 @@ appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $ht
         }
 
         $scope.update = function () {
-            updateContribution($scope,Contributions, logService, $rootScope);
+            updateContribution($scope,Contributions, logService, $rootScope, FlashService);
         }
 
-        $rootScope.startSpinner();
+        $scope.delete = function () {
+            if($scope.contribution.type == "PROPOSAL") {
+                logService.logAction("DELETE_PROPOSAL");
+            }
+            if($scope.contribution.type == "BRAINSTORMING") {
+                logService.logAction("DELETE_CONTRIBUTION");
+            }
+            deleteContribution($scope,localStorageService, Contributions, logService, $rootScope, FlashService);
+        };
 
-        $scope.broadcastUpdateContributions = function () {
-            ContributionDirectiveBroadcast.prepForUpdateContributions();
+        $scope.$on(ContributionDirectiveBroadcast.CONTRIBUTION_DELETED, function() {
+            $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID);
+        });
+
+        $scope.$on(ContributionDirectiveBroadcast.CONTRIBUTION_DELETE_ERROR, function() {
+            $rootScope.showError($rootScope.flash.message,"CONTRIBUTION", $scope.contributionID);
+        });
+
+        $scope.$on(ContributionDirectiveBroadcast.CONTRIBUTION_UPDATE_ERROR, function() {
+            $rootScope.showError($rootScope.flash.message,"CONTRIBUTION", $scope.contributionID);
+        });
+
+        $scope.broadcastUpdateContributions = function (msg) {
+            ContributionDirectiveBroadcast.prepForUpdateContributions(msg);
         };
     }
 
@@ -634,6 +661,9 @@ appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $ht
             },
             function (error) {
                 $scope.stopSpinner();
+                var errorMsg = error.data ? error.data.statusMessage : "Server is offline";
+                var errorStatus = error.data ? error.data.responseStatus : "OFFLINE";
+                FlashService.ErrorWithModal(errorMsg, "CONTRIBUTION", $scope.contributionID, errorStatus, false);
                 console.log("There was an error loading the contribution: "+error);
             }
         );
@@ -698,11 +728,11 @@ appCivistApp.controller('CommentsController', function($rootScope, $scope, $http
 		}
 
         $scope.delete = function () {
-			deleteContribution($scope, localStorageService, Contributions, logService, $rootScope);
+			deleteContribution($scope, localStorageService, Contributions, logService, $rootScope, FlashService);
 		};
 
-        $scope.broadcastUpdateContributions = function () {
-            ContributionDirectiveBroadcast.prepForUpdateContributions();
+        $scope.broadcastUpdateContributions = function (msg) {
+            ContributionDirectiveBroadcast.prepForUpdateContributions(msg);
         };
 	}
 
@@ -1037,7 +1067,7 @@ appCivistApp.controller('AddAttachmentCtrl', function($rootScope, $scope, $http,
 /**
  * Functions common to all Contribution Controllers
  */
-function createNewContribution (scope, Contributions, logService, rootScope) {
+function createNewContribution (scope, Contributions, logService, rootScope, FlashService) {
 	scope.postingContributionFlag  = postingContributionFlag = true;
     if(rootScope.startSpinner) rootScope.startSpinner();
     if (!scope.newContribution.title || !scope.newContribution.title === "") {
@@ -1073,6 +1103,7 @@ function createNewContribution (scope, Contributions, logService, rootScope) {
 				}
                 scope.postingContributionFlag = postingContributionFlag = false;
                 if(rootScope.stopSpinner) rootScope.stopSpinner();
+                FlashService.Success("Contribution created!",false);
                 // Logging Usage
                 var resourceId = data.uuid;
                 var action = type == 'PROPOSAL' ?
@@ -1080,7 +1111,7 @@ function createNewContribution (scope, Contributions, logService, rootScope) {
                     'CREATE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
                     'CREATE_COMMENT' : 'CREATE_CONTRIBUTION';
                 logService.logAction(action, "CONTRIBUTION", resourceId);
-                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionCreated");
 			},
 			function (error) {
 				console.log("Error creating the contribution: " + angular.toJson(error.statusText));
@@ -1090,18 +1121,21 @@ function createNewContribution (scope, Contributions, logService, rootScope) {
                 scope.postingContributionFlag = postingContributionFlag = false;
                 if(rootScope.stopSpinner) rootScope.stopSpinner();
 
+                var errorMsg = error.data ? error.data.statusMessage : "Server is offline";
+                var errorStatus = error.data ? error.data.responseStatus : "OFFLINE";
+                FlashService.Error(errorMsg, false, errorStatus);
                 // Logging Usage
                 var action = type == 'PROPOSAL' ?
                     'CREATE_PROPOSAL' : type == 'BRAINSTORMING' ?
                     'CREATE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
                     'CREATE_COMMENT' : 'CREATE_CONTRIBUTION';
                 logService.logAction(action, "CONTRIBUTION", null);
-                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionCreateError");
 			}
 	);
 }
 
-function updateContribution(scope, Contributions, logService, rootScope) {
+function updateContribution(scope, Contributions, logService, rootScope, FlashService) {
     if(rootScope.startSpinner) rootScope.startSpinner();
     if(scope.userIsAuthor) {
         var updateRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId)
@@ -1119,8 +1153,9 @@ function updateContribution(scope, Contributions, logService, rootScope) {
                 if(scope.contribution.type == "COMMENT") {
                     logService.logAction("UPDATE_COMMENT", "COMMENT",  scope.contribution.uuid, scope.user.email);
                 }
+                FlashService.Success("Contribution updated!", false);
                 if(rootScope.startSpinner) rootScope.stopSpinner();
-                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionUpdated");
             },
             function (error) {
                 console.log("Error in update");
@@ -1133,8 +1168,11 @@ function updateContribution(scope, Contributions, logService, rootScope) {
                 if(scope.contribution.type == "COMMENT") {
                     logService.logAction("UPDATE_COMMENT", "COMMENT", null, scope.user.email);
                 }
+                var errorMsg = error.data ? error.data.statusMessage : "Server is offline";
+                var errorStatus = error.data ? error.data.responseStatus : "OFFLINE";
+                FlashService.Error(errorMsg, false, errorStatus);
                 if(rootScope.startSpinner) rootScope.stopSpinner();
-                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
+                if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionUpdateError");
             }
         );
     }
@@ -1230,7 +1268,7 @@ function verifyAuthorship (scope, localStorageService, Contributions) {
 	}
 }
 
-function deleteContribution (scope, localStorageService, Contributions, logService, rootScope) {
+function deleteContribution (scope, localStorageService, Contributions, logService, rootScope, FlashService) {
 	var confirmed = confirm("Are you sure you want to delete this contribution?");
     if(scope.userIsAuthor && confirmed) {
         if(rootScope.startSpinner) rootScope.startSpinner();
@@ -1240,8 +1278,9 @@ function deleteContribution (scope, localStorageService, Contributions, logServi
         var localScope = scope;
 		deleteRes.$promise.then(
 				function (response) {
-                    localScope.container.splice(localScope.containerIndex,1);
+                    if (localScope.container) localScope.container.splice(localScope.containerIndex,1);
 					console.log("Contribution deleted");
+                    FlashService.Success("Contribution Deleted!",false);
                     // Log Actions
                     var action = type == 'PROPOSAL' ?
                         'DELETE_PROPOSAL' : type == 'BRAINSTORMING' ?
@@ -1250,7 +1289,7 @@ function deleteContribution (scope, localStorageService, Contributions, logServi
 
                     logService.logAction(action, "CONTRIBUTION", resourceId);
                     if(rootScope.startSpinner) rootScope.stopSpinner();
-                    if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
+                    if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionDeleted");
                 },
 				function (error) {
 					console.log("Contribution cannot be deleted: "+error.statusMessage);
@@ -1260,9 +1299,12 @@ function deleteContribution (scope, localStorageService, Contributions, logServi
                         'DELETE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
                         'DELETE_COMMENT' : 'DELETE_CONTRIBUTION';
 
+                    var errorMsg = error.data ? error.data.statusMessage : "Server is offline";
+                    var errorStatus = error.data ? error.data.responseStatus : "OFFLINE";
+                    FlashService.Error(errorMsg, false, errorStatus);
                     logService.logAction(action, "CONTRIBUTION", null);
                     if(rootScope.startSpinner) rootScope.stopSpinner();
-                    if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions();
+                    if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionDeleteError");
 				}
 		);
 	}

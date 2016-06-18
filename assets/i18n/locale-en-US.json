@@ -375,7 +375,7 @@
   "Section Description":"Section Description",
   "Section Length":"Section Length",
   "Add section":"Add section",
-  "Added Sections":"Added Sections",
+  "Added Sections":"Default Sections",
   "creation.components.newCampaign3.text2":"An error has occurred while creating the campgaign: {{error}}",
   "creation.components.newCampaign3.text3":"An error has occurred configuring the template for the campaign: {{error}}",
   "creation.components.versioningDescription.text2":"<strong>Versioning </strong>is the process by which Working Groups develop proposals to their final form.",

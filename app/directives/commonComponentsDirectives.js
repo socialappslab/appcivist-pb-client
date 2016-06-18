@@ -243,7 +243,8 @@ appCivistApp.directive('campaignHeader', function() {
             content: '=',
             assembly: '=assembly',
             campaign: '=campaign',
-            component: '=component'
+            component: '=component',
+            isCampaignPage: '=iscampaign'
         }
     }
 });

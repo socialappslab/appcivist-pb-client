@@ -1,7 +1,11 @@
 <div class="campaignHeader">
     <div class="voffset3 col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
     <h2 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-        <strong>{{'Campaign'|translate}}:&nbsp;&nbsp;</strong><span ng-if="campaign!=null && campaign!=undefined">{{campaign.title}}</span>
+        <strong>{{'Campaign'|translate}}:&nbsp;&nbsp;</strong>
+        <span ng-if="campaign!=null && campaign!=undefined && isCampaignPage">{{campaign.title}}</span>
+        <a ng-if="!isCampaignPage" href="#/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}">
+            <span ng-if="campaign!=null && campaign!=undefined && !isCampaignPage">{{campaign.title}}</span>
+        </a>
     </h2>
     <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
         <span><strong>{{'Organized by'|translate}}&nbsp;&nbsp;<a href="#/assembly/{{assembly.assemblyId}}/forum">{{assembly.name}}</a></strong></span>

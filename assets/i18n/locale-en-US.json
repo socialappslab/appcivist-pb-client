@@ -636,7 +636,7 @@
   "Show Voting Instructions":"Show Voting Instructions",
   "Hide Voting Instructions":"Hide Voting Instructions",
   "Voting in Campaign Page":"Voting in Campaign Page",
-  "campaign.component.voting.instructions1":"Just head over the <strong>Proposals</strong> tab and you will see the voting options under each proposal",
+  "campaign.component.voting.instructions1":"Go to the <strong>Proposals</strong> tab and you will see the voting options under each proposal.",
   "Move to the Proposals Tab":"Move to the Proposals Tab",
   "Through the Voting Ballot":"Through the Voting Ballot",
   "campaign.component.voting.instructions2":"The Voting Ballot allows non-appcivist users to vote. They will have to first fill a Voting Registration form configured by the Assembly Coordinators.",
@@ -687,5 +687,9 @@
   "Update Profile":"Update Profile",
   "New Working Group":"New Working Group",
   "New Campaign":"New Campaign",
-  "Invite participants": "Invite participants"
+  "Invite participants": "Invite participants",
+  "Invite Participants": "Invite Participants",
+  "Campaign of the Group":"Campaigns of the Group",
+  "Select brainstorming contributions to develop":"Select brainstorming contributions to develop",
+  "Choose from the list of members of the assembly":"Choose from the list of members of the assembly"
 }

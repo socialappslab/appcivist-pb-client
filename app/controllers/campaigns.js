@@ -639,7 +639,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 	}
 });
 
-appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeParams, $location, $uibModal,
+appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $http, $routeParams, $location, $uibModal,
 														  localStorageService, Assemblies, WorkingGroups, Campaigns,
 														  Contributions, FlashService, $translate, $filter, moment,
 														  Ballot, Candidate, VotesByUser, NewBallotPaper, BallotPaper,
@@ -961,10 +961,15 @@ appCivistApp.controller('CampaignComponentCtrl', function($scope, $http, $routeP
 			$scope.showLinkToBallot=!$scope.showLinkToBallot;
 		}
 
-		$scope.$on('updateContributions', function() {
+		$scope.$on(ContributionDirectiveBroadcast.CONTRIBUTION_CREATED, function() {
 			$scope.reloadContributionsAndGroups();
+
+			// Reload the ballot
+			ballotInit($scope, localStorageService);
+
+			// todo Reload user's working groups
 		});
-    }
+	}
 
 	function userIsMemberSuccess (data) {
 		$scope.membership = data;

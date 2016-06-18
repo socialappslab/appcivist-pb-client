@@ -143,7 +143,7 @@ appCivistApp.controller('ConsensusResultsCtrl', function($scope, $controller, $h
                 colorSet: "voteColors",
                 theme: 'theme2',
                 title: {
-                    text: "Consensus Results"
+                    text: "Plurality Results"
 
                 },
                 animationEnabled: true,

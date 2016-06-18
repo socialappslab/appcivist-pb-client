@@ -272,6 +272,10 @@ appCivistApp.controller('ErrorModalCtrl', function($scope, $rootScope, $translat
 	function init() {
 
 		$scope.error = error;
+		var errorMsg = error.data ? error.data.statusMessage : "Server is offline";
+		var errorStatus = error.data ? error.data.responseStatus : "OFFLINE";
+		$scope.errorMsg = errorMsg;
+		$scope.errorStatus = errorStatus;
 		$scope.resourceType = resourceType;
 		$scope.resourceId = resourceId;
 		$scope.supportContact = supportContact;

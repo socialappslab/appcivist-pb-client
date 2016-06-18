@@ -1,9 +1,12 @@
 appCivistApp.filter('capitalize', function() {
-    return function(input) {
-        return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    return function(input, all) {
+        var reg = (all) ? /([^\W_]+[^\s-]*) */g : /([^\W_]+[^\s-]*)/;
+        var result = (!!input) ? input.replace(reg, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }) : '';
+        return result;
     }
 });
-
 
 appCivistApp.filter("ContributionsByTheme", function () {
     return function (contributions, themeTitle) {

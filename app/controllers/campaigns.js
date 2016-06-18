@@ -884,6 +884,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 
 		$scope.reloadContributionsAndGroups = function() {
 			// Get list of contributions from server
+			if ($scope.contributions && $scope.contributions.length > 0) {
+				$scope.contributions.splice(0,$scope.contributions.length);
+			}
 			$scope.contributions = Contributions.contributionInResourceSpace($scope.campaign.resourceSpaceId).query();
 			$scope.contributions.$promise.then(
 					function (data) {
@@ -901,7 +904,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 					}
 			);
 
-			// Get list of working groups from server
+			// Get list of working groups for the campaign from server
 			$scope.workingGroups = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).query();
 			$scope.workingGroups.$promise.then(
 					function (data) {
@@ -912,6 +915,27 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 						console.log(JSON.stringify(error));
 						FlashService.Error("Error loading campaign contributions from server"); 
 					}
+			);
+
+			// Get and update the list of working groups of the user from the server
+
+
+			$scope.userWorkingGroups = Memberships.workingGroups($scope.user.userId).query();
+			$scope.userWorkingGroups.$promise.then(
+				function (data) {
+					$scope.userWorkingGroups = [];
+
+					for (var i = 0; i < data.length; i += 1) {
+						if (data[i].membershipType === 'GROUP') {
+							$scope.userWorkingGroups.push(data[i].workingGroup);
+						}
+					}
+
+					localStorageService.set("workingGroups", $scope.userWorkingGroups);
+				},
+				function (error) {
+					console.log("Error loading user working groups");
+				}
 			);
 
 			$timeout(function(){

@@ -11,7 +11,7 @@
         <!-- Campaign Select if no campaign has been selected -->
         <div ng-if="selectCampaign" id="campaignSelect" class="row col-md-12 col-sm-12">
             <label for="selectCampaignOfAssembly" class="no-padding col-sm-12 col-lg-12 col-md-12 col-xs-12 control-label">
-                {{'Main campaign of the Group:'|translate}}*</label>
+                {{'Campaigns of the Group'|translate}}:*</label>
             <div class="voffset4"></div>
                 <select id="selectCampaignOfAssembly" name="workingGroupAuthors"
                         class="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-model="campaignId"
@@ -60,7 +60,7 @@
                 <div class="col-md-4">
                     <div class="col-md-4">
                         <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-                             accept="image/*" ngf-max-size="2MB">
+                             accept="image/*" ngf-max-size="10MB">
                             <img data-src="holder.js/100x100" alt="Upload a picture"
                                  src="../assets/images/addIcon.png" data-holder-rendered="true"
                                  class="image-circle"/>

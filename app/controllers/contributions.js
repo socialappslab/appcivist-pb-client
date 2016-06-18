@@ -1102,7 +1102,6 @@ function createNewContribution (scope, Contributions, logService, rootScope, Fla
 					scope.replyParent.boxIsOpen = false;
 				}
                 scope.postingContributionFlag = postingContributionFlag = false;
-                if(rootScope.stopSpinner) rootScope.stopSpinner();
                 FlashService.Success("Contribution created!",false);
                 // Logging Usage
                 var resourceId = data.uuid;
@@ -1111,6 +1110,7 @@ function createNewContribution (scope, Contributions, logService, rootScope, Fla
                     'CREATE_BRAINSTORMING_CONTRIBUTION' : type == 'COMMENT' ?
                     'CREATE_COMMENT' : 'CREATE_CONTRIBUTION';
                 logService.logAction(action, "CONTRIBUTION", resourceId);
+                if(rootScope.stopSpinner) rootScope.stopSpinner();
                 if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionCreated");
 			},
 			function (error) {

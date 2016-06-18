@@ -15,10 +15,10 @@
             <p ng-if="cType === 'BRAINSTORMING'">{{'new.contribution.brainstorming' | translate}}</p>
             <h1 ng-if="cType === 'PROPOSAL'"><strong>{{'New Proposal' | translate}}</strong></h1>
             <p ng-if="cType === 'PROPOSAL'">{{'new.contribution.proposal' | translate}}</p>
-            <span ng-if="newContributionResponse!=undefined && newContributionResponse.hasErrors">
-                <label class="alert alert-danger" translate="{{'error.creation.contribution'}}"></label>
-                <label class="alert alert-danger">{{newContributionResponse.errors.statusMessage}}</label>
-            </span>
+            <!--<span ng-if="newContributionResponse!=undefined && newContributionResponse.hasErrors">-->
+                <!--<label class="alert alert-danger" translate="{{'error.creation.contribution'}}"></label>-->
+                <!--<label class="alert alert-danger">{{newContributionResponse.errors.statusMessage}}</label>-->
+            <!--</span>-->
         </div>
         <div class="modal-body view col-md-12 col-sm-12">
             <div class="row col-md-12 col-sm-12">

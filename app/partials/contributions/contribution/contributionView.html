@@ -114,7 +114,8 @@
 
         <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
         <div class="modal-footer view col-md-12 col-sm-12">
-            <button class="btn btn-danger" type="button" ng-if="userIsAuthor" ng-click="delete()">{{'Delete'|translate}}</button>
+            <!--REMOVED DELETE FROM CONTRIBUTION MODAL IN PROPOSALS AND NOTES -->
+            <button class="btn btn-danger" type="button" ng-if="userIsAuthor && contribution.type === 'BRAINSTORMING'" ng-click="delete()">{{'Delete'|translate}}</button>
         </div>
     </div>
 </div>

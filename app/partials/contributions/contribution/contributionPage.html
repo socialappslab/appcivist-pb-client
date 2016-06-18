@@ -1,10 +1,18 @@
 <div class="view col-md-12 col-sm-12" id="contributionPage">
-    <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1" />
+    <campaign-header
+            assembly="assembly"
+            campaign="campaign"
+            component="component">
+    </campaign-header>
+
     <div id="contributionSummary" class="row col-md-9 col-sm-9">
             <h3>
                 <strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read' | translate }}{{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}</strong>
                 <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="update()">
                     {{'Update' | translate}} {{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}
+                </button>
+                <button class="btn btn-danger" type="button" ng-if="editContribution && userIsAuthor" ng-click="delete()">
+                    {{'Delete'|translate}}
                 </button>
 
             </h3>

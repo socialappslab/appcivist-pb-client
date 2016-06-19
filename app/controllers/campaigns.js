@@ -1000,7 +1000,10 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 			// Reload the ballot
 			ballotInit($scope, localStorageService);
 
-			// todo Reload user's working groups
+		});
+
+		$scope.$on(ContributionDirectiveBroadcast.PROPOSAL_CREATED, function() {
+			$scope.changeToTab("proposals");
 		});
 	}
 

@@ -1248,6 +1248,7 @@ appCivistApp.factory('ContributionDirectiveBroadcast', function($rootScope) {
     contributionDirective.CONTRIBUTION_CREATED = 'contributionCreated';
     contributionDirective.CONTRIBUTION_UPDATED = 'contributionUpdated';
     contributionDirective.CONTRIBUTION_DELETED = 'contributionDeleted';
+    contributionDirective.PROPOSAL_CREATED = 'proposalCreated';
     contributionDirective.CONTRIBUTION_CREATE_ERROR = 'contributionCreateError';
     contributionDirective.CONTRIBUTION_UPDATE_ERROR = 'contributionUpdateError';
     contributionDirective.CONTRIBUTION_DELETE_ERROR = 'contributionDeleteError';

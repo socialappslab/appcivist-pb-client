@@ -1125,6 +1125,9 @@ function createNewContribution (scope, Contributions, logService, rootScope, Fla
                 logService.logAction(action, "CONTRIBUTION", resourceId);
                 if(rootScope.stopSpinner) rootScope.stopSpinner();
                 if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("contributionCreated");
+                if (data.type==='PROPOSAL'){
+                    if(scope.broadcastUpdateContributions) scope.broadcastUpdateContributions("proposalCreated");
+                }
 			},
 			function (error) {
 				console.log("Error creating the contribution: " + angular.toJson(error.statusText));

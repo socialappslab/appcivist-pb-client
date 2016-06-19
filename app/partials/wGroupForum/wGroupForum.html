@@ -90,8 +90,9 @@
                     <div class="voffset3"></div>
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
-                            <li class="contribution" ng-repeat="contribution in proposals | orderBy: 'creation' | filter:{type:'PROPOSAL'} track by $index">
-                                <div style="height: 500px;">
+                            <li class="contribution"
+                                ng-repeat="contribution in proposals | orderBy: 'creation' | filter:{type:'PROPOSAL'} track by $index">
+                                <div style="height: 500px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <contribution contribution="contribution"
                                                   assemblyid="assemblyID"
                                                   container="proposals"
@@ -108,7 +109,7 @@
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
                             <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'BRAINSTORMING'} track by $index">
-                                <div style="height: 350px;">
+                                <div style="height: 350px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <contribution contribution="contribution"
                                                   assemblyid="assemblyID"
                                                   container="contributions"

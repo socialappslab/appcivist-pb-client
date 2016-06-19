@@ -1155,8 +1155,10 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 
 				// if a $scope.component has not been selected yet, check if this component (c) is current
 				if (!$scope.component) {
-					var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm');
-					var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm');
+					var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm').local();
+					startMoment.hour(0);startMoment.minute(0);
+					var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm').local();
+					endMoment.hour(0);endMoment.minute(0);
 					//, and we are in the right dates,
 					// this component to current
 					if (moment().local().isBetween(startMoment, endMoment)) {
@@ -1216,19 +1218,29 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 			$scope.milestonesMap = localStorageService.get("currentMilestonesMap");
 		}
 
-		var campaignStart = moment($scope.campaign.startDate, 'YYYY-MM-DD HH:mm');
+		var campaignStart = moment($scope.campaign.startDate, 'YYYY-MM-DD HH:mm').local();
+		campaignStart.hour(0);campaignStart.minute(0);
 		var brainstormingEnd = $scope.milestonesMap['end_brainstorming'] ?
-				moment($scope.milestonesMap['end_brainstorming'].date, 'YYYY-MM-DD HH:mm') : null;
+				moment($scope.milestonesMap['end_brainstorming'].date, 'YYYY-MM-DD HH:mm').local() : null;
+		brainstormingEnd.hour(0);brainstormingEnd.minute(0);
 		var wGroupFormationEnd = $scope.milestonesMap['end_wgroups_creation'] ?
-				moment($scope.milestonesMap['end_wgroups_creation'].date, 'YYYY-MM-DD HH:mm') : null;
+				moment($scope.milestonesMap['end_wgroups_creation'].date, 'YYYY-MM-DD HH:mm').local() : null;
+		wGroupFormationEnd.hour(0);wGroupFormationEnd.minute(0);
 		var proposalsEnd = $scope.milestonesMap['end_proposals'] ?
-				moment($scope.milestonesMap['end_proposals'].date, 'YYYY-MM-DD HH:mm') : null;
+				moment($scope.milestonesMap['end_proposals'].date, 'YYYY-MM-DD HH:mm').local() : null;
+		proposalsEnd.hour(0);proposalsEnd.minute(0);
+
 		var voteStart = $scope.milestonesMap['start_voting'] ?
-				moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm') : null;
+				moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
+		voteStart.hour(0);voteStart.minute(0);
+
 		var voteEnd = $scope.milestonesMap['end_voting'] ?
-				moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm') : null;
+				moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
+		voteEnd.hour(0);voteEnd.minute(0);
+
 		var assessmentEnd = $scope.milestonesMap['end_assessment'] ?
-				moment($scope.milestonesMap['end_assessment'].date, 'YYYY-MM-DD HH:mm') : null;
+				moment($scope.milestonesMap['end_assessment'].date, 'YYYY-MM-DD HH:mm').local() : null;
+		assessmentEnd.hour(0);assessmentEnd.minute(0);
 
 		$scope.disableButton = {
 				contribute: !moment().local().isBetween(campaignStart, brainstormingEnd),

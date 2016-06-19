@@ -41,8 +41,6 @@
                                    is-open="milestone.calOpened"
                                    min-date="newCampaign.campaignTimeframeStartDate"
                                    max-date="newCampaign.campaignTimeframeEndDate"
-                                   datepicker-options="dateOptions"
-                                   date-disabled="disabled(date, mode)"
                                    ng-change="updateMilestoneValue(newCampaign.milestones[$index].date, $index)"
                                    ng-required="true"
                                    close-text="Close"/>

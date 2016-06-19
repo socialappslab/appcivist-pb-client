@@ -687,6 +687,20 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
             ];
             configDict['Voting'] = [
                 {
+                    position: -1,
+                    key: "component.voting.ballot.password.title",
+                    description: "Choose a Password for the Ballot",
+                    type: "title"
+                },
+                {
+                    position: 0,
+                    key: "component.voting.ballot.password",
+                    description: "Ballot Password",
+                    type: "input",
+                    inputType: "text",
+                    value: "123456"
+                },
+                {
                     position: 1,
                     key: "component.voting.system",
                     description: "Select the voting system",

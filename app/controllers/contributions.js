@@ -539,7 +539,8 @@ appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $ht
         }
 
         $scope.update = function () {
-            updateContribution($scope,Contributions, logService, $rootScope, FlashService);
+
+            updateContribution($scope, Contributions, logService, $rootScope, FlashService);
         }
 
         $scope.delete = function () {
@@ -1154,6 +1155,10 @@ function createNewContribution (scope, Contributions, logService, rootScope, Fla
 function updateContribution(scope, Contributions, logService, rootScope, FlashService) {
     if(rootScope.startSpinner) rootScope.startSpinner();
     if(scope.userIsAuthor) {
+        delete scope.contribution.authors;
+        delete scope.contribution.firstAuthor;
+        delete scope.contribution.campaignIds;
+        delete scope.contribution.assemblyId;
         var updateRes = Contributions.contribution(scope.assemblyID, scope.contribution.contributionId)
             .update(scope.contribution);
 

@@ -185,6 +185,10 @@ appCivistApp.controller('ConsensusResultsCtrl', function($scope, $controller, $h
     }
 
     function getContributionInfo (uuid) {
-        return $scope.contributionsIndex[uuid] ? $scope.contributionsIndex[uuid].title : "";
+        if ($scope.contributionsIndex && $scope.contributionsIndex[uuid]) {
+            return $scope.contributionsIndex[uuid].title;
+        } else {
+            "";
+        }
     }
 });

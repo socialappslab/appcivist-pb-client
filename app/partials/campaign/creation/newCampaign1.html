@@ -50,8 +50,7 @@
                     <label for="inputBudget" class="control-label">{{"What's the budget to allocate?" | translate}}</label>
                     <input id="inputBudget" name="budget" class="form-control"
                            ng-model="newCampaign.config.budget"
-                           model-format="currency"
-                           placeholder="{{newCampaign.config.budget}}">
+                           placeholder="{{newCampaign.config.budget | translate}}">
                 </div>
             </div>
         </div>

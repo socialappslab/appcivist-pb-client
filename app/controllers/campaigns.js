@@ -470,7 +470,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 	function prepareCampaignToCreate() {
 		var newCampaign = {};
-		newCampaign.title = $scope.newCampaign.goal; // campaign and goal are now the same, title will be removed from API
+		newCampaign.title = newCampaign.title ? newCampaign.title : $scope.newCampaign.goal;
 		newCampaign.goal = $scope.newCampaign.goal;
 		newCampaign.listed = $scope.newCampaign.listed;
 		newCampaign.themes = $scope.newCampaign.themes;

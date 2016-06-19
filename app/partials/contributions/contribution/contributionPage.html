@@ -1,112 +1,115 @@
 <div class="view col-md-12 col-sm-12" id="contributionPage">
-    <campaign-header
-            assembly="assembly"
-            campaign="campaign"
-            component="component">
-    </campaign-header>
 
     <div id="contributionSummary" class="row col-md-9 col-sm-9">
-            <h3>
-                <strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read' | translate }}{{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}</strong>
-                <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="update()">
-                    {{'Update' | translate}} {{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}
-                </button>
-                <button class="btn btn-danger" type="button" ng-if="editContribution && userIsAuthor" ng-click="delete()">
-                    {{'Delete'|translate}}
-                </button>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+            <campaign-header
+                    assembly="assembly"
+                    campaign="campaign"
+                    component="component">
+            </campaign-header>
+        </div>
+        <h3>
+            <strong>{{(editContribution && userIsAuthor) ? 'Edit ' : 'Read' | translate }}{{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}</strong>
+            <button ng-if="editContribution && userIsAuthor" class="btn btn-success center" ng-click="update()">
+                {{'Update' | translate}} {{contribution.type === 'PROPOSAL' ? 'Proposal' : 'Contribution' | translate}}
+            </button>
+            <button class="btn btn-danger" type="button" ng-if="editContribution && userIsAuthor" ng-click="delete()">
+                {{'Delete'|translate}}
+            </button>
 
-            </h3>
-            <div class="voffset4"></div>
-            <div class="col-md-12 col-sm-12">
-                <ul class="contribution-header-list col-md-12 col-sm-12">
-                    <li class="contribution-header-list-element col-md-12 col-sm-12">
-                        <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>{{'Title' | translate}}</strong></h4>
-                        </span>
-                        <span class="list-description col-md-10 col-sm-10">
-                            <h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.title}}</strong></h4>
-                            <input ng-if="editContribution && userIsAuthor" class="form-control" ng-model="contribution.title"/>
-                        </span>
-                    </li>
-                    <li class="contribution-header-list-element col-md-12 col-sm-12">
-                        <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>{{'Summary' | translate}}</strong></h4>
-                        </span>
-                        <span class="list-description col-md-10 col-sm-10">
-                            <h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.text}}</strong></h4>
-                            <textarea ng-if="editContribution && userIsAuthor" class="form-control" rows="3" ng-model="contribution.text"></textarea>
-                        </span>
-                    </li>
-                    <!--<li class="contribution-header-list-element col-md-12 col-sm-12">-->
-                        <!--<span class="list-title col-md-1 col-sm-1">-->
-                            <!--<h4><strong>Location</strong></h4>-->
-                        <!--</span>-->
-                        <!--<span class="list-description col-md-10 col-sm-10">-->
-                            <!--<h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.location.placeName}}</strong></h4>-->
-                            <!--<input ng-if="editContribution && userIsAuthor" class="form-control" ng-model="contribution.location.placeName"/>-->
-                        <!--</span>-->
-                    <!--</li>-->
-                    <li class="contribution-header-list-element col-md-12 col-sm-12">
-                        <span class="list-title col-md-1 col-sm-1">
-                            <h4><strong>{{'Themes' | translate}}</strong></h4>
-                        </span>
-                        <span class="inline col-md-10 col-sm-10">
-                            <div class="row col-md-12 col-sm-12">
-                                <ul class="tags tags-filter" ng-repeat="theme in contribution.themes track by $index">
-                                    <li class="tag tag-filter">
-                                        <strong>
-                                            {{theme.title}}
-                                            <span ng-if="editContribution && userIsAuthor" ng-click="contribution.themes.splice($index,1);">x</span>
-                                        </strong>
-                                    </li>
-                                </ul>
-                            </div>
-                        </span>
-                    </li>
-                </ul>
-            </div>
-            <div id="contributionEtherpad" class="col-md-10 col-sm-10">
-                <div class="contribution col-md-12 col-sm-12">
-                    <iframe ng-if="!userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
-                            width="100%" height="600px">
-                    </iframe>
-                    <iframe ng-if="(contribution.type === 'NOTE') || (userIsAuthor && contribution.type === 'PROPOSAL')" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
-                            width="100%" height="600px">
-                    </iframe>
-                </div>
-            </div>
-            <div class="col-md-10 col-sm-10">
-                <div class="col-md-6 col-sm-6">
-                    <h4><strong>{{'Similar Proposals' | translate}} ({{'coming soon' | translate}})</strong></h4>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <h4><strong>{{'contribution.contributionpage.text1' | translate}}</strong></h4>
-                    <div class="row col-md-12 col-sm-12">
-                        <div class="col-md-10 col-sm-10 no-padding">
-                            <input type="text" class="form-control " placeholder="{{'Search oder contributions' | translate}}" ng-model="contributionBasedFilter">
+        </h3>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 voffset4"></div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+            <ul class="contribution-header-list col-md-12 col-sm-12">
+                <li class="contribution-header-list-element col-md-12 col-sm-12">
+                    <span class="list-title col-md-1 col-sm-1">
+                        <h4><strong>{{'Title' | translate}}</strong></h4>
+                    </span>
+                    <span class="list-description col-md-10 col-sm-10">
+                        <h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.title}}</strong></h4>
+                        <input ng-if="editContribution && userIsAuthor" class="form-control" ng-model="contribution.title"/>
+                    </span>
+                </li>
+                <li class="contribution-header-list-element col-md-12 col-sm-12">
+                    <span class="list-title col-md-1 col-sm-1">
+                        <h4><strong>{{'Summary' | translate}}</strong></h4>
+                    </span>
+                    <span class="list-description col-md-10 col-sm-10">
+                        <h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.text}}</strong></h4>
+                        <textarea ng-if="editContribution && userIsAuthor" class="form-control" rows="3" ng-model="contribution.text"></textarea>
+                    </span>
+                </li>
+                <!--<li class="contribution-header-list-element col-md-12 col-sm-12">-->
+                    <!--<span class="list-title col-md-1 col-sm-1">-->
+                        <!--<h4><strong>Location</strong></h4>-->
+                    <!--</span>-->
+                    <!--<span class="list-description col-md-10 col-sm-10">-->
+                        <!--<h4 ng-if="!(editContribution && userIsAuthor)"><strong>{{contribution.location.placeName}}</strong></h4>-->
+                        <!--<input ng-if="editContribution && userIsAuthor" class="form-control" ng-model="contribution.location.placeName"/>-->
+                    <!--</span>-->
+                <!--</li>-->
+                <li class="contribution-header-list-element col-md-12 col-sm-12">
+                    <span class="list-title col-md-1 col-sm-1">
+                        <h4><strong>{{'Themes' | translate}}</strong></h4>
+                    </span>
+                    <span class="inline col-md-10 col-sm-10">
+                        <div class="row col-md-12 col-sm-12">
+                            <ul class="tags tags-filter" ng-repeat="theme in contribution.themes track by $index">
+                                <li class="tag tag-filter">
+                                    <strong>
+                                        {{theme.title}}
+                                        <span ng-if="editContribution && userIsAuthor" ng-click="contribution.themes.splice($index,1);">x</span>
+                                    </strong>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="col-md-2 col-sm-2">
-                            <button class="btn btn-success">{{'Add' | translate}}</button>
-                        </div>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div id="contributionEtherpad" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                <iframe ng-if="!userIsAuthor && contribution.type === 'PROPOSAL'" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}"
+                        width="100%" height="600px">
+                </iframe>
+                <iframe ng-if="(contribution.type === 'NOTE') || (userIsAuthor && contribution.type === 'PROPOSAL')" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                        width="100%" height="600px">
+                </iframe>
+            </div>
+        </div>
+        <div class="col-md-10 col-sm-10">
+            <div class="col-md-6 col-sm-6">
+                <h4><strong>{{'Similar Proposals' | translate}} ({{'coming soon' | translate}})</strong></h4>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <h4><strong>{{'contribution.contributionpage.text1' | translate}}</strong></h4>
+                <div class="row col-md-12 col-sm-12">
+                    <div class="col-md-10 col-sm-10 no-padding">
+                        <input type="text" class="form-control " placeholder="{{'Search oder contributions' | translate}}" ng-model="contributionBasedFilter">
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <button class="btn btn-success">{{'Add' | translate}}</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="sidebar" class="row col-md-2 col-sm-2">
-            <div class="row col-md-12 col-sm-12">
+    </div>
+
+    <div id="sidebar" class="row col-md-2 col-sm-2">
+            <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                 <img ng-if="contribution.type!='PROPOSAL'" ng-src="{{contribution.authors[0].profilePic.urlLargeString}}" alt="100x100" data-holder-rendered="true" class="image-circle">
                 <img ng-if="contribution.type==='PROPOSAL'" ng-src="{{workingGroup.profile.icon}}" alt="100x100" data-holder-rendered="true" class="image-circle">
 
-                <div class="voffset2"></div>
+                <div class="voffset2 col-lg-12 col-md-12 col-sm-12 col-xs-12 "></div>
                 <h4>{{'Created by' | translate}}
                     <strong ng-if="contribution.type!='PROPOSAL'">{{contribution.authors[0].name}}</strong>
                     <strong ng-if="contribution.type==='PROPOSAL'">{{workingGroup.name}}</strong>
                 </h4>
-                <div class="voffset2"></div>
+                <div class="voffset2 col-lg-12 col-md-12 col-sm-12 col-xs-12 "></div>
                 <button ng-if="editContribution && userIsAuthor && contribution.type==='PROPOSAL'" class="btn btn-success center" ng-click="openInvitationModal">{{'Invite people to join' | translate}}</button>
-                <div class="voffset2"></div>
+                <div class="voffset2 col-lg-12 col-md-12 col-sm-12 col-xs-12 "></div>
                 <h4 class="center" ng-if="contribution.type==='PROPOSAL'"><strong>{{'WG' | translate}} {{'Members' | translate}}</strong></h4>
-                <div class="voffset2"></div>
+                <div class="voffset2 col-lg-12 col-md-12 col-sm-12 col-xs-12 "></div>
                 <div class="row list-item assembliesList ng-if="contribution.type==='PROPOSAL'"">
                     <div class="row">
                         <div class="assemblyItem item" ng-repeat="membership in workingGroupMembers">
@@ -120,18 +123,18 @@
                     </div>
                 </div>
             </div>
-            <div class="row voffset4"></div>
-            <div class="row col-md-12 col-sm-12 box settingsBox" ng-if="contribution">
-                <attachments attachments="contribution.attachments"
+            <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 voffset4"></div>
+            <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 box settingsBox" ng-if="contribution">
+                <attachments
+                             attachments="contribution.attachments"
                              newattach="newAttachment"
                              contribution="contribution"
                              assemblyid="assemblyID"
                              showtitle="true"></attachments>
             </div>
-            <div class="voffset2"></div>
-            <h4 class="center"><strong>{{'Merges' | translate}} & {{'Splits' | translate}}</strong><i class="fa fa-question-circle"></i></h4>
-            <button class="btn btn-success center">{{'Propose merge' | translate}} ({{'coming soon' | translate}})</button>
-            <button class="btn btn-success center">{{'Propose split' | translate}} ({{'coming soon' | translate}})</button>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 voffset2"></div>
+            <h4 class="center col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"><strong>{{'Merges' | translate}} & {{'Splits' | translate}}</strong><i class="fa fa-question-circle"></i></h4>
+            <button class="btn btn-success center-block">{{'Propose merge' | translate}} ({{'coming soon' | translate}})</button>
+            <button class="btn btn-success center-block">{{'Propose split' | translate}} ({{'coming soon' | translate}})</button>
         </div>
-    </div>
 </div>

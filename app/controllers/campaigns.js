@@ -532,6 +532,9 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			for (var i = 0; i<components.length; i+=1) {
 				var component = components[i];
 				if((component.enabled && component.active)||(component.enabled && component.linked)) {
+					if (component && component.key === 'Proposalmaking') {
+						component.templates = [{ templateSections : component.contributionTemplate }];
+					}
 					newCampaign.components.push(component);
 				}
 				// Make sure start dates are not null

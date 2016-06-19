@@ -248,7 +248,14 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope
         $scope.getEtherpadReadOnlyUrl = Etherpad.getEtherpadReadOnlyUrl;
 
         $scope.openContributionPage = function(cID, edit)  {
-            $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+            if ($scope.campaignID === null || $scope.campaignID === undefined ) {
+                if ($scope.contribution && $scope.contribution.campaignIds && $scope.contribution.campaignIds.length > 0) {
+                    $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
+                }
+            } else {
+                $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+            }
+
             if (edit) {
               if ($scope.contribution.type=="PROPOSAL") {
                 logService.logAction("OPEN_EDIT_PROPOSAL");
@@ -394,7 +401,13 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.getEtherpadReadOnlyUrl = Etherpad.getEtherpadReadOnlyUrl;
 
             $scope.openContributionPage = function(cID, edit)  {
-                $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+                if ($scope.campaignID === null || $scope.campaignID === undefined) {
+                    if ($scope.contribution && $scope.contribution.campaignIds && $scope.contribution.campaignIds.length > 0) {
+                        $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
+                    }
+                } else {
+                    $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+                }
                 $uibModalInstance.dismiss('cancel');
             };
 

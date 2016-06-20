@@ -406,6 +406,18 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 $location.url("/invitation/"+$scope.membership.invitationToken);
             }
         };
+        $scope.approveMember = function (member) {
+            var res = Memberships.updateStatus(member.membershipId, "ACCEPTED").update(member);
+            res.$promise.then(
+                function (data) {
+                    member.status = "ACCEPTED";
+                },
+                function (error) {
+                    FlashService.Error("membership approval failed");
+                }
+            );
+        };
+
     }
 
     function initScopeContent () {

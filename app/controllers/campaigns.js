@@ -1222,25 +1222,25 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 		campaignStart.hour(0);campaignStart.minute(0);
 		var brainstormingEnd = $scope.milestonesMap['end_brainstorming'] ?
 				moment($scope.milestonesMap['end_brainstorming'].date, 'YYYY-MM-DD HH:mm').local() : null;
-		brainstormingEnd.hour(0);brainstormingEnd.minute(0);
+		if (brainstormingEnd) brainstormingEnd.hour(0);brainstormingEnd.minute(0);
 		var wGroupFormationEnd = $scope.milestonesMap['end_wgroups_creation'] ?
 				moment($scope.milestonesMap['end_wgroups_creation'].date, 'YYYY-MM-DD HH:mm').local() : null;
-		wGroupFormationEnd.hour(0);wGroupFormationEnd.minute(0);
+		if (wGroupFormationEnd) wGroupFormationEnd.hour(0);wGroupFormationEnd.minute(0);
 		var proposalsEnd = $scope.milestonesMap['end_proposals'] ?
 				moment($scope.milestonesMap['end_proposals'].date, 'YYYY-MM-DD HH:mm').local() : null;
-		proposalsEnd.hour(0);proposalsEnd.minute(0);
+		if(proposalsEnd) proposalsEnd.hour(0);proposalsEnd.minute(0);
 
 		var voteStart = $scope.milestonesMap['start_voting'] ?
 				moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
-		voteStart.hour(0);voteStart.minute(0);
+		if (voteStart) voteStart.hour(0);voteStart.minute(0);
 
 		var voteEnd = $scope.milestonesMap['end_voting'] ?
 				moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
-		voteEnd.hour(0);voteEnd.minute(0);
+		if (voteEnd) voteEnd.hour(0);voteEnd.minute(0);
 
 		var assessmentEnd = $scope.milestonesMap['end_assessment'] ?
 				moment($scope.milestonesMap['end_assessment'].date, 'YYYY-MM-DD HH:mm').local() : null;
-		assessmentEnd.hour(0);assessmentEnd.minute(0);
+		if (assessmentEnd) assessmentEnd.hour(0);assessmentEnd.minute(0);
 
 		$scope.disableButton = {
 				contribute: !moment().local().isBetween(campaignStart, brainstormingEnd),

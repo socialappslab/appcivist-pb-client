@@ -10,8 +10,7 @@
  * 		/views
  */
 
-console.log("Welcome to AppCivist!");
-
+(function() {
 var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard'];
@@ -251,6 +250,12 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
             controller: 'InvitationCtrl',
             templateUrl: 'app/partials/verify.html'
         })
+
+        // temporary new templates integration
+        .when('/v2/assembly/:aid/campaign/:cid',{
+          controller: 'v2.CampaignCtrl',
+          templateUrl: 'app/partials/v2/campaign/single-campaign-screen.html'
+        })
         .otherwise({
             redirectTo : '/'
         });
@@ -337,9 +342,9 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
         var sessionKey = localStorageService.get('sessionKey');
         var user = localStorageService.get("user");
 
-        if (!nonRestrictedPage && !authenticated
-            && (sessionKey === null || sessionKey === undefined || sessionKey === "" )
-            && (user === null || user === undefined)) {
+        if (!nonRestrictedPage && !authenticated && 
+            (sessionKey === null || sessionKey === undefined || sessionKey === "" ) && 
+            (user === null || user === undefined)) {
             $location.path('/');
         }
     });
@@ -361,10 +366,10 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
                 controller: 'ErrorModalCtrl',
                 size: 'lg',
                 resolve: {
-                    error: function () { return error;},
-                    resourceType: function () { return rType;},
-                    resourceId: function () { return rId},
-                    supportContact: function () {return $rootScope.supportContact }
+                    error: function () { return error; },
+                    resourceType: function () { return rType; },
+                    resourceId: function () { return rId; },
+                    supportContact: function () {return $rootScope.supportContact; }
                 }
             });
 
@@ -388,10 +393,10 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
                 controller: 'AlertModalCtrl',
                 size: 'lg',
                 resolve: {
-                    title: function () { return title;},
-                    message: function () { return message;},
-                    messageExtra: function () { return messageExtra;},
-                    allowCancelOption: function () { return allowCancelOption}
+                    title: function () { return title; },
+                    message: function () { return message; },
+                    messageExtra: function () { return messageExtra; },
+                    allowCancelOption: function () { return allowCancelOption; }
                 }
             });
 
@@ -408,25 +413,25 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
     $rootScope.startSpinner = function(){
         $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
         usSpinnerService.spin('spinner-1');
-    }
+    };
 
     $rootScope.stopSpinner = function(){
         usSpinnerService.stop('spinner-1');
         $(angular.element.find('[spinner-key="spinner-1"]')[0]).removeClass('spinner-container');
-    }
+    };
 
     // global spinner by key
     $rootScope.startSpinnerByKey = function(key){
-        var element = '[spinner-key="'+key+'"]'
+        var element = '[spinner-key="'+key+'"]';
         $(angular.element.find(key)[0]).addClass('spinner-container');
         usSpinnerService.spin(key);
-    }
+    };
 
     $rootScope.stopSpinnerByKey = function(key){
-        var element = '[spinner-key="'+key+'"]'
+        var element = '[spinner-key="'+key+'"]';
         usSpinnerService.stop(key);
         $(angular.element.find(element)[0]).removeClass('spinner-container');
-    }
+    };
 }
 
 /**
@@ -440,7 +445,7 @@ function pathIsNotRestricted(path) {
   var pathMatch = allowedPaths.filter( function (ap) {
         return path.match(ap);
       });
-  return (pathMatch.length > 0)
+  return (pathMatch.length > 0);
 }
 
 /**
@@ -462,3 +467,8 @@ function selectBackendServer(hostname, apis) {
         return apis.development;
     }
 }
+
+// expose global variables
+window.appCivistApp = appCivistApp;
+
+}());

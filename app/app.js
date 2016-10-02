@@ -13,7 +13,7 @@
 (function() {
 var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
-    'tmh.dynamicLocale', 'ngclipboard'];
+    'tmh.dynamicLocale', 'ngclipboard', 'ui.router'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var appcivist = {
@@ -107,7 +107,7 @@ appCivistApp.run(run);
  * @type {string[]}
  */
 config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
-    'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider'];
+    'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider', '$stateProvider'];
 
 /**
  * Configuration of the app, executed before everything else.
@@ -119,7 +119,7 @@ config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$
  * @param localStorageServiceProvider
  */
 function config($routeProvider, $locationProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
-                localStorageServiceProvider, $translateProvider, tmhDynamicLocaleProvider) {
+                localStorageServiceProvider, $translateProvider, tmhDynamicLocaleProvider, $stateProvider) {
 
     /**
      * Whitelist of external domains/URLs allowed to be queried (e.g., the etherpad server)
@@ -140,6 +140,39 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         .setPrefix('appcivist')
         .setStorageType('sessionStorage')
         .setNotify(true,true);
+
+
+		// temporary new templates integration
+		$stateProvider.state('v2',{
+			url: '/v2',
+			abstract: true,	
+			templateUrl: 'app/partials/v2/main.html',
+      controller: function($rootScope) {
+        $rootScope.ui = {
+          v2: true
+        };
+      }
+		})
+		.state('v2.assembly',{
+      url: '/assembly',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+		.state('v2.assembly.aid',{
+      url: '/:aid',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+		.state('v2.assembly.aid.campaign',{
+      url: '/campaign',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+		.state('v2.assembly.aid.campaign.cid',{
+			url: '/:cid',
+			controller: 'v2.CampaignCtrl',
+			templateUrl: 'app/partials/v2/campaign/single-campaign-screen.html'
+		});
 
     /**
      * Main routes available in the APP. Each route has its onw controller, which allows the user to
@@ -249,16 +282,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         .when('/invitation/:uuid',{
             controller: 'InvitationCtrl',
             templateUrl: 'app/partials/verify.html'
-        })
-
-        // temporary new templates integration
-        .when('/v2/assembly/:aid/campaign/:cid',{
-          controller: 'v2.CampaignCtrl',
-          templateUrl: 'app/partials/v2/campaign/single-campaign-screen.html'
-        })
-        .otherwise({
-            redirectTo : '/'
         });
+        //.otherwise({
+            //redirectTo : '/'
+        //});
 
     /**
      * HTTP Interceptor that makes sure that all HTTP requests have the session key inserted as HEADER
@@ -312,7 +339,6 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
         .useSanitizeValueStrategy(null);
 
     tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
-
 }
 
 /**

@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,200italic,600italic&subset=latin,vietnamese' rel='stylesheet' type='text/css'>
 		
-		<!-- V2 version -->
-		<link rel="stylesheet" href="app/css/style.v2.css">
     
 		<meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Start of appcivist Zendesk Widget script -->
@@ -23,14 +21,14 @@
 </head>
 <body>
   <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
-	<!--<div header></div>-->
-	<!--<div class="container-fluid" id="wrap">-->
-		<!--<div class="row">-->
-			<!--<div class="col-sm-12" data-ng-view></div>-->
-		<!--</div>-->
-    <!--</div>-->
-	<!--<div footer></div>-->
-	<div data-ng-view></div>
+  <div header ng-if="!ui.v2"></div>
+  <div class="container-fluid" id="wrap" ng-if="!ui.v2">
+    <div class="row">
+      <div class="col-sm-12" data-ng-view></div>
+    </div>
+    </div>
+  <div footer ng-if="!ui.v2"></div>
+	<div data-ui-view></div>
 </body>
 
 <!-- Javascript Libraries -->
@@ -56,6 +54,8 @@
 <script src="bower_components/angular-scroll/angular-scroll.min.js"></script>
 <script src="bower_components/angular-dynamic-locale/tmhDynamicLocale.min.js"></script>
 <script src="bower_components/ngclipboard/dist/ngclipboard.min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+
 
 <!--<script src="bower_components/angular-multirange-slider/dist/multirange-slider.js"></script>-->
 <!--<script src="bower_components/col-resizable/colResizable-1.5.min.js"></script>-->

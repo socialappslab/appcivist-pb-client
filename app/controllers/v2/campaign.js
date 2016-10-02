@@ -9,6 +9,7 @@ angular
 CampaignCtrl.$inject = ['$scope', 'Campaigns', '$routeParams', 'Assemblies'];
 
 function CampaignCtrl($scope, Campaigns, $routeParams, Assemblies) {
+  console.log(11111);
 	$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
 	$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
 	var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();

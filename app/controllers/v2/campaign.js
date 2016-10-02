@@ -6,12 +6,11 @@ angular
   .controller('v2.CampaignCtrl', CampaignCtrl);
 
 
-CampaignCtrl.$inject = ['$scope', 'Campaigns', '$routeParams', 'Assemblies'];
+CampaignCtrl.$inject = ['$scope', 'Campaigns', '$stateParams', 'Assemblies'];
 
-function CampaignCtrl($scope, Campaigns, $routeParams, Assemblies) {
-  console.log(11111);
-	$scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-	$scope.campaignID = ($routeParams.cid) ? parseInt($routeParams.cid) : 0;
+function CampaignCtrl($scope, Campaigns, $stateParams, Assemblies) {
+	$scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+	$scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
 	var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
 	res.$promise.then(function(data) {
 		$scope.campaign = data;

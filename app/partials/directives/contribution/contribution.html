@@ -5,12 +5,12 @@
                 src="'app/partials/contributions/contribution/attachmentBackground.html'"></ng-include>
     <br>
     <!-- Title and Text of Contribution -->
-    <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL' || contribution.type === 'NOTE'"
+    <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'IDEA' || contribution.type === 'PROPOSAL' || contribution.type === 'NOTE'"
                 ng-click="openContributionModal(contribution)"
                 src="'app/partials/contributions/contribution/contributionTitleText.html'"></ng-include>
     <!-- Meta information of contribution: themes, authors, date, votes-->
     <div class="row push-to-bottom no-padding">
-        <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'PROPOSAL' || contribution.type === 'NOTE'"
+        <ng-include ng-if="contribution.type === 'BRAINSTORMING' || contribution.type === 'IDEA' || contribution.type === 'PROPOSAL' || contribution.type === 'NOTE'"
                 src="'app/partials/contributions/contribution/contributionMeta.html'"></ng-include>
     </div>
 </div>

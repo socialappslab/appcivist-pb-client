@@ -286,7 +286,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.steps = [
 			{
 				step: 1,
-				title: "Campaign description", 
+				title: "Campaign description",
 				template: "app/partials/campaign/creation/newCampaign1.html",
 				info: "",
 				active: true,
@@ -294,7 +294,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			},
 			{
 				step: 2,
-				title: "Campaign milestones", 
+				title: "Campaign milestones",
 				template: "app/partials/campaign/creation/newCampaign2.html",
 				info: "",
 				active: false,
@@ -313,8 +313,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		// Setting up help info tooltips
 		if ($scope.info === undefined || $scope.info === null) {
 			info = $scope.info = helpInfo;
-			info.configCommentsInDiscussion = "Enable reply-to comments in discussions"; 
-			info.configEnableUpDownVote = "Enable up-votes and down-votes on contributions"; 
+			info.configCommentsInDiscussion = "Enable reply-to comments in discussions";
+			info.configEnableUpDownVote = "Enable up-votes and down-votes on contributions";
 			localStorageService.set("help", info);
 		}
 
@@ -324,12 +324,12 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 		$scope.campaigns = [];
 		$scope.templateOptions = [
 			{
-				description : "Yes, link to another campaign and use its template", 
+				description : "Yes, link to another campaign and use its template",
 				value: "LINKED",
 				subTemplateTitle: "Select a campaign from the list or search by name"
 			},
 			{
-				description : "No, use a predefined template", 
+				description : "No, use a predefined template",
 				value: "PREDEFINED",
 				subTemplateTitle: "Select a template from the list"
 			}
@@ -558,7 +558,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 			newCampaign.configs[2].value = $scope.newCampaign.config.discussionReplyTo;
 			newCampaign.configs[3].value = $scope.newCampaign.config.upDownVoting;
 		} else {
-			newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established"; 
+			newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
 		}
 		return newCampaign;
 	}
@@ -676,7 +676,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
         $scope.ballotResultsAreAvailable = false;
 		$scope.contentTabs = [
 			{
-				title : 'Brainstorming (issues and suggestions)', 
+				title : 'Brainstorming (issues and suggestions)',
 				tooltip: 'help.tooltip.brainstorming',
 				ctype : 'BRAINSTORMING',
 				//contentArray : 'contributions',
@@ -689,7 +689,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 				active : true,
 			},
 			{
-				title : 'Working Groups', 
+				title : 'Working Groups',
                 tooltip: 'help.tooltip.working-groups',
 				ctype : 'WORKING_GROUP',
 				//contentArray : 'workingGroups',
@@ -702,7 +702,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 				active : false,
 			},
 			{
-				title : 'Proposals', 
+				title : 'Proposals',
                 tooltip: 'help.tooltip.proposals',
 				ctype : 'PROPOSAL',
 				//contentArray : 'contributions',
@@ -715,7 +715,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 				active : false,
 			},
 			{
-				title : 'Winning Proposals', 
+				title : 'Winning Proposals',
                 tooltip: 'help.tooltip.winning-proposals',
 				ctype : 'PROPOSAL',
 				//contentArray : 'winningContributions',
@@ -728,7 +728,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 				active : false,
 			},
             {
-                title : 'Notes', 
+                title : 'Notes',
                 tooltip: 'help.tooltip.notes',
                 ctype : 'NOTE',
                 //contentArray : 'winningContributions',
@@ -909,7 +909,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
-						FlashService.Error("Error loading campaign contributions from server"); 
+						FlashService.Error("Error loading campaign contributions from server");
 					}
 			);
 
@@ -922,7 +922,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
-						FlashService.Error("Error loading campaign contributions from server"); 
+						FlashService.Error("Error loading campaign contributions from server");
 					}
 			);
 
@@ -1261,6 +1261,12 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 		$scope.enableVoting = !$scope.disableButton.vote;
 	}
 
+	$scope.ideasFilter = function (item) {
+	  if (item.type === 'BRAINSTORMING' || item.type === 'IDEA') {
+		  return true;
+		 }
+	};
+
 	function setContributionsAndGroups($scope, localStorageService) {
 		if ($scope.loadedLocally) {
 			// Get list of contributions from server
@@ -1271,13 +1277,13 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 						if(!$scope.contributions){
 							$scope.contributions = [];
 						}
-                        $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
+            $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
 						$scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
-                        $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
+            $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
-						FlashService.Error("Error loading campaign contributions from server"); 
+						FlashService.Error("Error loading campaign contributions from server");
 					}
 			);
 		} else {
@@ -1285,9 +1291,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 			if(!$scope.contributions){
 				$scope.contributions = [];
 			}
-            $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
-            $scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
-            $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
+      $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
+      $scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
+      $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
 		}
 
 		if ($scope.loadedLocally) {
@@ -1300,7 +1306,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
-						FlashService.Error("Error loading campaign contributions from server"); 
+						FlashService.Error("Error loading campaign contributions from server");
 					}
 			);
 		} else {

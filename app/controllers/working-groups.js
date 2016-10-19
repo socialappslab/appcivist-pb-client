@@ -264,12 +264,13 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($rootScope, $scope, $htt
 appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams, usSpinnerService, $uibModal,
                                                      $location, Upload, localStorageService, Contributions,
                                                      WorkingGroups, Memberships, Assemblies, Invitations, FlashService,
-                                                     $translate, $filter, logService) {
+                                                     $translate, $filter, logService, Ballot, NewBallotPaper, VotesByUser, BallotPaper) {
     init();
     function init() {
+      console.log("----------------------------------- init en el init que pienso");
         initScopeFunctions();
         initScopeContent();
-        initializeSideBoxes()
+        initializeSideBoxes();
     }
 
     function initScopeFunctions () {
@@ -537,12 +538,76 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
                 getWorkingGroupContributions($scope.assemblyID, $scope.workingGroupID);
                 getInvitations($scope.workingGroupID);
+                //prueba
+                if ($scope.buildMilestones && $scope.milestones) {
+            			$scope.milestonesMap = [];
+                        for (var i = 0; i< $scope.milestones.length; i++) {
+                            var m = $scope.milestones[i];
+                            $scope.milestonesMap[m.key] = m;
+                        }
+            			localStorageService.set("currentMilestonesMap", $scope.milestonesMap);
+            		} else {
+            			$scope.milestonesMap = localStorageService.get("currentMilestonesMap");
+            		}
+                console.log('antes de llamar al init');
+                var voteStart = $scope.milestonesMap['start_voting'] ?
+            				moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
+            		if (voteStart) {voteStart.hour(0);voteStart.minute(0)};
+
+            		var voteEnd = $scope.milestonesMap['end_voting'] ?
+            				moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
+            		if (voteEnd) {voteEnd.hour(0);voteEnd.minute(0)};
+                $scope.enableVoting = !moment().local().isBetween(voteStart, voteEnd);
+
+                ballotInit($scope, localStorageService);
             },
             function (error) {
                 $scope.stopSpinner();
                 FlashService.Error("Error occured trying to initialize the working group: "+JSON.stringify(error));
             }
         )
+    }
+
+    //prueba
+    function ballotInit($scope, localStorageService) {
+      console.log("------------------------------------entro a ballotInit");
+      console.log($scope.wGroup);
+      console.log($scope.wGroup.consensusBallot);
+        var ballotId = $scope.wGroup.consensusBallot; // campaign binding ballot's uuid
+        var userId = $scope.user.uuid; // user's uuid is also the signature used for voting by logged in users
+        $scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/ballot/"+$scope.wGroup.consensusBallot+"/start";
+
+        // Read the current results of the voting
+        $scope.wGroup.ballotResults = Ballot.results({uuid: $scope.wGroup.consensusBallot}).$promise;
+        $scope.wGroup.ballotResults.then(
+            function (data) {
+              console.log("------------------------------------ballotResults");
+                $scope.wGroup.ballotResults = data;
+                $scope.ballotResultsAreAvailable = true;
+            },
+            function (error) {
+                $scope.wGroup.ballotResults = null;
+                $scope.ballotResultsAreAvailable = false;
+            }
+        );
+
+        // User binding votes
+        $scope.listOfVotesByUser = {};
+        $scope.candidatesIndex = {};
+        $scope.wGroup.ballotPaper = {};
+
+        // Read user's binding votes
+        var userVotes = VotesByUser.getVotes(ballotId, userId).votes().$promise;
+        userVotes.then(function (data) {
+          console.log("------------------------------------userVotes");
+            $scope.listOfVotesByUser = data.vote.votes;
+            $scope.candidatesIndex = data.ballot.candidatesIndex;
+            $scope.wGroup.ballotPaper = data;
+        }, function (error) {
+            if (error.status == "400" || error.status == "404") { // no votes under this signature
+                var newBallot = NewBallotPaper.ballot(ballotId).save({vote: {signature: userId}}).$promise;
+            }
+        });
     }
 
     function initializeWorkingGroupForNonMembers() {

@@ -903,9 +903,24 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 						if(!$scope.contributions){
 							$scope.contributions = [];
 						}
-						$scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
-						$scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
-						$scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
+						$scope.contentTabsIndex["brainstorming"].contentArray = _.filter($scope.contributions, function(contrib) {
+							if (contrib.type==='BRAINSTORMING' || contrib.type==='IDEA') {
+								return true;
+							}
+							return false;
+						});
+						$scope.contentTabsIndex["proposals"].contentArray = _.filter($scope.contributions, function(contrib) {
+							if (contrib.type==='PROPOSAL') {
+								return true;
+							}
+							return false;
+						});
+            $scope.contentTabsIndex["notes"].contentArray = _.filter($scope.contributions, function(contrib) {
+							if (contrib.type==='NOTE') {
+								return true;
+							}
+							return false;
+						});
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
@@ -1094,7 +1109,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
     function ballotInit($scope, localStorageService) {
         var ballotId = $scope.campaign.bindingBallot; // campaign binding ballot's uuid
         var userId = $scope.user.uuid; // user's uuid is also the signature used for voting by logged in users
-
 		$scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/ballot/"+$scope.campaign.bindingBallot+"/start";
 
 		// Read the current results of the voting
@@ -1261,12 +1275,6 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 		$scope.enableVoting = !$scope.disableButton.vote;
 	}
 
-	$scope.ideasFilter = function (item) {
-	  if (item.type === 'BRAINSTORMING' || item.type === 'IDEA') {
-		  return true;
-		 }
-	};
-
 	function setContributionsAndGroups($scope, localStorageService) {
 		if ($scope.loadedLocally) {
 			// Get list of contributions from server
@@ -1277,9 +1285,24 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 						if(!$scope.contributions){
 							$scope.contributions = [];
 						}
-            $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
-						$scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
-            $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
+            $scope.contentTabsIndex["brainstorming"].contentArray = _.filter($scope.contributions, function(contrib) {
+							if (contrib.type==='BRAINSTORMING' || contrib.type==='IDEA') {
+								return true;
+							}
+							return false;
+						});
+						$scope.contentTabsIndex["proposals"].contentArray = _.filter($scope.contributions, function(contrib) {
+							if (contrib.type==='PROPOSAL') {
+								return true;
+							}
+							return false;
+						});
+            $scope.contentTabsIndex["notes"].contentArray = _.filter($scope.contributions, function(contrib) {
+							if (contrib.type==='NOTE') {
+								return true;
+							}
+							return false;
+						});
 					},
 					function (error) {
 						console.log(JSON.stringify(error));
@@ -1291,9 +1314,24 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 			if(!$scope.contributions){
 				$scope.contributions = [];
 			}
-      $scope.contentTabsIndex["brainstorming"].contentArray = $scope.contributions;
-      $scope.contentTabsIndex["proposals"].contentArray = $scope.contributions;
-      $scope.contentTabsIndex["notes"].contentArray = $scope.contributions;
+			$scope.contentTabsIndex["brainstorming"].contentArray = _.filter($scope.contributions, function(contrib) {
+				if (contrib.type==='BRAINSTORMING' || contrib.type==='IDEA') {
+					return true;
+				}
+				return false;
+			});
+			$scope.contentTabsIndex["proposals"].contentArray = _.filter($scope.contributions, function(contrib) {
+				if (contrib.type==='PROPOSAL') {
+					return true;
+				}
+				return false;
+			});
+			$scope.contentTabsIndex["notes"].contentArray = _.filter($scope.contributions, function(contrib) {
+				if (contrib.type==='NOTE') {
+					return true;
+				}
+				return false;
+			});
 		}
 
 		if ($scope.loadedLocally) {

@@ -92,10 +92,17 @@
                         <ul class="row contributions">
                             <li class="contribution"
                                 ng-repeat="contribution in proposals | orderBy: 'creation' | filter:{type:'PROPOSAL'} track by $index">
-                                <div style="height: 500px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <div style="height: 500px;width:350px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <contribution contribution="contribution"
                                                   assemblyid="assemblyID"
                                                   container="proposals"
+                                                  enableVoting="enableVoting"
+                                                  bballot="wGroup.consensusBallot"
+                                                  cballot="wGroup.consultiveBallot"
+                                                  bindingresults="wGroup.ballotResults"
+                                                  consultiveResults="wGroup.consultiveBallotResults"
+                                                  ballotpaper="wGroup.ballotPaper"
+                                                  cballotpaper="wGroup.consultiveBallotPaper"
                                                   containerid="wgroup.resourcesResourceSpaceId"
                                                   containerindex="$index"></contribution>
                                 </div>
@@ -109,7 +116,7 @@
                     <div class="row col-md-12 col-sm-12">
                         <ul class="row contributions">
                             <li class="contribution" ng-repeat="contribution in contributions | orderBy: 'creation' | filter:{type:'BRAINSTORMING'} track by $index">
-                                <div style="height: 350px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <div style="height: 350px;width:350px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <contribution contribution="contribution"
                                                   assemblyid="assemblyID"
                                                   container="contributions"

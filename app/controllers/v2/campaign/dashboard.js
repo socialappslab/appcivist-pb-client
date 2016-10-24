@@ -3,12 +3,12 @@
 
 angular
   .module('appCivistApp')
-  .controller('v2.CampaignCtrl', CampaignCtrl);
+  .controller('v2.CampaignDashboardCtrl', CampaignDashboardCtrl);
 
 
-CampaignCtrl.$inject = ['$scope', 'Campaigns', '$stateParams', 'Assemblies'];
+CampaignDashboardCtrl.$inject = ['$scope', 'Campaigns', '$stateParams', 'Assemblies'];
 
-function CampaignCtrl($scope, Campaigns, $stateParams, Assemblies) {
+function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies) {
 	$scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
 	$scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
 	var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();

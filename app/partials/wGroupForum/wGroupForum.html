@@ -92,7 +92,7 @@
                         <ul class="row contributions">
                             <li class="contribution"
                                 ng-repeat="contribution in proposals | orderBy: 'creation' | filter:{type:'PROPOSAL'} track by $index">
-                                <div style="height: 500px;width:350px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <div style="height: 500px;width:400px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <contribution contribution="contribution"
                                                   assemblyid="assemblyID"
                                                   container="proposals"
@@ -104,12 +104,23 @@
                                                   ballotpaper="wGroup.ballotPaper"
                                                   cballotpaper="wGroup.consultiveBallotPaper"
                                                   containerid="wgroup.resourcesResourceSpaceId"
+                                                  show-results-button="ballotResultsAreAvailable"
+                                                  show-results-method="showFinalResults()"
                                                   containerindex="$index"></contribution>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
+                <!-- Voting Results -->
+                <div class="row">
+                  <consensus-result-list
+                          ng-if="showVotingResults"
+                          contributions="contributions"
+                          ballotuuid="wGroup.consensusBallot">
+                  </consensus-result-list>
+                </div>
+                <br/>
                 <div class="row">
                     <h3><strong>{{'Our Brainstorming Contributions' | translate}}</strong></h3>
                     <div class="voffset3"></div>

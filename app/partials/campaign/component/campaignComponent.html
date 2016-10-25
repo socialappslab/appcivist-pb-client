@@ -177,11 +177,13 @@
             <div class="voffset5"></div>
         </div>
         <!-- Voting Results -->
-        <consensus-result-list
+        <div class="row">
+          <consensus-result-list
                 ng-if="showVotingResults"
                 contributions="contributions"
                 ballotuuid="campaign.bindingBallot"></consensus-result-list>
-
+        </div>
+        <br/>
         <!-- TODO: add other type of voting results -->
         <!-- TODO: add only show Winning Proposals -->
 

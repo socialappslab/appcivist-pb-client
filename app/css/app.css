@@ -2984,3 +2984,10 @@ i {
 }
 
 /*# sourceMappingURL=app.css.map */
+
+.custom-ballot-results {
+  border-color: #000;
+  border-style:solid;
+  border-width: 1px;
+  margin-left: 0.1%;
+}

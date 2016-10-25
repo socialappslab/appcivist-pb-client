@@ -530,6 +530,9 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
     function initializeWorkingGroup() {
         console.log("Reading detail information of group "+$scope.workingGroupID);
         var res = WorkingGroups.workingGroup($scope.assemblyID, $scope.workingGroupID).get();
+        $scope.ballotResultsAreAvailable = false;
+        $scope.showVotingResults = false;
+        $scope.showVotingResultsBeforeEnd = false;
         res.$promise.then(
             function (data) {
                 $scope.wGroup = data;
@@ -538,28 +541,25 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 getWorkingGroupProposals($scope.assemblyID, $scope.workingGroupID);
                 getWorkingGroupContributions($scope.assemblyID, $scope.workingGroupID);
                 getInvitations($scope.workingGroupID);
-                //prueba
-                if ($scope.buildMilestones && $scope.milestones) {
-            			$scope.milestonesMap = [];
-                        for (var i = 0; i< $scope.milestones.length; i++) {
-                            var m = $scope.milestones[i];
-                            $scope.milestonesMap[m.key] = m;
-                        }
-            			localStorageService.set("currentMilestonesMap", $scope.milestonesMap);
+
+                // get ballot and set currentMilestones
+                localStorageService.set("currentMilestones", $scope.milestones);
+                $scope.milestonesWGroupMap = localStorageService.get("currentMilestonesWGroupMap");
+                if ($scope.milestonesWGroupMap === null || $scope.milestonesWGroupMap === undefined || $scope.milestonesWGroupMap.length < 1) {
+                  $scope.ballotWGroup = Ballot.get({uuid: $scope.wGroup.consensusBallot}).$promise;
+                  $scope.ballotWGroup.then(function (data) {
+                    console.log('ballot');
+                    console.log(data.ballot);
+                    $scope.milestonesWGroupMap = [];
+                    $scope.milestonesWGroupMap['start_voting'] = data.ballot.starts_at;
+                    $scope.milestonesWGroupMap['end_voting'] = data.ballot.ends_at;
+              			localStorageService.set("currentMilestonesWGroupMap", $scope.milestonesWGroupMap);
+                    afterSetMilestones();
+                  });
             		} else {
-            			$scope.milestonesMap = localStorageService.get("currentMilestonesMap");
-            		}
-                console.log('antes de llamar al init');
-                var voteStart = $scope.milestonesMap['start_voting'] ?
-            				moment($scope.milestonesMap['start_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
-            		if (voteStart) {voteStart.hour(0);voteStart.minute(0)};
+                  afterSetMilestones();
+                }
 
-            		var voteEnd = $scope.milestonesMap['end_voting'] ?
-            				moment($scope.milestonesMap['end_voting'].date, 'YYYY-MM-DD HH:mm').local() : null;
-            		if (voteEnd) {voteEnd.hour(0);voteEnd.minute(0)};
-                $scope.enableVoting = !moment().local().isBetween(voteStart, voteEnd);
-
-                ballotInit($scope, localStorageService);
             },
             function (error) {
                 $scope.stopSpinner();
@@ -568,11 +568,21 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         )
     }
 
-    //prueba
+    function afterSetMilestones() {
+      var voteStart = $scope.milestonesWGroupMap['start_voting'] ?
+          moment($scope.milestonesWGroupMap['start_voting'], 'YYYY-MM-DD HH:mm').local() : null;
+      if (voteStart) {voteStart.hour(0);voteStart.minute(0)};
+
+      var voteEnd = $scope.milestonesWGroupMap['end_voting'] ?
+          moment($scope.milestonesWGroupMap['end_voting'], 'YYYY-MM-DD HH:mm').local() : null;
+      if (voteEnd) {voteEnd.hour(0);voteEnd.minute(0)};
+      $scope.enableVoting = moment().local().isBetween(voteStart, voteEnd);
+
+      ballotInit($scope, localStorageService);
+    }
+
+    //ballotIni for wGroups
     function ballotInit($scope, localStorageService) {
-      console.log("------------------------------------entro a ballotInit");
-      console.log($scope.wGroup);
-      console.log($scope.wGroup.consensusBallot);
         var ballotId = $scope.wGroup.consensusBallot; // campaign binding ballot's uuid
         var userId = $scope.user.uuid; // user's uuid is also the signature used for voting by logged in users
         $scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/ballot/"+$scope.wGroup.consensusBallot+"/start";
@@ -581,7 +591,6 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         $scope.wGroup.ballotResults = Ballot.results({uuid: $scope.wGroup.consensusBallot}).$promise;
         $scope.wGroup.ballotResults.then(
             function (data) {
-              console.log("------------------------------------ballotResults");
                 $scope.wGroup.ballotResults = data;
                 $scope.ballotResultsAreAvailable = true;
             },
@@ -599,7 +608,6 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
         // Read user's binding votes
         var userVotes = VotesByUser.getVotes(ballotId, userId).votes().$promise;
         userVotes.then(function (data) {
-          console.log("------------------------------------userVotes");
             $scope.listOfVotesByUser = data.vote.votes;
             $scope.candidatesIndex = data.ballot.candidatesIndex;
             $scope.wGroup.ballotPaper = data;
@@ -609,6 +617,11 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
             }
         });
     }
+
+    $scope.showFinalResults = function () {
+      console.log("showFinalResults");
+        $scope.showVotingResults = !$scope.showVotingResults;
+    };
 
     function initializeWorkingGroupForNonMembers() {
         console.log("Reading public information of group "+$scope.workingGroupID);

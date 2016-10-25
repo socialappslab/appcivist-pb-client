@@ -7,57 +7,104 @@ angular
 
 
 CampaignDashboardCtrl.$inject = [
-  '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter'
+  '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
+  'localStorageService', 'FlashService', 'Memberships'
 ];
 
 function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
-                               $filter) {
-	$scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
-	$scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
-	
-  var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
-	res.$promise.then(function(data) {
-		$scope.campaign = data;
-    $scope.currentComponent = Campaigns.getCurrentComponent($scope.campaign.components);
-    angular.forEach(data.components, function(c) {
-      c.cssClass = getComponentCssClass(c);
-    });
+                               $filter, localStorageService, FlashService, Memberships) {
 
-    // get proposals
-    getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
-      // only published proposals
-      $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'});
+  activate();
+
+  function activate() {
+    $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+    $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
+    $scope.user = localStorageService.get('user');
+
+    loadAssembly();
+    loadCampaigns();
+    loadWorkingGroups();
+    loadAllCampaigns();
+  }
+  
+  function loadAssembly() {
+    var rsp = Assemblies.assembly($scope.assemblyID).get();
+    rsp.$promise.then(function(data) {
+      $scope.assembly = data;
+    });
+  }
+	
+  function loadCampaigns() {
+    var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
+    res.$promise.then(function(data) {
+      $scope.campaign = data;
+      $scope.currentComponent = Campaigns.getCurrentComponent($scope.campaign.components);
+      angular.forEach(data.components, function(c) {
+        c.cssClass = getComponentCssClass(c);
+      });
+
+      // get proposals
+      getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
+        // only published proposals
+        $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'});
+        
+        if(!$scope.proposals){
+          $scope.proposals = [];
+        }
+      });
       
-      if(!$scope.proposals){
-        $scope.proposals = [];
-      }
-    });
-    
-    // get ideas
-    getContributions($scope.campaign, 'IDEA').then(function(response) {
-      $scope.ideas = $filter('filter')(response, {type: 'IDEA'});
+      // get ideas
+      getContributions($scope.campaign, 'IDEA').then(function(response) {
+        $scope.ideas = $filter('filter')(response, {type: 'IDEA'});
 
-      if(!$scope.ideas){
-        $scope.ideas = [];
-      }
-    });
-    
-    // get discussions
-    getContributions($scope.campaign, 'DISCUSSION').then(function(response) {
-      $scope.discussions = $filter('filter')(response, {type: 'DISCUSSION'});
+        if(!$scope.ideas){
+          $scope.ideas = [];
+        }
+      });
+      
+      // get discussions
+      getContributions($scope.campaign, 'DISCUSSION').then(function(response) {
+        $scope.discussions = $filter('filter')(response, {type: 'DISCUSSION'});
 
-      if(!$scope.discussions){
-        $scope.discussions = [];
-      }
-      console.log('DISCUSSIONS', $scope.discussions);
+        if(!$scope.discussions){
+          $scope.discussions = [];
+        }
+      });
     });
-	});
+  }
 	
-  var rsp = Assemblies.assembly($scope.assemblyID).get();
-	rsp.$promise.then(function(data) {
-		$scope.assembly = data;
-	});
+  function loadWorkingGroups() {
+    var rsp = Memberships.workingGroups($scope.user.userId).query();
+    rsp.$promise.then(
+      function (data) {
+        var workingGroups = [];
+        angular.forEach(data, function(d) {
 
+          if (d.membershipType === 'GROUP') {
+            workingGroups.push(d.workingGroup);
+          }
+        });
+        $scope.workingGroups = workingGroups;
+      },
+      function (error) {
+        FlashService.Error('Error loading user\'s working groups from server');
+      }
+    );
+  }
+
+  function loadAllCampaigns() {
+    var rsp = Campaigns.campaigns($scope.user.uuid, 'all').query();
+    rsp.$promise.then(
+      function(data) {
+        $scope.myCampaigns = data;
+      },
+      function (error) {
+        FlashService.Error('Error loading user\'s campaigns from server');
+      }
+    );
+  }
+
+  
   /**
    * Set timeline stage status.
    *
@@ -87,12 +134,12 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     // var rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query({type: type});
     var rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query();
     rsp.$promise.then(
-        function (data) {
-          return data;
-        },
-        function (error) {
-          FlashService.Error("Error loading campaign contributions from server"); 
-        }
+      function (data) {
+        return data;
+      },
+      function (error) {
+        FlashService.Error('Error loading campaign contributions from server');
+      }
     );
     return rsp.$promise;
   }

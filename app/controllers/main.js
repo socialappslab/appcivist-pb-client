@@ -28,6 +28,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		$scope.info = localStorageService.get("help");
 		$scope.userVotes = localStorageService.get("userVotes");
 		$scope.assembliesLoading = false;
+		$scope.onlyLanding = localStorageService.get("onlyLanding");
 
 		// New User Object to be used by signup forms
 		$scope.newUser = {

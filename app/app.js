@@ -33,6 +33,7 @@ var appcivist = {
             sage: "http://appcivist-sage.littlemacondo.com/backend/api"
         }
     },
+    onlyLanding: false,
     handleError: function (error) {
         console.log(error);
         if (error.status == 500)
@@ -52,6 +53,7 @@ var etherpad = {
 var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
 var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
 var etherpadServerURL = etherpad.server;
+var onlyLanding = appcivist.onlyLanding = disableLogin(window.location.hostname);
 
 var helpInfo = {
     assemblyDefinition : "Assemblies are group of citizens with common interests",
@@ -359,6 +361,7 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
     localStorageService.set("help", helpInfo); // TODO: replace with translation support
+    localStorageService.set("onlyLanding", onlyLanding);
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in and trying to access a restricted page
 
@@ -491,6 +494,15 @@ function selectBackendServer(hostname, apis) {
         return apis.testing;
     } else {
         return apis.development;
+    }
+}
+
+function disableLogin(hostname) {
+    var possibleHosts = ["appcivist.org", "appcivist.landing.littlemacondo.com"];
+    if (hostname.match(possibleHosts[0]) || hostname.match(possibleHosts[1])) {
+        return true;
+    } else {
+        return false;
     }
 }
 

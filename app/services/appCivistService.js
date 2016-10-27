@@ -162,6 +162,35 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
                 milestones: []
             };
             return campaign;
+        },
+
+        /**
+         * Helper method for finding out the current component in the
+         * campaign timeline.
+         *
+         * @param components {Array}: the list of components of the campaign
+         */
+        getCurrentComponent: function(components) {
+          var current;
+
+          angular.forEach(components, function(c) {
+            var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm').local();
+            startMoment.hour(0);
+            startMoment.minute(0);
+            var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm').local();
+            endMoment.hour(0);
+            endMoment.minute(0);
+            
+            if (moment().local().isBetween(startMoment, endMoment)) {
+              current = c;
+            }
+                        
+          });
+          
+          if(!current) {
+            current = components[components.length - 1];
+          }
+          return current;
         }
     };
 

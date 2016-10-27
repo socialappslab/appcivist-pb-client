@@ -170,8 +170,8 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 		})
 		.state('v2.assembly.aid.campaign.cid',{
 			url: '/:cid',
-			controller: 'v2.CampaignCtrl',
-			templateUrl: 'app/partials/v2/campaign/single-campaign-screen.html'
+			controller: 'v2.CampaignDashboardCtrl',
+			templateUrl: 'app/partials/v2/campaign/dashboard.html'
 		});
 
     /**

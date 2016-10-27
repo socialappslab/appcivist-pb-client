@@ -24,6 +24,47 @@ $yellow: #FCCF26;
 $black: black;
 $pale-yellow: #F2EFCD;
 
+/****** new color scheme *******/
+$color__brand-primary: #465A63;
+$color__brand-primary--light: lighten($color__brand-primary, 20%);
+$color__brand-primary--dark: darken($color__brand-primary, 10%);
+
+// options based on https://www.sessions.edu/color-calculator/
+// original red
+// $color__brand-accent: #B44551;
+// purple option
+$color__brand-accent: #4a4663;
+// green option
+// $color__brand-accent: #46634f;
+// granate option
+// $color__brand-accent: #634650;
+// light brown option
+// $color__brand-accent: #635e46;
+// brown option
+// $color__brand-accent: #635046;
+
+$color__text--primary: #212121;
+$color__text--secondary: #757575;
+$color__text--reverse: #F8F8F8;
+
+$color__background: $color__brand-primary;
+$color__borders: #E2E2E2;
+
+$color__link--active: $color__brand-accent;
+$color__link--hover: darken($color__link--active, 10%);
+
+$color__valid: #03804d;
+$color__alert: #DE111D;
+$color__alert-background: #f7f9f9;
+$color__error: #b12a0b;
+$color__error-background: #fdded8;
+$color__success: #03804d;
+$color__success-background: #d4f3e6;
+$color__warning: #a59b15;
+$color__warning-background: #fffecf;
+$color__information: #0192d0;
+$color__information-background: #d3f2ff;
+
 /******COMMON BOXES*******/
 $description-box: $light-green;
 $description-box-font: $dark-green;
@@ -60,12 +101,20 @@ $vertical-divider: $light-black;
 $indexBall: $light-black;
 
 /******HEADER**********/
-$header-background: $corporative-green;
-$header-menu-active: $corporative-dark-green;
-$header-default-color: $light-black;
-$header-menu-highlight: $corporative-light-green;
+//$header-background: $corporative-green;
+//$header-menu-active: $corporative-dark-green;
+//$header-default-color: $light-black;
+//$header-menu-highlight: $corporative-light-green;
+//$header-font: $white;
+//$header-sign-up-font: $pale-yellow;
+
+$header-background: $color__brand-primary;
+$header-menu-active: $color__brand-primary--dark;
+$header-default-color: $white;
+$header-menu-highlight: $color__brand-primary--light;
 $header-font: $white;
-$header-sign-up-font: $pale-yellow;
+$header-sign-up-font: $white;
+
 
 /**OLDHEADER DELETE WHEN REDESIGN ENDS*/
 $border-header: $light-grey;
@@ -73,7 +122,9 @@ $dropdown-hover: $dark-blue;
 //$header-menu-active: $dark-grey;
 
 /**FOOTER**/
-$footer-background: $corporative-dark-green;
+//$footer-background: $corporative-dark-green;
+//$footer-font: $white;
+$footer-background: $color__brand-primary;
 $footer-font: $white;
 
 /*****FORUM*********/

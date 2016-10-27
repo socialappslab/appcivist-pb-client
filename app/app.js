@@ -146,7 +146,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 		$stateProvider.state('v2',{
 			url: '/v2',
 			abstract: true,	
-			templateUrl: 'app/partials/v2/main.html',
+			templateUrl: 'app/v2/partials/main.html',
       controller: function($rootScope) {
         $rootScope.ui = {
           v2: true
@@ -171,7 +171,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 		.state('v2.assembly.aid.campaign.cid',{
 			url: '/:cid',
 			controller: 'v2.CampaignDashboardCtrl',
-			templateUrl: 'app/partials/v2/campaign/dashboard.html'
+			templateUrl: 'app/v2/partials/campaign/dashboard.html'
 		});
 
     /**

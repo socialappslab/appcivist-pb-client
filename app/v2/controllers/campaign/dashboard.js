@@ -20,11 +20,8 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
     $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
     $scope.user = localStorageService.get('user');
-
     loadAssembly();
     loadCampaigns();
-    loadWorkingGroups();
-    loadAllCampaigns();
   }
   
   function loadAssembly() {
@@ -73,36 +70,6 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     });
   }
 	
-  function loadWorkingGroups() {
-    var rsp = Memberships.workingGroups($scope.user.userId).query();
-    rsp.$promise.then(
-      function (data) {
-        var workingGroups = [];
-        angular.forEach(data, function(d) {
-
-          if (d.membershipType === 'GROUP') {
-            workingGroups.push(d.workingGroup);
-          }
-        });
-        $scope.workingGroups = workingGroups;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s working groups from server');
-      }
-    );
-  }
-
-  function loadAllCampaigns() {
-    var rsp = Campaigns.campaigns($scope.user.uuid, 'all').query();
-    rsp.$promise.then(
-      function(data) {
-        $scope.myCampaigns = data;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s campaigns from server');
-      }
-    );
-  }
 
   
   /**

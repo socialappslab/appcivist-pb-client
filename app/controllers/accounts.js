@@ -42,7 +42,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 	$scope.userIsAuthenticated = function(){
 		return loginService.userIsAuthenticated();
-	}
+	};
 
 	$scope.login = function() {
 		console.log("Signing in with email = " + $scope.user.email);

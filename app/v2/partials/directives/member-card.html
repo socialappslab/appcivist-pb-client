@@ -1,0 +1,10 @@
+<div class="member-card">
+  <figure>
+    <img ng-if="!currentUser || !currentUser.profilePic" src="../assets/images/avatar.png" alt="Avatar"/>
+    <img ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlLargeString}}" alt="Avatar"/>
+  </figure>
+  <h4>
+    <a href="">{{currentUser.name}}</a>
+    <span ng-if="actionBar" class="heading--subheader"><a href="">My Settings</a> | <a href="" ng-click="signout()">Log Out</a></span>
+  </h4>
+</div>

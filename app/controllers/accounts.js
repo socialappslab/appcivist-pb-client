@@ -1,4 +1,4 @@
-﻿// AppCivist Demo Client - Basic Controllers
+// AppCivist Demo Client - Basic Controllers
 
 /**
  * AccountCtrl - functions to control authentication

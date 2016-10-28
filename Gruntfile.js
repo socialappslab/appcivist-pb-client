@@ -47,13 +47,23 @@ module.exports = function(grunt) {
         },
         watch: {
           options: { livereload: true },
-          css: {
-            files: '**/*.sass',
+          html: {
+            files: ["index.html"]
+          },
+          js: {
+            files: ["app/*.js", "app/**/*.js"]
+          },
+          sass: {
+            files: ['**/*.scss'],
             tasks: ['sass'],
           },
           haml: {
             files: ['app/views/**/*.haml'],
             tasks: ['haml']
+          },
+          css: {
+            files: ['app/css/app.css'],
+            tasks: []
           }
         }
     });

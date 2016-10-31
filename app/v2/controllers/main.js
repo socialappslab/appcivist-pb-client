@@ -1,14 +1,28 @@
 (function() {
 'use strict';
 
-appCivistApp
-  .directive('navigationBar',  NavigationBar);
+angular
+  .module('appCivistApp')
+  .controller('v2.MainCtrl', MainCtrl);
 
-NavigationBar.$inject = [
-  'localStorageService', 'Memberships', 'Campaigns', 'FlashService'
+MainCtrl.$inject = [
+  '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'FlashService',
+  '$rootScope'
 ];
 
-function NavigationBar(localStorageService, Memberships, Campaigns, FlashService) {
+function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashService,
+                  $rootScope) {
+
+  activate();
+
+  function activate() {
+    $rootScope.ui = {
+      v2: true
+    };
+    $scope.user = localStorageService.get('user');
+    loadWorkingGroups($scope);
+    loadAllCampaigns($scope);
+  }
   
   function loadWorkingGroups(scope) {
     var rsp = Memberships.workingGroups(scope.user.userId).query();
@@ -40,15 +54,5 @@ function NavigationBar(localStorageService, Memberships, Campaigns, FlashService
       }
     );
   }
-
-  return {
-    restrict: 'AE',
-    templateUrl: '/app/v2/partials/directives/navigation-bar.html',
-    link: function postLink(scope, element, attrs) {
-      scope.user = localStorageService.get('user');
-      loadWorkingGroups(scope);
-      loadAllCampaigns(scope);
-    }
-  };
 }
 }());

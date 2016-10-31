@@ -147,11 +147,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 			url: '/v2',
 			abstract: true,	
 			templateUrl: 'app/v2/partials/main.html',
-      controller: function($rootScope) {
-        $rootScope.ui = {
-          v2: true
-        };
-      }
+      controller: 'v2.MainCtrl'
 		})
 		.state('v2.assembly',{
       url: '/assembly',

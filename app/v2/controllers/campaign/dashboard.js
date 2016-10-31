@@ -20,6 +20,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
     $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
     $scope.user = localStorageService.get('user');
+    $scope.ideasSectionExpanded = true;
     loadAssembly();
     loadCampaigns();
   }

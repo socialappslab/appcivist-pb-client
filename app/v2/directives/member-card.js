@@ -4,9 +4,11 @@
 appCivistApp
   .directive('memberCard',  MemberCard);
 
-MemberCard.$inject = ['localStorageService'];
+MemberCard.$inject = [
+  'localStorageService', 'loginService', 'logService'
+];
 
-function MemberCard(localStorageService) {
+function MemberCard(localStorageService, loginService, logService) {
 
   return {
     restrict: 'E',
@@ -21,6 +23,10 @@ function MemberCard(localStorageService) {
       if(!scope.user){
         scope.currentUser = localStorageService.get('user');
       }
+      
+      scope.signout = function() {
+        loginService.signOut(scope.currentUser.email, scope, logService.logAction("LOGOUT"));
+      };
     }
   };
 }

@@ -112,13 +112,6 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     return rsp.$promise;
   }
 
-  $scope.formatDate = function(date){
-    return moment(date, 'YYYY-MM-DD HH:mm').local().calendar();
-  };
 
-  // make discussion reply form visible
-  $scope.writeReply = function(discussion) {
-    discussion.showReplyForm = true;
-  };
 }
 }());

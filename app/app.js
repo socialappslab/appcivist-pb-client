@@ -168,6 +168,16 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 			url: '/:cid',
 			controller: 'v2.CampaignDashboardCtrl',
 			templateUrl: 'app/v2/partials/campaign/dashboard.html'
+		})
+		.state('v2.assembly.aid.group',{
+      url: '/group',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+		.state('v2.assembly.aid.group.gid',{
+			url: '/:gid',
+			controller: 'v2.WorkingGroupDashboardCtrl',
+			templateUrl: 'app/v2/partials/working-group/dashboard.html'
 		});
 
     /**

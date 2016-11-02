@@ -192,6 +192,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           }
           return current;
         }
+
     };
 
 });

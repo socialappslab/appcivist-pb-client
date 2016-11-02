@@ -1,0 +1,13 @@
+<section class="panel">
+  <div class="panel-heading">
+    <h1 class="heading--header">{{title}}</h1>
+  </div>
+  <div class="timeline">
+    <div ng-repeat="component in components track by $index" 
+         class="timeline-item"
+         ng-class="component.cssClass">
+      <div class="marker"></div>
+      {{component.title}}
+    </div>
+  </div>
+</section>

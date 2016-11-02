@@ -36,10 +36,6 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
     res.$promise.then(function(data) {
       $scope.campaign = data;
-      $scope.currentComponent = Campaigns.getCurrentComponent($scope.campaign.components);
-      angular.forEach(data.components, function(c) {
-        c.cssClass = getComponentCssClass(c);
-      });
 
       // get proposals
       getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
@@ -73,21 +69,6 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 	
 
   
-  /**
-   * Set timeline stage status.
-   *
-   * @param c {Component} the timeline component.
-   **/
-  function getComponentCssClass(c) {
-    if(c.componentId === $scope.currentComponent.componentId) {
-      return 'active';
-    }
-
-    if(c.position < $scope.currentComponent.position) {
-      return 'inactive';
-    }
-    return 'future';
-  }
 
   /**
    * Get contributions from server.

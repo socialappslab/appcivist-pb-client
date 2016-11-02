@@ -15,6 +15,8 @@ function ProposalCard() {
     },
     templateUrl: '/app/v2/partials/directives/proposal-card.html',
     link: function postLink(scope, element, attrs) {
+      scope.assemblyId = scope.proposal.workingGroupAuthors[0].assemblies[0];
+      scope.groupId = scope.proposal.workingGroupAuthors[0].groupId;
     }
   };
 }

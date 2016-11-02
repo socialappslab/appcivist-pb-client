@@ -4,16 +4,7 @@
       <h1 class="heading--title">{{campaign.title}}</h1>
       <p>{{campaign.goal}}</p>
     </section>
-    <section class="panel">
-      <h1 class="heading--header">Campaigns Status</h1>
-      <div class="timeline">
-        <div ng-repeat="component in campaign.components track by $index" 
-             class="timeline-item"
-             ng-class="component.cssClass">
-             <div class="marker"></div>{{component.title}}
-        </div>
-      </div>
-    </section>
+    <campaign-timeline title="Campaign Status" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
     <section class="panel ideas-and-proposals">
       <section class="list--proposal">
         <div class="panel-heading-no-margin">

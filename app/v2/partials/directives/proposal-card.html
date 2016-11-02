@@ -2,12 +2,12 @@
   <div class="card-info">
     <p class="heading--subheader">
       By 
-      <a ng-href="#/assembly/{{assembly.assemblyId}}/group/{{proposal.workingGroupAuthors[0].groupId}}">
+      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
         {{proposal.workingGroupAuthors[0].name}}
       </a>
     </p>
     <h1 class="heading--headline">
-      <a href="&#x2F;patterns&#x2F;03-templates-05-single-proposal&#x2F;03-templates-05-single-proposal.html">
+      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{proposal.contributionId}}">
         {{proposal.title|limitTo:97}}{{(proposal.title.length) > 97 ? '...' : '.' }}
       </a>
     </h1>

@@ -65,6 +65,9 @@
           </iframe>
       </div>
     </section>
+  </section>
+  
+  <section class="panel text-created-attachments-similar">
     <section class="temp-array created-attachments-similar">
       <div class="panel-heading">
         <h1 class="heading--header">Created by</h1>
@@ -94,7 +97,8 @@
         </div>
       </div>
       <div class="panel-heading">
-        <h1 class="heading--header">Attachments</h1><p class="heading--small"><a href="#">Add a new file</a></p>
+        <h1 class="heading--header">Attachments</h1>
+        <p class="heading--small"><a href="#"><i class="fa fa-paperclip"></i>&nbsp;Add a new file</a></p>
       </div>
       <div class="card-list" ng-repeat="file in proposal.attachments">
         <div class="action-bar small-card file-card">
@@ -104,11 +108,9 @@
               <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
             </a>
           </figure>
-          <a ng-href="{{file.url}}" target="_blank">
           <h4>
-              {{(file.name && file.name != "" ? file.name : file.url) | limitTo: 25}}{{(file.url.length > 25) ? '...' : ''}}
+            {{(file.name && file.name != "" ? file.name : file.url)}}
           </h4>
-          </a>
           <div class="action-button">
             <input id="menu04" type="checkbox" name="menu" />
             <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

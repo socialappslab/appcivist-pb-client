@@ -109,7 +109,9 @@ appCivistApp.directive('consensusControls', function(){
         ballotPaper: "=ballotpaper",
         consultiveBallotPaper: "=cballotpaper",
         bindingBallotId: "=bballot",
-        consultiveBallotId: "=cballot"
+        consultiveBallotId: "=cballot",
+        showResultsButton: "=",
+        showResultsMethod: "&"
     },
     controller: "ContributionVotesCtrl"
   }
@@ -149,9 +151,11 @@ appCivistApp.directive('contribution', function(){
             ballotPaper: "=ballotpaper",
             consultiveBallotPaper: "=cballotpaper",
             bindingBallotId: "=bballot",
-            consultiveBallotId: "=cballot"
+            consultiveBallotId: "=cballot",
+            showResultsButton: "=",
+            showResultsMethod: "&"
         },
-        controller: "ContributionDirectiveCtrl",
+        controller: "ContributionDirectiveCtrl"
     }
 });
 

@@ -177,11 +177,13 @@
             <div class="voffset5"></div>
         </div>
         <!-- Voting Results -->
-        <consensus-result-list
+        <div class="row">
+          <consensus-result-list
                 ng-if="showVotingResults"
                 contributions="contributions"
                 ballotuuid="campaign.bindingBallot"></consensus-result-list>
-
+        </div>
+        <br/>
         <!-- TODO: add other type of voting results -->
         <!-- TODO: add only show Winning Proposals -->
 
@@ -212,7 +214,6 @@
                                  ng-repeat="contribution in tab.contentArray
                                                 | orderBy: orderProperty : orderReverse
                                                 | filter: campaignContributionFilter
-                                                | filter: {type:tab.ctype}
                                                 track by $index ">
                                 <div style="height: 400px;" ng-if="tab.ctype==='BRAINSTORMING'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <contribution ng-click="openContributionModal(contribution,'lg')"

@@ -4,6 +4,8 @@
     <button class="btn btn-default {{noToggle}}" ng-click="contributionVote('NO', 'BINDING')">{{'No' | translate}}</button>
     <button class="btn btn-default {{abstainToggle}}" ng-click="contributionVote('ABSTAIN', 'BINDING')">{{'Abstain' | translate}}</button>
     <button class="btn btn-default {{blockToggle}}" ng-click="contributionVote('BLOCK', 'BINDING')">{{'Block' | translate}}</buttom>
+    <button ng-if="showResultsButton && !activeResults" class="btn btn-default" ng-click="updateListener()">{{'Show Results' | translate}}</buttom>
+    <button ng-if="showResultsButton && activeResults" class="btn btn-default" ng-click="updateListener()">{{'Hide Results' | translate}}</buttom>
   </div>
   <br />
 

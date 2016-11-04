@@ -147,13 +147,9 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 		// temporary new templates integration
 		$stateProvider.state('v2',{
 			url: '/v2',
-			abstract: true,	
+			abstract: true,
 			templateUrl: 'app/v2/partials/main.html',
-      controller: function($rootScope) {
-        $rootScope.ui = {
-          v2: true
-        };
-      }
+      controller: 'v2.MainCtrl'
 		})
 		.state('v2.assembly',{
       url: '/assembly',
@@ -174,6 +170,31 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 			url: '/:cid',
 			controller: 'v2.CampaignDashboardCtrl',
 			templateUrl: 'app/v2/partials/campaign/dashboard.html'
+		})
+		.state('v2.assembly.aid.group',{
+      url: '/group',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+		.state('v2.assembly.aid.group.gid',{
+			url: '/:gid',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+		.state('v2.assembly.aid.group.gid.item',{
+			url: '',
+			controller: 'v2.WorkingGroupDashboardCtrl',
+			templateUrl: 'app/v2/partials/working-group/dashboard.html'
+		})
+		.state('v2.assembly.aid.group.gid.proposal',{
+      url: '/proposal',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+		.state('v2.assembly.aid.group.gid.proposal.pid',{
+      url: '/:pid',
+      templateUrl: 'app/v2/partials/proposal/page.html',
+      controller: 'v2.ProposalPageCtrl'
 		});
 
     /**
@@ -371,9 +392,11 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
         var sessionKey = localStorageService.get('sessionKey');
         var user = localStorageService.get("user");
 
-        if (!nonRestrictedPage && !authenticated && 
-            (sessionKey === null || sessionKey === undefined || sessionKey === "" ) && 
+        // in v2 version there are anonymous pages, so we dont need permissions
+        if (next.indexOf('v2') === -1 && !nonRestrictedPage && !authenticated &&
+            (sessionKey === null || sessionKey === undefined || sessionKey === "" ) &&
             (user === null || user === undefined)) {
+              console.log('entro al uf');
             $location.path('/');
         }
     });

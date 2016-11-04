@@ -74,8 +74,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
             {"name": "Skyline Icon", "url":"https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"}
         ];
         if ($scope.info === undefined || $scope.info === null) {
-            info = $scope.info = helpInfo;
-            localStorageService.set("help",info);
+            info = $scope.info = localStorageService.get("help");
         }
         $scope.errors = [];
         $scope.selectedAssemblies = [];

@@ -312,7 +312,7 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 
 		// Setting up help info tooltips
 		if ($scope.info === undefined || $scope.info === null) {
-			info = $scope.info = helpInfo;
+			info = $scope.info = localStorageService.get("help");
 			info.configCommentsInDiscussion = "Enable reply-to comments in discussions";
 			info.configEnableUpDownVote = "Enable up-votes and down-votes on contributions";
 			localStorageService.set("help", info);

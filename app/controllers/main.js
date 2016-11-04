@@ -68,8 +68,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		}
 
 		if ($scope.info === undefined || $scope.info === null) {
-			$scope.info = helpInfo;
-			localStorageService.set("help", $scope.info);
+			info = $scope.info = localStorageService.get("help");
 		}
 
 		if (!$scope.userVotes) {

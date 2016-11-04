@@ -819,7 +819,7 @@ appCivistApp.controller('ContributionFeedbackCtrl', function($rootScope, $scope,
 
 appCivistApp.controller('ContributionVotesCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
 														  Contributions, $translate, MakeVote, Ballot, BallotPaper,
-                                                          VotesByUser, $rootScope) {
+                                                          VotesByUser, $rootScope, $timeout) {
     /**
      * Directive Scope
      * contribution: '=',
@@ -831,6 +831,15 @@ appCivistApp.controller('ContributionVotesCtrl', function($rootScope, $scope, $h
      * consultiveBallotId: "=cballot"
      */
 	init();
+  $scope.activeResults = false;
+
+  $scope.updateListener = function() {
+    if ($scope.activeResults !== true)
+      $scope.activeResults = true;
+    else
+      $scope.activeResults = false;
+    $timeout($scope.showResultsMethod, 0);
+  }
 
 	function init() {
         $scope.user = localStorageService.get('user');

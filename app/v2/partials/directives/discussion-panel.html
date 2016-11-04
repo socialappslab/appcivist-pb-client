@@ -8,7 +8,7 @@
       <p class="heading--header">{{formatDate(discussion.creation)}}</p>
     </div>
     <member-card user="discussion.authors[0]"></member-card>
-
+    
     <div class="comment-text">
       <small>{{discussion.text}}</small>
     </div>
@@ -22,7 +22,7 @@
         </div>
       </div>
       <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} Replies</a>
-      <a class="heading--subheader reply-count reply"
+      <a class="heading--subheader reply-count reply" 
          ng-if="!discussion.showReplyForm"
          ng-click="writeReply(discussion)">Reply to this comment</a>
     </div>
@@ -69,7 +69,7 @@
       </form>
     </div>
   </li>
-
+  
   <div class="panel reply-field">
     <h1 class="heading--header">Start a Conversation</h1>
     <form method="post" action="#" class="comment-form">

@@ -18,11 +18,24 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
   activate();
 
   function activate() {
-    $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
-    $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
-    $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
-    $scope.user = localStorageService.get('user');
-    loadProposal($scope.assemblyID, $scope.proposalID);
+
+    // if the param is uuid then is an anonymous user, use endpoints with uuid
+    // Example http://localhost:8000/#/v2/assembly/7/group/5/proposal/56c08723-0758-4319-8dee-b752cf8004e6
+    var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    // TODO make endpoints for assembly by UUID and wGroup by UUID
+    //if (pattern.test($stateParams.aid) === true && pattern.test($stateParams.gid) === true && pattern.test($stateParams.pid) === true) {
+    if (pattern.test($stateParams.pid) === true) {
+      console.log('Valid UUIDs');
+      $scope.proposalID = $stateParams.pid;
+    } else {
+      console.log('Not valid UUIDs');
+      $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+      $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
+      $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
+      $scope.user = localStorageService.get('user');
+      loadProposal($scope.assemblyID, $scope.proposalID);
+    }
+
   }
 
   function loadProposal(aid, pid) {
@@ -68,7 +81,7 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
       });
     }
   }
-  
+
   function loadRelatedContributions(resourceSpaceId) {
     var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query();
     rsp.$promise.then(
@@ -78,7 +91,7 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
           if(r.contributionId === $scope.proposalID){
             return;
           }
-          
+
           if(r.type === 'PROPOSAL' || r.type === 'IDEA'){
             r.assemblyId = r.workingGroupAuthors[0].assemblies[0];
             r.groupId = r.workingGroupAuthors[0].groupId;

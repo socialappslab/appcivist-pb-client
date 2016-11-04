@@ -17,14 +17,25 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
   activate();
 
   function activate() {
-    $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
-    $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
-    $scope.user = localStorageService.get('user');
 
-    loadAssembly();  
-    verifyMembership();
+    // if the param is uuid then it is an anonymous user
+    // Example http://localhost:8000/#/v2/assembly/7/group/56c08723-0758-4319-8dee-b752cf8004e6
+    var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    // TODO make endpoint for assembly by UUID
+    //if (pattern.test($stateParams.aid) === true && pattern.test($stateParams.gid) === true) {
+    if (pattern.test($stateParams.gid) === true) {
+      console.log('Valid UUIDs');
+      $scope.groupID = $stateParams.gid;
+    } else {
+      console.log('Not valid UUIDs');
+      $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+      $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
+      $scope.user = localStorageService.get('user');
+      loadAssembly();
+      verifyMembership();
+    }
   }
-  
+
   function loadAssembly() {
     var rsp = Assemblies.assembly($scope.assemblyID).get();
     rsp.$promise.then(function(data) {
@@ -33,13 +44,13 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
   }
 
   function verifyMembership() {
-  
+
     if ($scope.assemblyID >= 0 && $scope.groupID >= 0) {
         var rsp = Memberships.membershipInGroup($scope.groupID, $scope.user.userId).get();
         rsp.$promise.then(userIsMemberSuccess, userIsMemberError);
     }
   }
-    
+
   function userIsMemberSuccess(data) {
     $scope.membership = data;
     $scope.userIsMember = $scope.membership.status === "ACCEPTED";
@@ -113,7 +124,7 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
       function (error) {
         FlashService.Error('Error occured while trying to load working group ideals');
       }
-    );  
+    );
   }
 
   function loadDiscussions(resourceSpaceId) {
@@ -128,7 +139,7 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
       }
     );
   }
-  
+
   // TODO: just show the latest contributions until notifications API is ready
   function loadLatestActivities(resourceSpaceId) {
     var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query();

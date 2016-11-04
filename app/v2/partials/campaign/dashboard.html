@@ -1,4 +1,4 @@
-<main class="app-main">
+<main class="app-main" ng-class="{'anonymous' : user == null}">
     <section class="panel intro">
       <p class="heading--header">Campaign</p>
       <h1 class="heading--title">{{campaign.title}}</h1>
@@ -11,7 +11,7 @@
           <h1 class="heading--header">Proposals</h1>
           <p class="heading--small">
             <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
-            <a href="#"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
+            <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
         </div>
         <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal"></proposal-card>
       </section>
@@ -21,7 +21,7 @@
           <h1 class="heading--header">Ideas</h1>
           <p class="heading--small">
             <a href="&#x2F;patterns&#x2F;03-templates-08-all-ideas-view&#x2F;03-templates-08-all-ideas-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
-            <a href="#"><i class="fa fa-plus-square"></i>&nbsp;Add New</a>&nbsp;&nbsp;
+            <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;Add New</a>&nbsp;&nbsp;
             <a ng-if="ideasSectionExpanded" href="#"><i class="fa fa-eye-slash"></i>&nbsp;Hide</a>&nbsp;&nbsp;
             <a ng-if="!ideasSectionExpanded" href="#"><i class="fa fa-eye"></i>&nbsp;Show</a>&nbsp;&nbsp;
           </p>
@@ -32,5 +32,5 @@
     </section>
 
     <discussion-panel discussions="discussions"></discussion-panel>
-     
+
 </main>

@@ -145,7 +145,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 		// temporary new templates integration
 		$stateProvider.state('v2',{
 			url: '/v2',
-			abstract: true,	
+			abstract: true,
 			templateUrl: 'app/v2/partials/main.html',
       controller: 'v2.MainCtrl'
 		})
@@ -389,9 +389,11 @@ function run($rootScope, $location, $http, localStorageService, logService, $uib
         var sessionKey = localStorageService.get('sessionKey');
         var user = localStorageService.get("user");
 
-        if (!nonRestrictedPage && !authenticated && 
-            (sessionKey === null || sessionKey === undefined || sessionKey === "" ) && 
+        // in v2 version there are anonymous pages, so we dont need permissions
+        if (next.indexOf('v2') === -1 && !nonRestrictedPage && !authenticated &&
+            (sessionKey === null || sessionKey === undefined || sessionKey === "" ) &&
             (user === null || user === undefined)) {
+              console.log('entro al uf');
             $location.path('/');
         }
     });

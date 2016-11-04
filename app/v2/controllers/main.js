@@ -20,10 +20,12 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
       v2: true
     };
     $scope.user = localStorageService.get('user');
-    loadWorkingGroups($scope);
-    loadAllCampaigns($scope);
+    if ($scope.user != undefined) {
+      loadWorkingGroups($scope);
+      loadAllCampaigns($scope);
+    }
   }
-  
+
   function loadWorkingGroups(scope) {
     var rsp = Memberships.workingGroups(scope.user.userId).query();
     rsp.$promise.then(

@@ -4,12 +4,18 @@
 appCivistApp
   .directive('campaignTimeline',  CampaignTimeline);
 
-CampaignTimeline.$inject = ['Campaigns'];
+CampaignTimeline.$inject = ['Campaigns', 'localStorageService'];
 
-function CampaignTimeline(Campaigns) {
-  
+function CampaignTimeline(Campaigns, localStorageService) {
+
   function loadCampaign(scope, aid, cid) {
-    var res = Campaigns.campaign(aid, cid).get();
+    scope.user = localStorageService.get('user');
+    var res;
+    if (scope.user != null) {
+      res = Campaigns.campaign(aid, cid).get();
+    } else {
+      res = Campaigns.campaignByUUID(cid).get();
+    }
     res.$promise.then(function(data) {
       var currentComponent = Campaigns.getCurrentComponent(data.components);
       angular.forEach(data.components, function(c) {
@@ -18,7 +24,7 @@ function CampaignTimeline(Campaigns) {
       scope.components = data.components;
     });
   }
-  
+
   /**
    * Set timeline stage status.
    *
@@ -45,13 +51,13 @@ function CampaignTimeline(Campaigns) {
     },
     templateUrl: '/app/v2/partials/directives/campaign-timeline.html',
     link: function postLink(scope, element, attrs) {
-      
+
       if(!scope.campaignId){
         scope.$watch('campaignId', function(cid) {
-          loadCampaign(scope, scope.assemblyId, cid); 
+          loadCampaign(scope, scope.assemblyId, cid);
         });
       }else{
-        loadCampaign(scope, scope.assemblyId, scope.campaignId); 
+        loadCampaign(scope, scope.assemblyId, scope.campaignId);
       }
     }
   };

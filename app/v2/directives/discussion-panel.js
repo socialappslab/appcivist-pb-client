@@ -4,9 +4,9 @@
 appCivistApp
   .directive('discussionPanel',  DiscussionPanel);
 
-DiscussionPanel.$inject = [];
+DiscussionPanel.$inject = ["localStorageService"];
 
-function DiscussionPanel() {
+function DiscussionPanel(localStorageService) {
 
   return {
     restrict: 'E',
@@ -19,10 +19,12 @@ function DiscussionPanel() {
       scope.writeReply = function(discussion) {
         discussion.showReplyForm = true;
       };
-      
+
       scope.formatDate = function(date){
         return moment(date, 'YYYY-MM-DD HH:mm').local().format('LLL');
       };
+
+      scope.user = localStorageService.get('user');
     }
   };
 }

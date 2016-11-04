@@ -17,23 +17,42 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
   activate();
 
   function activate() {
-    $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
-    $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
-    $scope.user = localStorageService.get('user');
-    $scope.ideasSectionExpanded = true;
+
+    // if the param is uuid then it is an anonymous user
+    // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
+    var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    // TODO make endpoint for assembly by UUID
+    //if (pattern.test($stateParams.aid) === true && pattern.test($stateParams.cid) === true) {
+    if (pattern.test($stateParams.cid) === true) {
+      console.log('Valid UUIDs');
+      $scope.assemblyID = $stateParams.aid;
+      $scope.campaignID = $stateParams.cid;
+    } else {
+      console.log('Not valid UUIDs');
+      $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+      $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
+      $scope.user = localStorageService.get('user');
+      $scope.ideasSectionExpanded = true;
+    }
     loadAssembly();
     loadCampaigns();
   }
-  
+
   function loadAssembly() {
     var rsp = Assemblies.assembly($scope.assemblyID).get();
     rsp.$promise.then(function(data) {
       $scope.assembly = data;
     });
   }
-	
+
   function loadCampaigns() {
-    var res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
+    var res;
+    if ($scope.user == null) {
+      res = Campaigns.campaignByUUID($scope.campaignID).get();
+    } else {
+      res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
+    }
+
     res.$promise.then(function(data) {
       $scope.campaign = data;
 
@@ -41,12 +60,12 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
       getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
         // only published proposals
         $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'});
-        
+
         if(!$scope.proposals){
           $scope.proposals = [];
         }
       });
-      
+
       // get ideas
       getContributions($scope.campaign, 'IDEA').then(function(response) {
         $scope.ideas = $filter('filter')(response, {type: 'IDEA'});
@@ -55,7 +74,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
           $scope.ideas = [];
         }
       });
-      
+
       // get discussions
       getContributions($scope.campaign, 'DISCUSSION').then(function(response) {
         $scope.discussions = $filter('filter')(response, {type: 'DISCUSSION'});
@@ -66,9 +85,9 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
       });
     });
   }
-	
 
-  
+
+
 
   /**
    * Get contributions from server.

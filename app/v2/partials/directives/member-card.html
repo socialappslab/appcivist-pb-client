@@ -5,6 +5,6 @@
   </figure>
   <h4>
     <a href="">{{currentUser.name}}</a>
-    <span ng-if="actionBar" class="heading--subheader"><a href="">My Settings</a> | <a href="" ng-click="signout()">Log Out</a></span>
+    <span ng-if="actionBar && !commentsSection" class="heading--subheader"><a href="">My Settings</a> | <a href="" ng-click="signout()">Log Out</a></span>
   </h4>
 </div>

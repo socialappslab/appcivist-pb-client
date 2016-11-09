@@ -2985,4 +2985,8 @@ i {
   overflow-y: auto;
 }
 
+.panel-heading {
+  padding-left: 0px !important;
+}
+
 /*# sourceMappingURL=app.css.map */

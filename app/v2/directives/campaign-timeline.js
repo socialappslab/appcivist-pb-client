@@ -47,7 +47,8 @@ function CampaignTimeline(Campaigns, localStorageService) {
     scope: {
       assemblyId: '=',
       campaignId: '=',
-      title: '@'
+      title: '@',
+      onlyLabel: '='
     },
     templateUrl: '/app/v2/partials/directives/campaign-timeline.html',
     link: function postLink(scope, element, attrs) {

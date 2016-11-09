@@ -14,7 +14,8 @@ function MemberCard(localStorageService, loginService, logService) {
     restrict: 'E',
     scope: {
       user: '=',
-      actionBar: '='
+      actionBar: '=',
+      commentsSection: '='
     },
     templateUrl: '/app/v2/partials/directives/member-card.html',
     link: function postLink(scope, element, attrs) {
@@ -23,7 +24,7 @@ function MemberCard(localStorageService, loginService, logService) {
       if(!scope.user){
         scope.currentUser = localStorageService.get('user');
       }
-      
+
       scope.signout = function() {
         loginService.signOut(scope.currentUser.email, scope, logService.logAction("LOGOUT"));
       };

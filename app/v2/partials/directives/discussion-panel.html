@@ -1,14 +1,14 @@
 <section class="panel">
   <div class="panel-heading">
-      <h1 class="heading--header">Conversations</h1><p class="heading--small"><a href="#" ng-if="user != null">Start a new onversation</a></p>
+      <h1 class="heading--header">Conversations</h1><p class="heading--small"><a href="#" ng-if="user != null">Start a new conversation</a></p>
   </div>
   <li class="panel card conversation-container" ng-repeat="discussion in discussions">
     <div class="comment-meta">
       <!--<p class="heading++header">Yesterday in <a href="#">Housing and Urban Development (HUD) Funds</a></p>-->
       <p class="heading--header">{{formatDate(discussion.creation)}}</p>
     </div>
-    <member-card user="discussion.authors[0]"></member-card>
-    
+    <member-card user="discussion.authors[0]" comments-section="true"></member-card>
+
     <div class="comment-text">
       <small>{{discussion.text}}</small>
     </div>
@@ -22,7 +22,7 @@
         </div>
       </div>
       <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} Replies</a>
-      <a class="heading--subheader reply-count reply" 
+      <a class="heading--subheader reply-count reply"
          ng-if="!discussion.showReplyForm"
          ng-click="writeReply(discussion)">Reply to this comment</a>
     </div>
@@ -31,7 +31,7 @@
         <div class="comment-meta">
           <!-- <p class="heading++header">Yesterday in <a href="#">Housing and Urban Development (HUD) Funds</a></p> -->
           <p class="heading--header">{{formatDate(comment.creation)}}</a></p>
-          <member-card user="comment.authors[0]"></member-card>
+          <member-card user="comment.authors[0]" comments-section="true"></member-card>
         </div>
         <div class="comment-text">
           <small>{{comment.text}}</small>
@@ -62,14 +62,14 @@
             <textarea id="comment-field" rows="5" placeholder="Write you comment here"></textarea>
           </div>
           <div class="comment-meta">
-            <member-card action-bar="true"></member-card>
+            <member-card action-bar="true" comments-section="true"></member-card>
           </div>
           <input class="button" type='submit' value='Submit' />
         </fieldset>
       </form>
     </div>
   </li>
-  
+  <p ng-if="discussions.length === 0" class="card">No Discussions in this space yet. Be the first to create one. Click on "Start a new conversation"!</p>
   <div class="panel reply-field">
     <h1 class="heading--header">Start a Conversation</h1>
     <form method="post" action="#" class="comment-form">
@@ -78,7 +78,7 @@
           <textarea id="comment-field" rows="5" placeholder="Write you comment here"></textarea>
         </div>
         <div class="comment-meta">
-          <member-card action-bar="true"></member-card>
+          <member-card action-bar="true" comments-section="true"></member-card>
         </div>
         <input class="button" type='submit' value='Submit' />
       </fieldset>

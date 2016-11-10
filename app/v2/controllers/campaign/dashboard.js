@@ -56,6 +56,8 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     res.$promise.then(function(data) {
       $scope.campaign = data;
       $scope.spaceID = data.resourceSpaceId;
+      var currentComponent = Campaigns.getCurrentComponent(data.components);
+      setIdeasSectionVisibility(currentComponent);
 
       // get proposals
       getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
@@ -87,8 +89,10 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     });
   }
 
-
-
+  function setIdeasSectionVisibility(component) {
+    var key = component.key.toUpperCase();
+    $scope.isIdeasSectionVisible = (key === 'PROPOSAL MAKING' || key === 'IDEAS');
+  }
 
   /**
    * Get contributions from server.

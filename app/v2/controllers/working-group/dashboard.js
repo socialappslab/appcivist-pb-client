@@ -82,7 +82,7 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
         loadMembers($scope.assemblyID, $scope.groupID);
         loadProposals($scope.assemblyID, $scope.groupID);
         loadIdeas($scope.assemblyID, $scope.groupID);
-        loadDiscussions(data.forumResourceSpaceId);
+        $scope.spaceID = data.forumResourceSpaceId;
         loadLatestActivities(data.resourcesResourceSpaceId);
       },
       function (error) {
@@ -123,19 +123,6 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
       },
       function (error) {
         FlashService.Error('Error occured while trying to load working group ideals');
-      }
-    );
-  }
-
-  function loadDiscussions(resourceSpaceId) {
-    var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query();
-    rsp.$promise.then(
-      function (data) {
-        $scope.discussions = data;
-        console.log('DISCUSSIONS', data);
-      },
-      function (error) {
-        FlashService.Error('Error loading working group comments from server');
       }
     );
   }

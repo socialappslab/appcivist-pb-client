@@ -193,6 +193,21 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
       url: '/:pid',
       templateUrl: 'app/v2/partials/proposal/page.html',
       controller: 'v2.ProposalPageCtrl'
+	  })
+		.state('v2.space',{
+      url: '/space',
+      template: '<div ui-view></div>',
+      abstract: true
+		})
+		.state('v2.space.sid',{
+      url: '/:sid',
+      template: '<div ui-view></div>',
+      abstract: true
+		})
+		.state('v2.space.sid.proposal',{
+      url: '/proposal',
+      templateUrl: 'app/v2/partials/proposal/all.html',
+      controller: 'v2.ProposalsCtrl'
 		});
 
     /**

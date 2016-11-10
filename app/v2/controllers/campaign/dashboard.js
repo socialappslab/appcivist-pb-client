@@ -55,6 +55,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
     res.$promise.then(function(data) {
       $scope.campaign = data;
+      $scope.spaceID = data.resourceSpaceId;
 
       // get proposals
       getContributions($scope.campaign, 'PROPOSAL').then(function(response) {

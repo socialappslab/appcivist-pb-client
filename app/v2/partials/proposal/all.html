@@ -1,0 +1,39 @@
+<main class="app-main" in-view-container>
+  <section class="panel intro">
+    <h1 class="heading--title">All Proposals</h1>
+    <p class="heading--header">in the <a href="&#x2F;patterns&#x2F;03-templates-03-working-group-dashboard&#x2F;03-templates-03-working-group-dashboard.html">Ad-Hoc City Council Committee on Commissions</a> Working Group.</p>
+  </section>
+  <section class="panel" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
+    <ol class="pagination">
+      <li><a href="#"><< Prev</a></li>
+      <li class="current"><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">6</a></li>
+      <li><a href="#">7</a></li>
+      <li><a href="#">Next >></a></li>
+    </ol>
+  </section>
+  <section class="panel">
+    <section class="list--idea all-proposals">
+      <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal"></proposal-card>
+      <p ng-if="proposals.length === 0" class="card">No Proposals in this space yet</p>
+    </section>
+  </section>
+  <section class="panel" in-view="paginationVisible(paginationBottom, $inview)" ng-style="paginationBottom.style">
+    <ol class="pagination">
+      <li><a href="#"><< Prev</a></li>
+      <li class="current"><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">6</a></li>
+      <li><a href="#">7</a></li>
+      <li><a href="#">Next >></a></li>
+    </ol>
+  </section>
+</main>
+<div ui-view></div>

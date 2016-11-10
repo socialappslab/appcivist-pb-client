@@ -36,8 +36,9 @@
     "angular-i18n": "^1.5.5",
     "ngclipboard": "^1.1.1",
     "angular-ui-router": "^0.2.18",
-    "appcivist-patterns": "git@github.com:socialappslab/appcivist-patterns.git#master", 
-    "lodash": "~4.16.4"
+    "appcivist-patterns": "git@github.com:socialappslab/appcivist-patterns.git#master",
+    "lodash": "~4.16.4",
+    "angular-inview": "^2.1.0"
   },
   "resolutions": {
     "angular": "1.5.0",

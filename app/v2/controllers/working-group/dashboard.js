@@ -133,7 +133,6 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     rsp.$promise.then(
       function (data) {
         $scope.activities = data;
-        console.log('ACTIVITIES', data);
       },
       function (error) {
         FlashService.Error('Error loading working group activities from server');

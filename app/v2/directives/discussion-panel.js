@@ -10,7 +10,7 @@ DiscussionPanel.$inject = [
 
 function DiscussionPanel(localStorageService, $anchorScroll, $location, Contributions, FlashService, $filter) {
 
-  function newContribution(type){
+  function initContribution(type){
     var c = Contributions.defaultNewContribution();
     c.type = type;
     return c;
@@ -29,6 +29,19 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
     return rsp.$promise;
   }
 
+  function saveContribution(scope, sid, newContribution) {
+    newContribution.title = newContribution.text;
+    var rsp = Contributions.contributionInResourceSpace(sid);
+    rsp.save(newContribution).$promise.then(function(saved) {
+      if(newContribution.type === 'DISCUSSION') {
+        scope.newDiscussion = initContribution('DISCUSSION');
+      }else if(newContribution.type === 'COMMENT') {
+        scope.newComment = initContribution('COMMENT');
+      }
+      loadDiscussions(scope, scope.spaceId);
+    });
+  }
+
   return {
     restrict: 'E',
     scope: {
@@ -44,10 +57,14 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
 
       function activate() {
         loadDiscussions(scope, scope.spaceId);
-        scope.newDiscussion = newContribution('DISCUSSION');
+        scope.newDiscussion = initContribution('DISCUSSION');
+        scope.newComment = initContribution('COMMENT');
         // make discussion reply form visible
         scope.writeReply = function(discussion) {
           discussion.showReplyForm = true;
+          $location.hash('comment-field-' + discussion.resourceSpaceId);
+          $anchorScroll();
+          $('#discussion-field-' + discussion.resourceSpaceId).focus();
         };
 
         scope.formatDate = function(date){
@@ -62,12 +79,11 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
         };
 
         scope.createNewDiscussion = function() {
-          scope.newDiscussion.title = scope.newDiscussion.text;
-          var rsp = Contributions.contributionInResourceSpace(scope.spaceId);
-          rsp.save(scope.newDiscussion).$promise.then(function(saved) {
-            scope.newDiscussion = newContribution('DISCUSSION');
-            loadDiscussions(scope, scope.spaceId);
-          });
+          saveContribution(scope, scope.spaceId, scope.newDiscussion);
+        };
+
+        scope.createNewComment = function(discussion) {
+          saveContribution(scope, discussion.resourceSpaceId, scope.newComment);
         };
       }
     }

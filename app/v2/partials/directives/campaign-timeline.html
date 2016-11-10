@@ -2,12 +2,22 @@
   <div class="panel-heading">
     <h1 class="heading--header">{{title}}</h1>
   </div>
-  <div class="timeline">
-    <div ng-repeat="component in components track by $index" 
+  <div ng-if="!onlyLabel" class="timeline">
+    <div ng-repeat="component in components track by $index"
          class="timeline-item"
          ng-class="component.cssClass">
       <div class="marker"></div>
       {{component.title}}
+    </div>
+  </div>
+
+  <br/>
+  <div ng-if="onlyLabel">
+    <div class="sg-pattern-example">
+      <div ng-repeat="component in components track by $index"
+           ng-class="component.cssClass">
+        <span ng-if="component.cssClass == 'active'" class="label label-default">{{component.title}}</span>
+      </div>
     </div>
   </div>
 </section>

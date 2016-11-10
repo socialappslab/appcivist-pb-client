@@ -1,5 +1,5 @@
 appCivistApp.service('logService', function($resource, $rootScope, $http, $location, localStorageService, $uibModal, AppCivistAuth,
-											  FlashService) {
+											  FlashService, $window) {
 
   this.logAction = function(action, rType, rId, email) {
     if ($rootScope.logActions){
@@ -15,6 +15,8 @@ appCivistApp.service('logService', function($resource, $rootScope, $http, $locat
 
       $http.post(url, data).then(function(){
         console.log(action + " Logged");
+				if (action == 'LOGOUT')
+					$window.location = "/";
       });
     }
   }

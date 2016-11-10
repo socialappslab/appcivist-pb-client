@@ -11,7 +11,7 @@
 		</h3>
 	</div>
 	<div class="user">
-		<member-card action-bar="true"></member-card>    
+		<member-card action-bar="true"></member-card>
 	</div>
 	<ul class="submenu submenu-working-groups">
 		<h1 class="heading--header">My Working Groups</h1>
@@ -24,13 +24,13 @@
 	<ul class="submenu submenu-campaigns">
 		<h1 class="heading--header">My Campaigns</h1>
 		<li ng-repeat="c in myCampaigns">
-			<a href="&#x2F;patterns&#x2F;03-templates-01-campaign-dashboard&#x2F;03-templates-01-campaign-dashboard.html">
+			<a ng-href="/#/v2/assembly/{{c.assemblies[0]}}/campaign/{{c.campaignId}}">
 				{{c.title}}
 			</a>
 		</li>
 	</ul>
 </nav>
-  
+
 <nav id="small-nav" class="navigation-logged-in small-screen-nav">
 	<div class="logo">
 	<h1 class="heading--headline">City of Vallejo

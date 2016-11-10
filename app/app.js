@@ -193,6 +193,16 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
       url: '/:pid',
       templateUrl: 'app/v2/partials/proposal/page.html',
       controller: 'v2.ProposalPageCtrl'
+		})
+    .state('v2.campaign',{
+      url: '/campaign',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+    .state('v2.campaign.cuuid',{
+			url: '/:cuuid',
+			controller: 'v2.CampaignDashboardCtrl',
+			templateUrl: 'app/v2/partials/campaign/dashboard.html'
 		});
 
     /**

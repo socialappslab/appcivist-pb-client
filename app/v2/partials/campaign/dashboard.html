@@ -13,7 +13,7 @@
             <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
             <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
         </div>
-        <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal"></proposal-card>
+        <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal" campaign-id="campaignID" show-voting-buttons="false"></proposal-card>
         <p ng-if="proposals.length === 0" class="card">No Proposals in this space yet. Be the first to create one. Click on "Add new"!</p>
       </section>
 
@@ -27,7 +27,7 @@
             <a ng-if="!ideasSectionExpanded" href="#"><i class="fa fa-eye"></i>&nbsp;Show</a>&nbsp;&nbsp;
           </p>
         </div>
-        <idea-card ng-repeat="idea in ideas track by $index" idea="idea"></idea-card>
+        <idea-card ng-repeat="idea in ideas track by $index" idea="idea" campaign="campaign"></idea-card>
         <p ng-if="ideas.length === 0" class="card">No Ideas in this space yet. Be the first to create one. Click on "Add new"!</p>
       </section>
     </section>

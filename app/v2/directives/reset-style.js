@@ -10,14 +10,20 @@ appCivistApp
 ResetStyle.$inject = ['$rootScope'];
 
 function ResetStyle($rootScope) {
+  
+  function reset() {
+    if(location.hash.includes('/v2/')){
+      $('head style').detach();
+      $('head link[rel=stylesheet]').detach();
+    }
+  }
 
   return {
     restrict: 'E',
     link: function postLink(scope, element, attrs) {
-      if($rootScope.ui.v2){
-        $('head style').detach();
-        $('head link[rel=stylesheet]').detach();
-      }
+      $rootScope.$on('$locationChangeStart', function(next, current) {
+        reset();
+      });
     }
   };
 }

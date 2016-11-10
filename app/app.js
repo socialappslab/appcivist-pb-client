@@ -13,7 +13,7 @@
 (function() {
 var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
-    'tmh.dynamicLocale', 'ngclipboard', 'ui.router'];
+    'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview'];
 var appCivistApp = angular.module('appCivistApp', dependencies);
 
 var appcivist = {
@@ -208,6 +208,11 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
       url: '/proposal',
       templateUrl: 'app/v2/partials/proposal/all.html',
       controller: 'v2.ProposalsCtrl'
+		})
+		.state('v2.space.sid.idea',{
+      url: '/idea',
+      templateUrl: 'app/v2/partials/idea/all.html',
+      controller: 'v2.IdeasCtrl'
 		});
 
     /**

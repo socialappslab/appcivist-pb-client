@@ -60,7 +60,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
       // get proposals
       getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
         // only published proposals
-        $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'});
+        $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'}).splice(0, 6);
 
         if(!$scope.proposals){
           $scope.proposals = [];
@@ -69,7 +69,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
       // get ideas
       getContributions($scope.campaign, 'IDEA').then(function(response) {
-        $scope.ideas = $filter('filter')(response, {type: 'IDEA'});
+        $scope.ideas = $filter('filter')(response, {type: 'IDEA'}).splice(0, 6);
 
         if(!$scope.ideas){
           $scope.ideas = [];

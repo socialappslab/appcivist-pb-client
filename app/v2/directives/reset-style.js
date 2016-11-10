@@ -7,15 +7,17 @@
 appCivistApp
   .directive('resetStyle',  ResetStyle);
 
-ResetStyle.$inject = [];
+ResetStyle.$inject = ['$rootScope'];
 
-function ResetStyle() {
+function ResetStyle($rootScope) {
 
   return {
     restrict: 'E',
     link: function postLink(scope, element, attrs) {
-      $('head style').detach();
-      $('head link[rel=stylesheet]').detach();
+      if($rootScope.ui.v2){
+        $('head style').detach();
+        $('head link[rel=stylesheet]').detach();
+      }
     }
   };
 }

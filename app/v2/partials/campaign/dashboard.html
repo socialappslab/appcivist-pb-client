@@ -16,15 +16,18 @@
         <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal"></proposal-card>
         <p ng-if="proposals.length === 0" class="card">No Proposals in this space yet. Be the first to create one. Click on "Add new"!</p>
       </section>
-
+    </section>
+    
+    <section class="panel ideas-and-proposals">
       <section class="list--idea">
         <div class="panel-heading-no-margin">
           <h1 class="heading--header">Ideas</h1>
           <p class="heading--small">
             <a ng-href="#/v2/space/{{spaceID}}/idea"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
             <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;Add New</a>&nbsp;&nbsp;
-            <a ng-if="ideasSectionExpanded" href="#"><i class="fa fa-eye-slash"></i>&nbsp;Hide</a>&nbsp;&nbsp;
-            <a ng-if="!ideasSectionExpanded" href="#"><i class="fa fa-eye"></i>&nbsp;Show</a>&nbsp;&nbsp;
+            <!-- TODO: temporary commented -->
+            <!--<a ng-if="ideasSectionExpanded" href="#"><i class="fa fa-eye-slash"></i>&nbsp;Hide</a>&nbsp;&nbsp;-->
+            <!--<a ng-if="!ideasSectionExpanded" href="#"><i class="fa fa-eye"></i>&nbsp;Show</a>&nbsp;&nbsp;-->
           </p>
         </div>
         <idea-card ng-repeat="idea in ideas track by $index" idea="idea"></idea-card>

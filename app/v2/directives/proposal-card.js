@@ -34,17 +34,14 @@ function ProposalCard(Contributions, Campaigns) {
         }
       });
 
-      scope.showActionMenu = true;
+      scope.showActionMenu = false;
       scope.myObject = {};
       scope.myObject.refreshMenu = function() {
-          if (scope.showActionMenu == false)
-            scope.showActionMenu = true;
-          else
-            scope.showActionMenu = false;
-      }
+        scope.showActionMenu = !scope.showActionMenu;
+      };
 
       // Read user contribution feedback
-      scope.userFeedback = scope.userFeedback != null ?
+      scope.userFeedback = scope.userFeedback !== null ?
           scope.userFeedback : {"up":false, "down":false, "fav": false, "flag": false};
 
       // Feedback update

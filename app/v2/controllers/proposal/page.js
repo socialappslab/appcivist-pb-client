@@ -91,7 +91,7 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
         $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
         $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId);
         verifyAuthorship($scope.proposal);
-        loadRelatedContributions($scope.group.resourcesResourceSpaceId);
+        loadRelatedContributions($scope.group ? $scope.group.resourcesResourceSpaceId : null);
       },
       function (error) {
         FlashService.Error('Error occured when trying to load proposal: ' + JSON.stringify(error));

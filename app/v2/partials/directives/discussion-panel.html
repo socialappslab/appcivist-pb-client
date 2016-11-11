@@ -71,7 +71,9 @@
     </div>
   </li>
   <p ng-if="discussions.length === 0" class="card">No Discussions in this space yet. Be the first to create one. Click on "Start a new conversation"!</p>
-  <div class="panel reply-field">
+</section>
+
+  <section class="panel reply-field">
     <h1 class="heading--header">Start a Conversation</h1>
     <form method="post" ng-submit="createNewDiscussion()" class="comment-form">
       <fieldset>
@@ -84,5 +86,4 @@
         <input class="button" type='submit' value='Submit' />
       </fieldset>
     </form>
-  </div>
-</section>
+  </section>

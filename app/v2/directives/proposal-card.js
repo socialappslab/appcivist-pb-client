@@ -18,8 +18,12 @@ function ProposalCard(Contributions, Campaigns) {
     templateUrl: '/app/v2/partials/directives/proposal-card.html',
     link: function postLink(scope, element, attrs) {
       //console.log(scope.proposal);
-      scope.assemblyId = scope.proposal.workingGroupAuthors[0].assemblies[0];
-      scope.groupId = scope.proposal.workingGroupAuthors[0].groupId;
+      //
+      scope.assemblyId = scope.proposal.assemblyId;
+
+      var workingGroupAuthors = scope.proposal.workingGroupAuthors;
+      var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+      scope.groupId = workingGroupAuthorsLength ? scope.proposal.workingGroupAuthors[0].groupId : 0;
 
       // Verify the status of the campaign and show or not show the voting buttons
       var campaign = Campaigns.campaign(scope.assemblyId, scope.campaignId).get();

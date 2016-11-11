@@ -81,8 +81,14 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
     rsp.$promise.then(
       function (data) {
         $scope.proposal = data;
-        $scope.group = data.workingGroupAuthors[0];
-        $scope.campaignID = data.campaignIds[0];
+
+        var workingGroupAuthors = data.workingGroupAuthors;
+        var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+        $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
+
+        var campaignIds = data.campaignIds;
+        var campaignIdsLength = campaignIds ? campaignIds.length : 0;
+        $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
         $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId);
         verifyAuthorship($scope.proposal);
         loadRelatedContributions($scope.group.resourcesResourceSpaceId);

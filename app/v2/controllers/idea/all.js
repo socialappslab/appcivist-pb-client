@@ -3,15 +3,15 @@
 
 angular
   .module('appCivistApp')
-  .controller('v2.ProposalsCtrl', ProposalsCtrl);
+  .controller('v2.IdeasCtrl', IdeasCtrl);
 
 
-ProposalsCtrl.$inject = [
+IdeasCtrl.$inject = [
   '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
   'localStorageService', 'FlashService'
 ];
 
-function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
+function IdeasCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
                           $filter, localStorageService, FlashService) {
 
   activate();
@@ -30,7 +30,7 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
       console.log('Not valid UUIDs');
       $scope.spaceID = ($stateParams.sid) ? parseInt($stateParams.sid) : 0;
       $scope.user = localStorageService.get('user');
-      loadProposals($scope.spaceID);
+      loadIdeas($scope.spaceID);
     }
     $scope.paginationTop = {};
     $scope.paginationBottom = {};
@@ -43,28 +43,28 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
       pag.visible = visible;
       pag.style = visible ? {} : {display: 'none'};
     };
-  }
 
+  }
 
   /**
    * Get contributions from server.
    *
    * @param campaign {sid} the resource space id.
    **/
-  function loadProposals(sid) {
+  function loadIdeas(sid) {
     // TODO: pass type argument when issue is solved
     var rsp = Contributions.contributionInResourceSpace(sid).query();
     rsp.$promise.then(
       function (data) {
-        var proposals = $filter('filter')(data, {type: 'PROPOSAL'});
+        var ideas = $filter('filter')(data, {type: 'IDEA'});
 
-        if(!$scope.proposals){
-          $scope.proposals = [];
+        if(!$scope.ideas){
+          $scope.ideas = [];
         }
-        $scope.proposals = proposals;
+        $scope.ideas = ideas;
       },
       function (error) {
-        FlashService.Error('Error loading proposals from server');
+        FlashService.Error('Error loading ideas from server');
       }
     );
   }

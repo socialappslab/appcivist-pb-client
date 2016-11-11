@@ -17,16 +17,13 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
   activate();
 
   function activate() {
-
-    // if the param is uuid then it is an anonymous user
+    console.log('entro al controller correcto');
     // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    // TODO make endpoint for assembly by UUID
-    //if (pattern.test($stateParams.aid) === true && pattern.test($stateParams.cid) === true) {
-    if (pattern.test($stateParams.cid) === true) {
+    if ($stateParams.cuuid && pattern.test($stateParams.cuuid) === true) {
       console.log('Valid UUIDs');
-      $scope.assemblyID = $stateParams.aid;
-      $scope.campaignID = $stateParams.cid;
+      //$scope.assemblyID = $stateParams.aid;
+      $scope.campaignID = $stateParams.cuuid;
     } else {
       console.log('Not valid UUIDs');
       $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
@@ -56,11 +53,13 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     res.$promise.then(function(data) {
       $scope.campaign = data;
       $scope.spaceID = data.resourceSpaceId;
+      var currentComponent = Campaigns.getCurrentComponent(data.components);
+      setIdeasSectionVisibility(currentComponent);
 
       // get proposals
       getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
         // only published proposals
-        $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'});
+        $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'}).splice(0, 6);
 
         if(!$scope.proposals){
           $scope.proposals = [];
@@ -69,7 +68,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
       // get ideas
       getContributions($scope.campaign, 'IDEA').then(function(response) {
-        $scope.ideas = $filter('filter')(response, {type: 'IDEA'});
+        $scope.ideas = $filter('filter')(response, {type: 'IDEA'}).splice(0, 6);
 
         if(!$scope.ideas){
           $scope.ideas = [];
@@ -87,8 +86,10 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     });
   }
 
-
-
+  function setIdeasSectionVisibility(component) {
+    var key = component.key.toUpperCase();
+    $scope.isIdeasSectionVisible = (key === 'PROPOSAL MAKING' || key === 'IDEAS');
+  }
 
   /**
    * Get contributions from server.
@@ -101,7 +102,11 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     // Get list of contributions from server
     // TODO: pass type argument when issue is solved
     // var rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query({type: type});
-    var rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query();
+    var rsp;
+    if ($scope.user == null)
+      rsp = Contributions.contributionInResourceSpaceByUUID(campaign.resourceSpaceUUId).query();
+    else
+      rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query();
     rsp.$promise.then(
       function (data) {
         return data;

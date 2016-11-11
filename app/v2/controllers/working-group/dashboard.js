@@ -82,7 +82,7 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
         loadMembers($scope.assemblyID, $scope.groupID);
         loadProposals($scope.assemblyID, $scope.groupID);
         loadIdeas($scope.assemblyID, $scope.groupID);
-        loadDiscussions(data.forumResourceSpaceId);
+        $scope.spaceID = data.forumResourceSpaceId;
         loadLatestActivities(data.resourcesResourceSpaceId);
       },
       function (error) {
@@ -127,26 +127,12 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     );
   }
 
-  function loadDiscussions(resourceSpaceId) {
-    var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query();
-    rsp.$promise.then(
-      function (data) {
-        $scope.discussions = data;
-        console.log('DISCUSSIONS', data);
-      },
-      function (error) {
-        FlashService.Error('Error loading working group comments from server');
-      }
-    );
-  }
-
   // TODO: just show the latest contributions until notifications API is ready
   function loadLatestActivities(resourceSpaceId) {
     var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query();
     rsp.$promise.then(
       function (data) {
         $scope.activities = data;
-        console.log('ACTIVITIES', data);
       },
       function (error) {
         FlashService.Error('Error loading working group activities from server');

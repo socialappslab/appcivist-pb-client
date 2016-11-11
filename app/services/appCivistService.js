@@ -330,6 +330,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution',
                 {sid: spaceId});
         },
+        contributionInResourceSpaceByUUID: function (spaceUUId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public',
+                {uuid: spaceUUId});
+        },
         contributionsInCampaignComponent: function (assemblyID, campaignID, componentID) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
                 {

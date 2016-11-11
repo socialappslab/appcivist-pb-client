@@ -36,18 +36,62 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
       loadProposal($scope.assemblyID, $scope.proposalID);
     }
 
+    $scope.showActionMenu = true;
+    $scope.myObject = {};
+    $scope.myObject.refreshMenu = function() {
+        if ($scope.showActionMenu == false)
+          $scope.showActionMenu = true;
+        else
+          $scope.showActionMenu = false;
+    }
+    // Read user contribution feedback
+    $scope.userFeedback = $scope.userFeedback != null ?
+        $scope.userFeedback : {"up":false, "down":false, "fav": false, "flag": false};
   }
+
+  // Feedback update
+  $scope.updateFeedback = function (value) {
+      //console.log(value);
+      if (value === "up") {
+          $scope.userFeedback.up = true;
+          $scope.userFeedback.down = false;
+      } else if (value === "down") {
+          $scope.userFeedback.up = false;
+          $scope.userFeedback.down = true;
+      } else if (value === "fav") {
+          $scope.userFeedback.fav = true;
+      } else if (value === "flag") {
+          $scope.userFeedback.flag = true;
+      }
+
+      //var stats = $scope.contribution.stats;
+      var feedback = Contributions.userFeedback($scope.assemblyID, $scope.proposalID).update($scope.userFeedback);
+      feedback.$promise.then(
+          function (newStats) {
+              $scope.proposal.stats = newStats;
+          },
+          function (error) {
+              console.log("Error when updating user feedback");
+          }
+      );
+  };
 
   function loadProposal(aid, pid) {
     var rsp = Contributions.contribution(aid, pid).get();
     rsp.$promise.then(
       function (data) {
         $scope.proposal = data;
-        $scope.group = data.workingGroupAuthors[0];
-        $scope.campaignID = data.campaignIds[0];
+
+        var workingGroupAuthors = data.workingGroupAuthors;
+        var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+        $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
+
+        var campaignIds = data.campaignIds;
+        var campaignIdsLength = campaignIds ? campaignIds.length : 0;
+        $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
         $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId);
         verifyAuthorship($scope.proposal);
-        loadRelatedContributions($scope.group.resourcesResourceSpaceId);
+        loadRelatedContributions($scope.group ? $scope.group.resourcesResourceSpaceId : null);
       },
       function (error) {
         FlashService.Error('Error occured when trying to load proposal: ' + JSON.stringify(error));

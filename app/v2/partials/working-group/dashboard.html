@@ -55,7 +55,9 @@
           <a href="#"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
         </p>
       </div>
-      <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal" show-voting-buttons="true"></proposal-card>
+      <div class="proposals">
+        <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal" show-voting-buttons="true"></proposal-card>
+      </div>
       <p ng-if="proposals.length === 0" class="card">No Proposals in this space yet. Be the first to create one. Click on "Add new"!</p>
     </section>
   </section>
@@ -69,7 +71,9 @@
           <a href="#"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
         </p>
       </div>
-      <idea-card ng-repeat="idea in ideas track by $index" idea="idea" wg="wg"></idea-card>
+      <div class="proposals">
+        <idea-card ng-repeat="idea in ideas track by $index" idea="idea" wg="wg"></idea-card>
+      </div>
       <p ng-if="ideas.length === 0" class="card">No Ideas in this space yet. Be the first to create one. Click on "Add new"!</p>
     </section>
   </section>

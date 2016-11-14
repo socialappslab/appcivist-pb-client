@@ -22,12 +22,14 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
     $scope.user = localStorageService.get('user');
     $scope.userIsAuthenticated = loginService.userIsAuthenticated();
     $scope.isLoginPage = location.hash.includes('v2/login');
+    $scope.showSmallMenu = false;
     
     if ($scope.userIsAuthenticated) {
       $scope.currentAssembly = localStorageService.get('currentAssembly');
       loadWorkingGroups($scope);
       loadAllCampaigns($scope);
     }
+    $scope.updateSmallMenu = updateSmallMenu;
   }
 
   function loadWorkingGroups(scope) {
@@ -36,6 +38,10 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
 
   function loadAllCampaigns(scope) {
     scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+  }
+
+  function updateSmallMenu() {
+    $scope.showSmallMenu = !$scope.showSmallMenu;
   }
 }
 }());

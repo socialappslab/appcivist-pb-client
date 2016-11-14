@@ -1,4 +1,3 @@
-
 <div class="app-container">
 	<nav class="navigation-anonymous">
 		<div class="logo">
@@ -11,8 +10,8 @@
       </h3>
 		</div>
 		<div class="logo"></div>
-		<div class="sign-up">
-			<a ng-href="#/">Log in</a> or <a ng-href="#/">Sign Up</a>
+		<div class="sign-up" ng-if="!isLoginPage">
+			<a ng-href="#/v2/login">Log in</a> or <a ng-href="#/">Sign Up</a>
 		</div>
 	</nav>
 </div>

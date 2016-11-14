@@ -7,11 +7,11 @@ angular
 
 MainCtrl.$inject = [
   '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'FlashService',
-  '$rootScope'
+  '$rootScope', 'loginService'
 ];
 
 function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashService,
-                  $rootScope) {
+                  $rootScope, loginService) {
 
   activate();
 
@@ -20,7 +20,10 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
       v2: true
     };
     $scope.user = localStorageService.get('user');
-    if ($scope.user != undefined) {
+    $scope.userIsAuthenticated = loginService.userIsAuthenticated();
+    $scope.isLoginPage = location.hash.includes('v2/login');
+    
+    if ($scope.userIsAuthenticated) {
       loadWorkingGroups($scope);
       loadAllCampaigns($scope);
     }

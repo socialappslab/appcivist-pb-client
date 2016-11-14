@@ -1,0 +1,21 @@
+<form ng-submit="login()">
+  <fieldset class="row">
+    <div class="field-container col-lg-4 col-offset-4">
+      <label for="text">Email</label>
+      <input ng-model="user.email" id="text" type="text" placeholder="Text Input" autofocus>
+    </div>
+  </fieldset>
+  <br />
+  <fieldset class="row">
+    <div class="field-container col-lg-4 col-offset-4">
+      <label for="password">Password</label>
+      <input ng-model="user.password" id="password" type="password" placeholder="Type your Password">
+    </div>
+  </fieldset>
+  <br />
+  <fieldset class="row">
+    <div class="field-container col-lg-4 col-offset-4">
+      <input type="submit" class="form-submit btn--primary btn--block" placeholder="Text Input">
+    </div>
+  </fieldset>
+</form>

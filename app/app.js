@@ -214,7 +214,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
       templateUrl: 'app/v2/partials/idea/all.html',
       controller: 'v2.IdeasCtrl'
 		})
-	.state('v2.campaign',{
+	  .state('v2.campaign',{
       url: '/campaign',
       abstract: true,
       template: '<div ui-view></div>'
@@ -223,6 +223,11 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 			url: '/:cuuid',
 			controller: 'v2.CampaignDashboardCtrl',
 			templateUrl: 'app/v2/partials/campaign/dashboard.html'
+		})
+    .state('v2.login',{
+			url: '/login',
+			controller: 'v2.LoginCtrl',
+			templateUrl: 'app/v2/partials/login.html'
 		});
 
     /**

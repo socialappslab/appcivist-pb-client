@@ -2,15 +2,31 @@
 'use strict';
 
 appCivistApp
-  .directive('ideaCard',  IdeaCard);
+  .directive('contributionCard',  ContributionCard);
 
-IdeaCard.$inject = ['Contributions'];
+ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships'];
 
-function IdeaCard(Contributions) {
-  
+function ContributionCard(Contributions, Campaigns, localStorageService, Memberships) {
+
+  function hasRole(roles, roleName) {
+    var result = false;
+
+    angular.forEach(roles, function(role){
+      if(role.name === roleName) {
+        result = true;
+      }
+    });
+    return result;
+  }
+
   function setupMembershipInfo(scope) {
-    scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.idea);
+    scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.contribution);
 
+    var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.group).get();
+    authorship.$promise.then(function(response){
+      scope.userCanEdit = response.responseStatus === 'OK';
+    });
+    
     var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
     rsp.$promise.then(function(data) {
       scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');  
@@ -25,25 +41,29 @@ function IdeaCard(Contributions) {
   return {
     restrict: 'E',
     scope: {
-      idea: '=',
-      campaign: '=',
-      wg: '='
+      contribution: '=',
+      showVotingButtons: '=',
+      campaign: '='
     },
-    templateUrl: '/app/v2/partials/directives/idea-card.html',
+    templateUrl: '/app/v2/partials/directives/contribution-card.html',
     link: function postLink(scope, element, attrs) {
-      //the service GET contribution of type IDEA doesn't return workingGroupAuthors
-      if (scope.campaign) {
-        scope.assemblyId = scope.campaign.assemblies[0];
-        scope.groupId = scope.campaign.groupId;
-      } else if (scope.wg) {
-        scope.assemblyId = scope.wg.assemblies[0];
-        scope.groupId = scope.wg.groupId;
-      }
-      scope.group = scope.wg;
+      scope.user = localStorageService.get('user');
+      var workingGroupAuthors = scope.contribution.workingGroupAuthors;
+      var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+      scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+      scope.group = workingGroupAuthors[0];
       
       if(scope.group) {
         scope.assemblyId = scope.group.assemblies[0];
         setupMembershipInfo(scope);
+      }
+
+      if(scope.campaign) {
+        // Verify the status of the campaign and show or not show the voting buttons
+        var currentComponent = Campaigns.getCurrentComponent(scope.campaign.components);
+        if (currentComponent.key === 'Voting') {
+          scope.showVotingButtons = true;
+        }
       }
       scope.showActionMenu = false;
       scope.myObject = {};
@@ -71,16 +91,17 @@ function IdeaCard(Contributions) {
           }
 
           //var stats = scope.contribution.stats;
-          var feedback = Contributions.userFeedback(scope.assemblyId, scope.idea.contributionId).update(scope.userFeedback);
+          var feedback = Contributions.userFeedback(scope.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
           feedback.$promise.then(
               function (newStats) {
-                  scope.idea.stats = newStats;
+                  scope.contribution.stats = newStats;
               },
               function (error) {
                   console.log("Error when updating user feedback");
               }
           );
       };
+
     }
   };
 }

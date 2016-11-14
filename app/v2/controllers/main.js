@@ -24,40 +24,18 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
     $scope.isLoginPage = location.hash.includes('v2/login');
     
     if ($scope.userIsAuthenticated) {
+      $scope.currentAssembly = localStorageService.get('currentAssembly');
       loadWorkingGroups($scope);
       loadAllCampaigns($scope);
     }
   }
 
   function loadWorkingGroups(scope) {
-    var rsp = Memberships.workingGroups(scope.user.userId).query();
-    rsp.$promise.then(
-      function (data) {
-        var workingGroups = [];
-        angular.forEach(data, function(d) {
-
-          if (d.membershipType === 'GROUP') {
-            workingGroups.push(d.workingGroup);
-          }
-        });
-        scope.workingGroups = workingGroups;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s working groups from server');
-      }
-    );
+    scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
   }
 
   function loadAllCampaigns(scope) {
-    var rsp = Campaigns.campaigns(scope.user.uuid, 'all').query();
-    rsp.$promise.then(
-      function(data) {
-        scope.myCampaigns = data;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s campaigns from server');
-      }
-    );
+    scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
   }
 }
 }());

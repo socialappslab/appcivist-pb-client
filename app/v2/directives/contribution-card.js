@@ -54,7 +54,7 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
       scope.group = workingGroupAuthors[0];
       
       if(scope.group) {
-        scope.assemblyId = scope.group.assemblies[0];
+        scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
         setupMembershipInfo(scope);
       }
 

@@ -7,11 +7,11 @@ angular
 
 LoginCtrl.$inject = [
   '$scope', 'localStorageService', 'FlashService', 'AppCivistAuth',
-  'Memberships', 'Assemblies', '$state'
+  'Memberships', 'Assemblies', '$state', '$filter'
 ];
 
 function LoginCtrl($scope, localStorageService, FlashService, AppCivistAuth,
-                   Memberships, Assemblies, $state) {
+                   Memberships, Assemblies, $state, $filter) {
 
   activate();
 
@@ -33,7 +33,7 @@ function LoginCtrl($scope, localStorageService, FlashService, AppCivistAuth,
     localStorageService.set('sessionKey', user.sessionKey);
     localStorageService.set('authenticated', true);
     localStorageService.set('user', user);
-    var rsp = Memberships.memberships(user.userId).query();
+    var rsp = Memberships.workingGroups(user.userId).query();
     rsp.$promise.then(memberSuccess, memberError);
   }
 
@@ -42,9 +42,18 @@ function LoginCtrl($scope, localStorageService, FlashService, AppCivistAuth,
   }
 
   function memberSuccess(data) {
-    var member = data[0];
-    if(member.workingGroup && member.workingGroup.assemblies) {
-      var rsp = Assemblies.assembly(member.workingGroup.assemblies[0]).get();
+    var membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED' });
+    var myWorkingGroups = [];
+    
+    angular.forEach(membershipsInGroups, function(m) {
+      myWorkingGroups.push(m.workingGroup);
+    });
+    var wg = myWorkingGroups[0];
+    localStorageService.set('myWorkingGroups', myWorkingGroups);
+    
+    if(wg) {
+      var currentAssembly = wg.assemblies[0];
+      var rsp = Assemblies.assembly(currentAssembly).get();
       rsp.$promise.then(singleAssemblySuccess, singleAssemblyError);
     }
   }
@@ -54,7 +63,10 @@ function LoginCtrl($scope, localStorageService, FlashService, AppCivistAuth,
   }
 
   function singleAssemblySuccess(assembly) {
-    $state.go('v2.assembly.aid.campaign.cid', {aid: assembly.assemblyId, cid: assembly.campaigns[0].campaignId}, {reload: true});
+    localStorageService.set('currentAssembly', assembly);
+    var ongoingCampaigns = $filter('filter')(assembly.campaigns, { active: true });
+    localStorageService.set('ongoingCampaigns', ongoingCampaigns);
+    $state.go('v2.assembly.aid.campaign.cid', {aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId}, {reload: true});
   }
   
   function singleAssemblyError(error) {

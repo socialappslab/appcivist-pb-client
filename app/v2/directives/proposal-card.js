@@ -4,9 +4,39 @@
 appCivistApp
   .directive('proposalCard',  ProposalCard);
 
-ProposalCard.$inject = ['Contributions', 'Campaigns'];
+ProposalCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships'];
 
-function ProposalCard(Contributions, Campaigns) {
+function ProposalCard(Contributions, Campaigns, localStorageService, Memberships) {
+
+  function hasRole(roles, roleName) {
+    var result = false;
+
+    angular.forEach(roles, function(role){
+      if(role.name === roleName) {
+        result = true;
+      }
+    });
+    return result;
+  }
+
+  function setupMembershipInfo(scope) {
+    scope.userCanEdit = Contributions.verifyAuthorship(scope.user, scope.proposal);
+
+    var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.proposal, scope.group).get();
+    authorship.$promise.then(function(response){
+      scope.userCanEdit = response.responseStatus === 'OK';
+    });
+    
+    var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
+    rsp.$promise.then(function(data) {
+      scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');  
+    });
+    
+    rsp = Memberships.membershipInGroup(scope.groupId, scope.user.userId).get();
+    rsp.$promise.then(function(data) {
+      scope.userIsWorkingGroupCoordinator = hasRole(data.roles, 'COORDINATOR');
+    });
+  }
 
   return {
     restrict: 'E',
@@ -17,14 +47,16 @@ function ProposalCard(Contributions, Campaigns) {
     },
     templateUrl: '/app/v2/partials/directives/proposal-card.html',
     link: function postLink(scope, element, attrs) {
-      //console.log(scope.proposal);
-      //
-      scope.assemblyId = scope.proposal.assemblyId;
-
+      scope.user = localStorageService.get('user');
       var workingGroupAuthors = scope.proposal.workingGroupAuthors;
       var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
       scope.groupId = workingGroupAuthorsLength ? scope.proposal.workingGroupAuthors[0].groupId : 0;
-
+      scope.group = workingGroupAuthors[0];
+      
+      if(scope.group) {
+        scope.assemblyId = scope.group.assemblies[0];
+        setupMembershipInfo(scope);
+      }
       // Verify the status of the campaign and show or not show the voting buttons
       var campaign = Campaigns.campaign(scope.assemblyId, scope.campaignId).get();
       campaign.$promise.then(function(data) {

@@ -7,6 +7,20 @@ appCivistApp
 IdeaCard.$inject = ['Contributions'];
 
 function IdeaCard(Contributions) {
+  
+  function setupMembershipInfo(scope) {
+    scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.idea);
+
+    var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
+    rsp.$promise.then(function(data) {
+      scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');  
+    });
+    
+    rsp = Memberships.membershipInGroup(scope.groupId, scope.user.userId).get();
+    rsp.$promise.then(function(data) {
+      scope.userIsWorkingGroupCoordinator = hasRole(data.roles, 'COORDINATOR');
+    });
+  }
 
   return {
     restrict: 'E',
@@ -17,8 +31,6 @@ function IdeaCard(Contributions) {
     },
     templateUrl: '/app/v2/partials/directives/idea-card.html',
     link: function postLink(scope, element, attrs) {
-      //console.log(scope.idea);
-      //console.log(scope.campaign);
       //the service GET contribution of type IDEA doesn't return workingGroupAuthors
       if (scope.campaign) {
         scope.assemblyId = scope.campaign.assemblies[0];
@@ -27,19 +39,20 @@ function IdeaCard(Contributions) {
         scope.assemblyId = scope.wg.assemblies[0];
         scope.groupId = scope.wg.groupId;
       }
-
-
-      scope.showActionMenu = true;
+      scope.group = scope.wg;
+      
+      if(scope.group) {
+        scope.assemblyId = scope.group.assemblies[0];
+        setupMembershipInfo(scope);
+      }
+      scope.showActionMenu = false;
       scope.myObject = {};
       scope.myObject.refreshMenu = function() {
-          if (scope.showActionMenu == false)
-            scope.showActionMenu = true;
-          else
-            scope.showActionMenu = false;
-      }
+        scope.showActionMenu = !scope.showActionMenu;
+      };
 
       // Read user contribution feedback
-      scope.userFeedback = scope.userFeedback != null ?
+      scope.userFeedback = scope.userFeedback !== null ?
           scope.userFeedback : {"up":false, "down":false, "fav": false, "flag": false};
 
       // Feedback update

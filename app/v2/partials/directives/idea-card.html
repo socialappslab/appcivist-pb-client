@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="action-button">
-      <!--<input id="menu04" type="checkbox" name="menu" />-->
+      <input id="menu04" type="checkbox" name="menu" ng-checked="showActionMenu" hidden/>
       <div ng-click="myObject.refreshMenu()">
         <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <title>more</title>
@@ -37,11 +37,10 @@
             </g>
         </svg>
       </div>
-      <ul ng-class="{'action-menu' : showActionMenu == true}" class="ul-action-menu">
-        <li class="li-action-menu"><a href="#">Edit</a></li>
-        <li class="li-action-menu"><a href="#">Assign</a></li>
-        <li class="li-action-menu"><a href="#">Promote to proposal</a></li>
-        <li class="li-action-menu"><a href="#">Exclude</a></li>
+      <ul class="action-menu">
+        <li ng-if="userIsAuthor" class="li-action-menu"><a href="#">Edit</a></li>
+        <li ng-if="userIsAssemblyCoordinator" class="li-action-menu"><a href="#">Assign</a></li>
+        <li ng-if="userIsWorkingGroupCoordinator" class="li-action-menu"><a href="#">Promote to proposal</a></li>
         <li class="li-action-menu"><a href="#">See history</a></li>
       </ul>
     </div>

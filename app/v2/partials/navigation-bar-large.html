@@ -1,34 +1,36 @@
 <nav class="navigation-logged-in large-screen-nav">
-	<div class="logo">
-		<h1 class="heading--headline">City of Vallejo
-			<span>Vallejo, CA</span></h1>
-		</h1>
-		<h3 class="heading--subheader">
-			<div class="logo-small">
-				<img src="/bower_components/appcivist-patterns/dist/images/logo-white.svg" alt="AppCivist Logo" />
-				<strong>Powered by Appcivist</strong>
-			</div>
-		</h3>
-	</div>
-	<div class="user">
-		<member-card action-bar="true"></member-card>
-	</div>
-	<ul class="submenu submenu-working-groups">
-		<h1 class="heading--header">My Working Groups</h1>
-		<li ng-repeat="wg in myWorkingGroups">
-			<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
-				{{wg.name}}
-			</a>
-		</li>
-	</ul>
-	<ul class="submenu submenu-campaigns">
-		<h1 class="heading--header">Ongoing campaigns</h1>
-		<li ng-repeat="c in ongoingCampaigns">
-			<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
-				{{c.title}}
-			</a>
-		</li>
-	</ul>
+  <div class="navigation-content-sticky">
+    <div class="logo">
+      <h1 class="heading--headline">City of Vallejo
+        <span>Vallejo, CA</span></h1>
+      </h1>
+      <h3 class="heading--subheader">
+        <div class="logo-small">
+          <img src="/bower_components/appcivist-patterns/dist/images/logo-white.svg" alt="AppCivist Logo" />
+          <strong>Powered by Appcivist</strong>
+        </div>
+      </h3>
+    </div>
+    <div class="user">
+      <member-card action-bar="true"></member-card>
+    </div>
+    <ul class="submenu submenu-working-groups">
+      <h1 class="heading--header">My Working Groups</h1>
+      <li ng-repeat="wg in myWorkingGroups">
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+          {{wg.name}}
+        </a>
+      </li>
+    </ul>
+    <ul class="submenu submenu-campaigns">
+      <h1 class="heading--header">Ongoing campaigns</h1>
+      <li ng-repeat="c in ongoingCampaigns">
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
+          {{c.title}}
+        </a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
 <nav id="small-nav" class="navigation-logged-in small-screen-nav">

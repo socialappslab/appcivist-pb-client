@@ -161,7 +161,15 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
 		FlashService.Error('Error while trying to get assembly from server');
   }
 
-  function assembliesSuccess(assemblies) {
+  function assembliesSuccess(memberships) {
+    var currentAssembly = localStorageService.get('currentAssembly');
+    var assemblies = [];
+    angular.forEach(memberships, function(m) {
+      
+      if(m.assembly.assemblyId !== currentAssembly.assemblyId) {
+        assemblies.push(m.assembly);
+      }
+    });
     localStorageService.set('assemblies', assemblies);
     var deferred = $q.defer();
     deferred.resolve(assemblies);

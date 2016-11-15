@@ -33,8 +33,8 @@
     <ul ng-if="assemblies.length" class="submenu submenu-campaigns">
       <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
       <li ng-repeat="a in assemblies">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
-          {{a.title}}
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}">
+          {{a.name}}
         </a>
       </li>
     </ul>
@@ -108,8 +108,8 @@
     <ul ng-if="assemblies.length" class="submenu submenu-campaigns">
       <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
       <li ng-repeat="a in assemblies">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
-          {{a.title}}
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}">
+          {{a.name}}
         </a>
       </li>
     </ul>

@@ -26,12 +26,12 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
     authorship.$promise.then(function(response){
       scope.userCanEdit = response.responseStatus === 'OK';
     });
-    
+
     var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
     rsp.$promise.then(function(data) {
-      scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');  
+      scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
     });
-    
+
     rsp = Memberships.membershipInGroup(scope.groupId, scope.user.userId).get();
     rsp.$promise.then(function(data) {
       scope.userIsWorkingGroupCoordinator = hasRole(data.roles, 'COORDINATOR');
@@ -52,10 +52,10 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
       var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
       scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
       scope.group = workingGroupAuthors[0];
-      
+
       if(scope.group) {
         scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
-        setupMembershipInfo(scope);
+        //setupMembershipInfo(scope);
       }
 
       if(scope.campaign) {
@@ -72,12 +72,12 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
       };
 
       // Read user contribution feedback
-      scope.userFeedback = scope.userFeedback !== null ?
-          scope.userFeedback : {"up":false, "down":false, "fav": false, "flag": false};
+      if (scope.userFeedback === undefined || scope.userFeedback === null) {
+        scope.userFeedback = {"up":false, "down":false, "fav": false, "flag": false};
+      }
 
       // Feedback update
       scope.updateFeedback = function (value) {
-          //console.log(value);
           if (value === "up") {
               scope.userFeedback.up = true;
               scope.userFeedback.down = false;

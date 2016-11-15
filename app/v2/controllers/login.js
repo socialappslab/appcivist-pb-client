@@ -33,8 +33,9 @@ function LoginCtrl($scope, localStorageService, FlashService, AppCivistAuth,
     localStorageService.set('sessionKey', user.sessionKey);
     localStorageService.set('authenticated', true);
     localStorageService.set('user', user);
-    loginService.loadAuthenticatedUserMemberships(user).then(function(assembly) {
+    loginService.loadAuthenticatedUserMemberships(user).then(function() {
       var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+      var assembly = localStorageService.get('currentAssembly');
       $state.go('v2.assembly.aid.campaign.cid', {aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId}, {reload: true});
       location.reload();
     }); 

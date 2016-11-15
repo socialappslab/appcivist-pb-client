@@ -125,7 +125,8 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
   /**
    * Retrieve and store current user working groups, ongoing campaigns.
    */
-  this.loadAuthenticatedUserMemberships = function(user){
+  this.loadAuthenticatedUserMemberships = function(){
+    var user = localStorageService.get('user');
     var rsp = Memberships.workingGroups(user.userId).query();
     return rsp.$promise.then(memberSuccess, memberError);
   };
@@ -152,12 +153,29 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     localStorageService.set('currentAssembly', assembly);
     var ongoingCampaigns = $filter('filter')(assembly.campaigns, { active: true });
     localStorageService.set('ongoingCampaigns', ongoingCampaigns);
-    var deferred = $q.defer();
-    deferred.resolve(assembly);
-    return deferred.promise;
+    var user = localStorageService.get('user');
+    return Memberships.assemblies(user.userId).query().$promise.then(assembliesSuccess, assembliesError);
   }
   
   function singleAssemblyError(error) {
 		FlashService.Error('Error while trying to get assembly from server');
+  }
+
+  function assembliesSuccess(assemblies) {
+    localStorageService.set('assemblies', assemblies);
+    var deferred = $q.defer();
+    deferred.resolve(assemblies);
+    return deferred.promise;
+  }
+  
+  function assembliesError(error) {
+		
+    if(error.data && error.data.responseStatus === 'NODATA') {
+      localStorageService.set('assemblies', []);
+      var deferred = $q.defer();
+      deferred.resolve([]);
+      return deferred.promise;
+    }
+    FlashService.Error('Error while trying to get assemblies from server');
   }
 });

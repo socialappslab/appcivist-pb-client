@@ -34,6 +34,7 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
   function loadUserData(scope) {
     scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
     scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+    scope.assemblies = localStorageService.get('assemblies') || [];
 
     if(!scope.myWorkingGroups || !scope.ongoingCampaigns) {
       loginService.loadAuthenticatedUserMemberships($scope.user).then(function() {

@@ -1,12 +1,12 @@
 <main class="app-main">
   <section class="panel intro">
-    <p class="heading--header">Proposal</p>
+    <p class="heading--header">{{'Proposal' | translate}}</p>
     <h1 class="heading--title">{{proposal.title}}</h1>
     <p>{{proposal.text}}</p>
     <p class="heading--subheader">
-      In the
+      {{'in.wg.message.prev' | translate}}
       <a href="workin group dashboar url">{{group.name}}</a>
-      working group
+      {{'in.wg.message.next' | translate}}
     </p>
     <div class="tags">
       <span ng-repeat="theme in proposal.themes track by $index"><a href="#">{{theme.title}}</a></span>
@@ -30,7 +30,7 @@
         <!--<input id="menu04" type="checkbox" name="menu" />-->
         <div ng-click="myObject.refreshMenu()">
           <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>more</title>
+              <title>{{'more' | translate}}</title>
               <defs></defs>
               <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
                   <g id="more">
@@ -40,9 +40,9 @@
           </svg>
         </div>
         <ul ng-class="{'action-menu' : showActionMenu == true}" class="ul-action-menu">
-            <li class="li-action-menu"><a href="#">Edit</a></li>
-            <li class="li-action-menu"><a href="#">Exclude</a></li>
-            <li class="li-action-menu"><a href="#">Archive</a></li>
+            <li class="li-action-menu"><a href="#">{{'Edit' | translate}}</a></li>
+            <li class="li-action-menu"><a href="#">{{'Exclude' | translate}}</a></li>
+            <li class="li-action-menu"><a href="#">{{'Archive' | translate}}</a></li>
         </ul>
       </div>
     </div>
@@ -51,14 +51,14 @@
   <!--<campaign-timeline title="Proposal Status" assembly-id="assemblyID" campaign-id="campaignID" only-label="true"></campaign-timeline>-->
 
   <section class="panel intro">
-    <p class="heading--header">Proposal Status</p>
+    <p class="heading--header">{{'Proposal Status' | translate }}</p>
     <span class="label label-default">{{proposal.status}}</span>
   </section>
 
   <section class="panel text-created-attachments-similar">
     <section class="temp-array proposal-text">
       <div class="panel-heading">
-        <h1 class="heading--header">Proposal Text</h1>
+        <h1 class="heading--header">{{'Proposal Text' | translate }}</h1>
       </div>
       <div class="row etherpad">
           <iframe ng-if="!userIsAuthor"
@@ -77,7 +77,7 @@
   <section class="panel text-created-attachments-similar">
     <section class="temp-array created-attachments-similar">
       <div class="panel-heading">
-        <h1 class="heading--header">Created by</h1>
+        <h1 class="heading--header">{{'Created by' | translate}}</h1>
       </div>
       <div class="card-list">
         <div class="action-bar">
@@ -88,7 +88,7 @@
           <div class="action-button">
             <input id="menu04" type="checkbox" name="menu" />
             <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>more</title>
+              <title>{{'more' | translate}}</title>
               <defs></defs>
               <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
               <g id="more">
@@ -97,15 +97,15 @@
               </g>
             </svg>
             <ul class="action-menu">
-              <li><a href="#">Message this user</a></li>
-              <li><a href="#">Remove this user</a></li>
+              <li><a href="#">{{'Message this user' | translate}}</a></li>
+              <li><a href="#">{{'Remove this user' | translate}}</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="panel-heading">
-        <h1 class="heading--header">Attachments</h1>
-        <p class="heading--small"><a href="#"><i class="fa fa-paperclip"></i>&nbsp;Add a new file</a></p>
+        <h1 class="heading--header">{{'Attachments' | translate}}</h1>
+        <p class="heading--small"><a href="#"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a></p>
       </div>
       <div class="card-list" ng-repeat="file in proposal.attachments">
         <div class="action-bar small-card file-card">
@@ -121,7 +121,7 @@
           <div class="action-button">
             <input id="menu04" type="checkbox" name="menu" />
             <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>more</title>
+              <title>{{'more' | translate}}</title>
               <defs></defs>
               <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
               <g id="more">
@@ -130,13 +130,13 @@
               </g>
             </svg>
             <ul class="action-menu">
-              <li><a href="#">Delete</a></li>
-              <li><a href="#">Rename</a></li>
+              <li><a href="#">{{'Delete' | translate}}</a></li>
+              <li><a href="#">{{'Rename' | translate}}</a></li>
             </ul>
           </div>
         </div>
       </div>
-      <h1 class="heading--header">Similar Proposals</h1>
+      <h1 class="heading--header">{{'Similar Proposals' | translate}}</h1>
       <dl ng-repeat="related in relatedContributions">
         <dt>
           <a ng-href="#/v2/assembly/{{related.assemblyId}}/group/{{related.groupId}}/proposal/{{related.contributionId}}">

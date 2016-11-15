@@ -14,7 +14,7 @@
 		<member-card action-bar="true"></member-card>
 	</div>
 	<ul class="submenu submenu-working-groups">
-		<h1 class="heading--header">My Working Groups</h1>
+		<h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
 		<li ng-repeat="wg in workingGroups">
 			<a ng-href="/#/v2/assembly/{{wg.assemblies[0]}}/group/{{wg.groupId}}">
 				{{wg.name}}
@@ -22,7 +22,7 @@
 		</li>
 	</ul>
 	<ul class="submenu submenu-campaigns">
-		<h1 class="heading--header">My Campaigns</h1>
+		<h1 class="heading--header">{{'My Campaigns' | translate}}</h1>
 		<li ng-repeat="c in myCampaigns">
 			<a ng-href="/#/v2/assembly/{{c.assemblies[0]}}/campaign/{{c.campaignId}}">
 				{{c.title}}
@@ -39,7 +39,7 @@
 	</div>
 	<a href="#small-menu" class="small-nav-button">
 		<svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-			<title>more</title>
+			<title>{{'more' | translate}}</title>
 			<defs></defs>
 			<g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
 					<g id="more">

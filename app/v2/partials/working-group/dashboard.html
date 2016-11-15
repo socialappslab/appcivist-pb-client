@@ -1,26 +1,26 @@
 <main class="app-main">
   <section class="panel intro">
-    <p class="heading--header">Working Group</p>
+    <p class="heading--header">{{'WorkingGroup' | translate}}</p>
     <h1 class="heading--title">{{wg.name}}</h1>
     <p>{{wg.text}}</p>
   </section>
   <section class="panel activity-and-members">
     <section class="latest-activity latest-activity-relative">
       <div class="panel-heading panel-heading-relative">
-        <h1 class="heading--header">Latest Activity</h1>
+        <h1 class="heading--header">{{'Latest Activity' | translate}}</h1>
         <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
+          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
         </p>
       </div>
       <activity-card ng-repeat="activity in activities track by $index" activity="activity"></activity-card>
-      <p ng-if="!activities || activities.length === 0" class="card">There are no LATEST ACTIVITIES in the working group</p>
+      <p ng-if="!activities || activities.length === 0" class="card">{{'no.latest.activity' | translate}}</p>
     </section>
     <section class="members-panel">
       <div class="panel-heading panel-heading-relative">
-        <h1 class="heading--header">Members</h1>
+        <h1 class="heading--header">{{'Members' | translate}}</h1>
         <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
-          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
+          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
         </p>
       </div>
       <div class="card-list" ng-repeat="member in members">
@@ -29,7 +29,7 @@
           <div class="action-button">
             <input id="menu04" type="checkbox" name="menu" />
             <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>more</title>
+              <title>{{'more' | translate}}</title>
               <defs></defs>
               <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
                 <g id="more">
@@ -38,8 +38,8 @@
               </g>
             </svg>
             <ul class="action-menu">
-              <li><a href="#">Message this user</a></li>
-              <li><a href="#">Remove this user</a></li>
+              <li><a href="#">{{'Message this user' | translate}}</a></li>
+              <li><a href="#">{{'Remove this user' | translate}}</a></li>
             </ul>
           </div>
         </div>
@@ -49,32 +49,32 @@
   <section class="panel ideas-and-proposals">
     <section class="list--proposal">
       <div class="panel-heading-no-margin">
-        <h1 class="heading--header">Proposals</h1>
+        <h1 class="heading--header">{{'Proposals' | translate}}</h1>
         <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
-          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
+          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
         </p>
       </div>
       <div class="proposals">
         <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal" show-voting-buttons="true"></proposal-card>
       </div>
-      <p ng-if="proposals.length === 0" class="card">No Proposals in this space yet. Be the first to create one. Click on "Add new"!</p>
+      <p ng-if="proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
     </section>
   </section>
-  
+
   <section class="panel ideas-and-proposals">
     <section class="list--idea">
       <div class="panel-heading-no-margin">
         <h1 class="heading--header">Ideas</h1>
         <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
-          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
+          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
         </p>
       </div>
       <div class="proposals">
         <idea-card ng-repeat="idea in ideas track by $index" idea="idea" wg="wg"></idea-card>
       </div>
-      <p ng-if="ideas.length === 0" class="card">No Ideas in this space yet. Be the first to create one. Click on "Add new"!</p>
+      <p ng-if="ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
     </section>
   </section>
 

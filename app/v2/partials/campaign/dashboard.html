@@ -1,40 +1,40 @@
 <main class="app-main" ng-class="{'anonymous' : user == null}">
     <section class="panel intro">
-      <p class="heading--header">Campaign</p>
+      <p class="heading--header">{{'Campaign' | translate}}</p>
       <h1 class="heading--title">{{campaign.title}}</h1>
       <p>{{campaign.goal}}</p>
     </section>
-    <campaign-timeline title="Campaign Status" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
+    <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
     <section class="panel ideas-and-proposals">
       <section class="list--proposal">
         <div class="panel-heading-no-margin">
-          <h1 class="heading--header">Proposals</h1>
+          <h1 class="heading--header">{{'Proposals' | translate}}</h1>
           <p class="heading--small">
-            <a ng-href="#/v2/space/{{spaceID}}/proposal"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
-            <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;Add New</a></p>
+            <a ng-href="#/v2/space/{{spaceID}}/proposal"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+            <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
         </div>
         <div class="proposals">
           <contribution-card ng-repeat="proposal in proposals track by $index" 
                          contribution="proposal" campaign="campaign" show-voting-buttons="false"></contribution-card>
         </div>
-        <p ng-if="proposals.length === 0" class="card">No Proposals in this space yet. Be the first to create one. Click on "Add new"!</p>
+        <p ng-if="proposals === undefined || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
       </section>
     </section>
-    
+
     <section class="panel ideas-and-proposals" ng-if="isIdeasSectionVisible">
       <section class="list--idea">
         <div class="panel-heading-no-margin">
-          <h1 class="heading--header">Ideas</h1>
+          <h1 class="heading--header">{{'Ideas' | translate}}</h1>
           <p class="heading--small">
-            <a ng-href="#/v2/space/{{spaceID}}/idea"><i class="fa fa-arrows-alt"></i>&nbsp;See All</a>&nbsp;&nbsp;
-            <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;Add New</a>&nbsp;&nbsp;
+            <a ng-href="#/v2/space/{{spaceID}}/idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+            <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>&nbsp;&nbsp;
             <!-- TODO: temporary commented -->
             <!--<a ng-if="ideasSectionExpanded" href="#"><i class="fa fa-eye-slash"></i>&nbsp;Hide</a>&nbsp;&nbsp;-->
             <!--<a ng-if="!ideasSectionExpanded" href="#"><i class="fa fa-eye"></i>&nbsp;Show</a>&nbsp;&nbsp;-->
           </p>
         </div>
         <contribution-card ng-repeat="idea in ideas track by $index" contributionn="idea" campaign="campaign"></contribution-card>
-        <p ng-if="ideas.length === 0" class="card">No Ideas in this space yet. Be the first to create one. Click on "Add new"!</p>
+        <p ng-if="ideas === undefined || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
       </section>
     </section>
 

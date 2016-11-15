@@ -26,18 +26,20 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
     
     if ($scope.userIsAuthenticated) {
       $scope.currentAssembly = localStorageService.get('currentAssembly');
-      loadWorkingGroups($scope);
-      loadAllCampaigns($scope);
+      loadUserData($scope);
     }
     $scope.updateSmallMenu = updateSmallMenu;
   }
 
-  function loadWorkingGroups(scope) {
+  function loadUserData(scope) {
     scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
-  }
-
-  function loadAllCampaigns(scope) {
     scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+
+    if(!scope.myWorkingGroups || !scope.ongoingCampaigns) {
+      loginService.loadAuthenticatedUserMemberships($scope.user).then(function() {
+        location.reload();
+      }); 
+    }
   }
 
   function updateSmallMenu() {

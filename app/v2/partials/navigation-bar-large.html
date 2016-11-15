@@ -31,7 +31,7 @@
       </li>
     </ul>
     <ul ng-if="assemblies.length" class="submenu submenu-campaigns">
-      <h1 class="heading--header">Other Assemblies</h1>
+      <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
       <li ng-repeat="a in assemblies">
         <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
           {{a.title}}
@@ -90,7 +90,7 @@
     </div>
 
 		<ul class="submenu submenu-working-groups">
-			<h1 class="heading--header">My Working Groups</h1>
+			<h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
 			<li ng-repeat="wg in myWorkingGroups">
 				<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
 					{{wg.name}}
@@ -98,7 +98,7 @@
 			</li>
 		</ul>
 		<ul class="submenu submenu-campaigns">
-		  <h1 class="heading--header">Ongoing campaigns</h1>
+		  <h1 class="heading--header">{{'Ongoing Campaigns' | translate}}</h1>
       <li ng-repeat="c in ongoingCampaigns">
         <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
           {{c.title}}
@@ -106,16 +106,11 @@
       </li>
 		</ul>
     <ul ng-if="assemblies.length" class="submenu submenu-campaigns">
-      <h1 class="heading--header">Other Assemblies</h1>
+      <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
       <li ng-repeat="a in assemblies">
         <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
           {{a.title}}
         </a>
       </li>
     </ul>
-
-    <div class="credits">
-        <small>Created by the Social Apps Lab at <a href="http://citris-uc.org">CITRIS</a>, University of California, Berkeley</small>
-        <small>In partnership with the MiMove Team at INRIA, France</small>
-    </div>
 </nav>

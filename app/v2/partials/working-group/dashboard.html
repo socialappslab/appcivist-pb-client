@@ -56,7 +56,7 @@
         </p>
       </div>
       <div class="proposals">
-        <proposal-card ng-repeat="proposal in proposals track by $index" proposal="proposal" show-voting-buttons="true"></proposal-card>
+        <contribution-card ng-repeat="proposal in proposals track by $index" contribution="proposal" show-voting-buttons="true"></contribution-card>
       </div>
       <p ng-if="proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
     </section>
@@ -72,7 +72,7 @@
         </p>
       </div>
       <div class="proposals">
-        <idea-card ng-repeat="idea in ideas track by $index" idea="idea" wg="wg"></idea-card>
+        <contribution-card ng-repeat="idea in ideas track by $index" contribution="idea"></contribution-card>
       </div>
       <p ng-if="ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
     </section>

@@ -7,11 +7,11 @@ angular
 
 LoginCtrl.$inject = [
   '$scope', 'localStorageService', 'FlashService', 'AppCivistAuth',
-  'Memberships', 'Assemblies', '$state'
+  '$state', '$filter', 'loginService'
 ];
 
 function LoginCtrl($scope, localStorageService, FlashService, AppCivistAuth,
-                   Memberships, Assemblies, $state) {
+                   $state, $filter, loginService) {
 
   activate();
 
@@ -33,32 +33,15 @@ function LoginCtrl($scope, localStorageService, FlashService, AppCivistAuth,
     localStorageService.set('sessionKey', user.sessionKey);
     localStorageService.set('authenticated', true);
     localStorageService.set('user', user);
-    var rsp = Memberships.memberships(user.userId).query();
-    rsp.$promise.then(memberSuccess, memberError);
+    loginService.loadAuthenticatedUserMemberships(user).then(function(assembly) {
+      var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+      $state.go('v2.assembly.aid.campaign.cid', {aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId}, {reload: true});
+      location.reload();
+    }); 
   }
 
   function loginError(error) {
 		FlashService.Error('Error while trying to authenticate to the server');
-  }
-
-  function memberSuccess(data) {
-    var member = data[0];
-    if(member.workingGroup && member.workingGroup.assemblies) {
-      var rsp = Assemblies.assembly(member.workingGroup.assemblies[0]).get();
-      rsp.$promise.then(singleAssemblySuccess, singleAssemblyError);
-    }
-  }
-  
-  function memberError(error) {
-		FlashService.Error('Error while trying to get assemblies from server');
-  }
-
-  function singleAssemblySuccess(assembly) {
-    $state.go('v2.assembly.aid.campaign.cid', {aid: assembly.assemblyId, cid: assembly.campaigns[0].campaignId}, {reload: true});
-  }
-  
-  function singleAssemblyError(error) {
-		FlashService.Error('Error while trying to get assembly from server');
   }
 }
 }());

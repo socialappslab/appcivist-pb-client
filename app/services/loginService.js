@@ -1,5 +1,5 @@
-﻿appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
-											  FlashService, $rootScope) {
+appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
+											  FlashService, $rootScope, $q, Memberships, Assemblies, $filter) {
 
 
 	this.getUser = function() {
@@ -19,7 +19,6 @@
 			$rootScope.stopSpinner();
 			FlashService.ErrorWithModal("You are already registered.", "USER", null, "BADREQUEST", false);
 		} else {
-			console.log(user);
 			var authRes = AppCivistAuth.signUp().save(user);
 			authRes.$promise.then(
 					function (user) {
@@ -44,14 +43,13 @@
 		}
 
 		if (callback) { callback(); }
-	}
+	};
 
 	this.signIn = function(email, password, scope, callback) {
 		$rootScope.startSpinner();
 		var user = {};
 		user.email = email;
 		user.password = password;
-		console.log(user);
 		var authRes = AppCivistAuth.signIn().save(user);
 		authRes.$promise.then(
 				function(user) {
@@ -100,7 +98,7 @@
 
 	this.verifyUser = function(userId) {
 		return $resource(localStorageService.get("serverBaseUrl")+'/api/user/:uid/loggedin', {uid: UserId});
-	}
+	};
 
 	this.userIsAuthenticated = function() {
 		var authenticated = localStorageService.get('authenticated');
@@ -123,4 +121,43 @@
 
 		return 	authenticated;
 	};
+
+  /**
+   * Retrieve and store current user working groups, ongoing campaigns.
+   */
+  this.loadAuthenticatedUserMemberships = function(user){
+    var rsp = Memberships.workingGroups(user.userId).query();
+    return rsp.$promise.then(memberSuccess, memberError);
+  };
+  
+  function memberSuccess(data) {
+    var membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED' });
+    var myWorkingGroups = [];
+    
+    angular.forEach(membershipsInGroups, function(m) {
+      myWorkingGroups.push(m.workingGroup);
+    });
+    var wg = myWorkingGroups[0];
+    localStorageService.set('myWorkingGroups', myWorkingGroups);
+    var currentAssembly = wg.assemblies[0];
+    var rsp = Assemblies.assembly(currentAssembly).get();
+    return rsp.$promise.then(singleAssemblySuccess, singleAssemblyError);
+  }
+  
+  function memberError(error) {
+		FlashService.Error('Error while trying to get assemblies from server');
+  }
+
+  function singleAssemblySuccess(assembly) {
+    localStorageService.set('currentAssembly', assembly);
+    var ongoingCampaigns = $filter('filter')(assembly.campaigns, { active: true });
+    localStorageService.set('ongoingCampaigns', ongoingCampaigns);
+    var deferred = $q.defer();
+    deferred.resolve(assembly);
+    return deferred.promise;
+  }
+  
+  function singleAssemblyError(error) {
+		FlashService.Error('Error while trying to get assembly from server');
+  }
 });

@@ -29,19 +29,19 @@
 
 		<ul class="submenu submenu-working-groups">
 			<h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
-			<li ng-repeat="wg in workingGroups">
-				<a ng-href="/#/v2/assembly/{{wg.assemblies[0]}}/group/{{wg.groupId}}">
+			<li ng-repeat="wg in myWorkingGroups">
+				<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
 					{{wg.name}}
 				</a>
 			</li>
 		</ul>
 		<ul class="submenu submenu-campaigns">
-			<h1 class="heading--header">{{'My Campaigns' | translate}}</h1>
-			<li ng-repeat="c in myCampaigns">
-				<a href="&#x2F;patterns&#x2F;03-templates-01-campaign-dashboard&#x2F;03-templates-01-campaign-dashboard.html">
-					{{c.title}}
-				</a>
-			</li>
+		  <h1 class="heading--header">{{'Ongoing campaigns' | translate}}</h1>
+      <li ng-repeat="c in ongoingCampaigns">
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
+          {{c.title}}
+        </a>
+      </li>
 		</ul>
 
     <div class="credits">

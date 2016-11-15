@@ -22,42 +22,28 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
     $scope.user = localStorageService.get('user');
     $scope.userIsAuthenticated = loginService.userIsAuthenticated();
     $scope.isLoginPage = location.hash.includes('v2/login');
+    $scope.showSmallMenu = false;
     
     if ($scope.userIsAuthenticated) {
-      loadWorkingGroups($scope);
-      loadAllCampaigns($scope);
+      $scope.currentAssembly = localStorageService.get('currentAssembly');
+      loadUserData($scope);
+    }
+    $scope.updateSmallMenu = updateSmallMenu;
+  }
+
+  function loadUserData(scope) {
+    scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+    scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+
+    if(!scope.myWorkingGroups || !scope.ongoingCampaigns) {
+      loginService.loadAuthenticatedUserMemberships($scope.user).then(function() {
+        location.reload();
+      }); 
     }
   }
 
-  function loadWorkingGroups(scope) {
-    var rsp = Memberships.workingGroups(scope.user.userId).query();
-    rsp.$promise.then(
-      function (data) {
-        var workingGroups = [];
-        angular.forEach(data, function(d) {
-
-          if (d.membershipType === 'GROUP') {
-            workingGroups.push(d.workingGroup);
-          }
-        });
-        scope.workingGroups = workingGroups;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s working groups from server');
-      }
-    );
-  }
-
-  function loadAllCampaigns(scope) {
-    var rsp = Campaigns.campaigns(scope.user.uuid, 'all').query();
-    rsp.$promise.then(
-      function(data) {
-        scope.myCampaigns = data;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s campaigns from server');
-      }
-    );
+  function updateSmallMenu() {
+    $scope.showSmallMenu = !$scope.showSmallMenu;
   }
 }
 }());

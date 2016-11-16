@@ -17,7 +17,6 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
   activate();
 
   function activate() {
-    console.log('entro al controller correcto');
     // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if ($stateParams.cuuid && pattern.test($stateParams.cuuid) === true) {
@@ -33,6 +32,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     }
     loadAssembly();
     loadCampaigns();
+    loadCampaignResources();
   }
 
   function loadAssembly() {
@@ -44,7 +44,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
   function loadCampaigns() {
     var res;
-    if ($scope.user == null) {
+    if (!$scope.user) {
       res = Campaigns.campaignByUUID($scope.campaignID).get();
     } else {
       res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
@@ -103,10 +103,11 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     // TODO: pass type argument when issue is solved
     // var rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query({type: type});
     var rsp;
-    if ($scope.user == null)
+    if (!$scope.user){
       rsp = Contributions.contributionInResourceSpaceByUUID(campaign.resourceSpaceUUId).query();
-    else
+    }else{
       rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query();
+    }
     rsp.$promise.then(
       function (data) {
         return data;
@@ -116,6 +117,18 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
       }
     );
     return rsp.$promise;
+  }
+
+  function loadCampaignResources() {
+    var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
+    rsp.$promise.then(
+      function(resources) {
+        $scope.campaignResources = resources;
+      },
+      function(error) {
+        FlashService.Error('Error loading campaign resources from server');
+      }
+    );
   }
 
 

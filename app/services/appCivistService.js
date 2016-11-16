@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AppCivist Service Factories
  * Each factory returns ngResources connected to AppCivist API
  */
@@ -11,7 +11,7 @@
  */
 function getServerBaseUrl(localStorageService) {
     var serverBaseUrl = localStorageService.get('serverBaseUrl');
-    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+    if (serverBaseUrl === undefined || serverBaseUrl === null) {
         serverBaseUrl = appCivistCoreBaseURL;
         localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
         console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
@@ -194,8 +194,19 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
             current = components[components.length - 1];
           }
           return current;
-        }
+        },
 
+        /**
+         * Returns and $resource to interact with /assembly/:aid/campaign/:cid/resource endpoint.
+         *
+         * @param assemblyId {number} Assembly ID
+         * @param campaignId {number} Campaign ID
+         * @return {Array} List of resources associated with the given campaign
+         */
+        resources: function(assemblyId, campaignId) {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resource', 
+                           {aid: assemblyId, cid: campaignId});
+        }
     };
 
 });

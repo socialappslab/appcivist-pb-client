@@ -38,6 +38,11 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
     });
   }
 
+  function setContributionType(scope) {
+    scope.isProposal = scope.contribution.type === 'PROPOSAL';
+    scope.isIdea = scope.contribution.type === 'IDEA';
+  }
+
   return {
     restrict: 'E',
     scope: {
@@ -48,14 +53,14 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
     templateUrl: '/app/v2/partials/directives/contribution-card.html',
     link: function postLink(scope, element, attrs) {
       scope.user = localStorageService.get('user');
-      var workingGroupAuthors = scope.contribution.workingGroupAuthors;
-      var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-      scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
-      scope.group = workingGroupAuthors[0];
+      setContributionType(scope);
 
-      if(scope.group) {
+      if(!scope.isIdea) {
+        var workingGroupAuthors = scope.contribution.workingGroupAuthors;
+        var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+        scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+        scope.group = workingGroupAuthors[0];
         scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
-        //setupMembershipInfo(scope);
       }
 
       if(scope.campaign) {

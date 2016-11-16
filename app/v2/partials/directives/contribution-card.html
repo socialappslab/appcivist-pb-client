@@ -1,5 +1,5 @@
 <div class="card">
-  <div ng-if="contribution.type === 'PROPOSAL'" class="card-info">
+  <div ng-if="isProposal" class="card-info">
     <p class="heading--subheader">
       By
       <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
@@ -7,7 +7,7 @@
       </a>
     </p>
     <h1 class="heading--headline">
-      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/contribution/{{contribution.contributionId}}">
+      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
         {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
       </a>
     </h1>
@@ -18,9 +18,10 @@
       <span class="label label-info" ng-repeat="theme in contribution.themes">{{theme.title}}</span>
     </div>
   </div>
-  <div ng-if="contribution.type === 'IDEA'" class="card-info">
+  <div ng-if="isIdea" class="card-info">
     <h1 class="idea-title">
-      <a  ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/contribution/{{contribution.contributionId}}">
+      <!--<a  ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/idea/{{contribution.contributionId}}">-->
+      <a href="">
         {{contribution.title}}
       </a>
     </h1>

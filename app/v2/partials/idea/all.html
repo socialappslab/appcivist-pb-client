@@ -16,9 +16,11 @@
       <li><a href="#">Next >></a></li>
     </ol>
   </section>
-  <section class="panel">
-    <section class="list--idea all-proposals">
-      <idea-card ng-repeat="idea in ideas track by $index" idea="idea"></idea-card>
+  <section class="panel ideas-and-proposals">
+    <section class="list--proposal">
+      <div class="proposals">
+        <contribution-card ng-repeat="idea in ideas track by $index" contribution="idea"></contribution-card>
+      </div>
       <p ng-if="proposals.length === 0" class="card">No Ideas in this space yet</p>
     </section>
   </section>

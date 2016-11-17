@@ -506,6 +506,7 @@
   "no.proposal.message": "Aún no existen propuestas en este espacio. Sé el primero en crear una. Click en \"Agregar Nueva\"!",
   "no.idea.message": "Aún no existen ideas en este espacio. Sé el primero en crear una. Click en \"Agregar Nueva\"!",
   "no.discussion.message": "Aún no existen discusiones en este espacio. Sé el primero en crear una. Click en \"Iniciar una nueva Conversación\"!",
+  "no.resources.message": "Aún no existen recursos asociados a la campaña",
   "Assign": "Asignar",
   "Promote to proposal": "Promover a propuesta",
   "Exclude": "Excluir",

@@ -30,6 +30,8 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
       $scope.user = localStorageService.get('user');
       $scope.ideasSectionExpanded = true;
     }
+    $scope.showResourcesSection = false;
+    $scope.toggleResourcesSection = toggleResourcesSection;
     loadAssembly();
     loadCampaigns();
     loadCampaignResources();
@@ -131,6 +133,8 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     );
   }
 
-
+  function toggleResourcesSection() {
+    $scope.showResourcesSection = !$scope.showResourcesSection;
+  }
 }
 }());

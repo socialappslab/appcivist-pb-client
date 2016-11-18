@@ -21,12 +21,9 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
 
     // if the param is uuid then is an anonymous user, use endpoints with uuid
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    // TODO make endpoints for assembly by UUID and wGroup by UUID
     if (pattern.test($stateParams.pid) === true) {
-      console.log('Valid UUIDs');
       $scope.proposalID = $stateParams.pid;
     } else {
-      console.log('Not valid UUIDs');
       $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
       $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
       $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
@@ -37,28 +34,25 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
     $scope.showActionMenu = true;
     $scope.myObject = {};
     $scope.myObject.refreshMenu = function() {
-        if ($scope.showActionMenu == false)
-          $scope.showActionMenu = true;
-        else
-          $scope.showActionMenu = false;
-    }
+      scope.showActionMenu = !scope.showActionMenu;
+    };
     // Read user contribution feedback
-    $scope.userFeedback = $scope.userFeedback != null ?
-        $scope.userFeedback : {"up":false, "down":false, "fav": false, "flag": false};
+    $scope.userFeedback = $scope.userFeedback !== null ?
+        $scope.userFeedback : {'up':false, 'down':false, 'fav': false, 'flag': false};
   }
 
   // Feedback update
   $scope.updateFeedback = function (value) {
       //console.log(value);
-      if (value === "up") {
+      if (value === 'up') {
           $scope.userFeedback.up = true;
           $scope.userFeedback.down = false;
-      } else if (value === "down") {
+      } else if (value === 'down') {
           $scope.userFeedback.up = false;
           $scope.userFeedback.down = true;
-      } else if (value === "fav") {
+      } else if (value === 'fav') {
           $scope.userFeedback.fav = true;
-      } else if (value === "flag") {
+      } else if (value === 'flag') {
           $scope.userFeedback.flag = true;
       }
 
@@ -69,7 +63,7 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
               $scope.proposal.stats = newStats;
           },
           function (error) {
-              console.log("Error when updating user feedback");
+              console.log('Error when updating user feedback');
           }
       );
   };

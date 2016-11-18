@@ -506,8 +506,12 @@
   "no.proposal.message": "Aún no existen propuestas en este espacio. Sé el primero en crear una. Click en \"Agregar Nueva\"!",
   "no.idea.message": "Aún no existen ideas en este espacio. Sé el primero en crear una. Click en \"Agregar Nueva\"!",
   "no.discussion.message": "Aún no existen discusiones en este espacio. Sé el primero en crear una. Click en \"Iniciar una nueva Conversación\"!",
+  "no.resources.message": "Aún no existen recursos asociados a la campaña",
   "Assign": "Asignar",
   "Promote to proposal": "Promover a propuesta",
+  "Show resources": "Ver recursos",
+  "Hide resources": "Ocultar recursos",
+  "Resources": "Recursos",
   "Exclude": "Excluir",
   "See history": "Ver historial",
   "Give Feedback": "Dar Feedback",
@@ -541,5 +545,10 @@
   "Submit": "Enviar",
   "Ongoing Campaigns": "Campañas en curso",
   "Assign to Working Group": "Asignar a Grupo de Trabajo",
-  "Other Assemblies": "Otras Asambleas"
+  "Other Assemblies": "Otras Asambleas",
+  "Sort by": "Ordenar por",
+  "Date": "Fecha",
+  "Popularity": "Popularidad",
+  "Theme": "Tema",
+  "no.members.message": "No se encontraron miembros"
 }

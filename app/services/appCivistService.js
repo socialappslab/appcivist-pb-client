@@ -100,8 +100,13 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
                 "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
                 "linkedAssemblies" : [ ] // [ { "assemblyId": "2" }, { "assemblyId": "3" }, ... ]
             };
+        },
+
+        assemblyByUUID: function (uuid) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:uuid',
+                {uuid: uuid});
         }
-    }
+    };
 });
 
 appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService) {
@@ -440,7 +445,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             oldC.title = newC.title;
             oldC.text = newC.text;
             oldC.type = newC.type;
-            oldC.location = newC.location
+            oldC.location = newC.location;
             oldC.themesHash = newC.themesHash;
             oldC.themes = newC.themes;
             oldC.hashtags = newC.hashtags;
@@ -555,6 +560,11 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
             );
 
             return newWGroup;
+        },
+        
+        workingGroupByUUID: function (uuid) {
+            return $resource(getServerBaseUrl(localStorageService) + '/group/:uuid',
+                {uuid: uuid});
         }
     };
 });

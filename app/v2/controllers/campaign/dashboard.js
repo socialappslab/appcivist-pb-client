@@ -20,16 +20,15 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if ($stateParams.cuuid && pattern.test($stateParams.cuuid) === true) {
-      console.log('Valid UUIDs');
-      //$scope.assemblyID = $stateParams.aid;
       $scope.campaignID = $stateParams.cuuid;
     } else {
-      console.log('Not valid UUIDs');
       $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
       $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
       $scope.user = localStorageService.get('user');
       $scope.ideasSectionExpanded = true;
     }
+    $scope.showResourcesSection = false;
+    $scope.toggleResourcesSection = toggleResourcesSection;
     loadAssembly();
     loadCampaigns();
     loadCampaignResources();
@@ -64,7 +63,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
       // get proposals
       getContributions($scope.campaign, 'PROPOSAL').then(function(response) {
         // only published proposals
-        $scope.proposals = $filter('filter')(response, {status: 'PUBLISHED', type: 'PROPOSAL'}).splice(0, 6);
+        $scope.proposals = response.splice(0, 6);
 
         if(!$scope.proposals){
           $scope.proposals = [];
@@ -73,7 +72,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
       // get ideas
       getContributions($scope.campaign, 'IDEA').then(function(response) {
-        $scope.ideas = $filter('filter')(response, {type: 'IDEA'}).splice(0, 6);
+        $scope.ideas = response.splice(0, 6);
 
         if(!$scope.ideas){
           $scope.ideas = [];
@@ -82,7 +81,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
       // get discussions
       getContributions($scope.campaign, 'DISCUSSION').then(function(response) {
-        $scope.discussions = $filter('filter')(response, {type: 'DISCUSSION'});
+        $scope.discussions = response;
 
         if(!$scope.discussions){
           $scope.discussions = [];
@@ -105,13 +104,17 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
    **/
   function getContributions(campaign, type) {
     // Get list of contributions from server
-    // TODO: pass type argument when issue is solved
-    // var rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query({type: type});
     var rsp;
+    var query = {type: type};
+    
+    if(type === 'IDEA' || type === 'PROPOSAL'){
+      query.sort = 'date';
+    }
+    
     if (!$scope.user){
-      rsp = Contributions.contributionInResourceSpaceByUUID(campaign.resourceSpaceUUId).query();
+      rsp = Contributions.contributionInResourceSpaceByUUID(campaign.resourceSpaceUUId).query(query);
     }else{
-      rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query();
+      rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query(query);
     }
     rsp.$promise.then(
       function (data) {
@@ -136,6 +139,8 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     );
   }
 
-
+  function toggleResourcesSection() {
+    $scope.showResourcesSection = !$scope.showResourcesSection;
+  }
 }
 }());

@@ -219,10 +219,45 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 			controller: 'v2.CampaignDashboardCtrl',
 			templateUrl: 'app/v2/partials/campaign/dashboard.html'
 		})
+	  .state('v2.workingGroup',{
+      url: '/group',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+    .state('v2.workingGroup.gid',{
+			url: '/:gid',
+			controller: 'v2.WorkingGroupDashboardCtrl',
+			templateUrl: 'app/v2/partials/working-group/dashboard.html'
+		})
+	  .state('v2.proposal',{
+      url: '/proposal',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+    .state('v2.proposal.pid',{
+			url: '/:pid',
+			controller: 'v2.ProposalPageCtrl',
+			templateUrl: 'app/v2/partials/proposal/page.html'
+		})
     .state('v2.login',{
 			url: '/login',
 			controller: 'v2.LoginCtrl',
 			templateUrl: 'app/v2/partials/login.html'
+		})
+    .state('v2.user',{
+      url: '/user',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+    .state('v2.user.uid',{
+      url: '/:uid',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+    .state('v2.user.uid.profile',{
+      url: '/profile',
+			controller: 'v2.ProfileCtrl',
+			templateUrl: 'app/v2/partials/user/profile.html'
 		});
 
     /**

@@ -118,9 +118,12 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
 						});
 			}
 		}
-
 		return 	authenticated;
 	};
+
+  this.changePassword = function(data) {
+    return $resource(localStorageService.get('serverBaseUrl') + '/user/password/change');
+  };
 
   /**
    * Retrieve and store current user working groups, ongoing campaigns.

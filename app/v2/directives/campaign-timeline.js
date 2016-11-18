@@ -11,7 +11,7 @@ function CampaignTimeline(Campaigns, localStorageService) {
   function loadCampaign(scope, aid, cid) {
     scope.user = localStorageService.get('user');
     var res;
-    if (scope.user != null) {
+    if (scope.user) {
       res = Campaigns.campaign(aid, cid).get();
     } else {
       res = Campaigns.campaignByUUID(cid).get();
@@ -19,7 +19,7 @@ function CampaignTimeline(Campaigns, localStorageService) {
     res.$promise.then(function(data) {
       var currentComponent = Campaigns.getCurrentComponent(data.components);
       angular.forEach(data.components, function(c) {
-        c.cssClass = getComponentCssClass(currentComponent, c);
+        c.cssClass = getComponentCssClass(scope, currentComponent, c);
       });
       scope.components = data.components;
     });
@@ -31,8 +31,10 @@ function CampaignTimeline(Campaigns, localStorageService) {
    * @param currentComponent {Component} the current component.
    * @param c {Component} the timeline component.
    **/
-  function getComponentCssClass(currentComponent, c) {
-    if(c.componentId === currentComponent.componentId) {
+  function getComponentCssClass(scope, currentComponent, c) {
+    var idField = scope.user ? 'componentId' : 'uuid';
+
+    if(c[idField] === currentComponent[idField]) {
       return 'active';
     }
 

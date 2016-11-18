@@ -2,12 +2,18 @@
   <div ng-if="isProposal" class="card-info">
     <p class="heading--subheader">
       By
-      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
+      <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
+        {{contribution.workingGroupAuthors[0].name}}
+      </a>
+      <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
         {{contribution.workingGroupAuthors[0].name}}
       </a>
     </p>
     <h1 class="heading--headline">
-      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
+      <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}">
+        {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
+      </a>
+      <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
         {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
       </a>
     </h1>
@@ -109,7 +115,7 @@
           <li ng-if="userIsAuthor"><a href="#">{{'Edit' | translate}}</a></li>
           <li ng-if="userIsWorkingGroupCoordinator"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
           <li><a href="" ng-click="myObject.updateFeedback()">{{'Give Feedback' | translate}}</a></li>
-          <li ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.publish()">{{'Exclude' | translate}}</a></li>
+          <li ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
           <li><a href="#">{{'See history' | translate}}</a></li>
           <li ng-if="userIsAssemblyCoordinator"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
           <li ng-if="userIsAssemblyCoordinator ||  userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>

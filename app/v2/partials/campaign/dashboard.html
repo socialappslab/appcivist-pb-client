@@ -2,7 +2,36 @@
     <section class="panel intro">
       <p class="heading--header">{{'Campaign' | translate}}</p>
       <h1 class="heading--title">{{campaign.title}}</h1>
-      <p>{{campaign.goal}}</p>
+      <p>{{campaign.goal}}</p> 
+      <p class="heading--small pull-right">
+        <a href="" ng-if="!showResourcesSection" ng-click="toggleResourcesSection()">
+          <i class="fa fa-arrows-alt"></i>&nbsp;{{'Show resources' | translate}}
+        </a>
+        <a href="" ng-if="showResourcesSection" ng-click="toggleResourcesSection()">
+          <i class="fa fa-arrows-alt"></i>&nbsp;{{'Hide resources' | translate}}
+        </a>
+        &nbsp;&nbsp;
+      </p>
+    </section>
+    <section ng-if="showResourcesSection" class="panel">
+      <div class="panel-heading">
+        <h1 class="heading--header">{{'Resources' | translate}}</h1>
+      </div>
+      <br />
+      <div class="card-list" ng-repeat="resource in campaignResources">
+        <div class="action-bar small-card file-card">
+          <figure>
+            <a ng-href="{{resource.url}}" target="_blank">
+              <img ng-if="resource.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon" />
+              <img ng-if="resource.resourceType === 'PICTURE'" ng-src="{{resource.url}}" alt="File icon" />
+            </a>
+          </figure>
+          <h4>
+            {{(resource.name && resource.name != "" ? resource.name : resource.url)}}
+          </h4>
+        </div>
+      </div>
+      <p ng-if="!campaignResources || campaignResources.length === 0" class="card">{{'no.resources.message' | translate}}</p>
     </section>
     <div class="action-bar" style="margin-left:98%;float:right;">
       <div class="action-button" style="z-index: 999999;">
@@ -25,6 +54,9 @@
       </div>
     </div>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
+
+    <contribution-filter space-id="{{campaign.resourceSpaceId}}" list="proposals" type="proposal"></contribution-filter>
+
     <section class="panel ideas-and-proposals">
       <section class="list--proposal">
         <div class="panel-heading-no-margin">

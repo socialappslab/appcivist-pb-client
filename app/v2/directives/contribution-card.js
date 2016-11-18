@@ -4,9 +4,9 @@
 appCivistApp
   .directive('contributionCard',  ContributionCard);
 
-ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$location', '$window'];
+ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window'];
 
-function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $location, $window) {
+function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window) {
 
   function hasRole(roles, roleName) {
     var result = false;
@@ -53,14 +53,18 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
     templateUrl: '/app/v2/partials/directives/contribution-card.html',
     link: function postLink(scope, element, attrs) {
       scope.user = localStorageService.get('user');
+      scope.isAnonymous = !scope.user;
       setContributionType(scope);
 
       if(!scope.isIdea) {
         var workingGroupAuthors = scope.contribution.workingGroupAuthors;
         var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-        scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
         scope.group = workingGroupAuthors[0];
-        scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+
+        if(!scope.isAnonymous) {
+          scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+          scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+        }
       }
 
       if(scope.campaign) {
@@ -78,20 +82,20 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
 
       // Read user contribution feedback
       if (scope.userFeedback === undefined || scope.userFeedback === null) {
-        scope.userFeedback = {"up":false, "down":false, "fav": false, "flag": false};
+        scope.userFeedback = {'up':false, 'down':false, 'fav': false, 'flag': false};
       }
 
       // Feedback update
       scope.myObject.updateFeedback = function (value) {
-          if (value === "up") {
+          if (value === 'up') {
               scope.userFeedback.up = true;
               scope.userFeedback.down = false;
-          } else if (value === "down") {
+          } else if (value === 'down') {
               scope.userFeedback.up = false;
               scope.userFeedback.down = true;
-          } else if (value === "fav") {
+          } else if (value === 'fav') {
               scope.userFeedback.fav = true;
-          } else if (value === "flag") {
+          } else if (value === 'flag') {
               scope.userFeedback.flag = true;
           } else if (value === undefined) {
             if (scope.userFeedback.up == scope.userFeedback.down) {
@@ -110,7 +114,7 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
                   scope.contribution.stats = newStats;
               },
               function (error) {
-                  console.log("Error when updating user feedback");
+                  console.log('Error when updating user feedback');
               }
           );
       };

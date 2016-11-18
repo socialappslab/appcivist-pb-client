@@ -5,7 +5,7 @@
     <p>{{wg.text}}</p>
   </section>
   <section class="panel activity-and-members">
-    <section class="latest-activity latest-activity-relative">
+    <section class="latest-activity">
       <div class="panel-heading panel-heading-relative">
         <h1 class="heading--header">{{'Latest Activity' | translate}}</h1>
         <p class="heading--small">
@@ -58,8 +58,8 @@
       <div class="proposals">
         <contribution-card ng-repeat="proposal in proposals track by $index" contribution="proposal" show-voting-buttons="true"></contribution-card>
       </div>
-      <p ng-if="proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
     </section>
+    <p ng-if="proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
   </section>
 
   <section class="panel ideas-and-proposals">
@@ -74,8 +74,8 @@
       <div class="proposals">
         <contribution-card ng-repeat="idea in ideas track by $index" contribution="idea"></contribution-card>
       </div>
-      <p ng-if="ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
     </section>
+    <p ng-if="ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
   </section>
 
   <discussion-panel space-id="spaceID"></discussion-panel>

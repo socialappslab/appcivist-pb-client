@@ -426,7 +426,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             oldC.title = newC.title;
             oldC.text = newC.text;
             oldC.type = newC.type;
-            oldC.location = newC.location
+            oldC.location = newC.location;
             oldC.themesHash = newC.themesHash;
             oldC.themes = newC.themes;
             oldC.hashtags = newC.hashtags;

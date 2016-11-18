@@ -116,7 +116,7 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
   }
 
   function loadIdeas(aid, gid) {
-    var res = WorkingGroups.workingGroupContributions(aid, gid).query();
+    var res = Contributions.contributionInResourceSpace($scope.wg.resourcesResourceSpaceId).query({type: 'IDEA'});
     res.$promise.then(
       function (data) {
         $scope.ideas = $filter('filter')(data, {type: 'IDEA'});

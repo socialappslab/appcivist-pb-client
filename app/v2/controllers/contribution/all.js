@@ -18,35 +18,25 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
 
   function activate() {
     if ($stateParams.type == 'proposal') {
-      $scope.title = 'Proposals'
+      $scope.title = 'Proposals';
     } else if ($stateParams.type == 'idea') {
-      $scope.title = 'Ideas'
+      $scope.title = 'Ideas';
     } else {
-      $window.location = "/";
+      $window.location = '/';
     }
     $scope.type = $stateParams.type;
+    $scope.isAnonymous = false;
     // if the param is uuid then is an anonymous user, use endpoints with uuid
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    // TODO make endpoints for assembly by UUID and wGroup by UUID
-    if (pattern.test($stateParams.pid) === true) {
-      console.log('Valid UUIDs');
-      // TODO
+    if (pattern.test($stateParams.sid) === true) {
+      $scope.spaceID = $stateParams.sid;
+      $scope.isAnonymous = true;
     } else {
-      console.log('Not valid UUIDs');
       $scope.spaceID = ($stateParams.sid) ? parseInt($stateParams.sid) : 0;
       $scope.user = localStorageService.get('user');
-      loadContributions($scope.spaceID);
-
-      Space.getSpace($scope.spaceID).get().$promise.then(
-          function (space) {
-              $scope.seeAllType = space.type.replace('_', ' ');
-              $scope.seeAllTitle = space.name;
-          },
-          function (error) {
-              console.log("Error when updating user feedback");
-          }
-      );
     }
+    loadContributions($scope);
+    loadSpace($scope);
     $scope.paginationTop = {};
     $scope.paginationBottom = {};
 
@@ -66,20 +56,45 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
    *
    * @param campaign {sid} the resource space id.
    **/
-  function loadContributions(sid) {
-    // TODO: pass type argument when issue is solved
-    var rsp = Contributions.contributionInResourceSpace(sid).query();
+  function loadContributions(scope) {
+    var rsp;
+    var query = {type: scope.type.toUpperCase()};
+    
+    if(scope.isAnonymous) {
+      rsp = Contributions.contributionInResourceSpaceByUUID(scope.spaceID).query(query);
+    }else{
+      rsp = Contributions.contributionInResourceSpace(scope.spaceID).query(query);
+    }
     rsp.$promise.then(
       function (data) {
-        var contributions = $filter('filter')(data, {type: $scope.type.toUpperCase()});
+        var contributions = data;
 
-        if(!$scope.contributions){
-          $scope.contributions = [];
+        if(!contributions){
+          contributions = [];
         }
         $scope.contributions = contributions;
       },
       function (error) {
         FlashService.Error('Error loading proposals from server');
+      }
+    );
+  }
+
+  function loadSpace(scope) {
+    var rsp;
+    
+    if(scope.isAnonymous) {
+      rsp = Space.getSpaceByUUID(scope.spaceID).get();
+    }else{
+      rsp = Space.getSpace($scope.spaceID).get();
+    }
+    rsp.$promise.then(
+      function (space) {
+        scope.seeAllType = space.type.replace('_', ' ');
+        scope.seeAllTitle = space.name;
+      },
+      function (error) {
+        console.log('Error when updating user feedback');
       }
     );
   }

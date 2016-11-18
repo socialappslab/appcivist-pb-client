@@ -596,6 +596,11 @@ appCivistApp.factory('Space', function ($resource, localStorageService) {
         getSpace: function(spaceId) {
           return $resource(getServerBaseUrl(localStorageService) + '/space/:sid',
               {sid: spaceId});
+        },
+
+        getSpaceByUUID: function(spaceUUID) {
+          return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/public',
+              {uuid: spaceUUID});
         }
     };
 });

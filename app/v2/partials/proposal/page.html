@@ -5,7 +5,8 @@
     <p>{{proposal.text}}</p>
     <p class="heading--subheader">
       {{'in.wg.message.prev' | translate}}
-      <a href="workin group dashboar url">{{group.name}}</a>
+      <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/group/{{groupID}}">{{group.name}}</a>
+      <a ng-if="isAnonymous" ng-href="/#/v2/group/{{group.uuid}}">{{group.name}}</a>
       {{'in.wg.message.next' | translate}}
     </p>
     <div class="tags">

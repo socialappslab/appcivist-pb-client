@@ -51,8 +51,8 @@
       <div class="panel-heading-no-margin">
         <h1 class="heading--header">{{'Proposals' | translate}}</h1>
         <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
+          <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+          <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
         </p>
       </div>
       <div class="proposals">
@@ -67,7 +67,7 @@
       <div class="panel-heading-no-margin">
         <h1 class="heading--header">Ideas</h1>
         <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+          <a ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
           <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
         </p>
       </div>

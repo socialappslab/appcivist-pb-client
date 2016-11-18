@@ -191,7 +191,7 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 		})
 		.state('v2.assembly.aid.group.gid.proposal.pid',{
       url: '/:pid',
-      templateUrl: 'app/v2/partials/proposal/page.html',
+      templateUrl: 'app/v2/partials/contribution/page.html',
       controller: 'v2.ProposalPageCtrl'
 	  })
 		.state('v2.space',{
@@ -204,15 +204,10 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
       template: '<div ui-view></div>',
       abstract: true
 		})
-		.state('v2.space.sid.proposal',{
-      url: '/proposal',
-      templateUrl: 'app/v2/partials/proposal/all.html',
+		.state('v2.space.sid.contribution',{
+      url: '/contributions?type',
+      templateUrl: 'app/v2/partials/contribution/all.html',
       controller: 'v2.ProposalsCtrl'
-		})
-		.state('v2.space.sid.idea',{
-      url: '/idea',
-      templateUrl: 'app/v2/partials/idea/all.html',
-      controller: 'v2.IdeasCtrl'
 		})
 	  .state('v2.campaign',{
       url: '/campaign',

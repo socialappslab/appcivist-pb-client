@@ -209,7 +209,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
          * @return {Array} List of resources associated with the given campaign
          */
         resources: function(assemblyId, campaignId) {
-          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resource', 
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resource',
                            {aid: assemblyId, cid: campaignId});
         }
     };
@@ -291,6 +291,20 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         contributionSoftRemoval: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval',
                 {aid: assemblyId, coid: contributionId},
+                {
+                    'update' : {method:'PUT'}
+                });
+        },
+        publishContribution: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status',
+                {aid: assemblyId, coid: contributionId, status: 'PUBLISHED'},
+                {
+                    'update' : {method:'PUT'}
+                });
+        },
+        excludeContribution: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status',
+                {aid: assemblyId, coid: contributionId, status: 'EXCLUDED'},
                 {
                     'update' : {method:'PUT'}
                 });
@@ -573,6 +587,15 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
         },
         getEtherpadReadOnlyUrl : function (readOnlyPadId) {
             return localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+        }
+    };
+});
+
+appCivistApp.factory('Space', function ($resource, localStorageService) {
+    return {
+        getSpace: function(spaceId) {
+          return $resource(getServerBaseUrl(localStorageService) + '/space/:sid',
+              {sid: spaceId});
         }
     };
 });

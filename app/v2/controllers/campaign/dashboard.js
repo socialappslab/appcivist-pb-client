@@ -32,6 +32,11 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
     loadAssembly();
     loadCampaigns();
     loadCampaignResources();
+
+	  $scope.myObject = {};
+    $scope.myObject.refreshMenu = function() {
+      $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;
+    };
   }
 
   function loadAssembly() {

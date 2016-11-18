@@ -26,7 +26,7 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
       $scope.proposalID = $stateParams.pid;
       $scope.isAnonymous = true;
     } else {
-      $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+      $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
       $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
       $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
       $scope.user = localStorageService.get('user');

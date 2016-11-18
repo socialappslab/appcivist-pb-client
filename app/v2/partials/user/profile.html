@@ -33,13 +33,35 @@
       <div class="col-md-4 col-sm-4">
         <!--Profile Picture -->
         <div class="form-group">
-            <label for="profilePicUpload">{{'Change Profile Picture'|translate}}</label>
-            <br>
-            <img class="profilePic" src="{{user.profilePic.urlLargeString}}" />
-            <input type="file" id="profilePicUpload">
+          <label for="profilePicUpload">{{'Change Profile Picture'|translate}}</label>
+          <br>
+          <img class="profilePic" src="{{user.profilePic.urlLargeString}}" />
+          <input type="file" id="profilePicUpload">
         </div>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary pull-right" ng-click="updateProfile()">{{'Update Profile'|translate}}</button>
+    <br />
+    <div class="row">
+      <div class="col-lg-8">
+        <input type="checkbox" ng-click="toggleChangePassword()" >
+        <span>{{ 'Update password' | translate }}</span>
+      </div>
+    </div>
+    <br />
+    <div ng-if="showChangePassword">
+      <div class="row">
+        <div class="col-lg-8">
+          <label>{{'Password' | translate}}</label>
+          <input type="password" placeholder="{{'Password' | translate}}" ng-model="profile.password" ng-blur="blurReset()">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8">
+          <label>{{'Repeat password' | translate}}</label>
+          <input type="password" placeholder="{{'Repeat password' | translate}}" ng-model="profile.repeatPassword" ng-blur="blurReset()">
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="pull-right" ng-click="updateProfile()">{{'Update Profile' | translate}}</button>
   </form>
 </div>

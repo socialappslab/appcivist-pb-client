@@ -70,7 +70,7 @@
       </form>
     </div>
   </li>
-  <p ng-if="discussions.length === 0" class="card">{{'no.discussion.message' | translate}}</p>
+  <p ng-if="!discussions || discussions.length === 0" class="card">{{'no.discussion.message' | translate}}</p>
 </section>
 
   <section class="panel reply-field">

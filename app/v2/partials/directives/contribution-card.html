@@ -2,12 +2,18 @@
   <div ng-if="isProposal" class="card-info">
     <p class="heading--subheader">
       By
-      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
+      <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
+        {{contribution.workingGroupAuthors[0].name}}
+      </a>
+      <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
         {{contribution.workingGroupAuthors[0].name}}
       </a>
     </p>
     <h1 class="heading--headline">
-      <a ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
+      <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}">
+        {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
+      </a>
+      <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
         {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
       </a>
     </h1>

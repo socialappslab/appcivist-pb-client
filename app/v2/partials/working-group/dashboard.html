@@ -1,4 +1,4 @@
-<main class="app-main">
+<main class="app-main" ng-class="{anonymous: isAnonymous}">
   <section class="panel intro">
     <p class="heading--header">{{'WorkingGroup' | translate}}</p>
     <h1 class="heading--title">{{wg.name}}</h1>
@@ -44,6 +44,7 @@
           </div>
         </div>
       </div>
+      <p ng-if="!members || members.length === 0" class="card">{{'no.members.message' | translate}}</p>
     </section>
   </section>
   <section class="panel ideas-and-proposals">
@@ -59,7 +60,7 @@
         <contribution-card ng-repeat="proposal in proposals track by $index" contribution="proposal" show-voting-buttons="true"></contribution-card>
       </div>
     </section>
-    <p ng-if="proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
+    <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
   </section>
 
   <section class="panel ideas-and-proposals">
@@ -75,7 +76,7 @@
         <contribution-card ng-repeat="idea in ideas track by $index" contribution="idea"></contribution-card>
       </div>
     </section>
-    <p ng-if="ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
+    <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
   </section>
 
   <discussion-panel space-id="spaceID"></discussion-panel>

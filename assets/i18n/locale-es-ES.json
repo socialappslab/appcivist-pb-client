@@ -549,5 +549,6 @@
   "Sort by": "Ordenar por",
   "Date": "Fecha",
   "Popularity": "Popularidad",
-  "Theme": "Tema"
+  "Theme": "Tema",
+  "no.members.message": "No se encontraron miembros"
 }

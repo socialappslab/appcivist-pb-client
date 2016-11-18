@@ -703,7 +703,7 @@
   "no.proposal.message": "No Proposals in this space yet. Be the first to create one. Click on \"Add new\"!",
   "no.idea.message": "No Ideas in this space yet. Be the first to create one. Click on \"Add new\"!",
   "no.discussion.message": "No Discussions in this space yet. Be the first to create one. Click on \"Start a new conversation\"!",
-  "no.proposal.message": "No Resources in this campaign yet.",
+  "no.resources.message": "No Resources in this campaign yet.",
   "Show resources": "Show resources",
   "Hide resources": "Hide resources",
   "Resources": "Resources",
@@ -740,5 +740,6 @@
   "Sort by": "Sort by",
   "Date": "Date",
   "Popularity": "Popularity",
-  "Theme": "Theme"
+  "Theme": "Theme",
+  "no.members.message": "No members found"
 }

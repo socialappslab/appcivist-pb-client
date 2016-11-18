@@ -1,4 +1,4 @@
-<main class="app-main" ng-class="{'anonymous' : user == null}">
+<main class="app-main" ng-class="{'anonymous' : isAnonymous}">
     <section class="panel intro">
       <p class="heading--header">{{'Campaign' | translate}}</p>
       <h1 class="heading--title">{{campaign.title}}</h1>
@@ -89,7 +89,6 @@
         <p ng-if="ideas === undefined || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
       </section>
     </section>
-
-    <discussion-panel space-id="spaceID"></discussion-panel>
-
+    
+    <discussion-panel space-id="spaceID" endpoint="campaign"></discussion-panel>
 </main>

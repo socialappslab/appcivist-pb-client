@@ -19,8 +19,10 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
   function activate() {
     // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    $scope.isAnonymous = false;
     if ($stateParams.cuuid && pattern.test($stateParams.cuuid) === true) {
       $scope.campaignID = $stateParams.cuuid;
+      $scope.isAnonymous = true;
     } else {
       $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
       $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
@@ -48,7 +50,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
   function loadCampaigns() {
     var res;
-    if (!$scope.user) {
+    if ($scope.isAnonymous) {
       res = Campaigns.campaignByUUID($scope.campaignID).get();
     } else {
       res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
@@ -56,7 +58,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
     res.$promise.then(function(data) {
       $scope.campaign = data;
-      if($scope.user) {
+      if(!$scope.isAnonymous) {
         $scope.spaceID = data.resourceSpaceId;
       }else{
         $scope.spaceID = data.resourceSpaceUUId;
@@ -115,7 +117,7 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
       query.sort = 'date';
     }
     
-    if (!$scope.user){
+    if ($scope.isAnonymous){
       rsp = Contributions.contributionInResourceSpaceByUUID(campaign.resourceSpaceUUId).query(query);
     }else{
       rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query(query);

@@ -364,30 +364,50 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public',
                 {uuid: spaceUUId});
         },
+        
+        /**
+         * Returns a $resource to interact with the following endpoints:
+         *  - POST  /campaign/:uuid/contribution
+         *  - POST  /assembly/:uuid/contribution
+         *  - POST  /group/:uuid/contribution
+         *
+         *  @param {string} endpoint - campaign | assembly | group
+         *  @param {string} spaceUUID - space UUID
+         *  @returns {object} $resource
+         */ 
+        createAnomymousContribution: function(endpoint, spaceUUID) {
+          return $resource(getServerBaseUrl(localStorageService) + '/:endpoint/:uuid/contribution', 
+                           {endpoint: endpoint, uuid: spaceUUID}); 
+        },
+
         contributionsInCampaignComponent: function (assemblyID, campaignID, componentID) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
                 {
                     aid: assemblyID,
                     cid: campaignID,
                     ciid: componentID
-                })
+                });
         },
+
         userFeedback: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback',
                 { aid: assemblyId, cid: contributionId},
                 { 'update': { method: 'PUT'}}
             );
         },
+
         getContributionComments: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/comment',
                 { aid: assemblyId, cid: contributionId}
             );
         },
+
         getContributionByUUID: function (uuid) {
             return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid',
                 {uuid: uuid}
             );
         },
+
         defaultContributionAttachment: function () {
             var att = {
                 name: "",
@@ -397,6 +417,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             };
             return att;
         },
+
         newAttachmentObject: function (newAttachment) {
             if(!newAttachment.resourceType) {
                 newAttachment.resourceType = "WEBPAGE";

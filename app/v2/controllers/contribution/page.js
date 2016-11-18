@@ -21,7 +21,6 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
     $scope.isAnonymous = false;
     // if the param is uuid then is an anonymous user, use endpoints with uuid
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
     if (pattern.test($stateParams.pid) === true) {
       $scope.proposalID = $stateParams.pid;
       $scope.isAnonymous = true;

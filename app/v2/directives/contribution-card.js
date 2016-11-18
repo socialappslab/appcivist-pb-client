@@ -59,7 +59,7 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
       if(!scope.isIdea) {
         var workingGroupAuthors = scope.contribution.workingGroupAuthors;
         var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-        scope.group = workingGroupAuthors[0];
+        scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
 
         if(!scope.isAnonymous) {
           scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;

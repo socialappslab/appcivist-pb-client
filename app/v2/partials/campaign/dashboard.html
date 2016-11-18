@@ -33,6 +33,26 @@
       </div>
       <p ng-if="!campaignResources || campaignResources.length === 0" class="card">{{'no.resources.message' | translate}}</p>
     </section>
+    <div class="action-bar" style="margin-left:98%;float:right;">
+      <div class="action-button" style="z-index: 999999;">
+        <input id="xxxxx" type="checkbox" name="menu" ng-checked="myObject.showActionMenu" hidden/>
+        <div ng-click="myObject.refreshMenu()">
+          <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <title>{{'more' | translate}}</title>
+              <defs></defs>
+              <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
+                  <g id="more">
+                      <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                  </g>
+              </g>
+          </svg>
+        </div>
+        <ul class="action-menu">
+          <li><a href="#">{{'Edit' | translate}}</a></li>
+          <li><a href="#">{{'Add Resource' | translate}}</a></li>
+        </ul>
+      </div>
+    </div>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
 
     <contribution-filter space-id="{{campaign.resourceSpaceId}}" list="proposals" type="proposal"></contribution-filter>
@@ -42,11 +62,11 @@
         <div class="panel-heading-no-margin">
           <h1 class="heading--header">{{'Proposals' | translate}}</h1>
           <p class="heading--small">
-            <a ng-href="#/v2/space/{{spaceID}}/proposal"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+            <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
         </div>
         <div class="proposals">
-          <contribution-card ng-repeat="proposal in proposals track by $index" 
+          <contribution-card ng-repeat="proposal in proposals track by $index"
                          contribution="proposal" campaign="campaign" show-voting-buttons="false"></contribution-card>
         </div>
         <p ng-if="proposals === undefined || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
@@ -58,7 +78,7 @@
         <div class="panel-heading-no-margin">
           <h1 class="heading--header">{{'Ideas' | translate}}</h1>
           <p class="heading--small">
-            <a ng-href="#/v2/space/{{spaceID}}/idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+            <a ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>&nbsp;&nbsp;
             <!-- TODO: temporary commented -->
             <!--<a ng-if="ideasSectionExpanded" href="#"><i class="fa fa-eye-slash"></i>&nbsp;Hide</a>&nbsp;&nbsp;-->

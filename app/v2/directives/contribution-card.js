@@ -4,9 +4,9 @@
 appCivistApp
   .directive('contributionCard',  ContributionCard);
 
-ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships'];
+ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window'];
 
-function ContributionCard(Contributions, Campaigns, localStorageService, Memberships) {
+function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window) {
 
   function hasRole(roles, roleName) {
     var result = false;
@@ -86,7 +86,7 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
       }
 
       // Feedback update
-      scope.updateFeedback = function (value) {
+      scope.myObject.updateFeedback = function (value) {
           if (value === 'up') {
               scope.userFeedback.up = true;
               scope.userFeedback.down = false;
@@ -97,6 +97,14 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
               scope.userFeedback.fav = true;
           } else if (value === 'flag') {
               scope.userFeedback.flag = true;
+          } else if (value === undefined) {
+            if (scope.userFeedback.up == scope.userFeedback.down) {
+              scope.userFeedback.up = true;
+              scope.userFeedback.down = false;
+            } else {
+              scope.userFeedback.up = !scope.userFeedback.up;
+              scope.userFeedback.down = !scope.userFeedback.down;
+            }
           }
 
           //var stats = scope.contribution.stats;
@@ -110,6 +118,28 @@ function ContributionCard(Contributions, Campaigns, localStorageService, Members
               }
           );
       };
+
+      //change redirection
+      scope.myObject.softRemoval = function() {
+        Contributions.contributionSoftRemoval(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
+        $window.location.reload();
+      }
+
+      scope.myObject.publish = function() {
+        Contributions.publishContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
+        $window.location.reload();
+      }
+
+      scope.myObject.exclude = function() {
+        Contributions.excludeContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
+        $window.location.reload();
+      }
+
+      //find endpoint
+      scope.myObject.assignToWG = function() {
+        //Contributions.assignContributionToWG(scope.assemblyId, scope.contribution.contributionId, scope.wg).update(scope.contribution);
+        $window.location.reload();
+      }
 
     }
   };

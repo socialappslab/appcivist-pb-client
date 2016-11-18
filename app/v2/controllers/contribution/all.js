@@ -8,33 +8,48 @@ angular
 
 ProposalsCtrl.$inject = [
   '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-  'localStorageService', 'FlashService'
+  'localStorageService', 'FlashService', '$rootScope', 'Space', '$window'
 ];
 
 function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-                          $filter, localStorageService, FlashService) {
+                          $filter, localStorageService, FlashService, $rootScope, Space, $window) {
 
   activate();
 
   function activate() {
-
+    if ($stateParams.type == 'proposal') {
+      $scope.title = 'Proposals'
+    } else if ($stateParams.type == 'idea') {
+      $scope.title = 'Ideas'
+    } else {
+      $window.location = "/";
+    }
+    $scope.type = $stateParams.type;
     // if the param is uuid then is an anonymous user, use endpoints with uuid
-    // Example http://localhost:8000/#/v2/assembly/7/group/5/proposal/56c08723-0758-4319-8dee-b752cf8004e6
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     // TODO make endpoints for assembly by UUID and wGroup by UUID
-    //if (pattern.test($stateParams.aid) === true && pattern.test($stateParams.gid) === true && pattern.test($stateParams.pid) === true) {
     if (pattern.test($stateParams.pid) === true) {
       console.log('Valid UUIDs');
-      // TODO:
+      // TODO
     } else {
       console.log('Not valid UUIDs');
       $scope.spaceID = ($stateParams.sid) ? parseInt($stateParams.sid) : 0;
       $scope.user = localStorageService.get('user');
-      loadProposals($scope.spaceID);
+      loadContributions($scope.spaceID);
+
+      Space.getSpace($scope.spaceID).get().$promise.then(
+          function (space) {
+              $scope.seeAllType = space.type.replace('_', ' ');
+              $scope.seeAllTitle = space.name;
+          },
+          function (error) {
+              console.log("Error when updating user feedback");
+          }
+      );
     }
     $scope.paginationTop = {};
     $scope.paginationBottom = {};
-    
+
     $scope.paginationVisible =  function(pag, visible) {
       if($scope.paginationTop.visible) {
         $scope.paginationBottom.style = {display: 'none'};
@@ -51,22 +66,23 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
    *
    * @param campaign {sid} the resource space id.
    **/
-  function loadProposals(sid) {
+  function loadContributions(sid) {
     // TODO: pass type argument when issue is solved
     var rsp = Contributions.contributionInResourceSpace(sid).query();
     rsp.$promise.then(
       function (data) {
-        var proposals = $filter('filter')(data, {type: 'PROPOSAL'});
+        var contributions = $filter('filter')(data, {type: $scope.type.toUpperCase()});
 
-        if(!$scope.proposals){
-          $scope.proposals = [];
+        if(!$scope.contributions){
+          $scope.contributions = [];
         }
-        $scope.proposals = proposals;
+        $scope.contributions = contributions;
       },
       function (error) {
         FlashService.Error('Error loading proposals from server');
       }
     );
   }
+
 }
 }());

@@ -53,7 +53,7 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     $scope.userIsMember = $scope.membership.status === "ACCEPTED";
 
     if ($scope.userIsMember) {
-        loadWorkingGroupU();
+        loadWorkingGroup();
     } else {
         $scope.userIsMember = false;
         // TODO: anonymous working group page
@@ -73,6 +73,7 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
 
   function loadWorkingGroup() {
     var res;
+
     if($scope.isAnonymous){
       res = WorkingGroups.workingGroupByUUID($scope.groupID).get();
     }else{
@@ -81,11 +82,16 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     res.$promise.then(
       function (data) {
         $scope.wg = data;
-        loadMembers($scope.assemblyID, $scope.groupID);
-        loadProposals($scope.assemblyID, $scope.groupID);
-        loadIdeas($scope.assemblyID, $scope.groupID);
-        $scope.spaceID = data.forumResourceSpaceId;
-        loadLatestActivities(data.resourcesResourceSpaceId);
+        loadMembers(data);
+        loadProposals(data);
+        loadIdeas(data);
+        
+        if($scope.isAnonymous) {
+          // TODO
+        }else{
+          $scope.spaceID = data.forumResourceSpaceId;
+        }
+        loadLatestActivities(data);
       },
       function (error) {
         FlashService.Error('Error occured trying to initialize the working group: ' + JSON.stringify(error));
@@ -93,8 +99,18 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     );
   }
 
-  function loadMembers(aid, gid) {
-    var res = WorkingGroups.workingGroupMembers(aid, gid, 'ALL').query();
+  function loadMembers(group) {
+    var aid = group.assemblyId;
+    var gid = group.groupId;
+    var res;
+    
+    if($scope.isAnonymous) {
+      // TODO
+      res = WorkingGroups.workingGroupMembers(aid, gid, 'ALL').query();
+    }else{
+      res = WorkingGroups.workingGroupMembers(aid, gid, 'ALL').query();
+    }
+
     res.$promise.then(
       function (data) {
         $scope.members = data;
@@ -130,14 +146,18 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
   /**
    * Get contributions from server.
    *
-   * @param campaign {workingGroup} the current group.
-   * @param type {String} forum_post | comment | idea | question | issue |  proposal | note
+   * @param workingGroup {object} the current group.
+   * @param type {string} forum_post | comment | idea | question | issue |  proposal | note
    * @return promise
    **/
   function getContributions(workingGroup, type) {
     // Get list of contributions from server
     var rsp;
-    var query = {type: type};
+    var query = {};
+    
+    if(type) {
+      query.type = type;
+    }
     
     if(type === 'IDEA' || type === 'PROPOSAL'){
       query.sort = 'date';
@@ -160,9 +180,9 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
   }
 
   // TODO: just show the latest contributions until notifications API is ready
-  function loadLatestActivities(resourceSpaceId) {
-    var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query();
-    rsp.$promise.then(
+  function loadLatestActivities(group) {
+    var rsp = getContributions(group);
+    rsp.then(
       function (data) {
         $scope.activities = data;
       },

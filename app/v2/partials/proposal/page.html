@@ -1,4 +1,4 @@
-<main class="app-main">
+<main class="app-main" ng-class="{anonymous: isAnonymous}">
   <section class="panel intro">
     <p class="heading--header">{{'Proposal' | translate}}</p>
     <h1 class="heading--title">{{proposal.title}}</h1>
@@ -47,8 +47,6 @@
       </div>
     </div>
   </section>
-
-  <!--<campaign-timeline title="Proposal Status" assembly-id="assemblyID" campaign-id="campaignID" only-label="true"></campaign-timeline>-->
 
   <section class="panel intro">
     <p class="heading--header">{{'Proposal Status' | translate }}</p>
@@ -105,7 +103,7 @@
       </div>
       <div class="panel-heading">
         <h1 class="heading--header">{{'Attachments' | translate}}</h1>
-        <p class="heading--small"><a href="#"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a></p>
+        <p ng-if="!isAnonymous" class="heading--small"><a href="#"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a></p>
       </div>
       <div class="card-list" ng-repeat="file in proposal.attachments">
         <div class="action-bar small-card file-card">

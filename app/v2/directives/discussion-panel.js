@@ -17,10 +17,17 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
   }
 
   function loadDiscussions(scope, sid) {
-    var rsp = Contributions.contributionInResourceSpace(sid).query();
+    var query = {type: 'DISCUSSION'};
+    var rsp;
+
+    if (!scope.user){
+      rsp = Contributions.contributionInResourceSpaceByUUID(sid).query(query);
+    }else{
+      rsp = Contributions.contributionInResourceSpace(sid).query(query);
+    }
     rsp.$promise.then(
       function (data) {
-        scope.discussions = $filter('filter')(data, {type: 'DISCUSSION'});
+        scope.discussions = data;
       },
       function (error) {
         FlashService.Error('Error loading discussions from server');
@@ -56,6 +63,7 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
       });
 
       function activate() {
+        scope.user = localStorageService.get('user');
         loadDiscussions(scope, scope.spaceId);
         scope.newDiscussion = initContribution('DISCUSSION');
         scope.newComment = initContribution('COMMENT');

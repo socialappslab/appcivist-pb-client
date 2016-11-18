@@ -18,19 +18,20 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
   activate();
 
   function activate() {
-
+    $scope.isAnonymous = false;
     // if the param is uuid then is an anonymous user, use endpoints with uuid
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
     if (pattern.test($stateParams.pid) === true) {
       $scope.proposalID = $stateParams.pid;
+      $scope.isAnonymous = true;
     } else {
       $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
       $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
       $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
       $scope.user = localStorageService.get('user');
-      loadProposal($scope.assemblyID, $scope.proposalID);
     }
-
+    loadProposal($scope);
     $scope.showActionMenu = true;
     $scope.myObject = {};
     $scope.myObject.refreshMenu = function() {
@@ -68,8 +69,14 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
       );
   };
 
-  function loadProposal(aid, pid) {
-    var rsp = Contributions.contribution(aid, pid).get();
+  function loadProposal(scope) {
+    var rsp;
+    
+    if(scope.isAnonymous) {
+      rsp = Contributions.getContributionByUUID(scope.proposalID).get();
+    }else{
+      rsp = Contributions.contribution(scope.assemblyID, scope.proposalID).get();
+    }
     rsp.$promise.then(
       function (data) {
         $scope.proposal = data;
@@ -82,7 +89,11 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
         var campaignIdsLength = campaignIds ? campaignIds.length : 0;
         $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
         $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId);
-        verifyAuthorship($scope.proposal);
+        
+        if(!scope.isAnonymous) {
+          verifyAuthorship(scope.proposal);
+        }
+        // TODO: pass UUID when user is anonymous
         loadRelatedContributions($scope.group ? $scope.group.resourcesResourceSpaceId : null);
       },
       function (error) {

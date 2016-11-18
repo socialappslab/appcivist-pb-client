@@ -1,7 +1,7 @@
 <section class="panel">
   <div class="panel-heading">
     <h1 class="heading--header">{{'Conversations' | translate}}</h1>
-    <p class="heading--small"><a href="" ng-if="user != null" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></p>
+    <p class="heading--small"><a href="" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></p>
   </div>
   <li class="panel card conversation-container" ng-repeat="discussion in discussions">
     <div class="comment-meta">

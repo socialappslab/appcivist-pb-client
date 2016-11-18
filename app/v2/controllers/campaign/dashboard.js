@@ -51,7 +51,11 @@ function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Cont
 
     res.$promise.then(function(data) {
       $scope.campaign = data;
-      $scope.spaceID = data.resourceSpaceId;
+      if($scope.user) {
+        $scope.spaceID = data.resourceSpaceId;
+      }else{
+        $scope.spaceID = data.resourceSpaceUUId;
+      }
       var currentComponent = Campaigns.getCurrentComponent(data.components);
       setIdeasSectionVisibility(currentComponent);
 

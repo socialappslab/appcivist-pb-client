@@ -228,6 +228,21 @@ function config($routeProvider, $locationProvider, $resourceProvider, $httpProvi
 			url: '/login',
 			controller: 'v2.LoginCtrl',
 			templateUrl: 'app/v2/partials/login.html'
+		})
+    .state('v2.user',{
+      url: '/user',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+    .state('v2.user.uid',{
+      url: '/:uid',
+      abstract: true,
+      template: '<div ui-view></div>'
+		})
+    .state('v2.user.uid.profile',{
+      url: '/profile',
+			controller: 'v2.ProfileCtrl',
+			templateUrl: 'app/v2/partials/user/profile.html'
 		});
 
     /**

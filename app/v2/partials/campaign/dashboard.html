@@ -1,4 +1,4 @@
-<main class="app-main" ng-class="{'anonymous' : isAnonymous}">
+<main class="appmain" ng-class="{'anonymous' : isAnonymous}">
   <article class="campaign">
     <header class="campaign__header panel intro">
       <div class="heading--header">{{'Campaign' | translate}}</div>
@@ -6,7 +6,6 @@
       <p>{{campaign.goal}}</p>
     </header>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
-    </section>
     <section class="campaign__filters">
       <div class="search">
         <div clas="search__field_wrapper">
@@ -55,18 +54,32 @@
           </ul>
       </div>
     </section>
-    <section class="list--proposal all-proposals">
-      <header class="proposals__header">
-        <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-        <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-        <a class="proposals__add_new" href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
-        <a class="proposals__show_ideas" href="&#x2F;patterns&#x2F;03-templates-01-campaign-dashboard&#x2F;03-templates-01-campaign-dashboard.html">Show Ideas</a>
-      </header>
-      <div class="list__cards container__proposals">
-        <contribution-card ng-repeat="proposal in proposals track by $index" class="proposal__card" contribution="proposal" campaign="campaign"
-          show-voting-buttons="false"></contribution-card>
-      </div>
-    </section>
-    </section>
-    <discussion-panel space-id="spaceID" endpoint="campaign"></discussion-panel>
+    <div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}">
+      <section class="list--proposals">
+        <header class="proposals__header">
+          <h2 class="heading--header">{{'Proposals' | translate}}</h2>
+          <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+          <a class="proposals__add_new" href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+          <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
+        </header>
+        <div class="list__cards container__proposals">
+          <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign"
+            show-voting-buttons="false"></contribution-card>
+        </div>
+      </section>
+      <section class="list--ideas">
+        <header class="ideas__header">
+          <h2 class="heading--header">Ideas</h2>
+          <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+          <a class="ideas__add_new" ng-if="user != null" href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+          <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;Hide Ideas</a>&nbsp;&nbsp;
+        </header>
+
+        <div class="list__cards container__ideas">
+          <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign" show-voting-buttons="false"></contribution-card>
+        </div>
+      </section>
+    </div>
+  </article>
+  <discussion-panel space-id="spaceID" endpoint="campaign"></discussion-panel>
 </main>>

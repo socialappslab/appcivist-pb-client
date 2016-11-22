@@ -3,20 +3,23 @@
     <header class="card__header">
       <p class="heading--category">landscaping</p>
       <h1 class="heading--headline">
-        <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}">
+        <a ng-if="isAnonymous && isProposal" ng-href="#/v2/proposal/{{contribution.uuid}}">
         {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
         </a>
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
+        <a ng-if="!isAnonymous && isProposal" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
         {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
+        </a>
+        <a href="">
+          {{contribution.title}}
         </a>
       </h1>
-      <p class="heading--attribution">
+      <p ng-if="isProposal" class="heading--attribution">
         <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
         {{contribution.workingGroupAuthors[0].name}}
-      </a>
-      <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
+        </a>
+        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
         {{contribution.workingGroupAuthors[0].name}}
-      </a>
+        </a>
       </p>
       <div class="card__heading_actions">
         <ul>
@@ -55,10 +58,22 @@
           </li>
         </ul>
       </div>
+
+      <div ng-if="isIdea" class="temperature_check">
+        <ul>
+          <li class="upvote">
+            <a class="thumbs-up" href="#"><span class="screen-reader-only">Upvote</span></a>
+          </li>
+          <li class="downvote">
+            <a class="thumbs-down" href="#"><span class="screen-reader-only">Downvote</span></a>
+          </li>
+        </ul>
+      </div>
+
     </header>
-    <div class="card__body">
+    <div class="card__body" ng-if="isProposal">
       {{contribution.text|limitTo:152}}{{(contribution.text.length) > 152 ? '...' : '.' }}
-      <div class="voting-buttons" ng-if="contribution.type === 'PROPOSAL' && showVotingButtons">
+      <div class="voting-buttons" ng-if="isProposal && showVotingButtons">
         <div class="vote-button upvote">
           <a class="heading--small" href="#">
             <i class="fa fa-thumbs-up"></i>

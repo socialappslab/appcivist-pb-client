@@ -67,7 +67,7 @@
             show-voting-buttons="false"></contribution-card>
         </div>
       </section>
-      <section class="list--ideas">
+      <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
         <header class="ideas__header">
           <h2 class="heading--header">Ideas</h2>
           <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;

@@ -1,0 +1,89 @@
+<section class="panel">
+  <div class="panel-heading">
+    <h1 class="heading--header">{{'Conversations' | translate}}</h1>
+    <p class="heading--small"><a href="" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></p>
+  </div>
+  <li class="panel card conversation-container" ng-repeat="discussion in discussions">
+    <div class="comment-meta">
+      <!--<p class="heading++header">Yesterday in <a href="#">Housing and Urban Development (HUD) Funds</a></p>-->
+      <p class="heading--header">{{formatDate(discussion.creation)}}</p>
+    </div>
+    <member-card user="discussion.authors[0]" comments-section="true"></member-card>
+
+    <div class="comment-text">
+      <small>{{discussion.text}}</small>
+    </div>
+    <div class="comment-reply-controls">
+      <div class="voting-buttons">
+        <div class="vote-button upvote">
+          <a class="heading--small" href="#">+{{discussion.stats.ups}}</a>
+        </div>
+        <div class="vote-button downvote">
+          <a class="heading--small" href="#">-{{discussion.stats.downs}}</a>
+        </div>
+      </div>
+      <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>
+      <a href="" class="heading--subheader reply-count reply"
+         ng-if="!discussion.showReplyForm"
+         ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>
+    </div>
+    <ul class="threaded-comments">
+      <li class="panel comment-container" ng-repeat="comment in discussion.comments">
+        <div class="comment-meta">
+          <!-- <p class="heading++header">Yesterday in <a href="#">Housing and Urban Development (HUD) Funds</a></p> -->
+          <p class="heading--header">{{formatDate(comment.creation)}}</a></p>
+          <member-card user="comment.authors[0]" comments-section="true"></member-card>
+        </div>
+        <div class="comment-text">
+          <small>{{comment.text}}</small>
+        </div>
+        <div class="comment-reply-controls">
+          <div class="voting-buttons">
+            <div class="vote-button upvote">
+              <a class="heading--small" href="#">+{{comment.stats.ups}}</a>
+            </div>
+            <div class="vote-button downvote">
+              <a class="heading--small" href="#">-{{comment.stats.downs}}</a>
+            </div>
+          </div>
+          <!-- TODO: can someone comment on a comment?
+               replace ++ with double hyphen
+          <a class="heading++subheader reply-count">2 Replies</a>
+          <a class="heading++subheader reply-count reply">Reply to this comment</a>
+          -->
+        </div>
+      </li>
+    </ul>
+
+    <div class="panel reply-field" ng-if="discussion.showReplyForm">
+      <h1 class="heading--header">{{'Reply' | translate}}</h1>
+      <form method="post" ng-submit="createNewComment(discussion)" class="comment-form">
+        <fieldset>
+          <div class="field-container">
+            <textarea id="comment-field-{{discussion.resourceSpaceId}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+          </div>
+          <div class="comment-meta">
+            <member-card action-bar="true" comments-section="true"></member-card>
+          </div>
+          <input class="button" type='submit' value='Submit' />
+        </fieldset>
+      </form>
+    </div>
+  </li>
+  <p ng-if="!discussions || discussions.length === 0" class="card">{{'no.discussion.message' | translate}}</p>
+</section>
+
+  <section class="panel reply-field">
+    <h1 class="heading--header">{{'Start a Conversation' | translate}}</h1>
+    <form method="post" ng-submit="createNewDiscussion()" class="comment-form">
+      <fieldset>
+        <div class="field-container">
+          <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+        </div>
+        <div class="comment-meta">
+          <member-card action-bar="true" comments-section="true"></member-card>
+        </div>
+        <input class="button" type='submit' value="{{'Submit' | translate}}" />
+      </fieldset>
+    </form>
+  </section>

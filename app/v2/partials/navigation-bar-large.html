@@ -1,3 +1,56 @@
+<nav id="appcivist__nav" class="navigation ">
+  <div class="nav__container">
+    <button class="button__nav_toggle">☰</button>
+
+    <header itemprop="location" itemscope itemtype="http://schema.org/Place">
+      <h1>City of Vallejo</h1>
+      <h2>Vallejo, CA</h2>
+    </header>
+
+    <div class="user">
+      <member-card action-bar="true"></member-card>
+    </div>
+
+    <section class="my_working_groups">
+      <h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
+      <ul class="list__my_working_groups">
+        <li ng-repeat="wg in myWorkingGroups">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+          {{wg.name}}
+        </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="my_campaigns">
+      <h1 class="heading--header">{{'Ongoing Campaigns' | translate}}</h1>
+      <ul class="nav__my_campaigns">
+        <li ng-repeat="c in ongoingCampaigns">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
+          {{c.title}}
+        </a>
+        </li>
+      </ul>
+    </section>
+
+    <!--<ul ng-if="assemblies.length" class="submenu submenu-campaigns">
+      <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
+      <li ng-repeat="a in assemblies">
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}">
+          {{a.name}}
+        </a>
+      </li>
+    </ul>-->
+
+    <footer class="nav__footer">
+      <a href="#" class=""><img src="/bower_components/appcivist-patterns/dist/images/logo.svg" class="logo" alt="AppCivist Logo" /></a>
+      <div class="powered_by">Powered by Appcivist</div>
+    </footer>
+  </div>
+</nav>
+<appcivist-patterns></appcivist-patterns>
+
+<!--
 <nav class="navigation-logged-in large-screen-nav">
   <div class="navigation-content-sticky">
     <div class="logo">
@@ -42,75 +95,75 @@
 </nav>
 
 <nav ng-if="!showSmallMenu" id="small-nav" class="navigation-logged-in small-screen-nav">
-	<div class="logo">
-	<h1 class="heading--headline">City of Vallejo
-		<span>Participatory Budgeting</span></h1>
-		<h3 class="heading--subheader">Powered by Appcivist</h3>
-	</div>
-	<a class="small-nav-button" ng-click="updateSmallMenu()">
-		<svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-			<title>{{'more' | translate}}</title>
-			<defs></defs>
-			<g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
-					<g id="more">
-							<path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
-					</g>
-			</g>
-		</svg>
-	</a>
+  <div class="logo">
+    <h1 class="heading--headline">City of Vallejo
+      <span>Participatory Budgeting</span></h1>
+    <h3 class="heading--subheader">Powered by Appcivist</h3>
+  </div>
+  <a class="small-nav-button" ng-click="updateSmallMenu()">
+    <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <title>{{'more' | translate}}</title>
+      <defs></defs>
+      <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">
+        <g id="more">
+          <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+        </g>
+      </g>
+    </svg>
+  </a>
 </nav>
 
 <nav ng-if="showSmallMenu" class="navigation-logged-in">
-    <div class="navigation-logged-in small-screen-nav">
-			<div class="logo">
-				<h1 class="heading--headline">City of Vallejo
-					<span>Vallejo, CA</span></h1>
-				</h1>
-				<h3 class="heading--subheader">
-					<div class="logo-small">
-						<img src="/bower_components/appcivist-patterns/dist/images/logo-white.svg" alt="AppCivist Logo" />
-						<strong>Powered by Appcivist</strong>
-					</div>
-				</h3>
-			</div>
-			<a class="small-nav-button" ng-click="updateSmallMenu()">
-				<svg width="16px" height="16px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-					<title>close</title>
-					<defs></defs>
-					<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-							<g id="close" transform="translate(-10.000000, -10.000000)">
-									<polygon id="close" transform="translate(21.214286, 20.911240) rotate(45.000000) translate(-21.214286, -20.911240) " points="22.0714286 21.7683828 22.0714286 34.91124 20.3571429 34.91124 20.3571429 21.7683828 7.21428571 21.7683828 7.21428571 20.0540971 20.3571429 20.0540971 20.3571429 6.91123995 22.0714286 6.91123995 22.0714286 20.0540971 35.2142857 20.0540971 35.2142857 21.7683828"></polygon>
-							</g>
-					</g>
-				</svg>
-			</a>
+  <div class="navigation-logged-in small-screen-nav">
+    <div class="logo">
+      <h1 class="heading--headline">City of Vallejo
+        <span>Vallejo, CA</span></h1>
+      </h1>
+      <h3 class="heading--subheader">
+        <div class="logo-small">
+          <img src="/bower_components/appcivist-patterns/dist/images/logo-white.svg" alt="AppCivist Logo" />
+          <strong>Powered by Appcivist</strong>
+        </div>
+      </h3>
     </div>
-    <div class="user">
-			<member-card action-bar="true"></member-card>
-    </div>
+    <a class="small-nav-button" ng-click="updateSmallMenu()">
+      <svg width="16px" height="16px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>close</title>
+        <defs></defs>
+        <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="close" transform="translate(-10.000000, -10.000000)">
+            <polygon id="close" transform="translate(21.214286, 20.911240) rotate(45.000000) translate(-21.214286, -20.911240) " points="22.0714286 21.7683828 22.0714286 34.91124 20.3571429 34.91124 20.3571429 21.7683828 7.21428571 21.7683828 7.21428571 20.0540971 20.3571429 20.0540971 20.3571429 6.91123995 22.0714286 6.91123995 22.0714286 20.0540971 35.2142857 20.0540971 35.2142857 21.7683828"></polygon>
+          </g>
+        </g>
+      </svg>
+    </a>
+  </div>
+  <div class="user">
+    <member-card action-bar="true"></member-card>
+  </div>
 
-		<ul class="submenu submenu-working-groups">
-			<h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
-			<li ng-repeat="wg in myWorkingGroups">
-				<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+  <ul class="submenu submenu-working-groups">
+    <h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
+    <li ng-repeat="wg in myWorkingGroups">
+      <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
 					{{wg.name}}
 				</a>
-			</li>
-		</ul>
-		<ul class="submenu submenu-campaigns">
-		  <h1 class="heading--header">{{'Ongoing Campaigns' | translate}}</h1>
-      <li ng-repeat="c in ongoingCampaigns">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
+    </li>
+  </ul>
+  <ul class="submenu submenu-campaigns">
+    <h1 class="heading--header">{{'Ongoing Campaigns' | translate}}</h1>
+    <li ng-repeat="c in ongoingCampaigns">
+      <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
           {{c.title}}
         </a>
-      </li>
-		</ul>
-    <ul ng-if="assemblies.length" class="submenu submenu-campaigns">
-      <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
-      <li ng-repeat="a in assemblies">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}">
+    </li>
+  </ul>
+  <ul ng-if="assemblies.length" class="submenu submenu-campaigns">
+    <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
+    <li ng-repeat="a in assemblies">
+      <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}">
           {{a.name}}
         </a>
-      </li>
-    </ul>
-</nav>
+    </li>
+  </ul>
+</nav>-->

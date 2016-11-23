@@ -550,5 +550,6 @@
   "Date": "Fecha",
   "Popularity": "Popularidad",
   "Theme": "Tema",
-  "no.members.message": "No se encontraron miembros"
+  "no.members.message": "No se encontraron miembros",
+  "By": "Por"
 }

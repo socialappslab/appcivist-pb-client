@@ -14,8 +14,9 @@
         </a>
       </h1>
       <p ng-if="isProposal" class="heading--attribution">
+        {{'By' | translate }}
         <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
-        {{contribution.workingGroupAuthors[0].name}}
+         {{contribution.workingGroupAuthors[0].name}}
         </a>
         <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
         {{contribution.workingGroupAuthors[0].name}}

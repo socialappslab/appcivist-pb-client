@@ -9,7 +9,7 @@
         <a ng-if="!isAnonymous && isProposal" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
         {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
         </a>
-        <a href="">
+        <a href="" ng-if="isIdea">
           {{contribution.title}}
         </a>
       </h1>
@@ -30,7 +30,7 @@
               />
             </svg>
           </li>
-          <li class="action__contextual_menu">
+          <li class="action__contextual_menu" ng-click="toggleContextualMenu()">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px"
               height="16px" viewBox="0 0 16 16" xml:space="preserve">
               <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
@@ -95,13 +95,24 @@
           </a>
         </div>
       </div>
-      <div class="card__contextual_menu">
-        <ul>
-          <li><a href="#">Edit</a></li>
-          <li><a href="#">Publish</a></li>
-          <li><a href="#">Give Feedback</a></li>
-          <li><a href="#">Exclude</a></li>
-          <li><a href="#">See history</a></li>
+
+
+      <div class="card__contextual_menu" ng-class="{show: showContextualMenu}">
+        <ul ng-if="isProposal">
+          <li ng-if="userIsAuthor"><a href="#">{{'Edit' | translate}}</a></li>
+          <li ng-if="userIsWorkingGroupCoordinator"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
+          <li><a href="" ng-click="myObject.updateFeedback()">{{'Give Feedback' | translate}}</a></li>
+          <li ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
+          <li><a href="#">{{'See history' | translate}}</a></li>
+          <li ng-if="userIsAssemblyCoordinator"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
+          <li ng-if="userIsAssemblyCoordinator ||  userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
+        </ul>
+
+        <ul ng-if="isIdea">
+          <li ng-if="userIsAuthor"><a href="#">{{'Edit' | translate}}</a></li>
+          <li ng-if="userIsAssemblyCoordinator"><a href="#">{{'Assign' | translate}}</a></li>
+          <li ng-if="userIsWorkingGroupCoordinator"><a href="#">{{'Promote to contribution' | translate}}</a></li>
+          <li class="li-action-menu"><a href="#">{{'See history' | translate}}</a></li>
         </ul>
       </div>
     </div>

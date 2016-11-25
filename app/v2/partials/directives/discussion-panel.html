@@ -1,12 +1,16 @@
-<section class="panel">
-  <div class="panel-heading-no-margin">
-    <h1 class="heading--header">{{'Conversations' | translate}}</h1>
-    <p class="heading--small"><a href="" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></p>
-  </div>
-  <li class="panel card conversation-container" ng-repeat="discussion in discussions">
-    <div class="comment-meta">
-      <p class="heading--header">{{formatDate(discussion.creation)}}</p>
-      <member-card user="discussion.authors[0]" comments-section="true"></member-card>
+<section class="comments__section">
+  <header class="panel-heading">
+    <h2 class="heading--header">{{'Conversations' | translate}}</h2>
+    <div class="heading--small"><a href="" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></div>
+  </header>
+
+  <div class="comments__listing">
+    <li class="panel card conversation-container" ng-repeat="discussion in discussions">
+      <div class="comment-meta">
+        <p class="heading--header">{{formatDate(discussion.creation)}}</p>
+        <member-card user="discussion.authors[0]" comments-section="true"></member-card>
+        <p></p>
+      </div>
       <div class="comment-text">
         <small>{{discussion.text}}</small>
       </div>
@@ -32,6 +36,7 @@
             <p class="heading--header">{{formatDate(comment.creation)}}</a>
             </p>
             <member-card user="comment.authors[0]" comments-section="true"></member-card>
+            <p></p>
           </div>
           <div class="comment-text">
             <small>{{comment.text}}</small>
@@ -53,35 +58,41 @@
         </li>
       </ul>
 
-      <div class="panel reply-field" ng-if="discussion.showReplyForm">
-        <h1 class="heading--header">{{'Reply' | translate}}</h1>
-        <form method="post" ng-submit="createNewComment(discussion)" class="comment-form">
-          <fieldset>
-            <div class="field-container">
-              <textarea id="comment-field-{{discussion.resourceSpaceId}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
-            </div>
-            <div class="comment-meta">
-              <member-card action-bar="true" comments-section="true"></member-card>
-            </div>
-            <input class="button" type='submit' value='Submit' />
-          </fieldset>
-        </form>
+      <div class="comments__reply" ng-if="discussion.showReplyForm">
+        <h2 class="heading--header">{{'Reply' | translate}}</h2>
+        <div class="comments__comment_form">
+          <form method="post" ng-submit="createNewComment(discussion)" class="comment-form">
+            <fieldset>
+              <div class="field-container">
+                <textarea id="comment-field-{{discussion.resourceSpaceId}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+              </div>
+              <div class="comment-meta">
+                <member-card action-bar="true" comments-section="true"></member-card>
+              </div>
+              <input class="button" type='submit' value='Submit' />
+            </fieldset>
+          </form>
+        </div>
       </div>
-  </li>
-  <p ng-if="!discussions || discussions.length === 0" class="card">{{'no.discussion.message' | translate}}</p>
-</section>
+    </li>
+    <p ng-if="!discussions || discussions.length === 0" class="card">{{'no.discussion.message' | translate}}</p>
+  </div>
 
-<div class="panel reply-field">
-  <h1 class="heading--header">{{'Start a Conversation' | translate}}</h1>
-  <form method="post" ng-submit="createNewDiscussion()" class="comment-form">
-    <fieldset>
-      <div class="field-container">
-        <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
-      </div>
-      <div class="comment-meta">
-        <member-card action-bar="true" comments-section="true"></member-card>
-      </div>
-      <input class="button" type='submit' value="{{'Submit' | translate}}" />
-    </fieldset>
-  </form>
-</div>
+  <div class="comments__reply">
+    <h2 class="heading--header">{{'Start a Conversation' | translate}}</h2>
+    <div class="comments__comment_form">
+      <form method="post" ng-submit="createNewDiscussion()" class="comment-form">
+        <fieldset>
+          <div class="field-container">
+            <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+          </div>
+          <div class="comment-meta">
+            <member-card action-bar="true" comments-section="true"></member-card>
+          </div>
+          <input class="button" type='submit' value="{{'Submit' | translate}}" />
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+</section>

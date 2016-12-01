@@ -18,49 +18,41 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
   activate();
 
   function activate() {
-
+    $scope.isAnonymous = false;
     // if the param is uuid then is an anonymous user, use endpoints with uuid
-    // Example http://localhost:8000/#/v2/assembly/7/group/5/proposal/56c08723-0758-4319-8dee-b752cf8004e6
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    // TODO make endpoints for assembly by UUID and wGroup by UUID
-    //if (pattern.test($stateParams.aid) === true && pattern.test($stateParams.gid) === true && pattern.test($stateParams.pid) === true) {
     if (pattern.test($stateParams.pid) === true) {
-      console.log('Valid UUIDs');
       $scope.proposalID = $stateParams.pid;
+      $scope.isAnonymous = true;
     } else {
-      console.log('Not valid UUIDs');
-      $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+      $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
       $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
       $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
       $scope.user = localStorageService.get('user');
-      loadProposal($scope.assemblyID, $scope.proposalID);
     }
-
+    loadProposal($scope);
     $scope.showActionMenu = true;
     $scope.myObject = {};
     $scope.myObject.refreshMenu = function() {
-        if ($scope.showActionMenu == false)
-          $scope.showActionMenu = true;
-        else
-          $scope.showActionMenu = false;
-    }
+      scope.showActionMenu = !scope.showActionMenu;
+    };
     // Read user contribution feedback
-    $scope.userFeedback = $scope.userFeedback != null ?
-        $scope.userFeedback : {"up":false, "down":false, "fav": false, "flag": false};
+    $scope.userFeedback = $scope.userFeedback !== null ?
+        $scope.userFeedback : {'up':false, 'down':false, 'fav': false, 'flag': false};
   }
 
   // Feedback update
   $scope.updateFeedback = function (value) {
       //console.log(value);
-      if (value === "up") {
+      if (value === 'up') {
           $scope.userFeedback.up = true;
           $scope.userFeedback.down = false;
-      } else if (value === "down") {
+      } else if (value === 'down') {
           $scope.userFeedback.up = false;
           $scope.userFeedback.down = true;
-      } else if (value === "fav") {
+      } else if (value === 'fav') {
           $scope.userFeedback.fav = true;
-      } else if (value === "flag") {
+      } else if (value === 'flag') {
           $scope.userFeedback.flag = true;
       }
 
@@ -71,13 +63,19 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
               $scope.proposal.stats = newStats;
           },
           function (error) {
-              console.log("Error when updating user feedback");
+              console.log('Error when updating user feedback');
           }
       );
   };
 
-  function loadProposal(aid, pid) {
-    var rsp = Contributions.contribution(aid, pid).get();
+  function loadProposal(scope) {
+    var rsp;
+    
+    if(scope.isAnonymous) {
+      rsp = Contributions.getContributionByUUID(scope.proposalID).get();
+    }else{
+      rsp = Contributions.contribution(scope.assemblyID, scope.proposalID).get();
+    }
     rsp.$promise.then(
       function (data) {
         $scope.proposal = data;
@@ -90,7 +88,11 @@ function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contr
         var campaignIdsLength = campaignIds ? campaignIds.length : 0;
         $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
         $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId);
-        verifyAuthorship($scope.proposal);
+        
+        if(!scope.isAnonymous) {
+          verifyAuthorship(scope.proposal);
+        }
+        // TODO: pass UUID when user is anonymous
         loadRelatedContributions($scope.group ? $scope.group.resourcesResourceSpaceId : null);
       },
       function (error) {

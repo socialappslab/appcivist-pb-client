@@ -5,10 +5,17 @@ appCivistApp
   .directive('memberCard',  MemberCard);
 
 MemberCard.$inject = [
-  'localStorageService', 'loginService', 'logService'
+  'localStorageService', 'AppCivistAuth', '$state'
 ];
 
-function MemberCard(localStorageService, loginService, logService) {
+function MemberCard(localStorageService, AppCivistAuth, $state) {
+
+  function redirect() {
+    localStorageService.clearAll();
+    $state.go('v2.login', null, {reload: true}).then(function() {
+      location.reload();
+    });
+  }
 
   return {
     restrict: 'E',
@@ -26,7 +33,8 @@ function MemberCard(localStorageService, loginService, logService) {
       }
 
       scope.signout = function() {
-        loginService.signOut(scope.currentUser.email, scope, logService.logAction("LOGOUT"));
+		    var rsp = AppCivistAuth.signOut().save();
+        rsp.$promise.then(redirect, redirect);
       };
     }
   };

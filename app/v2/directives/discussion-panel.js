@@ -17,10 +17,17 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
   }
 
   function loadDiscussions(scope, sid) {
-    var rsp = Contributions.contributionInResourceSpace(sid).query();
+    var query = {type: 'DISCUSSION'};
+    var rsp;
+
+    if (!scope.user){
+      rsp = Contributions.contributionInResourceSpaceByUUID(sid).query(query);
+    }else{
+      rsp = Contributions.contributionInResourceSpace(sid).query(query);
+    }
     rsp.$promise.then(
       function (data) {
-        scope.discussions = $filter('filter')(data, {type: 'DISCUSSION'});
+        scope.discussions = data;
       },
       function (error) {
         FlashService.Error('Error loading discussions from server');
@@ -29,9 +36,14 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
     return rsp.$promise;
   }
 
-  function saveContribution(scope, sid, newContribution) {
+  function saveContribution(scope, sid, newContribution, endpoint) {
     newContribution.title = newContribution.text;
-    var rsp = Contributions.contributionInResourceSpace(sid);
+    var rsp;
+    if(!scope.user) {
+      rsp = Contributions.createAnomymousContribution(endpoint, sid);
+    }else{
+      rsp = Contributions.contributionInResourceSpace(sid);
+    }
     rsp.save(newContribution).$promise.then(function(saved) {
       if(newContribution.type === 'DISCUSSION') {
         scope.newDiscussion = initContribution('DISCUSSION');
@@ -45,7 +57,8 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
   return {
     restrict: 'E',
     scope: {
-      spaceId: '='
+      spaceId: '=',
+      endpoint: '@'
     },
     templateUrl: '/app/v2/partials/directives/discussion-panel.html',
     link: function postLink(scope, element, attrs) {
@@ -56,6 +69,7 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
       });
 
       function activate() {
+        scope.user = localStorageService.get('user');
         loadDiscussions(scope, scope.spaceId);
         scope.newDiscussion = initContribution('DISCUSSION');
         scope.newComment = initContribution('COMMENT');
@@ -70,7 +84,6 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
         scope.formatDate = function(date){
           return moment(date, 'YYYY-MM-DD HH:mm').local().format('LLL');
         };
-        scope.user = localStorageService.get('user');
         
         scope.startConversation = function() {
           $location.hash('discussion-field');
@@ -79,11 +92,12 @@ function DiscussionPanel(localStorageService, $anchorScroll, $location, Contribu
         };
 
         scope.createNewDiscussion = function() {
-          saveContribution(scope, scope.spaceId, scope.newDiscussion);
+          saveContribution(scope, scope.spaceId, scope.newDiscussion, scope.endpoint);
         };
 
         scope.createNewComment = function(discussion) {
-          saveContribution(scope, discussion.resourceSpaceId, scope.newComment);
+          var sid = scope.user ? discussion.resourceSpaceId : discussion.uuid;
+          saveContribution(scope, sid, scope.newComment, 'contribution');
         };
       }
     }

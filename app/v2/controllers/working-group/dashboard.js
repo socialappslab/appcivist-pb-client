@@ -17,17 +17,14 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
   activate();
 
   function activate() {
-
     // if the param is uuid then it is an anonymous user
-    // Example http://localhost:8000/#/v2/assembly/7/group/56c08723-0758-4319-8dee-b752cf8004e6
+    $scope.isAnonymous = false;
     var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    // TODO make endpoint for assembly by UUID
-    //if (pattern.test($stateParams.aid) === true && pattern.test($stateParams.gid) === true) {
     if (pattern.test($stateParams.gid) === true) {
-      console.log('Valid UUIDs');
       $scope.groupID = $stateParams.gid;
+      $scope.isAnonymous = true;
+      loadWorkingGroup();
     } else {
-      console.log('Not valid UUIDs');
       $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
       $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
       $scope.user = localStorageService.get('user');
@@ -75,15 +72,26 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
   }
 
   function loadWorkingGroup() {
-    var res = WorkingGroups.workingGroup($scope.assemblyID, $scope.groupID).get();
+    var res;
+
+    if($scope.isAnonymous){
+      res = WorkingGroups.workingGroupByUUID($scope.groupID).get();
+    }else{
+      res = WorkingGroups.workingGroup($scope.assemblyID, $scope.groupID).get();
+    }
     res.$promise.then(
       function (data) {
         $scope.wg = data;
-        loadMembers($scope.assemblyID, $scope.groupID);
-        loadProposals($scope.assemblyID, $scope.groupID);
-        loadIdeas($scope.assemblyID, $scope.groupID);
-        $scope.spaceID = data.forumResourceSpaceId;
-        loadLatestActivities(data.resourcesResourceSpaceId);
+        loadMembers(data);
+        loadProposals(data);
+        loadIdeas(data);
+        
+        if($scope.isAnonymous) {
+          // TODO
+        }else{
+          $scope.spaceID = data.forumResourceSpaceId;
+        }
+        loadLatestActivities(data);
       },
       function (error) {
         FlashService.Error('Error occured trying to initialize the working group: ' + JSON.stringify(error));
@@ -91,8 +99,18 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     );
   }
 
-  function loadMembers(aid, gid) {
-    var res = WorkingGroups.workingGroupMembers(aid, gid, 'ALL').query();
+  function loadMembers(group) {
+    var aid = group.assemblyId;
+    var gid = group.groupId;
+    var res;
+    
+    if($scope.isAnonymous) {
+      // TODO
+      res = WorkingGroups.workingGroupMembers(aid, gid, 'ALL').query();
+    }else{
+      res = WorkingGroups.workingGroupMembers(aid, gid, 'ALL').query();
+    }
+
     res.$promise.then(
       function (data) {
         $scope.members = data;
@@ -103,9 +121,8 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     );
   }
 
-  function loadProposals(aid, gid) {
-    var res = WorkingGroups.workingGroupProposals(aid, gid).query();
-    res.$promise.then(
+  function loadProposals(group) {
+    getContributions(group, 'PROPOSAL').then(
       function (data) {
         $scope.proposals = data;
       },
@@ -115,22 +132,57 @@ function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assembli
     );
   }
 
-  function loadIdeas(aid, gid) {
-    var res = WorkingGroups.workingGroupContributions(aid, gid).query();
-    res.$promise.then(
+  function loadIdeas(group) {
+    getContributions(group, 'IDEA').then(
       function (data) {
-        $scope.ideas = $filter('filter')(data, {type: 'IDEA'});
+        $scope.ideas = data;
       },
       function (error) {
-        FlashService.Error('Error occured while trying to load working group ideals');
+        FlashService.Error('Error occured while trying to load working group ideas');
       }
     );
   }
+  
+  /**
+   * Get contributions from server.
+   *
+   * @param workingGroup {object} the current group.
+   * @param type {string} forum_post | comment | idea | question | issue |  proposal | note
+   * @return promise
+   **/
+  function getContributions(workingGroup, type) {
+    // Get list of contributions from server
+    var rsp;
+    var query = {};
+    
+    if(type) {
+      query.type = type;
+    }
+    
+    if(type === 'IDEA' || type === 'PROPOSAL'){
+      query.sort = 'date';
+    }
+    
+    if (!$scope.user){
+      rsp = Contributions.contributionInResourceSpaceByUUID(workingGroup.resourceSpaceUUId).query(query);
+    }else{
+      rsp = Contributions.contributionInResourceSpace(workingGroup.resourceSpaceId).query(query);
+    }
+    rsp.$promise.then(
+      function (data) {
+        return data;
+      },
+      function (error) {
+        FlashService.Error('Error loading working group contributions from server');
+      }
+    );
+    return rsp.$promise;
+  }
 
   // TODO: just show the latest contributions until notifications API is ready
-  function loadLatestActivities(resourceSpaceId) {
-    var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query();
-    rsp.$promise.then(
+  function loadLatestActivities(group) {
+    var rsp = getContributions(group);
+    rsp.then(
       function (data) {
         $scope.activities = data;
       },

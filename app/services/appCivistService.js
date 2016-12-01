@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AppCivist Service Factories
  * Each factory returns ngResources connected to AppCivist API
  */
@@ -11,7 +11,7 @@
  */
 function getServerBaseUrl(localStorageService) {
     var serverBaseUrl = localStorageService.get('serverBaseUrl');
-    if (serverBaseUrl == undefined || serverBaseUrl == null) {
+    if (serverBaseUrl === undefined || serverBaseUrl === null) {
         serverBaseUrl = appCivistCoreBaseURL;
         localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
         console.log("Setting API Server in appCivistService to: "+appCivistCoreBaseURL);
@@ -100,8 +100,13 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
                 "invitations" : [ ], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
                 "linkedAssemblies" : [ ] // [ { "assemblyId": "2" }, { "assemblyId": "3" }, ... ]
             };
+        },
+
+        assemblyByUUID: function (uuid) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:uuid',
+                {uuid: uuid});
         }
-    }
+    };
 });
 
 appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService) {
@@ -194,8 +199,19 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
             current = components[components.length - 1];
           }
           return current;
-        }
+        },
 
+        /**
+         * Returns and $resource to interact with /assembly/:aid/campaign/:cid/resource endpoint.
+         *
+         * @param assemblyId {number} Assembly ID
+         * @param campaignId {number} Campaign ID
+         * @return {Array} List of resources associated with the given campaign
+         */
+        resources: function(assemblyId, campaignId) {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resource',
+                           {aid: assemblyId, cid: campaignId});
+        }
     };
 
 });
@@ -279,6 +295,20 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
                     'update' : {method:'PUT'}
                 });
         },
+        publishContribution: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status',
+                {aid: assemblyId, coid: contributionId, status: 'PUBLISHED'},
+                {
+                    'update' : {method:'PUT'}
+                });
+        },
+        excludeContribution: function (assemblyId, contributionId) {
+            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status',
+                {aid: assemblyId, coid: contributionId, status: 'EXCLUDED'},
+                {
+                    'update' : {method:'PUT'}
+                });
+        },
         contributionAttachment: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/attachment',
                 {aid: assemblyId, coid: contributionId});
@@ -334,30 +364,50 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public',
                 {uuid: spaceUUId});
         },
+        
+        /**
+         * Returns a $resource to interact with the following endpoints:
+         *  - POST  /campaign/:uuid/contribution
+         *  - POST  /assembly/:uuid/contribution
+         *  - POST  /group/:uuid/contribution
+         *
+         *  @param {string} endpoint - campaign | assembly | group
+         *  @param {string} spaceUUID - space UUID
+         *  @returns {object} $resource
+         */ 
+        createAnomymousContribution: function(endpoint, spaceUUID) {
+          return $resource(getServerBaseUrl(localStorageService) + '/:endpoint/:uuid/contribution', 
+                           {endpoint: endpoint, uuid: spaceUUID}); 
+        },
+
         contributionsInCampaignComponent: function (assemblyID, campaignID, componentID) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
                 {
                     aid: assemblyID,
                     cid: campaignID,
                     ciid: componentID
-                })
+                });
         },
+
         userFeedback: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback',
                 { aid: assemblyId, cid: contributionId},
                 { 'update': { method: 'PUT'}}
             );
         },
+
         getContributionComments: function (assemblyId, contributionId) {
             return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/comment',
                 { aid: assemblyId, cid: contributionId}
             );
         },
+
         getContributionByUUID: function (uuid) {
             return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid',
                 {uuid: uuid}
             );
         },
+
         defaultContributionAttachment: function () {
             var att = {
                 name: "",
@@ -367,6 +417,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             };
             return att;
         },
+
         newAttachmentObject: function (newAttachment) {
             if(!newAttachment.resourceType) {
                 newAttachment.resourceType = "WEBPAGE";
@@ -415,7 +466,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             oldC.title = newC.title;
             oldC.text = newC.text;
             oldC.type = newC.type;
-            oldC.location = newC.location
+            oldC.location = newC.location;
             oldC.themesHash = newC.themesHash;
             oldC.themes = newC.themes;
             oldC.hashtags = newC.hashtags;
@@ -530,6 +581,11 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
             );
 
             return newWGroup;
+        },
+        
+        workingGroupByUUID: function (uuid) {
+            return $resource(getServerBaseUrl(localStorageService) + '/group/:uuid',
+                {uuid: uuid});
         }
     };
 });
@@ -552,6 +608,20 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
         },
         getEtherpadReadOnlyUrl : function (readOnlyPadId) {
             return localStorageService.get("etherpadServer")+"p/"+readOnlyPadId+"?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+        }
+    };
+});
+
+appCivistApp.factory('Space', function ($resource, localStorageService) {
+    return {
+        getSpace: function(spaceId) {
+          return $resource(getServerBaseUrl(localStorageService) + '/space/:sid',
+              {sid: spaceId});
+        },
+
+        getSpaceByUUID: function(spaceUUID) {
+          return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/public',
+              {uuid: spaceUUID});
         }
     };
 });

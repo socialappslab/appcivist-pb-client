@@ -38,7 +38,8 @@
     "angular-ui-router": "^0.2.18",
     "appcivist-patterns": "git@github.com:socialappslab/appcivist-patterns.git#master",
     "lodash": "~4.16.4",
-    "angular-inview": "^2.1.0"
+    "angular-inview": "^2.1.0",
+    "ng-notify": "^0.8.0"
   },
   "resolutions": {
     "angular": "1.5.0",

@@ -7,11 +7,11 @@ angular
 
 MainCtrl.$inject = [
   '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'FlashService',
-  '$rootScope'
+  '$rootScope', 'loginService'
 ];
 
 function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashService,
-                  $rootScope) {
+                  $rootScope, loginService) {
 
   activate();
 
@@ -20,41 +20,31 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
       v2: true
     };
     $scope.user = localStorageService.get('user');
-    if ($scope.user != undefined) {
-      loadWorkingGroups($scope);
-      loadAllCampaigns($scope);
+    $scope.userIsAuthenticated = loginService.userIsAuthenticated();
+    $scope.isLoginPage = location.hash.includes('v2/login');
+    $scope.showSmallMenu = false;
+    
+    if ($scope.userIsAuthenticated) {
+      $scope.currentAssembly = localStorageService.get('currentAssembly');
+      loadUserData($scope);
+    }
+    $scope.updateSmallMenu = updateSmallMenu;
+  }
+
+  function loadUserData(scope) {
+    scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+    scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+    scope.assemblies = localStorageService.get('assemblies') || [];
+
+    if(!scope.myWorkingGroups || !scope.ongoingCampaigns) {
+      loginService.loadAuthenticatedUserMemberships($scope.user).then(function() {
+        location.reload();
+      }); 
     }
   }
 
-  function loadWorkingGroups(scope) {
-    var rsp = Memberships.workingGroups(scope.user.userId).query();
-    rsp.$promise.then(
-      function (data) {
-        var workingGroups = [];
-        angular.forEach(data, function(d) {
-
-          if (d.membershipType === 'GROUP') {
-            workingGroups.push(d.workingGroup);
-          }
-        });
-        scope.workingGroups = workingGroups;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s working groups from server');
-      }
-    );
-  }
-
-  function loadAllCampaigns(scope) {
-    var rsp = Campaigns.campaigns(scope.user.uuid, 'all').query();
-    rsp.$promise.then(
-      function(data) {
-        scope.myCampaigns = data;
-      },
-      function (error) {
-        FlashService.Error('Error loading user\'s campaigns from server');
-      }
-    );
+  function updateSmallMenu() {
+    $scope.showSmallMenu = !$scope.showSmallMenu;
   }
 }
 }());

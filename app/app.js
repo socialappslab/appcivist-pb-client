@@ -19,18 +19,16 @@
   var appcivist = {
     api: {
       voting: {
-        production: "http://appcivist.littlemacondo.com/voting/api/v0",
-        testing: "http://appcivist.littlemacondo.com/voting/api/v0",
-        development: "http://appcivist-dev.littlemacondo.com/voting/api/v0",
-        local: "http://localhost:5000/api/v0",
-        sage: "http://appcivist-sage.littlemacondo.com/voting/api/v0"
+        production: "https://platform.appcivist.org/voting/api/v0",
+        testing: "https://testplatform.appcivist.org/voting/api/v0",
+        development: "https://devplatform.org/voting/api/v0",
+        local: "https://localhost:5000/api/v0"
       },
       core: {
-        production: "http://appcivist.littlemacondo.com/backend/api",
-        testing: "http://appcivist.littlemacondo.com/backend/api",
-        development: "http://appcivist-dev.littlemacondo.com/backend/api",
-        local: "http://localhost:9000/api",
-        sage: "http://appcivist-sage.littlemacondo.com/backend/api"
+        production: "https://platform.appcivist.org/api",
+        testing: "https://testplatform.appcivist.org/api",
+        development: "https://devplatform.appcivist-dev.org/api",
+        local: "https://localhost:9000/api"
       }
     },
     handleError: function (error) {
@@ -45,7 +43,7 @@
   };
 
   var etherpad = {
-    server: "http://etherpad.littlemacondo.com/"
+    server: "https://etherpad.appcivist.org/"
   };
 
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
@@ -569,12 +567,12 @@
   /**
    * Special function to decide automatically what backend server to use by default
    * - If this is a local instance (running in localhost), then use the local dev server
-   * - If this is *.littlemacondo.com, then use the remote testing server
+   * - If this is *.org, then use the remote testing server
    * - TODO: when production version are ready, add a rule for selecting the production server
    */
   function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "appcivist-sage.littlemacondo.com", "appcivist.littlemacondo.com",
-      "appcivist-dev.littlemacondo.com"];
+    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org",
+      "devpb.appcivist.org"];
     if (hostname.match(possibleHosts[0])) {
       return apis.local;
     } else if (hostname.match(possibleHosts[1])) {

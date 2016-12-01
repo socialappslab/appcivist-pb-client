@@ -45,8 +45,6 @@
 
     function toggleContextualMenu() {
       this.showContextualMenu = !this.showContextualMenu;
-      console.log('holaa', this.showContextualMenu);
-
     }
 
     return {
@@ -58,6 +56,7 @@
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
+        scope.cm = { isHover: false };
         scope.user = localStorageService.get('user');
         scope.isAnonymous = !scope.user;
         scope.showContextualMenu = false;

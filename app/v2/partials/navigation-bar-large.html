@@ -1,6 +1,20 @@
-<nav id="appcivist__nav" class="navigation ">
+<style>
+  .nav--active button.button__nav_toggle,
+   button.button__nav_toggle:hover,
+   button.button__nav_toggle:focus {
+    background-color: #009877;
+    color: #fff;
+  }
+
+  button.button__nav_toggle {
+    background-color: #fff;
+    color: #009877;
+  }
+</style>
+
+<nav id="appcivist__nav" class="navigation" ng-class="{'nav--active': nav.isActive}">
   <div class="nav__container">
-    <button class="button__nav_toggle">☰</button>
+    <button class="button__nav_toggle" ng-click="toggleNavigation()">☰</button>
 
     <header class="nav_header" itemprop="location" itemscope itemtype="http://schema.org/Place">
       <h1>City of Vallejo</h1>
@@ -65,4 +79,3 @@
     </footer>
   </div>
 </nav>
-<appcivist-patterns></appcivist-patterns>

@@ -571,13 +571,12 @@
    * - TODO: when production version are ready, add a rule for selecting the production server
    */
   function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org",
-      "devpb.appcivist.org"];
-    if (hostname.match(possibleHosts[0])) {
+    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org"];
+    if (hostname===possibleHosts[0]) {
       return apis.local;
-    } else if (hostname.match(possibleHosts[1])) {
-      return apis.sage;
-    } else if (hostname.match(possibleHosts[2])) {
+    } else if (hostname===possibleHosts[1]) {
+      return apis.production;
+    } else if (hostname===possibleHosts[2]) {
       return apis.testing;
     } else {
       return apis.development;

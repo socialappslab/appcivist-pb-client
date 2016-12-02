@@ -12,7 +12,7 @@
             <strong>AppCivist</strong>
         </div>
 
-        <div class="navbar-brand" ng-if='!userIsAuthenticated()'>
+        <div class="navbar-brand" ng-if='!userIsAuthenticated() && !hideLogin'>
             <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
             <strong>AppCivist</strong>
         </div>

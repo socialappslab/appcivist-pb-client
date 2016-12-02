@@ -27,6 +27,7 @@ appCivistApp.controller('MainCtrl', function($scope, $resource, $location, local
 		$scope.etherpadServer = localStorageService.get("etherpadServer");
 		$scope.info = localStorageService.get("help");
 		$scope.userVotes = localStorageService.get("userVotes");
+    $scope.hideLogin = localStorageService.get("hideLogin");
 		$scope.assembliesLoading = false;
 
 		// New User Object to be used by signup forms

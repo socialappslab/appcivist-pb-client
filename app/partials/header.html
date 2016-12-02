@@ -59,7 +59,7 @@
             <li><a href="#section3" du-smooth-scroll><strong>{{'landing.section2.button' | translate}}</strong></a></li>
         </ul>
 
-        <form class="navbar-form navbar-right" role="login" ng-submit="login()" ng-if='!userIsAuthenticated() && !onlyLanding'>
+        <form class="navbar-form navbar-right" role="login" ng-submit="login()" ng-if='!userIsAuthenticated() && !hideLogin'>
             <div class="form-group">
                 <input type="text" placeholder="{{'Email' | translate}}" class="form-control" ng-model="user.email" autocorrect="off" autocapitalize="off">
                 <input type="password" placeholder="{{'Password' | translate}}" class="form-control" ng-model="user.password" autocorrect="off" autocapitalize="off"/>

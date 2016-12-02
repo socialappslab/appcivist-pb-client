@@ -70,8 +70,7 @@
 
         // get proposals
         getContributions($scope.campaign, 'PROPOSAL').then(function (response) {
-          // only published proposals
-          $scope.proposals = response.splice(0, 6);
+          $scope.proposals = response;
 
           if (!$scope.proposals) {
             $scope.proposals = [];
@@ -80,7 +79,7 @@
 
         // get ideas
         getContributions($scope.campaign, 'IDEA').then(function (response) {
-          $scope.ideas = response.splice(0, 6);
+          $scope.ideas = response;
 
           if (!$scope.ideas) {
             $scope.ideas = [];
@@ -113,7 +112,7 @@
     function getContributions(campaign, type) {
       // Get list of contributions from server
       var rsp;
-      var query = { type: type };
+      var query = { type: type, pageSize: 16 };
 
       if (type === 'IDEA' || type === 'PROPOSAL') {
         query.sort = 'date';

@@ -1,4 +1,4 @@
-// AppCivist Demo Client - Basic Controllers
+﻿// AppCivist Demo Client - Basic Controllers
 
 /**
  * AccountCtrl - functions to control authentication
@@ -21,7 +21,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
         $scope.sessionKey = localStorageService.get("sessionKey");
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
         $scope.votingApiUrl  = localStorageService.get("votingApiUrl");
-		$scope.onlyLanding = localStorageService.get("onlyLanding");
+        $scope.hideLogin= localStorageService.get("hideLogin");
 
         if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
             $scope.serverBaseUrl = appCivistCoreBaseURL;
@@ -43,7 +43,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
 
 	$scope.userIsAuthenticated = function(){
 		return loginService.userIsAuthenticated();
-	}
+	};
 
 	$scope.login = function() {
 		console.log("Signing in with email = " + $scope.user.email);

@@ -23,12 +23,14 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
     $scope.userIsAuthenticated = loginService.userIsAuthenticated();
     $scope.isLoginPage = location.hash.includes('v2/login');
     $scope.showSmallMenu = false;
-    
+    $scope.nav = {isActive: false};
+
     if ($scope.userIsAuthenticated) {
       $scope.currentAssembly = localStorageService.get('currentAssembly');
       loadUserData($scope);
     }
     $scope.updateSmallMenu = updateSmallMenu;
+    $scope.toggleNavigation = toggleNavigation;
   }
 
   function loadUserData(scope) {
@@ -39,12 +41,16 @@ function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashServ
     if(!scope.myWorkingGroups || !scope.ongoingCampaigns) {
       loginService.loadAuthenticatedUserMemberships($scope.user).then(function() {
         location.reload();
-      }); 
+      });
     }
   }
 
   function updateSmallMenu() {
     $scope.showSmallMenu = !$scope.showSmallMenu;
+  }
+
+  function toggleNavigation() {
+    $scope.nav.isActive = !$scope.nav.isActive;
   }
 }
 }());

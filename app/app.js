@@ -22,13 +22,13 @@
         production: "https://platform.appcivist.org/voting/api/v0",
         testing: "https://testplatform.appcivist.org/voting/api/v0",
         development: "https://devplatform.org/voting/api/v0",
-        local: "https://localhost:5000/api/v0"
+        local: "http://localhost:5000/api/v0"
       },
       core: {
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/api",
         development: "https://devplatform.appcivist-dev.org/api",
-        local: "https://localhost:9000/api"
+        local: "http://localhost:9000/api"
       }
     },
     handleError: function (error) {

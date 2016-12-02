@@ -1,8 +1,12 @@
 <section class="campaign__status">
   <h2 class="heading--header">{{title}}</h2>
   <div ng-if="!onlyLabel" class="timeline">
-    <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass">
-      <div class="marker"></div>{{component.title}}</div>
+    <div class="markers">
+      <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass">
+        <div class="marker"></div>
+        <div class="label">{{component.title}}</div>
+      </div>
+    </div>
   </div>
 
   <br/>

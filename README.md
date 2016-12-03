@@ -67,6 +67,7 @@ Before running the App, you will need to do the following:
 	5. Click "Assemblies" => [/assemblies](http://localhost:8000/#/assemblies)
 	6. Click "+Campaign" => [/assembly/1/campaign/create](http://localhost:8000/#/assembly/1/campaign/create)
 
+5. For deployment, consider using this [sample](https://gist.github.com/cdparra/4e684b37ca60f370135b32f2bc39b611) to create an init.d script and then follow this [guide](https://www.digitalocean.com/community/tutorials/how-to-configure-a-linux-service-to-start-automatically-after-a-crash-or-reboot-part-1-practical-examples) to make sure the service is enabled. 
 
 If you have problems maybe you can configure your git with this:
 git config --global url."https://".insteadOf git://

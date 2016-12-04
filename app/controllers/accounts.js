@@ -21,6 +21,7 @@ appCivistApp.controller('AccountCtrl', function($scope, $resource, $location, $u
         $scope.sessionKey = localStorageService.get("sessionKey");
         $scope.serverBaseUrl = localStorageService.get("serverBaseUrl");
         $scope.votingApiUrl  = localStorageService.get("votingApiUrl");
+        $scope.hideLogin= localStorageService.get("hideLogin");
 
         if ($scope.serverBaseUrl === undefined || $scope.serverBaseUrl === null) {
             $scope.serverBaseUrl = appCivistCoreBaseURL;

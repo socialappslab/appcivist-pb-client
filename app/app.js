@@ -26,7 +26,7 @@
       },
       core: {
         production: "https://platform.appcivist.org/api",
-        testing: "https://testplatform.appcivist.org/api",
+        testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
         local: "http://localhost:9000/api"
       }
@@ -50,6 +50,7 @@
   var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
   var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
   var etherpadServerURL = etherpad.server;
+  var hideLogin = (window.location.hostname==="appcivist.org" || window.location.hostname==="www.appcivist.org");
 
   var helpInfo = {
     assemblyDefinition: "Assemblies are group of citizens with common interests",
@@ -446,7 +447,8 @@
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
-    localStorageService.set("help", helpInfo); // TODO: replace with translation support
+    localStorageService.set("help", helpInfo);
+    localStorageService.set("hideLogin", hideLogin);
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       // redirect to login page if not logged in and trying to access a restricted page
 
@@ -571,17 +573,18 @@
    * - TODO: when production version are ready, add a rule for selecting the production server
    */
   function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org"];
-    if (hostname === possibleHosts[0]) {
+    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org", "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org", "www.appcivist.org"];
+    if (hostname===possibleHosts[0]) {
       return apis.local;
-    } else if (hostname === possibleHosts[1]) {
+    } else if (hostname===possibleHosts[1] || hostname===possibleHosts[4] || hostname===possibleHosts[6] || hostname===possibleHosts[7]) {
       return apis.production;
-    } else if (hostname === possibleHosts[2]) {
+    } else if (hostname===possibleHosts[2] || hostname===possibleHosts[5]) {
       return apis.testing;
     } else {
       return apis.development;
     }
   }
+
 
   // expose global variables
   window.appCivistApp = appCivistApp;

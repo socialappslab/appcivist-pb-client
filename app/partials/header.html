@@ -23,7 +23,7 @@
             <li><a href="#/home"><strong>{{'Home' | translate}}</strong></a></li>
             <li><a href="#/assemblies"><strong>{{'Assemblies' | translate}}</strong></a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right menu-elements" ng-if='userIsAuthenticated()'>
+        <ul class="nav navbar-nav navbar-right menu-elements" ng-if='userIsAuthenticated() && !onlyLanding'>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-inbox icon"></i>
@@ -59,7 +59,7 @@
             <li><a href="#section3" du-smooth-scroll><strong>{{'landing.section2.button' | translate}}</strong></a></li>
         </ul>
 
-        <form class="navbar-form navbar-right" role="login" ng-submit="login()" ng-if='!userIsAuthenticated()'>
+        <form class="navbar-form navbar-right" role="login" ng-submit="login()" ng-if='!userIsAuthenticated() && !hideLogin'>
             <div class="form-group">
                 <input type="text" placeholder="{{'Email' | translate}}" class="form-control" ng-model="user.email" autocorrect="off" autocapitalize="off">
                 <input type="password" placeholder="{{'Password' | translate}}" class="form-control" ng-model="user.password" autocorrect="off" autocapitalize="off"/>

@@ -1,83 +1,89 @@
-<main class="app-main" ng-class="{anonymous: isAnonymous}">
-  <section class="panel intro">
-    <p class="heading--header">{{'WorkingGroup' | translate}}</p>
-    <h1 class="heading--title">{{wg.name}}</h1>
-    <p>{{wg.text}}</p>
-  </section>
-  <section class="panel activity-and-members">
-    <section class="latest-activity">
-      <div class="panel-heading panel-heading-relative">
-        <h1 class="heading--header">{{'Latest Activity' | translate}}</h1>
-        <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-        </p>
+<main class="appmain" ng-class="{anonymous: isAnonymous}">
+  <article class="working_group">
+    <header class="page__header">
+      <div class="type">{{'WorkingGroup' | translate}}</div>
+      <div class="title_block">
+        <h1 class="heading--title">{{wg.name}}</h1>
       </div>
-      <activity-card ng-repeat="activity in activities track by $index" activity="activity"></activity-card>
-      <p ng-if="!activities || activities.length === 0" class="card">{{'no.latest.activity' | translate}}</p>
-    </section>
-    <section class="members-panel">
-      <div class="panel-heading panel-heading-relative">
-        <h1 class="heading--header">{{'Members' | translate}}</h1>
-        <p class="heading--small">
-          <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
-        </p>
-      </div>
-      <div class="card-list" ng-repeat="member in members">
-        <div class="action-bar">
-          <member-card user="member.user"></member-card>
-          <div class="action-button">
-            <input id="menu04" type="checkbox" name="menu" />
-            <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>{{'more' | translate}}</title>
-              <defs></defs>
-              <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
-                <g id="more">
-                  <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
-                </g>
-              </g>
-            </svg>
-            <ul class="action-menu">
-              <li><a href="#">{{'Message this user' | translate}}</a></li>
-              <li><a href="#">{{'Remove this user' | translate}}</a></li>
-            </ul>
+      <p class="description">{{wg.name}}</p>
+    </header>
+    <div class="page__contents">
+      <section class="panel activity-and-members">
+        <section class="latest-activity">
+          <div class="panel-heading panel-heading-relative">
+            <h1 class="heading--header">{{'Latest Activity' | translate}}</h1>
+            <p class="heading--small">
+              <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+            </p>
           </div>
-        </div>
-      </div>
-      <p ng-if="!members || members.length === 0" class="card">{{'no.members.message' | translate}}</p>
-    </section>
-  </section>
-  <section class="panel ideas-and-proposals">
-    <section class="list--proposal">
-      <div class="panel-heading-no-margin">
-        <h1 class="heading--header">{{'Proposals' | translate}}</h1>
-        <p class="heading--small">
-          <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-          <a href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
-        </p>
-      </div>
-      <div class="proposals">
-        <contribution-card ng-repeat="proposal in proposals track by $index" contribution="proposal" show-voting-buttons="true"></contribution-card>
-      </div>
-    </section>
-    <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
-  </section>
+          <activity-card ng-repeat="activity in activities track by $index" activity="activity"></activity-card>
+          <p ng-if="!activities || activities.length === 0" class="card">{{'no.latest.activity' | translate}}</p>
+        </section>
+        <section class="members-panel">
+          <div class="panel-heading panel-heading-relative">
+            <h1 class="heading--header">{{'Members' | translate}}</h1>
+            <p class="heading--small">
+              <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+              <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
+            </p>
+          </div>
+          <div class="card-list" ng-repeat="member in members">
+            <div class="action-bar">
+              <member-card user="member.user"></member-card>
+              <div class="action-button">
+                <input id="menu04" type="checkbox" name="menu" />
+                <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <title>{{'more' | translate}}</title>
+                  <defs></defs>
+                  <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">
+                    <g id="more">
+                      <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                    </g>
+                  </g>
+                </svg>
+                <ul class="action-menu">
+                  <li><a href="#">{{'Message this user' | translate}}</a></li>
+                  <li><a href="#">{{'Remove this user' | translate}}</a></li>
+                </ul>
+              </div>
+            </div>
+            <p ng-if="!members || members.length === 0" class="card">{{'no.members.message' | translate}}</p>
+          </div>
+        </section>
+      </section>
+    </div>
 
-  <section class="panel ideas-and-proposals">
-    <section class="list--idea">
-      <div class="panel-heading-no-margin">
-        <h1 class="heading--header">Ideas</h1>
-        <p class="heading--small">
-          <a ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-          <a href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
-        </p>
-      </div>
-      <div class="proposals">
-        <contribution-card ng-repeat="idea in ideas track by $index" contribution="idea"></contribution-card>
+    <section class="proposals_and_ideas">
+      <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)"></proposals-ideas-searchbox>
+      <div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}">
+        <section class="list--proposals">
+          <header class="proposals__header">
+            <h2 class="heading--header">{{'Proposals' | translate}}</h2>
+            <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+            <a class="proposals__add_new" href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
+          </header>
+          <div class="list__cards container__proposals">
+            <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign"
+              show-voting-buttons="true"></contribution-card>
+            <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
+          </div>
+        </section>
+        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
+          <header class="ideas__header">
+            <h2 class="heading--header">Ideas</h2>
+            <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+            <a class="ideas__add_new" ng-if="user != null" href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;Hide Ideas</a>&nbsp;&nbsp;
+          </header>
+
+          <div class="list__cards container__ideas">
+            <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign" show-voting-buttons="false"></contribution-card>
+            <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
+          </div>
+        </section>
       </div>
     </section>
-    <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
-  </section>
-
-  <discussion-panel space-id="spaceID" endpoint="group"></discussion-panel>
+    <discussion-panel space-id="spaceID" endpoint="group"></discussion-panel>
+  </article>
 </main>

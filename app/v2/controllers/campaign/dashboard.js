@@ -8,11 +8,11 @@
 
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships'
+    'localStorageService', 'FlashService', 'Memberships', 'Space'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships) {
+    $filter, localStorageService, FlashService, Memberships, Space) {
 
     activate();
 
@@ -62,6 +62,9 @@
 
       res.$promise.then(function (data) {
         $scope.campaign = data;
+        $scope.campaign.rsID = data.resourceSpaceId;
+        $scope.campaign.rsUUID = data.resourceSpaceUUId;
+
         if (!$scope.isAnonymous) {
           $scope.spaceID = data.resourceSpaceId;
         } else {
@@ -71,7 +74,7 @@
         setIdeasSectionVisibility(currentComponent);
 
         // get proposals
-        getContributions($scope.campaign, 'PROPOSAL').then(function (response) {
+        Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
           $scope.proposals = response;
 
           if (!$scope.proposals) {
@@ -80,7 +83,7 @@
         });
 
         // get ideas
-        getContributions($scope.campaign, 'IDEA').then(function (response) {
+        Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function (response) {
           $scope.ideas = response;
 
           if (!$scope.ideas) {
@@ -89,7 +92,7 @@
         });
 
         // get discussions
-        getContributions($scope.campaign, 'DISCUSSION').then(function (response) {
+        Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function (response) {
           $scope.discussions = response;
 
           if (!$scope.discussions) {
@@ -102,39 +105,6 @@
     function setIdeasSectionVisibility(component) {
       var key = component.key.toUpperCase();
       $scope.isIdeasSectionVisible = (key === 'PROPOSAL MAKING' || key === 'IDEAS');
-    }
-
-    /**
-     * Get contributions from server.
-     *
-     * @param campaign {Campaign} the current campaign.
-     * @param type {string} forum_post | comment | idea | question | issue |  proposal | note
-     * @param filters {object} filters to apply
-     * @return promise
-     **/
-    function getContributions(campaign, type, filters) {
-      // Get list of contributions from server
-      var rsp;
-
-      var query = filters || {};
-      query.type = type;
-      query.pageSize = 16;
-      console.log('GET', query);
-
-      if ($scope.isAnonymous) {
-        rsp = Contributions.contributionInResourceSpaceByUUID(campaign.resourceSpaceUUId).query(query);
-      } else {
-        rsp = Contributions.contributionInResourceSpace(campaign.resourceSpaceId).query(query);
-      }
-      rsp.$promise.then(
-        function (data) {
-          return data;
-        },
-        function (error) {
-          FlashService.Error('Error loading campaign contributions from server');
-        }
-      );
-      return rsp.$promise;
     }
 
     function loadCampaignResources() {
@@ -157,48 +127,19 @@
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
     }
 
-    /**
-     * Search handler
-     *
-     *  @param {object} filters - filters definition
-     */
-    function doSearch(filters) {
-      var type;
-      var textSearch;
-      var params = {};
-
-      switch (filters.mode) {
-        case 'proposals':
-          textSearch = 'by_text';
-          type = 'PROPOSAL';
-          break;
-        case 'groups':
-          textSearch = 'by_groups';
-          type = 'PROPOSAL';
-          break;
-        case 'ideas':
-          textSearch = 'by_text';
-          type = 'IDEA';
-          break;
-      }
-
-      if (filters.searchText) {
-        params[textSearch] = filters.searchText;
-      }
-
-      if (this.campaign) {
-        params.sorting = filters.sorting;
-        params.themes = filters.themes;
-        getContributions(this.campaign, type, params);
-      }
-    }
-
-
     function loadThemes(query) {
       if (!$scope.campaign) {
         return;
       }
       return $scope.campaign.themes;
+    }
+
+    /**
+     * Space.doSearch wrapper.
+     * @param {object} filters
+     */
+    function doSearch(filters) {
+      Space.doSearch(this.campaign, this.isAnonymous, filters);
     }
   }
 } ());

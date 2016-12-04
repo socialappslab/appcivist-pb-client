@@ -1,3 +1,16 @@
+<style>
+  member-card div {
+    margin-top: -5px;
+  }
+  .action-bar .action-button {
+    margin-top: 10px;
+  }
+
+  .action-button svg g {
+    fill: #11493b;
+  }
+</style>
+
 <main class="appmain" ng-class="{anonymous: isAnonymous}">
   <article class="working_group">
     <header class="page__header">
@@ -31,8 +44,8 @@
             <div class="action-bar">
               <member-card user="member.user"></member-card>
               <div class="action-button">
-                <input id="menu04" type="checkbox" name="menu" />
-                <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <input id="menu04" type="checkbox" name="menu" ng-checked="member.checked" hidden/>
+                <svg ng-click="member.checked = !member.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <title>{{'more' | translate}}</title>
                   <defs></defs>
                   <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">

@@ -151,7 +151,7 @@
 
     // TODO: just show the latest contributions until notifications API is ready
     function loadLatestActivities(group) {
-      var rsp = Space.getContributions(group, 'ALL', $scope.isAnonymous);
+      var rsp = Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous);
       rsp.then(
         function (data) {
           $scope.activities = data;

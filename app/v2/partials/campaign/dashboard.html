@@ -9,54 +9,7 @@
     </header>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
     <section class="proposals_and_ideas">
-      <div class="campaign__filters">
-        <div class="search">
-          <div clas="search__field_wrapper">
-            <input class="search__field" type="text" placeholder="Search…">
-            <a href="#">
-              <span class="aria-hidden">
-            <svg version="1.1" class="search__icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" xml:space="preserve">
-              <path class="svg_icon" d="M17.882,16.507c0,0.372-0.136,0.695-0.407,0.967c-0.272,0.272-0.596,0.408-0.968,0.408
-                c-0.387,0-0.709-0.136-0.968-0.408l-3.686-3.675c-1.282,0.888-2.711,1.332-4.288,1.332c-1.025,0-2.004-0.198-2.939-0.597
-                c-0.935-0.396-1.741-0.935-2.418-1.612c-0.677-0.677-1.215-1.483-1.612-2.418C0.199,9.569,0,8.59,0,7.565s0.199-2.004,0.597-2.939
-                c0.397-0.935,0.935-1.742,1.612-2.419c0.677-0.677,1.483-1.214,2.418-1.611C5.562,0.199,6.541,0,7.565,0s2.004,0.199,2.939,0.597
-                c0.935,0.397,1.742,0.934,2.419,1.611c0.677,0.677,1.214,1.484,1.611,2.419c0.398,0.935,0.597,1.914,0.597,2.939
-                c0,1.576-0.444,3.005-1.332,4.288l3.686,3.686C17.749,15.804,17.882,16.127,17.882,16.507z M10.967,10.966
-                c0.941-0.941,1.413-2.075,1.413-3.401s-0.471-2.459-1.413-3.402c-0.942-0.941-2.076-1.413-3.402-1.413S5.106,3.222,4.165,4.164
-                C3.222,5.106,2.751,6.24,2.751,7.565s0.471,2.459,1.414,3.401c0.941,0.942,2.075,1.414,3.401,1.414S10.025,11.909,10.967,10.966z"/>
-            </svg>
-          </span>
-              <span class="screen-reader__label">Submit Search</span>
-            </a>
-          </div>
-          <ul class="search_modes">
-            <li class="sarch_mode__full_text"><a class="active" href="#">Full Text</a></li>
-            <li class="sarch_mode__working_groups"><a href="#">Working Group</a></li>
-          </ul>
-        </div>
-        <div class="filters">
-          <h4 class="widget__label">
-            Filter by category</h3>
-            <ul class="tags">
-              <li><a href="#">Open Space</a></li>
-              <li><a href="#">Quick Fixes</a></li>
-              <li><a href="#">Schools</a></li>
-            </ul>
-            <a class="button__add_filter" href="#">
-              <span class="icon">+</span>
-              <span class="offscreen">Add Filter</span>
-            </a>
-        </div>
-        <div class="sort">
-          <h4 class="widget__label">
-            Sort by</h3>
-            <ul class="sort_modes">
-              <li class="sarch_mode__date"><a href="#">Date</a><a class="sort" href="asc_desc">▾</a></li>
-              <li class="sarch_mode__popularity"><a href="#">Popularity</a></li>
-              <li class="sarch_mode__popularity"><a href="#">Random</a></li>
-            </ul>
-        </div>
-      </div>
+      <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)"></proposals-ideas-searchbox>
       <div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}">
         <section class="list--proposals">
           <header class="proposals__header">

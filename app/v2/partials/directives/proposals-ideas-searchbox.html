@@ -1,0 +1,247 @@
+<style>
+  .campaign__filters .button__add_filter {
+    color: #11493b;
+  }
+
+  .campaign__filters .button__add_filter .icon,
+  .campaign__filters .filters .tags li:hover::after {
+    color: #fff;
+    background-color: #11493b;
+  }
+
+  .campaign__filters .filters .tags li:hover::after {
+    content: "";
+  }
+
+  fieldset.tags div {
+    position: relative;
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  fieldset.tags ul.tags {
+    display: inline;
+  }
+
+  fieldset.tags div input {
+    width: 140px;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+  }
+
+  fieldset.tags div input:focus {
+    outline: none;
+  }
+
+  fieldset.tags ul.tags a {
+    position: relative;
+  }
+
+  fieldset.tags ul.tags a i {
+    position: absolute;
+    right: 3px;
+  }
+
+  fieldset.tags .autocomplete {
+    margin-top: 5px;
+    margin-left: -10px;
+    position: absolute;
+    padding: 5px 0;
+    z-index: 999;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .2);
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2)
+  }
+
+  fieldset.tags .autocomplete .suggestion-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    max-height: 280px;
+    overflow-y: auto;
+    position: relative
+  }
+
+  fieldset.tags .autocomplete .suggestion-list .suggestion-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000;
+    background-color: #fff;
+    float: none;
+  }
+
+  fieldset.tags .autocomplete .suggestion-list .suggestion-item:hover,
+  fieldset.tags .autocomplete .suggestion-list .suggestion-item:focus {
+    background-color: #bacabc;
+    color: #11493b;
+  }
+
+  fieldset.tags .autocomplete .suggestion-item.selected,
+  fieldset.tags .autocomplete .suggestion-item.selected em {
+    color: #fff;
+    background-color: #0097cf;
+  }
+
+  fieldset.tags .autocomplete .suggestion-item em {
+    font: normal 700 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .hide {
+    margin-left: -10000px;
+  }
+
+  div.filters ul.tags li a {
+    position: relative;
+  }
+
+  div.filters ul.tags li a i {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+
+  ul.sort_modes li.active i {
+    color: #fff;
+  }
+
+  ul.sort_modes li i {
+    color: #11493b;
+    padding-right: 5px;
+    margin-top: 6px;
+  }
+</style>
+<div class="campaign__filters">
+  <div class="search">
+    <div clas="search__field_wrapper">
+      <input ng-model="filters.searchText" class="search__field" type="text" placeholder="Search…">
+      <a href="#">
+        <span class="aria-hidden">
+            <svg version="1.1" class="search__icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" xml:space="preserve">
+              <path class="svg_icon" d="M17.882,16.507c0,0.372-0.136,0.695-0.407,0.967c-0.272,0.272-0.596,0.408-0.968,0.408
+                c-0.387,0-0.709-0.136-0.968-0.408l-3.686-3.675c-1.282,0.888-2.711,1.332-4.288,1.332c-1.025,0-2.004-0.198-2.939-0.597
+                c-0.935-0.396-1.741-0.935-2.418-1.612c-0.677-0.677-1.215-1.483-1.612-2.418C0.199,9.569,0,8.59,0,7.565s0.199-2.004,0.597-2.939
+                c0.397-0.935,0.935-1.742,1.612-2.419c0.677-0.677,1.483-1.214,2.418-1.611C5.562,0.199,6.541,0,7.565,0s2.004,0.199,2.939,0.597
+                c0.935,0.397,1.742,0.934,2.419,1.611c0.677,0.677,1.214,1.484,1.611,2.419c0.398,0.935,0.597,1.914,0.597,2.939
+                c0,1.576-0.444,3.005-1.332,4.288l3.686,3.686C17.749,15.804,17.882,16.127,17.882,16.507z M10.967,10.966
+                c0.941-0.941,1.413-2.075,1.413-3.401s-0.471-2.459-1.413-3.402c-0.942-0.941-2.076-1.413-3.402-1.413S5.106,3.222,4.165,4.164
+                C3.222,5.106,2.751,6.24,2.751,7.565s0.471,2.459,1.414,3.401c0.941,0.942,2.075,1.414,3.401,1.414S10.025,11.909,10.967,10.966z"/>
+            </svg>
+          </span>
+        <span class="screen-reader__label">Submit Search</span>
+      </a>
+    </div>
+    <ul class="search_modes">
+      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'proposals'}">
+        <a href="#" ng-click="searchMode('proposals', $event)">Proposals</a>
+      </li>
+      <li class="sarch_mode__working_groups" ng-class="{active: filters.mode === 'groups'}">
+        <a href="#" ng-click="searchMode('groups', $event)">Working Group</a>
+      </li>
+      <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'ideas'}">
+        <a href="#" ng-click="searchMode('ideas', $event)">Ideas</a>
+      </li>
+    </ul>
+  </div>
+  <div class="filters">
+    <h4 class="widget__label">
+      Filter by category</h4>
+    <ul class="tags">
+      <li ng-repeat="theme in filters.themes">
+        <a href="">{{theme.title}}<i class="fa fa-close" ng-click="removeThemeFilter(theme, $event)"></i></a>
+      </li>
+    </ul>
+    <a class="button__add_filter" href="" ng-click="toggleModal('categoriesModal')">
+      <span class="icon">+</span>
+      <span class="offscreen">Add Filter</span>
+    </a>
+  </div>
+  <div class="sort">
+    <h4 class="widget__label">
+      Sort by</h4>
+    <ul class="sort_modes">
+      <li class="sarch_mode__date" ng-click="setSorting('date')" ng-class="{active: sortingIs('date')}">
+        <a href="">Date</a>
+        <i ng-if="sortingIs('date_desc')" class="fa fa-sort-down"></i>
+        <i ng-if="sortingIs('date_asc')" class="fa fa-sort-up"></i>
+        <i ng-if="!sortingIs('date_asc') && !sortingIs('date_desc')" class="fa fa-sort-up"></i>
+      </li>
+      <li class="sarch_mode__popularity" ng-click="setSorting('popularity')" ng-class="{active: sortingIs('popularity')}">
+        <a href="">Popularity</a>
+      </li>
+      <li class="sarch_mode__popularity" ng-click="setSorting('random')" ng-class="{active: sortingIs('random')}">
+        <a href="">Random</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="vex vex-theme-plain" ng-if="isCategoriesModalOpened">
+  <div class="vex-overlay" ng-click="toggleModal('categoriesModal')"></div>
+  <div class="vex-content">
+    <header class="modal-header">
+      <h2 class="modal__title">Select Categories to Add</h2>
+    </header>
+    <div class="modal-body">
+      <fieldset class="tags">
+        <div>
+          <ul class="tags">
+            <li ng-repeat="theme in selectedThemes">
+              <a href="#">{{theme.title}}<i class="fa fa-close" ng-click="remove(theme, $event)"></i></a>
+            </li>
+            <input type="text" ng-model="vm.query" placeholder="Add a category" />
+          </ul>
+          <div class="autocomplete" ng-if="isSuggestionListVisible">
+            <ul class="suggestion-list">
+              <li ng-repeat="theme in themes track by $index" ng-click="select(theme)" class="suggestion-item">
+                {{theme.title}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="actions">
+        <a href="" class="button__modal_submit" ng-click="addSelectedThemes(selectedThemes)">Apply Filters</a>
+      </fieldset>
+    </div>
+    <div class="vex-close" ng-click="toggleModal('categoriesModal')"></div>
+  </div>
+</div>
+
+<!--
+  TODO: make a modal directive that uses vex.
+  <script type="text/ng-template" id="filtersModal">
+   <header class="modal-header">
+      <h2 class="modal__title">Select Categories to Add</h2>
+    </header>
+    <div class="modal-body">
+      <fieldset class="tags">
+        <div>
+          <input type="text" ng-model="filters.query" placeholder="Add a category" />
+          <ul class="tags">
+            <li ng-repeat="theme in selectedThemes"><a href="#">{{theme.title}}</a></li>
+            <li><a href="#">Tag 1<i class="fa fa-close"></i></a></li>
+            <li><a href="#">Tag 2<i class="fa fa-close"></i></a></li>
+          </ul>
+          <div class="autocomplete" ng-if="isSuggestionListVisible">
+            <ul class="suggestion-list">
+              <li class="suggestion-item">Tag 1</li>
+              <li class="suggestion-item">Tag 2</li>
+            </ul>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset class="actions">
+        <a href="#" class="button__modal_submit">Apply Filters</a>
+      </fieldset>
+    </div>
+</script>-->

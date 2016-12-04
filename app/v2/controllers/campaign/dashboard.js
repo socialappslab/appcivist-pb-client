@@ -33,6 +33,8 @@
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection;
       $scope.toggleIdeasSection = toggleIdeasSection;
+      $scope.doSearch = doSearch.bind($scope);
+      $scope.loadThemes = loadThemes.bind($scope);
       loadAssembly();
       loadCampaigns();
       loadCampaignResources();
@@ -106,17 +108,18 @@
      * Get contributions from server.
      *
      * @param campaign {Campaign} the current campaign.
-     * @param type {String} forum_post | comment | idea | question | issue |  proposal | note
+     * @param type {string} forum_post | comment | idea | question | issue |  proposal | note
+     * @param filters {object} filters to apply
      * @return promise
      **/
-    function getContributions(campaign, type) {
+    function getContributions(campaign, type, filters) {
       // Get list of contributions from server
       var rsp;
-      var query = { type: type, pageSize: 16 };
 
-      if (type === 'IDEA' || type === 'PROPOSAL') {
-        query.sort = 'date';
-      }
+      var query = filters || {};
+      query.type = type;
+      query.pageSize = 16;
+      console.log('GET', query);
 
       if ($scope.isAnonymous) {
         rsp = Contributions.contributionInResourceSpaceByUUID(campaign.resourceSpaceUUId).query(query);
@@ -152,6 +155,50 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+    }
+
+    /**
+     * Search handler
+     *
+     *  @param {object} filters - filters definition
+     */
+    function doSearch(filters) {
+      var type;
+      var textSearch;
+      var params = {};
+
+      switch (filters.mode) {
+        case 'proposals':
+          textSearch = 'by_text';
+          type = 'PROPOSAL';
+          break;
+        case 'groups':
+          textSearch = 'by_groups';
+          type = 'PROPOSAL';
+          break;
+        case 'ideas':
+          textSearch = 'by_text';
+          type = 'IDEA';
+          break;
+      }
+
+      if (filters.searchText) {
+        params[textSearch] = filters.searchText;
+      }
+
+      if (this.campaign) {
+        params.sorting = filters.sorting;
+        params.themes = filters.themes;
+        getContributions(this.campaign, type, params);
+      }
+    }
+
+
+    function loadThemes(query) {
+      if (!$scope.campaign) {
+        return;
+      }
+      return $scope.campaign.themes;
     }
   }
 } ());

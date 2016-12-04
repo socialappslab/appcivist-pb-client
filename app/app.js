@@ -572,11 +572,11 @@
    */
   function selectBackendServer(hostname, apis) {
     var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org"];
-    if (hostname===possibleHosts[0]) {
+    if (hostname === possibleHosts[0]) {
       return apis.local;
-    } else if (hostname===possibleHosts[1]) {
+    } else if (hostname === possibleHosts[1]) {
       return apis.production;
-    } else if (hostname===possibleHosts[2]) {
+    } else if (hostname === possibleHosts[2]) {
       return apis.testing;
     } else {
       return apis.development;

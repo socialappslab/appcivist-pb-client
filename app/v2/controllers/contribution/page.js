@@ -88,6 +88,12 @@
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
 
+          if ($scope.group) {
+            $scope.group.profilePic = {
+              urlLargeString: $scope.group.profile.icon
+            }
+          }
+
           var campaignIds = data.campaignIds;
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;

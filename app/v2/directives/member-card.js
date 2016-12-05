@@ -28,6 +28,12 @@ function MemberCard(localStorageService, AppCivistAuth, $state) {
     link: function postLink(scope, element, attrs) {
       scope.currentUser = scope.user;
 
+      scope.$watch('user', function(newVal) {
+        if(newVal){
+          scope.currentUser = newVal;
+        }
+      });
+
       if(!scope.user){
         scope.currentUser = localStorageService.get('user');
       }

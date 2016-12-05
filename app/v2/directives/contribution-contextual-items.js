@@ -5,10 +5,10 @@
     .directive('contributionContextualItems', contributionContextualItems);
 
   contributionContextualItems.$inject = [
-    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window'
+    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notify'
   ];
 
-  function contributionContextualItems(Contributions, Campaigns, localStorageService, Memberships, $window) {
+  function contributionContextualItems(Contributions, Campaigns, localStorageService, Memberships, $window, Notify) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -27,6 +27,7 @@
       var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.group).get();
       authorship.$promise.then(function (response) {
         scope.userCanEdit = response.responseStatus === 'OK';
+        scope.userIsAuthor = scope.userCanEdit;
       });
 
       var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
@@ -122,7 +123,7 @@
                 scope.contribution.stats = newStats;
               },
               function (error) {
-                console.log('Error when updating user feedback');
+                Notify.show('Error when updating user feedback', 'error');
               }
             );
           };
@@ -134,8 +135,15 @@
           }
 
           scope.myObject.publish = function () {
-            Contributions.publishContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
-            $window.location.reload();
+            var rsp = Contributions.publishProposal(scope.assemblyId, scope.group.groupId, scope.contribution.contributionId).update();
+            rsp.$promise.then(
+              function(){
+                $window.location.reload();
+              },
+              function() {
+                Notify.show('Error while publishing proposal', 'error');
+              }
+            )
           }
 
           scope.myObject.exclude = function () {

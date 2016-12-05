@@ -96,7 +96,8 @@
           var campaignIds = data.campaignIds;
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
-          $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId);
+          console.log('DATA', data);
+          $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision);
 
           if (!scope.isAnonymous) {
             verifyAuthorship(scope.proposal);

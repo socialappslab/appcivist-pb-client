@@ -1,6 +1,6 @@
 <ul ng-if="isProposal">
-  <li class="li-action-menu" ng-if="userIsAuthor"><a href="#">{{'Edit' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="userIsWorkingGroupCoordinator"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="userIsAuthor && showEdit"><a href="#">{{'Edit' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="userIsAuthor"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
   <li class="li-action-menu"><a href="" ng-click="myObject.updateFeedback()">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->

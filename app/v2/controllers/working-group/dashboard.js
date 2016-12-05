@@ -171,7 +171,7 @@
 
     function toggleAllMembers() {
       if ($scope.membersLimit <= 5 ) {
-        $scope.membersLimit = 10;  // TODO: instead of 10, use lenght of member list
+        $scope.membersLimit = $scope.members ? $scope.members.length : 10;  // TODO: instead of 10, use lenght of member list
       } else {
         $scope.membersLimit = 5;
       }

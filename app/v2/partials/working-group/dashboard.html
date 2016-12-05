@@ -14,11 +14,11 @@
 <main class="appmain" ng-class="{anonymous: isAnonymous}">
   <article class="working_group">
     <header class="page__header">
-      <div class="type">{{'WorkingGroup' | translate}}</div>
+      <div class="type"><i class="fa fa-group"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>
       <div class="title_block">
-        <h1 class="heading--title">{{wg.name}}</h1>
+        <h1 class="heading--title"> {{wg.name}}</h1>
       </div>
-      <p class="description">{{wg.name}}</p>
+      <p class="description">{{wg.text}}</p>
     </header>
     <div class="page__contents">
       <section class="panel activity-and-members">

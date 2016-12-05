@@ -75,6 +75,12 @@
           });
           milestone.showDescription = !milestone.showDescription;
         }
+
+        scope.clearMilestonesMenu = function(components) {
+          angular.forEach(components, function(c) {
+            c.isHover = false;
+          });
+        }
       }
     };
   }

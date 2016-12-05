@@ -14,11 +14,11 @@
         <fieldset>
           <div class="field__container">
             <label for="add_proposal__title">Title <abbr title="Required">*</abbr></label>
-            <input id="add_proposal__title" type="text" placeholder="Proposal Title">
+            <input ng-model="proposal.title" id="add_proposal__title" type="text" placeholder="Proposal Title">
           </div>
           <div class="field__container">
             <label for="textarea">Description</label>
-            <textarea id="add_proposal__description" rows="8" cols="48" placeholder="Proposal Description"></textarea>
+            <textarea ng-model="proposal.text" id="add_proposal__description" rows="8" cols="48" placeholder="Proposal Description"></textarea>
           </div>
           <div class="field__container assign_proposal_to_wg">
             <label for="assign-to-wg">Assign this Proposal to a Working Group</label>

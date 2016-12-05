@@ -17,6 +17,7 @@
       templateUrl: '/app/v2/partials/directives/proposal-new.html',
       link: function(scope, element, attrs) {
         scope.init = init.bind(scope);
+        scope.proposal = {};
 
         scope.$watch('campaign', function (newVal) {
           if (newVal) {

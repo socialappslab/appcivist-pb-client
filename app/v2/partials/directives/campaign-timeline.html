@@ -1,10 +1,45 @@
+<style>
+  .campaign__status .page__header {
+    position: absolute;
+    background: none;
+    padding: 0;
+  }
+
+  .campaign__status .page__header ul li p {
+    padding: 5px;
+  }
+
+  .campaign__status .page__header .contextual_menu .content {
+    background-color: #e5ebe6 !important;
+  }
+
+  .campaign__status .page__header .contextual_menu .content::after {
+    border-bottom: 12px solid #e5ebe6 !important;
+  }
+</style>
 <section class="campaign__status">
   <h2 class="heading--header">{{title}}</h2>
   <div ng-if="!onlyLabel" class="timeline">
     <div class="markers">
-      <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass">
+      <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass" ng-mouseenter="component.isHover = true">
         <div class="marker"></div>
         <div class="label">{{component.title}}</div>
+        <header class="page__header">
+          <div class="title_block">
+            <div class="heading_actions">
+              <div class="contextual_menu" ng-class="{active: component.isHover}" ng-mouseleave="component.isHover = false" style="top: -2em; left: auto; right: -2.1em;">
+                <div class="content">
+                  <ul>
+                    <li ng-repeat="milestone in component.milestones track by $index" class="li-action-menu">
+                      <a href="" ng-click="toggleMilestoneDescription(milestone, component.milestones)">{{milestone.title}} ({{formatDate(milestone.date)}})</a>
+                      <p ng-if="milestone.showDescription">{{milestone.description}}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
       </div>
     </div>
   </div>

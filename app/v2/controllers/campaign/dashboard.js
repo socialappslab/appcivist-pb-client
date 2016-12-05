@@ -43,6 +43,11 @@
       $scope.myObject.refreshMenu = function () {
         $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;
       };
+      $scope.modals =  {
+        proposalNew: false
+      };
+      $scope.isModalOpened = isModalOpened.bind($scope);
+      $scope.toggleModal = toggleModal.bind($scope);
     }
 
     function loadAssembly() {
@@ -140,6 +145,24 @@
      */
     function doSearch(filters) {
       Space.doSearch(this.campaign, this.isAnonymous, filters);
+    }
+
+    /**
+     * helper that checks if modal is opened
+     *
+     * @param {string} id - modal ID
+     */
+    function isModalOpened(id) {
+      return this.modals[id];
+    }
+
+    /**
+     * helper that toggles modal visibility
+     *
+     * @param {string} id - modal ID
+     */
+    function toggleModal(id) {
+      this.modals[id] = !this.modals[id];
     }
   }
 } ());

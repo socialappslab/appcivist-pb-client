@@ -52,7 +52,7 @@
           <header class="proposals__header">
             <h2 class="heading--header">{{'Proposals' | translate}}</h2>
             <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="proposals__add_new" href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a class="proposals__add_new" ng-if="user != null" ng-click="toggleModal('proposalNew')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
           </header>
           <div class="list__cards container__proposals">
@@ -76,4 +76,5 @@
     </section>
   </article>
   <discussion-panel space-id="spaceID" endpoint="campaign"></discussion-panel>
+  <proposal-new campaign="campaign" ng-if="isModalOpened('proposalNew')" close="toggleModal('proposalNew')"></proposal-new>
 </main>

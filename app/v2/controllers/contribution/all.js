@@ -8,7 +8,7 @@ angular
 
 ProposalsCtrl.$inject = [
   '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-  'localStorageService', 'FlashService', '$rootScope', 'Space', '$window'
+  'localStorageService', 'FlashService', '$rootScope', 'Space', '$window', 'Notify'
 ];
 
 function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
@@ -59,7 +59,7 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
   function loadContributions(scope) {
     var rsp;
     var query = {type: scope.type.toUpperCase()};
-    
+
     if(scope.isAnonymous) {
       rsp = Contributions.contributionInResourceSpaceByUUID(scope.spaceID).query(query);
     }else{
@@ -75,14 +75,14 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
         $scope.contributions = contributions;
       },
       function (error) {
-        FlashService.Error('Error loading proposals from server');
+        Notify.show('Error loading proposals from server', 'error');
       }
     );
   }
 
   function loadSpace(scope) {
     var rsp;
-    
+
     if(scope.isAnonymous) {
       rsp = Space.getSpaceByUUID(scope.spaceID).get();
     }else{
@@ -94,7 +94,7 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
         scope.seeAllTitle = space.name;
       },
       function (error) {
-        console.log('Error when updating user feedback');
+        Notify.show('Error when updating user feedback', 'error');
       }
     );
   }

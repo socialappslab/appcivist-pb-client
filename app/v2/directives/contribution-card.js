@@ -19,25 +19,6 @@
       return result;
     }
 
-    function setupMembershipInfo(scope) {
-      scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.contribution);
-
-      var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.group).get();
-      authorship.$promise.then(function (response) {
-        scope.userCanEdit = response.responseStatus === 'OK';
-      });
-
-      var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
-      rsp.$promise.then(function (data) {
-        scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
-      });
-
-      rsp = Memberships.membershipInGroup(scope.groupId, scope.user.userId).get();
-      rsp.$promise.then(function (data) {
-        scope.userIsWorkingGroupCoordinator = hasRole(data.roles, 'COORDINATOR');
-      });
-    }
-
     function setContributionType(scope) {
       scope.isProposal = scope.contribution.type === 'PROPOSAL';
       scope.isIdea = scope.contribution.type === 'IDEA';
@@ -56,24 +37,9 @@
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
-        scope.cm = { isHover: false };
-        scope.user = localStorageService.get('user');
-        scope.isAnonymous = !scope.user;
         scope.showContextualMenu = false;
         scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
         setContributionType(scope);
-
-        if (!scope.isIdea) {
-          var workingGroupAuthors = scope.contribution.workingGroupAuthors;
-          var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-          scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
-
-          if (!scope.isAnonymous) {
-            scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
-            scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
-            setupMembershipInfo(scope);
-          }
-        }
 
         if (scope.campaign) {
           // Verify the status of the campaign and show or not show the voting buttons

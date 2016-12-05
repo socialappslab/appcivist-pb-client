@@ -26,7 +26,8 @@
           <div class="panel-heading panel-heading-relative">
             <h1 class="heading--header">{{'Latest Activity' | translate}}</h1>
             <p class="heading--small">
-              <a href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+              <!-- TODO: implements this view -->
+              <a ng-if="false" href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             </p>
           </div>
           <activity-card ng-repeat="activity in activities track by $index" activity="activity"></activity-card>

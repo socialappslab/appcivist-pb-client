@@ -154,7 +154,16 @@ module.exports = function (grunt) {
               'bower_components/ng-notify/dist/ng-notify.min.css',
               'bower_components/appcivist-patterns/dist/images/file-icon.png',
               'stylesheets/**/*',
-              'app/css/app.css'
+              'app/css/app.css',
+              'bower_components/angular-i18n/**/*.js'
+            ]
+          },{
+            expand: true,
+            dot: true,
+            cwd: './stylesheets/font',
+            dest: './dist/font/',
+            src: [
+              '**/*',
             ]
           }
         ]

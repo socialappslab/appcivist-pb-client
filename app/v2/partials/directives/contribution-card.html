@@ -2,7 +2,12 @@
 <div ng-if="isProposal">
   <div class="card__wrapper">
     <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false">
-      <p class="heading--category">landscaping</p>
+      <p class="heading--category">
+        <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
+          {{theme.title}}
+          <span ng-if="($index!=(contribution.themes.length-1))&&($index===0 || $index===1)">, </span>
+        </span>
+      </p>
       <div class="title_block">
         <h1 class="heading--headline">
           <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}">
@@ -115,7 +120,11 @@
 <div ng-if="isIdea">
   <div class="card__wrapper">
     <header class="card__header" style="height: 101px;" ng-mouseenter="cm.isHover = false">
-      <p class="heading--category">landscaping</p>
+      <p class="heading--category">
+        <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
+          {{theme.title}} <span ng-if="$index<themes.length-1 || $index==2 ">, </span>
+        </span>
+      </p>
       <h1 class="heading--headline">
         <a href="">
           {{contribution.title}}

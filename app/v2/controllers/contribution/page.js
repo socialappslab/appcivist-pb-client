@@ -66,7 +66,7 @@
           $scope.proposal.stats = newStats;
         },
         function (error) {
-          console.log('Error when updating user feedback');
+          Notify.show('Error when updating user feedbac', 'error');
         }
       );
     };
@@ -105,7 +105,7 @@
           loadRelatedContributions($scope.group ? $scope.group.resourcesResourceSpaceId : null);
         },
         function (error) {
-          FlashService.Error('Error occured when trying to load proposal: ' + JSON.stringify(error));
+          Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
         }
       );
     }

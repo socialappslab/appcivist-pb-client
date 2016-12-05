@@ -1,11 +1,9 @@
 module.exports = function (grunt) {
+  require('load-grunt-tasks')(grunt);
 
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    clean: {
-      src: ['dist', 'app/css/app.css', 'app/css/app.css.map']
-    },
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -65,21 +63,116 @@ module.exports = function (grunt) {
         files: ['app/css/app.css'],
         tasks: []
       }
+    },
+    clean: {
+      src: ['dist', 'app/css/app.css', 'app/css/app.css.map'],
+      dist: {
+        files: [
+          {
+            dot: true,
+            src: ['.tmp', './dist/*']
+          }
+        ]
+      },
+      server: '.tmp'
+    },
+    htmlmin: {
+      dist: {
+        options: {},
+        files: [{
+          expand: true,
+          cwd: './dist',
+          src: '{,*/}*.html',
+          dest: './dist'
+        }]
+      },
+    },
+    useminPrepare: {
+      html: './index.html',
+      options: {
+        dest: './dist/',
+        flow: {
+          steps: {
+            js: ['concat'],
+            css: ['cssmin']
+          },
+          post: []
+        }
+      }
+    },
+    usemin: {
+      html: ['./dist/**/*.html'],
+      css: ['./dist/styles/**/*.css'],
+      options: {
+        dirs: ['./dist']
+      }
+    },
+    cssmin: {
+      options: {
+        keepSpecialComments: '0'
+      },
+      dist: {
+        files: [{
+          cwd: './dist',
+          expand: true,
+          src: '**/*.css',
+          dest: './dist/'
+        }]
+      }
+    },
+    concat: {
+      options: {
+        separator: grunt.util.linefeed + ';' + grunt.util.linefeed
+      },
+      dist: {}
+    },
+    uglify: {
+      options: {
+        mangle: false,
+        compress: {
+          drop_console: true
+        }
+      },
+      dist: {
+        files: {
+          './dist/scripts/app.js': ['./dist/scripts/app.js'],
+          './dist/scripts/ui.js': ['./dist/scripts/ui.js']
+        }
+
+      }
+    },
+    copy: {
+      dist: {
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '.',
+            dest: './dist/',
+            src: [
+              'favicon.ico',
+              'assets/**/*',
+              'index.html',
+              'app/**/*.html',
+              'bower_components/vex/dist/css/vex.css',
+              'bower_components/vex/dist/css/vex-theme-plain.css',
+              'bower_components/appcivist-patterns/dist/{css,fonts,images}/**/*',
+              'bower_components/ng-notify/dist/ng-notify.min.css',
+              'bower_components/appcivist-patterns/dist/images/file-icon.png',
+              'stylesheets/**/*',
+              'app/css/app.css'
+            ]
+          }
+        ]
+      }
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-haml');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-exec');
-
   // Default task(s).
-  grunt.registerTask('default', ['uglify', "haml"]);
+  grunt.registerTask('default', ['uglify', 'haml']);
+  grunt.registerTask('build', [
+    'clean:dist', 'sass', 'useminPrepare', 'copy:dist', 'cssmin', 'concat', 'uglify', 'usemin'
+  ]);
 
   // Server tasks
   grunt.registerTask('server', ['clean', 'sass', 'uglify', 'jshint', 'haml', 'connect', 'watch']);

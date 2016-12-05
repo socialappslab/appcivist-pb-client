@@ -142,7 +142,7 @@ appCivistApp.controller('NewWorkingGroupCtrl', function($rootScope, $scope, $htt
                     if ($scope.workingGroups === undefined || $scope.workingGroups === null) { $scope.workingGroups = [];}
                     $scope.workingGroups.push($scope.newWorkingGroup);
                     localStorageService.set("workingGroups", $scope.workingGroups);
-                    $location.url("/assembly/"+$scope.assemblyID+"/group/"+$scope.newWorkingGroup.groupId);
+                    $location.url("/v1/assembly/"+$scope.assemblyID+"/group/"+$scope.newWorkingGroup.groupId);
                 },
                 function (error) {
                     $scope.errors.push(error.data);
@@ -404,7 +404,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
                 );
             } else if (!$scope.userIsMember && $scope.userIsInvitedMember) {
                 // If user has been invited to join, redirect to the invitation verification page
-                $location.url("/invitation/"+$scope.membership.invitationToken);
+                $location.url("/v1/invitation/"+$scope.membership.invitationToken);
             }
         };
         $scope.approveMember = function (member) {
@@ -585,7 +585,7 @@ appCivistApp.controller('WorkingGroupCtrl', function($scope, $http, $routeParams
     function ballotInit($scope, localStorageService) {
         var ballotId = $scope.wGroup.consensusBallot; // campaign binding ballot's uuid
         var userId = $scope.user.uuid; // user's uuid is also the signature used for voting by logged in users
-        $scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/ballot/"+$scope.wGroup.consensusBallot+"/start";
+        $scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/v1/ballot/"+$scope.wGroup.consensusBallot+"/start";
 
         // Read the current results of the voting
         $scope.wGroup.ballotResults = Ballot.results({uuid: $scope.wGroup.consensusBallot}).$promise;

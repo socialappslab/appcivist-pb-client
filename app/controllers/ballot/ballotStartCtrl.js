@@ -23,9 +23,9 @@ appCivistApp.controller('ballotStartCtrl', function($scope, $routeParams, $locat
 
     $scope.transitionToRegistration = function () {
         if (localStorageService.get("authenticated")) {
-            $location.url("/ballot/" + $routeParams.uuid + "/vote");
+            $location.url("/v1/ballot/" + $routeParams.uuid + "/vote");
         } else {
-            $location.url("/ballot/" + $routeParams.uuid + "/register");
+            $location.url("/v1/ballot/" + $routeParams.uuid + "/register");
         }
     }
 

@@ -101,7 +101,7 @@ appCivistApp.controller('ballotVoteCtrl', function ($scope, $routeParams, $locat
         }, {vote: $scope.vote}).$promise;
         ballot_paper.then(function (data) {
             console.log(data);
-            $location.url("/ballot/" + $routeParams.uuid + "/summary");
+            $location.url("/v1/ballot/" + $routeParams.uuid + "/summary");
         }, function (error) {
             alert(error.data.error);
             return;

@@ -621,8 +621,8 @@ appCivistApp.controller('CreateCampaignCtrl', function($scope, $sce, $http, $tem
 				campaignRes.$promise.then(
 						function(data) {
 							$scope.newCampaign = data;
-							console.log("Redirecting to /#/assembly/"+$scope.assemblyID+"/campaign/"+$scope.newCampaign.campaignId);
-							$location.url('/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
+							console.log("Redirecting to /#/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.newCampaign.campaignId);
+							$location.url('/v1/assembly/'+$scope.assemblyID+'/campaign/'+$scope.newCampaign.campaignId);
 						},
 						function(error) {
 							console.log("Error in the creation of the Campaign: "+JSON.stringify(error.statusMessage));
@@ -681,8 +681,10 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 				ctype : 'BRAINSTORMING',
 				//contentArray : 'contributions',
 				showInComponent : {
-					'proposal making' : true,
-					'deliberation' : true,
+          'ideas' : true,
+          'proposals' : true,
+          'proposal making' : true,
+          'deliberation' : true,
 					'voting' : true,
 					'implementation' : true
 				},
@@ -707,7 +709,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 				ctype : 'PROPOSAL',
 				//contentArray : 'contributions',
 				showInComponent : {
-					'proposal making' : true,
+          'ideas' : true,
+          'proposals' : true,
+          'proposal making' : true,
 					'deliberation' : true,
 					'voting' : true,
 					'implementation' : true
@@ -720,7 +724,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 				ctype : 'PROPOSAL',
 				//contentArray : 'winningContributions',
 				showInComponent : {
-					'proposal making' : false,
+          'ideas' : false,
+          'proposals' : false,
+          'proposal making' : false,
 					'deliberation' : false,
 					'voting' : false,
 					'implementation' : true
@@ -733,7 +739,9 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
                 ctype : 'NOTE',
                 //contentArray : 'winningContributions',
                 showInComponent : {
-                    'proposal making' : true,
+                  'ideas' : true,
+                  'proposals' : true,
+                  'proposal making' : true,
                     'deliberation' : true,
                     'voting' : true,
                     'implementation' : true
@@ -778,10 +786,10 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 		$scope.openContributionPage = function(cID, edit)  {
 			if ($scope.campaignID === null || $scope.campaignID === undefined ) {
 				if ($scope.contribution && $scope.contribution.campaignIds && $scope.contribution.campaignIds.length > 0) {
-					$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
+					$location.url("/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
 				}
 			} else {
-				$location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+				$location.url("/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
 			}
 		};
 
@@ -972,7 +980,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 			var ballotPaper = BallotPaper.get({uuid: $scope.campaign.bindingBallot, signature: $scope.user.uuid}).$promise;
 			ballotPaper.then(function (data) {
 				localStorageService.set("voteSignature", $scope.user.uuid);
-				$location.url("/ballot/" + $scope.campaign.bindingBallot + "/vote");
+				$location.url("/v1/ballot/" + $scope.campaign.bindingBallot + "/vote");
 			}, function (error) {
 				window.appcivist.handleError(error);
 			});
@@ -992,7 +1000,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
 		};
 
 		$scope.openCampaignBallot = function () {
-			$window.open("/#/ballot/"+$scope.campaign.bindingBallot+"/start", "_blank");
+			$window.open("/#/v1/ballot/"+$scope.campaign.bindingBallot+"/start", "_blank");
 		}
 
 		$scope.isRightRole = function(roleName) {
@@ -1109,7 +1117,7 @@ appCivistApp.controller('CampaignComponentCtrl', function($rootScope, $scope, $h
     function ballotInit($scope, localStorageService) {
         var ballotId = $scope.campaign.bindingBallot; // campaign binding ballot's uuid
         var userId = $scope.user.uuid; // user's uuid is also the signature used for voting by logged in users
-		$scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/ballot/"+$scope.campaign.bindingBallot+"/start";
+		$scope.ballotUrl = $location.protocol()+"://"+$location.host()+"/#/v1/ballot/"+$scope.campaign.bindingBallot+"/start";
 
 		// Read the current results of the voting
         $scope.campaign.ballotResults = Ballot.results({uuid: $scope.campaign.bindingBallot}).$promise;

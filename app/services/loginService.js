@@ -31,7 +31,7 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
 						localStorageService.set("user", user);
 						scope.user = user;
 						$rootScope.stopSpinner();
-						$location.url('/home');
+						$location.url('/v1/home');
 					},
 					function (error) {
 						var data = error.data;

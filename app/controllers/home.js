@@ -53,7 +53,7 @@
                 //    type: "CAMPAIGNS",
                 //    addAction: {
                 //        title: $scope.translations["New Campaign"],
-                //        href: "/#/assembly/"+$scope.assemblyID+"/campaign/create"
+                //        href: "/#/v1/assembly/"+$scope.assemblyID+"/campaign/create"
                 //    },
                 //    itemList: [],
                 //    errorMessage: $scope.translations["No current campaigns to show."]

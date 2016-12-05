@@ -28,7 +28,7 @@
 
                 <!-- Links if items are Assemblies -->
                 <a ng-if="box.type==='ASSEMBLIES'"
-                   ng-href="/#/assembly/{{item.assemblyId}}/forum">
+                   ng-href="/#/v1/assembly/{{item.assemblyId}}/forum">
                     <img ng-src="{{item.profile.icon}}" alt="100x100"
                          class="image-circle">
                     <div class="caption">
@@ -39,7 +39,7 @@
                 <!-- Links if items are Campaigns-->
                 <a ng-if="box.type==='CAMPAIGNS'"
                    ng-click="selectCampaign(item)"
-                   ng-href="#/assembly/{{item.assemblies[0]}}/campaign/{{item.campaignId}}">
+                   ng-href="#/v1/assembly/{{item.assemblies[0]}}/campaign/{{item.campaignId}}">
                     <img alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle">
                     <div class="caption">
                         <h4 class="text hidden-xs hidden-sm" title="{{item.title}}">{{item.title}}</h4>
@@ -49,7 +49,7 @@
 
                 <!-- Links if items are Working Groups-->
                 <a ng-if="box.type==='GROUPS'"
-                   ng-href="#/assembly/{{(assemblyID!=undefined || assemblyID!=null ) ? assemblyID : item.assemblies[0]}}/group/{{item.groupId}}">
+                   ng-href="#/v1/assembly/{{(assemblyID!=undefined || assemblyID!=null ) ? assemblyID : item.assemblies[0]}}/group/{{item.groupId}}">
                     <img alt="100x100" src="../assets/images/dublin.jpg"
                          data-holder-rendered="true"
                          class="image-circle">

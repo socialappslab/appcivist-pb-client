@@ -13,7 +13,7 @@
 				</div><!-- /input-group -->
 			</div><!-- /.col-lg-6 -->
 			<div class="col-lg-3 col-md-3 col-sm-3 h1">
-				<a ng-href="/#/assembly/create">
+				<a ng-href="/#/v1/assembly/create">
 					<img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" style="height: 34px; width:34px; display: inline-block; cursor: pointer;float:left;margin-right:12px;">
 					<div class="caption" style="align-content: center;vertical-align: middle;">
 						<h2 style="color:black;"><strong>{{'New Assembly' |translate}}</strong></h2>
@@ -27,10 +27,10 @@
 				<div class="col-sm-6 col-md-4" ng-repeat="assembly in assemblies | filter:assemblyFilter">
 					<div class="thumbnail assembly">
 						<div class="image-circle">
-							<a ng-href="#/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
+							<a ng-href="#/v1/assembly/{{assembly.assemblyId}}/forum"><img data-src="{{assembly.profile.icon}}" alt="100x100" src="../assets/images/dublin.jpg" data-holder-rendered="true" class="image-circle"></a>
 						</div>
 						<div class="caption220">
-							<h4><strong><a ng-href="#/assembly/{{assembly.assemblyId}}/forum">{{assembly.name}}</a></strong></h4>
+							<h4><strong><a ng-href="#/v1/assembly/{{assembly.assemblyId}}/forum">{{assembly.name}}</a></strong></h4>
 							<h5 class="text-muted"><strong><i><div ng-show="assembly.location.placeName != null">{{assembly.location.placeName}},</div> {{assembly.location.city}}, {{assembly.location.country}}</i></strong></h5>
 							<p>{{assembly.description | limitTo: 60}} {{assembly.description.length > 60 ? '...' : ''}}</p>
 						</div>

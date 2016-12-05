@@ -247,7 +247,7 @@ appCivistApp.controller('InvitationCtrl', function($scope, $resource, $location,
 			$scope.response = Invitations.invitationResponse($scope.token, resp).update();
 			$scope.response.$promise.then(
 					function (data)	{
-						$location.url("/assembly/"+$scope.invitation.targetId+"/forum");
+						$location.url("/v1/assembly/"+$scope.invitation.targetId+"/forum");
 					},
 					function (error) {
 						FlashService.Error("An error occured while trying to answer your invitation: "+JSON.stringify(error));

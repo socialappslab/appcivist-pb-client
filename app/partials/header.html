@@ -20,7 +20,7 @@
     <div class="collapse navbar-collapse" id="navbar-options">
         <!-- Menu when the user is logged in-->
         <ul class="nav navbar-nav navbar-left" ng-if='userIsAuthenticated()'>
-            <li><a href="#/home"><strong>{{'Home' | translate}}</strong></a></li>
+            <li><a href="#/v1/home"><strong>{{'Home' | translate}}</strong></a></li>
             <li><a href="#/assemblies"><strong>{{'Assemblies' | translate}}</strong></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right menu-elements" ng-if='userIsAuthenticated() && !onlyLanding'>
@@ -66,7 +66,7 @@
             </div>
             <button type="submit" class="btn btn-success">{{'header.sign_in' | translate}}</button>
             <!--<button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>-->
-            <!--<a ng-href="#/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'header.sign_up_group' | translate}}</button></a>-->
+            <!--<a ng-href="#/v1/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'header.sign_up_group' | translate}}</button></a>-->
             <a href="/user/recoveryform">{{'header.Forgot password' | translate}}</a></li>
         </form>
     </div>

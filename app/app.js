@@ -246,109 +246,106 @@
         controller: 'MainCtrl',
         templateUrl: '/app/partials/main.html'
       })
-      .when('/home', {
+      .when('/v1/home', {
         controller: 'HomeCtrl',
         templateUrl: 'app/partials/home/home.html',
         activetab: 'home'
       })
-      .when('/profile', {
+      .when('/v1/profile', {
         controller: 'ProfileCtrl',
         templateUrl: 'app/partials/profile/profile.html'
       })
-      .when('/assemblies', {
+      .when('/v1/assemblies', {
         controller: 'AssemblyListCtrl',
         templateUrl: 'app/partials/assemblies/assemblies.html',
         activetab: 'assemblies'
       })
-      .when('/assembly/create', {
+      .when('/v1/assembly/create', {
         controller: 'NewAssemblyCtrl',
         templateUrl: 'app/partials/assembly/newAssembly.html'
       })
-      .when('/assembly/create?:userIsNew', {
+      .when('/v1/assembly/create?:userIsNew', {
         controller: 'NewAssemblyCtrl',
         templateUrl: 'app/partials/assembly/newAssembly.html'
       })
-      .when('/assembly/:aid/campaign/create', {
+      .when('/v1/assembly/:aid/campaign/create', {
         controller: "CreateCampaignCtrl",
         templateUrl: 'app/partials/campaign/creation/newCampaign.html'
       })
-      .when('/assembly/:aid/forum', {
+      .when('/v1/assembly/:aid/forum', {
         controller: 'AssemblyCtrl',
         templateUrl: 'app/partials/forum/forum.html'
       })
       // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
-      .when('/assembly/:aid/campaign/:cid/wgroup/create', {
+      .when('/v1/assembly/:aid/campaign/:cid/wgroup/create', {
         controller: 'CampaignComponentCtrl',
         templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
       })
-      .when('/assembly/:aid/wgroup/create', {
+      .when('/v1/assembly/:aid/wgroup/create', {
         controller: 'NewWorkingGroupCtrl',
         templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
       })
-      .when('/assembly/:aid/campaign/:cid/contribution/:coid', {
+      .when('/v1/assembly/:aid/campaign/:cid/contribution/:coid', {
         controller: 'ContributionPageCtrl',
         templateUrl: 'app/partials/contributions/contribution/contributionPage.html'
       })
-      .when('/assembly/:aid/campaign/:cid/:ciid/:mid', {
+      .when('/v1/assembly/:aid/campaign/:cid/:ciid/:mid', {
         controller: 'CampaignComponentCtrl',
         templateUrl: 'app/partials/campaign/component/campaignComponent.html'
       })
-      .when('/assembly/:aid/campaign/:cid', {
+      .when('/v1/assembly/:aid/campaign/:cid', {
         controller: 'CampaignComponentCtrl',
         templateUrl: 'app/partials/campaign/component/campaignComponent.html'
       })
-      .when('/assembly/:aid/campaign/:cid/edit', { //edit
+      .when('/v1/assembly/:aid/campaign/:cid/edit', { //edit
         controller: "EditCampaignCtrl",
         templateUrl: 'app/partials/campaign/edit/editCampaign.html'
       })
-      .when('/assembly/:aid/campaign/:cid/:ciid', {
+      .when('/v1/assembly/:aid/campaign/:cid/:ciid', {
         controller: 'CampaignComponentCtrl',
         templateUrl: 'app/partials/campaign/component/campaignComponent.html'
       })
-      .when('/assembly/:aid/group/:wid', {
+      .when('/v1/assembly/:aid/group/:wid', {
         controller: 'WorkingGroupCtrl',
         templateUrl: 'app/partials/wGroupForum/wGroupForum.html'
       })
       // TODO: This should be /assembly/:aid/campaign/:cid/wgroup/create
-      .when('/assembly/:aid/campaign/:cid/wgroup/create', {
+      .when('/v1/assembly/:aid/campaign/:cid/wgroup/create', {
         controller: 'NewWorkingGroupCtrl',
         templateUrl: 'app/partials/contributions/newWorkingGroup/newWorkingGroup.html'
       })
       // TODO: finalize voting UIs #Issue #231
-      .when('/ballot/:uuid', {
+      .when('/v1/ballot/:uuid', {
         redirectTo: '/ballot/:uuid/start'
       })
-      .when('/ballot/:uuid/start', {
+      .when('/v1/ballot/:uuid/start', {
         controller: 'ballotStartCtrl',
         templateUrl: 'public/ballot/start.html'
       })
-      .when('/ballot/:uuid/register', {
+      .when('/v1/ballot/:uuid/register', {
         controller: 'ballotRegisterCtrl',
         templateUrl: 'public/ballot/register.html'
       })
-      .when('/ballot/:uuid/success', {
+      .when('/v1/ballot/:uuid/success', {
         controller: 'ballotSuccessCtrl',
         templateUrl: 'public/ballot/success.html'
       })
-      .when('/ballot/:uuid/vote', {
+      .when('/v1/ballot/:uuid/vote', {
         controller: 'ballotVoteCtrl',
         templateUrl: 'public/ballot/vote.html'
       })
-      .when('/ballot/:uuid/summary', {
+      .when('/v1/ballot/:uuid/summary', {
         controller: 'ballotVoteSummaryCtrl',
         templateUrl: 'public/ballot/summary.html'
       })
-      .when('/ballot/:uuid/result', {
+      .when('/v1/ballot/:uuid/result', {
         controller: 'ballotResultCtrl',
         templateUrl: 'public/ballot/result.html'
       })
-      .when('/invitation/:uuid', {
+      .when('/v1/invitation/:uuid', {
         controller: 'InvitationCtrl',
         templateUrl: 'app/partials/verify.html'
       });
-    //.otherwise({
-    //redirectTo : '/'
-    //});
 
     /**
      * HTTP Interceptor that makes sure that all HTTP requests have the session key inserted as HEADER

@@ -255,7 +255,7 @@ appCivistApp.controller('NewAssemblyCtrl', function($scope, $location, usSpinner
                         console.log("Created assembly: "+data.assemblyId);
                         localStorageService.set("currentAssembly",data);
                         localStorageService.set("temporaryNewAssembly","");
-                        $location.url('/assembly/'+data.assemblyId+"/forum");
+                        $location.url('/v1/assembly/'+data.assemblyId+"/forum");
                     },
                     // Error
                     function(error) {
@@ -537,7 +537,7 @@ appCivistApp.controller('AssemblyCtrl', function($rootScope, $scope, usSpinnerSe
                 );
             } else if (!$scope.userIsMember && $scope.userIsInvitedMember) {
                 // If user has been invited to join, redirect to the invitation verification page
-                $location.url("/invitation/"+$scope.membership.invitationToken);
+                $location.url("/v1/invitation/"+$scope.membership.invitationToken);
             }
         };
 

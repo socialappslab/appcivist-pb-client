@@ -18,7 +18,7 @@ appCivistApp.controller('ballotRegisterCtrl', function ($scope, $routeParams, $l
         ballot.$promise.then(function (data) {
             console.log("Posted voting registration form.");
             localStorageService.set("voteSignature", data.signature);
-            $location.url("/ballot/" + $routeParams.uuid + "/success");
+            $location.url("/v1/ballot/" + $routeParams.uuid + "/success");
         }, function (error) {
             window.appcivist.handleError(error);
         })
@@ -30,7 +30,7 @@ appCivistApp.controller('ballotRegisterCtrl', function ($scope, $routeParams, $l
         var ballotPaper = BallotPaper.get({uuid: $routeParams.uuid, signature: $scope.signature}).$promise;
         ballotPaper.then(function (data) {
             localStorageService.set("voteSignature", $scope.signature);
-            $location.url("/ballot/" + $routeParams.uuid + "/vote");
+            $location.url("/v1/ballot/" + $routeParams.uuid + "/vote");
         }, function (error) {
             window.appcivist.handleError(error);
         });
@@ -53,6 +53,6 @@ appCivistApp.controller('ballotRegisterCtrl', function ($scope, $routeParams, $l
         $translate.use($scope.user.language);
         $scope.signature = $scope.user.uuid;
         localStorageService.set("voteSignature", $scope.signature);
-        $location.url("/ballot/" + $routeParams.uuid + "/vote");
+        $location.url("/v1/ballot/" + $routeParams.uuid + "/vote");
     }
 });

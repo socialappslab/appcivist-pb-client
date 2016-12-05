@@ -38,7 +38,7 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function ($scope, $routeParams,
     });
 
     $scope.transitionToVoting = function () {
-        $location.url("ballot/" + $routeParams.uuid + "/vote");
+        $location.url("/v1/ballot/" + $routeParams.uuid + "/vote");
     }
 
     $scope.submitBallotPaper = function () {
@@ -48,7 +48,7 @@ appCivistApp.controller('ballotVoteSummaryCtrl', function ($scope, $routeParams,
         ).$promise;
         ballot_paper.then(function (data) {
             console.log(data);
-            $location.url("/ballot/" + $routeParams.uuid + "/result");
+            $location.url("/v1/ballot/" + $routeParams.uuid + "/result");
         }, function (error) {
             window.appcivist.handleError(error);
         })

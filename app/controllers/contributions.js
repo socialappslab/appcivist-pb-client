@@ -250,10 +250,10 @@ appCivistApp.controller('ContributionDirectiveCtrl', function($rootScope, $scope
         $scope.openContributionPage = function(cID, edit)  {
             if ($scope.campaignID === null || $scope.campaignID === undefined ) {
                 if ($scope.contribution && $scope.contribution.campaignIds && $scope.contribution.campaignIds.length > 0) {
-                    $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
+                    $location.url("/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
                 }
             } else {
-                $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+                $location.url("/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
             }
 
             if (edit) {
@@ -403,10 +403,10 @@ appCivistApp.controller('ContributionModalCtrl',
             $scope.openContributionPage = function(cID, edit)  {
                 if ($scope.campaignID === null || $scope.campaignID === undefined) {
                     if ($scope.contribution && $scope.contribution.campaignIds && $scope.contribution.campaignIds.length > 0) {
-                        $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
+                        $location.url("/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.contribution.campaignIds[0]+"/contribution/"+cID+"?edit="+edit);
                     }
                 } else {
-                    $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
+                    $location.url("/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID+"/contribution/"+cID+"?edit="+edit);
                 }
                 $uibModalInstance.dismiss('cancel');
             };
@@ -554,7 +554,7 @@ appCivistApp.controller('ContributionPageCtrl', function($rootScope, $scope, $ht
         };
 
         $scope.$on(ContributionDirectiveBroadcast.CONTRIBUTION_DELETED, function() {
-            $location.url("/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID);
+            $location.url("/v1/assembly/"+$scope.assemblyID+"/campaign/"+$scope.campaignID);
         });
 
         $scope.$on(ContributionDirectiveBroadcast.CONTRIBUTION_DELETE_ERROR, function() {

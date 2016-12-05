@@ -1,5 +1,5 @@
 appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
-											  FlashService, $rootScope, $q, Memberships, Assemblies, $filter) {
+											  FlashService, $rootScope, $q, Memberships, Assemblies, $filter, $state) {
 
 
 	this.getUser = function() {
@@ -60,8 +60,14 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
 						console.log("User get from API: " + user.userId);
 						localStorageService.set("user", user);
 						scope.user = user;
-						$location.url('/home');
-					} else { // Not Authenticated
+
+            loadAuthenticatedUserMemberships(user).then(function() {
+              var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+              var assembly = localStorageService.get('currentAssembly');
+              $state.go('v2.assembly.aid.campaign.cid', {aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId}, {reload: true});
+              location.reload();
+            });
+          } else { // Not Authenticated
 						scope.user = null;
 						$location.url('/');
 						FlashService.ErrorWithModal('You need to log in.', "USER", null, "UNAUTHORIZED", false);
@@ -129,15 +135,19 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
    * Retrieve and store current user working groups, ongoing campaigns.
    */
   this.loadAuthenticatedUserMemberships = function(){
+    return loadAuthenticatedUserMemberships();
+  };
+
+  function loadAuthenticatedUserMemberships() {
     var user = localStorageService.get('user');
     var rsp = Memberships.workingGroups(user.userId).query();
     return rsp.$promise.then(memberSuccess, memberError);
-  };
-  
+  }
+
   function memberSuccess(data) {
     var membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED' });
     var myWorkingGroups = [];
-    
+
     angular.forEach(membershipsInGroups, function(m) {
       myWorkingGroups.push(m.workingGroup);
     });
@@ -147,7 +157,7 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     var rsp = Assemblies.assembly(currentAssembly).get();
     return rsp.$promise.then(singleAssemblySuccess, singleAssemblyError);
   }
-  
+
   function memberError(error) {
 		FlashService.Error('Error while trying to get assemblies from server');
   }
@@ -159,7 +169,7 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     var user = localStorageService.get('user');
     return Memberships.assemblies(user.userId).query().$promise.then(assembliesSuccess, assembliesError);
   }
-  
+
   function singleAssemblyError(error) {
 		FlashService.Error('Error while trying to get assembly from server');
   }
@@ -168,7 +178,7 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     var currentAssembly = localStorageService.get('currentAssembly');
     var assemblies = [];
     angular.forEach(memberships, function(m) {
-      
+
       if(m.assembly.assemblyId !== currentAssembly.assemblyId) {
         assemblies.push(m.assembly);
       }
@@ -178,9 +188,9 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     deferred.resolve(assemblies);
     return deferred.promise;
   }
-  
+
   function assembliesError(error) {
-		
+
     if(error.data && error.data.responseStatus === 'NODATA') {
       localStorageService.set('assemblies', []);
       var deferred = $q.defer();

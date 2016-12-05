@@ -41,6 +41,22 @@
         scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
         setContributionType(scope);
 
+        if (!scope.isIdea) {
+            var workingGroupAuthors = scope.contribution.workingGroupAuthors;
+            var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+            scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
+            scope.notAssigned = true;
+
+            if(scope.group){
+              scope.notAssigned = false;
+            }
+
+            if (!scope.isAnonymous) {
+              scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+              scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+            }
+          }
+
         if (scope.campaign) {
           // Verify the status of the campaign and show or not show the voting buttons
           var currentComponent = Campaigns.getCurrentComponent(scope.campaign.components);

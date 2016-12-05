@@ -71,6 +71,7 @@
           if (!scope.isAnonymous) {
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
             scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+            setupMembershipInfo(scope);
           }
         }
 

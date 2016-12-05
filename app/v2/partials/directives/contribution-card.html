@@ -52,15 +52,7 @@
           </ul>
           <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
             <div class="content">
-              <ul>
-                <li class="action__edit" ng-if="userIsAuthor"><a href="#">{{'Edit' | translate}}</a></li>
-                <li class="action__publish" ng-if="userIsWorkingGroupCoordinator"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
-                <li class="action__feedback"><a href="" ng-click="myObject.updateFeedback()">{{'Give Feedback' | translate}}</a></li>
-                <li class="action__exclude" ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
-                <li class="action__history"><a href="#">{{'See history' | translate}}</a></li>
-                <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
-                <li class="action__delete" ng-if="userIsAssemblyCoordinator ||  userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
-              </ul>
+              <contribution-contextual-items contribution="contribution"></contribution-contextual-items>
             </div>
           </div>
         </div>
@@ -171,12 +163,7 @@
 
         <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
           <div class="content">
-            <ul>
-              <li class="action__edit" ng-if="userIsAuthor"><a href="#">{{'Edit' | translate}}</a></li>
-              <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a href="#">{{'Assign' | translate}}</a></li>
-              <li class="action__promote" ng-if="userIsWorkingGroupCoordinator"><a href="#">{{'Promote to contribution' | translate}}</a></li>
-              <li class="action__history"><a href="#">{{'See history' | translate}}</a></li>
-            </ul>
+            <contribution-contextual-items contribution="contribution"></contribution-contextual-items>
           </div>
         </div>
       </div>

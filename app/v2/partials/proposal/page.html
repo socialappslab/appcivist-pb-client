@@ -67,13 +67,7 @@
 
           <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
             <div class="content">
-              <ul>
-                <li class="li-action-menu"><a href="#">{{'Edit' | translate}}</a></li>
-                <li class="li-action-menu" ng-if="userIsWorkingGroupCoordinator"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
-                <li class="li-action-menu"><a href="#">{{'Exclude' | translate}}</a></li>
-                <li class="li-action-menu"><a href="#">{{'Archive' | translate}}</a></li>
-                <li class="li-action-menu"><a href="#">{{'See history' | translate}}</a></li>
-              </ul>
+              <contribution-contextual-items contribution="proposal"></contribution-contextual-items>
             </div>
           </div>
         </div>

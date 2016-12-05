@@ -37,8 +37,7 @@
         scope.showActionMenu = !scope.showActionMenu;
       };
       // Read user contribution feedback
-      $scope.userFeedback = $scope.userFeedback !== null ?
-        $scope.userFeedback : { 'up': false, 'down': false, 'fav': false, 'flag': false };
+      $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.cm = {
         isHover: false

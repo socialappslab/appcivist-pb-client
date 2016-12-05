@@ -1,150 +1,186 @@
-<main class="app-main" ng-class="{anonymous: isAnonymous}">
-  <section class="panel intro">
-    <p class="heading--header">{{'Proposal' | translate}}</p>
-    <h1 class="heading--title">{{proposal.title}}</h1>
-    <p>{{proposal.text}}</p>
-    <p class="heading--subheader">
-      {{'in.wg.message.prev' | translate}}
-      <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/group/{{groupID}}">{{group.name}}</a>
-      <a ng-if="isAnonymous" ng-href="/#/v2/group/{{group.uuid}}">{{group.name}}</a>
-      {{'in.wg.message.next' | translate}}
-    </p>
-    <div class="tags">
-      <span ng-repeat="theme in proposal.themes track by $index"><a href="#">{{theme.title}}</a></span>
-    </div>
-    <div class="action-bar">
+<style>
+  .page__header a {
+    text-decoration: none;
+  }
+
+  .action-bar .action-button {
+    margin-top: 10px;
+  }
+
+  .action-button svg g {
+    fill: #11493b;
+  }
+
+  .campaign_cards .attachments {
+    float: left;
+  }
+
+  .campaign_cards .attachments-shrinked {
+    width: 60%;
+  }
+
+  .campaign_cards .list--ideas {
+    left: 0;
+  }
+</style>
+
+<main class="appmain" ng-class="{anonymous: isAnonymous}">
+  <article class="proposal__single">
+    <header class="page__header">
+      <div class="type">
+        {{'Proposal' | translate}}
+        <span class="status">— {{proposal.status}}</span>
+      </div>
+      <div class="title_block">
+        <h1 class="heading--title">{{proposal.title}}</h1>
+
+        <div class="heading_actions">
+          <ul class="actions">
+            <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
+              <a href="#">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px"
+                  height="16px" viewBox="0 0 16 16" xml:space="preserve">
+                  <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
+		c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
+		c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
+		c-0.084,0-0.174-0.03-0.271-0.094l-1.438-1.124c-0.306,0.159-0.621,0.291-0.947,0.396c-0.111,0.944-0.213,1.59-0.303,1.937
+		c-0.048,0.195-0.173,0.293-0.375,0.293H6.843c-0.097,0-0.182-0.029-0.255-0.089c-0.074-0.059-0.113-0.134-0.12-0.225l-0.292-1.916
+		c-0.34-0.111-0.653-0.24-0.938-0.386l-1.468,1.114c-0.07,0.063-0.156,0.094-0.261,0.094c-0.097,0-0.184-0.037-0.26-0.114
+		c-0.875-0.791-1.447-1.374-1.719-1.748c-0.048-0.07-0.073-0.15-0.073-0.239c0-0.084,0.028-0.165,0.084-0.24
+		c0.104-0.146,0.281-0.376,0.531-0.692c0.25-0.317,0.438-0.562,0.562-0.734c-0.188-0.348-0.33-0.691-0.427-1.032L0.302,9.51
+		C0.211,9.496,0.139,9.451,0.083,9.379C0.027,9.306,0,9.226,0,9.135V6.822c0-0.083,0.027-0.164,0.083-0.239
+		c0.056-0.077,0.122-0.122,0.199-0.137l1.937-0.291c0.097-0.32,0.232-0.638,0.406-0.958C2.347,4.802,1.976,4.323,1.51,3.759
+		C1.441,3.676,1.406,3.593,1.406,3.51c0-0.07,0.032-0.149,0.094-0.24c0.181-0.25,0.523-0.623,1.025-1.119
+		C3.029,1.654,3.357,1.405,3.51,1.405c0.09,0,0.18,0.036,0.271,0.104l1.438,1.116C5.524,2.464,5.84,2.332,6.167,2.228
+		c0.11-0.943,0.211-1.589,0.302-1.937C6.517,0.098,6.642,0,6.843,0h2.312C9.252,0,9.337,0.029,9.41,0.089
+		c0.073,0.058,0.113,0.134,0.12,0.223l0.291,1.916c0.341,0.111,0.653,0.24,0.938,0.387l1.479-1.116
+		c0.062-0.062,0.146-0.094,0.25-0.094c0.09,0,0.177,0.036,0.26,0.104c0.896,0.827,1.469,1.417,1.719,1.771
+		c0.048,0.057,0.073,0.132,0.073,0.229c0,0.083-0.028,0.163-0.084,0.239c-0.104,0.146-0.28,0.376-0.53,0.693
+		c-0.251,0.315-0.438,0.56-0.563,0.734c0.181,0.347,0.323,0.688,0.427,1.02l1.906,0.292c0.09,0.014,0.163,0.057,0.219,0.13
+		C15.971,6.69,15.998,6.773,15.998,6.863z M9.884,9.884c0.521-0.52,0.781-1.149,0.781-1.886c0-0.736-0.26-1.364-0.781-1.884
+		c-0.52-0.522-1.149-0.782-1.885-0.782c-0.735,0-1.364,0.26-1.885,0.782C5.593,6.634,5.333,7.262,5.333,7.998
+		c0,0.736,0.26,1.366,0.781,1.886c0.521,0.521,1.149,0.78,1.885,0.78C8.735,10.664,9.364,10.404,9.884,9.884z"></path>
+                </svg>
+              </a>
+            </li>
+          </ul>
+
+          <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
+            <div class="content">
+              <ul>
+                <li class="li-action-menu"><a href="#">{{'Edit' | translate}}</a></li>
+                <li class="li-action-menu" ng-if="userIsWorkingGroupCoordinator"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
+                <li class="li-action-menu"><a href="#">{{'Exclude' | translate}}</a></li>
+                <li class="li-action-menu"><a href="#">{{'Archive' | translate}}</a></li>
+                <li class="li-action-menu"><a href="#">{{'See history' | translate}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="parent_working_group">
+        <i class="fa fa-group"></i>
+        <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/group/{{groupID}}">{{group.name}}</a>
+        <a ng-if="isAnonymous" ng-href="/#/v2/group/{{group.uuid}}">{{group.name}}</a> {{'in.wg.message.next' | translate}}
+      </p>
+      <ul class="tags">
+        <li ng-repeat="theme in proposal.themes track by $index"><a href="">{{theme.title}}</a></li>
+      </ul>
+      <div class="attribution">
+        <p class="heading--subheader">Created by</p>
+        <member-card></member-card>
+      </div>
+      <p class="description">{{proposal.text}}</p>
       <div class="voting-buttons">
         <div class="vote-button upvote">
           <a class="heading--small" ng-click="updateFeedback('up')">
-            <i class="fa fa-chevron-up"></i>
-            {{proposal.stats.ups}}
+            <i class="fa fa-chevron-up"></i> {{proposal.stats.ups}}
           </a>
         </div>
         <div class="vote-button downvote">
           <a class="heading--small" ng-click="updateFeedback('down')">
-            <i class="fa fa-chevron-down"></i>
-            {{proposal.stats.downs}}
+            <i class="fa fa-chevron-down"></i> {{proposal.stats.downs}}
           </a>
         </div>
       </div>
-      <div class="action-button">
-        <!--<input id="menu04" type="checkbox" name="menu" />-->
-        <div ng-click="myObject.refreshMenu()">
-          <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>{{'more' | translate}}</title>
-              <defs></defs>
-              <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
-                  <g id="more">
-                      <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
-                  </g>
-              </g>
-          </svg>
+    </header>
+
+    <section class="etherpad__embed text-created-attachments-similar">
+      <section class="temp-array proposal-text">
+        <div class="panel__heading">
+          <h2 class="heading--header">{{'Proposal Text' | translate }}</h2>
         </div>
-        <ul ng-class="{'action-menu' : showActionMenu == true}" class="ul-action-menu">
-            <li class="li-action-menu"><a href="#">{{'Edit' | translate}}</a></li>
-            <li class="li-action-menu"><a href="#">{{'Exclude' | translate}}</a></li>
-            <li class="li-action-menu"><a href="#">{{'Archive' | translate}}</a></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel intro">
-    <p class="heading--header">{{'Proposal Status' | translate }}</p>
-    <span class="label label-default">{{proposal.status}}</span>
-  </section>
-
-  <section class="panel text-created-attachments-similar">
-    <section class="temp-array proposal-text">
-      <div class="panel-heading">
-        <h1 class="heading--header">{{'Proposal Text' | translate }}</h1>
-      </div>
-      <div class="row etherpad">
-          <iframe ng-if="!userIsAuthor"
-                  name="embed_readonly"
-                  ng-src="{{etherpadReadOnlyUrl}}"
-                  width="100%"
-                  height="600px">
+        <div class="etherpad__wrapper">
+          <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
           </iframe>
-          <iframe ng-if="userIsAuthor" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
-                  width="100%" height="600px">
+          <iframe ng-if="userIsAuthor" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
           </iframe>
+        </div>
+      </section>
+    </section>
+
+    <section class="proposals_and_ideas">
+      <div class="campaign_cards">
+        <section class="attachments tex-created-attachments-similar" ng-class="{'attachments-shrinked': ideasSectionExpanded}">
+          <section class="temp-array created-attachments-similar">
+            <div class="file_attachments">
+              <div class="panel-heading">
+                <h2 class="heading--header">{{'Attachments' | translate}}</h2>
+                <div class="heading--small">
+                  <a href="" ng-if="!isAnonymous"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
+                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
+                </div>
+              </div>
+            </div>
+
+            <div class="card-list" ng-repeat="file in proposal.attachments">
+              <div class="action-bar small-card file-card">
+                <figure>
+                  <a ng-href="{{file.url}}" target="_blank">
+                    <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon"
+                    />
+                    <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
+                  </a>
+                </figure>
+                <h4>
+                  {{(file.name && file.name != "" ? file.name : file.url)}}
+                </h4>
+                <div class="action-button">
+                  <input id="menu04" type="checkbox" name="menu" ng-checked="file.checked" hidden/>
+                  <svg ng-click="file.checked = !file.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <title>{{'more' | translate}}</title>
+                    <defs></defs>
+                    <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">
+                      <g id="more">
+                        <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                      </g>
+                    </g>
+                  </svg>
+                  <ul class="action-menu">
+                    <li><a href="">{{'Delete' | translate}}</a></li>
+                    <li><a href="">{{'Rename' | translate}}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+
+        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
+          <header class="ideas__header">
+            <h2 class="heading--header">Ideas</h2>
+            <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;Hide Ideas</a>&nbsp;&nbsp;
+          </header>
+
+          <div class="list__cards container__ideas">
+            <contribution-card ng-repeat="idea in relatedContributions track by $index" class="card__idea" contribution="idea" show-voting-buttons="false"></contribution-card>
+          </div>
+        </section>
       </div>
     </section>
-  </section>
 
-  <section class="panel text-created-attachments-similar">
-    <section class="temp-array created-attachments-similar">
-      <div class="panel-heading">
-        <h1 class="heading--header">{{'Created by' | translate}}</h1>
-      </div>
-      <div class="card-list">
-        <div class="action-bar">
-          <div class="member-card">
-            <figure><img src="http:&#x2F;&#x2F;placeimg.com&#x2F;100&#x2F;100&#x2F;any&#x2F;sepia" alt="Avatar" /></figure>
-            <h4><a href="">Jacobus Sneiders</a>
-          </div>
-          <div class="action-button">
-            <input id="menu04" type="checkbox" name="menu" />
-            <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>{{'more' | translate}}</title>
-              <defs></defs>
-              <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
-              <g id="more">
-              <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
-              </g>
-              </g>
-            </svg>
-            <ul class="action-menu">
-              <li><a href="#">{{'Message this user' | translate}}</a></li>
-              <li><a href="#">{{'Remove this user' | translate}}</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="panel-heading">
-        <h1 class="heading--header">{{'Attachments' | translate}}</h1>
-        <p ng-if="!isAnonymous" class="heading--small"><a href="#"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a></p>
-      </div>
-      <div class="card-list" ng-repeat="file in proposal.attachments">
-        <div class="action-bar small-card file-card">
-          <figure>
-            <a ng-href="{{file.url}}" target="_blank">
-              <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon" />
-              <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
-            </a>
-          </figure>
-          <h4>
-            {{(file.name && file.name != "" ? file.name : file.url)}}
-          </h4>
-          <div class="action-button">
-            <input id="menu04" type="checkbox" name="menu" />
-            <svg width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <title>{{'more' | translate}}</title>
-              <defs></defs>
-              <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)" >
-              <g id="more">
-              <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
-              </g>
-              </g>
-            </svg>
-            <ul class="action-menu">
-              <li><a href="#">{{'Delete' | translate}}</a></li>
-              <li><a href="#">{{'Rename' | translate}}</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <h1 class="heading--header">{{'Similar Proposals' | translate}}</h1>
-      <dl ng-repeat="related in relatedContributions">
-        <dt>
-          <a ng-href="#/v2/assembly/{{related.assemblyId}}/group/{{related.groupId}}/proposal/{{related.contributionId}}">
-            {{related.title|limitTo:97}}{{(related.title.length) > 97 ? '...' : '.' }}
-          </a>
-        </dt>
-        <dd class="heading--small">{{related.text}}</dd>
-      </dl>
-    </section>
-  </section>
-  <discussion-panel space-id="proposalID" endpoint="contribution"></discussion-panel>
+    <discussion-panel space-id="proposalID" endpoint="contribution"></discussion-panel>
+  </article>
 </main>

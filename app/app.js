@@ -190,7 +190,7 @@
       })
       .state('v2.assembly.aid.group.gid.proposal.pid', {
         url: '/:pid',
-        templateUrl: 'app/v2/partials/contribution/page.html',
+        templateUrl: 'app/v2/partials/proposal/page.html',
         controller: 'v2.ProposalPageCtrl'
       })
       .state('v2.space', {

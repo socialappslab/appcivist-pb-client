@@ -30,19 +30,19 @@
               <a ng-if="false" href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             </p>
           </div>
-          <activity-card ng-repeat="activity in activities track by $index" activity="activity"></activity-card>
+          <activity-card ng-repeat="activity in activities | limitTo:activitiesLimit track by $index " activity="activity"></activity-card>
           <p ng-if="!activities || activities.length === 0" class="card">{{'no.latest.activity' | translate}}</p>
         </section>
         <section class="members-panel">
           <div class="panel-heading panel-heading-relative">
             <h1 class="heading--header">{{'Members' | translate}}</h1>
             <p class="heading--small">
-              <!-- TODO: implement this views -->
-              <a ng-if="false" href="&#x2F;patterns&#x2F;03-templates-07-all-proposals-view&#x2F;03-templates-07-all-proposals-view.html"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+              <a href="" ng-click="toggleAllMembers()"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+              <!-- TODO: implement this view -->
               <a ng-if="false" href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
             </p>
           </div>
-          <div class="card-list" ng-repeat="member in members">
+          <div class="card-list" ng-repeat="member in members | limitTo:membersLimit">
             <div class="action-bar">
               <member-card user="member.user"></member-card>
               <div class="action-button">

@@ -30,10 +30,13 @@
         $scope.user = localStorageService.get('user');
         loadAssembly();
       }
+      $scope.activitiesLimit = 4;
+      $scope.membersLimit = 5;
       $scope.ideasSectionExpanded = false;
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
+      $scope.toggleAllMembers = toggleAllMembers.bind($scope);
     }
 
     function loadAssembly() {
@@ -164,6 +167,14 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+    }
+
+    function toggleAllMembers() {
+      if ($scope.membersLimit <= 5 ) {
+        $scope.membersLimit = 10;  // TODO: instead of 10, use lenght of member list
+      } else {
+        $scope.membersLimit = 5;
+      }
     }
 
     /**

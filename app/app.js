@@ -43,40 +43,18 @@
   };
 
   var etherpad = {
-    server: "https://etherpad.appcivist.org/"
+    server: "https://etherpad.appcivist.org/",
+    testserver: "https://testetherpad.appcivist.org/"
   };
 
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
   var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
   var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
-  var etherpadServerURL = etherpad.server;
-  var hideLogin = (window.location.hostname==="appcivist.org" || window.location.hostname==="www.appcivist.org");
-
-  var helpInfo = {
-    assemblyDefinition: "Assemblies are group of citizens with common interests",
-    locationTooltip: "Can be the name of a specific place, address, city or country associated with your assembly",
-    targetAudienceTooltip: "Describe who you want to participate",
-    supportedMembershipRegistrationTooltip: "Members can be invited or request to join the assembly, or both.",
-    moderatorsTooltip: "Moderators are assembly members empowered to delete inappropriate content. AppCivist " +
-    "recommends that assemblies have at least two. An alternative is to allow all members to be moderators. In both " +
-    "cases at least two moderators must agree.",
-    coordinatorsTooltip: "Coordinators are assembly members empowered to change settings",
-    invitationsTooltip: "Add one or more email addresses of people you want to invite, separated by comma, then click " +
-    "add to list",
-    invitationsEmailTooltip: "Each invitee will receive the following email",
-    listedAssemblyTooltip: "If true, the 'profile' of the assembly will be searchable and public",
-    campaignDefinition: "Campaigns are initiatives that the assembly undertakes to achieve a specific goal. Each " +
-    "campaign has its own template that structures its components, working groups, and timeline.",
-    campaignTemplateTooltip: "The campaign template determines an initial configuration of the proposal development " +
-    "components. Linking to another campaign will bring that campaign's configuration",
-    campaignFastrackTooltip: "Fastrack uses default values for each stage of a " +
-    "campaign (e.g., default dates and duration, default configuration values)",
-    proposalTimeline: "Click on the stage name to activate or deactivate the stages you wish to include in your " +
-    "campaign. Stages shown as disabled take place in the linked campaign.",
-    campaignTimeframeTooltip: "Select a period of time to represent in the timeline below.",
-    componentContributionTemplateTooltip: "A proposal template is the list of sections (with its descriptions) that " +
-    "are used to initialized proposal drafts"
-  };
+  var etherpadServerURL = (window.location.hostname === "testpb.appcivist.org"
+                              || window.location.hostname === "localhost")
+                                  ? etherpad.testserver : etherpad.server;
+  var hideLogin = (window.location.hostname === "appcivist.org"
+                              || window.location.hostname === "www.appcivist.org");
 
   /**
    * AngularJS initial configurations:
@@ -447,7 +425,6 @@
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
-    localStorageService.set("help", helpInfo);
     localStorageService.set("hideLogin", hideLogin);
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       // redirect to login page if not logged in and trying to access a restricted page
@@ -584,7 +561,6 @@
       return apis.development;
     }
   }
-
 
   // expose global variables
   window.appCivistApp = appCivistApp;

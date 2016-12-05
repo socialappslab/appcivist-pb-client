@@ -24,6 +24,7 @@
     function setupMembershipInfo(scope) {
       var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
       rsp.$promise.then(function (data) {
+        // TODO ASK THIS ONCE SOMEWHERE ELSE AND STORE IN LOCAL STORAGE
         scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
       });
     }

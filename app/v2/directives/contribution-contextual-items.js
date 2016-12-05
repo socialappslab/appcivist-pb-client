@@ -24,7 +24,12 @@
     function setupMembershipInfo(scope) {
       //scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.contribution);
 
+      // TODO: do not ask the server for membership and authorship here, store this information and get it
+      // on loading at the beginning
       scope.userIsAuthor = true;
+      scope.userCanEdit = true;
+      scope.userIsAssemblyCoordinator = true;
+      scope.userIsWorkingGroupCoordinator = true;
       //var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.group).get();
       //authorship.$promise.then(function (response) {
       //  scope.userCanEdit = response.responseStatus === 'OK';

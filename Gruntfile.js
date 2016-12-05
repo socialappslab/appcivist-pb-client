@@ -6,11 +6,21 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+        mangle: false,
+        compress: {
+          drop_console: true
+        }
       },
       build: {
         src: 'app/js/app.js',
         dest: 'dist/<%= pkg.name %>.min.js'
+      },
+      dist: {
+        files: {
+          './dist/scripts/app.js': ['./dist/scripts/app.js'],
+          './dist/scripts/ui.js': ['./dist/scripts/ui.js']
+        }
       }
     },
     jshint: {
@@ -65,7 +75,7 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      src: ['dist', 'app/css/app.css', 'app/css/app.css.map'],
+      src: ['dist/*', 'app/css/app.css', 'app/css/app.css.map'],
       dist: {
         files: [
           {
@@ -73,8 +83,7 @@ module.exports = function (grunt) {
             src: ['.tmp', './dist/*']
           }
         ]
-      },
-      server: '.tmp'
+      }
     },
     htmlmin: {
       dist: {
@@ -126,21 +135,6 @@ module.exports = function (grunt) {
       },
       dist: {}
     },
-    uglify: {
-      options: {
-        mangle: false,
-        compress: {
-          drop_console: true
-        }
-      },
-      dist: {
-        files: {
-          './dist/scripts/app.js': ['./dist/scripts/app.js'],
-          './dist/scripts/ui.js': ['./dist/scripts/ui.js']
-        }
-
-      }
-    },
     copy: {
       dist: {
         files: [
@@ -175,5 +169,5 @@ module.exports = function (grunt) {
   ]);
 
   // Server tasks
-  grunt.registerTask('server', ['clean', 'sass', 'uglify', 'jshint', 'haml', 'connect', 'watch']);
+  grunt.registerTask('server', ['clean', 'sass', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
 };

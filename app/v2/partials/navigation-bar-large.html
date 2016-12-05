@@ -1,16 +1,16 @@
-<!--<style>-->
-  <!--.nav&#45;&#45;active button.button__nav_toggle,-->
-  <!--button.button__nav_toggle:hover,-->
-  <!--button.button__nav_toggle:focus {-->
-    <!--background-color: #009877;-->
-    <!--color: #fff;-->
-  <!--}-->
+<style>
+  .nav--active button.button__nav_toggle,
+  button.button__nav_toggle:hover,
+  button.button__nav_toggle:focus {
+    background-color: #009877;
+    color: #fff;
+  }
 
-  <!--button.button__nav_toggle {-->
-    <!--background-color: #fff;-->
-    <!--color: #009877;-->
-  <!--}-->
-<!--</style>-->
+  button.button__nav_toggle {
+    background-color: #fff;
+    color: #009877;
+  }
+</style>
 <nav id="appcivist__nav" class="navigation" ng-class="{'nav--active': nav.isActive}">
   <div class="nav__container">
     <button class="button__nav_toggle" ng-click="toggleNavigation()">☰</button>
@@ -20,9 +20,7 @@
       <h2>Vallejo, CA</h2>
     </header>
 
-    <!--<div class="user__logged_in">-->
     <member-card action-bar="true"></member-card>
-    <!--</div>-->
 
     <section class="my_working_groups">
       <h3 class="section_header">{{'My Working Groups' | translate}}</h3>

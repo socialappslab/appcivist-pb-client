@@ -148,6 +148,7 @@ module.exports = function (grunt) {
               'assets/**/*',
               'index.html',
               'app/**/*.html',
+              'app/**/*.js',
               'bower_components/vex/dist/css/vex.css',
               'bower_components/vex/dist/css/vex-theme-plain.css',
               'bower_components/appcivist-patterns/dist/css/**/*',

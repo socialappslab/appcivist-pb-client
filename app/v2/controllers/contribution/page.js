@@ -96,8 +96,12 @@
           var campaignIds = data.campaignIds;
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
-          console.log('DATA', data);
-          $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision);
+
+          if(data.extendedTextPad){
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision);
+          }else{
+            console.warn('Proposal with no PAD associated');
+          }
 
           if (!scope.isAnonymous) {
             verifyAuthorship(scope.proposal);

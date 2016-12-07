@@ -167,6 +167,22 @@ module.exports = function (grunt) {
             src: [
               '**/*',
             ]
+          },{
+            expand: true,
+            dot: true,
+            cwd: './bower_components/appcivist-patterns/dist/fonts',
+            dest: './dist/fonts/',
+            src: [
+              '**/*',
+            ]
+          },{
+            expand: true,
+            dot: true,
+            cwd: './bower_components/appcivist-patterns/dist/images',
+            dest: './dist/images/',
+            src: [
+              '**/*',
+            ]
           }
         ]
       }

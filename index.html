@@ -6,17 +6,26 @@
   <title>AppCivist</title>
   <!-- Latest compiled and minified Bootstrap CSS -->
   <!-- build:css stylesheets/vendor.css -->
-  <link rel="stylesheet" href='bower_components/bootstrap/dist/css/bootstrap.css'>
-  <link rel="stylesheet" href='bower_components/bootstrap/dist/css/bootstrap-theme.css'>
-  <link rel="stylesheet" href="bower_components/angular-multi-slider/multislider.css">
-  <link rel="stylesheet" media="screen" href="stylesheets/lib/glyph.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,200italic,600italic&subset=latin,vietnamese'
+  <link data-version="v1" rel="stylesheet" href='bower_components/bootstrap/dist/css/bootstrap.css'>
+  <link data-version="v1" rel="stylesheet" href='bower_components/bootstrap/dist/css/bootstrap-theme.css'>
+  <link data-version="v1" rel="stylesheet" href="bower_components/angular-multi-slider/multislider.css">
+  <link data-version="v1" rel="stylesheet" media="screen" href="stylesheets/lib/glyph.css">
+  <link data-version="v1" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link data-version="v1" href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600,200italic,600italic&subset=latin,vietnamese'
     rel='stylesheet' type='text/css'>
   <!-- endbuild -->
 
-  <link rel="stylesheet" media="screen" href="app/css/app.css">
+  <link data-version="v1" rel="stylesheet" media="screen" href="app/css/app.css">
 
+  <!-- V2 styles -->
+  <!-- build:css stylesheets/app.v2.css -->
+  <link data-version="v2" rel="stylesheet" href="bower_components/vex/dist/css/vex.css" />
+  <link data-version="v2" rel="stylesheet" href="bower_components/vex/dist/css/vex-theme-plain.css" />
+  <link data-version="v2" rel="stylesheet" media="all" href="bower_components/appcivist-patterns/dist/css/style.css">
+  <link data-version="v2" rel="stylesheet" href="bower_components/ng-notify/dist/ng-notify.min.css">
+  <link data-version="v2" rel="stylesheet" href="bower_components/ng-notify/dist/ng-notify.min.css">
+  <!-- endbuild -->
+  <!-- end of V2 styles -->
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Start of appcivist Zendesk Widget script -->
@@ -26,6 +35,8 @@
 </head>
 
 <body>
+  <reset-style></reset-style>
+
   <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>
   <div header ng-if="!ui.v2"></div>
   <div class="container-fluid" id="wrap" ng-if="!ui.v2">
@@ -133,8 +144,4 @@
 <script src="app/v2/services/notify.js" type="text/javascript"></script>
 <script src="app/v2/services/modal.js" type="text/javascript"></script>
 <!-- endbuild -->
-
-
-<reset-style></reset-style>
-
 </html>

@@ -16,9 +16,6 @@
     activate();
 
     function activate() {
-      $rootScope.ui = {
-        v2: true
-      };
       $scope.user = localStorageService.get('user');
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
       $scope.isLoginPage = location.hash.includes('v2/login');

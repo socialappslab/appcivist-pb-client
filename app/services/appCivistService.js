@@ -658,7 +658,6 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
                 var query = filters || {};
                 query.type = type;
                 query.pageSize = 16;
-                console.log('getContributions', target);
 
                 if (isAnonymous) {
                     rsp = Contributions.contributionInResourceSpaceByUUID(target.rsUUID).query(query);

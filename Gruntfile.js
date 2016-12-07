@@ -150,14 +150,15 @@ module.exports = function (grunt) {
               'app/**/*.html',
               'bower_components/vex/dist/css/vex.css',
               'bower_components/vex/dist/css/vex-theme-plain.css',
-              'bower_components/appcivist-patterns/dist/{css,fonts,images}/**/*',
+              'bower_components/appcivist-patterns/dist/css/**/*',
+              'bower_components/appcivist-patterns/dist/fonts/**/*',
+              'bower_components/appcivist-patterns/dist/images/**/*',
               'bower_components/ng-notify/dist/ng-notify.min.css',
-              'bower_components/appcivist-patterns/dist/images/file-icon.png',
               'stylesheets/**/*',
               'app/css/app.css',
               'bower_components/angular-i18n/**/*.js'
             ]
-          },{
+          }, {
             expand: true,
             dot: true,
             cwd: './stylesheets/font',

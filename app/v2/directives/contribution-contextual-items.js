@@ -22,23 +22,24 @@
     }
 
     function setupMembershipInfo(scope) {
-      scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.contribution);
+      //scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.contribution);
 
-      var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.group).get();
-      authorship.$promise.then(function (response) {
-        scope.userCanEdit = response.responseStatus === 'OK';
-        scope.userIsAuthor = scope.userCanEdit;
-      });
-
-      var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
-      rsp.$promise.then(function (data) {
-        scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
-      });
-
-      rsp = Memberships.membershipInGroup(scope.groupId, scope.user.userId).get();
-      rsp.$promise.then(function (data) {
-        scope.userIsWorkingGroupCoordinator = hasRole(data.roles, 'COORDINATOR');
-      });
+      scope.userIsAuthor = true;
+      //var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.group).get();
+      //authorship.$promise.then(function (response) {
+      //  scope.userCanEdit = response.responseStatus === 'OK';
+      //  scope.userIsAuthor = scope.userCanEdit;
+      //});
+      //
+      //var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
+      //rsp.$promise.then(function (data) {
+      //  scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
+      //});
+      //
+      //rsp = Memberships.membershipInGroup(scope.groupId, scope.user.userId).get();
+      //rsp.$promise.then(function (data) {
+      //  scope.userIsWorkingGroupCoordinator = hasRole(data.roles, 'COORDINATOR');
+      //});
     }
 
     function setContributionType(scope) {

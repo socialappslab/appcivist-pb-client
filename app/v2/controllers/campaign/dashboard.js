@@ -45,7 +45,7 @@
       $scope.myObject.refreshMenu = function () {
         $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;
       };
-      $scope.modals =  {
+      $scope.modals = {
         proposalNew: false
       };
       $scope.isModalOpened = isModalOpened.bind($scope);
@@ -87,24 +87,24 @@
           if (!$scope.proposals) {
             $scope.proposals = [];
           }
-        });
 
-        // get ideas
-        Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function (response) {
-          $scope.ideas = response;
+          // get ideas
+          Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function (response) {
+            $scope.ideas = response;
 
-          if (!$scope.ideas) {
-            $scope.ideas = [];
-          }
-        });
+            if (!$scope.ideas) {
+              $scope.ideas = [];
+            }
+          });
 
-        // get discussions
-        Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function (response) {
-          $scope.discussions = response;
+          // get discussions
+          Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function (response) {
+            $scope.discussions = response;
 
-          if (!$scope.discussions) {
-            $scope.discussions = [];
-          }
+            if (!$scope.discussions) {
+              $scope.discussions = [];
+            }
+          });
         });
       });
     }

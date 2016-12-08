@@ -6,7 +6,7 @@
 
   ProfileCtrl.$inject = [
     '$scope', '$resource', '$location', 'localStorageService', '$http',
-    'loginService', 'Notify', $translate
+    'loginService', 'Notify', '$translate'
   ];
 
   function ProfileCtrl($scope, $resource, $location, localStorageService, $http,

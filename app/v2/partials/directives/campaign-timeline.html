@@ -21,13 +21,13 @@
   <h2 class="heading--header">{{title}}</h2>
   <div ng-if="!onlyLabel" class="timeline">
     <div class="markers">
-      <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass" ng-mouseenter="component.isHover = true">
+      <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass" ng-mouseenter="toggleComponent(component, components)">
         <div class="marker"></div>
         <div class="label">{{component.title}}</div>
         <header class="page__header">
           <div class="title_block">
             <div class="heading_actions">
-              <div class="contextual_menu" ng-class="{active: component.isHover}" ng-mouseleave="component.isHover = false" style="top: -2em; left: auto; right: -2.1em;">
+              <div class="contextual_menu" ng-class="{active: component.isHover}" ng-mouseleave="toggleComponent(component, components)" style="top: -2em; left: auto; right: -2.1em;">
                 <div class="content">
                   <ul>
                     <li ng-repeat="milestone in component.milestones track by $index" class="li-action-menu">

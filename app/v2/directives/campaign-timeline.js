@@ -76,10 +76,16 @@
           milestone.showDescription = !milestone.showDescription;
         }
 
-        scope.clearMilestonesMenu = function(components) {
-          angular.forEach(components, function(c) {
+        scope.clearMilestonesMenu = function (components) {
+          angular.forEach(components, function (c) {
             c.isHover = false;
           });
+        }
+
+        scope.toggleComponent = function (component, components) {
+          var isHover = component.isHover;
+          this.clearMilestonesMenu(components);
+          component.isHover = !isHover;
         }
       }
     };

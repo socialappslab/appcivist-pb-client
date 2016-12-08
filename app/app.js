@@ -44,15 +44,16 @@
 
   var etherpad = {
     server: "https://etherpad.appcivist.org/",
-    testserver: "https://testetherpad.appcivist.org/"
+    testserver: "https://testetherpad.appcivist.org/",
+    localserver: "http://localhost:9001/"
   };
 
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
   var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
   var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
-  var etherpadServerURL = (window.location.hostname === "testpb.appcivist.org"
-                              || window.location.hostname === "localhost")
-                                  ? etherpad.testserver : etherpad.server;
+  var etherpadServerURL = (window.location.hostname === "testpb.appcivist.org")
+                                  ? etherpad.testserver : (window.location.hostname === "localhost")
+                                    ?  etherpad.localserver : etherpad.server;
   var hideLogin = (window.location.hostname === "appcivist.org"
                               || window.location.hostname === "www.appcivist.org");
 

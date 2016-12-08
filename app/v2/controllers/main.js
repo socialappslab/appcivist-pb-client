@@ -7,16 +7,18 @@
 
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'FlashService',
-    '$rootScope', 'loginService'
+    '$rootScope', 'loginService', '$translate'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashService,
-    $rootScope, loginService) {
+    $rootScope, loginService, $translate) {
 
     activate();
 
     function activate() {
       $scope.user = localStorageService.get('user');
+      if ($scope.user && $scope.user.language)
+        $translate.use($scope.user.language);
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
       $scope.isLoginPage = location.hash.includes('v2/login');
       $scope.showSmallMenu = false;

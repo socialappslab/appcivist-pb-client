@@ -8,11 +8,11 @@
 
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Space'
+    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships, Space) {
+    $filter, localStorageService, FlashService, Memberships, Space, $translate) {
 
     activate();
 
@@ -29,6 +29,8 @@
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+          $translate.use($scope.user.language);
       }
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection;

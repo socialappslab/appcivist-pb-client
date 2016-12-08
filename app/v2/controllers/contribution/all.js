@@ -8,11 +8,11 @@ angular
 
 ProposalsCtrl.$inject = [
   '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-  'localStorageService', 'FlashService', '$rootScope', 'Space', '$window', 'Notify'
+  'localStorageService', 'FlashService', '$rootScope', 'Space', '$window', 'Notify', '$translate'
 ];
 
 function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-                          $filter, localStorageService, FlashService, $rootScope, Space, $window) {
+                          $filter, localStorageService, FlashService, $rootScope, Space, $window, $translate) {
 
   activate();
 
@@ -34,6 +34,8 @@ function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contribu
     } else {
       $scope.spaceID = ($stateParams.sid) ? parseInt($stateParams.sid) : 0;
       $scope.user = localStorageService.get('user');
+      if ($scope.user && $scope.user.language)
+        $translate.use($scope.user.language);
     }
     loadContributions($scope);
     loadSpace($scope);

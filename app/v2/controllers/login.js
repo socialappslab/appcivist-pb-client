@@ -7,11 +7,11 @@
 
   LoginCtrl.$inject = [
     '$scope', 'localStorageService', 'Notify', 'AppCivistAuth',
-    '$state', '$filter', 'loginService'
+    '$state', '$filter', 'loginService', '$translate'
   ];
 
   function LoginCtrl($scope, localStorageService, Notify, AppCivistAuth,
-    $state, $filter, loginService) {
+    $state, $filter, loginService, $translate) {
 
     activate();
 
@@ -33,6 +33,9 @@
       localStorageService.set('sessionKey', user.sessionKey);
       localStorageService.set('authenticated', true);
       localStorageService.set('user', user);
+      // todo
+      if ($scope.user && $scope.user.language)
+        $translate.use($scope.user.language);
       loginService.loadAuthenticatedUserMemberships(user).then(function () {
         var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
         var assembly = localStorageService.get('currentAssembly');

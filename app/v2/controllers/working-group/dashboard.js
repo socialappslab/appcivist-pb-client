@@ -8,11 +8,11 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Space'
+    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate'
   ];
 
   function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships, Space) {
+    $filter, localStorageService, FlashService, Memberships, Space, $translate) {
 
     activate();
 
@@ -28,6 +28,8 @@
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+          $translate.use($scope.user.language);
         loadAssembly();
       }
       $scope.activitiesLimit = 4;

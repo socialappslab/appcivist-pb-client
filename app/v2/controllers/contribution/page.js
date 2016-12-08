@@ -8,12 +8,12 @@
 
   ProposalPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Etherpad', 'Notify'
+    'localStorageService', 'FlashService', 'Memberships', 'Etherpad', 'Notify', '$translate'
   ];
 
   function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, FlashService, Memberships,
-    Etherpad, Notify) {
+    Etherpad, Notify, $translate) {
 
     activate();
 
@@ -29,6 +29,8 @@
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
         $scope.user = localStorageService.get('user');
+        if ($scope.user && $scope.user.language)
+          $translate.use($scope.user.language);
       }
       loadProposal($scope);
       $scope.showActionMenu = true;

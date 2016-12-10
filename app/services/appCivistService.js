@@ -109,109 +109,199 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
     };
 });
 
-appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService) {
+appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService, Notify) {
     var serverBaseUrl = getServerBaseUrl(localStorageService);
     return {
-        campaigns: function(userUUID, state) {
-            return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', { uuid: userUUID, filter: state });
-        },
-        campaign: function(assemblyId, campaignId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/' + assemblyId + '/campaign/' + campaignId);
-        },
-        campaignByUUID: function(campaignUUID) {
-            return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
-        },
-        newCampaign: function(assemblyId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign',
-                {
-                    aid: assemblyId
-                }
-            );
-        },
-        templates: function() {
-            return $resource(getServerBaseUrl(localStorageService) + '/campaign/template');
-        },
-        defaultNewCampaign: function() {
-            var campaign = {
-                // title : "PB Belleville 2016",
-                // shortname : "pb-belleville-2016
-                // goal: "Develop proposals for Belleville 2016"
-                // url:
-                listed: true,
-                config: {
-                    discussionReplyTo: true,
-                    upDownVoting: true,
-                    budget: 50000,
-                    budgetCurrency: "$"
-                },
-                configs: [
-                    {
-                        key: "campaign.pb.budget",
-                        value: "50.000"
-                    },
-                    {
-                        key: "campaign.pb.budget.currency",
-                        value: "$"
-                    },
-                    {
-                        key: "campaign.discussions.reply.to.comments",
-                        value: true
-                    },
-                    {
-                        key: "campaign.up-down-voting",
-                        value: true
-                    }
-                ],
-                themes: [], // [ {theme:""}, ... ]
-                existingThemes: [], // [ 1, 89, ... ]
-                components: [], // [{...}]
-                existingComponents: [],
-                useLinkedCampaign: false,
-                milestones: []
-            };
-            return campaign;
-        },
+      campaigns: function(userUUID, state) {
+          return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', { uuid: userUUID, filter: state });
+      },
+      campaign: function(assemblyId, campaignId) {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/' + assemblyId + '/campaign/' + campaignId);
+      },
+      campaignByUUID: function(campaignUUID) {
+          return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
+      },
+      newCampaign: function(assemblyId) {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign',
+              {
+                  aid: assemblyId
+              }
+          );
+      },
+      templates: function() {
+          return $resource(getServerBaseUrl(localStorageService) + '/campaign/template');
+      },
+      defaultNewCampaign: function() {
+          var campaign = {
+              // title : "PB Belleville 2016",
+              // shortname : "pb-belleville-2016
+              // goal: "Develop proposals for Belleville 2016"
+              // url:
+              listed: true,
+              config: {
+                  discussionReplyTo: true,
+                  upDownVoting: true,
+                  budget: 50000,
+                  budgetCurrency: "$"
+              },
+              configs: [
+                  {
+                      key: "campaign.pb.budget",
+                      value: "50.000"
+                  },
+                  {
+                      key: "campaign.pb.budget.currency",
+                      value: "$"
+                  },
+                  {
+                      key: "campaign.discussions.reply.to.comments",
+                      value: true
+                  },
+                  {
+                      key: "campaign.up-down-voting",
+                      value: true
+                  }
+              ],
+              themes: [], // [ {theme:""}, ... ]
+              existingThemes: [], // [ 1, 89, ... ]
+              components: [], // [{...}]
+              existingComponents: [],
+              useLinkedCampaign: false,
+              milestones: []
+          };
+          return campaign;
+      },
 
-        /**
-         * Helper method for finding out the current component in the
-         * campaign timeline.
-         *
-         * @param components {Array}: the list of components of the campaign
-         */
-        getCurrentComponent: function(components) {
-            var current;
+      /**
+       * Helper method for finding out the current component in the
+       * campaign timeline.
+       *
+       * @param components {Array}: the list of components of the campaign
+       */
+      getCurrentComponent: function(components) {
+          var current;
 
-            angular.forEach(components, function(c) {
-                var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm').local();
-                startMoment.hour(0);
-                startMoment.minute(0);
-                var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm').local();
-                endMoment.hour(0);
-                endMoment.minute(0);
+          angular.forEach(components, function(c) {
+              var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm').local();
+              startMoment.hour(0);
+              startMoment.minute(0);
+              var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm').local();
+              endMoment.hour(0);
+              endMoment.minute(0);
 
-                if (moment().local().isBetween(startMoment, endMoment)) {
-                    current = c;
-                }
+              if (moment().local().isBetween(startMoment, endMoment)) {
+                  current = c;
+              }
 
-            });
+          });
 
-            if (!current) {
-                current = components[components.length - 1];
-            }
-            return current;
-        },
+          if (!current && components && components.length) {
+              current = components[components.length - 1];
+          }
+          return current;
+      },
 
-        /**
-         * Returns and $resource to interact with /assembly/:aid/campaign/:cid/resource endpoint.
-         *
-         * @param assemblyId {number} Assembly ID
-         * @param campaignId {number} Campaign ID
-         * @return {Array} List of resources associated with the given campaign
-         */
-        resources: function(assemblyId, campaignId) {
-            return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resource',
-                { aid: assemblyId, cid: campaignId });
+      /**
+       * Returns and $resource to interact with /assembly/:aid/campaign/:cid/resource endpoint.
+       *
+       * @param assemblyId {number} Assembly ID
+       * @param campaignId {number} Campaign ID
+       * @return {Array} List of resources associated with the given campaign
+       */
+      resources: function(assemblyId, campaignId) {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resources',
+              { aid: assemblyId, cid: campaignId });
+      },
+
+      timeline: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
+
+        // Get timeline of the campaign
+        var rsp;
+        var query = filters || {};
+        query.all = true;
+
+        if (!isAnonymous) {
+          rsp = this.timelineByCampaignId(assemblyId,campaignId).query(query);
+        } else {
+          rsp = this.timelineByCampaignUUID(campaignUUID).query(query);
         }
+        rsp.$promise.then(
+          function(data) {
+            return data;
+          },
+          function(error) {
+            Notify.show('Error loading contributions from server', 'error');
+          }
+        );
+        return rsp.$promise;
+
+      },
+      timelineByCampaignId: function(assemblyId, campaignId) {
+        return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/timeline', { aid: assemblyId, cid: campaignId});
+      },
+      timelineByCampaignUUID: function(campaignUUID) {
+        return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/timeline', { uuid: campaignUUID});
+      },
+
+      components: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
+
+        // Get components of the campaign
+        var rsp;
+        var query = filters || {};
+        query.all = true;
+
+        if (!isAnonymous) {
+          rsp = this.componentsByCampaignId(assemblyId,campaignId).query(query);
+        } else {
+          rsp = this.componentsByCampaignUUID(campaignUUID).query(query);
+        }
+        rsp.$promise.then(
+          function(data) {
+            return data;
+          },
+          function(error) {
+            Notify.show('Error loading contributions from server', 'error');
+          }
+        );
+        return rsp.$promise;
+
+      },
+      componentsByCampaignId: function(assemblyId, campaignId) {
+        return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/components', { aid: assemblyId, cid: campaignId});
+      },
+      componentsByCampaignUUID: function(campaignUUID) {
+        return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/components', { uuid: campaignUUID});
+      },
+
+      themes: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
+
+        // Get themes of the campaign
+        var rsp;
+        var query = filters || {};
+        query.all = true;
+
+        if (!isAnonymous) {
+          rsp = this.themesByCampaignId(assemblyId,campaignId).query(query);
+        } else {
+          rsp = this.themesByCampaignUUID(campaignUUID).query(query);
+        }
+        rsp.$promise.then(
+          function(data) {
+            return data;
+          },
+          function(error) {
+            Notify.show('Error loading contributions from server', 'error');
+          }
+        );
+        return rsp.$promise;
+
+      },
+      themesByCampaignId: function(assemblyId, campaignId) {
+        return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/themes', { aid: assemblyId, cid: campaignId});
+      },
+      themesByCampaignUUID: function(campaignUUID) {
+        return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID});
+      }
     };
 
 });

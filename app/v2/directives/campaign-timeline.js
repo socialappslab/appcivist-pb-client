@@ -8,20 +8,20 @@
 
   function CampaignTimeline(Campaigns, localStorageService) {
 
-    function loadCampaign(scope, aid, cid) {
+    function loadCampaignComponents(scope, aid, cid) {
       scope.user = localStorageService.get('user');
       var res;
       if (scope.user) {
-        res = Campaigns.campaign(aid, cid).get();
+        res = Campaigns.components(aid, cid,false,null,null);
       } else {
-        res = Campaigns.campaignByUUID(cid).get();
+        res = Campaigns.components(null, null,true,cid,null);
       }
-      res.$promise.then(function (data) {
-        var currentComponent = Campaigns.getCurrentComponent(data.components);
-        angular.forEach(data.components, function (c) {
+      res.then(function (data) {
+        var currentComponent = Campaigns.getCurrentComponent(data);
+        angular.forEach(data, function (c) {
           c.cssClass = getComponentCssClass(scope, currentComponent, c);
         });
-        scope.components = data.components;
+        scope.components = data;
       });
     }
 
@@ -57,10 +57,10 @@
 
         if (!scope.campaignId) {
           scope.$watch('campaignId', function (cid) {
-            loadCampaign(scope, scope.assemblyId, cid);
+            loadCampaignComponents(scope, scope.assemblyId, cid);
           });
         } else {
-          loadCampaign(scope, scope.assemblyId, scope.campaignId);
+          loadCampaignComponents(scope, scope.assemblyId, scope.campaignId);
         }
 
         scope.formatDate = function (date) {

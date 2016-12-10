@@ -4,9 +4,9 @@
   appCivistApp
     .directive('contributionCard', ContributionCard);
 
-  ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window'];
+  ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope'];
 
-  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window) {
+  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -33,7 +33,8 @@
       scope: {
         contribution: '=',
         showVotingButtons: '=',
-        campaign: '='
+        campaign: '=',
+        components: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
@@ -57,9 +58,9 @@
             }
           }
 
-        if (scope.campaign) {
+        if (scope.campaign && scope.components) {
           // Verify the status of the campaign and show or not show the voting buttons
-          var currentComponent = Campaigns.getCurrentComponent(scope.campaign.components);
+          var currentComponent = Campaigns.getCurrentComponent(scope.components);
           if (currentComponent.key === 'Voting') {
             scope.showVotingButtons = true;
           }
@@ -130,7 +131,6 @@
           //Contributions.assignContributionToWG(scope.assemblyId, scope.contribution.contributionId, scope.wg).update(scope.contribution);
           $window.location.reload();
         }
-
       }
     };
   }

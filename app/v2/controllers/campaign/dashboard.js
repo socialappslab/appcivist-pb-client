@@ -8,11 +8,11 @@
 
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate'
+    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate', '$rootScope'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships, Space, $translate) {
+    $filter, localStorageService, FlashService, Memberships, Space, $translate, $rootScope) {
 
     activate();
 
@@ -77,8 +77,23 @@
         } else {
           $scope.spaceID = data.resourceSpaceUUId;
         }
-        var currentComponent = Campaigns.getCurrentComponent(data.components);
-        setIdeasSectionVisibility(currentComponent);
+
+        // We are reading the components twice,
+        // - in the campaign-timeline directive
+        // - here
+        // TODO: find a way of reading it just once
+        // (can we defer the rendering of the campaign-timeline directive until this part of the code is run)
+        var res;
+        if (!$scope.isAnonymous) {
+          res = Campaigns.components($scope.assemblyID, $scope.campaignID,false,null,null);
+        } else {
+          res = Campaigns.components(null, null,true,$scope.campaignID,null);
+        }
+        res.then(function (data) {
+          var currentComponent = Campaigns.getCurrentComponent(data);
+          setIdeasSectionVisibility(currentComponent);
+          $scope.components = data;
+        });
 
         // get proposals
         Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
@@ -132,6 +147,7 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      $rootScope.onResize();
     }
 
     function loadThemes(query) {

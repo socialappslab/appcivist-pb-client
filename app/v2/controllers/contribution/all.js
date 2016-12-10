@@ -8,11 +8,13 @@ angular
 
 ProposalsCtrl.$inject = [
   '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-  'localStorageService', 'FlashService', '$rootScope', 'Space', '$window', 'Notify', '$translate'
+  'localStorageService', 'FlashService', '$rootScope', 'Space', '$window',
+  'Notify', '$translate'
 ];
 
 function ProposalsCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-                          $filter, localStorageService, FlashService, $rootScope, Space, $window, $translate) {
+                         $filter, localStorageService, FlashService, $rootScope, Space, $window,
+                         Notify, $translate) {
 
   activate();
 

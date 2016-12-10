@@ -3,13 +3,14 @@
     padding: 50px;
   }
 </style>
-<main class="appmain" in-view-container ng-class="{anonymous: isAnonymous}">
+<main class="appmain" in-view-container ng-class="{anonymous: isAnonymous}" resize>
   <article class="all_proposals">
     <header class="page__header">
       <h1 class="heading--title">All {{ title }}</h1>
-      <div class="heading--header">in the
-        <a ng-href="refUrl">
-        {{seeAllTitle}}</a> {{ seeAllType }}.
+      <div class="heading--header">
+        <i class="fa fa-asterisk" ng-if="seeAllType == 'CAMPAIGN'"></i>
+        <i class="fa fa-group" ng-if="seeAllType == 'WORKING_GROUP'"></i>
+        <a ng-href="refUrl">&nbsp;&nbsp;{{seeAllTitle}}</a>
       </div>
     </header>
     <div class="page__content">
@@ -17,7 +18,7 @@
         <ol class="pagination">
           <li>
             <a href="">
-              << Prev</a>
+              << Previous </a>
           </li>
           <li class="current"><a href="">1</a></li>
           <li><a href="">2</a></li>
@@ -30,14 +31,23 @@
         </ol>
       </section>
 
-      <section class="list--proposals">
-        <div class="list__cards container__proposals">
-          <contribution-card ng-if="type == 'proposal'" class="card__proposal" ng-repeat="proposal in contributions track by $index"
-            contribution="proposal"></contribution-card>
-          <contribution-card ng-if="type == 'idea'" class="card__idea" ng-repeat="idea in contributions track by $index" contribution="idea"></contribution-card>
+      <section class="list--proposals" ng-if="type==='proposal'">
+        <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
+          <contribution-card class="card__proposal" ng-repeat="proposal in contributions track by $index"
+            contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize"></contribution-card>
+            <p ng-if="contributions.length === 0" class="card">No {{ title }} in this space yet</p>
+        </div>
+      </section>
+
+
+      <section class="list--ideas" ng-if="type==='ideas'">
+        <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
+          <contribution-card class="card__idea" ng-repeat="idea in contributions track by $index"
+                             contribution="idea" show-voting-buttons="false" on-finish-render="eqResize"></contribution-card>
           <p ng-if="contributions.length === 0" class="card">No {{ title }} in this space yet</p>
         </div>
       </section>
+
 
       <section class="panel" in-view="paginationVisible(paginationBottom, $inview)" ng-style="paginationBottom.style">
         <ol class="pagination">

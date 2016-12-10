@@ -39,6 +39,11 @@
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
         scope.showContextualMenu = false;
+        var stats = scope.contribution.stats;
+
+        if(stats) {
+          scope.contribution.informalScore = stats.ups - stats.downs;
+        }
         scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
         setContributionType(scope);
 

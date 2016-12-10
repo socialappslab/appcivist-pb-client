@@ -52,10 +52,10 @@
   var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
   var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
   var etherpadServerURL = (window.location.hostname === "testpb.appcivist.org")
-                                  ? etherpad.testserver : (window.location.hostname === "localhost")
-                                    ?  etherpad.localserver : etherpad.server;
+    ? etherpad.testserver : (window.location.hostname === "localhost")
+      ? etherpad.localserver : etherpad.server;
   var hideLogin = (window.location.hostname === "appcivist.org"
-                              || window.location.hostname === "www.appcivist.org");
+    || window.location.hostname === "www.appcivist.org");
 
   /**
    * AngularJS initial configurations:
@@ -145,7 +145,10 @@
       .state('v2.assembly.aid.campaign.cid', {
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html'
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.assembly.aid.group', {
         url: '/group',
@@ -160,7 +163,10 @@
       .state('v2.assembly.aid.group.gid.item', {
         url: '',
         controller: 'v2.WorkingGroupDashboardCtrl',
-        templateUrl: 'app/v2/partials/working-group/dashboard.html'
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.assembly.aid.group.gid.proposal', {
         url: '/proposal',
@@ -170,7 +176,10 @@
       .state('v2.assembly.aid.group.gid.proposal.pid', {
         url: '/:pid',
         templateUrl: 'app/v2/partials/proposal/page.html',
-        controller: 'v2.ProposalPageCtrl'
+        controller: 'v2.ProposalPageCtrl',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.space', {
         url: '/space',
@@ -185,7 +194,10 @@
       .state('v2.space.sid.contribution', {
         url: '/contributions?type',
         templateUrl: 'app/v2/partials/contribution/all.html',
-        controller: 'v2.ProposalsCtrl'
+        controller: 'v2.ProposalsCtrl',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.campaign', {
         url: '/campaign',
@@ -195,7 +207,10 @@
       .state('v2.campaign.cuuid', {
         url: '/:cuuid',
         controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html'
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.workingGroup', {
         url: '/group',
@@ -205,7 +220,10 @@
       .state('v2.workingGroup.gid', {
         url: '/:gid',
         controller: 'v2.WorkingGroupDashboardCtrl',
-        templateUrl: 'app/v2/partials/working-group/dashboard.html'
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.proposal', {
         url: '/proposal',
@@ -215,7 +233,10 @@
       .state('v2.proposal.pid', {
         url: '/:pid',
         controller: 'v2.ProposalPageCtrl',
-        templateUrl: 'app/v2/partials/proposal/page.html'
+        templateUrl: 'app/v2/partials/proposal/page.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.login', {
         url: '/login',
@@ -235,7 +256,10 @@
       .state('v2.user.uid.profile', {
         url: '/profile',
         controller: 'v2.ProfileCtrl',
-        templateUrl: 'app/v2/partials/user/profile.html'
+        templateUrl: 'app/v2/partials/user/profile.html',
+        access: {
+          requiresLogin: true
+        }
       });
 
     /**
@@ -408,7 +432,7 @@
    */
   run.$inject = [
     '$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal',
-    'usSpinnerService', '$timeout', '$document'
+    'usSpinnerService', '$timeout', '$document', 'Authorization'
   ];
 
   /**
@@ -419,7 +443,7 @@
    * @param localStorageService
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
-    $timeout, $document) {
+    $timeout, $document, Authorization) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -501,7 +525,6 @@
       }
     };
 
-
     // global spinner
     $rootScope.startSpinner = function () {
       $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
@@ -525,6 +548,34 @@
       usSpinnerService.stop(key);
       $(angular.element.find(element)[0]).removeClass('spinner-container');
     };
+
+    // authentication control
+    $rootScope.$on('$stateChangeStart', function (event, next, nextParams) {
+      var authorized;
+      var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      var isAnonymous = true;
+
+      angular.forEach(_.keys(nextParams), function (key) {
+        if (!pattern.test(nextParams[key])) {
+          isAnonymous = false;
+        }
+      });
+
+      if (isAnonymous) {
+        return;
+      }
+
+      if (next.access !== undefined) {
+        authorized = Authorization.authorize(next.access.requiresLogin);
+
+        if (authorized === Authorization.enums.LOGIN_REQUIRED) {
+          $location.path('/v2/login');
+        } else if (authorized === Authorization.enums.NOT_AUTHORIZED) {
+          console.log('hola en doooos');
+          $location.path('/').replace();
+        }
+      }
+    });
   }
 
   /**
@@ -549,11 +600,11 @@
    */
   function selectBackendServer(hostname, apis) {
     var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org", "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org", "www.appcivist.org"];
-    if (hostname===possibleHosts[0]) {
+    if (hostname === possibleHosts[0]) {
       return apis.local;
-    } else if (hostname===possibleHosts[1] || hostname===possibleHosts[4] || hostname===possibleHosts[6] || hostname===possibleHosts[7]) {
+    } else if (hostname === possibleHosts[1] || hostname === possibleHosts[4] || hostname === possibleHosts[6] || hostname === possibleHosts[7]) {
       return apis.production;
-    } else if (hostname===possibleHosts[2] || hostname===possibleHosts[5]) {
+    } else if (hostname === possibleHosts[2] || hostname === possibleHosts[5]) {
       return apis.testing;
     } else {
       return apis.development;

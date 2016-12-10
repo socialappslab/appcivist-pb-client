@@ -24,24 +24,28 @@
       $scope.isAnonymous = false;
       $scope.ideasSectionExpanded = false;
 
-      if ($stateParams.cuuid && pattern.test($stateParams.cuuid) === true) {
+      if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;
         $scope.isAnonymous = true;
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
-        if ($scope.user && $scope.user.language)
+        if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
+        }
       }
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection;
       $scope.toggleIdeasSection = toggleIdeasSection;
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
-      loadAssembly();
       loadCampaigns();
-      loadCampaignResources();
+
+      if(!$scope.isAnonymous) {
+        loadAssembly();
+        loadCampaignResources();
+      }
 
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function () {
@@ -89,7 +93,7 @@
         if (!$scope.isAnonymous) {
           res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
         } else {
-          res = Campaigns.components(null, null, true, $scope.campaignID, null);
+          res = Campaigns.componentsByCampaignUUID($scope.campaignID).query();
         }
         res.then(function (data) {
           var currentComponent = Campaigns.getCurrentComponent(data);
@@ -149,7 +153,6 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      $rootScope.onResize();
     }
 
     function loadThemes(query) {

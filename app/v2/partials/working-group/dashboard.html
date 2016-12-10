@@ -9,6 +9,11 @@
   .action-button svg g {
     fill: #11493b;
   }
+
+  .action-button ul.shrinked li {
+    visibility: hidden;
+    height: 0;
+  }
 </style>
 
 <main class="appmain" ng-class="{anonymous: isAnonymous}" resize>
@@ -56,8 +61,8 @@
                     </g>
                   </g>
                 </svg>
-                <ul class="action-menu">
-                  <li><a >{{'Message this user' | translate}}</a></li>
+                <ul class="action-menu" ng-class="{shrinked: !member.checked}">
+                  <li><a>{{'Message this user' | translate}}</a></li>
                   <li><a >{{'Remove this user' | translate}}</a></li>
                 </ul>
               </div>

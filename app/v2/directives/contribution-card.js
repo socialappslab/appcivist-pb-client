@@ -28,6 +28,14 @@
       this.showContextualMenu = !this.showContextualMenu;
     }
 
+    function setInformalScore(contribution) {
+      var stats = contribution.stats;
+
+      if (stats) {
+        contribution.informalScore = stats.ups - stats.downs;
+      }
+    }
+
     return {
       restrict: 'E',
       scope: {
@@ -39,29 +47,25 @@
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
         scope.showContextualMenu = false;
-        var stats = scope.contribution.stats;
-
-        if(stats) {
-          scope.contribution.informalScore = stats.ups - stats.downs;
-        }
+        setInformalScore(scope.contribution);
         scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
         setContributionType(scope);
 
         if (!scope.isIdea) {
-            var workingGroupAuthors = scope.contribution.workingGroupAuthors;
-            var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-            scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
-            scope.notAssigned = true;
+          var workingGroupAuthors = scope.contribution.workingGroupAuthors;
+          var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+          scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
+          scope.notAssigned = true;
 
-            if(scope.group){
-              scope.notAssigned = false;
-            }
-
-            if (!scope.isAnonymous) {
-              scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
-              scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
-            }
+          if (scope.group) {
+            scope.notAssigned = false;
           }
+
+          if (!scope.isAnonymous) {
+            scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+            scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+          }
+        }
 
         if (scope.campaign && scope.components) {
           // Verify the status of the campaign and show or not show the voting buttons
@@ -108,6 +112,7 @@
           feedback.$promise.then(
             function (newStats) {
               scope.contribution.stats = newStats;
+              setInformalScore(scope.contribution);
             },
             function (error) {
               console.log('Error when updating user feedback');

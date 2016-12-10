@@ -81,13 +81,13 @@
       <div class="temperature_check" ng-if="showVotingButtons">
         <ul class="votes">
           <li class="upvote" ng-mouseenter="contribution.overUp = true" ng-mouseleave="contribution.overUp = false">
-            <a class="thumbs-up"><span class="screen-reader-only">Upvote</span></a>
+            <a class="thumbs-up" ng-click="myObject.updateFeedback('up')"><span class="screen-reader-only">Upvote</span></a>
             <div class="popover" style="top: -56px;" ng-class="{active: contribution.overUp}">
               <div class="content">{{contribution.stats.ups}}</div>
             </div>
           </li>
           <li class="downvote" ng-mouseenter="contribution.overDown = true" ng-mouseleave="contribution.overDown = false">
-            <a class="thumbs-down"><span class="screen-reader-only">Downvote</span></a>
+            <a class="thumbs-down" ng-click="myObject.updateFeedback('down')"><span class="screen-reader-only">Downvote</span></a>
             <div class="popover" style="top: -56px;" ng-class="{active: contribution.overDown}">
               <div class="content">{{contribution.stats.downs}}</div>
             </div>

@@ -11,7 +11,7 @@
   }
 </style>
 
-<main class="appmain" ng-class="{anonymous: isAnonymous}">
+<main class="appmain" ng-class="{anonymous: isAnonymous}" resize>
   <article class="working_group">
     <header class="page__header">
       <div class="type"><i class="fa fa-group"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>
@@ -78,9 +78,9 @@
             <a class="proposals__add_new"  ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
           </header>
-          <div class="list__cards container__proposals">
+          <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign"
-              show-voting-buttons="true"></contribution-card>
+              show-voting-buttons="true" on-finish-render="eqResize"></contribution-card>
             <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
           </div>
         </section>

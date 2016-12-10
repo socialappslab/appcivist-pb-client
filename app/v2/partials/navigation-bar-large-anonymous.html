@@ -1,11 +1,11 @@
 <div class="app-container">
 	<nav class="navigation-anonymous">
 		<div class="logo">
-			<h1 class="heading--headline">City of Vallejo
-			<span>Vallejo, CA</span></h1>
+			<h1 class="heading--headline">{{currentAssembly ? currentAssembly.name : AppCivist for PB}}
+			<span>{{currentAssembly ? currentAssembly.location.placeName : ''}}</span></h1>
       <h3 class="heading--subheader">
           <div class="logo-small">
-              <strong>Powered by Appcivist</strong>
+              <strong>Powered by AppCivist</strong>
           </div>
       </h3>
 		</div>

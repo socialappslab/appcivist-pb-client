@@ -16,11 +16,22 @@
     <button class="button__nav_toggle" ng-click="toggleNavigation()">☰</button>
 
     <header class="nav_header" itemprop="location" itemscope itemtype="http://schema.org/Place">
-      <h1>City of Vallejo</h1>
-      <h2>Vallejo, CA</h2>
+      <h1>{{currentAssembly.name}}</h1>
+      <h2>{{currentAssembly.location.placeName}}</h2>
     </header>
 
     <member-card action-bar="true"></member-card>
+
+    <section class="my_campaigns">
+      <h3 class="section_header">{{'Ongoing Campaigns' | translate}}</h3>
+      <ul class="list__my_campaigns">
+        <li ng-repeat="c in ongoingCampaigns">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
+            {{c.title}}
+          </a>
+        </li>
+      </ul>
+    </section>
 
     <section class="my_working_groups">
       <h3 class="section_header">{{'My Working Groups' | translate}}</h3>
@@ -33,13 +44,13 @@
       </ul>
     </section>
 
-    <section class="my_campaigns">
-      <h3 class="section_header">{{'Ongoing Campaigns' | translate}}</h3>
-      <ul class="list__my_campaigns">
-        <li ng-repeat="c in ongoingCampaigns">
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
-          {{c.title}}
-        </a>
+    <section class="my_working_groups" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
+      <h3 class="section_header">{{'Other Working Groups' | translate}}</h3>
+      <ul class="list__my_working_groups">
+        <li ng-repeat="wg in otherWorkingGroups">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+            {{wg.name}}
+          </a>
         </li>
       </ul>
     </section>

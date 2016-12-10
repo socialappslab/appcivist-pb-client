@@ -156,7 +156,7 @@
       if (!$scope.campaign) {
         return;
       }
-      return $scope.campaign.themes;
+      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {});
     }
 
     /**

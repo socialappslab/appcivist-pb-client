@@ -124,7 +124,7 @@
   <div class="search">
     <div clas="search__field_wrapper">
       <input ng-model="filters.searchText" class="search__field" type="text" placeholder="Search…">
-      <a href="#">
+      <a >
         <span class="aria-hidden">
             <svg version="1.1" class="search__icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" xml:space="preserve">
               <path class="svg_icon" d="M17.882,16.507c0,0.372-0.136,0.695-0.407,0.967c-0.272,0.272-0.596,0.408-0.968,0.408
@@ -142,13 +142,13 @@
     </div>
     <ul class="search_modes">
       <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'proposals'}">
-        <a href="#" ng-click="searchMode('proposals', $event)">Proposals</a>
+        <a  ng-click="searchMode('proposals', $event)">Proposals</a>
       </li>
       <li class="sarch_mode__working_groups" ng-class="{active: filters.mode === 'groups'}">
-        <a href="#" ng-click="searchMode('groups', $event)">Working Group</a>
+        <a  ng-click="searchMode('groups', $event)">Working Group</a>
       </li>
       <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'ideas'}">
-        <a href="#" ng-click="searchMode('ideas', $event)">Ideas</a>
+        <a  ng-click="searchMode('ideas', $event)">Ideas</a>
       </li>
     </ul>
   </div>
@@ -196,7 +196,7 @@
         <div>
           <ul class="tags">
             <li ng-repeat="theme in selectedThemes">
-              <a href="#">{{theme.title}}<i class="fa fa-close" ng-click="remove(theme, $event)"></i></a>
+              <a >{{theme.title}}<i class="fa fa-close" ng-click="remove(theme, $event)"></i></a>
             </li>
             <input type="text" ng-model="vm.query" placeholder="Add a category" />
           </ul>
@@ -228,9 +228,9 @@
         <div>
           <input type="text" ng-model="filters.query" placeholder="Add a category" />
           <ul class="tags">
-            <li ng-repeat="theme in selectedThemes"><a href="#">{{theme.title}}</a></li>
-            <li><a href="#">Tag 1<i class="fa fa-close"></i></a></li>
-            <li><a href="#">Tag 2<i class="fa fa-close"></i></a></li>
+            <li ng-repeat="theme in selectedThemes"><a >{{theme.title}}</a></li>
+            <li><a >Tag 1<i class="fa fa-close"></i></a></li>
+            <li><a >Tag 2<i class="fa fa-close"></i></a></li>
           </ul>
           <div class="autocomplete" ng-if="isSuggestionListVisible">
             <ul class="suggestion-list">
@@ -241,7 +241,7 @@
         </div>
       </fieldset>
       <fieldset class="actions">
-        <a href="#" class="button__modal_submit">Apply Filters</a>
+        <a  class="button__modal_submit">Apply Filters</a>
       </fieldset>
     </div>
 </script>-->

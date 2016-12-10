@@ -39,7 +39,7 @@
             <p class="heading--small">
               <a href="" ng-click="toggleAllMembers()"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
               <!-- TODO: implement this view -->
-              <a ng-if="false" href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
+              <a ng-if="false" ><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
             </p>
           </div>
           <div class="card-list" ng-repeat="member in members | limitTo:membersLimit">
@@ -57,8 +57,8 @@
                   </g>
                 </svg>
                 <ul class="action-menu">
-                  <li><a href="#">{{'Message this user' | translate}}</a></li>
-                  <li><a href="#">{{'Remove this user' | translate}}</a></li>
+                  <li><a >{{'Message this user' | translate}}</a></li>
+                  <li><a >{{'Remove this user' | translate}}</a></li>
                 </ul>
               </div>
             </div>
@@ -75,7 +75,7 @@
           <header class="proposals__header">
             <h2 class="heading--header">{{'Proposals' | translate}}</h2>
             <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="proposals__add_new" href="#" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a class="proposals__add_new"  ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
           </header>
           <div class="list__cards container__proposals">
@@ -88,7 +88,7 @@
           <header class="ideas__header">
             <h2 class="heading--header">Ideas</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="ideas__add_new" ng-if="user != null" href="#"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a class="ideas__add_new" ng-if="user != null" ><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;Hide Ideas</a>&nbsp;&nbsp;
           </header>
 

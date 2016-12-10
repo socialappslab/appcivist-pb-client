@@ -50,6 +50,11 @@
         setInformalScore(scope.contribution);
         scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
         setContributionType(scope);
+        var assembly = localStorageService.get('currentAssembly');
+
+        if(assembly){
+          scope.assemblyId = assembly.assemblyId;
+        }
 
         if (!scope.isIdea) {
           var workingGroupAuthors = scope.contribution.workingGroupAuthors;
@@ -63,7 +68,6 @@
 
           if (!scope.isAnonymous) {
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
-            scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
           }
         }
 

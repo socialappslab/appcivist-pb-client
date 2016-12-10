@@ -8,11 +8,13 @@
 
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate', '$rootScope'
+    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate', '$rootScope',
+    '$timeout'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships, Space, $translate, $rootScope) {
+    $filter, localStorageService, FlashService, Memberships, Space, $translate, $rootScope,
+    $timeout) {
 
     activate();
 
@@ -85,9 +87,9 @@
         // (can we defer the rendering of the campaign-timeline directive until this part of the code is run)
         var res;
         if (!$scope.isAnonymous) {
-          res = Campaigns.components($scope.assemblyID, $scope.campaignID,false,null,null);
+          res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
         } else {
-          res = Campaigns.components(null, null,true,$scope.campaignID,null);
+          res = Campaigns.components(null, null, true, $scope.campaignID, null);
         }
         res.then(function (data) {
           var currentComponent = Campaigns.getCurrentComponent(data);

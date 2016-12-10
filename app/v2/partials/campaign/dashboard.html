@@ -1,4 +1,4 @@
-<main class="appmain" ng-class="{'anonymous' : isAnonymous}">
+<main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
   <article class="campaign">
     <header class="page__header">
       <div class="type"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</div>
@@ -75,7 +75,7 @@
           </header>
           <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign"
-              components="components" show-voting-buttons="false"></contribution-card>
+              components="components" show-voting-buttons="false" on-finish-render="eqResize"></contribution-card>
           </div>
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">

@@ -64,7 +64,7 @@
     </header>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
     <section class="proposals_and_ideas">
-      <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)"></proposals-ideas-searchbox>
+      <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" load-groups="loadGroups(query)"></proposals-ideas-searchbox>
       <div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}">
         <section class="list--proposals">
           <header class="proposals__header">

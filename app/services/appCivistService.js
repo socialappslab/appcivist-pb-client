@@ -784,6 +784,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         if (target) {
           params.sorting = filters.sorting;
           params.themes = filters.themes;
+          params.groups = filters.groups;
           this.getContributions(target, type, isAnonymous, params);
         }
       }

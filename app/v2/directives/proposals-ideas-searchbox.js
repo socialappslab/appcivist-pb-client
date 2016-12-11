@@ -13,21 +13,27 @@
       scope: {
         // Function (mode, filtersSpec)
         searchHandler: '&',
-        loadThemes: '&'
+        loadThemes: '&',
+        loadGroups: '&'
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function (scope, element, attrs) {
         scope.filters = {
           searchText: '',
           themes: [],
+          groups: [],
           // date_asc | date_desc | popularity | random
           sorting: 'date_asc',
-          mode: 'proposals'
+          mode: 'proposal'
         };
-        scope.vm = { selectedThemes: [] };
+        scope.vm = { selectedThemes: [], selectedGroups: [] };
         scope.themesOptions = {
           textField: 'title',
           idField: 'themeId'
+        };
+        scope.groupsOptions = {
+          textField: 'name',
+          idField: 'groupId'
         };
         scope.searchMode = searchMode.bind(scope);
         scope.$watch('filters.searchText', searchTextObserver.bind(scope));
@@ -38,8 +44,9 @@
         scope.setSorting = setSorting.bind(scope);
         scope.sortingIs = sortingIs.bind(scope);
         scope.doSearch = doSearch.bind(scope);
-        scope.addSelectedThemes = addSelectedThemes.bind(scope);
+        scope.addSelected = addSelected.bind(scope);
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
+        scope.removeGroupFilter = removeGroupFilter.bind(scope);
       }
     };
 
@@ -91,14 +98,17 @@
     }
 
     /**
-     * Add current selected themes to the filters object.
+     * Add current selected themes/groups to the filters object.
      *
-     * @param {Object[]} selected
      */
-    function addSelectedThemes(selected) {
-      var themes = this.filters.themes.concat(selected);
+    function addSelected() {
+      var themes = this.filters.themes.concat(this.vm.selectedThemes);
+      var groups = this.filters.groups.concat(this.vm.selectedGroups);
       this.filters.themes = _.uniqBy(themes, function (e) {
         return e.themeId;
+      });
+      this.filters.groups = _.uniqBy(groups, function (e) {
+        return e.groupId;
       });
       this.toggleModal('categoriesModal');
       this.doSearch();
@@ -115,6 +125,20 @@
       var toRemove = { themeId: theme.themeId };
       _.remove(this.filters.themes, toRemove);
       _.remove(this.vm.selectedThemes, toRemove);
+      this.doSearch();
+    }
+
+    /**
+     * Remove group from filters.groups array.
+     *
+     * @param {object} group
+     * @param {object} event
+     */
+    function removeGroupFilter(group, event) {
+      event.preventDefault();
+      var toRemove = { groupId: group.groupId };
+      _.remove(this.filters.groups, toRemove);
+      _.remove(this.vm.selectedGroups, toRemove);
       this.doSearch();
     }
 

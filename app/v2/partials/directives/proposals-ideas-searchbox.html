@@ -11,6 +11,7 @@
 
   .campaign__filters .button__add_filter {
     color: #11493b;
+    margin-left: 0;
   }
 
   .hide {
@@ -36,6 +37,28 @@
     padding-right: 5px;
     margin-top: 6px;
   }
+
+  .filters .tags__group .tags {
+    float: none;
+  }
+
+  .filters .tags__group {
+    margin-bottom: 5px;
+  }
+
+  .label {
+    color: #11493b;
+    padding: 0;
+  }
+
+  .tags p {
+    margin-bottom: 0.2em;
+    color: #11493b;
+  }
+
+  .vex.vex-theme-plain .vex-content .modal-body {
+    padding: 2em;
+  }
 </style>
 <div class="campaign__filters">
   <div class="search">
@@ -58,22 +81,31 @@
       </a>
     </div>
     <ul class="search_modes">
-      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'proposals'}">
-        <a ng-click="searchMode('PROPOSAL', $event)">Proposals</a>
+      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'proposal'}">
+        <a ng-click="searchMode('proposal', $event)">Proposals</a>
       </li>
-      <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'ideas'}">
-        <a ng-click="searchMode('IDEA', $event)">Ideas</a>
+      <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'idea'}">
+        <a ng-click="searchMode('idea', $event)">Ideas</a>
       </li>
     </ul>
   </div>
   <div class="filters">
     <h4 class="widget__label">
-      Filter by category</h4>
-    <ul class="tags">
-      <li ng-repeat="theme in filters.themes">
-        <a href="">{{theme.title}}<i class="fa fa-close" ng-click="removeThemeFilter(theme, $event)"></i></a>
-      </li>
-    </ul>
+      Filter by</h4>
+    <div class="tags__group">
+      <ul class="tags" ng-if="filters.themes.length > 0">
+        <p>Themes</p>
+        <li ng-repeat="theme in filters.themes">
+          <a href="">{{theme.title}}<i class="fa fa-close" ng-click="removeThemeFilter(theme, $event)"></i></a>
+        </li>
+      </ul>
+      <ul class="tags" ng-if="filters.groups.length > 0">
+        <p>Working group</p>
+        <li ng-repeat="group in filters.groups">
+          <a href="">{{group.name}}<i class="fa fa-close" ng-click="removeGroupFilter(group, $event)"></i></a>
+        </li>
+      </ul>
+    </div>
     <a class="button__add_filter" href="" ng-click="toggleModal('categoriesModal')">
       <span class="icon">+</span>
       <span class="offscreen">Add Filter</span>
@@ -103,43 +135,20 @@
   <div class="vex-overlay" ng-click="toggleModal('categoriesModal')"></div>
   <div class="vex-content">
     <header class="modal-header">
-      <h2 class="modal__title">Select Categories to Add</h2>
+      <h2 class="modal__title">Select filters to add</h2>
     </header>
     <div class="modal-body">
+      <label class="label">
+        Themes</label>
       <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="vm.selectedThemes"></tags-field>
+      <label class="label">
+        Working Groups</label>
+      <tags-field load-items="loadGroups({query: query})" options="groupsOptions" selected="vm.selectedGroups"></tags-field>
+      <br />
       <fieldset class="actions">
-        <a href="" class="button__modal_submit" ng-click="addSelectedThemes(vm.selectedThemes)">Apply Filters</a>
+        <a href="" class="button__modal_submit" ng-click="addSelected()">Apply Filters</a>
       </fieldset>
     </div>
     <div class="vex-close" ng-click="toggleModal('categoriesModal')"></div>
   </div>
 </div>
-
-<!--
-  TODO: make a modal directive that uses vex.
-  <script type="text/ng-template" id="filtersModal">
-   <header class="modal-header">
-      <h2 class="modal__title">Select Categories to Add</h2>
-    </header>
-    <div class="modal-body">
-      <fieldset class="tags">
-        <div>
-          <input type="text" ng-model="filters.query" placeholder="Add a category" />
-          <ul class="tags">
-            <li ng-repeat="theme in selectedThemes"><a >{{theme.title}}</a></li>
-            <li><a >Tag 1<i class="fa fa-close"></i></a></li>
-            <li><a >Tag 2<i class="fa fa-close"></i></a></li>
-          </ul>
-          <div class="autocomplete" ng-if="isSuggestionListVisible">
-            <ul class="suggestion-list">
-              <li class="suggestion-item">Tag 1</li>
-              <li class="suggestion-item">Tag 2</li>
-            </ul>
-          </div>
-        </div>
-      </fieldset>
-      <fieldset class="actions">
-        <a  class="button__modal_submit">Apply Filters</a>
-      </fieldset>
-    </div>
-</script>-->

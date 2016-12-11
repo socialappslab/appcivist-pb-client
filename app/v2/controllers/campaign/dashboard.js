@@ -8,13 +8,13 @@
 
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate', '$rootScope',
-    '$timeout'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope',
+    'WorkingGroups'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships, Space, $translate, $rootScope,
-    $timeout) {
+    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
+    WorkingGroups) {
 
     activate();
 
@@ -40,6 +40,7 @@
       $scope.toggleIdeasSection = toggleIdeasSection;
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
+      $scope.loadGroups = loadGroups.bind($scope);
       loadCampaigns();
 
       if(!$scope.isAnonymous) {
@@ -59,10 +60,7 @@
     }
 
     function loadAssembly() {
-      var rsp = Assemblies.assembly($scope.assemblyID).get();
-      rsp.$promise.then(function (data) {
-        $scope.assembly = data;
-      });
+      $scope.assembly = localStorageService.get('currentAssembly');
     }
 
     function loadCampaigns() {
@@ -99,7 +97,7 @@
           var currentComponent = Campaigns.getCurrentComponent(data);
           setIdeasSectionVisibility(currentComponent);
           $scope.components = data;
-        });
+        }, defaultErrorCallback);
 
         // get proposals
         Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
@@ -116,7 +114,7 @@
             if (!$scope.ideas) {
               $scope.ideas = [];
             }
-          });
+          }, defaultErrorCallback);
 
           // get discussions
           Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function (response) {
@@ -125,7 +123,7 @@
             if (!$scope.discussions) {
               $scope.discussions = [];
             }
-          });
+          }, defaultErrorCallback);
         });
       });
     }
@@ -142,7 +140,7 @@
           $scope.campaignResources = resources;
         },
         function (error) {
-          FlashService.Error('Error loading campaign resources from server');
+          Notify.show('Error loading campaign resources from server', 'error');
         }
       );
     }
@@ -160,6 +158,13 @@
         return;
       }
       return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {});
+    }
+
+    function loadGroups(query) {
+      if (!$scope.campaign) {
+        return;
+      }
+      return WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).query().$promise;
     }
 
     /**
@@ -186,6 +191,10 @@
      */
     function toggleModal(id) {
       this.modals[id] = !this.modals[id];
+    }
+
+    function defaultErrorCallback(error) {
+      Notify.show('Error while trying to retrieve data from server', 'error');
     }
   }
 } ());

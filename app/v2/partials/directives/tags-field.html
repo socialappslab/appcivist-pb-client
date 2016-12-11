@@ -1,0 +1,17 @@
+<fieldset class="tags">
+  <div>
+    <ul class="tags">
+      <li ng-repeat="item in selected">
+        <a>{{getText(item)}}<i class="fa fa-close" ng-click="remove(item, $event)"></i></a>
+      </li>
+      <input type="text" ng-model="vm.query" placeholder="{{options.placeholder}}" />
+    </ul>
+    <div class="autocomplete" ng-if="isSuggestionListVisible">
+      <ul class="suggestion-list">
+        <li ng-repeat="item in items track by $index" ng-click="select(item)" class="suggestion-item">
+          {{getText(item)}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</fieldset>

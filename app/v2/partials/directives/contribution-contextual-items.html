@@ -4,7 +4,7 @@
   <li class="li-action-menu"><a href="" ng-click="myObject.updateFeedback()">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
-  <li class="li-action-menu" ng-if="false"><a >{{'See history' | translate}}</a></li>
+  <li class="li-action-menu"><a >{{'See history' | translate}}</a></li>
   <li class="li-action-menu" ng-if="userIsAssemblyCoordinator && notAssigned"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
   <li class="li-action-menu" ng-if="userIsAssemblyCoordinator ||  userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
 </ul>

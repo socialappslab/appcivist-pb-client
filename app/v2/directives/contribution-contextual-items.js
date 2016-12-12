@@ -22,29 +22,29 @@
     }
 
     function setupMembershipInfo(scope) {
-      //scope.userIsAuthor = Contributions.verifyAuthorship(scope.user, scope.contribution);
+      var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
+      var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
+      var groupRoles = groupMembershipsHash[scope.group ? scope.group.groupId : scope.group];
+      scope.userIsWorkingGroupCoordinator = groupRoles != undefined ? hasRole(groupRoles, "COORDINATOR") : false;
+      console.log("User is coordinator of group "+scope.group+" = "+scope.userIsWorkingGroupCoordinator );
+      var assemblyRoles = groupMembershipsHash[scope.assemblyId];
+      scope.userIsAssemblyCoordinator = assemblyRoles != undefined ? hasRole(assemblyRoles, "COORDINATOR") : false;
+      console.log("User is coordinator of assembly "+scope.assemblyId+" = "+scope.userIsAssemblyCoordinator );
 
-      // TODO: do not ask the server for membership and authorship here, store this information and get it
-      // on loading at the beginning
-      scope.userIsAuthor = true;
-      scope.userCanEdit = true;
-      scope.userIsAssemblyCoordinator = true;
-      scope.userIsWorkingGroupCoordinator = true;
-      //var authorship = Contributions.verifyGroupAuthorship(scope.user, scope.contribution, scope.group).get();
-      //authorship.$promise.then(function (response) {
-      //  scope.userCanEdit = response.responseStatus === 'OK';
-      //  scope.userIsAuthor = scope.userCanEdit;
-      //});
-      //
-      //var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
-      //rsp.$promise.then(function (data) {
-      //  scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
-      //});
-      //
-      //rsp = Memberships.membershipInGroup(scope.groupId, scope.user.userId).get();
-      //rsp.$promise.then(function (data) {
-      //  scope.userIsWorkingGroupCoordinator = hasRole(data.roles, 'COORDINATOR');
-      //});
+      if (scope.contribution.type==='PROPOSAL') {
+        scope.userCanEdit = scope.userIsAuthor = groupRoles != undefined;
+        console.log("User can edit Proposal "+scope.contribution.contributionId+" = "+scope.userCanEdit);
+        console.log("User is author of Proposal "+scope.contribution.contributionId+" = "+scope.userIsAuthor);
+      } else if (scope.contribution.type==='NOTE') {
+        scope.userCanEdit = true;
+        scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
+        console.log("User can edit NOTE "+scope.contribution.contributionId+" = "+scope.userCanEdit);
+        console.log("User is author of NOTE "+scope.contribution.contributionId+" = "+scope.userIsAuthor);
+      } else {
+        scope.userCanEdit = scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
+        console.log("User can edit Idea "+scope.contribution.contributionId+" = "+scope.userCanEdit);
+        console.log("User is author of Idea "+scope.contribution.contributionId+" = "+scope.userIsAuthor);
+      }
     }
 
     function setContributionType(scope) {
@@ -54,6 +54,18 @@
 
     function toggleContextualMenu() {
       this.showContextualMenu = !this.showContextualMenu;
+    }
+
+    function verifyAuthorshipUser (contribution, user) {
+      var authors = contribution.authors;
+      if (authors && authors.length > 0) {
+        for (var i = 0; i<authors.length; i++) {
+          if (user.userId === authors[i].userId) {
+            return true;
+          }
+        }
+      }
+      return false;
     }
 
     return {

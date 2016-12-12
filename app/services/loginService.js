@@ -143,22 +143,41 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
 
   function loadAuthenticatedUserMemberships() {
     var user = localStorageService.get('user');
-    var rsp = Memberships.workingGroups(user.userId).query();
+    var rsp = Memberships.memberships(user.userId).query();
     return rsp.$promise.then(memberSuccess, memberError);
   }
 
   function memberSuccess(data) {
-    var membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED' });
+    var membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+    var membershipsInAssemblies = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'ASSEMBLY' });
     var myWorkingGroups = [];
+    var myAssemblies = [];
+    var groupMembershipsHash = {};
+    var assemblyMembershipsHash = {};
+
 
     angular.forEach(membershipsInGroups, function (m) {
-      myWorkingGroups.push(m.workingGroup);
+      myWorkingGroups.push(m.targetGroup);
+      groupMembershipsHash[m.targetGroup.groupId] = m.roles;
     });
-    var wg = myWorkingGroups[0];
+
+    angular.forEach(membershipsInAssemblies, function (m) {
+      myAssemblies.push(m.targetAssembly);
+      assemblyMembershipsHash[m.targetAssembly.assemblyId] = m.roles;
+
+    });
+
     localStorageService.set('myWorkingGroups', myWorkingGroups);
-    var currentAssembly = wg.assemblies[0];
-    var rsp = Assemblies.assembly(currentAssembly).get();
-    return rsp.$promise.then(singleAssemblySuccess, singleAssemblyError);
+    localStorageService.set('assemblies', myAssemblies);
+    localStorageService.set('groupMembershipsHash', groupMembershipsHash);
+    localStorageService.set('assemblyMembershipsHash', assemblyMembershipsHash);
+
+    var currentAssembly = myAssemblies[0];
+    if (currentAssembly != null) {
+      singleAssemblySuccess(currentAssembly);
+    } else {
+      singleAssemblyError("No assembly in memberships");
+    }
   }
 
   function memberError(error) {
@@ -169,8 +188,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     localStorageService.set('currentAssembly', assembly);
     var ongoingCampaigns = $filter('filter')(assembly.campaigns, { active: true });
     localStorageService.set('ongoingCampaigns', ongoingCampaigns);
-    var user = localStorageService.get('user');
-    return Memberships.assemblies(user.userId).query().$promise.then(assembliesSuccess, assembliesError);
+
   }
 
   function singleAssemblyError(error) {

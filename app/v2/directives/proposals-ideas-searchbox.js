@@ -14,7 +14,7 @@
         // Function (mode, filtersSpec)
         searchHandler: '&',
         loadThemes: '&',
-        loadGroups: '&'
+        loadGroups: '&?'
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function (scope, element, attrs) {

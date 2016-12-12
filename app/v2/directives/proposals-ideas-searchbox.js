@@ -26,7 +26,11 @@
           sorting: 'date_asc',
           mode: 'proposal'
         };
-        scope.vm = { selectedThemes: [], selectedGroups: [] };
+        scope.vm = {
+          selectedThemes: [],
+          selectedGroups: [],
+          canFilterByGroup: !!scope.loadGroups
+        };
         scope.themesOptions = {
           textField: 'title',
           idField: 'themeId'

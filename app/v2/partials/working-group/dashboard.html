@@ -2,6 +2,7 @@
   member-card div {
     margin-top: -5px;
   }
+
   .action-bar .action-button {
     margin-top: 10px;
   }
@@ -44,7 +45,7 @@
             <p class="heading--small">
               <a href="" ng-click="toggleAllMembers()"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
               <!-- TODO: implement this view -->
-              <a ng-if="false" ><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
+              <a ng-if="false"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a></p>
             </p>
           </div>
           <div class="card-list" ng-repeat="member in members | limitTo:membersLimit">
@@ -52,7 +53,8 @@
               <member-card user="member.user"></member-card>
               <div class="action-button">
                 <input id="menu04" type="checkbox" name="menu" ng-checked="member.checked" hidden/>
-                <svg ng-click="member.checked = !member.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <svg ng-click="member.checked = !member.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink">
                   <title>{{'more' | translate}}</title>
                   <defs></defs>
                   <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">
@@ -63,7 +65,7 @@
                 </svg>
                 <ul class="action-menu" ng-class="{shrinked: !member.checked}">
                   <li><a>{{'Message this user' | translate}}</a></li>
-                  <li><a >{{'Remove this user' | translate}}</a></li>
+                  <li><a>{{'Remove this user' | translate}}</a></li>
                 </ul>
               </div>
             </div>
@@ -80,7 +82,7 @@
           <header class="proposals__header">
             <h2 class="heading--header">{{'Proposals' | translate}}</h2>
             <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="proposals__add_new"  ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a class="proposals__add_new" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
           </header>
           <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
@@ -93,7 +95,7 @@
           <header class="ideas__header">
             <h2 class="heading--header">Ideas</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="ideas__add_new" ng-if="user != null" ><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a class="ideas__add_new" ng-if="user != null"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;Hide Ideas</a>&nbsp;&nbsp;
           </header>
 

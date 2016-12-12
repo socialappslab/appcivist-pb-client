@@ -172,7 +172,7 @@
     }
 
     function toggleAllMembers() {
-      if ($scope.membersLimit <= 5 ) {
+      if ($scope.membersLimit <= 5) {
         $scope.membersLimit = $scope.members ? $scope.members.length : 10;  // TODO: instead of 10, use lenght of member list
       } else {
         $scope.membersLimit = 5;
@@ -184,7 +184,20 @@
      * @param {object} filters
      */
     function doSearch(filters) {
-      Space.doSearch(this.wg, this.isAnonymous, filters);
+      // only send themes and groups as an array of IDs
+      var self = this;
+      var rsp = Space.doSearch(this.wg, this.isAnonymous, filters);
+
+      if (!rsp) {
+        return;
+      }
+      rsp.then(function (data) {
+        if (filters.mode === 'proposal') {
+          self.proposals = data;
+        } else if (filters.mode === 'idea') {
+          self.ideas = data;
+        }
+      });
     }
 
     function loadThemes(query) {

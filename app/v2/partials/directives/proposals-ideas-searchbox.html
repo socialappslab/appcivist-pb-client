@@ -138,12 +138,10 @@
       <h2 class="modal__title">Select filters to add</h2>
     </header>
     <div class="modal-body">
-      <label class="label">
-        Themes</label>
+      <label class="label">Themes</label>
       <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="vm.selectedThemes"></tags-field>
-      <label class="label">
-        Working Groups</label>
-      <tags-field load-items="loadGroups({query: query})" options="groupsOptions" selected="vm.selectedGroups"></tags-field>
+      <label class="label" ng-if="canFilterByGroup">Working Groups</label>
+      <tags-field ng-if="canFilterByGroup" load-items="loadGroups({query: query})" options="groupsOptions" selected="vm.selectedGroups"></tags-field>
       <br />
       <fieldset class="actions">
         <a href="" class="button__modal_submit" ng-click="addSelected()">Apply Filters</a>

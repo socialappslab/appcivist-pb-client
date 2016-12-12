@@ -172,7 +172,20 @@
      * @param {object} filters
      */
     function doSearch(filters) {
-      Space.doSearch(this.campaign, this.isAnonymous, filters);
+      // only send themes and groups as an array of IDs
+      var self = this;
+      var rsp = Space.doSearch(this.campaign, this.isAnonymous, params);
+
+      if(!rsp) {
+        return;
+      }
+      rsp.then(function(data) {
+        if(filters.mode === 'proposal') {
+          self.proposals = data;
+        }else if(filters.mode === 'idea') {
+          self.ideas = data;
+        }
+      });
     }
 
     /**
@@ -191,10 +204,6 @@
      */
     function toggleModal(id) {
       this.modals[id] = !this.modals[id];
-    }
-
-    function defaultErrorCallback(error) {
-      Notify.show('Error while trying to retrieve data from server', 'error');
     }
   }
 } ());

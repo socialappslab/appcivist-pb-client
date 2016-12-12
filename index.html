@@ -6,12 +6,15 @@
   <title>AppCivist</title>
   <script>
     window.paceOptions = {
-      ajax: true,
-      restartOnRequestAfter: false,
       document: true, // disabled
-      eventLag: true, // disabled
+      eventLag: true,
+      restartOnPushState: true,
+      restartOnRequestAfter: true,
+      ajax: {
+          trackMethods: [ 'POST','GET', 'PUT', 'DELETE']
+      }
       elements : {
-        selectors: [".appmain"]
+        selectors: ['.appmain']
       }
     };
   </script>

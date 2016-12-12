@@ -174,7 +174,7 @@
     function doSearch(filters) {
       // only send themes and groups as an array of IDs
       var self = this;
-      var rsp = Space.doSearch(this.campaign, this.isAnonymous, params);
+      var rsp = Space.doSearch(this.campaign, this.isAnonymous, filters);
 
       if(!rsp) {
         return;
@@ -204,6 +204,10 @@
      */
     function toggleModal(id) {
       this.modals[id] = !this.modals[id];
+    }
+
+    function defaultErrorCallback (error) {
+      Notify.show('Error loading data from server', 'error');
     }
   }
 } ());

@@ -43,7 +43,7 @@
       $scope.loadGroups = loadGroups.bind($scope);
       loadCampaigns();
 
-      if(!$scope.isAnonymous) {
+      if (!$scope.isAnonymous) {
         loadAssembly();
         loadCampaignResources();
       }
@@ -172,17 +172,17 @@
      * @param {object} filters
      */
     function doSearch(filters) {
-      // only send themes and groups as an array of IDs
+      this.ideasSectionExpanded = filters.mode === 'idea';
       var self = this;
       var rsp = Space.doSearch(this.campaign, this.isAnonymous, filters);
 
-      if(!rsp) {
+      if (!rsp) {
         return;
       }
-      rsp.then(function(data) {
-        if(filters.mode === 'proposal') {
+      rsp.then(function (data) {
+        if (filters.mode === 'proposal') {
           self.proposals = data;
-        }else if(filters.mode === 'idea') {
+        } else if (filters.mode === 'idea') {
           self.ideas = data;
         }
       });
@@ -206,7 +206,7 @@
       this.modals[id] = !this.modals[id];
     }
 
-    function defaultErrorCallback (error) {
+    function defaultErrorCallback(error) {
       Notify.show('Error loading data from server', 'error');
     }
   }

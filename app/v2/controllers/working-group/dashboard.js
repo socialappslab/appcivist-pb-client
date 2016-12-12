@@ -184,7 +184,7 @@
      * @param {object} filters
      */
     function doSearch(filters) {
-      // only send themes and groups as an array of IDs
+      this.ideasSectionExpanded = filters.mode === 'idea';
       var self = this;
       var rsp = Space.doSearch(this.wg, this.isAnonymous, filters);
 

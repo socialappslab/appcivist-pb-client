@@ -66,6 +66,7 @@
       feedback.$promise.then(
         function (newStats) {
           $scope.proposal.stats = newStats;
+          $scope.proposal.informalScore = Contributions.getInformalScore($scope.proposal);
         },
         function (error) {
           Notify.show('Error when updating user feedbac', 'error');
@@ -83,8 +84,8 @@
       }
       rsp.$promise.then(
         function (data) {
+          data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
-
           var workingGroupAuthors = data.workingGroupAuthors;
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
@@ -99,9 +100,9 @@
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
 
-          if(data.extendedTextPad){
+          if (data.extendedTextPad) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision);
-          }else{
+          } else {
             console.warn('Proposal with no PAD associated');
           }
 

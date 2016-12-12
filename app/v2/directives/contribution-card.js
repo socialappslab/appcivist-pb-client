@@ -4,9 +4,11 @@
   appCivistApp
     .directive('contributionCard', ContributionCard);
 
-  ContributionCard.$inject = ['Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope'];
+  ContributionCard.$inject = [
+    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope', 'Notify'
+    ];
 
-  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope) {
+  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -28,14 +30,6 @@
       this.showContextualMenu = !this.showContextualMenu;
     }
 
-    function setInformalScore(contribution) {
-      var stats = contribution.stats;
-
-      if (stats) {
-        contribution.informalScore = stats.ups - stats.downs;
-      }
-    }
-
     return {
       restrict: 'E',
       scope: {
@@ -47,7 +41,7 @@
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
         scope.showContextualMenu = false;
-        setInformalScore(scope.contribution);
+        scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
         scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
         setContributionType(scope);
         var assembly = localStorageService.get('currentAssembly');
@@ -116,10 +110,10 @@
           feedback.$promise.then(
             function (newStats) {
               scope.contribution.stats = newStats;
-              setInformalScore(scope.contribution);
+              scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
             },
             function (error) {
-              console.log('Error when updating user feedback');
+              Notify.show('Error when updating user feedback', 'error');
             }
           );
         };

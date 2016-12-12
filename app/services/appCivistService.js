@@ -571,6 +571,22 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       oldC.themes = newC.themes;
       oldC.hashtags = newC.hashtags;
       oldC.attachments = newC.attachments;
+    },
+
+    /**
+     * Calculates informal score of the given contribution.
+     *
+     * @param {object} contribution
+     * @returns {Number}
+     */
+    getInformalScore: function(contribution) {
+      var stats = contribution.stats;
+      var score = 0;
+
+      if (stats) {
+        score = stats.ups - stats.downs;
+      }
+      return score;
     }
   };
 });

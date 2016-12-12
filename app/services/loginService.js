@@ -1,5 +1,5 @@
 appCivistApp.service('loginService', function ($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
-  FlashService, $rootScope, $q, Memberships, Assemblies, $filter, $state) {
+  FlashService, $rootScope, $q, Memberships, Assemblies, $filter, $state, Notify, Campaigns) {
 
 
   this.getUser = function () {
@@ -14,10 +14,10 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     $rootScope.startSpinner();
     if (user.password && user.password.localeCompare(user.repeatPassword) != 0) {
       $rootScope.stopSpinner();
-      FlashService.ErrorWithModal("Your passwords don't match.", "USER", null, "BADREQUEST", false);
+      Notify.show("Your passwords don't match.", 'error');
     } else if (user === '0') {
       $rootScope.stopSpinner();
-      FlashService.ErrorWithModal("You are already registered.", "USER", null, "BADREQUEST", false);
+      Notify.show("You are already registered.", 'error');
     } else {
       var authRes = AppCivistAuth.signUp().save(user);
       authRes.$promise.then(
@@ -27,7 +27,6 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
           }
           localStorageService.set('sessionKey', user.sessionKey);
           localStorageService.set('authenticated', true);
-          console.log("User get from API: " + user.userId);
           localStorageService.set("user", user);
           scope.user = user;
           $rootScope.stopSpinner();
@@ -37,7 +36,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
           var data = error.data;
           scope.user = null;
           $rootScope.stopSpinner();
-          FlashService.ErrorWithModal(data.statusMessage, "USER", null, data.responseStatus, false);
+          Notify.show(data.statusMessage, 'error');
         }
       );
     }
@@ -57,7 +56,6 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
         if (user !== '0') {
           localStorageService.set('sessionKey', user.sessionKey);
           localStorageService.set('authenticated', true);
-          console.log("User get from API: " + user.userId);
           localStorageService.set("user", user);
           scope.user = user;
 
@@ -73,22 +71,13 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
         } else { // Not Authenticated
           scope.user = null;
           $location.url('/');
-          FlashService.ErrorWithModal('You need to log in.', "USER", null, "UNAUTHORIZED", false);
+          Notify.show('You need to log in.', 'error');
         }
       },
       function (error) {
         $rootScope.stopSpinner();
         var data = error.data;
-        FlashService.ErrorWithModal(data.statusMessage, "USER", null, data.responseStatus, false);
-        //$uibModal.open({
-        //	templateUrl: 'app/partials/landing/loginErrorModal.html',
-        //	size: 'sm',
-        //	controller: ['$scope', function($scope){
-        //		$scope.close = function(){
-        //			this.$close();
-        //		}
-        //	}]
-        //});
+        Notify.show(data.statusMessage, 'error');
       }
     );
     if (callback) { callback(); }
@@ -120,9 +109,6 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
             if (user != undefined && user.userId > 0) {
               localStorageService.set('user', user);
               localStorageProvider.set('authenticated', true);
-              //user.$save();
-              //localStorageService.set('authenticated', true);
-              //$location.url('/home');
             }
           });
       }
@@ -157,13 +143,13 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
 
 
     angular.forEach(membershipsInGroups, function (m) {
-      myWorkingGroups.push(m.targetGroup);
-      groupMembershipsHash[m.targetGroup.groupId] = m.roles;
+      myWorkingGroups.push(m.workingGroup);
+      groupMembershipsHash[m.workingGroup.groupId] = m.roles;
     });
 
     angular.forEach(membershipsInAssemblies, function (m) {
-      myAssemblies.push(m.targetAssembly);
-      assemblyMembershipsHash[m.targetAssembly.assemblyId] = m.roles;
+      myAssemblies.push(m.assembly);
+      assemblyMembershipsHash[m.assembly.assemblyId] = m.roles;
 
     });
 
@@ -174,25 +160,35 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
 
     var currentAssembly = myAssemblies[0];
     if (currentAssembly != null) {
-      singleAssemblySuccess(currentAssembly);
+      return singleAssemblySuccess(currentAssembly);
     } else {
       singleAssemblyError("No assembly in memberships");
     }
   }
 
   function memberError(error) {
-    FlashService.Error('Error while trying to get assemblies from server');
+    Notify.show('Error while trying to get assemblies from server', 'error');
   }
 
   function singleAssemblySuccess(assembly) {
+    var user = localStorageService.get('user');
     localStorageService.set('currentAssembly', assembly);
     var ongoingCampaigns = $filter('filter')(assembly.campaigns, { active: true });
-    localStorageService.set('ongoingCampaigns', ongoingCampaigns);
 
+    var rsp = Campaigns.campaigns(user.uuid, 'ongoing').query().$promise;
+    rsp.then(
+      function (data) {
+        localStorageService.set('ongoingCampaigns', data);
+      },
+      function(){
+        Notify.show('Error while trying to get ongoing campaigns from server', 'error');
+      }
+    )
+    return rsp;
   }
 
   function singleAssemblyError(error) {
-    FlashService.Error('Error while trying to get assembly from server');
+    Notify.show('Error while trying to get assembly from server', 'error');
   }
 
   function assembliesSuccess(memberships) {
@@ -218,6 +214,6 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
       deferred.resolve([]);
       return deferred.promise;
     }
-    FlashService.Error('Error while trying to get assemblies from server');
+    Notify.show('Error while trying to get assemblies from server', 'error');
   }
 });

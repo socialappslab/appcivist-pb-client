@@ -22,7 +22,7 @@
 
     function login() {
       if (!$scope.user.email || !$scope.user.password) {
-        FlashService.Error('Email and password are required', true, 'BADREQUEST');
+        Notify.show('Email and password are required', 'error');
         return;
       }
       var rsp = AppCivistAuth.signIn().save($scope.user);
@@ -34,8 +34,9 @@
       localStorageService.set('authenticated', true);
       localStorageService.set('user', user);
       // todo
-      if ($scope.user && $scope.user.language)
+      if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
+      }
       loginService.loadAuthenticatedUserMemberships(user).then(function () {
         var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
         var assembly = localStorageService.get('currentAssembly');

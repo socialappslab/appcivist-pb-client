@@ -86,17 +86,24 @@
 
     function updatePassword() {
       if ($scope.profile.password === $scope.profile.repeatPassword) {
+        if($scope.profile.password.length < 5) {
+          Notify.show('Password length must at least 5 characters', 'error');
+          return;
+        }
+
         var url = localStorageService.get('serverBaseUrl') + '/user/password/change';
         var data = {
           password: $scope.profile.password,
           repeatPassword: $scope.profile.repeatPassword
         };
-        var rsp = loginService.changePassword();
-        rsp.save(data).$promise.then(
+        var ChangePasswordService = loginService.changePassword();
+        var rsp = new ChangePasswordService(data);
+        rsp.$save().then(
           function (response) {
             Notify.show('Data saved correctly');
           },
           function (error) {
+            console.log(error);
             Notify.show('Error updating user password', 'error');
           }
         );

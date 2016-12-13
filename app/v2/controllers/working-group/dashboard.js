@@ -139,19 +139,9 @@
       Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
         function (data) {
           $scope.proposals = data;
-          Space.getPinnedContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
-            prependPinnedContributions, nonPinnedContributions
-          );
         },
         function (error) {
-          Space.getPinnedContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
-            function (data) {
-              $scope.proposals.unshift(data);
-            },
-            function (error) {
-              FlashService.Error('Error occurred while trying to load working group proposals');
-            }
-          );
+          FlashService.Error('Error occurred while trying to load working group proposals');
         }
       );
     }
@@ -207,9 +197,6 @@
       rsp.then(function (data) {
         if (filters.mode === 'proposal') {
           self.proposals = data;
-          Space.getPinnedContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
-            prependPinnedContributions, nonPinnedContributions
-          );
         } else if (filters.mode === 'idea') {
           self.ideas = data;
         }

@@ -128,11 +128,12 @@
         var authorship = Contributions.verifyGroupAuthorship($scope.user, proposal, $scope.group).get();
         authorship.$promise.then(function (response) {
           $scope.userIsAuthor = response.responseStatus === 'OK';
-
           if ($scope.userIsAuthor) {
             loadEtherpadWriteUrl(proposal);
           }
         });
+      } else if ($scope.userIsAuthor) {
+        loadEtherpadWriteUrl(proposal);
       }
     }
 

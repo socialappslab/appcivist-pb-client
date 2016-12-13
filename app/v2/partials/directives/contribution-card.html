@@ -1,7 +1,8 @@
 <!-- PROPOSAL CARD -->
 <div ng-if="isProposal">
   <div class="card__wrapper">
-    <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false">
+    <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false"
+            ng-class="{new: contribution.status==='NEW', archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
       <p class="heading--category">
         <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
           {{theme.title}}
@@ -55,7 +56,9 @@
               </a>
             </li>
           </ul>
-          <div ng-if="cm.isHover" class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
+          <div ng-if="cm.isHover" class="contextual_menu"
+               ng-class="{active: cm.isHover}"
+               ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
             <div class="content">
               <contribution-contextual-items contribution="contribution"></contribution-contextual-items>
             </div>

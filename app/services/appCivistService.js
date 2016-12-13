@@ -464,7 +464,14 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public',
         { uuid: spaceUUId });
     },
-
+    pinnedContributionInResourceSpace: function (spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/pinned',
+        { sid: spaceId });
+    },
+    pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public/pinned',
+        { uuid: spaceUUId });
+    },
     /**
      * Returns a $resource to interact with the following endpoints:
      *  - POST  /campaign/:uuid/contribution
@@ -781,6 +788,26 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         return rsp.$promise;
       },
 
+      getPinnedContributions: function (target, type, isAnonymous) {
+        // Get list of contributions from server
+        var rsp;
+        var query = {};
+        query.type=type;
+        if (isAnonymous) {
+          rsp = Contributions.pinnedContributionInResourceSpaceByUUID(target.rsUUID).query(query);
+        } else {
+          rsp = Contributions.pinnedContributionInResourceSpace(target.rsID).query(query);
+        }
+        rsp.$promise.then(
+          function (data) {
+            return data;
+          },
+          function (error) {
+            Notify.show('Error loading contributions from server', 'error');
+          }
+        );
+        return rsp.$promise;
+      },
       /**
        * Basic search handler.
        *

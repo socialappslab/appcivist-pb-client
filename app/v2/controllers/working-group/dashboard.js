@@ -139,9 +139,19 @@
       Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
         function (data) {
           $scope.proposals = data;
+          Space.getPinnedContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
+            prependPinnedContributions, nonPinnedContributions
+          );
         },
         function (error) {
-          FlashService.Error('Error occured while trying to load working group proposals');
+          Space.getPinnedContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
+            function (data) {
+              $scope.proposals.unshift(data);
+            },
+            function (error) {
+              FlashService.Error('Error occurred while trying to load working group proposals');
+            }
+          );
         }
       );
     }
@@ -197,6 +207,9 @@
       rsp.then(function (data) {
         if (filters.mode === 'proposal') {
           self.proposals = data;
+          Space.getPinnedContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
+            prependPinnedContributions, nonPinnedContributions
+          );
         } else if (filters.mode === 'idea') {
           self.ideas = data;
         }
@@ -208,6 +221,18 @@
         return;
       }
       return this.wg.themes;
+    }
+
+    function prependPinnedContributions (data) {
+      if (data && data.length>0) {
+        for (var i = 0; i<data.length; i++) {
+          $scope.proposals.unshift(data[i]);
+        }
+      }
+    }
+
+    function nonPinnedContributions (error) {
+      console.log("No pinned contributions");
     }
   }
 } ());

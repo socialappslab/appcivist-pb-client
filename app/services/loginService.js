@@ -77,7 +77,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
       function (error) {
         $rootScope.stopSpinner();
         var data = error.data;
-        Notify.show(data.statusMessage, 'error');
+        Notify.show(data ? data.statusMessage ? data.statusMessage : '' : '', 'error');
       }
     );
     if (callback) { callback(); }

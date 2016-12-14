@@ -32,7 +32,7 @@
       $scope.toggleNavigation = toggleNavigation;
 
       $rootScope.$on('$stateChangeSuccess', stateChangeHandler.bind($scope));
-      $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
+      if($scope.currentAssembly) $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
     }
 
     function loadUserData(scope) {

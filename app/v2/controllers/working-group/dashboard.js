@@ -8,11 +8,11 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate'
+    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate', '$rootScope'
   ];
 
   function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships, Space, $translate) {
+    $filter, localStorageService, FlashService, Memberships, Space, $translate, $rootScope) {
 
     activate();
 
@@ -172,6 +172,7 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      $rootScope.$broadcast('eqResize', true);
     }
 
     function toggleAllMembers() {
@@ -210,15 +211,15 @@
       return this.wg.themes;
     }
 
-    function prependPinnedContributions (data) {
-      if (data && data.length>0) {
-        for (var i = 0; i<data.length; i++) {
+    function prependPinnedContributions(data) {
+      if (data && data.length > 0) {
+        for (var i = 0; i < data.length; i++) {
           $scope.proposals.unshift(data[i]);
         }
       }
     }
 
-    function nonPinnedContributions (error) {
+    function nonPinnedContributions(error) {
       console.log("No pinned contributions");
     }
   }

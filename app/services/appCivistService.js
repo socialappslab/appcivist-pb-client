@@ -350,6 +350,37 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
     reSendInvitation: function (invitationId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email',
         { iid: invitationId });
+    },
+
+    hasRol: function (rols, rolName) {
+      var rol;
+      for (var i = 0; i < rols.length; i++) {
+        rol = rols[i];
+
+        if (rol.name === rolName) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    assemblyRols: function (aid) {
+      var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
+      return assemblyMembershipsHash[aid];
+    },
+
+    groupRols: function (gid) {
+      var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
+      return groupMembershipsHash[gid];
+    },
+
+    rolIn: function(target, id, rol) {
+      switch(target) {
+        case 'assembly':
+          return this.hasRol(this.assemblyRols(id), rol);
+        case 'group':
+          return this.hasRol(this.groupRols(id), rol);
+      }
     }
 
   };
@@ -586,7 +617,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
      * @param {object} contribution
      * @returns {Number}
      */
-    getInformalScore: function(contribution) {
+    getInformalScore: function (contribution) {
       var stats = contribution.stats;
       var score = 0;
 
@@ -792,7 +823,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         // Get list of contributions from server
         var rsp;
         var query = {};
-        query.type=type;
+        query.type = type;
         if (isAnonymous) {
           rsp = Contributions.pinnedContributionInResourceSpaceByUUID(target.rsUUID).query(query);
         } else {
@@ -826,10 +857,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
         if (target) {
           params.sorting = filters.sorting;
-          params.themes = _.flatMap(filters.themes, function(e) {
+          params.themes = _.flatMap(filters.themes, function (e) {
             return e.themeId;
           });
-          params.groups = _.flatMap(filters.groups, function(e) {
+          params.groups = _.flatMap(filters.groups, function (e) {
             return e.groupId;
           });
           return this.getContributions(target, type, isAnonymous, params);

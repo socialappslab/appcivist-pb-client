@@ -33,6 +33,8 @@
 
       $rootScope.$on('$stateChangeSuccess', stateChangeHandler.bind($scope));
       if($scope.currentAssembly) $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
+      // TODO: read the following from the instance main assembly settings in the server
+      $scope.creationPatternsEnabled = false;
     }
 
     function loadUserData(scope) {

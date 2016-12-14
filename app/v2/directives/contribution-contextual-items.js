@@ -10,40 +10,30 @@
 
   function contributionContextualItems(Contributions, Campaigns, localStorageService, Memberships, $window, Notify) {
 
-    function hasRole(roles, roleName) {
-      var result = false;
-
-      angular.forEach(roles, function (role) {
-        if (role.name === roleName) {
-          result = true;
-        }
-      });
-      return result;
-    }
-
     function setupMembershipInfo(scope) {
+      var hasRol = Memberships.hasRol;
       var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
       var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
       var groupRoles = groupMembershipsHash[scope.group ? scope.group.groupId : scope.group];
-      scope.userIsWorkingGroupCoordinator = groupRoles != undefined ? hasRole(groupRoles, "COORDINATOR") : false;
-      console.log("User is coordinator of group "+scope.group+" = "+scope.userIsWorkingGroupCoordinator );
-      var assemblyRoles = groupMembershipsHash[scope.assemblyId];
-      scope.userIsAssemblyCoordinator = assemblyRoles != undefined ? hasRole(assemblyRoles, "COORDINATOR") : false;
-      console.log("User is coordinator of assembly "+scope.assemblyId+" = "+scope.userIsAssemblyCoordinator );
+      scope.userIsWorkingGroupCoordinator = groupRoles != undefined ? hasRol(groupRoles, "COORDINATOR") : false;
+      console.log("User is coordinator of group " + scope.group + " = " + scope.userIsWorkingGroupCoordinator);
+      var assemblyRoles = assemblyMembershipsHash[scope.assemblyId];
+      scope.userIsAssemblyCoordinator = assemblyRoles != undefined ? hasRol(assemblyRoles, "COORDINATOR") : false;
+      console.log("User is coordinator of assembly " + scope.assemblyId + " = " + scope.userIsAssemblyCoordinator);
 
-      if (scope.contribution.type==='PROPOSAL') {
+      if (scope.contribution.type === 'PROPOSAL') {
         scope.userCanEdit = scope.userIsAuthor = groupRoles != undefined;
-        console.log("User can edit Proposal "+scope.contribution.contributionId+" = "+scope.userCanEdit);
-        console.log("User is author of Proposal "+scope.contribution.contributionId+" = "+scope.userIsAuthor);
-      } else if (scope.contribution.type==='NOTE') {
+        console.log("User can edit Proposal " + scope.contribution.contributionId + " = " + scope.userCanEdit);
+        console.log("User is author of Proposal " + scope.contribution.contributionId + " = " + scope.userIsAuthor);
+      } else if (scope.contribution.type === 'NOTE') {
         scope.userCanEdit = true;
         scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
-        console.log("User can edit NOTE "+scope.contribution.contributionId+" = "+scope.userCanEdit);
-        console.log("User is author of NOTE "+scope.contribution.contributionId+" = "+scope.userIsAuthor);
+        console.log("User can edit NOTE " + scope.contribution.contributionId + " = " + scope.userCanEdit);
+        console.log("User is author of NOTE " + scope.contribution.contributionId + " = " + scope.userIsAuthor);
       } else {
         scope.userCanEdit = scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
-        console.log("User can edit Idea "+scope.contribution.contributionId+" = "+scope.userCanEdit);
-        console.log("User is author of Idea "+scope.contribution.contributionId+" = "+scope.userIsAuthor);
+        console.log("User can edit Idea " + scope.contribution.contributionId + " = " + scope.userCanEdit);
+        console.log("User is author of Idea " + scope.contribution.contributionId + " = " + scope.userIsAuthor);
       }
     }
 
@@ -56,10 +46,10 @@
       this.showContextualMenu = !this.showContextualMenu;
     }
 
-    function verifyAuthorshipUser (contribution, user) {
+    function verifyAuthorshipUser(contribution, user) {
       var authors = contribution.authors;
       if (authors && authors.length > 0) {
-        for (var i = 0; i<authors.length; i++) {
+        for (var i = 0; i < authors.length; i++) {
           if (user.userId === authors[i].userId) {
             return true;
           }
@@ -94,7 +84,7 @@
             scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
             scope.notAssigned = true;
 
-            if(scope.group){
+            if (scope.group) {
               scope.notAssigned = false;
             }
 
@@ -155,10 +145,10 @@
           scope.myObject.publish = function () {
             var rsp = Contributions.publishProposal(scope.assemblyId, scope.group.groupId, scope.contribution.contributionId).update();
             rsp.$promise.then(
-              function(){
+              function () {
                 $window.location.reload();
               },
-              function() {
+              function () {
                 Notify.show('Error while publishing proposal', 'error');
               }
             )

@@ -33,11 +33,6 @@
         EqualHeights('.container__proposals .card__body .excerpt');
         EqualHeights('.container__proposals .card__body');
       }
-
-      if (document.querySelector('.container__ideas')) {
-        //EqualHeights('.container__ideas .card__header .heading--headline');
-        //EqualHeights('.container__ideas .card__header');
-      }
     }
 
     /**

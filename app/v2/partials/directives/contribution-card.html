@@ -3,6 +3,9 @@
   <div class="card__wrapper">
     <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false"
             ng-class="{new: contribution.status==='NEW', archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
+      <div class="card__heading_bookmark" ng-if="contribution.pinned">
+        <i class="fa fa-bookmark"></i>
+      </div>
       <p class="heading--category">
         <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
           {{theme.title}}

@@ -154,6 +154,7 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      $rootScope.$broadcast('eqResize', true);
     }
 
     function loadThemes(query) {

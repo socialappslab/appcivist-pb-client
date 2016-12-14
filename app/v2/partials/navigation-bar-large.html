@@ -15,6 +15,15 @@
   .nav--active {
     z-index: 2000 !important;
   }
+
+  .nav__container {
+    overflow-y: scroll;
+  }
+
+  .navigation.nav--active .nav__footer,
+  .nav--active.navigation-logged-in .nav__footer {
+    position: relative;
+  }
 </style>
 <nav id="appcivist__nav" class="navigation" ng-class="{'nav--active': nav.isActive}">
   <div class="nav__container">
@@ -60,14 +69,26 @@
       </ul>
     </section>
 
-    <!--<ul ng-if="assemblies.length" class="submenu submenu-campaigns">
-      <h1 class="heading--header">{{'Other Assemblies' | translate }}</h1>
-      <li ng-repeat="a in assemblies">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}">
-          {{a.name}}
-        </a>
-      </li>
-    </ul>-->
+    <section class="my_working_groups" ng-if="isAssemblyCoordinator">
+      <h3 class="section_header">{{'AppCivist Instance Settings' | translate}}</h3>
+      <ul class="list__my_working_groups">
+        <li>
+          <a ng-href="/#/v2/assembly/new">
+            New assembly
+          </a>
+        </li>
+        <li>
+          <a ng-href="/#/v2/campaign/new">
+            New campaign
+          </a>
+        </li>
+        <li>
+          <a ng-href="/#/v2/group/new">
+            New working group
+          </a>
+        </li>
+      </ul>
+    </section>
 
     <footer class="nav__footer">
       <div class="logo__wrapper">

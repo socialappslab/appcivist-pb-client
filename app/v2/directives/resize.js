@@ -14,15 +14,48 @@
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-        window.addEventListener('resize', onResize);
+        window.addEventListener('resize', onResize.bind(scope));
+        var transitionEvent = whichTransitionEvent();
 
         // if we receive a eqResize event, we emmit a native resize event
-        scope.$on('eqResize', function() {
-          var e = new Event('resize');
-          window.dispatchEvent(e);
+        scope.$on('eqResize', function (event, animated) {
+          /* delay resize if there is a transition going on */
+          if (animated) {
+            document.addEventListener(transitionEvent, emmitResize);
+          } else {
+            emmitResize();
+          }
+        });
+
+        scope.$on('eqResizeEnd', function (event) {
+          document.removeEventListener(transitionEvent, emmitResize)
         });
       }
     };
+
+
+    /* From Modernizr */
+    function whichTransitionEvent() {
+      var t;
+      var el = document.createElement('fakeelement');
+      var transitions = {
+        'transition': 'transitionend',
+        'OTransition': 'oTransitionEnd',
+        'MozTransition': 'transitionend',
+        'WebkitTransition': 'webkitTransitionEnd'
+      }
+
+      for (t in transitions) {
+        if (el.style[t] !== undefined) {
+          return transitions[t];
+        }
+      }
+    }
+
+    function emmitResize() {
+      var e = new Event('resize');
+      window.dispatchEvent(e);
+    }
 
     function onResize() {
       if (document.querySelector('.container__proposals')) {
@@ -33,11 +66,7 @@
         EqualHeights('.container__proposals .card__body .excerpt');
         EqualHeights('.container__proposals .card__body');
       }
-
-      if (document.querySelector('.container__ideas')) {
-        EqualHeights('.container__ideas .card__header .heading--headline');
-        EqualHeights('.container__ideas .card__header');
-      }
+      this.$broadcast('eqResizeEnd');
     }
 
     /**

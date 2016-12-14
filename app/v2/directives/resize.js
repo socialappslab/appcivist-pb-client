@@ -17,7 +17,7 @@
         window.addEventListener('resize', onResize);
 
         // if we receive a eqResize event, we emmit a native resize event
-        scope.$on('eqResize', function() {
+        scope.$on('eqResize', function () {
           var e = new Event('resize');
           window.dispatchEvent(e);
         });
@@ -35,8 +35,8 @@
       }
 
       if (document.querySelector('.container__ideas')) {
-        EqualHeights('.container__ideas .card__header .heading--headline');
-        EqualHeights('.container__ideas .card__header');
+        //EqualHeights('.container__ideas .card__header .heading--headline');
+        //EqualHeights('.container__ideas .card__header');
       }
     }
 

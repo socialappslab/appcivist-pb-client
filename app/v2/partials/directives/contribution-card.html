@@ -101,38 +101,15 @@
           </div>
         </div>
       </div>
-
-      <!--<div class="voting-buttons" ng-if="showVotingButtons">
-        <div class="vote-button upvote">
-          <a class="heading--small" href="#">
-            <i class="fa fa-thumbs-up"></i>
-          </a>
-        </div>
-        <div class="vote-button middle">
-          <a class="heading--small" href="#">
-            <i class="fa fa-circle-o"></i>
-          </a>
-        </div>
-        <div class="vote-button middle">
-          <a class="heading--small" href="#">
-            <i class="fa fa-ban"></i>
-          </a>
-        </div>
-        <div class="vote-button downvote">
-          <a class="heading--small" href="#">
-            <i class="fa fa-thumbs-down"></i>
-          </a>
-        </div>
-      </div>-->
     </div>
   </div>
 </div>
 
 
 <!-- IDEA CARD -->
-<div ng-if="isIdea">
+<div class="card__idea" ng-if="isIdea">
   <div class="card__wrapper">
-    <header class="card__header" style="height: 136px;" ng-mouseenter="cm.isHover = false">
+    <header class="card__header" style="height: 150px;" ng-mouseenter="cm.isHover = false">
       <div class="heading--category">
         <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
           {{theme.title}} <span ng-if="$index<themes.length-1 || $index==2 ">, </span>
@@ -190,7 +167,6 @@
           </div>
         </div>
       </div>
-
       <div class="card__body">
         <div class="voting_mechanism">
           <div class="temperature_check" ng-if="showVotingButtons">

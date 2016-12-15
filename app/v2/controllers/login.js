@@ -18,6 +18,7 @@
     function activate() {
       $scope.user = {};
       $scope.login = login;
+      $scope.isLoginPage = true;
     }
 
     function login() {

@@ -7,11 +7,11 @@
 
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'FlashService',
-    '$rootScope', 'loginService', '$translate'
+    '$rootScope', 'loginService', '$translate', '$state'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashService,
-    $rootScope, loginService, $translate) {
+    $rootScope, loginService, $translate, $state) {
 
     activate();
 
@@ -30,6 +30,7 @@
       }
       $scope.updateSmallMenu = updateSmallMenu;
       $scope.toggleNavigation = toggleNavigation;
+      $scope.goToLogin = goToLogin;
 
       $rootScope.$on('$stateChangeSuccess', stateChangeHandler.bind($scope));
       if($scope.currentAssembly) $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
@@ -55,6 +56,11 @@
 
     function toggleNavigation() {
       $scope.nav.isActive = !$scope.nav.isActive;
+    }
+
+    function goToLogin() {
+      $scope.isLoginPage = true;
+      $state.go('v2.login');
     }
 
     function stateChangeHandler(event) {

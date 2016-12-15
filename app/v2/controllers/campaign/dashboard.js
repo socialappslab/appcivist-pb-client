@@ -94,7 +94,8 @@
         if (!$scope.isAnonymous) {
           res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
         } else {
-          res = Campaigns.componentsByCampaignUUID($scope.campaignID).query();
+          res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
+
         }
         res.then(function (data) {
           var currentComponent = Campaigns.getCurrentComponent(data);

@@ -1,0 +1,26 @@
+<main class="appmain">
+  <article class="campaign">
+    <header class="page__header">
+      <h1 class="heading--title">{{'Create Campaign' | translate}}</h1>
+    </header>
+    <section>
+      <wizard>
+        <wizard-pane title="{{'Campaign description' | translate}}" number="1" state="campaign.new.description">
+        </wizard-pane>
+        <wizard-pane title="{{'Campaign milestones' | translate}}" number="2" state="campaign.new.milestones">
+        </wizard-pane>
+        <wizard-pane title="{{'Campaign stages' | translate}}" number="3" state="campaign.new.stages">
+        </wizard-pane>
+      </wizard>
+      <wizard-content>
+        <div class="step-content" id="wizardwidget-steps">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div ui-view></div>
+            </div>
+          </div>
+        </div>
+      </wizard-content>
+    </section>
+  </article>
+</main>

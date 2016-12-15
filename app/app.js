@@ -120,7 +120,7 @@
       .setNotify(true, true);
 
 
-    // temporary new templates integration
+    // V2 routes
     $stateProvider.state('v2', {
       url: '/v2',
       abstract: true,
@@ -203,6 +203,14 @@
         url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      .state('v2.campaign.new', {
+        url: '/new',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.campaign.cuuid', {
         url: '/:cuuid',
@@ -377,22 +385,15 @@
      */
     $httpProvider.interceptors.push(['$q', '$location', 'localStorageService', function ($q, $location, localStorageService) {
       return {
-        'request': function (config) {
+        request: function (config) {
           config.headers = config.headers || {};
           var sessionKey = localStorageService.get('sessionKey');
           if (sessionKey) {
             config.headers.SESSION_KEY = '' + sessionKey;
           }
-          //else{
-          //    if (!pathIsNotRestricted($location.path()))
-          //        $location.path('/');
-          //}
           return config;
         },
-        'responseError': function (response) {
-          //if(response.status === 401 || response.status === 403) {
-          //    $location.path('/');
-          //}
+        responseError: function (response) {
           return $q.reject(response);
         }
       };
@@ -461,7 +462,6 @@
       if (next.indexOf('v2') === -1 && !nonRestrictedPage && !authenticated &&
         (sessionKey === null || sessionKey === undefined || sessionKey === "") &&
         (user === null || user === undefined)) {
-        console.log('entro al uf');
         $location.path('/');
       }
     });
@@ -571,7 +571,6 @@
         if (authorized === Authorization.enums.LOGIN_REQUIRED) {
           $location.path('/v2/login');
         } else if (authorized === Authorization.enums.NOT_AUTHORIZED) {
-          console.log('hola en doooos');
           $location.path('/').replace();
         }
       }

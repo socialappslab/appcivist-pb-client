@@ -1,0 +1,370 @@
+<style>
+  /* WIZARD */
+  .wizard {
+    -webkit-border-radius: 2px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 2px;
+    -moz-background-clip: padding;
+    border-radius: 2px;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wizard.wizard-tabbed {
+    background: #fbfbfb;
+  }
+
+  .wizard.wizard-tabbed ul li {
+    padding: 0 30px;
+    background-color: #fbfbfb;
+  }
+
+  .wizard.wizard-tabbed ul li .chevron {
+    display: none;
+  }
+
+  .wizard.wizard-tabbed ul li .chevron:before {
+    display: none;
+  }
+
+  .wizard.wizard-tabbed ul li.complete {
+    background-color: #fbfbfb;
+  }
+
+  .wizard.wizard-tabbed ul li.active {
+    background: #ffffff;
+  }
+
+  .wizard.wizard-wired {
+    padding-top: 10px;
+    display: block;
+    background: #ffffff;
+    text-align: center;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .wizard.wizard-wired ul {
+    display: table;
+    width: 100%;
+    position: relative;
+  }
+
+  .wizard.wizard-wired ul li {
+    display: table-cell;
+    text-align: center;
+    background-color: #ffffff;
+    width: 20%;
+    padding: 0;
+    margin: 0;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+  }
+
+  .wizard.wizard-wired ul li .chevron {
+    display: none;
+  }
+
+  .wizard.wizard-wired ul li .chevron:before {
+    display: none;
+  }
+
+  .wizard.wizard-wired ul li.complete {
+    background-color: #ffffff;
+  }
+
+  .wizard.wizard-wired ul li.complete .step:before {
+    font-size: 22px;
+    line-height: 36px;
+  }
+
+  .wizard.wizard-wired ul li.complete:hover {
+    background-color: #ffffff;
+  }
+
+  .wizard.wizard-wired ul li.active {
+    background-color: #ffffff;
+  }
+
+  .wizard.wizard-wired ul li .step {
+    border-width: 2px;
+    width: 40px;
+    height: 40px;
+    line-height: 34px;
+    font-size: 15px;
+    z-index: 2;
+    background-color: #ffffff;
+  }
+
+  .wizard.wizard-wired ul li .title {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 6px;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 20px;
+    z-index: 104;
+    text-align: center;
+    table-layout: fixed;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .wizard.wizard-wired ul li:before {
+    display: block;
+    content: "";
+    width: 100%;
+    height: 2px !important;
+    font-size: 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+    position: relative !important;
+    top: 25px;
+    z-index: 1 !important;
+  }
+
+  .wizard.wizard-wired ul li:first-child:before {
+    max-width: 51%;
+    left: 50%;
+  }
+
+  .wizard.wizard-wired ul li:last-child:before {
+    max-width: 50%;
+    width: 50%;
+  }
+
+  .wizard ul {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+    width: 4000px;
+  }
+
+  .wizard ul.previous-disabled li.complete {
+    cursor: default;
+  }
+
+  .wizard ul.previous-disabled li.complete:hover {
+    background: #f3f3f3;
+    cursor: default;
+  }
+
+  .wizard ul.previous-disabled li.complete:hover .chevron:before {
+    border-left-color: #f3f3f3;
+  }
+
+  .wizard ul li {
+    float: left;
+    margin: 0;
+    padding: 10px 20px 10px 30px !important;
+    position: relative;
+    background: #f5f5f5;
+    color: #d0d0d0;
+    font-size: 16px;
+    cursor: default;
+    -webkit-transition: all 0.218s ease;
+    -moz-transition: all 0.218s ease;
+    -o-transition: all 0.218s ease;
+    transition: all 0.218s ease;
+  }
+
+  .wizard ul li .step {
+    border: 2px solid #e5e5e5;
+    color: #cccccc;
+    font-size: 13px;
+    border-radius: 100%;
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    text-align: center;
+    margin-right: 10px;
+  }
+
+  .wizard ul li .chevron {
+    border: 24px solid transparent;
+    border-left: 14px solid #d4d4d4;
+    border-right: 0;
+    display: block;
+    position: absolute;
+    right: -14px;
+    top: 0;
+    z-index: 1;
+  }
+
+  .wizard ul li .chevron:before {
+    border: 24px solid transparent;
+    border-left: 14px solid #f5f5f5;
+    border-right: 0;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 1px;
+    top: -24px;
+    -webkit-transition: all 0.218s ease;
+    -moz-transition: all 0.218s ease;
+    -o-transition: all 0.218s ease;
+    transition: all 0.218s ease;
+  }
+
+  .wizard ul li.complete {
+    background: #f5f5f5;
+    color: #444444;
+  }
+
+  .wizard ul li.complete:before {
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: -1px;
+    height: 2px;
+    max-height: 2px;
+    overflow: hidden;
+    background-color: #a0d468;
+    z-index: 10000;
+  }
+
+  .wizard ul li.complete:hover {
+    background: #eeeeee;
+    cursor: pointer;
+  }
+
+  .wizard ul li.complete:hover .chevron:before {
+    border-left: 14px solid #eeeeee;
+  }
+
+  .wizard ul li.complete .chevron:before {
+    border-left: 14px solid #f5f5f5;
+  }
+
+  .wizard ul li.complete .step {
+    color: #a0d468;
+    border-color: #a0d468;
+  }
+
+  .wizard ul li.complete .step:before {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 100%;
+    content: "\f00c";
+    background-color: #ffffff;
+    z-index: 3;
+    font-family: FontAwesome;
+    font-size: 12px;
+    color: #a0d468;
+  }
+
+  .wizard ul li.active {
+    background: #ffffff;
+    color: #262626;
+  }
+
+  .wizard ul li.active .step {
+    border-color: #FF6A13;
+    color: #FF6A13;
+  }
+
+  .wizard ul li.active:before {
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: -1px;
+    height: 2px;
+    max-height: 2px;
+    overflow: hidden;
+    background-color: #FF6A13;
+    z-index: 10000;
+  }
+
+  .wizard ul li.active .chevron:before {
+    border-left: 14px solid #ffffff;
+  }
+
+  .wizard ul li .badge {
+    margin-right: 8px;
+  }
+
+  .wizard > .steps .disabled a {
+    background: initial;
+  }
+
+  .wizard ul li:first-child {
+    -webkit-border-radius: 2px 0 0 0;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 2px 0 0 0;
+    -moz-background-clip: padding;
+    border-radius: 2px 0 0 0;
+    background-clip: padding-box;
+    padding-left: 20px;
+  }
+
+  .wizard ul li {
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+  }
+
+  .wizard ul li.disabled {
+    background-color: #ddd;
+    color: #bbb;
+  }
+
+  .wizard ul li.disabled .chevron:before {
+    border-left: 14px solid #ddd;
+  }
+
+  .wizard ul li.disabled .step {
+    border: 2px solid #bbb;
+    color: #bbb;
+  }
+
+  .wizard ul li a {
+    color: inherit;
+  }
+
+  .wizard ul li .step {
+    border: 2px solid #53a93f;
+    color: #53a93f;
+  }
+
+  .wizard ul li:hover {
+    background-color: #eee;
+    cursor: pointer;
+  }
+
+  .wizard ul li:hover .chevron:before {
+    border-left: 14px solid #eee;
+  }
+
+  .wizard ul li .chevron:before {
+    border-left: 14px solid #fff;
+  }
+
+  .wizard ul li.active:before {
+    z-index: 100;
+  }
+</style>
+<div id="wizardwidget" class="wizard">
+  <ul class="steps" ng-transclude></ul>
+</div>

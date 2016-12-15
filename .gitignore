@@ -1,6 +1,7 @@
 *.class
 
 public/*
+app/fonts
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -65,6 +66,10 @@ local.properties
 
 npm-debug.log
 app/css/app.css.map
+app/css/app.v2.css
+app/css/app.v2.css.map
+app/css/app.v1-mini.css
+app/css/app.v1-mini.css.map
 bower_components/
 node_modules/
 stylesheets/.sass-cache

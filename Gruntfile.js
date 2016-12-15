@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         },
         files: {                         // Dictionary of files
           'app/css/app.css': 'stylesheets/main.scss',       // 'destination': 'source'
-          'app/css/app.v2.css': 'app/v2/stylesheets/main.scss'
+          'app/css/app.v1-mini.css': 'app/v2/stylesheets/main.scss'
         }
       }
     },
@@ -76,7 +76,11 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      src: ['dist/*', 'app/css/app.css', 'app/css/app.css.map', 'app/css/app.v2.css', 'app/css/app.v2.css.map'],
+      src: [
+        'dist/*', 'app/css/app.css', 'app/css/app.css.map',
+        'app/css/app.v2.css', 'app/css/app.v2.css.map',
+        'app/fonts/*'
+      ],
       dist: {
         files: [
           {
@@ -137,6 +141,19 @@ module.exports = function (grunt) {
       dist: {}
     },
     copy: {
+      dev: {
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: './node_modules/bootstrap-sass/assets/fonts/bootstrap/',
+            dest: './app/fonts/bootstrap/',
+            src: [
+              '**/*',
+            ]
+          }
+        ]
+      },
       dist: {
         files: [
           {
@@ -198,5 +215,5 @@ module.exports = function (grunt) {
   ]);
 
   // Server tasks
-  grunt.registerTask('server', ['clean', 'sass', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
+  grunt.registerTask('server', ['clean', 'copy:dev', 'sass', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
 };

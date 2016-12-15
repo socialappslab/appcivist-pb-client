@@ -1,0 +1,153 @@
+<section class="comments__section">
+  <div class="row">
+    <form>
+      <div class="col-lg-6 col-md-6 col-xs-12">
+        <div id="campaignDefinition" class="box descriptionBox row col-md-12 col-sm-12 col-xs-12">
+          <p>{{'definition.campaign' | translate}}</p>
+        </div>
+        <div class="row vertical-space-medium"></div>
+        <!-- Title -->
+        <div id="campaignTitle" class="row col-md-12 col-sm-12 form-horizontal">
+          <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched &&newCampaignForm1.goal.$invalid }">
+            <label for="inputDefineCampaignTitle" class="control-label">{{"Name your campaign" | translate}}*</label>
+            <input id="inputDefineCampaignTitle" name="goal" class="form-control" placeholder="{{'e.g., Develop proposals for PB Paris 2015' | translate}}"
+              ng-model="newCampaign.title" ng-required="true" />
+            <div class="help-block" ng-messages="newCampaignForm1.goal.$error" ng-if="newCampaignForm1.goal.$touched">
+              <p ng-message="required">{{'creation.components.newCampaign1.text1' | translate}}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Goal -->
+        <div id="campaignGoal" class="row col-md-12 col-sm-12 form-horizontal">
+          <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched &&newCampaignForm1.goal.$invalid }">
+            <label for="inputDefineCampaignGoals" class="control-label">{{"What's the goal of the campaign?" | translate}}*</label>
+            <input id="inputDefineCampaignGoals" name="goal" class="form-control" placeholder="{{'e.g., Develop proposals for PB Paris 2015' | translate}}"
+              ng-model="newCampaign.goal" ng-required="true" />
+            <div class="help-block" ng-messages="newCampaignForm1.goal.$error" ng-if="newCampaignForm1.goal.$touched">
+              <p ng-message="required">{{'creation.components.newCampaign1.text1' | translate}}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enable Budget? -->
+        <div id="campaignBudgetQuestion" class="row col-md-12 col-sm-12">
+          <div class="form-group">
+            <label for="selectCampaignBudget" class="control-label">{{'Will the campaign allocate a budget?' | translate}}</label>
+            <select id="selectCampaignBudget" name="budgetSelect" class="form-control" ng-model="newCampaign.enableBudget">
+                    <option value="yes" selected>{{'Yes' | translate}}</option>
+                    <option value="no">{{'No' | translate}}</option>
+                </select>
+          </div>
+        </div>
+
+        <!-- Budget Amount -->
+        <div id="campaignConfigs" class="row col-md-12 col-sm-12" ng-if="newCampaign.enableBudget=='yes'">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label for="inputBudget" class="control-label">{{"What's the budget to allocate?" | translate}}</label>
+              <input id="inputBudget" name="budget" class="form-control" ng-model="newCampaign.config.budget" placeholder="{{newCampaign.config.budget | translate}}">
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign Template -->
+        <div id="campaignTemplate" class="row col-md-12 col-sm-12">
+          <div class="form-group">
+            <label for="selectCampaignTemplate" class="control-label">
+                    {{"select.campaign.template" | translate}}
+                </label>
+            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{help.tooltip.campaignTemplate}}"></i></h3>
+            <select id="selectCampaignTemplate" name="template" class="form-control" ng-model="newCampaign.template" ng-options="option.description for option in templateOptions track by option.value"
+              ng-change="changeCampaignTemplate(newCampaign.template)">
+                </select>
+          </div>
+        </div>
+
+        <!-- Link Campaign Template: existing campaigns -->
+        <div id="campaignTemplateLinked" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='LINKED'">
+          <div class="form-group">
+            <label for="selectLinkedCampaign" class="control-label">{{newCampaign.template.subTemplateTitle}}</label>
+            <select id="selectLinkedCampaign" class="form-control" ng-model="newCampaign.linkedCampaign" ng-options="campaign.title group by campaign.assembly for campaign in campaigns track by campaign.value"
+              ng-change="initializeLinkedCampaignOptionThemes(newCampaign.linkedCampaign)">
+                </select>
+          </div>
+        </div>
+
+        <!-- Predefined Campaign Template: existing templates -->
+        <div id="campaignTemplatePredefined" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='PREDEFINED'">
+          <div class="form-group">
+            <label for="selectPredefinedTemplate" class="control-label">{{newCampaign.template.subTemplateTitle}}</label>
+            <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignTemplateTooltip}}"></i></h3>-->
+            <select id="selectPredefinedTemplate" class="form-control" ng-model="newCampaign.selectedTemplate" ng-options="template.name for template in templates track by template.campaignTemplateId">
+                </select>
+          </div>
+        </div>
+
+        <!-- Campaign themes-->
+        <div id="campaignOptionalThemes" class="row col-md-12 col-sm-12">
+          <div class="form-group">
+            <label for="checkConfirmCampaignGoals" class="control-label">{{"campaign.create.themes" | translate}}</label>
+            <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
+              <div class="themes-container-title" ng-show="newCampaign.template.value==='LINKED' && campaignThemes.length>0">
+                <h4><strong>{{'campaign.create.themes.linked' | translate}}</strong></h4>
+              </div>
+              <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index" ng-show="newCampaign.template.value==='LINKED'">
+                <input type="checkbox" ng-model="campaignThemes[$index].selected">
+                <span>{{theme.title}}</span>
+              </div>
+
+              <div class="themes-container-title">
+                <h4><strong>{{'campaign.create.themes.assembly' | translate}}</strong></h4>
+              </div>
+              <div class="themes-container-content optionThemes" ng-repeat="theme in assemblyThemes track by $index">
+                <input type="checkbox" ng-model="assemblyThemes[$index].selected">
+                <span>{{theme.title}}</span>
+              </div>
+
+              <div class="themes-container-title">
+                <h4><strong>{{"add.new.themes" | translate}}</strong></h4>
+              </div>
+              <div class="col-md-8 col-md-8">
+                <input id="newTheme" class="form-control" placeholder="{{'Housing' | translate}}" ng-model="newTheme" />
+              </div>
+              <div class="themes-container-content optionThemes col-md-4 col-md-4">
+                <button class="btn btn-success" ng-click="addTheme(newTheme)">{{'Add new' | translate}}</button>
+              </div>
+              <div class="themes-container-content optionThemes col-md-12 col-sm-12">
+                <ul class="tags" ng-repeat="t in newCampaign.themes track by $index">
+                  <li class="tag tag-filter">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeTheme($index)"></span> {{t.title}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 voffset3"></div>
+        <!-- Template configuration -->
+        <div id="campaignTemplatePreview" class="row col-md-12 col-sm-12">
+          <!-- template-configuration class directive -->
+          <div class="row col-md-12 col-sm-12 template-configuration"></div>
+        </div>
+
+        <div id="campaignButtons1" class="row col-md-12 col-sm-12">
+          <div class="col-md-6">
+            <button class="btn btn-success col-md-12" uib-popover="{{'help.tooltip.campaignFastrack' | translate}}" popover-trigger="mouseenter"
+              ng-disabled="!newCampaignForm1.$valid" ng-click="createCampaign({step:4}, {fastrack:true})">
+                    <h3>
+                        <strong>{{"Fastrack" | translate }}</strong>
+                    </h3>
+                </button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-primary col-md-12" ng-click="createCampaign({step:2}, {fastrack:false})" ng-disabled="!newCampaignForm1.$valid">
+                    <h3><strong>{{"Next" | translate}}</strong></h3>
+                </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

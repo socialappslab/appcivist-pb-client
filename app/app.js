@@ -212,6 +212,30 @@
           requiresLogin: true
         }
       })
+      .state('v2.campaign.new.description', {
+        url: '/description',
+        controller: 'v2.CampaignFormDescriptionCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.description.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.campaign.new.milestones', {
+        url: '/milestones',
+        controller: 'v2.CampaignFormMilestonesCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.milestones.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.campaign.new.stages', {
+        url: '/stages',
+        controller: 'v2.CampaignFormStagesCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.stages.html',
+        access: {
+          requiresLogin: true
+        }
+      })
       .state('v2.campaign.cuuid', {
         url: '/:cuuid',
         controller: 'v2.CampaignDashboardCtrl',

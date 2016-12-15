@@ -33,7 +33,8 @@ module.exports = function (grunt) {
           noCache: true
         },
         files: {                         // Dictionary of files
-          'app/css/app.css': 'stylesheets/main.scss'       // 'destination': 'source'
+          'app/css/app.css': 'stylesheets/main.scss',       // 'destination': 'source'
+          'app/css/app.v2.css': 'app/v2/stylesheets/main.scss'
         }
       }
     },
@@ -75,7 +76,7 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      src: ['dist/*', 'app/css/app.css', 'app/css/app.css.map'],
+      src: ['dist/*', 'app/css/app.css', 'app/css/app.css.map', 'app/css/app.v2.css', 'app/css/app.v2.css.map'],
       dist: {
         files: [
           {
@@ -157,6 +158,7 @@ module.exports = function (grunt) {
               'bower_components/ng-notify/dist/ng-notify.min.css',
               'stylesheets/**/*',
               'app/css/app.css',
+              'app/css/app.v2.css',
               'bower_components/angular-i18n/**/*.js'
             ]
           }, {
@@ -167,7 +169,7 @@ module.exports = function (grunt) {
             src: [
               '**/*',
             ]
-          },{
+          }, {
             expand: true,
             dot: true,
             cwd: './bower_components/appcivist-patterns/dist/fonts',
@@ -175,7 +177,7 @@ module.exports = function (grunt) {
             src: [
               '**/*',
             ]
-          },{
+          }, {
             expand: true,
             dot: true,
             cwd: './bower_components/appcivist-patterns/dist/images',

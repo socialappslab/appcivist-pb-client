@@ -1,7 +1,7 @@
 <section class="comments__section">
   <div class="row">
     <form>
-      <div class="col-lg-6 col-md-6 col-xs-12">
+      <div class="col-lg-8 col-md-8 col-xs-12">
         <div id="campaignDefinition" class="box descriptionBox row col-md-12 col-sm-12 col-xs-12">
           <p>{{'definition.campaign' | translate}}</p>
         </div>
@@ -136,15 +136,13 @@
           <div class="col-md-6">
             <button class="btn btn-success col-md-12" uib-popover="{{'help.tooltip.campaignFastrack' | translate}}" popover-trigger="mouseenter"
               ng-disabled="!newCampaignForm1.$valid" ng-click="createCampaign({step:4}, {fastrack:true})">
-                    <h3>
-                        <strong>{{"Fastrack" | translate }}</strong>
-                    </h3>
-                </button>
+              {{"Fastrack" | translate }}
+            </button>
           </div>
           <div class="col-md-6">
             <button class="btn btn-primary col-md-12" ng-click="createCampaign({step:2}, {fastrack:false})" ng-disabled="!newCampaignForm1.$valid">
-                    <h3><strong>{{"Next" | translate}}</strong></h3>
-                </button>
+              {{"Next" | translate}}
+            </button>
           </div>
         </div>
       </div>

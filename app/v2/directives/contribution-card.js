@@ -36,7 +36,8 @@
         contribution: '=',
         showVotingButtons: '=',
         campaign: '=',
-        components: '='
+        components: '=',
+        isAnonymous: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
@@ -62,6 +63,10 @@
 
           if (!scope.isAnonymous) {
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+            scope.contributionId = scope.contribution.contributionId;
+          } else {
+            scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].uuid : "";
+            scope.contributionId = scope.contribution.uuid;
           }
         }
 

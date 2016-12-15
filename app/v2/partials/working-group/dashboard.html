@@ -86,7 +86,7 @@
             <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
           </header>
           <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
-            <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign"
+            <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign" is-anonymous="isAnonymous"
               show-voting-buttons="true" on-finish-render="eqResize"></contribution-card>
             <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
           </div>
@@ -100,7 +100,7 @@
           </header>
 
           <div class="list__cards container__ideas">
-            <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign" show-voting-buttons="false"></contribution-card>
+            <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="false"></contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
           </div>
         </section>

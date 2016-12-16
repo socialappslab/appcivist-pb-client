@@ -50,19 +50,19 @@
         <div class="row vertical-space-medium"></div>
         <div id="campaignButtons2" class="row col-md-12 col-sm-12">
           <div class="col-md-4">
-            <button class="btn btn-success col-md-12" uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter" ng-disabled="!newCampaignForm2.$valid"
-              ng-click="createCampaign({step:3}, {fastrack:true})">
+            <button class="btn btn-success col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
+              ng-click="createCampaign('done', {fastrack:true})">
               {{'Fastrack' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter" ng-disabled="!newCampaignForm2.$valid"
-              ng-click="createCampaign({step:2}, {fastrack:false})">
+            <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
+              ng-click="createCampaign('v2.campaign.new.description', {fastrack:false})">
                {{'Back' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" ng-click="createCampaign({step:3}, {fastrack:false})" ng-disabled="!newCampaignForm2.$valid">
+            <button class="btn btn-primary col-md-12" ng-click="createCampaign('v2.campaign.new.stages', {fastrack:false})" ng-disabled="!newCampaignForm2.$valid">
               {{'Next' | translate}}
             </button>
           </div>

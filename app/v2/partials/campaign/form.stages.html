@@ -3,7 +3,7 @@
     <div class="col-lg-8 col-md-8 col-xs-12">
       <form name="newCampaignForm3">
         <uib-accordion close-others="oneAtATime">
-          <uib-accordion-group heading="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : '' | translate}}"
+          <div uib-accordion-group heading="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : '' | translate}}"
             is-open="component.active" ng-if="component.enabled" is-disabled="component.linked" ng-repeat="component in newCampaign.proposalComponents track by $index">
 
             <uib-accordion-heading>
@@ -112,7 +112,7 @@
                 <div class="col-md-12 voffset3"></div>
               </div>
             </section>
-          </uib-accordion-group>
+          </div>
         </uib-accordion>
 
         <section id="errors" class="row col-md-12 col-sm-12" ng-if="errors.length > 0 || templateErrors.length > 0">
@@ -124,19 +124,19 @@
 
         <section id="campaignButtons3" class="row col-md-12 col-sm-12">
           <div class="col-md-4">
-            <button class="btn btn-success col-md-12" uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter" ng-disabled="!newCampaignForm3.$valid"
-              ng-click="createCampaign({step:4}, {fastrack:true})">
+            <button class="btn btn-success col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm3.$valid"
+              ng-click="createCampaign('done', {fastrack:true})">
                 {{'Fastrack' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" uib-popover="{{info.campaignFastrackTooltip}}" popover-trigger="mouseenter" ng-disabled="!newCampaignForm3.$valid"
-              ng-click="createCampaign({step:2}, {fastrack:false})">
+            <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm3.$valid"
+              ng-click="createCampaign('v2.campaign.new.milestones', {fastrack:false})">
               {{'Back' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" ng-click="createCampaign({step:4}, {fastrack:false})" ng-disabled="!newCampaignForm3.$valid">
+            <button class="btn btn-primary col-md-12" ng-click="createCampaign('done', {fastrack:false})" ng-disabled="!newCampaignForm3.$valid">
               {{'Start' | translate}}
             </button>
           </div>

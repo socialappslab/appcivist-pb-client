@@ -206,7 +206,7 @@
       })
       .state('v2.campaign.new', {
         url: '/new',
-        controller: 'v2.CampaignFormCtrl',
+        controller: 'v2.CampaignFormWizardCtrl',
         templateUrl: 'app/v2/partials/campaign/form.html',
         access: {
           requiresLogin: true
@@ -214,7 +214,7 @@
       })
       .state('v2.campaign.new.description', {
         url: '/description',
-        controller: 'v2.CampaignFormDescriptionCtrl',
+        controller: 'v2.CampaignFormCtrl',
         templateUrl: 'app/v2/partials/campaign/form.description.html',
         access: {
           requiresLogin: true
@@ -222,7 +222,7 @@
       })
       .state('v2.campaign.new.milestones', {
         url: '/milestones',
-        controller: 'v2.CampaignFormMilestonesCtrl',
+        controller: 'v2.CampaignFormCtrl',
         templateUrl: 'app/v2/partials/campaign/form.milestones.html',
         access: {
           requiresLogin: true
@@ -230,7 +230,7 @@
       })
       .state('v2.campaign.new.stages', {
         url: '/stages',
-        controller: 'v2.CampaignFormStagesCtrl',
+        controller: 'v2.CampaignFormCtrl',
         templateUrl: 'app/v2/partials/campaign/form.stages.html',
         access: {
           requiresLogin: true

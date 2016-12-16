@@ -1,6 +1,6 @@
 <section class="comments__section">
   <div class="row">
-    <form>
+    <form name="newCampaignForm1">
       <div class="col-lg-8 col-md-8 col-xs-12">
         <div id="campaignDefinition" class="box descriptionBox row col-md-12 col-sm-12 col-xs-12">
           <p>{{'definition.campaign' | translate}}</p>
@@ -134,13 +134,13 @@
 
         <div id="campaignButtons1" class="row col-md-12 col-sm-12">
           <div class="col-md-6">
-            <button class="btn btn-success col-md-12" uib-popover="{{'help.tooltip.campaignFastrack' | translate}}" popover-trigger="mouseenter"
-              ng-disabled="!newCampaignForm1.$valid" ng-click="createCampaign({step:4}, {fastrack:true})">
+            <button class="btn btn-success col-md-12" uib-tooltip="{{'help.tooltip.campaignFastrack' | translate}}" ng-disabled="!newCampaignForm1.$valid"
+              ng-click="createCampaign('done', {fastrack:true})">
               {{"Fastrack" | translate }}
             </button>
           </div>
           <div class="col-md-6">
-            <button class="btn btn-primary col-md-12" ng-click="createCampaign({step:2}, {fastrack:false})" ng-disabled="!newCampaignForm1.$valid">
+            <button class="btn btn-primary col-md-12" ng-click="createCampaign('v2.campaign.new.milestones', {fastrack:false})" ng-disabled="!newCampaignForm1.$valid">
               {{"Next" | translate}}
             </button>
           </div>

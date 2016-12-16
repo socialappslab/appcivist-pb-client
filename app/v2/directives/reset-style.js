@@ -28,7 +28,6 @@
 
       if (location.hash.includes('campaign/new')) {
         if (!$(v1MiniSelector).lenght) {
-          console.log('siiiii');
           // ADD v1-mini style
           var el = $('head link[data-version=v2]').first();
           el.before(v1Mini);

@@ -269,12 +269,18 @@
 
     function initScopeContent() {
       $scope.user = localStorageService.get("user");
-      if ($scope.user && $scope.user.language)
+      if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
+      }
       $scope.forms = {};
-      $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-      $scope.currentStep = 1;
-      $scope.prevStep = 2;
+      $scope.assembly = localStorageService.get('currentAssembly');
+
+      if (!$scope.assembly) {
+        return;
+      }
+      $scope.assemblyID = $scope.assembly.assemblyId;
+      $scope.currentStep = 2;
+      $scope.prevStep = 1;
 
       // Campaign creation steps and templates for each step
       $scope.steps = [

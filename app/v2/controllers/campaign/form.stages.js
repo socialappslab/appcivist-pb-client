@@ -272,8 +272,13 @@
       if ($scope.user && $scope.user.language)
         $translate.use($scope.user.language);
       $scope.forms = {};
-      $scope.assemblyID = ($routeParams.aid) ? parseInt($routeParams.aid) : 0;
-      $scope.currentStep = 1;
+      $scope.assembly = localStorageService.get('currentAssembly');
+
+      if (!$scope.assembly) {
+        return;
+      }
+      $scope.assemblyID = $scope.assembly.assemblyId;
+      $scope.currentStep = 3;
       $scope.prevStep = 2;
 
       // Campaign creation steps and templates for each step

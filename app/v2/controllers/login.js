@@ -49,7 +49,7 @@
       console.log(error);
       var msg = 'Error while trying to authenticate to the server';
 
-      if (error.data.statusMessage) {
+      if (error && error.data && error.data.statusMessage) {
         msg = error.data.statusMessage;
       }
       Notify.show(msg, 'error');

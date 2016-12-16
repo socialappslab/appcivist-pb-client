@@ -15,14 +15,19 @@
   .nav--active {
     z-index: 2000 !important;
   }
-
+  
   .nav__container {
     overflow-y: scroll;
   }
-
+  
   .navigation.nav--active .nav__footer,
   .nav--active.navigation-logged-in .nav__footer {
     position: relative;
+  }
+  
+  .account__actions .button {
+    background-color: #bacabc;
+    color: #11493b;
   }
 </style>
 <nav id="appcivist__nav" class="navigation" ng-class="{'nav--active': nav.isActive}" ng-if="!isLoginPage">
@@ -64,4 +69,3 @@
     </footer>
   </div>
 </nav>
-

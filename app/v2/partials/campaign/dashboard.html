@@ -89,14 +89,14 @@
           </header>
 
           <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-            <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous"
-              show-voting-buttons="true"></contribution-card>
+            <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign" components="components"
+              is-anonymous="isAnonymous" show-voting-buttons="true"></contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
           </div>
         </section>
       </div>
     </section>
   </article>
-  <discussion-panel space-id="spaceID" endpoint="campaign"></discussion-panel>
+  <discussion-panel space-id="spaceID" endpoint-id="campaignID" endpoint="campaign"></discussion-panel>
   <proposal-new campaign="campaign" ng-if="isModalOpened('proposalNew')" close="toggleModal('proposalNew')"></proposal-new>
 </main>

@@ -6,11 +6,11 @@
     .controller('v2.MainCtrl', MainCtrl);
 
   MainCtrl.$inject = [
-    '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'FlashService',
+    '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
     '$rootScope', 'loginService', '$translate', '$state'
   ];
 
-  function MainCtrl($scope, localStorageService, Memberships, Campaigns, FlashService,
+  function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
     $rootScope, loginService, $translate, $state) {
 
     activate();
@@ -31,9 +31,18 @@
       $scope.updateSmallMenu = updateSmallMenu;
       $scope.toggleNavigation = toggleNavigation;
       $scope.goToLogin = goToLogin;
-
       $rootScope.$on('$stateChangeSuccess', stateChangeHandler.bind($scope));
-      if($scope.currentAssembly) $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
+
+      if ($scope.currentAssembly) {
+        var assemblyRols = Memberships.assemblyRols($scope.currentAssembly.assemblyId);
+        if (assemblyRols) {
+          $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
+        } else {
+          loginService.loadAuthenticatedUserMemberships().then(function () {
+            $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
+          });
+        }
+      }
       // TODO: read the following from the instance main assembly settings in the server
       $scope.creationPatternsEnabled = false;
     }

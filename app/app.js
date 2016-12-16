@@ -149,7 +149,7 @@
         }
       })
       .state('v2.assembly.new.step2', {
-        url: 'assemblies',
+        url: '/assemblies',
         templateUrl: 'app/v2/partials/assembly/step2.html',
         controller: 'v2.AssemblyFormCtrl',
         access: {

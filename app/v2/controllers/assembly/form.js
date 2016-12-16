@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -6,9 +6,13 @@
     .controller('v2.AssemblyFormCtrl', AssemblyFormCtrl);
 
 
-  AssemblyFormCtrl.$inject = ['$scope', 'localStorageService', '$translate', '$routeParams','LocaleService', 'Assemblies', 'usSpinnerService', '$state'];
+  AssemblyFormCtrl.$inject = [
+    '$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService', 'Assemblies',
+    'usSpinnerService', '$state', '$location'
+  ];
 
-  function AssemblyFormCtrl($scope, localStorageService, $translate, $routeParams, LocaleService, Assemblies, usSpinnerService, $state) {
+  function AssemblyFormCtrl($scope, localStorageService, $translate, $routeParams,
+    LocaleService, Assemblies, usSpinnerService, $state, $location) {
 
     if ($state.is('v2.assembly.new')) {
       $state.go('v2.assembly.new.step1');
@@ -31,7 +35,7 @@
       //temporal fix
       $scope.info = '';
 
-      $scope.goToStep = function(step) {
+      $scope.goToStep = function (step) {
         console.log('go to step...')
         if (step === 1) {
           $state.go('v2.assembly.new.step1');
@@ -82,7 +86,7 @@
         step(number);
       }*/
 
-      $scope.setNewAssemblyIcon = function(url, name) {
+      $scope.setNewAssemblyIcon = function (url, name) {
         $scope.newAssembly.profile.icon = url;
         var file = {};
         file.name = name;
@@ -90,13 +94,13 @@
         $scope.f = file;
       }
 
-      $scope.addEmailsToList = function(emailsText) {
+      $scope.addEmailsToList = function (emailsText) {
 
         $scope.invalidEmails = [];
         console.log("Adding emails: " + emailsText);
         var emails = emailsText.split(',');
         console.log("Adding emails: " + emails);
-        emails.forEach(function(email) {
+        emails.forEach(function (email) {
           console.log("Adding email: " + email);
           var invitee = {};
           invitee.email = email.trim();
@@ -111,26 +115,26 @@
         $scope.inviteesEmails.list = "";
       }
 
-      $scope.isValidEmail = function(email) {
+      $scope.isValidEmail = function (email) {
         //var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
         //var re = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
         //return re.test(email);
         return true;
       }
 
-      $scope.removeInvalidEmail = function(index) {
+      $scope.removeInvalidEmail = function (index) {
         $scope.invalidEmails.splice(index, 1);
       };
 
-      $scope.removeInvitee = function(index) {
+      $scope.removeInvitee = function (index) {
         $scope.newAssembly.invitations.splice(index, 1);
       }
 
-      $scope.addTheme = function(ts) {
+      $scope.addTheme = function (ts) {
         console.log("Adding themes: " + ts);
         var themes = ts.split(',');
         console.log("Adding themes: " + themes);
-        themes.forEach(function(theme) {
+        themes.forEach(function (theme) {
           console.log("Adding theme: " + theme);
           var addedTheme = {};
           addedTheme.title = theme.trim();
@@ -141,11 +145,11 @@
         $scope.themes.list = "";
       }
 
-      $scope.removeTheme = function(index) {
+      $scope.removeTheme = function (index) {
         $scope.newAssembly.themes.splice(index, 1);
       }
 
-      $scope.findWithAttr = function(array, attr, value) {
+      $scope.findWithAttr = function (array, attr, value) {
         for (var i = 0; i < array.length; i += 1) {
           if (array[i][attr] === value) {
             return i;
@@ -153,7 +157,7 @@
         }
       }
 
-      $scope.removeByAttr = function(array, attr, value) {
+      $scope.removeByAttr = function (array, attr, value) {
         for (var i = 0; i < array.length; i += 1) {
           if (array[i][attr] === value) {
             array.splice(i, 1);
@@ -161,15 +165,15 @@
         }
       }
 
-      $scope.getLinkedAssemblyById = function(id) {
+      $scope.getLinkedAssemblyById = function (id) {
         return $scope.findWithAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
       }
 
-      $scope.removeLinkedAssemblyById = function(id) {
+      $scope.removeLinkedAssemblyById = function (id) {
         return $scope.removeByAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
       }
 
-      $scope.selectAssembly = function(assemblyId) {
+      $scope.selectAssembly = function (assemblyId) {
         $scope.selectedAssemblies[assemblyId] = !$scope.selectedAssemblies[assemblyId];
 
         if ($scope.selectedAssemblies[assemblyId]) {
@@ -183,7 +187,7 @@
       }
 
       // TODO: process selected assemblies
-      $scope.createNewAssembly = function(step) {
+      $scope.createNewAssembly = function (step) {
         if (step === 1) {
           console.log("Creating assembly with name = " + $scope.newAssembly.name);
           if ($scope.newAssembly.profile.membership === 'OPEN') {
@@ -223,12 +227,6 @@
 
           $scope.newAssembly.configs[0].value = $scope.newAssembly.config.facetoface;
           $scope.newAssembly.configs[1].value = $scope.newAssembly.config.messaging;
-
-          console.log("Creating assembly with managementType = " + $scope.newAssembly.profile.managementType);
-          //delete $scope.newAssembly.profile.;
-          //delete $scope.newAssembly.profile.member;
-          //delete $scope.newAssembly.profile.roles;
-          //delete $scope.newAssembly.profile.role;
           localStorageService.set("temporaryNewAssembly", $scope.newAssembly);
           $scope.tabs[1].active = true;
         } else if (step === 2 && !$scope.userIsNew) {
@@ -236,14 +234,13 @@
           var newAssemblyRes = Assemblies.assembly().save($scope.newAssembly);
           newAssemblyRes.$promise.then(
             // Success
-            function(data) {
-              console.log("Created assembly: " + data.assemblyId);
+            function (data) {
               localStorageService.set("currentAssembly", data);
               localStorageService.set("temporaryNewAssembly", "");
               $location.url('/v1/assembly/' + data.assemblyId + "/forum");
             },
             // Error
-            function(error) {
+            function (error) {
               var e = error.data;
               console.log("Couldn't create assembly: " + e.statusMessage);
               $scope.errors.push(e);
@@ -262,7 +259,7 @@
         }
       }
 
-      $scope.uploadFiles = function(file, errFiles) {
+      $scope.uploadFiles = function (file, errFiles) {
         $scope.f = file;
         $scope.errFile = errFiles && errFiles[0];
         if (file) {
@@ -273,15 +270,15 @@
             }
           });
 
-          file.upload.then(function(response) {
-            $timeout(function() {
+          file.upload.then(function (response) {
+            $timeout(function () {
               file.result = response.data;
               $scope.newAssembly.profile.icon = response.data.url;
             });
-          }, function(response) {
+          }, function (response) {
             if (response.status > 0)
               $scope.errorMsg = response.status + ': ' + response.data;
-          }, function(evt) {
+          }, function (evt) {
             file.progress = Math.min(100, parseInt(100.0 *
               evt.loaded / evt.total));
             console.log('progress: ' + file.progress + '% ');
@@ -289,20 +286,10 @@
         }
       }
 
-      $scope.startSpinner = function() {
-        $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
-        usSpinnerService.spin('spinner-1');
-      }
-
-      $scope.stopSpinner = function() {
-        usSpinnerService.stop('spinner-1');
-        $(angular.element.find('.spinner-container')).remove();
-      }
-
-      $scope.$watch("newAssembly.name", function(newVal, oldval) {
+      $scope.$watch("newAssembly.name", function (newVal, oldval) {
         $translate('assembly.newAssemblystep1.text5', {
           newAssemblyName: $scope.newAssembly.name
-        }).then(function(text) {
+        }).then(function (text) {
           $scope.newAssembly.invitationEmail = text;
         });
       }, true);
@@ -334,7 +321,6 @@
     }
 
     function initializeListOfAssembliesToFollow() {
-      $scope.startSpinner();
       var sessionKey = localStorageService.get("sessionKey");
       if (sessionKey === null || sessionKey === undefined || sessionKey === "") {
         $scope.assemblies = Assemblies.assembliesWithoutLogin().query();
@@ -342,14 +328,12 @@
         $scope.assemblies = Assemblies.assemblies().query();
       }
       $scope.assemblies.$promise.then(
-        function(data) {
+        function (data) {
           $scope.assemblies = data;
           console.log("Assemblies loaded...");
-          $scope.stopSpinner();
         },
-        function(error) {
+        function (error) {
           $scope.errors.push(error);
-          $scope.stopSpinner();
         }
       );
     }
@@ -366,4 +350,4 @@
 
 
   }
-}());
+} ());

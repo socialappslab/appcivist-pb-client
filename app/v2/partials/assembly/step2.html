@@ -1,0 +1,69 @@
+
+<br/>
+<div class="step-margin row">
+    <div class="col-lg-6 col-md-6 col-xs-12">
+        <div class="box descriptionBox">
+            <p>
+                {{'assembly.newAssemblystep2.text1' | translate}}
+            </p>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <input type="text" class="form-control" placeholder="{{'Search for...' | translate}}" ng-model="assemblyFilter"/>
+    </div>
+</div>
+
+<div class="row assembliesLanding assemblies">
+    <div class="col-lg-12 col-md-12 col-xs-12">
+        <div ng-if="assemblies.length > 0">
+            <div class="col-sm-6 col-md-6 col-xs-12"
+                 ng-repeat="assembly in assemblies | filter:assemblyFilter">
+                <div class="thumbnail assembly col-lg-2 col-md-2 col-sm-2 col-xs-4" id="assembly{{assembly.assemblyId}}">
+                    <div class="image-circle">
+                        <a ng-class="selectedAssemblies[assembly.assemblyId] ? 'assemblySelected' : '' "
+                           ng-click="selectAssembly(assembly.assemblyId)">
+                            <img data-src="{{assembly.profile.icon}}"
+                                 alt="{{assembly.name | limitTo: 10}}" src="../assets/images/dublin.jpg"
+                                 data-holder-rendered="true" class="image-circle"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="thumbnail assembly col-lg-10 col-md-10 col-sm-10 col-xs-8">
+                    <div class="caption">
+                    <h4><strong>{{assembly.name}}</strong></h4>
+                    <h5 class="text-muted">
+                        <strong>
+                            <i>
+                                <div ng-show="assembly.location.placeName != null">
+                                    {{assembly.location.placeName}}
+                                </div>
+                            </i>
+                        </strong>
+                    </h5>
+                    <p>{{assembly.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="row">
+  <uib-alert ng-repeat="error in errors track by $index" type="danger" close="removeErrors($index)">{{error.statusMessage}} </uib-alert>
+</div>
+<div class="step-buttons row">
+    <!--<button class="col-md-push-2 col-md-2 btn btn-primary" ng-click="tabs[0].active=true">
+        <h3><strong>{{'Back' | translate}}</strong></h3>
+    </button>
+    <button class="col-md-push-3 col-md-5 btn btn-success" ng-click="createNewAssembly(2)">
+        <h3 ng-if="userIsNew"><strong>{{'Next' | translate}}</strong></h3>
+        <h3 ng-if="!userIsNew"><strong>{{'Start the Assembly' | translate}}</strong></h3>
+    </button>-->
+    <input type='submit' value="{{'Back' | translate}}" ng-click="goToStep(1)" ng-disabled="!newAssemblyForm1.$valid" class="button col-md-4 col-md-4"/>
+    <div class="col-md-1 voffset5"></div>
+    <input type='submit' value="{{'Start the Assembly' | translate}}" ng-click="createNewAssembly(2)" class="button col-md-4 col-md-4"/>
+</div>
+<div class="col-md-12 voffset5"></div>
+<div class="col-md-12 voffset5"></div>
+<div class="col-md-12 voffset5"></div>
+<div class="col-md-12 voffset5"></div>

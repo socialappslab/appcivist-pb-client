@@ -1,0 +1,74 @@
+<style>
+.remove-column {
+    width: 15%;
+}
+.table {
+  border: 0px solid #808080;
+}
+td {
+  border: 0px solid #808080;
+}
+.table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+    border-top: 0px solid #ddd;
+    border-right: 0px solid #ddd;
+    border-left: 0px solid #ddd;
+}
+.image-circle {
+    height: 6rem;
+    width: 6rem;
+    display: block;
+    margin: auto;
+    border-radius: 100%;
+    display: inline-block;
+}
+.step-buttons {
+    margin-left: 25%;
+}
+.step-margin {
+    margin-left: 1%;
+}
+.voffset5 {
+    margin-top: 1rem;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+''
+.add-button {
+  display: table;
+}
+.add-button > img {
+  vertical-align: middle;
+  display: table-cell;
+}
+.add-button > span {
+  vertical-align: middle;
+  display: table-cell;
+}
+</style>
+<main class="appmain">
+  <article class="campaign">
+    <header class="page__header">
+      <h1 class="heading--title">{{'Create Assembly' | translate}}</h1>
+    </header>
+    <section>
+      <wizard>
+        <wizard-pane title="{{'Assembly description' | translate}}" number="1" state="v2.assembly.new.step1">
+        </wizard-pane>
+        <wizard-pane title="{{'Assemblies to follow' | translate}}" number="2" state="v2.assembly.new.step2">
+        </wizard-pane>
+      </wizard>
+      <wizard-content>
+        <div class="step-content" id="wizardwidget-steps">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div ui-view></div>
+            </div>
+          </div>
+        </div>
+      </wizard-content>
+    </section>
+  </article>
+</main>

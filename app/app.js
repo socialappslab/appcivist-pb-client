@@ -273,6 +273,14 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
+      .state('v2.workingGroup.new', {
+        url: '/new',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
       .state('v2.workingGroup.gid', {
         url: '/:gid',
         controller: 'v2.WorkingGroupDashboardCtrl',

@@ -6,7 +6,7 @@
 
   ContributionCard.$inject = [
     'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope', 'Notify'
-    ];
+  ];
 
   function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify) {
 
@@ -47,7 +47,7 @@
         setContributionType(scope);
         var assembly = localStorageService.get('currentAssembly');
 
-        if(assembly){
+        if (assembly) {
           scope.assemblyId = assembly.assemblyId;
         }
 
@@ -81,46 +81,6 @@
         scope.myObject = {};
         scope.myObject.refreshMenu = function () {
           scope.showActionMenu = !scope.showActionMenu;
-        };
-
-        // Read user contribution feedback
-        if (scope.userFeedback === undefined || scope.userFeedback === null) {
-          scope.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false };
-        }
-
-        // Feedback update
-        scope.myObject.updateFeedback = function (value) {
-          if (value === 'up') {
-            scope.userFeedback.up = true;
-            scope.userFeedback.down = false;
-          } else if (value === 'down') {
-            scope.userFeedback.up = false;
-            scope.userFeedback.down = true;
-          } else if (value === 'fav') {
-            scope.userFeedback.fav = true;
-          } else if (value === 'flag') {
-            scope.userFeedback.flag = true;
-          } else if (value === undefined) {
-            if (scope.userFeedback.up == scope.userFeedback.down) {
-              scope.userFeedback.up = true;
-              scope.userFeedback.down = false;
-            } else {
-              scope.userFeedback.up = !scope.userFeedback.up;
-              scope.userFeedback.down = !scope.userFeedback.down;
-            }
-          }
-
-          //var stats = scope.contribution.stats;
-          var feedback = Contributions.userFeedback(scope.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
-          feedback.$promise.then(
-            function (newStats) {
-              scope.contribution.stats = newStats;
-              scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
-            },
-            function (error) {
-              Notify.show('Error when updating user feedback', 'error');
-            }
-          );
         };
 
         //change redirection

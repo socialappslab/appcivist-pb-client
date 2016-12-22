@@ -12,6 +12,58 @@
   function DiscussionPanel(localStorageService, $anchorScroll, $location, Contributions,
     Notify, $filter, Space) {
 
+    return {
+      restrict: 'E',
+      scope: {
+        spaceId: '=',
+        endpointId: '=',
+        endpoint: '@'
+      },
+      templateUrl: '/app/v2/partials/directives/discussion-panel.html',
+      link: function(scope, element, attrs) {
+        scope.$watch('spaceId', function (val) {
+          if (val) {
+            activate();
+          }
+        });
+
+        function activate() {
+          scope.user = localStorageService.get('user');
+          scope.isAnonymous = !!scope.user;
+          loadDiscussions(scope, scope.spaceId);
+          scope.newDiscussion = initContribution('DISCUSSION');
+          scope.newComment = initContribution('COMMENT');
+          // make discussion reply form visible
+          scope.writeReply = function (discussion) {
+            discussion.showReplyForm = true;
+            $location.hash('comment-field-' + discussion.uuid);
+            $anchorScroll();
+            $('#discussion-field-' + discussion.uuid).focus();
+          };
+
+          scope.formatDate = function (date) {
+            return moment(date, 'YYYY-MM-DD HH:mm').local().format('LLL');
+          };
+
+          scope.startConversation = function () {
+            $location.hash('discussion-field');
+            $anchorScroll();
+            $('#discussion-field').focus();
+          };
+
+          scope.createNewDiscussion = function () {
+            var sid = scope.user ? scope.spaceId : scope.endpointId;
+            saveContribution(scope, sid, scope.newDiscussion, scope.endpoint);
+          };
+
+          scope.createNewComment = function (discussion) {
+            var sid = scope.user ? discussion.resourceSpaceId : discussion.uuid;
+            saveContribution(scope, sid, scope.newComment, 'contribution');
+          };
+        }
+      }
+    };
+
     function initContribution(type) {
       var c = Contributions.defaultNewContribution();
       c.type = type;
@@ -59,6 +111,7 @@
 
     function saveContribution(scope, sid, newContribution, endpoint) {
       newContribution.title = newContribution.text;
+      console.log('to submit', newContribution);
       var rsp;
       if (!scope.user) {
         rsp = Contributions.createAnomymousContribution(endpoint, sid);
@@ -74,56 +127,5 @@
         loadDiscussions(scope, scope.spaceId);
       });
     }
-
-    return {
-      restrict: 'E',
-      scope: {
-        spaceId: '=',
-        endpointId: '=',
-        endpoint: '@'
-      },
-      templateUrl: '/app/v2/partials/directives/discussion-panel.html',
-      link: function postLink(scope, element, attrs) {
-        scope.$watch('spaceId', function (val) {
-          if (val) {
-            activate();
-          }
-        });
-
-        function activate() {
-          scope.user = localStorageService.get('user');
-          loadDiscussions(scope, scope.spaceId);
-          scope.newDiscussion = initContribution('DISCUSSION');
-          scope.newComment = initContribution('COMMENT');
-          // make discussion reply form visible
-          scope.writeReply = function (discussion) {
-            discussion.showReplyForm = true;
-            $location.hash('comment-field-' + discussion.resourceSpaceId);
-            $anchorScroll();
-            $('#discussion-field-' + discussion.resourceSpaceId).focus();
-          };
-
-          scope.formatDate = function (date) {
-            return moment(date, 'YYYY-MM-DD HH:mm').local().format('LLL');
-          };
-
-          scope.startConversation = function () {
-            $location.hash('discussion-field');
-            $anchorScroll();
-            $('#discussion-field').focus();
-          };
-
-          scope.createNewDiscussion = function () {
-            var sid = scope.user ? scope.spaceId : scope.endpointId;
-            saveContribution(scope, sid, scope.newDiscussion, scope.endpoint);
-          };
-
-          scope.createNewComment = function (discussion) {
-            var sid = scope.user ? discussion.resourceSpaceId : discussion.uuid;
-            saveContribution(scope, sid, scope.newComment, 'contribution');
-          };
-        }
-      }
-    };
   }
 } ());

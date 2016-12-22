@@ -29,7 +29,7 @@
 
         function activate() {
           scope.user = localStorageService.get('user');
-          scope.isAnonymous = !!scope.user;
+          scope.isAnonymous = !scope.user;
           loadDiscussions(scope, scope.spaceId);
           scope.newDiscussion = initContribution('DISCUSSION');
           scope.newComment = initContribution('COMMENT');
@@ -111,7 +111,6 @@
 
     function saveContribution(scope, sid, newContribution, endpoint) {
       newContribution.title = newContribution.text;
-      console.log('to submit', newContribution);
       var rsp;
       if (!scope.user) {
         rsp = Contributions.createAnomymousContribution(endpoint, sid);

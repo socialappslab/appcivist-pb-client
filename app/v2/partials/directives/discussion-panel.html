@@ -1,3 +1,12 @@
+<style>
+  .comment-meta {
+    width: 100% !important;
+  }
+
+  .comment-meta input[type=submit] {
+    float: right;
+  }
+</style>
 <section class="comments__section">
   <header class="panel-heading">
     <h2 class="heading--header">{{'Conversations' | translate}}</h2>
@@ -41,7 +50,7 @@
         <div class="comments__comment_form">
           <form ng-submit="createNewComment(discussion)">
             <fieldset>
-              <div>
+              <div ng-if="isAnonymous">
                 <div class="field-container col-lg-6" style="margin-bottom: 10px;">
                   <input type="text" ng-model="newComment.username" placeholder="{{'Your name' | translate}}">
                 </div>
@@ -58,8 +67,8 @@
               <div class="comment-form">
                 <div class="comment-meta">
                   <member-card action-bar="true" comments-section="true"></member-card>
+                  <input class="button" type="submit" value="Submit" />
                 </div>
-                <input class="button" type='submit' value='Submit' />
               </div>
             </fieldset>
           </form>
@@ -72,15 +81,28 @@
   <div class="comments__reply">
     <h2 class="heading--header">{{'Start a Conversation' | translate}}</h2>
     <div class="comments__comment_form">
-      <form method="post" ng-submit="createNewDiscussion()" class="comment-form">
+      <form method="post" ng-submit="createNewDiscussion()">
         <fieldset>
-          <div class="field-container">
-            <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+          <div ng-if="isAnonymous">
+            <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+              <input type="text" ng-model="newDiscussion.username" placeholder="{{'Your name' | translate}}">
+            </div>
+            <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+              <input type="email" ng-model="newDiscussion.email" placeholder="{{'Your email' | translate}}">
+            </div>
           </div>
-          <div class="comment-meta">
-            <member-card action-bar="true" comments-section="true"></member-card>
+          <div>
+            <div class="field-container col-lg-12">
+              <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+            </div>
           </div>
-          <input class="button" type='submit' value="{{'Submit' | translate}}" />
+          <br />
+          <div class="comment-form">
+            <div class="comment-meta">
+              <member-card action-bar="true" comments-section="true"></member-card>
+              <input class="button" type="submit" value="Submit"/>
+            </div>
+          </div>
         </fieldset>
       </form>
     </div>

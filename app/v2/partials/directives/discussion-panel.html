@@ -6,6 +6,14 @@
   .comment-meta input[type=submit] {
     float: right;
   }
+
+  .inline-controls .temperature_check {
+    display: inline-block;
+  }
+
+  .inline-controls .temperature_check .votes {
+    margin-right: 0;
+  }
 </style>
 <section class="comments__section">
   <header class="panel-heading">
@@ -25,8 +33,9 @@
       </div>
       <div class="comment-reply-controls">
         <contribution-feedback contribution="discussion"></contribution-feedback>
-        <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>
-        <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>
+        <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>&nbsp;&nbsp;
+        <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>&nbsp;&nbsp;
+        <a ng-if="isCoordinator" ng-click="delete(discussion)" class="heading--subheader reply-count"><i class="fa fa-remove"></i>&nbsp;{{'Delete' | translate}}</a>&nbsp;&nbsp;
       </div>
       <ul class="threaded-comments">
         <li class="panel comment-container" ng-repeat="comment in discussion.comments">
@@ -39,8 +48,9 @@
           <div class="comment-text">
             <small>{{comment.text}}</small>
           </div>
-          <div class="comment-reply-controls">
+          <div class="comment-reply-controls inline-controls">
             <contribution-feedback contribution="comment"></contribution-feedback>
+            <a ng-if="isCoordinator" ng-click="delete(comment)" class="heading--subheader reply-count"><i class="fa fa-remove"></i>&nbsp;{{'Delete' | translate}}</a>
           </div>
         </li>
       </ul>

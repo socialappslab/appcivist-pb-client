@@ -6,11 +6,11 @@
 
   DiscussionPanel.$inject = [
     'localStorageService', '$anchorScroll', '$location', 'Contributions', 'Notify', '$filter',
-    'Space'
+    'Space', 'Memberships', '$stateParams'
   ];
 
   function DiscussionPanel(localStorageService, $anchorScroll, $location, Contributions,
-    Notify, $filter, Space) {
+    Notify, $filter, Space, Memberships, $stateParams) {
 
     return {
       restrict: 'E',
@@ -20,7 +20,7 @@
         endpoint: '@'
       },
       templateUrl: '/app/v2/partials/directives/discussion-panel.html',
-      link: function(scope, element, attrs) {
+      link: function (scope, element, attrs) {
         scope.$watch('spaceId', function (val) {
           if (val) {
             activate();
@@ -30,6 +30,22 @@
         function activate() {
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
+
+          if (scope.user) {
+            var hasRol = Memberships.hasRol;
+            var assembly = localStorageService.get('currentAssembly');
+            scope.assemblyId = assembly.assemblyId;
+            var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
+            var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
+            var assemblyRols = assemblyMembershipsHash[assembly.assemblyId];
+            scope.isCoordinator = assemblyRols != undefined ? hasRol(assemblyRols, 'COORDINATOR') : false;
+
+            if (!scope.isCoordinator) {
+              var groupId = $stateParams.gid ? parseInt($stateParams.gid) : 0;
+              var groupRols = groupMembershipsHash[groupId];
+              scope.isCoordinator = groupRols != undefined ? hasRol(groupRols, 'COORDINATOR') : false;
+            }
+          }
           loadDiscussions(scope, scope.spaceId);
           scope.newDiscussion = initContribution('DISCUSSION');
           scope.newComment = initContribution('COMMENT');
@@ -60,6 +76,19 @@
             var sid = scope.user ? discussion.resourceSpaceId : discussion.uuid;
             saveContribution(scope, sid, scope.newComment, 'contribution');
           };
+
+          scope.delete = function (contribution) {
+            var rsp = Contributions.contributionSoftRemoval(scope.assemblyId, contribution.contributionId).update().$promise;
+            rsp.then(
+              function () {
+                Notify.show('Comment removed');
+                loadDiscussions(scope, scope.spaceId);
+              },
+              function () {
+                Notify.show('Error while trying to remove comment', 'error');
+              }
+            )
+          }
         }
       }
     };

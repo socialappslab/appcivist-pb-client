@@ -13,7 +13,7 @@
 (function () {
   var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
-    'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify'];
+    'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha'];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
   var appcivist = {
@@ -75,7 +75,8 @@
         'it-IT': 'Italiano'
       },
       'preferredLocale': 'en-US'
-    });
+    })
+    .constant('RECAPTCHA_KEY', '6Le_ow8UAAAAALdzF8F_LaqQI6t6MDw4USLMedMy');
 
   appCivistApp.config(config);
   appCivistApp.run(run);
@@ -85,7 +86,9 @@
    * @type {string[]}
    */
   config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
-    'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider', '$stateProvider'];
+    'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider', '$stateProvider',
+    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider'
+  ];
 
   /**
    * Configuration of the app, executed before everything else.
@@ -97,8 +100,12 @@
    * @param localStorageServiceProvider
    */
   function config($routeProvider, $locationProvider, $resourceProvider, $httpProvider, $sceDelegateProvider,
-    localStorageServiceProvider, $translateProvider, tmhDynamicLocaleProvider, $stateProvider) {
+    localStorageServiceProvider, $translateProvider, tmhDynamicLocaleProvider, $stateProvider, RECAPTCHA_KEY,
+    vcRecaptchaServiceProvider) {
 
+    vcRecaptchaServiceProvider.setDefaults({
+      key: RECAPTCHA_KEY,
+    });
     /**
      * Whitelist of external domains/URLs allowed to be queried (e.g., the etherpad server)
      */
@@ -216,7 +223,7 @@
         abstract: true
       })
       .state('v2.space.sid.contribution', {
-        url: '/contributions?type',
+        url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl',
         access: {

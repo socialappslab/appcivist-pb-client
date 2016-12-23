@@ -30,10 +30,13 @@
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;
         $scope.isAnonymous = true;
+        $scope.fromURL = 'v2/campaign/' + $scope.campaignID;
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
+        $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.campaignID;
+
         if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
         }
@@ -50,7 +53,6 @@
         loadAssembly();
         loadCampaignResources();
       }
-
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function () {
         $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;

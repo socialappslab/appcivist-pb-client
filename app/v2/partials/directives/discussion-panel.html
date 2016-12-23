@@ -1,3 +1,30 @@
+<style>
+  .comment-meta {
+    width: 100% !important;
+  }
+
+  .comment-meta input[type=submit] {
+    float: right;
+  }
+
+  .inline-controls .temperature_check {
+    display: inline-block;
+  }
+
+  .inline-controls .temperature_check .votes {
+    margin-right: 0;
+  }
+
+  .comments__reply h2 {
+    margin-bottom: 10px;
+  }
+
+  input[disabled],
+  textarea[disabled] {
+    background-color: #eee;
+    opacity: 1;
+  }
+</style>
 <section class="comments__section">
   <header class="panel-heading">
     <h2 class="heading--header">{{'Conversations' | translate}}</h2>
@@ -15,20 +42,10 @@
         <small>{{discussion.text}}</small>
       </div>
       <div class="comment-reply-controls">
-        <div class="voting-buttons">
-          <div class="vote-button upvote">
-            <a class="heading--small" >
-              <i class="fa fa-chevron-up"></i>&nbsp;{{discussion.stats.ups}}
-            </a>
-          </div>
-          <div class="vote-button downvote">
-            <a class="heading--small" >
-              <i class="fa fa-chevron-down"></i>&nbsp;{{discussion.stats.downs}}
-            </a>
-          </div>
-        </div>
-        <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>
-        <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>
+        <contribution-feedback contribution="discussion"></contribution-feedback>
+        <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>&nbsp;&nbsp;
+        <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>&nbsp;&nbsp;
+        <a ng-if="isCoordinator" ng-click="delete(discussion)" class="heading--subheader reply-count"><i class="fa fa-remove"></i>&nbsp;{{'Delete' | translate}}</a>&nbsp;&nbsp;
       </div>
       <ul class="threaded-comments">
         <li class="panel comment-container" ng-repeat="comment in discussion.comments">
@@ -41,19 +58,9 @@
           <div class="comment-text">
             <small>{{comment.text}}</small>
           </div>
-          <div class="comment-reply-controls">
-            <div class="voting-buttons">
-              <div class="vote-button upvote">
-                <a class="heading--small" >
-                  <i class="fa fa-chevron-up"></i>&nbsp;{{comment.stats.ups}}
-                </a>
-              </div>
-              <div class="vote-button downvote">
-                <a class="heading--small" >
-                  <i class="fa fa-chevron-down"></i>&nbsp;{{comment.stats.downs}}
-                </a>
-              </div>
-            </div>
+          <div class="comment-reply-controls inline-controls">
+            <contribution-feedback contribution="comment"></contribution-feedback>
+            <a ng-if="isCoordinator" ng-click="delete(comment)" class="heading--subheader reply-count"><i class="fa fa-remove"></i>&nbsp;{{'Delete' | translate}}</a>
           </div>
         </li>
       </ul>
@@ -61,15 +68,31 @@
       <div class="comments__reply" ng-if="discussion.showReplyForm">
         <h2 class="heading--header">{{'Reply' | translate}}</h2>
         <div class="comments__comment_form">
-          <form method="post" ng-submit="createNewComment(discussion)" class="comment-form">
+          <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse" 
+               on-success="validateCaptchaResponse(discussion)" style="margin-bottom: 10px;"></div>
+          <form ng-submit="createNewComment(discussion)">
             <fieldset>
-              <div class="field-container">
-                <textarea id="comment-field-{{discussion.resourceSpaceId}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+              <div ng-if="isAnonymous">
+                <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+                  <input type="text" ng-model="newComment.username" placeholder="{{'Your name' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                </div>
+                <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+                  <input type="email" ng-model="newComment.email" placeholder="{{'Your email' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                </div>
               </div>
-              <div class="comment-meta">
-                <member-card action-bar="true" comments-section="true"></member-card>
+              <div>
+                <div class="field-container col-lg-12">
+                  <textarea id="comment-field-{{discussion.uuid}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}" 
+                            ng-disabled="!discussion.recaptchaResponseOK"></textarea>
+                </div>
               </div>
-              <input class="button" type='submit' value='Submit' />
+              <br />
+              <div class="comment-form">
+                <div class="comment-meta">
+                  <member-card action-bar="true" comments-section="true"></member-card>
+                  <input class="button" type="submit" value="Submit" />
+                </div>
+              </div>
             </fieldset>
           </form>
         </div>
@@ -81,15 +104,29 @@
   <div class="comments__reply">
     <h2 class="heading--header">{{'Start a Conversation' | translate}}</h2>
     <div class="comments__comment_form">
-      <form method="post" ng-submit="createNewDiscussion()" class="comment-form">
+      <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
+      <form ng-submit="createNewDiscussion()">
         <fieldset>
-          <div class="field-container">
-            <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"></textarea>
+          <div ng-if="isAnonymous">
+            <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+              <input type="text" ng-model="newDiscussion.username" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
+            </div>
+            <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+              <input type="email" ng-model="newDiscussion.email" placeholder="{{'Your email' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
+            </div>
           </div>
-          <div class="comment-meta">
-            <member-card action-bar="true" comments-section="true"></member-card>
+          <div>
+            <div class="field-container col-lg-12">
+              <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}" ng-disabled="!vm.recaptchaResponseOK"></textarea>
+            </div>
           </div>
-          <input class="button" type='submit' value="{{'Submit' | translate}}" />
+          <br />
+          <div class="comment-form">
+            <div class="comment-meta">
+              <member-card action-bar="true" comments-section="true"></member-card>
+              <input class="button" type="submit" value="Submit"/>
+            </div>
+          </div>
         </fieldset>
       </form>
     </div>

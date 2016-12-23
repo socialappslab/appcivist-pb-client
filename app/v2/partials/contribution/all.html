@@ -10,7 +10,7 @@
       <div class="heading--header">
         <i class="fa fa-asterisk" ng-if="seeAllType == 'CAMPAIGN'"></i>
         <i class="fa fa-group" ng-if="seeAllType == 'WORKING_GROUP'"></i>
-        <a ng-href="refUrl">&nbsp;&nbsp;{{seeAllTitle}}</a>
+        <a ng-href="/#/{{fromURL}}">&nbsp;&nbsp;{{seeAllTitle}}</a>
       </div>
     </header>
     <div class="page__content">
@@ -33,17 +33,17 @@
 
       <section class="list--proposals" ng-if="type==='proposal'">
         <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
-          <contribution-card class="card__proposal" ng-repeat="proposal in contributions track by $index"
-            contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize"></contribution-card>
-            <p ng-if="contributions.length === 0" class="card">No {{ title }} in this space yet</p>
+          <contribution-card class="card__proposal" ng-repeat="proposal in contributions track by $index" contribution="proposal" show-voting-buttons="false"
+            on-finish-render="eqResize"></contribution-card>
+          <p ng-if="contributions.length === 0" class="card">No {{ title }} in this space yet</p>
         </div>
       </section>
 
 
       <section class="list--ideas" ng-if="type==='ideas'">
         <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-          <contribution-card class="card__idea" ng-repeat="idea in contributions track by $index"
-                             contribution="idea" show-voting-buttons="false" on-finish-render="eqResize"></contribution-card>
+          <contribution-card class="card__idea" ng-repeat="idea in contributions track by $index" contribution="idea" show-voting-buttons="false"
+            on-finish-render="eqResize"></contribution-card>
           <p ng-if="contributions.length === 0" class="card">No {{ title }} in this space yet</p>
         </div>
       </section>

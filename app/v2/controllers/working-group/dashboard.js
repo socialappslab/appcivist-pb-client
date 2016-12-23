@@ -8,11 +8,11 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Space', '$translate', '$rootScope'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope'
   ];
 
   function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships, Space, $translate, $rootScope) {
+    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
 
     activate();
 
@@ -26,13 +26,17 @@
       if (pattern.test($stateParams.gid)) {
         $scope.groupID = $stateParams.gid;
         $scope.isAnonymous = true;
+        $scope.fromURL = 'v2/group/' + $scope.groupID;
         loadWorkingGroup();
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.user = localStorageService.get('user');
-        if ($scope.user && $scope.user.language)
+        $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
+
+        if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
+        }
         loadAssembly();
       }
       $scope.activitiesLimit = 4;
@@ -79,7 +83,7 @@
         // TODO: show anonymous working group page
       } else {
         $scope.stopSpinner();
-        FlashService.Error("An error occured while verifying your membership to the assembly: " + JSON.stringify(error))
+        Notify.show("An error occured while verifying your membership to the assembly: " + JSON.stringify(error), 'error');
       }
     }
 
@@ -103,12 +107,13 @@
           if ($scope.isAnonymous) {
             // TODO
           } else {
-            $scope.spaceID = data.forumResourceSpaceId;
+            $scope.forumSpaceID = data.forumResourceSpaceId;
+            $scope.spaceID = data.resourcesResourceSpaceId;
           }
           loadLatestActivities(data);
         },
         function (error) {
-          FlashService.Error('Error occured trying to initialize the working group: ' + JSON.stringify(error));
+          Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
         }
       );
     }
@@ -130,7 +135,7 @@
           $scope.members = data;
         },
         function (error) {
-          FlashService.Error('Error occured while trying to load working group members');
+          Notify.show('Error occured while trying to load working group members', 'error');
         }
       );
     }
@@ -141,7 +146,7 @@
           $scope.proposals = data;
         },
         function (error) {
-          FlashService.Error('Error occurred while trying to load working group proposals');
+          Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
     }
@@ -152,7 +157,7 @@
           $scope.ideas = data;
         },
         function (error) {
-          FlashService.Error('Error occured while trying to load working group ideas');
+          Notify.show('Error occured while trying to load working group ideas', 'error');
         }
       );
     }
@@ -165,7 +170,7 @@
           $scope.activities = data;
         },
         function (error) {
-          FlashService.Error('Error loading working group activities from server');
+          Notify.show('Error loading working group activities from server', 'error');
         }
       );
     }

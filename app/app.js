@@ -223,7 +223,7 @@
         abstract: true
       })
       .state('v2.space.sid.contribution', {
-        url: '/contributions?type',
+        url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl',
         access: {

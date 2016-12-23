@@ -6,7 +6,7 @@
 
   DiscussionPanel.$inject = [
     'localStorageService', '$anchorScroll', '$location', 'Contributions', 'Notify', '$filter',
-    'Space', 'Memberships', '$stateParams'
+    'Space', 'Memberships', '$stateParams', 'RECAPTCHA_KEY'
   ];
 
   function DiscussionPanel(localStorageService, $anchorScroll, $location, Contributions,
@@ -27,9 +27,12 @@
           }
         });
 
+
         function activate() {
+          scope.vm = {};
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
+          scope.validateCaptchaResponse = validateCaptchaResponse.bind(scope);
 
           if (scope.user) {
             var hasRol = Memberships.hasRol;
@@ -45,6 +48,12 @@
               var groupRols = groupMembershipsHash[groupId];
               scope.isCoordinator = groupRols != undefined ? hasRol(groupRols, 'COORDINATOR') : false;
             }
+          } else {
+            scope.$watch('vm.recaptchaResponse', function (response) {
+              if (response) {
+                validateCaptchaResponse(scope.vm);
+              }
+            });
           }
           loadDiscussions(scope, scope.spaceId);
           scope.newDiscussion = initContribution('DISCUSSION');
@@ -140,6 +149,10 @@
 
     function saveContribution(scope, sid, newContribution, endpoint) {
       newContribution.title = newContribution.text;
+
+      if (!newContribution.title) {
+        return;
+      }
       var rsp;
       if (!scope.user) {
         rsp = Contributions.createAnomymousContribution(endpoint, sid);
@@ -154,6 +167,16 @@
         }
         loadDiscussions(scope, scope.spaceId);
       });
+    }
+
+    /**
+     * Verify that user response is correct.
+     * 
+     * @param {object} target - element with recaptchaResponse and recaptchaResponseOK properties.
+     */
+    function validateCaptchaResponse(target) {
+      // TODO
+      target.recaptchaResponseOK = true;
     }
   }
 } ());

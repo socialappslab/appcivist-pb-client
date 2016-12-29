@@ -24,8 +24,8 @@
       $scope.isAnonymous = false;
       $scope.ideasSectionExpanded = false;
       // TODO: read the following from configurations in the campaign/component
-      $scope.newProposalsEnabled = false;
-      $scope.newIdeasEnabled = false;
+      $scope.newProposalsEnabled = true;
+      $scope.newIdeasEnabled = true;
 
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;

@@ -3,36 +3,34 @@
   <div class="vex-content">
     <div class="modal_content__add_proposal">
       <header class="modal-header">
-        <h2 class="modal__title">Add Proposal</h2>
+        <h2 class="modal__title">{{'Add Proposal' | translate}}</h2>
       </header>
       <div class="modal-body">
         <fieldset class="divider">
-          <label for="textarea">Upload csv file</label>
+          <label for="textarea">{{'Upload csv file' | translate}}</label>
           <input type="file" id="input">
-          <a  class="button__modal_submit">Upload</a>
+          <a class="button__modal_submit">{{'Upload' | translate}}</a>
         </fieldset>
         <fieldset>
           <div class="field__container">
-            <label for="add_proposal__title">Title <abbr title="Required">*</abbr></label>
+            <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
             <input ng-model="proposal.title" id="add_proposal__title" type="text" placeholder="Proposal Title">
           </div>
           <div class="field__container">
-            <label for="textarea">Description</label>
-            <textarea ng-model="proposal.text" id="add_proposal__description" rows="8" cols="48" placeholder="Proposal Description"></textarea>
+            <label for="textarea">{{'Description' | translate}}</label>
+            <textarea ng-model="proposal.summary" id="add_proposal__description" rows="8" cols="48" placeholder="{{'Proposal Description' | translate}}"></textarea>
           </div>
           <div class="field__container assign_proposal_to_wg">
-            <label for="assign-to-wg">Assign this Proposal to a Working Group</label>
+            <label for="assign-to-wg">{{'Working Group' | translate}}</label>
             <select id="assign-to-wg">
-              <option value="value1">A Handy Working Group Name</option>
-              <option value="value2">Here's a Working Group Name</option>
-              <option value="value3">And Here's Another One</option>
+              <option ng-repeat="group in groups" value="group">{{group.name}}</option>
             </select>
           </div>
           <div class="field__container assign_proposal_to_users">
             <fieldset class="user__assignment">
               <!-- assuming some sort of autocomplete -->
               <label for="">
-                Assign users
+                {{'Authors' | translate}}
                 <input type="text" placeholder="Enter a name to search…">
                 <ul class="user__list">
                   <div class="user__card person">
@@ -115,21 +113,21 @@
             </fieldset>
           </div>
           <fieldset class="add_proposal__availble_themes">
-            <p clas="intro">Select categories to assign</p>
-            <label class="add_proposal__categories_label">Select categories to assign</label>
+            <p clas="intro">{{'Categories' | translate}}</p>
+            <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
             <ul class="tags">
-              <li><a >Open Space</a></li>
-              <li><a >Quick Fixes</a></li>
-              <li><a >Schools</a></li>
+              <li><a>Open Space</a></li>
+              <li><a>Quick Fixes</a></li>
+              <li><a>Schools</a></li>
             </ul>
           </fieldset>
           <div class="field__container">
-            <label for="add_proposal__source_code">Title</label>
-            <input id="add_proposal__source_code" type="number" size="3" placeholder="Proposal Source Code">
+            <label for="add_proposal__source_code">{{'Source code' | translate}}</label>
+            <input ng-model="proposal.sourceCode" id="add_proposal__source_code" type="number" size="3" placeholder="{{'Source Code' | translate}}">
           </div>
         </fieldset>
         <fieldset>
-          <a  class="button__modal_submit">Submit Proposal</a>
+          <a class="button__modal_submit">{{'Submit Proposal' | translate}}</a>
         </fieldset>
       </div>
     </div>

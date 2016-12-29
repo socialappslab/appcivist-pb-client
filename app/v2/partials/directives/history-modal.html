@@ -1,0 +1,12 @@
+<div class="modal_content__contribution_history">
+
+  <header class="modal-header">
+    <h2 class="modal__title">Contribution History</h2>
+  </header>
+
+  <div class="modal-body">
+    <div ng-repeat="element in vm.historyElements">
+      <history-change history-element="element"></history-change>
+    </div>
+  </div>
+</div>

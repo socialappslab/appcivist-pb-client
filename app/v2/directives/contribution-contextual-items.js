@@ -5,10 +5,10 @@
     .directive('contributionContextualItems', contributionContextualItems);
 
   contributionContextualItems.$inject = [
-    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notify'
+    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notify', '$compile'
   ];
 
-  function contributionContextualItems(Contributions, Campaigns, localStorageService, Memberships, $window, Notify) {
+  function contributionContextualItems(Contributions, Campaigns, localStorageService, Memberships, $window, Notify, $compile) {
 
     function setupMembershipInfo(scope) {
       var hasRol = Memberships.hasRol;
@@ -164,6 +164,13 @@
             //Contributions.assignContributionToWG(scope.assemblyId, scope.contribution.contributionId, scope.wg).update(scope.contribution);
             $window.location.reload();
           }
+
+          scope.myObject.seeHistory = function () {
+            scope.vexInstance = vex.open({
+              unsafeContent: $compile(document.querySelector('.history-modal').innerHTML)(scope)[0]
+            });
+          }
+
         }
       }
     };

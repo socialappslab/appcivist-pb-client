@@ -625,7 +625,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         score = stats.ups - stats.downs;
       }
       return score;
-    }
+    },
+    contributionHistory: function (assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/history',
+        { aid: assemblyId, cid: contributionId });
+    },
   };
 });
 

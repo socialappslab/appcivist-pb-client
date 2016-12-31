@@ -5,10 +5,10 @@
     .directive('contributionContextualItems', contributionContextualItems);
 
   contributionContextualItems.$inject = [
-    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notify', '$compile'
+    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notify', '$compile', 'Notifications'
   ];
 
-  function contributionContextualItems(Contributions, Campaigns, localStorageService, Memberships, $window, Notify, $compile) {
+  function contributionContextualItems(Contributions, Campaigns, localStorageService, Memberships, $window, Notify, $compile, Notifications) {
 
     function setupMembershipInfo(scope) {
       var hasRol = Memberships.hasRol;
@@ -169,6 +169,11 @@
             scope.vexInstance = vex.open({
               unsafeContent: $compile(document.querySelector('.history-modal').innerHTML)(scope)[0]
             });
+          }
+
+          scope.myObject.subscribe = function() {
+            var query = { "origin": scope.contribution.uuid, "eventName": "NEW_CONTRIBUTION_PROPOSAL", "endPointType": "email"};
+            var subscription = Notifications.subscribe().save(query);
           }
 
         }

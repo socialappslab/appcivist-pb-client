@@ -82,7 +82,8 @@
       </ul>
       <div class="attribution">
         <p class="heading--subheader">Created by</p>
-        <member-card user="group"></member-card>
+        <member-card ng-repeat="author in proposal.authors" user="author"></member-card>
+        <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
       <p class="description">{{proposal.text}}</p>
 

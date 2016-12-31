@@ -2,13 +2,13 @@
   'use strict';
 
   appCivistApp
-    .directive('campaignContextualItems', campaignContextualItems);
+    .directive('wgroupContextualItems', wgroupContextualItems);
 
-  campaignContextualItems.$inject = [
+  wgroupContextualItems.$inject = [
     'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications'
   ];
 
-  function campaignContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications) {
+  function wgroupContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -36,12 +36,12 @@
     return {
       restrict: 'E',
       scope: {
-        campaign: '='
+        wgroup: '='
       },
-      templateUrl: '/app/v2/partials/directives/campaign-contextual-items.html',
+      templateUrl: '/app/v2/partials/directives/wgroup-contextual-items.html',
       link: function (scope, element, attrs) {
 
-        scope.$watch('campaign', function (newVal) {
+        scope.$watch('wgroup', function (newVal) {
           if (newVal) {
             init();
           }
@@ -61,12 +61,15 @@
             scope.showActionMenu = !scope.showActionMenu;
           };
           // TODO: add logic for menu items
-          // TODO: 1. Edit Campaign
-          // Todo: 2. Add Resource to campaign
+          // TODO: 1. Edit WGroup
+          // Todo: 2. Add Resource to wgroup
 
           scope.myObject.subscribe = function() {
-            var query = { "origin": scope.campaign.uuid, "eventName": "NEW_CAMPAIGN", "endPointType": "email"};
+            var query = { "origin": scope.wgroup.uuid, "eventName": "NEW_WORKING_GROUP", "endPointType": "email"};
             var subscription = Notifications.subscribe().save(query);
+            subscription.$promise.then(function(response) {
+              console.log(response);
+            });
           }
         }
       }

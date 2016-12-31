@@ -390,6 +390,9 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
   return {
     userNotificationsByUUID: function (userUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID })
+    },
+    subscribe: function() {
+      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
     }
   };
 

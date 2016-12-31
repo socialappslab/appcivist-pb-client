@@ -147,7 +147,7 @@
     }
 
     function loadRelatedContributions(resourceSpaceId) {
-      var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).query({ type: 'IDEA' });
+      var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).get({ type: 'IDEA' });
       rsp.$promise.then(
         function (data) {
           var related = [];

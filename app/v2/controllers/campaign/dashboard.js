@@ -107,7 +107,7 @@
 
         // get proposals
         Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
-          $scope.proposals = response;
+          $scope.proposals = response.list;
 
           if (!$scope.proposals) {
             $scope.proposals = [];
@@ -115,7 +115,7 @@
 
           // get ideas
           Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function (response) {
-            $scope.ideas = response;
+            $scope.ideas = response.list;
 
             if (!$scope.ideas) {
               $scope.ideas = [];
@@ -124,7 +124,7 @@
 
           // get discussions
           Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function (response) {
-            $scope.discussions = response;
+            $scope.discussions = response.list;
 
             if (!$scope.discussions) {
               $scope.discussions = [];

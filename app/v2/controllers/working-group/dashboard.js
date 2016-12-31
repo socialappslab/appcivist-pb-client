@@ -143,7 +143,7 @@
     function loadProposals(group) {
       Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
         function (data) {
-          $scope.proposals = data;
+          $scope.proposals = data.list;
         },
         function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
@@ -154,7 +154,7 @@
     function loadIdeas(group) {
       Space.getContributions(group, 'IDEA', $scope.isAnonymous).then(
         function (data) {
-          $scope.ideas = data;
+          $scope.ideas = data.list;
         },
         function (error) {
           Notify.show('Error occured while trying to load working group ideas', 'error');
@@ -167,7 +167,7 @@
       var rsp = Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous);
       rsp.then(
         function (data) {
-          $scope.activities = data;
+          $scope.activities = data.list;
         },
         function (error) {
           Notify.show('Error loading working group activities from server', 'error');

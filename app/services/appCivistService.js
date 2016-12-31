@@ -487,13 +487,23 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       };
       return newC;
     },
-    contributionInResourceSpace: function (spaceId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution',
-        { sid: spaceId });
+    contributionInResourceSpace: function (spaceId, pageC, pageSizeC) {
+      if (pageC && pageSizeC) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution?page=:page&pageSize=:pageSize',
+          { sid: spaceId, page: pageC - 1, pageSize: pageSizeC });
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution',
+          { sid: spaceId });
+      }
     },
-    contributionInResourceSpaceByUUID: function (spaceUUId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public',
-        { uuid: spaceUUId });
+    contributionInResourceSpaceByUUID: function (spaceUUId, pageC, pageSizeC) {
+      if(pageC && pageSizeC) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public?page=:page&pageSize=:pageSize',
+          { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public',
+          { uuid: spaceUUId });
+      }
     },
     pinnedContributionInResourceSpace: function (spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/pinned',
@@ -808,9 +818,9 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         query.pageSize = 16;
 
         if (isAnonymous) {
-          rsp = Contributions.contributionInResourceSpaceByUUID(target.rsUUID).query(query);
+          rsp = Contributions.contributionInResourceSpaceByUUID(target.rsUUID).get(query);
         } else {
-          rsp = Contributions.contributionInResourceSpace(target.rsID).query(query);
+          rsp = Contributions.contributionInResourceSpace(target.rsID).get(query);
         }
         rsp.$promise.then(
           function (data) {

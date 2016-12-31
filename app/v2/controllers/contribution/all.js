@@ -45,9 +45,9 @@
           $translate.use($scope.user.language);
         }
       }
-      loadContributions($scope);
+      //loadContributions($scope);
       loadSpace($scope);
-      $scope.paginationTop = {};
+      /*$scope.paginationTop = {};
       $scope.paginationBottom = {};
 
       $scope.paginationVisible = function (pag, visible) {
@@ -57,38 +57,9 @@
         }
         pag.visible = visible;
         pag.style = visible ? {} : { display: 'none' };
-      };
+      };*/
     }
 
-
-    /**
-     * Get contributions from server.
-     *
-     * @param campaign {sid} the resource space id.
-     **/
-    function loadContributions(scope) {
-      var rsp;
-      var query = { type: scope.type.toUpperCase() };
-
-      if (scope.isAnonymous) {
-        rsp = Contributions.contributionInResourceSpaceByUUID(scope.spaceID).query(query);
-      } else {
-        rsp = Contributions.contributionInResourceSpace(scope.spaceID).query(query);
-      }
-      rsp.$promise.then(
-        function (data) {
-          var contributions = data;
-
-          if (!contributions) {
-            contributions = [];
-          }
-          $scope.contributions = contributions;
-        },
-        function (error) {
-          Notify.show('Error loading proposals from server', 'error');
-        }
-      );
-    }
 
     function loadSpace(scope) {
       var rsp;
@@ -112,8 +83,8 @@
 
     /**
      * Validates that fromURL is correct.
-     * 
-     * @param {string} url - The URL to validate. 
+     *
+     * @param {string} url - The URL to validate.
      * @param {number} sid - Space ID.
      *  Posible options: v2/assembly/:aid/group/:gid or v2/assembly/:aid/campaign/:cid
      */

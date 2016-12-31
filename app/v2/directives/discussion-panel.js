@@ -113,14 +113,14 @@
       var rsp;
 
       if (!scope.user) {
-        rsp = Contributions.contributionInResourceSpaceByUUID(sid).query(query);
+        rsp = Contributions.contributionInResourceSpaceByUUID(sid).get(query);
       } else {
-        rsp = Contributions.contributionInResourceSpace(sid).query(query);
+        rsp = Contributions.contributionInResourceSpace(sid).get(query);
       }
       rsp.$promise.then(
         function (data) {
-          scope.discussions = data;
-          loadComments(scope, data);
+          scope.discussions = data.list;
+          loadComments(scope, data.list);
         },
         function (error) {
           Notify.show('Error loading discussions from server', 'error');
@@ -131,7 +131,7 @@
 
     /**
      * Load the associated comments of each discussion element.
-     * 
+     *
      * @param {object} scope
      * @param {object[]} discussions
      */
@@ -171,7 +171,7 @@
 
     /**
      * Verify that user response is correct.
-     * 
+     *
      * @param {object} target - element with recaptchaResponse and recaptchaResponseOK properties.
      */
     function validateCaptchaResponse(target) {

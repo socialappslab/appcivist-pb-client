@@ -10,7 +10,7 @@ appCivistApp
 ContributionFilter.$inject = ['Contributions'];
 
 function ContributionFilter(Contributions) {
-  
+
   var directive = {
     restrict: 'E',
     scope: {
@@ -36,10 +36,10 @@ function ContributionFilter(Contributions) {
   }
 
   function search(scope) {
-    var rsp = Contributions.contributionInResourceSpace(scope.spaceId).query(scope.filters);
+    var rsp = Contributions.contributionInResourceSpace(scope.spaceId).get(scope.filters);
     rsp.$promise.then(
       function(data) {
-        scope.list = data;
+        scope.list = data.list;
       },
       function(error) {
         console.log(error);

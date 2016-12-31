@@ -14,57 +14,7 @@
       </div>
     </header>
     <div class="page__content">
-      <section class="panel" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
-        <ol class="pagination">
-          <li>
-            <a href="">
-              << Previous </a>
-          </li>
-          <li class="current"><a href="">1</a></li>
-          <li><a href="">2</a></li>
-          <li><a href="">3</a></li>
-          <li><a href="">4</a></li>
-          <li><a href="">5</a></li>
-          <li><a href="">6</a></li>
-          <li><a href="">7</a></li>
-          <li><a href="">Next >></a></li>
-        </ol>
-      </section>
-
-      <section class="list--proposals" ng-if="type==='proposal'">
-        <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
-          <contribution-card class="card__proposal" ng-repeat="proposal in contributions track by $index" contribution="proposal" show-voting-buttons="false"
-            on-finish-render="eqResize"></contribution-card>
-          <p ng-if="contributions.length === 0" class="card">No {{ title }} in this space yet</p>
-        </div>
-      </section>
-
-
-      <section class="list--ideas" ng-if="type==='ideas'">
-        <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-          <contribution-card class="card__idea" ng-repeat="idea in contributions track by $index" contribution="idea" show-voting-buttons="false"
-            on-finish-render="eqResize"></contribution-card>
-          <p ng-if="contributions.length === 0" class="card">No {{ title }} in this space yet</p>
-        </div>
-      </section>
-
-
-      <section class="panel" in-view="paginationVisible(paginationBottom, $inview)" ng-style="paginationBottom.style">
-        <ol class="pagination">
-          <li>
-            <a href="">
-              << Prev</a>
-          </li>
-          <li class="current"><a href="">1</a></li>
-          <li><a href="">2</a></li>
-          <li><a href="">3</a></li>
-          <li><a href="">4</a></li>
-          <li><a href="">5</a></li>
-          <li><a href="">6</a></li>
-          <li><a href="">7</a></li>
-          <li><a href="">Next >></a></li>
-        </ol>
-      </section>
+      <pagination-widget page-size="2" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"></pagination-widget>
     </div>
   </article>
 </main>

@@ -815,13 +815,15 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       getContributions: function (target, type, isAnonymous, filters) {
         // Get list of contributions from server
         var rsp;
-
         var query = filters || {};
         query.type = type;
         query.pageSize = 16;
-
         if (isAnonymous) {
-          rsp = Contributions.contributionInResourceSpaceByUUID(target.rsUUID).get(query);
+          if (type === 'DISCUSSION') {
+            rsp = Contributions.contributionInResourceSpaceByUUID(target.frsUUID).get(query);
+          } else {
+            rsp = Contributions.contributionInResourceSpaceByUUID(target.rsUUID).get(query);
+          }
         } else {
           rsp = Contributions.contributionInResourceSpace(target.rsID).get(query);
         }

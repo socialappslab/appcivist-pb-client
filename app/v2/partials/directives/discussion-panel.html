@@ -27,7 +27,7 @@
 </style>
 <section class="comments__section">
   <header class="panel-heading">
-    <h2 class="heading--header">{{'Conversations' | translate}}</h2>
+    <h2 class="heading--header">{{ sectionTitle }}</h2>
     <div class="heading--small"><a href="" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></div>
   </header>
 
@@ -68,7 +68,7 @@
       <div class="comments__reply" ng-if="discussion.showReplyForm">
         <h2 class="heading--header">{{'Reply' | translate}}</h2>
         <div class="comments__comment_form">
-          <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse" 
+          <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse"
                on-success="validateCaptchaResponse(discussion)" style="margin-bottom: 10px;"></div>
           <form ng-submit="createNewComment(discussion)">
             <fieldset>
@@ -82,8 +82,8 @@
               </div>
               <div>
                 <div class="field-container col-lg-12">
-                  <textarea id="comment-field-{{discussion.uuid}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}" 
-                            ng-disabled="!discussion.recaptchaResponseOK"></textarea>
+                  <textarea id="comment-field-{{discussion.uuid}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}"
+                            ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
                 </div>
               </div>
               <br />
@@ -117,7 +117,7 @@
           </div>
           <div>
             <div class="field-container col-lg-12">
-              <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}" ng-disabled="!vm.recaptchaResponseOK"></textarea>
+              <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}" ng-disabled="!vm.recaptchaResponseOK && isAnonymous"></textarea>
             </div>
           </div>
           <br />

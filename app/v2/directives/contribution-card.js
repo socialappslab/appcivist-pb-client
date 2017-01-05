@@ -34,7 +34,7 @@
       restrict: 'E',
       scope: {
         contribution: '=',
-        showVotingButtons: '=',
+        showVotingButtons: '@',
         campaign: '=',
         components: '=',
         isAnonymous: '='

@@ -22,6 +22,7 @@
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       $scope.isAnonymous = false;
+      $scope.userIsMember = false;
       $scope.ideasSectionExpanded = false;
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = true;
@@ -66,6 +67,17 @@
 
     function loadAssembly() {
       $scope.assembly = localStorageService.get('currentAssembly');
+      verifyMembership();
+    }
+
+    function verifyMembership() {
+      if ($scope.assemblyID >= 0) {
+        var rsp = Memberships.membershipInAssembly($scope.assembly.assemblyId, $scope.user.userId).get();
+        rsp.$promise.then(function (data) {
+          if (data && data.status === 'ACCEPTED')
+            $scope.userIsMember = true;
+        });
+      }
     }
 
     function loadCampaigns() {
@@ -78,9 +90,9 @@
 
       res.$promise.then(function (data) {
         $scope.campaign = data;
-        $scope.campaign.rsID = data.resourceSpaceId;
+        $scope.campaign.rsID = data.resourceSpaceId; //must be always id
         $scope.campaign.rsUUID = data.resourceSpaceUUId;
-
+        $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
         if (!$scope.isAnonymous) {
           $scope.spaceID = data.resourceSpaceId;
         } else {

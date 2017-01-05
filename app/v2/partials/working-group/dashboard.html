@@ -143,6 +143,9 @@
         </section>
       </div>
     </section>
-    <discussion-panel space-id="spaceID" endpoint="group"></discussion-panel>
+    <div class="row">
+      <discussion-panel class="col-md-6" ng-if="userIsMember" space-id="spaceID" endpoint="group" section-title="Members"></discussion-panel>
+      <discussion-panel ng-class="{'col-md-6': userIsMember, 'col-md-12': !userIsMember}" space-id="spaceID" endpoint="group" section-title="Public"></discussion-panel>
+    </row>
   </article>
 </main>

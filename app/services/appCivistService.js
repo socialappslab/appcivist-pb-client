@@ -374,8 +374,8 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
       return groupMembershipsHash[gid];
     },
 
-    rolIn: function(target, id, rol) {
-      switch(target) {
+    rolIn: function (target, id, rol) {
+      switch (target) {
         case 'assembly':
           return this.hasRol(this.assemblyRols(id), rol);
         case 'group':
@@ -391,7 +391,7 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
     userNotificationsByUUID: function (userUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID })
     },
-    subscribe: function() {
+    subscribe: function () {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
     }
   };
@@ -500,7 +500,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       }
     },
     contributionInResourceSpaceByUUID: function (spaceUUId, pageC, pageSizeC) {
-      if(pageC && pageSizeC) {
+      if (pageC && pageSizeC) {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public?page=:page&pageSize=:pageSize',
           { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
       } else {
@@ -1646,3 +1646,20 @@ appCivistApp.factory('ContributionDirectiveBroadcast', function ($rootScope) {
 
   return contributionDirective;
 });
+
+
+appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
+  function ($resource, localStorageService) {
+    var url = getServerBaseUrl(localStorageService);
+
+    return {
+      /**
+       * Method that validate user's response.
+       * 
+       * @param {string} toValidate - recaptcha hashed response
+       */
+      verify: function (toValidate) {
+        return $resource(url + '/site/verify', { k: toValidate }).save().$promise;
+      }
+    }
+  }]);

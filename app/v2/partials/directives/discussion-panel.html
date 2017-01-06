@@ -35,7 +35,7 @@
     <li class="panel card conversation-container" ng-repeat="discussion in discussions">
       <div class="comment-meta">
         <p class="heading--header">{{formatDate(discussion.creation)}}</p>
-        <member-card user="discussion.authors[0]" comments-section="true"></member-card>
+        <member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>
         <p></p>
       </div>
       <div class="comment-text">
@@ -52,7 +52,7 @@
           <div class="comment-meta">
             <p class="heading--header">{{formatDate(comment.creation)}}</a>
             </p>
-            <member-card user="comment.authors[0]" comments-section="true"></member-card>
+            <member-card user="comment.authors[0] || comment.nonMemberAuthor" comments-section="true"></member-card>
             <p></p>
           </div>
           <div class="comment-text">
@@ -74,10 +74,10 @@
             <fieldset>
               <div ng-if="isAnonymous">
                 <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-                  <input type="text" ng-model="newComment.username" placeholder="{{'Your name' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                  <input type="text" ng-model="newComment.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
                 </div>
                 <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-                  <input type="email" ng-model="newComment.email" placeholder="{{'Your email' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                  <input type="email" ng-model="newComment.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
                 </div>
               </div>
               <div>
@@ -109,10 +109,10 @@
         <fieldset>
           <div ng-if="isAnonymous">
             <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-              <input type="text" ng-model="newDiscussion.username" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
+              <input type="text" ng-model="newDiscussion.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
             </div>
             <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-              <input type="email" ng-model="newDiscussion.email" placeholder="{{'Your email' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
+              <input type="email" ng-model="newDiscussion.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
             </div>
           </div>
           <div>

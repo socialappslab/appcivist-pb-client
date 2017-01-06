@@ -2,7 +2,7 @@
   <a class="avatar_link">
     <figure class="photo">
       <img ng-if="!currentUser || !currentUser.profilePic" src="../assets/images/avatar.png" alt="Avatar" />
-      <img ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlLargeString}}" alt="Avatar" />
+      <img ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlAsString}}" alt="Avatar" />
     </figure>
   </a>
   <div class="fn">{{currentUser.name}}</div>

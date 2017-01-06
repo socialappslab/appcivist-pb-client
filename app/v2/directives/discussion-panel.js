@@ -6,11 +6,11 @@
 
   DiscussionPanel.$inject = [
     'localStorageService', '$anchorScroll', '$location', 'Contributions', 'Notify', '$filter',
-    'Space', 'Memberships', '$stateParams', 'RECAPTCHA_KEY'
+    'Space', 'Memberships', '$stateParams', 'RECAPTCHA_KEY', 'Captcha'
   ];
 
   function DiscussionPanel(localStorageService, $anchorScroll, $location, Contributions,
-    Notify, $filter, Space, Memberships, $stateParams) {
+    Notify, $filter, Space, Memberships, $stateParams, RECAPTCHA_KEY, Captcha) {
 
     return {
       restrict: 'E',
@@ -105,6 +105,7 @@
     function initContribution(type) {
       var c = Contributions.defaultNewContribution();
       c.type = type;
+      c.nonMemberAuthor = {};
       return c;
     }
 
@@ -174,8 +175,16 @@
      * @param {object} target - element with recaptchaResponse and recaptchaResponseOK properties.
      */
     function validateCaptchaResponse(target) {
-      // TODO
-      target.recaptchaResponseOK = true;
+      Captcha.verify(target.recaptchaResponse).then(
+        function (response) {
+          target.recaptchaResponseOK = response && response.success;
+        },
+        function (response) {
+          target.recaptchaResponseOK = false;
+          var msg = response.data ? response.data.statusMessage : response.statusText;
+          Notify.show('Error while validating captcha response: ' + msg, 'error');
+        }
+      );
     }
   }
 } ());

@@ -48,7 +48,7 @@
                   contributions = [];
                 }
                 scope.contributions = contributions;
-                scope.totalContributions = data.pagination.total; //get from response
+                scope.totalContributions = data.total; //get from response
                 scope.pagination.current = pageNumber;
               },
               function (error) {

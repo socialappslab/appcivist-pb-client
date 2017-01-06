@@ -18,7 +18,6 @@
         spaceId: '=',
         endpointId: '=',
         endpoint: '@',
-        sectionTitle: '@',
         publicBoard: '@'
       },
       templateUrl: '/app/v2/partials/directives/discussion-panel.html',

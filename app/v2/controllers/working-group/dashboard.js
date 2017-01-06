@@ -14,6 +14,14 @@
   function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
 
+    $scope.activeTab = "Public";
+    $scope.changeActiveTab = function (tab) {
+      if (tab == 1)
+        $scope.activeTab = "Members";
+      else
+        $scope.activeTab = "Public";
+    }
+
     activate();
 
     function activate() {
@@ -38,6 +46,10 @@
           $translate.use($scope.user.language);
         }
         loadAssembly();
+      }
+
+      if (!$scope.isAnonymous) {
+        $scope.activeTab = "Members";
       }
       $scope.activitiesLimit = 4;
       $scope.membersLimit = 5;
@@ -100,12 +112,13 @@
           $scope.wg = data;
           $scope.wg.rsID = data.resourcesResourceSpaceId;
           $scope.wg.rsUUID = data.resourceSpaceUUId;
+          $scope.wg.frsUUID = data.forumResourceSpaceUUId;
           loadMembers(data);
           loadProposals(data);
           loadIdeas(data);
 
           if ($scope.isAnonymous) {
-            // TODO
+            $scope.spaceID = data.resourceSpaceUUId;
           } else {
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;

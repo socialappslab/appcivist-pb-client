@@ -16,6 +16,14 @@
     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
     WorkingGroups) {
 
+    $scope.activeTab = "Public";
+    $scope.changeActiveTab = function (tab) {
+      if (tab == 1)
+        $scope.activeTab = "Members";
+      else
+        $scope.activeTab = "Public";
+    }
+
     activate();
 
     function activate() {
@@ -51,6 +59,7 @@
       loadCampaigns();
 
       if (!$scope.isAnonymous) {
+        $scope.activeTab = "Members";
         loadAssembly();
         loadCampaignResources();
       }

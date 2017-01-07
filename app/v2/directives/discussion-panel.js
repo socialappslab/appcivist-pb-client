@@ -33,6 +33,7 @@
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
           scope.validateCaptchaResponse = validateCaptchaResponse.bind(scope);
+          scope.setCaptchaResponse = setCaptchaResponse.bind(scope);
 
           if (scope.user) {
             var hasRol = Memberships.hasRol;
@@ -167,6 +168,17 @@
         }
         loadDiscussions(scope, scope.spaceId);
       });
+    }
+
+    /**
+     * Recaptcha on-success handler. This is used in comment form.
+     * 
+     * @param {object} discussion - the discussion associated with the comment form.
+     * @param {string} response - the hashed recaptcha response.
+     */
+    function setCaptchaResponse(discussion, response) {
+      discussion.recaptchaResponse = response;
+      this.validateCaptchaResponse(discussion);
     }
 
     /**

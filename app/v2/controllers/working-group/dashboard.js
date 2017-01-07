@@ -111,14 +111,14 @@
         function (data) {
           $scope.wg = data;
           $scope.wg.rsID = data.resourcesResourceSpaceId;
-          $scope.wg.rsUUID = data.resourceSpaceUUId;
+          $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
           $scope.wg.frsUUID = data.forumResourceSpaceUUId;
           loadMembers(data);
           loadProposals(data);
           loadIdeas(data);
 
           if ($scope.isAnonymous) {
-            $scope.spaceID = data.resourceSpaceUUId;
+            $scope.spaceID = data.resourcesResourceSpaceUUId;
           } else {
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;
@@ -137,20 +137,21 @@
       var res;
 
       if ($scope.isAnonymous) {
-        // TODO
-        res = WorkingGroups.workingGroupMembers(aid, gid, 'ALL').query();
+        $scope.members = group.members
+          .filter(function (m) {
+            return m.status === 'ACCEPTED';
+          });
       } else {
         res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
+        res.$promise.then(
+          function (data) {
+            $scope.members = data;
+          },
+          function (error) {
+            Notify.show('Error occured while trying to load working group members', 'error');
+          }
+        );
       }
-
-      res.$promise.then(
-        function (data) {
-          $scope.members = data;
-        },
-        function (error) {
-          Notify.show('Error occured while trying to load working group members', 'error');
-        }
-      );
     }
 
     function loadProposals(group) {

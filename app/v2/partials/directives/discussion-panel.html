@@ -69,7 +69,7 @@
         <h2 class="heading--header">{{'Reply' | translate}}</h2>
         <div class="comments__comment_form">
           <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse"
-               on-success="validateCaptchaResponse(discussion)" style="margin-bottom: 10px;"></div>
+               on-success="setCaptchaResponse(discussion, response)" style="margin-bottom: 10px;"></div>
           <form ng-submit="createNewComment(discussion)">
             <fieldset>
               <div ng-if="isAnonymous">

@@ -51,8 +51,9 @@
             <div class="form-group">
               <label for="profilePicUpload">{{'Change Profile Picture'|translate}}</label>
               <br>
-              <img class="profilePic" src="{{user.profilePic.urlLargeString}}" />
-              <input type="file" id="profilePicUpload">
+              <img class="profilePic" src="{{user.profilePic.urlAsString}}" />
+              <input type="file" id="profilePicUpload" fileread="profile.profile_pic">
+              <!--<input type="file" id="profilePicUpload" fileread="profile.profile_pic">-->
             </div>
           </div>
         </div>

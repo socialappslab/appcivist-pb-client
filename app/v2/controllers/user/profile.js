@@ -52,14 +52,23 @@
     }
 
     function updateProfile() {
-      $scope.user.username = $scope.profile.username;
-      $scope.user.name = $scope.profile.firstname + ' ' + $scope.profile.lastname;
-      $scope.user.email = $scope.profile.email;
       var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId;
-      var data = $scope.user;
+      var fd = new FormData();
+      fd.append('profile_pic', $scope.profile.profile_pic);
+      fd.append('name', $scope.profile.firstname + ' ' + $scope.profile.lastname);
+      fd.append('email', $scope.profile.email);
+      fd.append('username', $scope.profile.username);
 
       if (userInfoChanged()) {
-        $http.put(url, data).then(function (response) {
+        $http.put(url, fd, {
+          headers: {
+            'Content-Type': undefined
+          },
+          transformRequest: angular.identity,
+          params: {
+            fd
+          }
+        }).then(function (response) {
           var rsp = loginService.getUser().get({ id: $scope.user.userId });
           rsp.$promise.then(
             function (data) {
@@ -68,6 +77,7 @@
                 updatePassword();
               } else {
                 Notify.show('Data saved correctly');
+                window.location.reload();
               }
             },
             function (error) {
@@ -86,7 +96,7 @@
 
     function updatePassword() {
       if ($scope.profile.password === $scope.profile.repeatPassword) {
-        if($scope.profile.password.length < 5) {
+        if ($scope.profile.password.length < 5) {
           Notify.show('Password length must at least 5 characters', 'error');
           return;
         }
@@ -113,11 +123,11 @@
     }
 
     function userInfoChanged() {
-      var props = ['firstname', 'lastname', 'email', 'username'];
+      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic'];
 
-      for(var i = 0; i < props.length; i++){
+      for (var i = 0; i < props.length; i++) {
         var prop = props[i];
-        if($scope.profile[prop] !== $scope.userFromServer[prop]){
+        if ($scope.profile[prop] !== $scope.userFromServer[prop]) {
           return true;
         }
       }

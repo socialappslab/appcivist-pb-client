@@ -454,6 +454,7 @@
           if (sessionKey) {
             config.headers.SESSION_KEY = '' + sessionKey;
           }
+          config.headers.UI_PATH = '' + $location.absUrl(); // Added for Research Purposes
           return config;
         },
         responseError: function (response) {

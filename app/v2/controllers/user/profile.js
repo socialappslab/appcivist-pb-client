@@ -66,7 +66,7 @@
           },
           transformRequest: angular.identity,
           params: {
-            fd
+            //fd
           }
         }).then(function (response) {
           var rsp = loginService.getUser().get({ id: $scope.user.userId });

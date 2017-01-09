@@ -18,6 +18,7 @@
     activate();
 
     function activate() {
+      $scope.pageSize = 16;
       if ($stateParams.type == 'proposal') {
         $scope.title = 'Proposals';
       } else if ($stateParams.type == 'idea') {

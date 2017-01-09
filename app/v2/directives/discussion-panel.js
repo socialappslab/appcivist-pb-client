@@ -22,11 +22,15 @@
       },
       templateUrl: '/app/v2/partials/directives/discussion-panel.html',
       link: function (scope, element, attrs) {
-        scope.$watch('spaceId', function (val) {
-          if (val) {
-            activate();
-          }
-        });
+        if (!scope.spaceId) {
+          scope.$watch('spaceId', function (val) {
+            if (val) {
+              activate();
+            }
+          });
+        } else {
+          activate();
+        }
 
         function activate() {
           scope.vm = {};

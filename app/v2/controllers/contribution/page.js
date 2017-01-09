@@ -8,17 +8,27 @@
 
   ProposalPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'FlashService', 'Memberships', 'Etherpad', 'Notify', '$translate'
+    'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
+    'Space'
   ];
 
   function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, FlashService, Memberships,
-    Etherpad, Notify, $translate) {
+    $filter, localStorageService, Memberships, Etherpad, Notify,
+    $translate, Space) {
 
     activate();
 
     function activate() {
+      $scope.activeTab = 'Public';
+      $scope.changeActiveTab = function (tab) {
+        if (tab == 1) {
+          $scope.activeTab = 'Members';
+        } else {
+          $scope.activeTab = 'Public';
+        }
+      }
       $scope.isAnonymous = false;
+      $scope.userIsMember = false;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       if (pattern.test($stateParams.pid) === true) {
@@ -29,8 +39,11 @@
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
         $scope.user = localStorageService.get('user');
-        if ($scope.user && $scope.user.language)
+        if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
+        }
+        // user is member of Assembly
+        $scope.userIsMember = true;
       }
       loadProposal($scope);
       $scope.showActionMenu = true;
@@ -86,13 +99,14 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
+          $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
           var workingGroupAuthors = data.workingGroupAuthors;
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
 
           if ($scope.group) {
             $scope.group.profilePic = {
-              urlLargeString: $scope.group.profile.icon
+              urlAsString: $scope.group.profile.icon
             }
           }
 
@@ -109,8 +123,7 @@
           if (!scope.isAnonymous) {
             verifyAuthorship(scope.proposal);
           }
-          // TODO: pass UUID when user is anonymous
-          loadRelatedContributions($scope.group ? $scope.group.resourcesResourceSpaceId : null);
+          loadRelatedContributions();
         },
         function (error) {
           Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
@@ -146,12 +159,14 @@
       }
     }
 
-    function loadRelatedContributions(resourceSpaceId) {
-      var rsp = Contributions.contributionInResourceSpace(resourceSpaceId).get({ type: 'IDEA' });
-      rsp.$promise.then(
+    function loadRelatedContributions() {
+      $scope.group.rsUUID = $scope.group.resourcesResourceSpaceUUId;
+      $scope.group.rsID = $scope.group.resourcesResourceSpaceId;
+      var rsp = Space.getContributions($scope.group, 'IDEA', $scope.isAnonymous);
+      rsp.then(
         function (data) {
           var related = [];
-          angular.forEach(data, function (r) {
+          angular.forEach(data.list, function (r) {
             if (r.contributionId === $scope.proposalID) {
               return;
             }

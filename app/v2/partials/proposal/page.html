@@ -22,6 +22,94 @@
   .campaign_cards .list--ideas {
     left: 0;
   }
+
+  .nav-tabs {
+    border-bottom: 1px solid #c6c8cb;
+  }
+  .nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+  }
+  .nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    color: #555;
+    text-decoration: none;
+  }
+  .nav-tabs > li > a:hover {
+    border-color: #eeeeee #eeeeee #c6c8cb;
+    background-color: #e6e7e8;
+  }
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover,
+  .nav-tabs > li.active > a:focus {
+    color: #555555;
+    background-color: #e6e7e8;
+    border: 1px solid #c6c8cb;
+    border-bottom-color: transparent;
+    cursor: default;
+  }
+  .nav-tabs.nav-justified {
+    width: 100%;
+    border-bottom: 0;
+  }
+  .nav-tabs.nav-justified > li {
+    float: none;
+  }
+  .nav-tabs.nav-justified > li > a {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+  .nav-tabs.nav-justified > .dropdown .dropdown-menu {
+    top: auto;
+    left: auto;
+  }
+  @media (min-width: 768px) {
+    .nav-tabs.nav-justified > li {
+      display: table-cell;
+      width: 1%;
+    }
+    .nav-tabs.nav-justified > li > a {
+      margin-bottom: 0;
+    }
+  }
+  .nav-tabs.nav-justified > li > a {
+    margin-right: 0;
+    border-radius: 4px;
+  }
+  .nav-tabs.nav-justified > .active > a,
+  .nav-tabs.nav-justified > .active > a:hover,
+  .nav-tabs.nav-justified > .active > a:focus {
+    border: 1px solid #dddddd;
+  }
+  @media (min-width: 768px) {
+    .nav-tabs.nav-justified > li > a {
+      border-bottom: 1px solid #dddddd;
+      border-radius: 4px 4px 0 0;
+    }
+    .nav-tabs.nav-justified > .active > a,
+    .nav-tabs.nav-justified > .active > a:hover,
+    .nav-tabs.nav-justified > .active > a:focus {
+      border-bottom-color: #f6f6f7;
+    }
+  }
+  .nav.nav-tabs {
+    margin-left: 5%;
+    width: 90%;
+  }
+  .custom-ul {
+    padding-bottom: 50px;
+    padding-top: 50px;
+  }
+  .custom-li {
+    padding-bottom: 15px;
+    padding-top: 15px;
+  }
+  .custom-a {
+    padding: 15px;
+  }
 </style>
 
 <main class="appmain" ng-class="{anonymous: isAnonymous}">
@@ -181,7 +269,19 @@
         </section>
       </div>
     </section>
-
-    <discussion-panel space-id="proposalID" endpoint="contribution"></discussion-panel>
   </article>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs custom-ul">
+      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">Members Conversations</a></li>
+      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">Public Conversations</a></li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+      <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
+        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="proposalID" endpoint-id="proposalID" endpoint="contribution"></discussion-panel>
+      </div>
+      <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
+        <discussion-panel class="col-md-12" space-id="proposal.frsUUID" endpoint-id="proposal.frsUUID" endpoint="contribution" public-board="true"></discussion-panel>
+      </div>
+  </div>
 </main>

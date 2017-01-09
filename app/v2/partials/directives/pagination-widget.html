@@ -81,7 +81,7 @@
 <section class="list--proposals" ng-if="type==='proposal'">
   <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
     <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize" total-items="totalContributions"
-    current-page="pagination.current" contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize"></contribution-card>
+    current-page="pagination.current" contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize" is-anonymous="isAnonymous"></contribution-card>
     <!--<contribution-card class="card__proposal" ng-repeat="proposal in contributions track by $index" contribution="proposal" show-voting-buttons="false"
       on-finish-render="eqResize"></contribution-card>-->
     <p ng-if="contributions.length === 0" class="card">No {{ type }}s in this space yet</p>
@@ -91,7 +91,7 @@
 <section class="list--ideas" ng-if="type==='ideas'">
   <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
     <contribution-card class="card__idea" dir-paginate="idea in contributions | itemsPerPage: pageSize" total-items="totalContributions"
-    current-page="pagination.current" contribution="idea" show-voting-buttons="false" on-finish-render="eqResize"></contribution-card>
+    current-page="pagination.current" contribution="idea" show-voting-buttons="false" on-finish-render="eqResize" is-anonymous="isAnonymous"></contribution-card>
     <!--<contribution-card class="card__idea" ng-repeat="idea in contributions track by $index" contribution="idea" show-voting-buttons="false"
       on-finish-render="eqResize"></contribution-card>-->
     <p ng-if="contributions.length === 0" class="card">No {{ type }}s in this space yet</p>

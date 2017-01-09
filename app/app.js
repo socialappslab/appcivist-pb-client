@@ -226,9 +226,6 @@
         url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl',
-        access: {
-          requiresLogin: true
-        }
       })
       .state('v2.campaign', {
         url: '/campaign',

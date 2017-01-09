@@ -225,7 +225,7 @@
       .state('v2.space.sid.contribution', {
         url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
-        controller: 'v2.ProposalsCtrl',
+        controller: 'v2.ProposalsCtrl'
       })
       .state('v2.campaign', {
         url: '/campaign',

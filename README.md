@@ -59,6 +59,13 @@ Before running the App, you will need to do the following:
 	$ grunt server
 	```
 
+4. Alternatively, you can use the packaged HTML/JS/CSS version and configure your HTTP server to have index.html as index in that directory
+
+```
+grunt build
+cp -rf dist/* /path/to/html/version/appcivist-pb
+```
+
 4. Try visiting the following routes: 
 	1. Go to [localhost:8000](http://localhost:8000)
 	2. Login with these credentials: bob@example.com / secret => [/home](http://localhost:8000/home)
@@ -69,11 +76,9 @@ Before running the App, you will need to do the following:
 
 5. For deployment, consider using this [sample](https://gist.github.com/cdparra/4e684b37ca60f370135b32f2bc39b611) to create an init.d script and then follow this [guide](https://www.digitalocean.com/community/tutorials/how-to-configure-a-linux-service-to-start-automatically-after-a-crash-or-reboot-part-1-practical-examples) to make sure the service is enabled. 
 
+
 If you have problems maybe you can configure your git with this:
 git config --global url."https://".insteadOf git://
-
-## Contact
-For more information contact [Jose](joseanmp@gmail.com) or [Cristhian](cdparra@gmail.com)
 
 [git]: http://git-scm.com/
 [bower]: http://bower.io

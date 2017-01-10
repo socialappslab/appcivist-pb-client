@@ -209,9 +209,9 @@
       }
       rsp.then(function (data) {
         if (filters.mode === 'proposal') {
-          self.proposals = data;
+          self.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
-          self.ideas = data;
+          self.ideas = data ? data.list : [];
         }
       });
     }

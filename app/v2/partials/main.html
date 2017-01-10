@@ -6,8 +6,8 @@
 </style>
 
 <div class="appcivist" ng-class="{'nav--active': nav.isActive}">
-  <div ng-if="userIsAuthenticated" ng-include="'/app/v2/partials/navigation-bar-large.html'"></div>
-  <div ng-if="!userIsAuthenticated" ng-include="'/app/v2/partials/navigation-bar-large-anonymous.html'"></div>
+  <div ng-if="userIsAuthenticated && !isLoginPage" ng-include="'/app/v2/partials/navigation-bar-large.html'"></div>
+  <div ng-if="!userIsAuthenticated && !isLoginPage" ng-include="'/app/v2/partials/navigation-bar-large-anonymous.html'"></div>
   <ui-view></ui-view>
 
   <footer class="appmain">

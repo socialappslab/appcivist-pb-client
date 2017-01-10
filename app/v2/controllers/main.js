@@ -7,11 +7,11 @@
 
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
-    '$rootScope', 'loginService', '$translate', '$state'
+    '$rootScope', 'loginService', '$translate', '$state', '$stateParams'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
-    $rootScope, loginService, $translate, $state) {
+    $rootScope, loginService, $translate, $state, $stateParams) {
 
     activate();
 
@@ -20,13 +20,19 @@
       if ($scope.user && $scope.user.language)
         $translate.use($scope.user.language);
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
-      $scope.isLoginPage = location.hash.includes('v2/login');
+      $scope.userIsAuthenticated = $scope.userIsAuthenticated === null ? false : $scope.userIsAuthenticated;
+      $scope.isLoginPage = $state.is('v2.login');
       $scope.showSmallMenu = false;
       $scope.nav = { isActive: false };
 
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
         loadUserData($scope);
+      } else {
+        if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
+          $scope.isAnonymous = true;
+          $scope.isLoginPage = false;
+        }
       }
       $scope.updateSmallMenu = updateSmallMenu;
       $scope.toggleNavigation = toggleNavigation;
@@ -74,6 +80,9 @@
 
     function stateChangeHandler(event) {
       this.nav.isActive = false;
+      this.isLoginPage =  $state.is('v2.login');
+      this.userIsAuthenticated = loginService.userIsAuthenticated();
+      this.userIsAuthenticated = this.userIsAuthenticated === null ? false : this.userIsAuthenticated;
     }
   }
 } ());

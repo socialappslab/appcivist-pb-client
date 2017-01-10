@@ -636,6 +636,8 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
 
       if (stats) {
         score = stats.ups - stats.downs;
+      } else if (contribution.popularity != null) {
+        score = contribution.popularity;
       }
       return score;
     },
@@ -1655,7 +1657,7 @@ appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
     return {
       /**
        * Method that validate user's response.
-       * 
+       *
        * @param {string} toValidate - recaptcha hashed response
        */
       verify: function (toValidate) {

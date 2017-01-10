@@ -187,19 +187,22 @@
       </div>
     </section>
   </article>
+
     <!-- Nav tabs -->
-      <ul class="nav nav-tabs custom-ul">
-          <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">Members Conversations</a></li>
-          <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">Public Conversations</a></li>
-      </ul>
-      <!-- Tab panes -->
-      <div class="tab-content">
-          <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-            <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID" endpoint="campaign"></discussion-panel>
-          </div>
-          <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-            <discussion-panel class="col-md-12" space-id="campaign.frsUUID" endpoint-id="campaign.uuid" endpoint="campaign" public-board="true"></discussion-panel>
-          </div>
-      </div>
+  <ul class="nav nav-tabs custom-ul">
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">Members Conversations</a></li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">Public Conversations</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
+      <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID" endpoint="campaign"></discussion-panel>
+    </div>
+    <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
+      <discussion-panel class="col-md-12" space-id="campaign.frsUUID" endpoint-id="campaign.uuid" endpoint="campaign" public-board="true"></discussion-panel>
+    </div>
+  </div>
+
   <proposal-new campaign="campaign" ng-if="isModalOpened('proposalNew')" close="toggleModal('proposalNew')"></proposal-new>
 </main>

@@ -1,0 +1,63 @@
+<div class="vex vex-theme-plain">
+  <div class="vex-overlay"></div>
+  <div class="vex-content">
+    <div class="modal_content__add_proposal">
+      <header class="modal-header">
+        <h2 class="modal__title">{{'Add Proposal' | translate}}</h2>
+      </header>
+      <div class="modal-body">
+        <form name="contributionForm">
+          <fieldset class="divider" ng-if="userIsAssemblyCoordinator">
+            <label for="textarea">{{'Upload csv file' | translate}}</label>
+            <input type="file" id="input">
+            <a class="button__modal_submit">{{'Upload' | translate}}</a>
+          </fieldset>
+          <fieldset>
+            <div class="field__container">
+              <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
+              <input ng-model="proposal.title" ng-required="true" id="add_proposal__title" type="text" placeholder="Proposal Title" name="title">
+              <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
+                <div ng-message="required">{{'This field is required' | translate}}</div>
+              </div>
+            </div>
+            <div class="field__container">
+              <label for="textarea">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
+              <textarea ng-model="proposal.text" ng-required="true" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Proposal Description' | translate}}"></textarea>
+              <div ng-messages="contributionForm.text.$error" style="color:maroon" role="alert">
+                <div ng-message="required">{{'This field is required' | translate}}</div>
+              </div>
+            </div>
+            <div class="field__container assign_proposal_to_wg">
+              <label for="workingGroup">{{'Working Group' | translate}}</label>
+              <select name="workingGroup" ng-model="selectedGroup" ng-required="true" ng-change="selectGroup()" ng-options="group as group.name for group in groups">
+                <option value="">{{'Select a working group' | translate}}</option>
+              </select>
+              <div ng-messages="contributionForm.workingGroup.$error" style="color:maroon" role="alert">
+                <div ng-message="required">{{'This field is required' | translate}}</div>
+              </div>
+            </div>
+            <div class="field__container assign_proposal_to_users">
+              <fieldset class="user__assignment">
+                <label for="authors">{{'Authors' | translate}}</label>
+                <tags-field load-items="loadAuthors({query: query})" options="authorsOptions" selected="proposal.authors" prefetch="true" disabled="isAuthorsDisabled"></tags-field>
+              </fieldset>
+            </div>
+            <fieldset class="add_proposal__availble_themes">
+              <p clas="intro">{{'Categories' | translate}}</p>
+              <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
+              <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="proposal.existingThemes" prefetch="true"></tags-field>
+            </fieldset>
+            <div class="field__container">
+              <label for="add_proposal__source_code">{{'Source code' | translate}}</label>
+              <input ng-model="proposal.sourceCode" id="add_proposal__source_code" placeholder="{{'Source Code' | translate}}">
+            </div>
+          </fieldset>
+          <fieldset>
+            <a class="button__modal_submit" ng-click="submit()">{{'Submit Proposal' | translate}}</a>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div class="vex-close" ng-click="close()"></div>
+  </div>
+</div>

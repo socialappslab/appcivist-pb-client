@@ -4,31 +4,35 @@
     padding: 10px;
     background-color: #fff;
   }
-
+  
+  fieldset.tags div[disabled] {
+    background-color: #eee;
+  }
+  
   fieldset.tags ul.tags {
     display: inline;
   }
-
+  
   fieldset.tags div input {
     width: 140px;
     border: 0;
     outline: none;
     box-shadow: none;
   }
-
+  
   fieldset.tags div input:focus {
     outline: none;
   }
-
+  
   fieldset.tags ul.tags a {
     position: relative;
   }
-
+  
   fieldset.tags ul.tags a i {
     position: absolute;
     right: 3px;
   }
-
+  
   fieldset.tags .autocomplete {
     margin-top: 5px;
     margin-left: -10px;
@@ -42,7 +46,7 @@
     -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
     box-shadow: 0 5px 10px rgba(0, 0, 0, .2)
   }
-
+  
   fieldset.tags .autocomplete .suggestion-list {
     margin: 0;
     padding: 0;
@@ -51,7 +55,7 @@
     overflow-y: auto;
     position: relative
   }
-
+  
   fieldset.tags .autocomplete .suggestion-list .suggestion-item {
     padding: 5px 10px;
     cursor: pointer;
@@ -63,19 +67,19 @@
     background-color: #fff;
     float: none;
   }
-
+  
   fieldset.tags .autocomplete .suggestion-list .suggestion-item:hover,
   fieldset.tags .autocomplete .suggestion-list .suggestion-item:focus {
     background-color: #bacabc;
     color: #11493b;
   }
-
+  
   fieldset.tags .autocomplete .suggestion-item.selected,
   fieldset.tags .autocomplete .suggestion-item.selected em {
     color: #fff;
     background-color: #0097cf;
   }
-
+  
   fieldset.tags .autocomplete .suggestion-item em {
     font: normal 700 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #000;
@@ -83,14 +87,14 @@
   }
 </style>
 <fieldset class="tags">
-  <div>
+  <div ng-disabled="disabled">
     <ul class="tags">
       <li ng-repeat="item in selected">
         <a>{{getText(item)}}<i class="fa fa-close" ng-click="remove(item, $event)"></i></a>
       </li>
-      <input type="text" ng-model="vm.query" placeholder="{{options.placeholder}}" />
+      <input type="text" ng-model="vm.query" placeholder="{{options.placeholder}}" ng-focus="onFocus()" ng-disabled="disabled" />
     </ul>
-    <div class="autocomplete" ng-if="isSuggestionListVisible">
+    <div class="autocomplete" ng-if="isSuggestionListVisible" ng-mouseleave="onMouseLeave()">
       <ul class="suggestion-list">
         <li ng-repeat="item in items track by $index" ng-click="select(item)" class="suggestion-item">
           {{getText(item)}}

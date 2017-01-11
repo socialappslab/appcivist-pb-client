@@ -739,5 +739,21 @@
   "Sort by": "Sort by",
   "Date": "Date",
   "no.members.message": "No members found",
-  "Select a working group": "Select a working group"
+  "Select a working group": "Select a working group",
+  "Non Member Author": "Non Member Author",
+  "Gender": "Gender",
+  "Male": "Male",
+  "Female": "Female",
+  "Other": "Other",
+  "Age": "Age",
+  "Add Proposal": "Add Proposal",
+  "Upload csv file": "Upload csv file",
+  "Upload": "Upload",
+  "Working Group": "Working Group",
+  "Categories": "Categories",
+  "Source Code": "Source Code",
+  "Add Idea": "Add Idea",
+  "Your email": "Your email",
+  "URL": "URL",
+  "Select categories to assign": "Select categories to assign"
 }

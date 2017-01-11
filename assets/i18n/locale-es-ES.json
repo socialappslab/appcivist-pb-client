@@ -544,5 +544,11 @@
   "Date": "Fecha",
   "no.members.message": "No se encontraron miembros",
   "By": "Por",
-  "Select a working group": "Selecciona un grupo de trabajo"
+  "Select a working group": "Selecciona un grupo de trabajo",
+  "Non Member Author": "Autor no miembro",
+  "Gender": "Género",
+  "Male": "Masculino",
+  "Female": "Femenino",
+  "Other": "Otro",
+  "Age": "Edad"
 }

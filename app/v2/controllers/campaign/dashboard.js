@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -9,15 +9,15 @@
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope',
-    'WorkingGroups'
+    'WorkingGroups', '$compile'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
-    WorkingGroups) {
+    WorkingGroups, $compile) {
 
     $scope.activeTab = "Public";
-    $scope.changeActiveTab = function (tab) {
+    $scope.changeActiveTab = function(tab) {
       if (tab == 1)
         $scope.activeTab = "Members";
       else
@@ -56,6 +56,8 @@
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
+      $scope.openModal = openModal.bind($scope);
+      $scope.closeModal = closeModal.bind($scope);
       loadCampaigns();
 
       if (!$scope.isAnonymous) {
@@ -64,7 +66,7 @@
         loadCampaignResources();
       }
       $scope.myObject = {};
-      $scope.myObject.refreshMenu = function () {
+      $scope.myObject.refreshMenu = function() {
         $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;
       };
       $scope.modals = {
@@ -82,7 +84,7 @@
     function verifyMembership() {
       if ($scope.assemblyID >= 0) {
         var rsp = Memberships.membershipInAssembly($scope.assembly.assemblyId, $scope.user.userId).get();
-        rsp.$promise.then(function (data) {
+        rsp.$promise.then(function(data) {
           if (data && data.status === 'ACCEPTED')
             $scope.userIsMember = true;
         });
@@ -97,7 +99,7 @@
         res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
       }
 
-      res.$promise.then(function (data) {
+      res.$promise.then(function(data) {
         $scope.campaign = data;
         $scope.campaign.rsID = data.resourceSpaceId; //must be always id
         $scope.campaign.rsUUID = data.resourceSpaceUUId;
@@ -120,14 +122,14 @@
           res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
 
         }
-        res.then(function (data) {
+        res.then(function(data) {
           var currentComponent = Campaigns.getCurrentComponent(data);
           setIdeasSectionVisibility(currentComponent);
           $scope.components = data;
         }, defaultErrorCallback);
 
         // get proposals
-        Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
+        Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function(response) {
           $scope.proposals = response.list;
 
           if (!$scope.proposals) {
@@ -135,7 +137,7 @@
           }
 
           // get ideas
-          Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function (response) {
+          Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function(response) {
             $scope.ideas = response.list;
 
             if (!$scope.ideas) {
@@ -144,7 +146,7 @@
           }, defaultErrorCallback);
 
           // get discussions
-          Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function (response) {
+          Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function(response) {
             $scope.discussions = response.list;
 
             if (!$scope.discussions) {
@@ -163,10 +165,10 @@
     function loadCampaignResources() {
       var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
       rsp.$promise.then(
-        function (resources) {
+        function(resources) {
           $scope.campaignResources = resources;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error loading campaign resources from server', 'error');
         }
       );
@@ -207,7 +209,7 @@
       if (!rsp) {
         return;
       }
-      rsp.then(function (data) {
+      rsp.then(function(data) {
         if (filters.mode === 'proposal') {
           self.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
@@ -237,5 +239,22 @@
     function defaultErrorCallback(error) {
       Notify.show('Error loading data from server', 'error');
     }
+
+    /**
+     * Open a modal using vex library
+     */
+    function openModal(id) {
+      var self = this;
+      this.vexInstance = vex.open({
+        unsafeContent: $compile(document.getElementById(id).innerHTML)(self)[0]
+      });
+    }
+
+    /**
+     * Closes the currently open modal.
+     */
+    function closeModal() {
+      this.vexInstance.close();
+    }
   }
-} ());
+}());

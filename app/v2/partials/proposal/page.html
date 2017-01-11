@@ -169,7 +169,7 @@
         <li ng-repeat="theme in proposal.themes track by $index"><a href="">{{theme.title}}</a></li>
       </ul>
       <div class="attribution">
-        <p class="heading--subheader">Created by</p>
+        <p class="heading--subheader">{{ 'Created by' | translate }}</p>
         <member-card ng-repeat="author in proposal.authors" user="author"></member-card>
         <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
@@ -179,10 +179,10 @@
         <div class="temperature_check">
           <ul class="votes">
             <li class="upvote">
-              <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">Upvote</span></a>
+              <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">{{ 'Upvote' | translate }}</span></a>
             </li>
             <li class="downvote">
-              <a class="thumbs-down" ng-click="updateFeedback('down')"><span class="screen-reader-only">Downvote</span></a>
+              <a class="thumbs-down" ng-click="updateFeedback('down')"><span class="screen-reader-only">{{ 'Downvote' | translate }}</span></a>
             </li>
           </ul>
           <div ng-if="proposal.informalScore" class="informal_score" ng-class="{positive: proposal.informalScore > 0, negative: proposal.informalScore < 0}">
@@ -217,7 +217,7 @@
                 <h2 class="heading--header">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
                   <a href="" ng-if="!isAnonymous"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
-                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;Show Ideas</a>&nbsp;&nbsp;
+                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{ 'Show Ideas' | translate }}</a>&nbsp;&nbsp;
                 </div>
               </div>
             </div>
@@ -260,8 +260,8 @@
 
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
           <header class="ideas__header">
-            <h2 class="heading--header">Ideas</h2>
-            <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;Hide Ideas</a>&nbsp;&nbsp;
+            <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
+            <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;
           </header>
 
           <div class="list__cards container__ideas">
@@ -273,8 +273,8 @@
   </article>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs custom-ul">
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">Members Conversations</a></li>
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">Public Conversations</a></li>
+      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }}</a></li>
+      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }}</a></li>
   </ul>
   <!-- Tab panes -->
   <div class="tab-content">

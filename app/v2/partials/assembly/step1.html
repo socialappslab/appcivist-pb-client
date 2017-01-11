@@ -3,6 +3,9 @@
     <form name="newAssemblyForm1">
       <br/>
         <div class="col-lg-12 col-md-12 col-xs-12">
+          <div id="description" class="col-md-12 form-group box descriptionBox">
+              <p>{{'definition.assembly' | translate}}</p>
+          </div>
             <div id="assemblyName" class="col-md-12 form-group"
                  ng-class="{ 'has-error': newAssemblyForm1.name.$touched && newAssemblyForm1.name.$invalid }">
                 <h3 for="inputNameAssembly" class="control-label">{{'Name'|translate }}*</h3>
@@ -277,7 +280,7 @@
                     <label>
                         <input type="checkbox" ng-model="newAssembly.listed"/>
                         <strong>
-                            <span translate="Do you want your Assembly to be listed?"></span>
+                            <span translate="{{ 'Do you want your Assembly to be listed?' | translate }}"></span>
                             <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
                         </strong>
                     </label>

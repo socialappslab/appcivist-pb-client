@@ -14,7 +14,7 @@
         <fieldset>
           <div class="field__container">
             <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
-            <input ng-model="proposal.title" id="add_proposal__title" type="text" placeholder="Proposal Title">
+            <input ng-model="proposal.title" id="add_proposal__title" type="text" placeholder="{{ 'Proposal Title' | translate }}">
           </div>
           <div class="field__container">
             <label for="textarea">{{'Description' | translate}}</label>
@@ -31,7 +31,7 @@
               <!-- assuming some sort of autocomplete -->
               <label for="">
                 {{'Authors' | translate}}
-                <input type="text" placeholder="Enter a name to search…">
+                <input type="text" placeholder="{{ 'Enter a name to search...' | translate }}">
                 <ul class="user__list">
                   <div class="user__card person">
                     <a href="">
@@ -44,8 +44,8 @@
                       </svg>
                     </a>
                     <ul class="action__menu">
-                      <li><a >Message this user</a></li>
-                      <li><a >Remove this user</a></li>
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
                     </ul>
                   </div>
                   <div class="user__card person">
@@ -59,8 +59,8 @@
                       </svg>
                     </a>
                     <ul class="action__menu">
-                      <li><a >Message this user</a></li>
-                      <li><a >Remove this user</a></li>
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
                     </ul>
                   </div>
                   <div class="user__card person">
@@ -74,8 +74,8 @@
                       </svg>
                     </a>
                     <ul class="action__menu">
-                      <li><a >Message this user</a></li>
-                      <li><a >Remove this user</a></li>
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
                     </ul>
                   </div>
                   <div class="user__card person">
@@ -89,8 +89,8 @@
                       </svg>
                     </a>
                     <ul class="action__menu">
-                      <li><a >Message this user</a></li>
-                      <li><a >Remove this user</a></li>
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
                     </ul>
                   </div>
                   <div class="user__card person">
@@ -104,8 +104,8 @@
                       </svg>
                     </a>
                     <ul class="action__menu">
-                      <li><a >Message this user</a></li>
-                      <li><a >Remove this user</a></li>
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
                     </ul>
                   </div>
                 </ul>
@@ -123,7 +123,7 @@
           </fieldset>
           <div class="field__container">
             <label for="add_proposal__source_code">{{'Source code' | translate}}</label>
-            <input ng-model="proposal.sourceCode" id="add_proposal__source_code" type="number" size="3" placeholder="{{'Source Code' | translate}}">
+            <input ng-model="proposal.sourceCode" id="add_proposal__source_code" type="number" size="3" placeholder="{{'Source code' | translate}}">
           </div>
         </fieldset>
         <fieldset>

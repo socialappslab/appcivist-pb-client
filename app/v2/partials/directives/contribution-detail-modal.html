@@ -1,0 +1,27 @@
+<div class="modal_content__contribution_history">
+  <header class="modal-header">
+    <p class="heading--category">
+      <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
+        {{theme.title}}
+        <span ng-if="($index!=(contribution.themes.length-1))&&($index===0 || $index===1)">, </span>
+      </span>
+    </p>
+    <div class="title_block">
+      <h2 class="modal__title">
+        {{contribution.title}}
+      </h2>
+    </div>
+  </header>
+
+  <div class="modal-body">
+    <div class="contribution content">
+      <header class="type_and_date">
+        <div class="type_icon" aria-hidden></div>
+        {{ 'Description' | translate }}
+      </header>
+      <div class="contribution_details">
+        <div class="contribution_description">{{ contribution.text }}</div>
+      </div>
+    </div>
+  </div>
+</div>

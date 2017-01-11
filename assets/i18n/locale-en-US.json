@@ -741,5 +741,8 @@
   "Date": "Date",
   "Popularity": "Popularity",
   "Theme": "Theme",
-  "no.members.message": "No members found"
+  "no.members.message": "No members found",
+
+  "pagination.widget.no": "No",
+  "pagination.widget.description" : "in this space yet"
 }

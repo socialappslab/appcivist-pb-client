@@ -5,10 +5,10 @@
     .directive('contributionCard', ContributionCard);
 
   ContributionCard.$inject = [
-    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope', 'Notify'
+    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope', 'Notify', '$compile'
   ];
 
-  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify) {
+  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify, $compile) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -103,6 +103,12 @@
         scope.myObject.assignToWG = function () {
           //Contributions.assignContributionToWG(scope.assemblyId, scope.contribution.contributionId, scope.wg).update(scope.contribution);
           $window.location.reload();
+        }
+
+        scope.myObject.seeDetail = function () {
+          vex.open({
+            unsafeContent: $compile(document.querySelector('.contribution-detail-modal').innerHTML)(scope)[0]
+          });
         }
       }
     };

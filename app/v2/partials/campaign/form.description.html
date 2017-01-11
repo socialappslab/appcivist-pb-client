@@ -9,7 +9,7 @@
         <!-- Title -->
         <div id="campaignTitle" class="row col-md-12 col-sm-12 form-horizontal">
           <div class="form-group" ng-class="{ 'has-error': newCampaignForm1.goal.$touched &&newCampaignForm1.goal.$invalid }">
-            <label for="inputDefineCampaignTitle" class="control-label">{{"Name your campaign" | translate}}*</label>
+            <label for="inputDefineCampaignTitle" class="control-label">{{ 'Name your campaign' | translate}}*</label>
             <input id="inputDefineCampaignTitle" name="goal" class="form-control" placeholder="{{'e.g., Develop proposals for PB Paris 2015' | translate}}"
               ng-model="newCampaign.title" ng-required="true" />
             <div class="help-block" ng-messages="newCampaignForm1.goal.$error" ng-if="newCampaignForm1.goal.$touched">

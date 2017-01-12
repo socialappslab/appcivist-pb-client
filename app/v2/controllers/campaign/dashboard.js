@@ -81,7 +81,7 @@
 
     function verifyMembership() {
       if ($scope.assemblyID >= 0) {
-        var rsp = Memberships.membershipInAssembly($scope.assembly.assemblyId, $scope.user.userId).get();
+        var rsp = Memberships.membershipInAssembly($scope.assemblyID, $scope.user.userId).get();
         rsp.$promise.then(function (data) {
           if (data && data.status === 'ACCEPTED')
             $scope.userIsMember = true;
@@ -102,6 +102,7 @@
         $scope.campaign.rsID = data.resourceSpaceId; //must be always id
         $scope.campaign.rsUUID = data.resourceSpaceUUId;
         $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
+        //$scope.campaign.frsUUID = data.resourceSpaceUUId; --test exceptionHandler
         if (!$scope.isAnonymous) {
           $scope.spaceID = data.resourceSpaceId;
         } else {

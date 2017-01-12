@@ -614,7 +614,10 @@
   "Submit Proposal": "Enviar Propuesta",
   "Categories": "Categorías",
   "Select categories to assign": "Seleccionar categorías a asignar",
-  "Enter a name to search..." : "Ingresar un nombre a buscar..."
+  "Enter a name to search..." : "Ingresar un nombre a buscar...",
+
+  "Member Authors": "Autores miembros",
+  "Non Member Authors": "Autores no miembros"
 
 
 }

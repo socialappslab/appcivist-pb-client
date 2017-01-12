@@ -5,10 +5,10 @@ appCivistApp
   .directive('contributionDetailModal',  contributionDetailModal);
 
 contributionDetailModal.$inject = [
-  'localStorageService', 'AppCivistAuth', '$state', 'Contributions', 'Space'
+  'localStorageService', 'AppCivistAuth', '$state', 'Contributions', 'Space', '$translate'
 ];
 
-function contributionDetailModal(localStorageService, AppCivistAuth, $state, Contributions, Space) {
+function contributionDetailModal(localStorageService, AppCivistAuth, $state, Contributions, Space, $translate) {
 
   function redirect() {
     localStorageService.clearAll();
@@ -41,6 +41,28 @@ function contributionDetailModal(localStorageService, AppCivistAuth, $state, Con
 		    var rsp = AppCivistAuth.signOut().save();
         rsp.$promise.then(redirect, redirect);
       };
+
+      activate();
+
+      function activate() {
+        scope.activeTab = 'Public';
+        scope.changeActiveTab = function (tab) {
+          if (tab == 1) {
+            scope.activeTab = 'Members';
+          } else {
+            scope.activeTab = 'Public';
+          }
+        }
+        scope.userIsMember = false;
+        scope.user = localStorageService.get('user');
+        if (scope.user && scope.user.language) {
+          $translate.use(scope.user.language);
+          scope.userIsMember = true;
+        }
+
+        scope.contributionID = scope.contribution.contributionId;
+
+      }
     }
   };
 }

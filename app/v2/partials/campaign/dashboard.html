@@ -163,7 +163,7 @@
               c6.166,0,11.215-5.001,11.215-11.19C27.216,9.81,22.191,4.786,16.001,4.786z" />
           </svg>
         </div>
-        <div class="powered_by">Powered by AppCivist</div>
+        <div class="powered_by">{{ 'Powered by AppCivist' | translate }} </div>
       </div>
     </header>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
@@ -184,7 +184,7 @@
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
           <header class="ideas__header">
-            <h2 class="heading--header">Ideas</h2>
+            <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             <a class="ideas__add_new" ng-if="user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;Hide Ideas</a>&nbsp;&nbsp;
@@ -201,8 +201,8 @@
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs custom-ul">
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">Members Conversations</a></li>
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">Public Conversations</a></li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate}}</a></li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate}}</a></li>
   </ul>
 
   <!-- Tab panes -->

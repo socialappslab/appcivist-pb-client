@@ -104,6 +104,7 @@
         $scope.campaign.rsID = data.resourceSpaceId; //must be always id
         $scope.campaign.rsUUID = data.resourceSpaceUUId;
         $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
+        //$scope.campaign.frsUUID = data.resourceSpaceUUId; --test exceptionHandler
         if (!$scope.isAnonymous) {
           $scope.spaceID = data.resourceSpaceId;
         } else {

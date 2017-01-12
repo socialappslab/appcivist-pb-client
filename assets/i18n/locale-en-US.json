@@ -755,5 +755,14 @@
   "Add Idea": "Add Idea",
   "Your email": "Your email",
   "URL": "URL",
-  "Select categories to assign": "Select categories to assign"
+  "Select categories to assign": "Select categories to assign",
+  "pagination.widget.no": "No",
+  "pagination.widget.description": "in this space yet",
+  "Powered by AppCivist": "Powered by AppCivist",
+  "Search...": "Search...",
+  "Filter by": "Filter by",
+  "Add Filter": "Add Filter",
+  "Random": "Random",
+  "Members Conversations": "Members Conversations",
+  "Public Conversations": "Public Conversations"
 }

@@ -84,7 +84,7 @@
     current-page="pagination.current" contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize" is-anonymous="isAnonymous"></contribution-card>
     <!--<contribution-card class="card__proposal" ng-repeat="proposal in contributions track by $index" contribution="proposal" show-voting-buttons="false"
       on-finish-render="eqResize"></contribution-card>-->
-    <p ng-if="contributions.length === 0" class="card">No {{ type }}s in this space yet</p>
+    <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | transalte }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>
 
@@ -94,7 +94,7 @@
     current-page="pagination.current" contribution="idea" show-voting-buttons="false" on-finish-render="eqResize" is-anonymous="isAnonymous"></contribution-card>
     <!--<contribution-card class="card__idea" ng-repeat="idea in contributions track by $index" contribution="idea" show-voting-buttons="false"
       on-finish-render="eqResize"></contribution-card>-->
-    <p ng-if="contributions.length === 0" class="card">No {{ type }}s in this space yet</p>
+    <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>
 

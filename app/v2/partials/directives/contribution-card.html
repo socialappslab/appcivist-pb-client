@@ -14,11 +14,11 @@
       </p>
       <div class="title_block">
         <h1 class="heading--headline">
-          <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}">
-            {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
+          <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}" style="display: block; width: 280px;word-wrap: break-word;">
+            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
-          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}">
-            {{contribution.title|limitTo:97}}{{(contribution.title.length) > 97 ? '...' : '.' }}
+          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}" style="display: block; width: 280px;word-wrap: break-word;">
+            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
         </h1>
         <div class="card__heading_actions">
@@ -102,7 +102,7 @@
       </div>
       <div class="title_block">
         <h1 class="heading--headline">
-          <a href="">
+          <a href="" ng-click="myObject.seeDetail()">
           {{contribution.title}}
           </a>
         </h1>
@@ -159,4 +159,8 @@
       </div>
     </header>
   </div>
+</div>
+
+<div class="contribution-detail-modal" style="display: none;">
+  <contribution-detail-modal contribution="contribution" user="user"></contribution-detail-modal>
 </div>

@@ -1,0 +1,136 @@
+<div class="vex vex-theme-plain">
+  <div class="vex-overlay"></div>
+  <div class="vex-content">
+    <div class="modal_content__add_proposal">
+      <header class="modal-header">
+        <h2 class="modal__title">{{'Add Proposal' | translate}}</h2>
+      </header>
+      <div class="modal-body">
+        <fieldset class="divider">
+          <label for="textarea">{{'Upload csv file' | translate}}</label>
+          <input type="file" id="input">
+          <a class="button__modal_submit">{{'Upload' | translate}}</a>
+        </fieldset>
+        <fieldset>
+          <div class="field__container">
+            <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
+            <input ng-model="proposal.title" id="add_proposal__title" type="text" placeholder="{{ 'Proposal Title' | translate }}">
+          </div>
+          <div class="field__container">
+            <label for="textarea">{{'Description' | translate}}</label>
+            <textarea ng-model="proposal.summary" id="add_proposal__description" rows="8" cols="48" placeholder="{{'Proposal Description' | translate}}"></textarea>
+          </div>
+          <div class="field__container assign_proposal_to_wg">
+            <label for="assign-to-wg">{{'Working Group' | translate}}</label>
+            <select id="assign-to-wg">
+              <option ng-repeat="group in groups" value="group">{{group.name}}</option>
+            </select>
+          </div>
+          <div class="field__container assign_proposal_to_users">
+            <fieldset class="user__assignment">
+              <!-- assuming some sort of autocomplete -->
+              <label for="">
+                {{'Authors' | translate}}
+                <input type="text" placeholder="{{ 'Enter a name to search...' | translate }}">
+                <ul class="user__list">
+                  <div class="user__card person">
+                    <a href="">
+                      <figure class="photo"><img src="https://placeimg.com/100/100/any/sepia" alt="Avatar for FirstName LastName"></figure>
+                      <div class="fn">Jacobus Sneiders</div>
+                    </a>
+                    <a class="menu__contextual" >
+                      <svg class="icon__more" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path class="svg__shape" d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                      </svg>
+                    </a>
+                    <ul class="action__menu">
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
+                    </ul>
+                  </div>
+                  <div class="user__card person">
+                    <a href="">
+                      <figure class="photo"><img src="https://placeimg.com/100/100/animals" alt="Avatar for FirstName LastName"></figure>
+                      <div class="fn">Duane Wilms</div>
+                    </a>
+                    <a class="menu__contextual" >
+                      <svg class="icon__more" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path class="svg__shape" d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                      </svg>
+                    </a>
+                    <ul class="action__menu">
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
+                    </ul>
+                  </div>
+                  <div class="user__card person">
+                    <a href="">
+                      <figure class="photo"><img src="https://placeimg.com/100/100/people/grayscale" alt="Avatar for FirstName LastName"></figure>
+                      <div class="fn">Frans Keegan</div>
+                    </a>
+                    <a class="menu__contextual" >
+                      <svg class="icon__more" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path class="svg__shape" d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                      </svg>
+                    </a>
+                    <ul class="action__menu">
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
+                    </ul>
+                  </div>
+                  <div class="user__card person">
+                    <a href="">
+                      <figure class="photo"><img src="https://placeimg.com/100/100/any/grayscale" alt="Avatar for FirstName LastName"></figure>
+                      <div class="fn">Freyr Hines</div>
+                    </a>
+                    <a class="menu__contextual" >
+                      <svg class="icon__more" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path class="svg__shape" d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                      </svg>
+                    </a>
+                    <ul class="action__menu">
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
+                    </ul>
+                  </div>
+                  <div class="user__card person">
+                    <a href="">
+                      <figure class="photo"><img src="https://placeimg.com/100/100/tech/grayscale" alt="Avatar for FirstName LastName"></figure>
+                      <div class="fn">Plinius Sloane</div>
+                    </a>
+                    <a class="menu__contextual" >
+                      <svg class="icon__more" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path class="svg__shape" d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+                      </svg>
+                    </a>
+                    <ul class="action__menu">
+                      <li><a >{{ 'Message this user'| translate}}</a></li>
+                      <li><a >{{ 'Remove this user'| translate}}</a></li>
+                    </ul>
+                  </div>
+                </ul>
+              </label>
+            </fieldset>
+          </div>
+          <fieldset class="add_proposal__availble_themes">
+            <p clas="intro">{{'Categories' | translate}}</p>
+            <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
+            <ul class="tags">
+              <li><a>Open Space</a></li>
+              <li><a>Quick Fixes</a></li>
+              <li><a>Schools</a></li>
+            </ul>
+          </fieldset>
+          <div class="field__container">
+            <label for="add_proposal__source_code">{{'Source code' | translate}}</label>
+            <input ng-model="proposal.sourceCode" id="add_proposal__source_code" type="number" size="3" placeholder="{{'Source code' | translate}}">
+          </div>
+        </fieldset>
+        <fieldset>
+          <a class="button__modal_submit">{{'Submit Proposal' | translate}}</a>
+        </fieldset>
+      </div>
+    </div>
+    <div class="vex-close" ng-click="close()"></div>
+  </div>
+</div>

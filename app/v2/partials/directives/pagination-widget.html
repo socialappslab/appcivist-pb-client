@@ -1,99 +1,89 @@
 <style>
-
-.pagination {
-  display: inline-block;
-  padding-left: 0;
-  margin: 20px 0;
-  border-radius: 4px;
-}
-.pagination > li {
-  display: inline;
-}
-
-.pagination > .disabled > span,
-.pagination > .disabled > span:hover,
-.pagination > .disabled > span:focus,
-.pagination > .disabled > a,
-.pagination > .disabled > a:hover,
-.pagination > .disabled > a:focus {
-  color: #777;
-  cursor: not-allowed;
-  background-color: #fff;
-  border-color: #ddd;
-}
-.pagination-lg > li > a,
-.pagination-lg > li > span {
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.3333333;
-}
-.pagination-lg > li:first-child > a,
-.pagination-lg > li:first-child > span {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-.pagination-lg > li:last-child > a,
-.pagination-lg > li:last-child > span {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-.pagination-sm > li > a,
-.pagination-sm > li > span {
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-}
-.pagination-sm > li:first-child > a,
-.pagination-sm > li:first-child > span {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-.pagination-sm > li:last-child > a,
-.pagination-sm > li:last-child > span {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-
-.text-center {
-  text-align: center;
-}
+  .pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px;
+  }
+  
+  .pagination>li {
+    display: inline;
+  }
+  
+  .pagination>.disabled>span,
+  .pagination>.disabled>span:hover,
+  .pagination>.disabled>span:focus,
+  .pagination>.disabled>a,
+  .pagination>.disabled>a:hover,
+  .pagination>.disabled>a:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+  }
+  
+  .pagination-lg>li>a,
+  .pagination-lg>li>span {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+  }
+  
+  .pagination-lg>li:first-child>a,
+  .pagination-lg>li:first-child>span {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+  
+  .pagination-lg>li:last-child>a,
+  .pagination-lg>li:last-child>span {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  
+  .pagination-sm>li>a,
+  .pagination-sm>li>span {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  
+  .pagination-sm>li:first-child>a,
+  .pagination-sm>li:first-child>span {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+  
+  .pagination-sm>li:last-child>a,
+  .pagination-sm>li:last-child>span {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  contribution-card.card__proposal div.card__idea {
+    width: 100%;
+  }
 </style>
-  <!--<section class="panel" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
-  <ol class="pagination">
-    <li>
-      <a href="">
-        << Previous </a>
-    </li>
-    <li class="current"><a href="">1</a></li>
-    <li><a href="">2</a></li>
-    <li><a href="">3</a></li>
-    <li><a href="">4</a></li>
-    <li><a href="">5</a></li>
-    <li><a href="">6</a></li>
-    <li><a href="">7</a></li>
-    <li><a href="">Next >></a></li>
-  </ol>
-</section>-->
 <section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
   <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
 </section>
 
 <section class="list--proposals" ng-if="type==='proposal'">
   <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
-    <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize" total-items="totalContributions"
-    current-page="pagination.current" contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize" is-anonymous="isAnonymous"></contribution-card>
-    <!--<contribution-card class="card__proposal" ng-repeat="proposal in contributions track by $index" contribution="proposal" show-voting-buttons="false"
-      on-finish-render="eqResize"></contribution-card>-->
+    <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize" total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize"
+      is-anonymous="isAnonymous"></contribution-card>
     <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | transalte }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>
 
 <section class="list--ideas" ng-if="type==='idea'">
   <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-    <contribution-card class="card__idea" dir-paginate="idea in contributions | itemsPerPage: pageSize" total-items="totalContributions"
-    current-page="pagination.current" contribution="idea" show-voting-buttons="false" on-finish-render="eqResize" is-anonymous="isAnonymous"></contribution-card>
-    <!--<contribution-card class="card__idea" ng-repeat="idea in contributions track by $index" contribution="idea" show-voting-buttons="false"
-      on-finish-render="eqResize"></contribution-card>-->
+    <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize" total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="false" on-finish-render="eqResize"
+      is-anonymous="isAnonymous"></contribution-card>
     <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>
@@ -101,19 +91,3 @@
 <section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
   <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
 </section>
-<!--<section class="panel" in-view="paginationVisible(paginationBottom, $inview)" ng-style="paginationBottom.style">
-  <ol class="pagination">
-    <li>
-      <a href="">
-        << Prev</a>
-    </li>
-    <li class="current"><a href="">1</a></li>
-    <li><a href="">2</a></li>
-    <li><a href="">3</a></li>
-    <li><a href="">4</a></li>
-    <li><a href="">5</a></li>
-    <li><a href="">6</a></li>
-    <li><a href="">7</a></li>
-    <li><a href="">Next >></a></li>
-  </ol>
-</section>-->

@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   appCivistApp
@@ -13,7 +13,7 @@
     function hasRole(roles, roleName) {
       var result = false;
 
-      angular.forEach(roles, function (role) {
+      angular.forEach(roles, function(role) {
         if (role.name === roleName) {
           result = true;
         }
@@ -37,13 +37,16 @@
         showVotingButtons: '@',
         campaign: '=',
         components: '=',
-        isAnonymous: '='
+        isAnonymous: '=',
+        showIdeaBody: '@'
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
         scope.showContextualMenu = false;
         scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
         scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
+        scope.ideaExcerptStyle = scope.showIdeaBody ? { height: '120px' } : { height: '110px' };
+        scope.ideaHeaderStyle = scope.showIdeaBody ? { height: '100px' } : { height: '150px' };
         setContributionType(scope);
         var assembly = localStorageService.get('currentAssembly');
 
@@ -79,33 +82,33 @@
         }
         scope.showActionMenu = false;
         scope.myObject = {};
-        scope.myObject.refreshMenu = function () {
+        scope.myObject.refreshMenu = function() {
           scope.showActionMenu = !scope.showActionMenu;
         };
 
         //change redirection
-        scope.myObject.softRemoval = function () {
+        scope.myObject.softRemoval = function() {
           Contributions.contributionSoftRemoval(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
           $window.location.reload();
         }
 
-        scope.myObject.publish = function () {
+        scope.myObject.publish = function() {
           Contributions.publishContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
           $window.location.reload();
         }
 
-        scope.myObject.exclude = function () {
+        scope.myObject.exclude = function() {
           Contributions.excludeContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
           $window.location.reload();
         }
 
         //find endpoint
-        scope.myObject.assignToWG = function () {
+        scope.myObject.assignToWG = function() {
           //Contributions.assignContributionToWG(scope.assemblyId, scope.contribution.contributionId, scope.wg).update(scope.contribution);
           $window.location.reload();
         }
 
-        scope.myObject.seeDetail = function () {
+        scope.myObject.seeDetail = function() {
           vex.open({
             unsafeContent: $compile(document.querySelector('.contribution-detail-modal').innerHTML)(scope)[0]
           });
@@ -113,4 +116,4 @@
       }
     };
   }
-} ());
+}());

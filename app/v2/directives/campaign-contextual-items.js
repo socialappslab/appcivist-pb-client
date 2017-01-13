@@ -1,19 +1,19 @@
-(function () {
+(function() {
   'use strict';
 
   appCivistApp
     .directive('campaignContextualItems', campaignContextualItems);
 
   campaignContextualItems.$inject = [
-    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications'
+    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify'
   ];
 
-  function campaignContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications) {
+  function campaignContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify) {
 
     function hasRole(roles, roleName) {
       var result = false;
 
-      angular.forEach(roles, function (role) {
+      angular.forEach(roles, function(role) {
         if (role.name === roleName) {
           result = true;
         }
@@ -23,7 +23,7 @@
 
     function setupMembershipInfo(scope) {
       var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
-      rsp.$promise.then(function (data) {
+      rsp.$promise.then(function(data) {
         // TODO ASK THIS ONCE SOMEWHERE ELSE AND STORE IN LOCAL STORAGE
         scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
       });
@@ -39,9 +39,9 @@
         campaign: '='
       },
       templateUrl: '/app/v2/partials/directives/campaign-contextual-items.html',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
 
-        scope.$watch('campaign', function (newVal) {
+        scope.$watch('campaign', function(newVal) {
           if (newVal) {
             init();
           }
@@ -57,7 +57,7 @@
           }
 
           scope.myObject = {};
-          scope.myObject.refreshMenu = function () {
+          scope.myObject.refreshMenu = function() {
             scope.showActionMenu = !scope.showActionMenu;
           };
           // TODO: add logic for menu items
@@ -65,11 +65,18 @@
           // Todo: 2. Add Resource to campaign
 
           scope.myObject.subscribe = function() {
-            var query = { "origin": scope.campaign.uuid, "eventName": "NEW_CAMPAIGN", "endPointType": "email"};
-            var subscription = Notifications.subscribe().save(query);
+            var query = { "origin": scope.campaign.uuid, "eventName": "NEW_CAMPAIGN", "endPointType": "email" };
+            var subscription = Notifications.subscribe().save(query).$promise.then(
+              function() {
+                Notify.show('Subscribed successfully', 'success');
+              },
+              function() {
+                Notify.show('Error while trying to communicate with the server', 'error');
+              }
+            );
           }
         }
       }
     };
   }
-} ());
+}());

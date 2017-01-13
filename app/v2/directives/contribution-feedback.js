@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -8,24 +8,41 @@
     .directive('contributionFeedback', ContributionFeedback);
 
   ContributionFeedback.$inject = [
-    'Contributions', 'localStorageService'
+    'Contributions', 'localStorageService', 'Memberships', '$compile', 'Notify'
   ];
 
-  function ContributionFeedback(Contributions, localStorageService) {
+  function ContributionFeedback(Contributions, localStorageService, Memberships, $compile, Notify) {
     return {
       restrict: 'E',
       scope: {
-        contribution: '='
+        contribution: '=',
+        // true | false, indicates that we should display delete button.
+        withDelete: '@',
+        // true | false, indicates that we should display flag button.
+        withFlag: '@'
       },
       templateUrl: '/app/v2/partials/directives/contribution-feedback.html',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
         // Read user contribution feedback
         scope.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false };
-        var assembly = localStorageService.get('currentAssembly');
+        scope.assembly = localStorageService.get('currentAssembly');
+        scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
+        scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
+        scope.showModerationForm = showModerationForm.bind(scope);
+        scope.submitModerationForm = submitModerationForm.bind(scope);
+        scope.submitDelete = submitDelete.bind(scope);
+        scope.submitFlag = submitFlag.bind(scope);
+        scope.moderationReasons = [
+          'It\'s spam',
+          'Violates the assembly commenting policy',
+          'It is disrespectful towards other people',
+          'Attacks others personally',
+          'Other'
+        ];
         var user = localStorageService.get('user');
 
         // Feedback update
-        scope.updateFeedback = function (value) {
+        scope.updateFeedback = function(value) {
           if (!user) {
             return;
           }
@@ -50,18 +67,82 @@
             }
           }
 
-          var feedback = Contributions.userFeedback(assembly.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
+          var feedback = Contributions.userFeedback(scope.assembly.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
           feedback.$promise.then(
-            function (newStats) {
+            function(newStats) {
               scope.contribution.stats = newStats;
               scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
             },
-            function (error) {
+            function(error) {
               Notify.show('Error when updating user feedback', 'error');
             }
           );
         };
-      }
+      },
     };
+
+    /**
+     * Displays the moderation form.
+     * 
+     * @param {string} context - delete | flag
+     */
+    function showModerationForm(context) {
+      this.moderationContext = context;
+      this.vexInstance = vex.open({
+        unsafeContent: $compile(document.getElementById('moderationForm').innerHTML)(this)[0]
+      });
+    }
+
+    /**
+     * DELETE or FLAG comment
+     */
+    function submitModerationForm() {
+      switch (this.moderationContext) {
+        case 'delete':
+          this.submitDelete();
+          break;
+        case 'flag':
+          this.submitFlag();
+          break;
+      }
+    }
+
+    /**
+     * Removes the contribution.
+     */
+    function submitDelete() {
+      var self = this;
+      Contributions.moderate(this.assembly.assemblyId, this.contribution).then(
+        function() {
+          Notify.show('Operation succeeded', 'success');
+          self.vexInstance.close();
+        },
+        function() {
+          Notify.show('Error while trying to communicate with the server', 'error');
+        }
+      );
+    }
+
+    /**
+     * Flags the contribution.
+     */
+    function submitFlag() {
+      var self = this;
+      var payload = {
+        flag: true,
+        textualFeedback: this.contribution.moderationComment
+      };
+      var feedback = Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(payload);
+      feedback.$promise.then(
+        function(newStats) {
+          self.contribution.stats = newStats;
+          self.vexInstance.close();
+          Notify.show('Operation succeeded', 'success');
+        },
+        function() {
+          Notify.show('Error when updating user feedback', 'error');
+        }
+      );
+    }
   }
-} ());
+}());

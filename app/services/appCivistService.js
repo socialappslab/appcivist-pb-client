@@ -19,41 +19,40 @@ function getServerBaseUrl(localStorageService) {
   return serverBaseUrl;
 }
 
-appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
+appCivistApp.factory('Assemblies', function($resource, localStorageService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
-    assemblies: function () {
+    assemblies: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
-    assembly: function (assemblyId) {
+    assembly: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId });
     },
-    assemblyPublicProfile: function (assemblyId) {
+    assemblyPublicProfile: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', { aid: assemblyId });
     },
-    assembliesWithoutLogin: function () {
+    assembliesWithoutLogin: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/listed');
     },
-    assembliesByQuery: function (q) {
+    assembliesByQuery: function(q) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly', { query: q });
     },
-    assemblyMembers: function (assemblyId) {
+    assemblyMembers: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId });
     },
-    linkedAssemblies: function (assemblyId) {
+    linkedAssemblies: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/linked', { aid: assemblyId });
     },
-    featuredAssemblies: function () {
+    featuredAssemblies: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly', { filter: "featured" });
     },
-    verifyMembership: function (assemblyId, userId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/user/:uid',
-        {
-          aid: assemblyId,
-          uid: userId
-        });
+    verifyMembership: function(assemblyId, userId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/user/:uid', {
+        aid: assemblyId,
+        uid: userId
+      });
     },
-    defaultNewAssembly: function () {
+    defaultNewAssembly: function() {
       return {
         //"name": "Assemblée Belleville",
         //"shortname": "assemblee-belleville",
@@ -78,15 +77,13 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
         //},
         "themes": [{
           "title": "Housing"
-        }
-        ],
+        }],
         "existingThemes": [],
         "config": {
           "facetoface": true,
           "messaging": true
         },
-        "configs": [
-          {
+        "configs": [{
             "key": "assembly.face-to-face.scheduling",
             "value": "true"
           },
@@ -102,36 +99,33 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService) {
       };
     },
 
-    assemblyByUUID: function (uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:uuid',
-        { uuid: uuid });
+    assemblyByUUID: function(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:uuid', { uuid: uuid });
     }
   };
 });
 
-appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService, Notify) {
+appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService, Notify) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
-    campaigns: function (userUUID, state) {
+    campaigns: function(userUUID, state) {
       return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', { uuid: userUUID, filter: state });
     },
-    campaign: function (assemblyId, campaignId) {
+    campaign: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/' + assemblyId + '/campaign/' + campaignId);
     },
-    campaignByUUID: function (campaignUUID) {
+    campaignByUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
     },
-    newCampaign: function (assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign',
-        {
-          aid: assemblyId
-        }
-      );
+    newCampaign: function(assemblyId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', {
+        aid: assemblyId
+      });
     },
-    templates: function () {
+    templates: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/template');
     },
-    defaultNewCampaign: function () {
+    defaultNewCampaign: function() {
       var campaign = {
         // title : "PB Belleville 2016",
         // shortname : "pb-belleville-2016
@@ -144,8 +138,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           budget: 50000,
           budgetCurrency: "$"
         },
-        configs: [
-          {
+        configs: [{
             key: "campaign.pb.budget",
             value: "50.000"
           },
@@ -178,10 +171,10 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
      *
      * @param components {Array}: the list of components of the campaign
      */
-    getCurrentComponent: function (components) {
+    getCurrentComponent: function(components) {
       var current;
 
-      angular.forEach(components, function (c) {
+      angular.forEach(components, function(c) {
         var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm').local();
         startMoment.hour(0);
         startMoment.minute(0);
@@ -208,12 +201,11 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
      * @param campaignId {number} Campaign ID
      * @return {Array} List of resources associated with the given campaign
      */
-    resources: function (assemblyId, campaignId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resources',
-        { aid: assemblyId, cid: campaignId });
+    resources: function(assemblyId, campaignId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resources', { aid: assemblyId, cid: campaignId });
     },
 
-    timeline: function (assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
+    timeline: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
 
       // Get timeline of the campaign
       var rsp;
@@ -226,24 +218,24 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
         rsp = this.timelineByCampaignUUID(campaignUUID).query(query);
       }
       rsp.$promise.then(
-        function (data) {
+        function(data) {
           return data;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error loading contributions from server', 'error');
         }
       );
       return rsp.$promise;
 
     },
-    timelineByCampaignId: function (assemblyId, campaignId) {
+    timelineByCampaignId: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/timeline', { aid: assemblyId, cid: campaignId });
     },
-    timelineByCampaignUUID: function (campaignUUID) {
+    timelineByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/timeline', { uuid: campaignUUID });
     },
 
-    components: function (assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
+    components: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
 
       // Get components of the campaign
       var rsp;
@@ -256,24 +248,24 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
         rsp = this.componentsByCampaignUUID(campaignUUID).query(query);
       }
       rsp.$promise.then(
-        function (data) {
+        function(data) {
           return data;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error loading contributions from server', 'error');
         }
       );
       return rsp.$promise;
 
     },
-    componentsByCampaignId: function (assemblyId, campaignId) {
+    componentsByCampaignId: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/components', { aid: assemblyId, cid: campaignId });
     },
-    componentsByCampaignUUID: function (campaignUUID) {
+    componentsByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/components', { uuid: campaignUUID });
     },
 
-    themes: function (assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
+    themes: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
 
       // Get themes of the campaign
       var rsp;
@@ -286,73 +278,66 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
         rsp = this.themesByCampaignUUID(campaignUUID).query(query);
       }
       rsp.$promise.then(
-        function (data) {
+        function(data) {
           return data;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error loading contributions from server', 'error');
         }
       );
       return rsp.$promise;
 
     },
-    themesByCampaignId: function (assemblyId, campaignId) {
+    themesByCampaignId: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/themes', { aid: assemblyId, cid: campaignId });
     },
-    themesByCampaignUUID: function (campaignUUID) {
+    themesByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID });
     }
   };
 
 });
 
-appCivistApp.factory('Memberships', function ($resource, localStorageService) {
+appCivistApp.factory('Memberships', function($resource, localStorageService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
-    membership: function () {
-      return $resource(getServerBaseUrl(localStorageService) + '/membership',
-        {},
-        {
-          'update': { method: 'PUT' },
-          'delete': { method: 'DELETE' }
-        });
+    membership: function() {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership', {}, {
+        'update': { method: 'PUT' },
+        'delete': { method: 'DELETE' }
+      });
     },
-    membershipRequest: function (targetCollection, targetId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/membership/:target/:id/request',
-        {
-          target: targetCollection,
-          id: targetId
-        }
-      );
+    membershipRequest: function(targetCollection, targetId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/:target/:id/request', {
+        target: targetCollection,
+        id: targetId
+      });
     },
-    memberships: function (userId) {
+    memberships: function(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid', { uid: userId });
     },
-    assemblies: function (userId) {
+    assemblies: function(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid', { uid: userId, type: 'assembly' });
     },
-    workingGroups: function (userId) {
+    workingGroups: function(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid', { uid: userId, type: 'group' });
     },
-    membershipInAssembly: function (assemblyId, userId) {
+    membershipInAssembly: function(assemblyId, userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/assembly/:aid/user/:uid', { aid: assemblyId, uid: userId });
     },
-    membershipInGroup: function (groupId, userId) {
+    membershipInGroup: function(groupId, userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/group/:gid/user/:uid', { gid: groupId, uid: userId });
     },
-    updateStatus: function (membershipId, newStatus) {
-      return $resource(getServerBaseUrl(localStorageService) + '/membership/:mid/:status',
-        { mid: membershipId, status: newStatus },
-        {
-          'update': { method: 'PUT' }
-        });
+    updateStatus: function(membershipId, newStatus) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/:mid/:status', { mid: membershipId, status: newStatus }, {
+        'update': { method: 'PUT' }
+      });
     },
-    reSendInvitation: function (invitationId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email',
-        { iid: invitationId });
+    reSendInvitation: function(invitationId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email', { iid: invitationId });
     },
 
-    hasRol: function (rols, rolName) {
+    hasRol: function(rols, rolName) {
       var rol;
       for (var i = 0; i < rols.length; i++) {
         rol = rols[i];
@@ -364,99 +349,106 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
       return false;
     },
 
-    assemblyRols: function (aid) {
+    assemblyRols: function(aid) {
       var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
       return assemblyMembershipsHash[aid];
     },
 
-    groupRols: function (gid) {
+    groupRols: function(gid) {
       var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
       return groupMembershipsHash[gid];
     },
 
-    rolIn: function (target, id, rol) {
+    rolIn: function(target, id, rol) {
       switch (target) {
         case 'assembly':
           return this.hasRol(this.assemblyRols(id), rol);
         case 'group':
           return this.hasRol(this.groupRols(id), rol);
       }
+    },
+
+    /**
+     * Check if current user is coordinator of the given assembly.
+     * 
+     * @param {number} aid - Assembly ID.
+     */
+    isAssemblyCoordinator: function(aid) {
+      return this.rolIn('assembly', aid, 'COORDINATOR');
+    },
+
+    /**
+     * Check if current user is member of the given assembly.
+     * 
+     * @param {string} target - group | assembly
+     * @param {number} id - Assembly ID.
+     */
+    isMember: function(target, id) {
+      return this.rolIn(target, id, 'MEMBER');
     }
 
   };
 });
 
-appCivistApp.factory('Notifications', function ($resource, localStorageService) {
+appCivistApp.factory('Notifications', function($resource, localStorageService) {
   return {
-    userNotificationsByUUID: function (userUUID) {
+    userNotificationsByUUID: function(userUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID })
     },
-    subscribe: function () {
+    subscribe: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
     }
   };
 
 });
 
-appCivistApp.factory('Contributions', function ($resource, localStorageService, WorkingGroups) {
+appCivistApp.factory('Contributions', function($resource, localStorageService, WorkingGroups) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
-    contributions: function (assemblyId) {
+    contributions: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/' + assemblyId + '/contribution?space=forum');
     },
-    contribution: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid',
-        { aid: assemblyId, coid: contributionId },
-        {
-          'update': { method: 'PUT' },
-          'delete': { method: 'DELETE' }
-        });
+    contribution: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid', { aid: assemblyId, coid: contributionId }, {
+        'update': { method: 'PUT' },
+        'delete': { method: 'DELETE' }
+      });
     },
-    contributionSoftRemoval: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval',
-        { aid: assemblyId, coid: contributionId },
-        {
-          'update': { method: 'PUT' }
-        });
+    contributionSoftRemoval: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval', { aid: assemblyId, coid: contributionId }, {
+        'update': { method: 'PUT' }
+      });
     },
-    publishContribution: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status',
-        { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' },
-        {
-          'update': { method: 'PUT' }
-        });
+    publishContribution: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status', { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' }, {
+        'update': { method: 'PUT' }
+      });
     },
     /**
      * sets a new revision for the public etherpad
      */
-    publishProposal: function (assemblyId, groupId, proposalId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals/:pid/publish',
-        { aid: assemblyId, pid: proposalId, gid: groupId },
-        {
-          'update': { method: 'PUT' }
-        });
+    publishProposal: function(assemblyId, groupId, proposalId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals/:pid/publish', { aid: assemblyId, pid: proposalId, gid: groupId }, {
+        'update': { method: 'PUT' }
+      });
     },
-    excludeContribution: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status',
-        { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' },
-        {
-          'update': { method: 'PUT' }
-        });
+    excludeContribution: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status', { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' }, {
+        'update': { method: 'PUT' }
+      });
     },
-    contributionAttachment: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/attachment',
-        { aid: assemblyId, coid: contributionId });
+    contributionAttachment: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/attachment', { aid: assemblyId, coid: contributionId });
     },
-    groupContribution: function (assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution',
-        { aid: assemblyId, gid: groupId });
+    groupContribution: function(assemblyId, groupId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution', { aid: assemblyId, gid: groupId });
     },
-    verifyAuthorship: function (user, c) {
+    verifyAuthorship: function(user, c) {
       if (user != null && user != undefined && c != null && c != undefined) {
         var authorList = c.authors;
         // Check if author is in authorList (if author list is defined)
         if (authorList != null && authorList != undefined && authorList.length > 0) {
-          if (authorList.filter(function (author) { return author.userId === user.userId; }).length > 0) {
+          if (authorList.filter(function(author) { return author.userId === user.userId; }).length > 0) {
             return true;
           } else {
             return false;
@@ -464,13 +456,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         }
       }
     },
-    verifyGroupAuthorship: function (user, c, group) {
+    verifyGroupAuthorship: function(user, c, group) {
       var assemblyId = group.assemblies ? group.assemblies[0] : 0;
       var groupId = group.groupId;
       var status = 'ACCEPTED';
       return WorkingGroups.verifyMembership(assemblyId, groupId, user.userId);
     },
-    defaultNewContribution: function () {
+    defaultNewContribution: function() {
       var newC = {
         "title": "",
         "text": "",
@@ -490,31 +482,25 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       };
       return newC;
     },
-    contributionInResourceSpace: function (spaceId, pageC, pageSizeC) {
+    contributionInResourceSpace: function(spaceId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution?page=:page&pageSize=:pageSize',
-          { sid: spaceId, page: pageC - 1, pageSize: pageSizeC });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution?page=:page&pageSize=:pageSize', { sid: spaceId, page: pageC - 1, pageSize: pageSizeC });
       } else {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution',
-          { sid: spaceId });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution', { sid: spaceId });
       }
     },
-    contributionInResourceSpaceByUUID: function (spaceUUId, pageC, pageSizeC) {
+    contributionInResourceSpaceByUUID: function(spaceUUId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public?page=:page&pageSize=:pageSize',
-          { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public?page=:page&pageSize=:pageSize', { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
       } else {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public',
-          { uuid: spaceUUId });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public', { uuid: spaceUUId });
       }
     },
-    pinnedContributionInResourceSpace: function (spaceId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/pinned',
-        { sid: spaceId });
+    pinnedContributionInResourceSpace: function(spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/pinned', { sid: spaceId });
     },
-    pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public/pinned',
-        { uuid: spaceUUId });
+    pinnedContributionInResourceSpaceByUUID: function(spaceUUId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public/pinned', { uuid: spaceUUId });
     },
     /**
      * Returns a $resource to interact with the following endpoints:
@@ -526,40 +512,31 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
      *  @param {string} spaceUUID - space UUID
      *  @returns {object} $resource
      */
-    createAnomymousContribution: function (endpoint, spaceUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/:endpoint/:uuid/contribution',
-        { endpoint: endpoint, uuid: spaceUUID });
+    createAnomymousContribution: function(endpoint, spaceUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/:endpoint/:uuid/contribution', { endpoint: endpoint, uuid: spaceUUID });
     },
 
-    contributionsInCampaignComponent: function (assemblyID, campaignID, componentID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution',
-        {
-          aid: assemblyID,
-          cid: campaignID,
-          ciid: componentID
-        });
+    contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/component/:ciid/contribution', {
+        aid: assemblyID,
+        cid: campaignID,
+        ciid: componentID
+      });
     },
 
-    userFeedback: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback',
-        { aid: assemblyId, cid: contributionId },
-        { 'update': { method: 'PUT' } }
-      );
+    userFeedback: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback', { aid: assemblyId, cid: contributionId }, { 'update': { method: 'PUT' } });
     },
 
-    getContributionComments: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/comment',
-        { aid: assemblyId, cid: contributionId }
-      );
+    getContributionComments: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/comment', { aid: assemblyId, cid: contributionId });
     },
 
-    getContributionByUUID: function (uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid',
-        { uuid: uuid }
-      );
+    getContributionByUUID: function(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid', { uuid: uuid });
     },
 
-    defaultContributionAttachment: function () {
+    defaultContributionAttachment: function() {
       var att = {
         name: "",
         resourceType: "",
@@ -569,28 +546,28 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       return att;
     },
 
-    newAttachmentObject: function (newAttachment) {
+    newAttachmentObject: function(newAttachment) {
       if (!newAttachment.resourceType) {
         newAttachment.resourceType = "WEBPAGE";
-        if (newAttachment.url.endsWith(".jpg")
-          || newAttachment.url.toLowerCase().endsWith(".png")
-          || newAttachment.url.toLowerCase().endsWith(".jpeg")
-          || newAttachment.url.toLowerCase().endsWith(".gif")
-          || newAttachment.url.toLowerCase().endsWith(".tiff")) {
+        if (newAttachment.url.endsWith(".jpg") ||
+          newAttachment.url.toLowerCase().endsWith(".png") ||
+          newAttachment.url.toLowerCase().endsWith(".jpeg") ||
+          newAttachment.url.toLowerCase().endsWith(".gif") ||
+          newAttachment.url.toLowerCase().endsWith(".tiff")) {
           newAttachment.resourceType = "PICTURE";
-        } else if (newAttachment.url.toLowerCase().endsWith(".pdf")
-          || newAttachment.url.toLowerCase().endsWith(".doc")
-          || newAttachment.url.toLowerCase().endsWith(".docx")
-          || newAttachment.url.toLowerCase().endsWith(".xsl")
-          || newAttachment.url.toLowerCase().endsWith(".xslx")) {
+        } else if (newAttachment.url.toLowerCase().endsWith(".pdf") ||
+          newAttachment.url.toLowerCase().endsWith(".doc") ||
+          newAttachment.url.toLowerCase().endsWith(".docx") ||
+          newAttachment.url.toLowerCase().endsWith(".xsl") ||
+          newAttachment.url.toLowerCase().endsWith(".xslx")) {
           newAttachment.resourceType = "FILE";
-        } else if (newAttachment.url.toLowerCase().endsWith(".mp3")
-          || newAttachment.url.toLowerCase().endsWith(".ogg")
-          || newAttachment.url.toLowerCase().endsWith(".acc")) {
+        } else if (newAttachment.url.toLowerCase().endsWith(".mp3") ||
+          newAttachment.url.toLowerCase().endsWith(".ogg") ||
+          newAttachment.url.toLowerCase().endsWith(".acc")) {
           newAttachment.resourceType = "AUDIO";
-        } else if (newAttachment.url.toLowerCase().endsWith(".mp4")
-          || newAttachment.url.toLowerCase().endsWith(".mov")
-          || newAttachment.url.toLowerCase().endsWith(".avi")) {
+        } else if (newAttachment.url.toLowerCase().endsWith(".mp4") ||
+          newAttachment.url.toLowerCase().endsWith(".mov") ||
+          newAttachment.url.toLowerCase().endsWith(".avi")) {
           newAttachment.resourceType = "VIDEO";
         } else {
           newAttachment.resourceType = "WEBPAGE";
@@ -602,13 +579,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         resourceType: newAttachment.resourceType
       }
     },
-    copyAttachmentObject: function (oldAtt, newAtt) {
+    copyAttachmentObject: function(oldAtt, newAtt) {
       oldAtt.name = newAtt.name;
       oldAtt.url = newAtt.url;
       oldAtt.resourceType = newAtt.resourceType;
       oldAtt.showForm = newAtt.showForm;
     },
-    copyContributionObject: function (oldC, newC) {
+    copyContributionObject: function(oldC, newC) {
       if (newC.contributionId) {
         oldC.contributionId = newC.contributionId;
       } else {
@@ -630,7 +607,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
      * @param {object} contribution
      * @returns {Number}
      */
-    getInformalScore: function (contribution) {
+    getInformalScore: function(contribution) {
       var stats = contribution.stats;
       var score = 0;
 
@@ -641,69 +618,73 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       }
       return score;
     },
-    contributionHistory: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/history',
-        { aid: assemblyId, cid: contributionId });
+
+    contributionHistory: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/history', { aid: assemblyId, cid: contributionId });
     },
+
+    /**
+     * Soft deletes a contribution.
+     * 
+     * @param {number} aid - assembly ID.
+     * @param {object} contribution - Contribution to delete, it should have the property moderationComment.
+     * @returns {object} Promise
+     */
+    moderate: function(aid, contribution) {
+      var url = getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/moderate';
+      var action = $resource(url, { aid: aid, coid: contribution.contributionId }, {
+        moderate: { method: 'PUT' }
+      });
+      return action.moderate(contribution).$promise;
+    }
   };
 });
 
-appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStorageService) {
+appCivistApp.factory('WorkingGroups', function($resource, $translate, localStorageService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
-    workingGroup: function (assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid',
-        { aid: assemblyId, gid: groupId });
+    workingGroup: function(assemblyId, groupId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId });
     },
-    workingGroupInCampaign: function (assemblyId, campaignId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group/:gid',
-        { aid: assemblyId, cid: campaignId, gid: groupId });
+    workingGroupInCampaign: function(assemblyId, campaignId, groupId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group/:gid', { aid: assemblyId, cid: campaignId, gid: groupId });
     },
-    workingGroups: function (assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group',
-        { aid: assemblyId },
-        { 'update': { method: 'PUT' }, 'delete': { method: 'DELETE' } }
-      );
+    workingGroups: function(assemblyId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group', { aid: assemblyId }, { 'update': { method: 'PUT' }, 'delete': { method: 'DELETE' } });
     },
-    workingGroupsInCampaign: function (assemblyId, campaignId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group',
-        { aid: assemblyId, cid: campaignId });
+    workingGroupsInCampaign: function(assemblyId, campaignId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group', { aid: assemblyId, cid: campaignId });
     },
-    workingGroupMembers: function (assemblyId, groupId, stat) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/membership/:status',
-        {
-          aid: assemblyId,
-          gid: groupId,
-          status: stat
-        });
+    workingGroupMembers: function(assemblyId, groupId, stat) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/membership/:status', {
+        aid: assemblyId,
+        gid: groupId,
+        status: stat
+      });
     },
-    workingGroupProposals: function (assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals',
-        {
-          aid: assemblyId,
-          gid: groupId
-        });
+    workingGroupProposals: function(assemblyId, groupId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals', {
+        aid: assemblyId,
+        gid: groupId
+      });
     },
-    workingGroupContributions: function (assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contributions',
-        {
-          aid: assemblyId,
-          gid: groupId
-        });
+    workingGroupContributions: function(assemblyId, groupId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contributions', {
+        aid: assemblyId,
+        gid: groupId
+      });
     },
-    verifyMembership: function (assemblyId, groupId, userId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/user/:uid',
-        {
-          aid: assemblyId,
-          gid: groupId,
-          uid: userId
-        });
+    verifyMembership: function(assemblyId, groupId, userId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/user/:uid', {
+        aid: assemblyId,
+        gid: groupId,
+        uid: userId
+      });
     },
-    workingGroupPublicProfile: function (assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/public',
-        { aid: assemblyId, gid: groupId });
+    workingGroupPublicProfile: function(assemblyId, groupId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/public', { aid: assemblyId, gid: groupId });
     },
-    defaultNewWorkingGroup: function () {
+    defaultNewWorkingGroup: function() {
       var newWGroup = {
         //"name": "Assemblée Belleville",
         //"text": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
@@ -746,28 +727,26 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
         "blockMajority": false
       };
 
-      var invitationEmail = $translate('wgroup.invitation.email.text',
-        { group: "[Group's Name]" }).then(
-        function (text) {
+      var invitationEmail = $translate('wgroup.invitation.email.text', { group: "[Group's Name]" }).then(
+        function(text) {
           newWGroup.invitationEmail = text;
         }
-        );
+      );
 
       return newWGroup;
     },
 
-    workingGroupByUUID: function (uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/group/:uuid',
-        { uuid: uuid });
+    workingGroupByUUID: function(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/group/:uuid', { uuid: uuid });
     }
   };
 });
 
-appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
+appCivistApp.factory('Etherpad', function($resource, localStorageService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   var etherpadServer = localStorageService.get("etherpadServer");
   return {
-    embedUrl: function (id, revision) {
+    embedUrl: function(id, revision) {
       var url = etherpadServer + "p/" + id;
       if (revision !== undefined) {
         url += '/timeslider#' + revision;
@@ -775,14 +754,13 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
       url += '?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false';
       return url;
     },
-    getReadWriteUrl: function (assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/padid',
-        {
-          aid: assemblyId,
-          cid: contributionId
-        });
+    getReadWriteUrl: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/padid', {
+        aid: assemblyId,
+        cid: contributionId
+      });
     },
-    getEtherpadReadOnlyUrl: function (readOnlyPadId, revision) {
+    getEtherpadReadOnlyUrl: function(readOnlyPadId, revision) {
       var url = localStorageService.get("etherpadServer") + "p/" + readOnlyPadId;
       if (revision !== undefined) {
         url += 'timeslider#' + revision;
@@ -793,16 +771,14 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService) {
 });
 
 appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contributions', 'Notify',
-  function ($resource, localStorageService, Contributions, Notify) {
+  function($resource, localStorageService, Contributions, Notify) {
     return {
-      getSpace: function (spaceId) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid',
-          { sid: spaceId });
+      getSpace: function(spaceId) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid', { sid: spaceId });
       },
 
-      getSpaceByUUID: function (spaceUUID) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/public',
-          { uuid: spaceUUID });
+      getSpaceByUUID: function(spaceUUID) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/public', { uuid: spaceUUID });
       },
 
       /**
@@ -814,7 +790,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {object} filters - filters to apply
        * @return {object} promise
        **/
-      getContributions: function (target, type, isAnonymous, filters) {
+      getContributions: function(target, type, isAnonymous, filters) {
         // Get list of contributions from server
         var rsp;
         var query = filters || {};
@@ -830,17 +806,17 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           rsp = Contributions.contributionInResourceSpace(target.rsID).get(query);
         }
         rsp.$promise.then(
-          function (data) {
+          function(data) {
             return data;
           },
-          function (error) {
+          function(error) {
             Notify.show('Error loading contributions from server', 'error');
           }
         );
         return rsp.$promise;
       },
 
-      getPinnedContributions: function (target, type, isAnonymous) {
+      getPinnedContributions: function(target, type, isAnonymous) {
         // Get list of contributions from server
         var rsp;
         var query = {};
@@ -851,10 +827,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           rsp = Contributions.pinnedContributionInResourceSpace(target.rsID).query(query);
         }
         rsp.$promise.then(
-          function (data) {
+          function(data) {
             return data;
           },
-          function (error) {
+          function(error) {
             Notify.show('Error loading contributions from server', 'error');
           }
         );
@@ -867,7 +843,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        *  @param {boolean} isAnonymous
        *  @param {object} filters - filters definition
        */
-      doSearch: function (target, isAnonymous, filters) {
+      doSearch: function(target, isAnonymous, filters) {
         if (!target || !filters) {
           return;
         }
@@ -878,28 +854,28 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
         if (target) {
           params.sorting = filters.sorting;
-          params.themes = _.flatMap(filters.themes, function (e) {
+          params.themes = _.flatMap(filters.themes, function(e) {
             return e.themeId;
           });
-          params.groups = _.flatMap(filters.groups, function (e) {
+          params.groups = _.flatMap(filters.groups, function(e) {
             return e.groupId;
           });
           return this.getContributions(target, type, isAnonymous, params);
         }
       }
     };
-  }]);
+  }
+]);
 
-appCivistApp.factory('Components', function ($resource, $sce, localStorageService, $translate, $filter, moment) {
+appCivistApp.factory('Components', function($resource, $sce, localStorageService, $translate, $filter, moment) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
 
   return {
-    defaultProposalComponents: function () {
+    defaultProposalComponents: function() {
       // Options Dictionary
       var optionsDict = {};
 
-      optionsDict['component.deliberation.who-deliberates'] = [
-        {
+      optionsDict['component.deliberation.who-deliberates'] = [{
           name: "All assembly members",
           value: "ASSEMBLY",
           selected: true
@@ -915,8 +891,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
           selected: false
         }
       ];
-      optionsDict['component.deliberation.who-deliberates.jury'] = [
-        {
+      optionsDict['component.deliberation.who-deliberates.jury'] = [{
           name: "From all assembly members",
           value: "ASSEMBLY",
           selected: true
@@ -927,8 +902,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
           selected: false
         }
       ];
-      optionsDict['component.voting.system'] = [
-        {
+      optionsDict['component.voting.system'] = [{
           name: "Range",
           value: "RANGE",
           selected: true
@@ -949,8 +923,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
           selected: false
         }
       ];
-      optionsDict['component.voting.system.plurality.type'] = [
-        {
+      optionsDict['component.voting.system.plurality.type'] = [{
           name: "Only YES votes",
           value: "YES",
           selected: true
@@ -971,8 +944,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
           selected: true
         }
       ];
-      optionsDict['component.voting.system.winners'] = [
-        {
+      optionsDict['component.voting.system.winners'] = [{
           name: "Fixed regardless of budget",
           value: "FIXED",
           selected: true
@@ -991,8 +963,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
 
       // Config Dictionary
       var configDict = {};
-      configDict['Proposalmaking'] = [
-        {
+      configDict['Proposalmaking'] = [{
           key: "component.proposalmaking.enable.proposal.merge-split",
           description: "Proposalmaking.component.proposalmaking.enable.proposal.merge-split",
           type: "checkbox",
@@ -1007,8 +978,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
           value: true
         }
       ];
-      configDict['Deliberation'] = [
-        {
+      configDict['Deliberation'] = [{
           position: 1,
           key: "component.deliberation.enable.technical-assesment",
           description: "Enable technical assessment of proposals",
@@ -1056,8 +1026,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
           dependsOfValue: "JURY"
         }
       ];
-      configDict['Voting'] = [
-        {
+      configDict['Voting'] = [{
           position: -1,
           key: "component.voting.ballot.password.title",
           description: "Choose a Password for the Ballot",
@@ -1193,8 +1162,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
         template: "/app/partials/campaign/creation/components/proposal.html",
         descriptionTemplate: "/app/partials/campaign/creation/components/proposalDescription.html",
         // TODO: transform the contribution template into just another config
-        contributionTemplate: [
-          {
+        contributionTemplate: [{
             title: "Title",
             description: "A sentence that describes the proposal's main idea",
             length: 30,
@@ -1346,11 +1314,12 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
       var componentList = [
         proposalMaking, deliberation, voting,
         linkedDeliberation, linkedVoting, linkedImplementation,
-        implementation];
+        implementation
+      ];
 
       return componentList;
     },
-    defaultSupportingComponents: function () {
+    defaultSupportingComponents: function() {
       return [
         { name: 'Working Groups', alias: 'workingGroups' },
         { name: 'Visualization', alias: 'visualization' },
@@ -1360,9 +1329,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
         { name: 'Implementation', alias: 'implementation' }
       ];
     },
-    defaultProposalComponentMilestones: function () {
-      return [
-        {
+    defaultProposalComponentMilestones: function() {
+      return [{
           date: moment().local().toDate(),
           value: 1,
           title: "Proposal Making start date",
@@ -1454,7 +1422,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
         },
         {
           date: moment().local().add(21, 'days').toDate(),
-          value: 90, title: "Technical assessments due date",
+          value: 90,
+          title: "Technical assessments due date",
           description: "defaultProposalComponentMilestones.endAssessment.text1",
           component: "Deliberation",
           componentKey: "Deliberation",
@@ -1485,7 +1454,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
         },
         {
           date: moment().local().add(30, 'days').toDate(),
-          value: 130, title: "Voting period end date",
+          value: 130,
+          title: "Voting period end date",
           description: "defaultProposalComponentMilestones.endAssessment.text3",
           component: "Voting",
           componentKey: "Voting",
@@ -1499,7 +1469,8 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
         },
         {
           date: moment().local().add(31, 'days').toDate(),
-          value: 250, title: "Implementation start date",
+          value: 250,
+          title: "Implementation start date",
           description: "defaultProposalComponentMilestones.endAssessment.text4",
           component: "Implementation",
           componentKey: "Implementation",
@@ -1516,32 +1487,32 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
   };
 });
 
-appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) {
+appCivistApp.factory('AppCivistAuth', function($resource, localStorageService) {
   return {
-    signIn: function () {
+    signIn: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/user/login');
     },
-    signOut: function () {
+    signOut: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/user/logout');
     },
-    signUp: function () {
+    signUp: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/user/signup');
     }
   };
 });
 
-appCivistApp.factory('FileUploader', function ($resource, localStorageService, Upload, $timeout) {
+appCivistApp.factory('FileUploader', function($resource, localStorageService, Upload, $timeout) {
   return {
-    upload: function () {
+    upload: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/upload');
     },
-    list: function () {
+    list: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/files');
     },
-    uploadEndpoint: function () {
+    uploadEndpoint: function() {
       return getServerBaseUrl(localStorageService) + '/upload';
     },
-    uploadFileAndAddToResource: function (file, resource) {
+    uploadFileAndAddToResource: function(file, resource) {
       if (file) {
         var type = "FILE";
         if (file.type.startsWith("image")) {
@@ -1558,16 +1529,16 @@ appCivistApp.factory('FileUploader', function ($resource, localStorageService, U
           data: { file: file }
         });
 
-        file.upload.then(function (response) {
-          $timeout(function () {
+        file.upload.then(function(response) {
+          $timeout(function() {
             file.result = response.data;
             resource.name = response.data.name;
             resource.url = response.data.url;
           });
-        }, function (response) {
+        }, function(response) {
           if (response.status > 0)
             file.errorMsg = response.status + ': ' + response.data;
-        }, function (evt) {
+        }, function(evt) {
           file.progress = Math.min(100, parseInt(100.0 *
             evt.loaded / evt.total));
           console.log('progress: ' + file.progress + '% ');
@@ -1578,35 +1549,31 @@ appCivistApp.factory('FileUploader', function ($resource, localStorageService, U
   };
 });
 
-appCivistApp.factory('Invitations', function ($resource, localStorageService) {
+appCivistApp.factory('Invitations', function($resource, localStorageService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
-    assemblyInvitation: function (assemblyId) {
+    assemblyInvitation: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/assembly/:aid', { aid: assemblyId });
     },
-    groupInvitation: function (groupId) {
+    groupInvitation: function(groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/group/:gid', { gid: groupId });
     },
-    invitations: function (target, status) {
+    invitations: function(target, status) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:s', { t: target, s: status });
     },
-    invitation: function (token) {
-      return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t',
-        { t: token },
-        {
-          'update': { method: 'PUT' },
-          'delete': { method: 'DELETE' }
-        });
+    invitation: function(token) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t', { t: token }, {
+        'update': { method: 'PUT' },
+        'delete': { method: 'DELETE' }
+      });
     },
-    invitationResponse: function (token, response) {
-      return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:r',
-        { t: token, r: response },
-        {
-          'update': { method: 'PUT' },
-          'delete': { method: 'DELETE' }
-        });
+    invitationResponse: function(token, response) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:t/:r', { t: token, r: response }, {
+        'update': { method: 'PUT' },
+        'delete': { method: 'DELETE' }
+      });
     },
-    defaultInvitation: function (target, type, defaultEmail) {
+    defaultInvitation: function(target, type, defaultEmail) {
       var newInvitation = {
         email: "",
         moderator: true,
@@ -1620,15 +1587,14 @@ appCivistApp.factory('Invitations', function ($resource, localStorageService) {
   }
 });
 
-appCivistApp.factory('BallotCampaign', function ($http, $resource, localStorageService) {
+appCivistApp.factory('BallotCampaign', function($http, $resource, localStorageService) {
   var url = getServerBaseUrl(localStorageService);
   return $resource(
-    url + '/ballot/:uuid/campaign',
-    { "uuid": "@id" }
+    url + '/ballot/:uuid/campaign', { "uuid": "@id" }
   );
 });
 
-appCivistApp.factory('ContributionDirectiveBroadcast', function ($rootScope) {
+appCivistApp.factory('ContributionDirectiveBroadcast', function($rootScope) {
   var contributionDirective = {};
   contributionDirective.CONTRIBUTION_CREATED = 'contributionCreated';
   contributionDirective.CONTRIBUTION_UPDATED = 'contributionUpdated';
@@ -1637,12 +1603,12 @@ appCivistApp.factory('ContributionDirectiveBroadcast', function ($rootScope) {
   contributionDirective.CONTRIBUTION_CREATE_ERROR = 'contributionCreateError';
   contributionDirective.CONTRIBUTION_UPDATE_ERROR = 'contributionUpdateError';
   contributionDirective.CONTRIBUTION_DELETE_ERROR = 'contributionDeleteError';
-  contributionDirective.prepForUpdateContributions = function (msg) {
+  contributionDirective.prepForUpdateContributions = function(msg) {
     var message = msg ? msg : contributionDirective.CONTRIBUTION_UPDATED;
     this.broadcastUpdateContributions(message);
   };
 
-  contributionDirective.broadcastUpdateContributions = function (msg) {
+  contributionDirective.broadcastUpdateContributions = function(msg) {
     $rootScope.$broadcast(msg);
   };
 
@@ -1651,7 +1617,7 @@ appCivistApp.factory('ContributionDirectiveBroadcast', function ($rootScope) {
 
 
 appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
-  function ($resource, localStorageService) {
+  function($resource, localStorageService) {
     var url = getServerBaseUrl(localStorageService);
 
     return {
@@ -1660,8 +1626,9 @@ appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
        *
        * @param {string} toValidate - recaptcha hashed response
        */
-      verify: function (toValidate) {
+      verify: function(toValidate) {
         return $resource(url + '/site/verify', { k: toValidate }).save().$promise;
       }
     }
-  }]);
+  }
+]);

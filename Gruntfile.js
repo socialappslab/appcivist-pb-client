@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   // Project configuration.
@@ -27,13 +27,13 @@ module.exports = function (grunt) {
       src: ['app/js/', 'test/e2e/', 'test/unit/']
     },
     sass: {
-      dist: {                            // Target
-        options: {                       // Target options
+      dist: { // Target
+        options: { // Target options
           style: 'expanded',
           noCache: true
         },
-        files: {                         // Dictionary of files
-          'app/css/app.css': 'stylesheets/main.scss',       // 'destination': 'source'
+        files: { // Dictionary of files
+          'app/css/app.css': 'stylesheets/main.scss', // 'destination': 'source'
           'app/css/app.v1-mini.css': 'app/v2/stylesheets/main.scss'
         }
       }
@@ -82,12 +82,10 @@ module.exports = function (grunt) {
         'app/fonts/*'
       ],
       dist: {
-        files: [
-          {
-            dot: true,
-            src: ['.tmp', './dist/*']
-          }
-        ]
+        files: [{
+          dot: true,
+          src: ['.tmp', './dist/*']
+        }]
       }
     },
     htmlmin: {
@@ -142,68 +140,66 @@ module.exports = function (grunt) {
     },
     copy: {
       dev: {
-        files: [
-          {
-            expand: true,
-            dot: true,
-            cwd: './node_modules/bootstrap-sass/assets/fonts/bootstrap/',
-            dest: './app/fonts/bootstrap/',
-            src: [
-              '**/*',
-            ]
-          }
-        ]
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: './node_modules/bootstrap-sass/assets/fonts/bootstrap/',
+          dest: './app/fonts/bootstrap/',
+          src: [
+            '**/*',
+          ]
+        }]
       },
       dist: {
-        files: [
-          {
-            expand: true,
-            dot: true,
-            cwd: '.',
-            dest: './dist/',
-            src: [
-              'favicon.ico',
-              'assets/**/*',
-              'index.html',
-              'app/**/*.html',
-              'app/**/*.js',
-              'bower_components/vex/dist/css/vex.css',
-              'bower_components/vex/dist/css/vex-theme-plain.css',
-              'bower_components/appcivist-patterns/dist/css/**/*',
-              'bower_components/appcivist-patterns/dist/fonts/**/*',
-              'bower_components/appcivist-patterns/dist/images/**/*',
-              'bower_components/ng-notify/dist/ng-notify.min.css',
-              'stylesheets/**/*',
-              'app/css/app.css',
-              'app/css/app.v2.css',
-              'bower_components/angular-i18n/**/*.js'
-            ]
-          }, {
-            expand: true,
-            dot: true,
-            cwd: './stylesheets/font',
-            dest: './dist/font/',
-            src: [
-              '**/*',
-            ]
-          }, {
-            expand: true,
-            dot: true,
-            cwd: './bower_components/appcivist-patterns/dist/fonts',
-            dest: './dist/fonts/',
-            src: [
-              '**/*',
-            ]
-          }, {
-            expand: true,
-            dot: true,
-            cwd: './bower_components/appcivist-patterns/dist/images',
-            dest: './dist/images/',
-            src: [
-              '**/*',
-            ]
-          }
-        ]
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '.',
+          dest: './dist/',
+          src: [
+            'favicon.ico',
+            'assets/**/*',
+            'index.html',
+            'app/**/*.html',
+            'app/**/*.js',
+            'bower_components/vex/dist/css/vex.css',
+            'bower_components/vex/dist/css/vex-theme-plain.css',
+            'bower_components/appcivist-patterns/dist/css/**/*',
+            'bower_components/appcivist-patterns/dist/fonts/**/*',
+            'bower_components/appcivist-patterns/dist/images/**/*',
+            'bower_components/ng-notify/dist/ng-notify.min.css',
+            'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css',
+            'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
+            'stylesheets/**/*',
+            'app/css/app.css',
+            'app/css/app.v2.css',
+            'bower_components/angular-i18n/**/*.js'
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: './stylesheets/font',
+          dest: './dist/font/',
+          src: [
+            '**/*',
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: './bower_components/appcivist-patterns/dist/fonts',
+          dest: './dist/fonts/',
+          src: [
+            '**/*',
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: './bower_components/appcivist-patterns/dist/images',
+          dest: './dist/images/',
+          src: [
+            '**/*',
+          ]
+        }]
       }
     }
   });

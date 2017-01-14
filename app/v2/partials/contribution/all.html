@@ -6,7 +6,9 @@
 <main class="appmain" in-view-container ng-class="{anonymous: isAnonymous}" resize>
   <article class="all_proposals">
     <header class="page__header">
-      <h1 class="heading--title">{{ 'All' | translate }} {{ title | translate }}</h1>
+      <h1 class="heading--title" ng-if="title==='Ideas'">{{ 'All Ideas' | translate }}</h1>
+      <h1 class="heading--title" ng-if="title==='Proposals'">{{ 'All Proposals' | translate }}</h1>
+      <h1 class="heading--title" ng-if="title==='Members'">{{ 'All Members' | translate }}</h1>
       <div class="heading--header">
         <i class="fa fa-asterisk" ng-if="seeAllType == 'CAMPAIGN'"></i>
         <i class="fa fa-group" ng-if="seeAllType == 'WORKING_GROUP'"></i>

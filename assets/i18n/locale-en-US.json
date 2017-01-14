@@ -744,5 +744,8 @@
   "no.members.message": "No members found",
 
   "pagination.widget.no": "No",
-  "pagination.widget.description" : "in this space yet"
+  "pagination.widget.description" : "in this space yet", 
+  "Subscribe" : "Subscribe", 
+  "All Ideas": "All Ideas", 
+  "All Proposals": "All Proposals"
 }

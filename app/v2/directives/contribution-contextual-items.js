@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   appCivistApp
@@ -64,9 +64,9 @@
         contribution: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-contextual-items.html',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
 
-        scope.$watch('contribution', function (newVal) {
+        scope.$watch('contribution', function(newVal) {
           if (newVal) {
             init();
           }
@@ -95,7 +95,7 @@
             }
           }
           scope.myObject = {};
-          scope.myObject.refreshMenu = function () {
+          scope.myObject.refreshMenu = function() {
             scope.showActionMenu = !scope.showActionMenu;
           };
 
@@ -105,7 +105,7 @@
           }
 
           // Feedback update
-          scope.myObject.updateFeedback = function (value) {
+          scope.myObject.updateFeedback = function(value) {
             if (value === 'up') {
               scope.userFeedback.up = true;
               scope.userFeedback.down = false;
@@ -127,57 +127,65 @@
             }
             var feedback = Contributions.userFeedback(scope.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
             feedback.$promise.then(
-              function (newStats) {
+              function(newStats) {
                 scope.contribution.stats = newStats;
               },
-              function (error) {
+              function(error) {
                 Notify.show('Error when updating user feedback', 'error');
               }
             );
           };
 
           //change redirection
-          scope.myObject.softRemoval = function () {
+          scope.myObject.softRemoval = function() {
             Contributions.contributionSoftRemoval(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
             $window.location.reload();
           }
 
-          scope.myObject.publish = function () {
+          scope.myObject.publish = function() {
             var rsp = Contributions.publishProposal(scope.assemblyId, scope.group.groupId, scope.contribution.contributionId).update();
             rsp.$promise.then(
-              function () {
+              function() {
                 $window.location.reload();
               },
-              function () {
+              function() {
                 Notify.show('Error while publishing proposal', 'error');
               }
             )
           }
 
-          scope.myObject.exclude = function () {
+          scope.myObject.exclude = function() {
             Contributions.excludeContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
             $window.location.reload();
           }
 
           //find endpoint
-          scope.myObject.assignToWG = function () {
+          scope.myObject.assignToWG = function() {
             //Contributions.assignContributionToWG(scope.assemblyId, scope.contribution.contributionId, scope.wg).update(scope.contribution);
             $window.location.reload();
           }
 
-          scope.myObject.seeHistory = function () {
+          scope.myObject.seeHistory = function() {
             scope.vexInstance = vex.open({
               unsafeContent: $compile(document.querySelector('.history-modal').innerHTML)(scope)[0]
             });
           }
 
           scope.myObject.subscribe = function() {
-            var query = { "origin": scope.contribution.uuid, "eventName": "NEW_CONTRIBUTION_PROPOSAL", "endPointType": "email"};
-            var subscription = Notifications.subscribe().save(query);
+            var query = { "origin": scope.contribution.uuid, "eventName": "NEW_CONTRIBUTION_PROPOSAL", "endPointType": "email" };
+            var subscription = Notifications.subscribe().save(query).$promise;
+            subscription.then(
+              function() {
+                Notify.show('Subscribed successfully', 'success');
+              },
+              function() {
+                Notify.show('Error while trying to communicate with the server', 'error');
+              }
+            );
           }
 
         }
       }
     };
   }
-} ());
+}());

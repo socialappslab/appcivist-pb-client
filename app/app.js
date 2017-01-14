@@ -10,10 +10,11 @@
  * 		/views
  */
 
-(function () {
+(function() {
   var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
-    'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha', 'angularUtils.directives.dirPagination', 'ErrorCatcher'];
+    'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha', 'angularUtils.directives.dirPagination', 'ErrorCatcher'
+  ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
   var appcivist = {
@@ -31,7 +32,7 @@
         local: "http://localhost:9000/api"
       }
     },
-    handleError: function (error) {
+    handleError: function(error) {
       console.log(error);
       if (error.status == 500)
         alert("Something went wrong on our end. Please try again at a later time.");
@@ -51,11 +52,11 @@
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
   var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
   var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
-  var etherpadServerURL = (window.location.hostname === "testpb.appcivist.org")
-    ? etherpad.testserver : (window.location.hostname === "localhost")
-      ? etherpad.localserver : etherpad.server;
-  var hideLogin = (window.location.hostname === "appcivist.org"
-    || window.location.hostname === "www.appcivist.org");
+  var etherpadServerURL = (window.location.hostname === "testpb.appcivist.org") ?
+    etherpad.testserver : (window.location.hostname === "localhost") ?
+    etherpad.localserver : etherpad.server;
+  var hideLogin = (window.location.hostname === "appcivist.org" ||
+    window.location.hostname === "www.appcivist.org");
 
   /**
    * AngularJS initial configurations:
@@ -64,8 +65,8 @@
    */
 
   appCivistApp
-    .constant('DEBUG_MODE', /*DEBUG_MODE*/true/*DEBUG_MODE*/)
-    .constant('VERSION_TAG', /*VERSION_TAG_START*/new Date().getTime()/*VERSION_TAG_END*/)
+    .constant('DEBUG_MODE', /*DEBUG_MODE*/ true /*DEBUG_MODE*/ )
+    .constant('VERSION_TAG', /*VERSION_TAG_START*/ new Date().getTime() /*VERSION_TAG_END*/ )
     .constant('LOCALES', {
       'locales': {
         'en-US': 'English',
@@ -129,11 +130,11 @@
 
     // V2 routes
     $stateProvider.state('v2', {
-      url: '/v2',
-      abstract: true,
-      templateUrl: 'app/v2/partials/main.html',
-      controller: 'v2.MainCtrl'
-    })
+        url: '/v2',
+        abstract: true,
+        templateUrl: 'app/v2/partials/main.html',
+        controller: 'v2.MainCtrl'
+      })
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,
@@ -443,9 +444,9 @@
     /**
      * HTTP Interceptor that makes sure that all HTTP requests have the session key inserted as HEADER
      */
-    $httpProvider.interceptors.push(['$q', '$location', 'localStorageService', function ($q, $location, localStorageService) {
+    $httpProvider.interceptors.push(['$q', '$location', 'localStorageService', function($q, $location, localStorageService) {
       return {
-        request: function (config) {
+        request: function(config) {
           config.headers = config.headers || {};
           var sessionKey = localStorageService.get('sessionKey');
           if (sessionKey) {
@@ -454,7 +455,7 @@
           config.headers.UI_PATH = '' + $location.absUrl(); // Added for Research Purposes
           return config;
         },
-        responseError: function (response) {
+        responseError: function(response) {
           return $q.reject(response);
         }
       };
@@ -486,6 +487,7 @@
       .useSanitizeValueStrategy(null);
 
     tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
+    $translateProvider.translationNotFoundIndicator('$$$');
   }
 
   /**
@@ -510,7 +512,7 @@
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
     localStorageService.set("hideLogin", hideLogin);
-    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+    $rootScope.$on('$locationChangeStart', function(event, next, current) {
       // redirect to login page if not logged in and trying to access a restricted page
 
       //var nonRestrictedPage = $.inArray($location.path(), ['/assembly', '/register']) === -1;
@@ -536,7 +538,7 @@
 
     // set error modal
     $rootScope.supportContact = "Cristhian Parra (cdparra [at] berkeley [dot] edu)";
-    $rootScope.showError = function (error, rType, rId) {
+    $rootScope.showError = function(error, rType, rId) {
       if (!$rootScope.inModal) {
         var modalInstance = $uibModal.open({
           animation: true,
@@ -544,16 +546,16 @@
           controller: 'ErrorModalCtrl',
           size: 'lg',
           resolve: {
-            error: function () { return error; },
-            resourceType: function () { return rType; },
-            resourceId: function () { return rId; },
-            supportContact: function () { return $rootScope.supportContact; }
+            error: function() { return error; },
+            resourceType: function() { return rType; },
+            resourceId: function() { return rId; },
+            supportContact: function() { return $rootScope.supportContact; }
           }
         });
 
-        modalInstance.result.then(function () {
+        modalInstance.result.then(function() {
           console.log('Closed error modal');
-        }, function () {
+        }, function() {
           console.log('Modal dismissed at: ' + new Date());
         });
 
@@ -563,7 +565,7 @@
     };
 
     // set alert info modal
-    $rootScope.showAlert = function (title, message, messageExtra, allowCancelOption) {
+    $rootScope.showAlert = function(title, message, messageExtra, allowCancelOption) {
       if (!$rootScope.inModal) {
         var modalInstance = $uibModal.open({
           animation: true,
@@ -571,52 +573,52 @@
           controller: 'AlertModalCtrl',
           size: 'lg',
           resolve: {
-            title: function () { return title; },
-            message: function () { return message; },
-            messageExtra: function () { return messageExtra; },
-            allowCancelOption: function () { return allowCancelOption; }
+            title: function() { return title; },
+            message: function() { return message; },
+            messageExtra: function() { return messageExtra; },
+            allowCancelOption: function() { return allowCancelOption; }
           }
         });
 
-        modalInstance.result.then(function () {
+        modalInstance.result.then(function() {
           console.log('Closed alert modal');
-        }, function () {
+        }, function() {
           console.log('Modal dismissed at: ' + new Date());
         });
       }
     };
 
     // global spinner
-    $rootScope.startSpinner = function () {
+    $rootScope.startSpinner = function() {
       $(angular.element.find('[spinner-key="spinner-1"]')[0]).addClass('spinner-container');
       usSpinnerService.spin('spinner-1');
     };
 
-    $rootScope.stopSpinner = function () {
+    $rootScope.stopSpinner = function() {
       usSpinnerService.stop('spinner-1');
       $(angular.element.find('[spinner-key="spinner-1"]')[0]).removeClass('spinner-container');
     };
 
     // global spinner by key
-    $rootScope.startSpinnerByKey = function (key) {
+    $rootScope.startSpinnerByKey = function(key) {
       var element = '[spinner-key="' + key + '"]';
       $(angular.element.find(key)[0]).addClass('spinner-container');
       usSpinnerService.spin(key);
     };
 
-    $rootScope.stopSpinnerByKey = function (key) {
+    $rootScope.stopSpinnerByKey = function(key) {
       var element = '[spinner-key="' + key + '"]';
       usSpinnerService.stop(key);
       $(angular.element.find(element)[0]).removeClass('spinner-container');
     };
 
     // authentication control
-    $rootScope.$on('$stateChangeStart', function (event, next, nextParams) {
+    $rootScope.$on('$stateChangeStart', function(event, next, nextParams) {
       var authorized;
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       var isAnonymous = true;
 
-      angular.forEach(_.keys(nextParams), function (key) {
+      angular.forEach(_.keys(nextParams), function(key) {
         if (!pattern.test(nextParams[key])) {
           isAnonymous = false;
         }
@@ -646,7 +648,7 @@
    */
   function pathIsNotRestricted(path) {
     var allowedPaths = ["assembly/create", "ballot/", "invitation/"];
-    var pathMatch = allowedPaths.filter(function (ap) {
+    var pathMatch = allowedPaths.filter(function(ap) {
       return path.match(ap);
     });
     return (pathMatch.length > 0);
@@ -674,4 +676,4 @@
   // expose global variables
   window.appCivistApp = appCivistApp;
 
-} ());
+}());

@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   appCivistApp
@@ -27,10 +27,21 @@
         /**
          * Selected items reference.
          */
-        selected: '='
+        selected: '=',
+
+        /**
+         * Boolean value that tells the directive that when tags-field has focus it 
+         * should display the list of options. Default: false.
+         */
+        prefetch: '<',
+
+        /**
+         * attribute that indicates if tags-field is disabled.
+         */
+        disabled: '='
       },
       templateUrl: '/app/v2/partials/directives/tags-field.html',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
         scope.vm = {
           query: ''
         };
@@ -41,6 +52,9 @@
         scope.select = select.bind(scope);
         scope.remove = remove.bind(scope);
         scope.getText = getText.bind(scope);
+        scope.fetch = fetch.bind(scope);
+        scope.onFocus = onFocus.bind(scope);
+        scope.onMouseLeave = onMouseLeave.bind(scope);
       }
     };
 
@@ -57,16 +71,44 @@
       if (!self.isSuggestionListVisible) {
         return;
       }
-      var rsp = self.loadItems({ query: text });
+      this.fetch(text);
+    }
+
+    /**
+     * Populates the options list
+     * 
+     * @param {string} text - The query to filter the list of options.
+     */
+    function fetch(text) {
+      var self = this;
+      var rsp = this.loadItems({ query: text });
 
       if (angular.isFunction(rsp.then)) {
-        rsp.then(function (items) {
+        rsp.then(function(items) {
           self.items = items;
-        })
+        });
       } else {
         self.items = rsp;
       }
     }
+
+    /**
+     * onfocus handler
+     */
+    function onFocus() {
+      if (this.prefetch) {
+        this.isSuggestionListVisible = true;
+        this.fetch();
+      }
+    }
+
+    /**
+     * mouseleave handler
+     */
+    function onMouseLeave() {
+      this.isSuggestionListVisible = false;
+    }
+
 
     /**
      * Add an item to the list of selected items.
@@ -76,7 +118,7 @@
     function select(item) {
       this.vm.query = '';
       var self = this;
-      this.selected = _.uniqBy(this.selected.concat([item]), function (e) {
+      this.selected = _.uniqBy(this.selected.concat([item]), function(e) {
         return e[self.options.idField];
       });
     }
@@ -103,4 +145,4 @@
       return item[this.options.textField];
     }
   }
-} ());
+}());

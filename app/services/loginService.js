@@ -158,7 +158,21 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     localStorageService.set('groupMembershipsHash', groupMembershipsHash);
     localStorageService.set('assemblyMembershipsHash', assemblyMembershipsHash);
 
-    var currentAssembly = myAssemblies[0];
+    var domain = localStorageService.get('domain');
+    var currentAssembly;
+    if(domain) {
+      var fa = _.filter(myAssemblies, function(a) {
+        return a.uuid === domain.uuid;
+      });
+      if (fa) {
+        currentAssembly = fa[0];
+      } else {
+        currentAssembly = myAssemblies[0];
+      }
+    } else {
+      currentAssembly = myAssemblies[0];
+    }
+
     if (currentAssembly != null) {
       return singleAssemblySuccess(currentAssembly);
     } else {

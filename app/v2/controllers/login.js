@@ -7,11 +7,11 @@
 
   LoginCtrl.$inject = [
     '$scope', 'localStorageService', 'Notify', 'AppCivistAuth',
-    '$state', '$filter', 'loginService', '$translate'
+    '$state', '$filter', 'loginService', '$translate', 'Assemblies'
   ];
 
   function LoginCtrl($scope, localStorageService, Notify, AppCivistAuth,
-    $state, $filter, loginService, $translate) {
+    $state, $filter, loginService, $translate, Assemblies) {
 
     activate();
 
@@ -19,6 +19,14 @@
       $scope.user = {};
       $scope.login = login;
       $scope.isLoginPage = true;
+      if ($state.params.domain) {
+        $scope.domain = $state.params.domain;
+        var rsp = Assemblies.assemblyByShortName($scope.domain).get();
+        rsp.$promise.then(function(data) {
+          $scope.assembly = data;
+          localStorageService.set('domain', data);
+        });
+      }
     }
 
     function login() {

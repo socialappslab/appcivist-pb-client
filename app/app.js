@@ -312,6 +312,11 @@
         controller: 'v2.LoginCtrl',
         templateUrl: 'app/v2/partials/login.html'
       })
+      .state('v2.login2', {
+        url: '/:domain/login',
+        controller: 'v2.LoginCtrl',
+        templateUrl: 'app/v2/partials/login.html'
+      })
       .state('v2.user', {
         url: '/user',
         abstract: true,

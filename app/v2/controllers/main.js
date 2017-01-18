@@ -21,7 +21,7 @@
         $translate.use($scope.user.language);
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
       $scope.userIsAuthenticated = $scope.userIsAuthenticated === null ? false : $scope.userIsAuthenticated;
-      $scope.isLoginPage = $state.is('v2.login');
+      $scope.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');
       $scope.showSmallMenu = false;
       $scope.nav = { isActive: false };
 

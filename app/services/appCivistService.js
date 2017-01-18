@@ -28,6 +28,9 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
     assembly: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId });
     },
+    assemblyByShortName: function(shortName) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:shortname', { shortname: shortName });
+    },
     assemblyPublicProfile: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', { aid: assemblyId });
     },
@@ -361,7 +364,7 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
 
     /**
      * Checks if current user has the given rol.
-     * 
+     *
      * @param {string} target - assembly | group
      * @param {number} id - target ID
      * @param {string} rol - the rol to check
@@ -377,7 +380,7 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
 
     /**
      * Check if current user is coordinator of the given assembly.
-     * 
+     *
      * @param {number} aid - Assembly ID.
      */
     isAssemblyCoordinator: function(aid) {
@@ -386,7 +389,7 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
 
     /**
      * Check if current user is member of the given assembly.
-     * 
+     *
      * @param {string} target - group | assembly
      * @param {number} id - Assembly ID.
      */
@@ -632,7 +635,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
 
     /**
      * Soft deletes a contribution.
-     * 
+     *
      * @param {number} aid - assembly ID.
      * @param {object} contribution - Contribution to delete, it should have the property moderationComment.
      * @returns {object} Promise

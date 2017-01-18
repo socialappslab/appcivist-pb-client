@@ -7,6 +7,14 @@
   input[type=submit]:hover {
     background-color: #009877;
   }
+
+  input[type=password] {
+    border-radius: 0;
+    box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.25);
+    border-radius: none;
+    background-color: white;
+    padding: 0.46875em;
+  }
 </style>
 <header class="page__header">
   <div class="title_block">
@@ -16,18 +24,22 @@
 <br />
 <br />
 <main class="appmain">
+  <figure class="photo" style="text-align: center;">
+    <img ng-if="!domain || !assembly.profile.icon" src="../assets/images/avatar.png" alt="Avatar" />
+    <img ng-if="domain && assembly.profile.icon" ng-src="{{assembly.profile.icon}}" alt="Avatar" />
+  </figure>
   <form ng-submit="login()">
     <fieldset class="row">
       <div class="field-container col-lg-4 col-offset-4">
         <label for="text">Email</label>
-        <input ng-model="user.email" id="text" type="text" placeholder="Text Input" autofocus>
+        <input class="form-input" ng-model="user.email" id="text" type="text" placeholder="Text Input" autofocus>
       </div>
     </fieldset>
     <br />
     <fieldset class="row">
       <div class="field-container col-lg-4 col-offset-4">
         <label for="password">Password</label>
-        <input ng-model="user.password" id="password" type="password" placeholder="Type your Password">
+        <input class="form-input" ng-model="user.password" id="password" type="password" placeholder="Type your Password">
       </div>
     </fieldset>
     <br />

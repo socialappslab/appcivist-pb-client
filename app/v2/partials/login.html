@@ -16,6 +16,9 @@
     padding: 0.46875em;
   }
 </style>
+<!-- TODO: add the cover of the assembly also in the header, with the green-tinted overlay
+  <header class="page__header" style="background-image: linear-gradient(to bottom, rgba(0, 152, 119, 0.8), rgba(0, 152, 119, 0.8)), url('{{assembly.profile.cover}}');">
+-->
 <header class="page__header">
   <div class="title_block">
     <h1 class="heading--title">Sign in</h1>
@@ -24,9 +27,8 @@
 <br />
 <br />
 <main class="appmain">
-  <figure class="photo" style="text-align: center;">
-    <img ng-if="!domain || !assembly.profile.icon" src="../assets/images/avatar.png" alt="Avatar" />
-    <img ng-if="domain && assembly.profile.icon" ng-src="{{assembly.profile.icon}}" alt="Avatar" />
+  <figure class="photo" style="text-align: center;" ng-if="domain && assembly.profile.icon">
+    <img ng-src="{{assembly.profile.icon}}" alt="Avatar" width="250px"/>
   </figure>
   <form ng-submit="login()">
     <fieldset class="row">

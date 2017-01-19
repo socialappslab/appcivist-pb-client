@@ -666,12 +666,12 @@
    * - TODO: when production version are ready, add a rule for selecting the production server
    */
   function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org", "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org", "www.appcivist.org"];
+    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org", "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org", "www.appcivist.org", "testapp.appcivist.org"];
     if (hostname === possibleHosts[0]) {
       return apis.local;
     } else if (hostname === possibleHosts[1] || hostname === possibleHosts[4] || hostname === possibleHosts[6] || hostname === possibleHosts[7]) {
       return apis.production;
-    } else if (hostname === possibleHosts[2] || hostname === possibleHosts[5]) {
+    } else if (hostname === possibleHosts[2] || hostname === possibleHosts[5] || hostname === possibleHosts[8]) {
       return apis.testing;
     } else {
       return apis.development;

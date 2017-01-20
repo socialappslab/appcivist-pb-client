@@ -54,9 +54,11 @@
               function(response) {
 
                 _.forEach(response, function(element) {
-                  _.forEach(element.changes.associationChanges, function(change) {
-                    change.resource = getResourceSpace(change.resourceSpaceId);
-                  });
+                  if (element.changes) {
+                    _.forEach(element.changes.associationChanges, function (change) {
+                      change.resource = getResourceSpace(change.resourceSpaceId);
+                    });
+                  }
                 });
 
                 scope.vm.historyElements = response;

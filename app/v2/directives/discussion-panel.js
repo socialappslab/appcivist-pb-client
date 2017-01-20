@@ -82,12 +82,12 @@
           };
 
           scope.createNewDiscussion = function() {
-            var sid = (scope.user && !scope.publicBoard) ? scope.spaceId : scope.endpointId;
+            var sid = (scope.user) ? scope.spaceId : scope.endpointId;
             saveContribution(scope, sid, scope.newDiscussion, scope.endpoint);
           };
 
           scope.createNewComment = function(discussion) {
-            var sid = (scope.user && !scope.publicBoard) ? discussion.resourceSpaceId : discussion.uuid;
+            var sid = (scope.user) ? discussion.resourceSpaceId : discussion.uuid;
             saveContribution(scope, sid, scope.newComment, 'contribution');
           };
         }
@@ -104,7 +104,7 @@
     function loadDiscussions(scope, sid) {
       var query = { type: 'DISCUSSION' };
       var rsp;
-      if (!scope.user || scope.publicBoard) {
+      if (!scope.user) {
         rsp = Contributions.contributionInResourceSpaceByUUID(sid).get(query);
       } else {
         rsp = Contributions.contributionInResourceSpace(sid).get(query);
@@ -131,7 +131,7 @@
       angular.forEach(discussions, function(d) {
         d.rsUUID = d.resourceSpaceUUID;
         d.rsID = d.resourceSpaceId;
-        Space.getContributions(d, 'comment', (!scope.user || scope.publicBoard), {}).then(
+        Space.getContributions(d, 'comment', (!scope.user), {}).then(
           function(comments) {
             d.comments = comments.list;
           }
@@ -146,7 +146,7 @@
         return;
       }
       var rsp;
-      if (!scope.user || scope.publicBoard) {
+      if (!scope.user) {
         rsp = Contributions.createAnomymousContribution(endpoint, sid);
       } else {
         rsp = Contributions.contributionInResourceSpace(sid);

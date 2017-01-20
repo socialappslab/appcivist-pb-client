@@ -369,7 +369,7 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
      * @param {number} id - target ID
      * @param {string} rol - the rol to check
      */
-    rolIn: function (target, id, rol) {
+    rolIn: function(target, id, rol) {
       switch (target) {
         case 'assembly':
           return this.hasRol(this.assemblyRols(id), rol);

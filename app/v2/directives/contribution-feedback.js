@@ -97,6 +97,11 @@
      * DELETE or FLAG comment
      */
     function submitModerationForm() {
+      if (this.contribution.moderationComment === 'Other') {
+        this.contribution.moderationComment = this.contribution.moderationCommentOther;
+        delete this.contribution.moderationCommentOther;
+      }
+
       switch (this.moderationContext) {
         case 'delete':
           this.submitDelete();

@@ -29,7 +29,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId });
     },
     assemblyByShortName: function(shortName) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:shortname', { shortname: shortName });
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/name/:shortname', { shortname: shortName });
     },
     assemblyPublicProfile: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', { aid: assemblyId });

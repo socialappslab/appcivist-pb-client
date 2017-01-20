@@ -770,5 +770,7 @@
   "Your name": "Dein Name",
   "Your password has been reset. Please now log in using your new password.": "Dein Passwort wurde zurückgesetzt. Bitte melde dich mit dem neuen Passwort ein.",
   "Your passwords don't match": "Die Passwörter stimmen nicht überein",
-  "Your user has not yet been set up for password usage.": "Deinem Account wurde noch kein Passwort zugewiesen."
+  "Your user has not yet been set up for password usage.": "Deinem Account wurde noch kein Passwort zugewiesen.",
+  "Enter reason": "Enter reason",
+  "Moderation pending": "Moderation pending"
 }

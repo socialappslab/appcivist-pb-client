@@ -68,7 +68,6 @@
         <contribution-feedback contribution="discussion" with-delete="true" with-flag="true"></contribution-feedback>
         <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>&nbsp;&nbsp;
         <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>&nbsp;&nbsp;
-        <a ng-if="isCoordinator" ng-click="delete(discussion)" class="heading--subheader reply-count"><i class="fa fa-remove"></i>&nbsp;{{'Delete' | translate}}</a>&nbsp;&nbsp;
       </div>
       <ul class="threaded-comments">
         <li class="panel comment-container" ng-repeat="comment in discussion.comments">
@@ -84,7 +83,6 @@
           </div>
           <div class="comment-reply-controls inline-controls">
             <contribution-feedback contribution="comment" with-delete="true" with-flag="true"></contribution-feedback>
-            <a ng-if="isCoordinator" ng-click="delete(comment)" class="heading--subheader reply-count"><i class="fa fa-remove"></i>&nbsp;{{'Delete' | translate}}</a>
           </div>
         </li>
       </ul>

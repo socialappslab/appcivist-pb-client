@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   appCivistApp
@@ -21,9 +21,9 @@
         publicBoard: '@'
       },
       templateUrl: '/app/v2/partials/directives/discussion-panel.html',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
         if (!scope.spaceId) {
-          scope.$watch('spaceId', function (val) {
+          scope.$watch('spaceId', function(val) {
             if (val) {
               activate();
             }
@@ -54,7 +54,7 @@
               scope.isCoordinator = groupRols != undefined ? hasRol(groupRols, 'COORDINATOR') : false;
             }
           } else {
-            scope.$watch('vm.recaptchaResponse', function (response) {
+            scope.$watch('vm.recaptchaResponse', function(response) {
               if (response) {
                 validateCaptchaResponse(scope.vm);
               }
@@ -64,45 +64,32 @@
           scope.newDiscussion = initContribution('DISCUSSION');
           scope.newComment = initContribution('COMMENT');
           // make discussion reply form visible
-          scope.writeReply = function (discussion) {
+          scope.writeReply = function(discussion) {
             discussion.showReplyForm = true;
             $location.hash('comment-field-' + discussion.uuid);
             $anchorScroll();
             $('#discussion-field-' + discussion.uuid).focus();
           };
 
-          scope.formatDate = function (date) {
+          scope.formatDate = function(date) {
             return moment(date, 'YYYY-MM-DD HH:mm').local().format('LLL');
           };
 
-          scope.startConversation = function () {
+          scope.startConversation = function() {
             $location.hash('discussion-field');
             $anchorScroll();
             $('#discussion-field').focus();
           };
 
-          scope.createNewDiscussion = function () {
+          scope.createNewDiscussion = function() {
             var sid = (scope.user && !scope.publicBoard) ? scope.spaceId : scope.endpointId;
             saveContribution(scope, sid, scope.newDiscussion, scope.endpoint);
           };
 
-          scope.createNewComment = function (discussion) {
+          scope.createNewComment = function(discussion) {
             var sid = (scope.user && !scope.publicBoard) ? discussion.resourceSpaceId : discussion.uuid;
             saveContribution(scope, sid, scope.newComment, 'contribution');
           };
-
-          scope.delete = function (contribution) {
-            var rsp = Contributions.contributionSoftRemoval(scope.assemblyId, contribution.contributionId).update().$promise;
-            rsp.then(
-              function () {
-                Notify.show('Comment removed');
-                loadDiscussions(scope, scope.spaceId);
-              },
-              function () {
-                Notify.show('Error while trying to remove comment', 'error');
-              }
-            )
-          }
         }
       }
     };
@@ -123,11 +110,11 @@
         rsp = Contributions.contributionInResourceSpace(sid).get(query);
       }
       rsp.$promise.then(
-        function (data) {
+        function(data) {
           scope.discussions = data.list;
           loadComments(scope, data.list);
         },
-        function (error) {
+        function(error) {
           Notify.show('Error loading discussions from server', 'error');
         }
       );
@@ -141,11 +128,11 @@
      * @param {object[]} discussions
      */
     function loadComments(scope, discussions) {
-      angular.forEach(discussions, function (d) {
+      angular.forEach(discussions, function(d) {
         d.rsUUID = d.resourceSpaceUUID;
         d.rsID = d.resourceSpaceId;
         Space.getContributions(d, 'comment', (!scope.user || scope.publicBoard), {}).then(
-          function (comments) {
+          function(comments) {
             d.comments = comments.list;
           }
         );
@@ -164,7 +151,7 @@
       } else {
         rsp = Contributions.contributionInResourceSpace(sid);
       }
-      rsp.save(newContribution).$promise.then(function (saved) {
+      rsp.save(newContribution).$promise.then(function(saved) {
         if (newContribution.type === 'DISCUSSION') {
           scope.newDiscussion = initContribution('DISCUSSION');
         } else if (newContribution.type === 'COMMENT') {
@@ -192,10 +179,10 @@
      */
     function validateCaptchaResponse(target) {
       Captcha.verify(target.recaptchaResponse).then(
-        function (response) {
+        function(response) {
           target.recaptchaResponseOK = response && response.success;
         },
-        function (response) {
+        function(response) {
           target.recaptchaResponseOK = false;
           var msg = response.data ? response.data.statusMessage : response.statusText;
           Notify.show('Error while validating captcha response: ' + msg, 'error');
@@ -203,4 +190,4 @@
       );
     }
   }
-} ());
+}());

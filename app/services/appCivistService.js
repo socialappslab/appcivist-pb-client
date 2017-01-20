@@ -646,7 +646,16 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
         moderate: { method: 'PUT' }
       });
       return action.moderate(contribution).$promise;
-    }
+    },
+
+    /**
+     * Retrieves the contribution history by its UUID.
+     * 
+     * @param {string} uuid - Contribution's UUID.
+     */
+    contributionHistoryByUUID: function(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/history', { uuid: uuid }).query().$promise;
+    },
   };
 });
 

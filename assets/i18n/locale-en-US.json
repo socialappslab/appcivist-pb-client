@@ -770,5 +770,16 @@
   "Your name": "Your name",
   "Your password has been reset. Please now log in using your new password.": "Your password has been reset. Please now log in using your new password.",
   "Your passwords don't match": "Your passwords don't match",
-  "Your user has not yet been set up for password usage.": "Your user has not yet been set up for password usage."
+  "Your user has not yet been set up for password usage.": "Your user has not yet been set up for password usage.",
+  "Feedback Form": "Feedback Form",
+  "Need score": "Need score",
+  "Benefit": "Benefit",
+  "Feasibility": "Feasibility",
+  "Status": "Status",
+  "Private": "Private",
+  "Public": "Public",
+  "Select a Working Group that should received this feedback": "Select a Working Group that should received this feedback",
+  "Select a type": "Select a type",
+  "Type": "Type",
+  "Textual Feedback": "Textual Feedback"
 }

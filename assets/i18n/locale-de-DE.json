@@ -770,5 +770,16 @@
   "Your name": "Dein Name",
   "Your password has been reset. Please now log in using your new password.": "Dein Passwort wurde zurückgesetzt. Bitte melde dich mit dem neuen Passwort ein.",
   "Your passwords don't match": "Die Passwörter stimmen nicht überein",
-  "Your user has not yet been set up for password usage.": "Deinem Account wurde noch kein Passwort zugewiesen."
+  "Your user has not yet been set up for password usage.": "Deinem Account wurde noch kein Passwort zugewiesen.",
+  "Feedback Form": "Feedback Form",
+  "Need score": "Need score",
+  "Benefit": "Benefit",
+  "Feasibility": "Feasibility",
+  "Status": "Status",
+  "Private": "Private",
+  "Public": "Public",
+  "Select a Working Group that should received this feedback": "Select a Working Group that should received this feedback",
+  "Select a type": "Select a type",
+  "Type": "Type",
+  "Textual Feedback": "Textual Feedback"
 }

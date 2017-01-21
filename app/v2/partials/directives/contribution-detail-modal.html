@@ -3,10 +3,12 @@
     padding-bottom: 10px !important;
     padding-top: 12px !important;
   }
+  
   hr {
     margin-top: 0px;
     margin-bottom: 20px;
   }
+  
   p {
     margin-bottom: 5px;
   }
@@ -32,10 +34,10 @@
       <br/>
       <div class="attribution">
         <p ng-if="contribution.authors" class="heading--subheader">{{ 'Member Authors' | translate }}</p>
-        <hr ng-if="contribution.authors"/>
+        <hr ng-if="contribution.authors" />
         <member-card ng-repeat="author in contribution.authors" user="author"></member-card>
         <p ng-if="contribution.nonMemberAuthors" class="heading--subheader">{{ 'Non Member Authors' | translate }}</p>
-        <hr ng-if="contribution.nonMemberAuthors"/>
+        <hr ng-if="contribution.nonMemberAuthors" />
         <member-card ng-repeat="author in contribution.nonMemberAuthors" user="author"></member-card>
       </div>
       <br/>
@@ -44,8 +46,8 @@
       <div class="contribution_description">{{ contribution.text }}</div>
       <!-- Nav tabs -->
       <ul class="nav nav-tabs custom-ul">
-          <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }}</a></li>
-          <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }}</a></li>
+        <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }}</a></li>
+        <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }}</a></li>
       </ul>
       <!-- Tab panes -->
       <div class="tab-content">
@@ -53,7 +55,8 @@
           <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="contributionID" endpoint-id="contributionID" endpoint="contribution"></discussion-panel>
         </div>
         <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-          <discussion-panel class="col-md-12" space-id="contribution.forumResourceSpaceUUID" endpoint-id="contribution.uuid" endpoint="contribution" public-board="true"></discussion-panel>
+          <discussion-panel ng-if="!currentUser" class="col-md-12" space-id="contribution.forumResourceSpaceUUID" endpoint-id="contribution.uuid" endpoint="contribution" public-board="true"></discussion-panel>
+          <discussion-panel ng-if="currentUser" class="col-md-12" space-id="contribution.forumResourceSpaceId" endpoint-id="contributionID" endpoint="contribution" public-board="true"></discussion-panel>
         </div>
       </div>
     </div>

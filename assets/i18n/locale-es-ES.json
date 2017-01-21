@@ -781,5 +781,7 @@
   "Select a Working Group that should received this feedback": "Select a Working Group that should received this feedback",
   "Select a type": "Select a type",
   "Type": "Type",
-  "Textual Feedback": "Textual Feedback"
+  "Textual Feedback": "Textual Feedback",
+  "Enter reason": "Ingrese el motivo",
+  "Moderation pending": "Pendiente de moderación"
 }

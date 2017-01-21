@@ -23,11 +23,15 @@
       },
       templateUrl: '/app/v2/partials/directives/contribution-feedback.html',
       link: function(scope, element, attrs) {
+        var user = localStorageService.get('user');
         // Read user contribution feedback
         scope.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false };
-        scope.assembly = localStorageService.get('currentAssembly');
-        scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
-        scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
+
+        if (user) {
+          scope.assembly = localStorageService.get('currentAssembly');
+          scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
+          scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
+        }
         scope.showModerationForm = showModerationForm.bind(scope);
         scope.submitModerationForm = submitModerationForm.bind(scope);
         scope.submitDelete = submitDelete.bind(scope);
@@ -39,7 +43,6 @@
           'Attacks others personally',
           'Other'
         ];
-        var user = localStorageService.get('user');
 
         // Feedback update
         scope.updateFeedback = function(value) {
@@ -97,6 +100,11 @@
      * DELETE or FLAG comment
      */
     function submitModerationForm() {
+      if (this.contribution.moderationComment === 'Other') {
+        this.contribution.moderationComment = this.contribution.moderationCommentOther;
+        delete this.contribution.moderationCommentOther;
+      }
+
       switch (this.moderationContext) {
         case 'delete':
           this.submitDelete();

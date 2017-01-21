@@ -35,7 +35,6 @@
     this.verifyMembership = verifyMembership.bind(this);
     this.selectType = selectType.bind(this);
     this.submit = submit.bind(this);
-    this.handleEscapeKey = handleEscapeKey.bind(this);
 
     this.$onInit = function() {
       vm.feedback = {
@@ -56,13 +55,6 @@
       vm.verifyMembership();
       vm.loadTypes();
     };
-
-    // setup listener to close modal when espace key is pressed
-    $(document).keyup(function(event) {
-      if (event.which === 27) {
-        vm.handleEscapeKey($scope);
-      }
-    });
   }
 
   /**
@@ -136,14 +128,5 @@
         servs.Notify.show('Error while updating user feedback', 'error');
       }
     );
-  }
-
-  function handleEscapeKey(scope) {
-    var vm = this;
-    scope.$apply(function() {
-      if (angular.isFunction(vm.close)) {
-        vm.close();
-      }
-    });
   }
 }());

@@ -23,19 +23,9 @@ td {
     border-radius: 100%;
     display: inline-block;
 }
-.step-buttons {
-    margin-left: 25%;
-}
-.step-margin {
-    margin-left: 1%;
-}
-.voffset5 {
+.voffset3 {
     margin-top: 1rem;
 }
-.form-group {
-    margin-bottom: 15px;
-}
-
 .add-button {
   display: table;
 }
@@ -48,16 +38,18 @@ td {
   display: table-cell;
 }
 </style>
+<!-- just grabbed some styles form version 1 -->
 <main class="appmain">
   <article class="campaign">
     <header class="page__header">
-      <h1 class="heading--title">{{'Create Assembly' | translate}}</h1>
+      <h1 ng-if="!isEdit" class="heading--title">{{'Create Assembly' | translate}}</h1>
+      <h1 ng-if="isEdit" class="heading--title">{{'Update Assembly' | translate}}</h1>
     </header>
     <section>
       <wizard>
-        <wizard-pane title="{{'Assembly description' | translate}}" number="1" state="v2.assembly.new.step1">
+        <wizard-pane title="{{'Assembly description' | translate}}" number="1" state=".step1">
         </wizard-pane>
-        <wizard-pane title="{{'Assemblies to follow' | translate}}" number="2" state="v2.assembly.new.step2">
+        <wizard-pane title="{{'Assemblies to follow' | translate}}" number="2" state=".step2">
         </wizard-pane>
       </wizard>
       <wizard-content>

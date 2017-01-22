@@ -770,5 +770,12 @@
   "Your name": "Your name",
   "Your password has been reset. Please now log in using your new password.": "Your password has been reset. Please now log in using your new password.",
   "Your passwords don't match": "Your passwords don't match",
-  "Your user has not yet been set up for password usage.": "Your user has not yet been set up for password usage."
+  "Your user has not yet been set up for password usage.": "Your user has not yet been set up for password usage.",
+  "Create Assembly": "Create Assembly",
+  "Update Assembly": "Update Assembly",
+  "Assembly description": "Assembly description",
+  "Assemblies to follow": "Assemblies to follow",
+  "Update the Assembly": "Update the Assembly",
+  "Manage": "Manage",
+  "Following this assemblies": "Following this assemblies"
 }

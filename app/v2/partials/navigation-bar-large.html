@@ -32,6 +32,9 @@
     <header class="nav_header" itemprop="location" itemscope itemtype="http://schema.org/Place">
       <h1>{{currentAssembly.name}}</h1>
       <h2>{{currentAssembly.location.placeName}}</h2>
+      <a ng-if="isAssemblyCoordinator" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/edit">
+        {{ 'Manage' | translate }}
+      </a>
     </header>
 
     <member-card action-bar="true"></member-card>

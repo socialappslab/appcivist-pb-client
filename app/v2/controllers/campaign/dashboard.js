@@ -78,17 +78,11 @@
 
     function loadAssembly() {
       $scope.assembly = localStorageService.get('currentAssembly');
-      verifyMembership();
+      verifyMembership($scope.assembly);
     }
 
-    function verifyMembership() {
-      if ($scope.assemblyID >= 0) {
-        var rsp = Memberships.membershipInAssembly($scope.assembly.assemblyId, $scope.user.userId).get();
-        rsp.$promise.then(function(data) {
-          if (data && data.status === 'ACCEPTED')
-            $scope.userIsMember = true;
-        });
-      }
+    function verifyMembership(assembly) {
+      $scope.userIsMember = Memberships.rolIn('assembly', assembly.assemblyId, 'MEMBER');
     }
 
     function loadCampaigns() {
@@ -104,12 +98,8 @@
         $scope.campaign.rsID = data.resourceSpaceId; //must be always id
         $scope.campaign.rsUUID = data.resourceSpaceUUId;
         $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
-        //$scope.campaign.frsUUID = data.resourceSpaceUUId; --test exceptionHandler
-        if (!$scope.isAnonymous) {
-          $scope.spaceID = data.resourceSpaceId;
-        } else {
-          $scope.spaceID = data.resourceSpaceUUId;
-        }
+        $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
+        $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
 
         // We are reading the components twice,
         // - in the campaign-timeline directive
@@ -143,15 +133,6 @@
 
             if (!$scope.ideas) {
               $scope.ideas = [];
-            }
-          }, defaultErrorCallback);
-
-          // get discussions
-          Space.getContributions($scope.campaign, 'DISCUSSION', $scope.isAnonymous).then(function(response) {
-            $scope.discussions = response.list;
-
-            if (!$scope.discussions) {
-              $scope.discussions = [];
             }
           }, defaultErrorCallback);
         });

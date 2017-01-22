@@ -777,5 +777,7 @@
   "Assemblies to follow": "Asambleas a seguir",
   "Update the Assembly": "Actualizar la Asamblea",
   "Manage": "Configurar",
-  "Following this assemblies": "Asambleas seguidas"
+  "Following this assemblies": "Asambleas seguidas",
+  "Enter reason": "Ingrese el motivo",
+  "Moderation pending": "Pendiente de moderación"
 }

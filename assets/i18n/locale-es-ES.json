@@ -772,5 +772,8 @@
   "Your passwords don't match": "Your passwords don't match",
   "Your user has not yet been set up for password usage.": "Your user has not yet been set up for password usage.",
   "Enter reason": "Ingrese el motivo",
-  "Moderation pending": "Pendiente de moderación"
+  "Moderation pending": "Pendiente de moderación",
+  "definition.wgroup": "Definition of Working Groups",
+  "Add emails of new members who are not in the assembly yet": "Add emails of new members who are not in the assembly yet",
+  "Update Working Group": "Update Working Group"
 }

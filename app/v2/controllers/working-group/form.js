@@ -6,10 +6,10 @@
     .controller('v2.WorkingGroupFormCtrl', WorkingGroupFormCtrl);
 
   WorkingGroupFormCtrl.$inject = ['$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService',
-  'Assemblies', 'WorkingGroups', 'Campaigns', 'usSpinnerService', '$state', 'logService'];
+  'Assemblies', 'WorkingGroups', 'Campaigns', 'usSpinnerService', '$state', 'logService', '$stateParams'];
 
   function WorkingGroupFormCtrl($scope, localStorageService, $translate, $routeParams, LocaleService,
-    Assemblies, WorkingGroups, Campaigns, usSpinnerService, $state, logService) {
+    Assemblies, WorkingGroups, Campaigns, usSpinnerService, $state, logService, $stateParams) {
     init();
 
     function init() {
@@ -83,7 +83,46 @@
         }
       };
 
-      $scope.createWorkingGroup = function() {
+      $scope.getAttributesFromExistingWGroup = function() {
+        //TODO to set default assembly
+        $scope.campaignId = $scope.newWorkingGroup.campaigns[0];
+        $scope.campaignThemes = $scope.newWorkingGroup.existingThemes; //?
+
+        if ($scope.newWorkingGroup.profile.supportedMembership === 'OPEN') {
+          $scope.newWorkingGroup.profile.membership = 'OPEN';
+        } else if ($scope.newWorkingGroup.profile.supportedMembership === "INVITATION" || $scope.newWorkingGroup.profile.supportedMembership === "REQUEST"
+            || $scope.newWorkingGroup.profile.supportedMembership === "INVITATION_AND_REQUEST") {
+              $scope.newWorkingGroup.profile.registration = {};
+            if ($scope.newWorkingGroup.profile.supportedMembership === "INVITATION")
+              $scope.newWorkingGroup.profile.registration.invitation = true;
+            if ($scope.newWorkingGroup.profile.supportedMembership === "REQUEST")
+              $scope.newWorkingGroup.profile.registration.request = true;
+            if ($scope.newWorkingGroup.profile.supportedMembership === "INVITATION_AND_REQUEST") {
+              $scope.newWorkingGroup.profile.registration.invitation = true;
+              $scope.newWorkingGroup.profile.registration.request = true;
+            }
+            $scope.newWorkingGroup.profile.membership = 'REGISTRATION';
+        }
+
+        // see how this can be established
+        if ($scope.newWorkingGroup.profile.managementType === "OPEN") {
+          $scope.newWorkingGroup.profile.moderators = 'none';
+          $scope.newWorkingGroup.profile.coordinators = 'none';
+        } else if ($scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED") {
+          $scope.newWorkingGroup.profile.moderators = 'two'; //can be all
+          $scope.newWorkingGroup.profile.coordinators = 'two'; //can be all
+        } else if ($scope.newWorkingGroup.profile.managementType = "MODERATED") {
+          $scope.newWorkingGroup.profile.moderators = 'two'; //can be all
+          $scope.newWorkingGroup.profile.coordinators = 'none';
+        } else if ($scope.newWorkingGroup.profile.managementType = "COORDINATED") {
+          $scope.newWorkingGroup.profile.moderators = 'none';
+          $scope.newWorkingGroup.profile.coordinators =  'two'; //can be all
+        }
+
+        $scope.contributions = $scope.newWorkingGroup.existingContributions; //?
+      }
+
+      $scope.createOrUpdateWorkingGroup = function() {
         $scope.newWorkingGroup.existingThemes = [];
         // 1. process themes
         if ($scope.campaignThemes) {
@@ -137,7 +176,13 @@
             }
           }
         }
-        var newGroup = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).save($scope.newWorkingGroup);
+        var newGroup;
+        if (!$scope.isEdit) {
+          newGroup = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).save($scope.newWorkingGroup);
+        } else {
+          newGroup = WorkingGroups.workingGroup($scope.assemblyID, $scope.newWorkingGroup.groupId).update($scope.newWorkingGroup);
+        }
+
         newGroup.$promise.then(
           function(response) {
             $scope.newWorkingGroup = response;
@@ -153,7 +198,7 @@
           },
           function(error) {
             $scope.errors.push(error.data);
-            $rootScope.showError(error.data, "WORKING_GROUP", null);
+            //$rootScope.showError(error.data, "WORKING_GROUP", null);
           }
         );
 
@@ -188,6 +233,7 @@
     }
 
     function initScopeContent() {
+      $scope.isEdit = false;
       $scope.user = localStorageService.get("user");
       if ($scope.user && $scope.user.language)
         $translate.use($scope.user.language);
@@ -201,7 +247,7 @@
         $scope.selectCampaign = true;
       }
 
-      $scope.workingGroupID = $routeParams.wid;
+      $scope.workingGroupID = $routeParams.wid || $stateParams.gid;
       $scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
       $scope.defaultIcons = [{
         "name": "Justice Icon",
@@ -232,6 +278,16 @@
       $scope.membersCurrentPg = 0;
       $scope.membersPageSize = 5;
       $scope.assemblyMembers = [];
+
+      if ($stateParams.gid) {
+        $scope.isEdit = true;
+        var rsp = WorkingGroups.workingGroup($scope.assemblyID ,$stateParams.gid).get();
+        rsp.$promise.then(function(data) {
+          console.log("Get WGroup with wgroupId " + $stateParams.gid);
+          $scope.newWorkingGroup = data;
+          $scope.getAttributesFromExistingWGroup();
+        });
+      }
 
       $scope.$watch("newWorkingGroup.name", function(newVal, oldval) {
         $translate('wgroup.invitation.email.text', {

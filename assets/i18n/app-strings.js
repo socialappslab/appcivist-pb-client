@@ -41,7 +41,7 @@ appCivistApp.config(function ($translateProvider) {
         "header.sign_up_individual": "Individual Sign Up",
         "header.sign_out": "Sign Out",
         "header.Forgot password": "Forgot Password?",
-        "footer.text": "Created by the <a href='http://socialappslab.org/'>Social Apps Lab</a> at CITRIS, University of California, Berkeley.<br/> 2014-2016 &copy; Regents of the University of California <br/> In partnership with the <a href='https://mimove.inria.fr/'>MiMove Team</a> at <a href='http://www.inria.fr/'>INRIA</a>, France.",
+        "footer.text": "Created by the <a href='http://socialappslab.org/'>Social Apps Lab</a> at CITRIS, University of California, Berkeley.<br/> 2014-2017 &copy; Regents of the University of California <br/> In partnership with the <a href='https://mimove.inria.fr/'>MiMove Team</a> at <a href='http://www.inria.fr/'>INRIA</a>, France.",
         "footer.text.dev": "[DEV] Change Backend Server: Currently Using ",
 
         // User Menus

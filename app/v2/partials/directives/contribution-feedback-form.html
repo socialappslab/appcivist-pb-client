@@ -64,7 +64,7 @@
           <div class="col-lg-12" text-angular ng-model="vm.feedback.textualFeedback"></div>
         </fieldset>
         <fieldset>
-          <label for="status">{{'Status' | translate}}</label>
+          <label for="status">{{'Visibility of feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="status" ng-model="vm.feedback.status" class="col-lg-12">
                   <option value="PRIVATE">{{'Private' | translate}}</option>
@@ -73,7 +73,7 @@
           </div>
         </fieldset>
         <fieldset ng-if="vm.userIsCoordinator || vm.userIsWGCoordinator">
-          <label for="status">{{'Type' | translate}}</label>
+          <label for="status">{{'Type of feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="type" class="col-lg-12" ng-model="vm.selectedType" ng-change="vm.selectType()" ng-options="type as type.text for type in vm.types">
                   <option value="">{{'Select a type' | translate}}</option>
@@ -81,7 +81,7 @@
           </div>
         </fieldset>
         <fieldset ng-if="!vm.userIsMember">
-          <label for="group">{{'Select a Working Group that should received this feedback' | translate}}</label>
+          <label for="group">{{'Select a Working Group that should receive this feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="group" class="col-lg-12" ng-model="vm.selectedGroup" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
                   <option value="">{{'Select a working group' | translate}}</option>

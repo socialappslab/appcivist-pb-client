@@ -97,12 +97,12 @@
 
   function loadTypes() {
     var types = [
-      { value: 'MEMBER', text: 'Member' },
-      { value: 'WORKING_GROUP', text: 'Working Group' }
+      { value: 'MEMBER', text: 'Member feedback' },
+      { value: 'WORKING_GROUP', text: 'Working group official feedback' }
     ];
 
     if (this.userIsCoordinator) {
-      types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical Assessment' });
+      types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
     }
     this.types = types;
   }

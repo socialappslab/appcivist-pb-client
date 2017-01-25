@@ -775,13 +775,16 @@
   "Need score": "Need score",
   "Benefit": "Benefit",
   "Feasibility": "Feasibility",
-  "Status": "Status",
+  "Visibility of feedback": "Visibility of feedback",
   "Private": "Private",
   "Public": "Public",
-  "Select a Working Group that should received this feedback": "Select a Working Group that should received this feedback",
+  "Select a Working Group that should receive this feedback": "Select a Working Group that should receive this feedback",
   "Select a type": "Select a type",
-  "Type": "Type",
+  "Type of feedback": "Type of feedback",
   "Textual Feedback": "Textual Feedback",
-  "Enter reason": "Ingrese el motivo",
-  "Moderation pending": "Pendiente de moderación"
+  "Enter reason": "Enter reason",
+  "Moderation pending": "Moderation pending",
+  "Member feedback": "Member feedback",
+  "Working group official feedback": "Working group official feedback",
+  "Technical feedback": "Technical feedback"
 }

@@ -61,7 +61,7 @@
         </fieldset>
         <fieldset>
           <label for="textualFeedback">{{'Textual Feedback' | translate}}</label>
-          <div class="col-lg-12" text-angular ng-model="vm.feedback.textualFeedback"></div>
+          <textarea class="col-lg-12" ui-tinymce="vm.tinymceOptions" ng-model="vm.feedback.textualFeedback"></textarea>
         </fieldset>
         <fieldset>
           <label for="status">{{'Visibility of feedback' | translate}}</label>

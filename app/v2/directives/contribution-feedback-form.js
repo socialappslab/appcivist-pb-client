@@ -51,6 +51,17 @@
         ceil: 4,
         showTicksValues: true
       };
+      vm.tinymceOptions = {
+        // plugins: 'link image code',
+        // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code',
+        height: 400,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table contextmenu paste imagetools'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+      };
       vm.loadGroups();
       vm.verifyMembership();
       vm.loadTypes();

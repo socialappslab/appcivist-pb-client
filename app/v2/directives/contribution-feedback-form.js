@@ -20,21 +20,24 @@
     });
 
   ContributionFeedbackFormCtrl.$inject = [
-    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope'
+    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader'
   ];
   var servs = {};
 
-  function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify, $scope) {
+  function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify,
+    $scope, FileUploader) {
     var vm = this;
     servs.Memberships = Memberships;
     servs.Contributions = Contributions;
     servs.Notify = Notify;
+    servs.FileUploader = FileUploader;
     this.selectGroup = selectGroup.bind(this);
     this.loadGroups = loadGroups.bind(this);
     this.loadTypes = loadTypes.bind(this);
     this.verifyMembership = verifyMembership.bind(this);
     this.selectType = selectType.bind(this);
     this.submit = submit.bind(this);
+    this.getEditorOptions = getEditorOptions.bind(this);
 
     this.$onInit = function() {
       vm.feedback = {
@@ -51,17 +54,7 @@
         ceil: 4,
         showTicksValues: true
       };
-      vm.tinymceOptions = {
-        // plugins: 'link image code',
-        // toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code',
-        height: 400,
-        plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table contextmenu paste imagetools'
-        ],
-        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
-      };
+      vm.tinymceOptions = vm.getEditorOptions();
       vm.loadGroups();
       vm.verifyMembership();
       vm.loadTypes();
@@ -139,5 +132,62 @@
         servs.Notify.show('Error while updating user feedback', 'error');
       }
     );
+  }
+
+  function getEditorOptions() {
+    return {
+      height: 400,
+      plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table contextmenu paste imagetools'
+      ],
+      toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+      images_upload_credentials: true,
+      image_advtab: true,
+      image_title: true,
+      automatic_uploads: true,
+      file_picker_types: 'image',
+      imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
+      images_upload_handler: function(blobInfo, success, failure) {
+        var xhr, formData;
+        xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.open('POST', servs.FileUploader.uploadEndpoint());
+        xhr.onload = function() {
+          var json;
+
+          if (xhr.status != 200) {
+            failure('HTTP Error: ' + xhr.status);
+            return;
+          }
+          json = JSON.parse(xhr.responseText);
+
+          if (!json || typeof json.url != 'string') {
+            failure('Invalid JSON: ' + xhr.responseText);
+            return;
+          }
+          success(json.url);
+        };
+        formData = new FormData();
+        console.log('blob info', blobInfo);
+        formData.append('file', blobInfo.blob());
+        xhr.send(formData);
+      },
+      file_picker_callback: function(cb, value, meta) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.onchange = function() {
+          var file = this.files[0];
+          var id = 'blobid' + (new Date()).getTime();
+          var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+          var blobInfo = blobCache.create(id, file);
+          blobCache.add(blobInfo);
+          cb(blobInfo.blobUri(), { title: file.name });
+        };
+        input.click();
+      }
+    };
   }
 }());

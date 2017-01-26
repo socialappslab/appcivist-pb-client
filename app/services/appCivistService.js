@@ -26,7 +26,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
     assembly: function(assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId });
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId }, { 'update': { method:'PUT' } });
     },
     assemblyByShortName: function(shortName) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/name/:shortname', { shortname: shortName });
@@ -341,7 +341,11 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
     },
 
     hasRol: function(rols, rolName) {
+      if (!rols) {
+        return false;
+      }
       var rol;
+
       for (var i = 0; i < rols.length; i++) {
         rol = rols[i];
 

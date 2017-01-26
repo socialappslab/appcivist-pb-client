@@ -4,6 +4,9 @@
 				<h1 class="heading--headline">{{currentAssembly.name}}
 					<span>{{currentAssembly.location.placeName}}</span></h1>
 				</h1>
+        <a ng-if="isAssemblyCoordinator" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/edit">
+          {{ 'Manage' | translate }}
+        </a>
 				<h3 class="heading--subheader">
 					<div class="logo-small">
 						<img src="/bower_components/appcivist-patterns/dist/images/logo-white.svg" alt="AppCivist Logo" />

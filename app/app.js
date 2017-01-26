@@ -311,6 +311,14 @@
           requiresLogin: true
         }
       })
+      .state('v2.workingGroup.edit', {
+        url: '/:gid/edit',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
       .state('v2.workingGroup.gid', {
         url: '/:gid',
         controller: 'v2.WorkingGroupDashboardCtrl',

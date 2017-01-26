@@ -2,47 +2,47 @@
   .comment-meta {
     width: 100% !important;
   }
-  
+
   .comment-meta input[type=submit] {
     float: right;
   }
-  
+
   .inline-controls .temperature_check {
     display: inline-block;
   }
-  
+
   .inline-controls .temperature_check .votes {
     margin-right: 0;
   }
-  
+
   .comments__reply h2 {
     margin-bottom: 10px;
   }
-  
+
   input[disabled],
   textarea[disabled] {
     background-color: #eee;
     opacity: 1;
   }
-  
+
   .comment-text {
     padding-top: 15px;
     padding-left: 20px;
   }
-  
+
   .threaded-comments {
     padding-top: 0.1em;
     padding-bottom: 0px;
   }
-  
+
   li.panel.card.conversation-container {
     position: relative;
   }
-  
+
   li.panel.comment-container {
     position: relative;
   }
-  
+
   .github-fork-ribbon:before {
     background-color: #f80;
   }
@@ -54,67 +54,69 @@
   </header>
 
   <div class="comments__listing">
-    <li class="panel card conversation-container" ng-repeat="discussion in discussions">
-      <a ng-if="discussion.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
-      <div class="comment-meta">
-        <p class="heading--header">{{formatDate(discussion.creation)}}</p>
-        <member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>
-        <p></p>
-      </div>
-      <div class="comment-text">
-        <small>{{discussion.text}}</small>
-      </div>
-      <div class="comment-reply-controls">
-        <contribution-feedback contribution="discussion" with-delete="true" with-flag="true"></contribution-feedback>
-        <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>&nbsp;&nbsp;
-        <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>&nbsp;&nbsp;
-      </div>
-      <ul class="threaded-comments">
-        <li class="panel comment-container" ng-repeat="comment in discussion.comments">
-          <a ng-if="comment.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
-          <div class="comment-meta">
-            <p class="heading--header">{{formatDate(comment.creation)}}</a>
-            </p>
-            <member-card user="comment.authors[0] || comment.nonMemberAuthor" comments-section="true"></member-card>
-            <p></p>
-          </div>
-          <div class="comment-text">
-            <small>{{comment.text}}</small>
-          </div>
-          <div class="comment-reply-controls inline-controls">
-            <contribution-feedback contribution="comment" with-delete="true" with-flag="true"></contribution-feedback>
-          </div>
-        </li>
-      </ul>
+    <li class="panel card conversation-container" ng-repeat="discussion in discussions track by discussion.contributionId">
+      <div ng-if="discussion">
+        <a ng-if="discussion.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
+        <div class="comment-meta">
+          <p class="heading--header">{{formatDate(discussion.creation)}}</p>
+          <member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>
+          <p></p>
+        </div>
+        <div class="comment-text">
+          <small>{{discussion.text}}</small>
+        </div>
+        <div class="comment-reply-controls">
+          <contribution-feedback contribution="discussion" with-delete="true" with-flag="true"></contribution-feedback>
+          <a class="heading--subheader reply-count">{{discussion.comments.length || 0}} {{'Replies' | translate}}</a>&nbsp;&nbsp;
+          <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>&nbsp;&nbsp;
+        </div>
+        <ul class="threaded-comments">
+          <li class="panel comment-container" ng-repeat="comment in discussion.comments track by comment.contributionId">
+            <a ng-if="comment.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
+            <div class="comment-meta">
+              <p class="heading--header">{{formatDate(comment.creation)}}</a>
+              </p>
+              <member-card user="comment.authors[0] || comment.nonMemberAuthor" comments-section="true"></member-card>
+              <p></p>
+            </div>
+            <div class="comment-text">
+              <small>{{comment.text}}</small>
+            </div>
+            <div class="comment-reply-controls inline-controls">
+              <contribution-feedback contribution="comment" with-delete="true" with-flag="true"></contribution-feedback>
+            </div>
+          </li>
+        </ul>
 
-      <div class="comments__reply" ng-if="discussion.showReplyForm">
-        <h2 class="heading--header">{{'Reply' | translate}}</h2>
-        <div class="comments__comment_form">
-          <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse" on-success="setCaptchaResponse(discussion, response)" style="margin-bottom: 10px;"></div>
-          <form ng-submit="createNewComment(discussion)">
-            <fieldset>
-              <div ng-if="isAnonymous">
-                <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-                  <input type="text" ng-model="newComment.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+        <div class="comments__reply" ng-if="discussion.showReplyForm">
+          <h2 class="heading--header">{{'Reply' | translate}}</h2>
+          <div class="comments__comment_form">
+            <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse" on-success="setCaptchaResponse(discussion, response)" style="margin-bottom: 10px;"></div>
+            <form ng-submit="createNewComment(discussion)">
+              <fieldset>
+                <div ng-if="isAnonymous">
+                  <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+                    <input type="text" ng-model="newComment.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                  </div>
+                  <div class="field-container col-lg-6" style="margin-bottom: 10px;">
+                    <input type="email" ng-model="newComment.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                  </div>
                 </div>
-                <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-                  <input type="email" ng-model="newComment.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                <div>
+                  <div class="field-container col-lg-12">
+                    <textarea id="comment-field-{{discussion.uuid}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}" ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div class="field-container col-lg-12">
-                  <textarea id="comment-field-{{discussion.uuid}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}" ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
+                <br />
+                <div class="comment-form">
+                  <div class="comment-meta">
+                    <member-card action-bar="true" comments-section="true"></member-card>
+                    <input class="button" type="submit" value="Submit" />
+                  </div>
                 </div>
-              </div>
-              <br />
-              <div class="comment-form">
-                <div class="comment-meta">
-                  <member-card action-bar="true" comments-section="true"></member-card>
-                  <input class="button" type="submit" value="Submit" />
-                </div>
-              </div>
-            </fieldset>
-          </form>
+              </fieldset>
+            </form>
+          </div>
         </div>
       </div>
     </li>

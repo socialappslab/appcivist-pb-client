@@ -8,10 +8,10 @@
     .directive('contributionFeedback', ContributionFeedback);
 
   ContributionFeedback.$inject = [
-    'Contributions', 'localStorageService', 'Memberships', '$compile', 'Notify'
+    'Contributions', 'localStorageService', 'Memberships', '$compile', 'Notify', '$rootScope'
   ];
 
-  function ContributionFeedback(Contributions, localStorageService, Memberships, $compile, Notify) {
+  function ContributionFeedback(Contributions, localStorageService, Memberships, $compile, Notify, $rootScope) {
     return {
       restrict: 'E',
       scope: {
@@ -86,7 +86,7 @@
 
     /**
      * Displays the moderation form.
-     * 
+     *
      * @param {string} context - delete | flag
      */
     function showModerationForm(context) {
@@ -124,6 +124,7 @@
         function() {
           Notify.show('Operation succeeded', 'success');
           self.vexInstance.close();
+          $rootScope.$emit('refreshList', 'refresh');
         },
         function() {
           Notify.show('Error while trying to communicate with the server', 'error');

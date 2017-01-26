@@ -13,7 +13,8 @@
 (function() {
   var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
-    'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha', 'angularUtils.directives.dirPagination', 'ErrorCatcher'
+    'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
+    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 

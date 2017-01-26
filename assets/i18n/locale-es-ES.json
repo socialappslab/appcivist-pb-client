@@ -779,5 +779,19 @@
   "Manage": "Configurar",
   "Following this assemblies": "Asambleas seguidas",
   "Enter reason": "Ingrese el motivo",
-  "Moderation pending": "Pendiente de moderación"
+  "Moderation pending": "Pendiente de moderación",
+  "Feedback Form": "Feedback Form",
+  "Need score": "Need score",
+  "Benefit": "Benefit",
+  "Feasibility": "Feasibility",
+  "Visibility of feedback": "Visibility of feedback",
+  "Private": "Private",
+  "Public": "Public",
+  "Select a Working Group that should receive this feedback": "Select a Working Group that should receive this feedback",
+  "Select a type": "Select a type",
+  "Type of feedback": "Type of feedback",
+  "Textual Feedback": "Textual Feedback",
+  "Member feedback": "Member feedback",
+  "Working group official feedback": "Working group official feedback",
+  "Technical feedback": "Technical feedback"
 }

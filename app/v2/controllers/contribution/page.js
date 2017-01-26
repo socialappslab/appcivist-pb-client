@@ -41,6 +41,7 @@
         $scope.user = localStorageService.get('user');
         if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
+          $scope.userName = $scope.user.name;
         }
         // user is member of Assembly
         $scope.userIsMember = true;

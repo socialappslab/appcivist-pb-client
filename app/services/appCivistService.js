@@ -341,7 +341,11 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
     },
 
     hasRol: function(rols, rolName) {
+      if (!rols) {
+        return false;
+      }
       var rol;
+
       for (var i = 0; i < rols.length; i++) {
         rol = rols[i];
 

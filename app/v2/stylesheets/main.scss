@@ -9,15 +9,11 @@
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_tooltip.scss";
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_buttons.scss";
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_button-groups.scss";
-
-
-
 @import "../../../stylesheets/styles/_colors.scss";
 @import "../../../stylesheets/styles/_common.scss";
 @import "../../../stylesheets/styles/_header.scss";
 @import "../../partials/campaign/creation/_campaignCreation.scss";
 @import "../../partials/directives/timeline/_timeline.scss";
-
 .form-control {
-font-size: initial;
+  font-size: initial;
 }

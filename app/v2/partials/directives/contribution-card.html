@@ -56,7 +56,7 @@
               </a>
             </li>
           </ul>
-          <div ng-if="cm.isHover" class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
+          <div ng-show="cm.isHover" class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
             <div class="content">
               <contribution-contextual-items contribution="contribution"></contribution-contextual-items>
             </div>
@@ -163,5 +163,5 @@
 </div>
 
 <div class="contribution-detail-modal" style="display: none;">
-  <contribution-detail-modal contribution="contribution" user="user"></contribution-detail-modal>
+  <contribution-detail-modal vex-instance="vexInstance" contribution="contribution" user="user" ></contribution-detail-modal>
 </div>

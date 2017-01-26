@@ -20,7 +20,8 @@
     return {
       restrict: 'E',
       scope: {
-        contribution: '='
+        contribution: '=',
+        vexInstance: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-detail-modal.html',
       link: function postLink(scope, element, attrs) {
@@ -33,6 +34,7 @@
         activate();
 
         function activate() {
+          scope.enableDiscussions = false;
           scope.activeTab = 'Public';
           scope.changeActiveTab = function(tab) {
             if (tab == 1) {
@@ -49,6 +51,12 @@
           }
 
           scope.contributionID = scope.contribution.contributionId;
+
+          scope.$watch('vexInstance', function(newValue, oldValue) {
+            if (newValue) {
+              scope.enableDiscussions = true;
+            }
+          });
 
         }
       }

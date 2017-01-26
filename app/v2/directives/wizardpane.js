@@ -40,7 +40,7 @@
       if (vm.disabledIf) {
         return;
       }
-      $state.go(dest);
+      $state.go("^"+dest);
     };
   }
 } ());

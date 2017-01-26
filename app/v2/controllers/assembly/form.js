@@ -8,39 +8,31 @@
 
   AssemblyFormCtrl.$inject = [
     '$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService', 'Assemblies',
-    'usSpinnerService', '$state', '$location'
+    'usSpinnerService', '$state', '$location', '$stateParams',
   ];
 
   function AssemblyFormCtrl($scope, localStorageService, $translate, $routeParams,
-    LocaleService, Assemblies, usSpinnerService, $state, $location) {
-
-    if ($state.is('v2.assembly.new')) {
-      $state.go('v2.assembly.new.step1');
-    }
+    LocaleService, Assemblies, usSpinnerService, $state, $location, $stateParams) {
 
     init();
-    initializeNewAssembly();
-    initializeListOfAssembliesToFollow();
 
     function init() {
-      $scope.user = localStorageService.get("user");
-      if ($scope.user && $scope.user.language)
-        $translate.use($scope.user.language);
-      $scope.themes = {
-        list: null
-      };
-      $scope.inviteesEmails = {
-        list: null
-      };
       //temporal fix
       $scope.info = '';
 
       $scope.goToStep = function (step) {
-        console.log('go to step...')
         if (step === 1) {
-          $state.go('v2.assembly.new.step1');
+          if ($stateParams.aid) {
+            $location.path('/v2/assembly/' + $stateParams.aid + '/edit/description');
+          } else {
+            $location.path('/v2/assembly/new/description');
+          }
         } else {
-          $state.go('v2.assembly.new.step2');
+          if ($stateParams.aid) {
+            $location.path('/v2/assembly/' + $stateParams.aid + '/edit/assemblies');
+          } else {
+            $location.path('/v2/assembly/new/assemblies');
+          }
         }
       }
 
@@ -70,6 +62,41 @@
         $scope.newUser = {};
       }
 
+      $scope.isEdit = false;
+      var temporaryAssembly = localStorageService.get("temporaryNewAssembly");
+      if ($stateParams.aid) {
+        $scope.isEdit = true;
+        if ((temporaryAssembly != null && temporaryAssembly.assemblyId != $stateParams.aid) || temporaryAssembly == null) {
+          var rsp = Assemblies.assembly($stateParams.aid).get();
+          rsp.$promise.then(function(data) {
+            console.log("Get Assembly with assemblyId " + $stateParams.aid);
+            $scope.newAssembly = data;
+            localStorageService.set("temporaryNewAssembly", data);
+            $scope.getAttributesFromExistingAssembly();
+          });
+        } else {
+          $scope.newAssembly = temporaryAssembly;
+        }
+        initializeNewAssembly();
+        //initializeListOfAssembliesToFollow();
+      } else {
+        if (temporaryAssembly != null && temporaryAssembly.assemblyId != null) {
+          localStorageService.set("temporaryNewAssembly", null);
+        }
+        initializeNewAssembly();
+        //initializeListOfAssembliesToFollow();
+      }
+
+      $scope.user = localStorageService.get("user");
+      if ($scope.user && $scope.user.language)
+        $translate.use($scope.user.language);
+      $scope.themes = {
+        list: null
+      };
+      $scope.inviteesEmails = {
+        list: null
+      };
+
       /*$scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName() ?
         LocaleService.getLocaleDisplayName() : LOCALES.locales[LOCALES.preferredLocale];
       $scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
@@ -95,7 +122,9 @@
       }
 
       $scope.addEmailsToList = function (emailsText) {
-
+        if (!$scope.newAssembly.invitations) {
+          $scope.newAssembly.invitations = [];
+        }
         $scope.invalidEmails = [];
         console.log("Adding emails: " + emailsText);
         var emails = emailsText.split(',');
@@ -173,8 +202,16 @@
         return $scope.removeByAttr($scope.newAssembly.linkedAssemblies, "assemblyId", id);
       }
 
-      $scope.selectAssembly = function (assemblyId) {
+      $scope.selectAssembly = function (assembly) {
+        var assemblyId = assembly.assemblyId;
+        if (!$scope.newAssembly.linkedAssemblies) {
+          $scope.newAssembly.linkedAssemblies = [];
+          $scope.selectedAssembliesWithName = [];
+        } else {
+          $scope.selectedAssembliesWithName = $scope.newAssembly.linkedAssemblies;
+        }
         $scope.selectedAssemblies[assemblyId] = !$scope.selectedAssemblies[assemblyId];
+        $scope.selectedAssembliesWithName.push(assembly);
 
         if ($scope.selectedAssemblies[assemblyId]) {
           var linked = {
@@ -186,8 +223,38 @@
         }
       }
 
+      $scope.getAttributesFromExistingAssembly = function() {
+
+        if ($scope.newAssembly.profile.supportedMembership === 'OPEN') {
+          $scope.newAssembly.profile.membership = 'OPEN';
+        } else if ($scope.newAssembly.profile.supportedMembership === "INVITATION" || $scope.newAssembly.profile.supportedMembership === "REQUEST"
+            || $scope.newAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST") {
+            $scope.newAssembly.profile.membership === 'REGISTRATION';
+        }
+
+        // see how this can be established
+        if ($scope.newAssembly.profile.managementType === "OPEN") {
+          $scope.newAssembly.profile.moderators === 'none';
+          $scope.newAssembly.profile.coordinators === 'none';
+        } else if ($scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED") {
+          $scope.newAssembly.profile.moderators === 'two'; //can be all
+          $scope.newAssembly.profile.coordinators === 'two'; //can be all
+        } else if ($scope.newAssembly.profile.managementType = "MODERATED") {
+          $scope.newAssembly.profile.moderators === 'two'; //can be all
+          $scope.newAssembly.profile.coordinators === 'none';
+        } else if ($scope.newAssembly.profile.managementType = "COORDINATED") {
+          $scope.newAssembly.profile.moderators === 'none';
+          $scope.newAssembly.profile.coordinators === 'two'; //can be all
+        }
+
+        $scope.newAssembly.config = {};
+        $scope.newAssembly.config.facetoface = $scope.newAssembly.configs[0].value;
+        $scope.newAssembly.config.messaging = $scope.newAssembly.configs[1].value;
+      }
+
       // TODO: process selected assemblies
-      $scope.createNewAssembly = function (step) {
+      $scope.createOrUpdateAssembly = function (step) {
+        console.log("Create or Update Assembly");
         if (step === 1) {
           console.log("Creating assembly with name = " + $scope.newAssembly.name);
           if ($scope.newAssembly.profile.membership === 'OPEN') {
@@ -231,13 +298,20 @@
           $scope.tabs[1].active = true;
         } else if (step === 2 && !$scope.userIsNew) {
           console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
-          var newAssemblyRes = Assemblies.assembly().save($scope.newAssembly);
-          newAssemblyRes.$promise.then(
+          var assemblyRes;
+          if (!$scope.isEdit) {
+            assemblyRes = Assemblies.assembly().save($scope.newAssembly);
+          } else {
+            //$scope.newAssembly.campaigns.delete;
+            assemblyRes = Assemblies.assembly($scope.newAssembly.assemblyId).update($scope.newAssembly);
+          }
+          assemblyRes.$promise.then(
             // Success
             function (data) {
               localStorageService.set("currentAssembly", data);
               localStorageService.set("temporaryNewAssembly", "");
-              $location.url('/v1/assembly/' + data.assemblyId + "/forum");
+              //redirect to manage page
+              $location.url('/v2/assembly/' + data.assemblyId + "/edit");
             },
             // Error
             function (error) {
@@ -258,6 +332,7 @@
           loginService.signUp($scope.newUser, $scope);
         }
       }
+
 
       $scope.uploadFiles = function (file, errFiles) {
         $scope.f = file;
@@ -293,6 +368,10 @@
           $scope.newAssembly.invitationEmail = text;
         });
       }, true);
+
+      $scope.$watch("newAssembly", function (newVal, oldval) {
+        localStorageService.set("temporaryNewAssembly", newVal);
+      }, true);
     }
 
     function initializeNewAssembly() {
@@ -322,9 +401,12 @@
 
     function initializeListOfAssembliesToFollow() {
       var sessionKey = localStorageService.get("sessionKey");
+      console.log(sessionKey);
       if (sessionKey === null || sessionKey === undefined || sessionKey === "") {
+        console.log("assembliesWithoutLogin");
         $scope.assemblies = Assemblies.assembliesWithoutLogin().query();
       } else {
+        console.log("assemblies");
         $scope.assemblies = Assemblies.assemblies().query();
       }
       $scope.assemblies.$promise.then(

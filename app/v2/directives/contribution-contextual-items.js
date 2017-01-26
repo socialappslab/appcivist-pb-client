@@ -76,6 +76,9 @@
           scope.cm = { isHover: false };
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
+          scope.modals = {};
+          scope.openModal = openModal.bind(scope);
+          scope.closeModal = closeModal.bind(scope);
           setContributionType(scope);
 
           if (!scope.isIdea) {
@@ -183,9 +186,16 @@
               }
             );
           }
-
         }
       }
     };
+
+    function openModal(id) {
+      this.modals[id] = true;
+    }
+
+    function closeModal(id) {
+      this.modals[id] = false;
+    }
   }
 }());

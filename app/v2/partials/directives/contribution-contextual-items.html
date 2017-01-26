@@ -1,7 +1,7 @@
 <ul ng-if="isProposal">
-  <li class="li-action-menu" ng-if="userIsAuthor && showEdit"><a >{{'Edit' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="userIsAuthor && showEdit"><a>{{'Edit' | translate}}</a></li>
   <li class="li-action-menu" ng-if="userIsAuthor"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
-  <li class="li-action-menu"><a href="" ng-click="myObject.updateFeedback()">{{'Give Feedback' | translate}}</a></li>
+  <li class="li-action-menu"><a href="" ng-click="$parent.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
   <li class="li-action-menu"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
@@ -11,12 +11,20 @@
 </ul>
 
 <ul ng-if="isIdea">
-  <li class="action__edit" ng-if="userIsAuthor"><a >{{'Edit' | translate}}</a></li>
-  <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a >{{'Assign' | translate}}</a></li>
-  <li class="action__promote" ng-if="userIsWorkingGroupCoordinator"><a >{{'Promote to contribution' | translate}}</a></li>
+  <li class="action__edit" ng-if="userIsAuthor"><a>{{'Edit' | translate}}</a></li>
+  <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a>{{'Assign' | translate}}</a></li>
+  <li class="action__promote" ng-if="userIsWorkingGroupCoordinator"><a>{{'Promote to contribution' | translate}}</a></li>
   <li class="action__history"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
 </ul>
 
 <div class="history-modal" style="display: none;">
   <history-modal vex-instance="vexInstance" contribution="contribution"></history-modal>
 </div>
+
+<!--<contribution-feedback-form ng-if="modals.feedbackModal" contribution="contribution" close="closeModal('feedbackModal')"></contribution-feedback-form>-->
+
+<modal open-if="modals.feedbackModal" close="closeModal('feedbackModal')" title="Feedback Form" template-id="feedbackModal"></modal>
+
+<script id="feedbackModal" type="text/ng-template">
+  <contribution-feedback-form contribution="$parent.contribution"></contribution-feedback-form>
+</script>

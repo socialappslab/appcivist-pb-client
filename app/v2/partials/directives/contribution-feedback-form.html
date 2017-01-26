@@ -1,0 +1,97 @@
+<div>
+  <style>
+    .field-container {
+      height: 39.5px;
+      margin-bottom: 10px;
+    }
+    
+    .field-container>select,
+    .field-container>input {
+      height: 39.5px;
+    }
+    
+    button.button__modal_submit {
+      width: 100%;
+      height: 39.5px;
+      margin-top: 20px !important;
+    }
+    
+    .rzslider .rz-tick-value {
+      top: -35px;
+    }
+    
+    .rzslider .rz-pointer {
+      background-color: #009877;
+    }
+    
+    .rzslider .rz-pointer.rz-active:after {
+      background-color: #fff;
+    }
+    
+    .rzslider .rz-bar,
+    .rzslider .rz-tick {
+      background-color: #11493b;
+    }
+    
+    form>fieldset {
+      margin-bottom: 20px;
+    }
+  </style>
+  <div class="modal_content__add_proposal">
+    <header class="modal-header" style="padding: 2em;">{{'Feedback Form' | translate}}</header>
+    <div class="modal-body">
+      <form>
+        <fieldset>
+          <label for="needScore">{{'Need score' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <rzslider rz-slider-model="vm.feedback.need" rz-slider-options="vm.sliderOptions"></rzslider>
+          </div>
+        </fieldset>
+        <fieldset>
+          <label for="benefit">{{'Benefit' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <rzslider rz-slider-model="vm.feedback.benefit" rz-slider-options="vm.sliderOptions"></rzslider>
+          </div>
+        </fieldset>
+        <fieldset>
+          <label for="feasibility">{{'Feasibility' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <rzslider rz-slider-model="vm.feedback.feasibility" rz-slider-options="vm.sliderOptions"></rzslider>
+          </div>
+        </fieldset>
+        <fieldset>
+          <label for="textualFeedback">{{'Textual Feedback' | translate}}</label>
+          <textarea class="col-lg-12" ui-tinymce="vm.tinymceOptions" ng-model="vm.feedback.textualFeedback"></textarea>
+        </fieldset>
+        <fieldset>
+          <label for="status">{{'Visibility of feedback' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <select name="status" ng-model="vm.feedback.status" class="col-lg-12">
+                  <option value="PRIVATE">{{'Private' | translate}}</option>
+                  <option value="PUBLIC">{{'Public' | translate}}</option>
+                </select>
+          </div>
+        </fieldset>
+        <fieldset ng-if="vm.userIsCoordinator || vm.userIsWGCoordinator">
+          <label for="status">{{'Type of feedback' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <select name="type" class="col-lg-12" ng-model="vm.selectedType" ng-change="vm.selectType()" ng-options="type as type.text for type in vm.types">
+                  <option value="">{{'Select a type' | translate}}</option>
+                </select>
+          </div>
+        </fieldset>
+        <fieldset ng-if="!vm.userIsMember">
+          <label for="group">{{'Select a Working Group that should receive this feedback' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <select name="group" class="col-lg-12" ng-model="vm.selectedGroup" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
+                  <option value="">{{'Select a working group' | translate}}</option>
+                </select>
+          </div>
+        </fieldset>
+      </form>
+      <fieldset>
+        <button class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+      </fieldset>
+    </div>
+  </div>
+</div>

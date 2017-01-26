@@ -771,6 +771,20 @@
   "Your password has been reset. Please now log in using your new password.": "Your password has been reset. Please now log in using your new password.",
   "Your passwords don't match": "Your passwords don't match",
   "Your user has not yet been set up for password usage.": "Your user has not yet been set up for password usage.",
-  "Enter reason": "Ingrese el motivo",
-  "Moderation pending": "Pendiente de moderación"
+  "Feedback Form": "Feedback Form",
+  "Need score": "Need score",
+  "Benefit": "Benefit",
+  "Feasibility": "Feasibility",
+  "Visibility of feedback": "Visibility of feedback",
+  "Private": "Private",
+  "Public": "Public",
+  "Select a Working Group that should receive this feedback": "Select a Working Group that should receive this feedback",
+  "Select a type": "Select a type",
+  "Type of feedback": "Type of feedback",
+  "Textual Feedback": "Textual Feedback",
+  "Enter reason": "Enter reason",
+  "Moderation pending": "Moderation pending",
+  "Member feedback": "Member feedback",
+  "Working group official feedback": "Working group official feedback",
+  "Technical feedback": "Technical feedback"
 }

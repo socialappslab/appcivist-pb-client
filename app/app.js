@@ -143,7 +143,7 @@
       })
       .state('v2.assembly.new', {
         url: '/new',
-        controller: 'v2.AssemblyFormCtrl',
+        controller: 'v2.AssemblyFormWizardCtrl',
         templateUrl: 'app/v2/partials/assembly/form.html',
         access: {
           requiresLogin: true
@@ -169,6 +169,30 @@
         url: '/:aid',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.edit', {
+        url: '/edit',
+        controller: 'v2.AssemblyFormWizardCtrl',
+        templateUrl: 'app/v2/partials/assembly/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.edit.step1', {
+        url: '/description',
+        templateUrl: 'app/v2/partials/assembly/step1.html',
+        controller: 'v2.AssemblyFormCtrl',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.edit.step2', {
+        url: '/assemblies',
+        templateUrl: 'app/v2/partials/assembly/step2.html',
+        controller: 'v2.AssemblyFormCtrl',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.assembly.aid.campaign', {
         url: '/campaign',

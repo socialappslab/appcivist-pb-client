@@ -26,7 +26,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
     assembly: function(assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId });
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId }, { 'update': { method:'PUT' } });
     },
     assemblyByShortName: function(shortName) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/name/:shortname', { shortname: shortName });

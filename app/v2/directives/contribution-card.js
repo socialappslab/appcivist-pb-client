@@ -109,7 +109,7 @@
         }
 
         scope.myObject.seeDetail = function() {
-          vex.open({
+          scope.vexInstance = vex.open({
             unsafeContent: $compile(document.querySelector('.contribution-detail-modal').innerHTML)(scope)[0]
           });
         }

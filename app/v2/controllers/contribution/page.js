@@ -6,6 +6,7 @@
     .controller('v2.ProposalPageCtrl', ProposalPageCtrl);
 
 
+
   ProposalPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
@@ -19,6 +20,7 @@
     activate();
 
     function activate() {
+      ModalMixin.init($scope);
       $scope.addAttachment = addAttachment.bind($scope);
       $scope.updateFeedback = updateFeedback.bind($scope);
       $scope.uploadFile = uploadFile.bind($scope);

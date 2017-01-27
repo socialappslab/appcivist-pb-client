@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -9,18 +9,22 @@
   ProposalPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
-    'Space'
+    'Space', '$http', 'FileUploader'
   ];
 
   function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
-    $translate, Space) {
+    $translate, Space, $http, FileUploader) {
 
     activate();
 
     function activate() {
+      $scope.addAttachment = addAttachment.bind($scope);
+      $scope.updateFeedback = updateFeedback.bind($scope);
+      $scope.uploadFile = uploadFile.bind($scope);
+      $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
-      $scope.changeActiveTab = function (tab) {
+      $scope.changeActiveTab = function(tab) {
         if (tab == 1) {
           $scope.activeTab = 'Members';
         } else {
@@ -49,7 +53,7 @@
       loadProposal($scope);
       $scope.showActionMenu = true;
       $scope.myObject = {};
-      $scope.myObject.refreshMenu = function () {
+      $scope.myObject.refreshMenu = function() {
         scope.showActionMenu = !scope.showActionMenu;
       };
       // Read user contribution feedback
@@ -61,7 +65,7 @@
     }
 
     // Feedback update
-    $scope.updateFeedback = function (value) {
+    function updateFeedback(value) {
       //console.log(value);
       if (value === 'up') {
         $scope.userFeedback.up = true;
@@ -78,11 +82,11 @@
       //var stats = $scope.contribution.stats;
       var feedback = Contributions.userFeedback($scope.assemblyID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
-        function (newStats) {
+        function(newStats) {
           $scope.proposal.stats = newStats;
           $scope.proposal.informalScore = Contributions.getInformalScore($scope.proposal);
         },
-        function (error) {
+        function(error) {
           Notify.show('Error when updating user feedbac', 'error');
         }
       );
@@ -97,7 +101,7 @@
         rsp = Contributions.contribution(scope.assemblyID, scope.proposalID).get();
       }
       rsp.$promise.then(
-        function (data) {
+        function(data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
@@ -126,7 +130,7 @@
           }
           loadRelatedContributions();
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
         }
       );
@@ -140,7 +144,7 @@
       // 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
       if (!$scope.userIsAuthor && $scope.group && $scope.group.groupId) {
         var authorship = Contributions.verifyGroupAuthorship($scope.user, proposal, $scope.group).get();
-        authorship.$promise.then(function (response) {
+        authorship.$promise.then(function(response) {
           $scope.userIsAuthor = response.responseStatus === 'OK';
           if ($scope.userIsAuthor) {
             loadEtherpadWriteUrl(proposal);
@@ -154,7 +158,7 @@
     function loadEtherpadWriteUrl(proposal) {
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
-        etherpadRes.$promise.then(function (pad) {
+        etherpadRes.$promise.then(function(pad) {
           $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
         });
       }
@@ -165,9 +169,9 @@
       $scope.proposal.rsID = $scope.proposal.resourceSpaceId;
       var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous);
       rsp.then(
-        function (data) {
+        function(data) {
           var related = [];
-          angular.forEach(data.list, function (r) {
+          angular.forEach(data.list, function(r) {
             if (r.contributionId === $scope.proposalID) {
               return;
             }
@@ -175,7 +179,7 @@
           });
           $scope.relatedContributions = related;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error loading contributions from server', 'error');
         }
       );
@@ -184,5 +188,66 @@
     function toggleIdeasSection() {
       this.ideasSectionExpanded = !this.ideasSectionExpanded;
     }
+
+    /**
+     * Implements add attachment to proposal feature.
+     */
+    function addAttachment() {
+      var vm = this;
+      var input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      $(input).bind('change', function() {
+        var file = this.files[0];
+        vm.$apply(function() {
+          vm.uploadFile(file);
+        });
+      });
+      input.click();
+      this.$on('$destroy', function() {
+        $(input).unbind('change');
+      });
+    }
+
+    /**
+     * Upload the given file to the server. Also, attachs it to
+     * the current contribution.
+     * 
+     * @param {object} file
+     */
+    function uploadFile(file) {
+      var vm = this;
+      var fd = new FormData();
+      fd.append('file', file);
+      $http.post(FileUploader.uploadEndpoint(), fd, {
+        headers: {
+          'Content-Type': undefined
+        },
+        transformRequest: angular.identity,
+      }).then(function(response) {
+        vm.createAttachmentResource(response.data.url);
+      }, function(error) {
+        Notify.show('Error while uploading file to the server', 'error');
+      });
+    }
+
+    /**
+     * After the file has been uploaded, we should relate it with the contribution.
+     * 
+     * @param {string} url - The uploaded file's url.
+     */
+    function createAttachmentResource(url) {
+      var vm = this;
+      var attachment = Contributions.newAttachmentObject({ url: url });
+      var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
+      rsp.then(function(response) {
+
+        if (!vm.proposal.attachment) {
+          vm.proposal.attachment = [];
+        }
+        vm.proposal.attachments.push(response);
+      }, function(error) {
+        Notify.show('Error while uploading file to the server', 'error');
+      });
+    }
   }
-} ());
+}());

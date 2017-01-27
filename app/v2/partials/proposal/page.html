@@ -235,7 +235,7 @@
               <div class="panel-heading">
                 <h2 class="heading--header">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
-                  <a href="" ng-if="!isAnonymous"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
+                  <a href="" ng-if="!userIsAuthor" ng-click="addAttachment()"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
                   <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{ 'Show Ideas' | translate }}</a>&nbsp;&nbsp;
                 </div>
               </div>
@@ -250,7 +250,7 @@
                   </a>
                 </figure>
                 <h4>
-                  {{(file.name && file.name != "" ? file.name : file.url)}}
+                  <a ng-href="{{file.url}}" target="_blank">{{(file.name && file.name != "" ? file.name : file.url)}}</a>
                 </h4>
                 <!--TODO: add these buttons back when we implement their functionalities-->
                 <!--<div class="action-button" ng-if="!isAnonymous">-->

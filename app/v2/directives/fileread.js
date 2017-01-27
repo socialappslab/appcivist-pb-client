@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -12,17 +12,17 @@
       scope: {
         fileread: '='
       },
-      link: function (scope, element, attributes) {
-        element.bind('change', function (changeEvent) {
-          scope.$apply(function () {
+      link: function(scope, element, attributes) {
+        element.bind('change', function(changeEvent) {
+          scope.$apply(function() {
             scope.fileread = changeEvent.target.files[0];
           });
         });
 
-        scope.$on('$destory', function () {
+        scope.$on('$destroy', function() {
           element.unbind('change');
         });
       }
     }
   }
-} ())
+}())

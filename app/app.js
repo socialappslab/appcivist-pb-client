@@ -149,17 +149,17 @@
           requiresLogin: true
         }
       })
-      .state('v2.assembly.new.step1', {
+      .state('v2.assembly.new.description', {
         url: '/description',
-        templateUrl: 'app/v2/partials/assembly/step1.html',
+        templateUrl: 'app/v2/partials/assembly/description.html',
         controller: 'v2.AssemblyFormCtrl',
         access: {
           requiresLogin: true
         }
       })
-      .state('v2.assembly.new.step2', {
-        url: '/assemblies',
-        templateUrl: 'app/v2/partials/assembly/step2.html',
+      .state('v2.assembly.new.configuration', {
+        url: '/configuration',
+        templateUrl: 'app/v2/partials/assembly/configuration.html',
         controller: 'v2.AssemblyFormCtrl',
         access: {
           requiresLogin: true
@@ -170,6 +170,32 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
+
+      .state('v2.assembly.aid.assembly', {
+        url: '/assembly/new',
+        controller: 'v2.AssemblyFormWizardCtrl',
+        templateUrl: 'app/v2/partials/assembly/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.assembly.description', {
+        url: '/description',
+        templateUrl: 'app/v2/partials/assembly/description.html',
+        controller: 'v2.AssemblyFormCtrl',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.assembly.configuration', {
+        url: '/configuration',
+        templateUrl: 'app/v2/partials/assembly/configuration.html',
+        controller: 'v2.AssemblyFormCtrl',
+        access: {
+          requiresLogin: true
+        }
+      })
+
       .state('v2.assembly.aid.edit', {
         url: '/edit',
         controller: 'v2.AssemblyFormWizardCtrl',
@@ -178,17 +204,17 @@
           requiresLogin: true
         }
       })
-      .state('v2.assembly.aid.edit.step1', {
+      .state('v2.assembly.aid.edit.description', {
         url: '/description',
-        templateUrl: 'app/v2/partials/assembly/step1.html',
+        templateUrl: 'app/v2/partials/assembly/description.html',
         controller: 'v2.AssemblyFormCtrl',
         access: {
           requiresLogin: true
         }
       })
-      .state('v2.assembly.aid.edit.step2', {
-        url: '/assemblies',
-        templateUrl: 'app/v2/partials/assembly/step2.html',
+      .state('v2.assembly.aid.edit.configuration', {
+        url: '/configuration',
+        templateUrl: 'app/v2/partials/assembly/configuration.html',
         controller: 'v2.AssemblyFormCtrl',
         access: {
           requiresLogin: true
@@ -198,6 +224,98 @@
         url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.new', {
+        url: '/new',
+        controller: 'v2.CampaignFormWizardCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.new.description', {
+        url: '/description',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.description.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.new.milestones', {
+        url: '/milestones',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.milestones.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.new.stages', {
+        url: '/stages',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.stages.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+
+      .state('v2.assembly.aid.campaign.edit', {
+        url: '/:cid/edit',
+        controller: 'v2.CampaignFormWizardCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.edit.description', {
+        url: '/description',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.description.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.edit.milestones', {
+        url: '/milestones',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.milestones.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.edit.stages', {
+        url: '/stages',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.stages.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      //campaign edits
+      .state('v2.assembly.aid.campaign.workingGroup', {
+        url: '/:cid/group',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.workingGroup.new', {
+        url: '/new',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.workingGroup.gid', {
+        url: '/:gid',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.workingGroup.gid.edit', {
+        url: '/edit',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.assembly.aid.campaign.cid', {
         url: '/:cid',
@@ -253,76 +371,15 @@
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
       })
-      .state('v2.campaign', {
+      /*.state('v2.campaign', {
         url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
-      })
-      .state('v2.campaign.new', {
-        url: '/new',
-        controller: 'v2.CampaignFormWizardCtrl',
-        templateUrl: 'app/v2/partials/campaign/form.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.campaign.new.description', {
-        url: '/description',
-        controller: 'v2.CampaignFormCtrl',
-        templateUrl: 'app/v2/partials/campaign/form.description.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.campaign.new.milestones', {
-        url: '/milestones',
-        controller: 'v2.CampaignFormCtrl',
-        templateUrl: 'app/v2/partials/campaign/form.milestones.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.campaign.new.stages', {
-        url: '/stages',
-        controller: 'v2.CampaignFormCtrl',
-        templateUrl: 'app/v2/partials/campaign/form.stages.html',
-        access: {
-          requiresLogin: true
-        }
-      })
+      })*/
       .state('v2.campaign.cuuid', {
         url: '/:cuuid',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.workingGroup', {
-        url: '/group',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.workingGroup.new', {
-        url: '/new',
-        controller: 'v2.WorkingGroupFormCtrl',
-        templateUrl: 'app/v2/partials/working-group/form.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.workingGroup.edit', {
-        url: '/:gid/edit',
-        controller: 'v2.WorkingGroupFormCtrl',
-        templateUrl: 'app/v2/partials/working-group/form.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.workingGroup.gid', {
-        url: '/:gid',
-        controller: 'v2.WorkingGroupDashboardCtrl',
-        templateUrl: 'app/v2/partials/working-group/dashboard.html',
         access: {
           requiresLogin: true
         }

@@ -8,11 +8,11 @@
 
   AssemblyFormCtrl.$inject = [
     '$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService', 'Assemblies',
-    'usSpinnerService', '$state', '$location', '$stateParams',
+    'usSpinnerService', '$state', '$location', '$stateParams', 'configService'
   ];
 
   function AssemblyFormCtrl($scope, localStorageService, $translate, $routeParams,
-    LocaleService, Assemblies, usSpinnerService, $state, $location, $stateParams) {
+    LocaleService, Assemblies, usSpinnerService, $state, $location, $stateParams, configService) {
 
     init();
 
@@ -29,9 +29,9 @@
           }
         } else {
           if ($stateParams.aid) {
-            $location.path('/v2/assembly/' + $stateParams.aid + '/edit/assemblies');
+            $location.path('/v2/assembly/' + $stateParams.aid + '/edit/configuration');
           } else {
-            $location.path('/v2/assembly/new/assemblies');
+            $location.path('/v2/assembly/new/configuration');
           }
         }
       }
@@ -64,7 +64,7 @@
 
       $scope.isEdit = false;
       var temporaryAssembly = localStorageService.get("temporaryNewAssembly");
-      if ($stateParams.aid) {
+      if ($stateParams.aid && ($state.is('v2.assembly.aid.edit') || $state.is('v2.assembly.aid.edit.description') || $state.is('v2.assembly.aid.edit.configuration'))) {
         $scope.isEdit = true;
         if ((temporaryAssembly != null && temporaryAssembly.assemblyId != $stateParams.aid) || temporaryAssembly == null) {
           var rsp = Assemblies.assembly($stateParams.aid).get();
@@ -78,13 +78,11 @@
           $scope.newAssembly = temporaryAssembly;
         }
         initializeNewAssembly();
-        //initializeListOfAssembliesToFollow();
       } else {
         if (temporaryAssembly != null && temporaryAssembly.assemblyId != null) {
           localStorageService.set("temporaryNewAssembly", null);
         }
         initializeNewAssembly();
-        //initializeListOfAssembliesToFollow();
       }
 
       $scope.user = localStorageService.get("user");
@@ -96,22 +94,6 @@
       $scope.inviteesEmails = {
         list: null
       };
-
-      /*$scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName() ?
-        LocaleService.getLocaleDisplayName() : LOCALES.locales[LOCALES.preferredLocale];
-      $scope.localesDisplayNames = LocaleService.getLocalesDisplayNames();
-
-      $scope.changeLanguage = function(locale) {
-        LocaleService.setLocaleByDisplayName(locale);
-      };
-
-      $scope.removeErrors = function(index) {
-        $scope.errors.splice(index, 1);
-      }
-
-      $scope.setCurrentStep = function(number) {
-        step(number);
-      }*/
 
       $scope.setNewAssemblyIcon = function (url, name) {
         $scope.newAssembly.profile.icon = url;
@@ -250,6 +232,24 @@
         $scope.newAssembly.config = {};
         $scope.newAssembly.config.facetoface = $scope.newAssembly.configs[0].value;
         $scope.newAssembly.config.messaging = $scope.newAssembly.configs[1].value;
+
+        // add configs and principal configs
+        var configs1 = configService.getAssemblyConfigs("ASSEMBLY");
+        var configs2 = [];
+        if($state.is('v2.assembly.aid.edit') || $state.is('v2.assembly.aid.edit.description') || $state.is('v2.assembly.aid.edit.configuration')) {
+          configs2 = configService.getPrincipalAssemblyConfigs("ASSEMBLY");
+        }
+        var configs = _.concat(configs1, configs2);
+        var finalConfig = [];
+        _.forEach($scope.newAssembly.configs, function(config) {
+          _.forEach(configs, function (configAux) {
+            if (config.key == configAux.key) {
+              config.definition = configAux.definition;
+            }
+          });
+          finalConfig.push(config);
+        });
+        $scope.newAssembly.configs = finalConfig;
       }
 
       // TODO: process selected assemblies
@@ -311,7 +311,8 @@
               localStorageService.set("currentAssembly", data);
               localStorageService.set("temporaryNewAssembly", "");
               //redirect to manage page
-              $location.url('/v2/assembly/' + data.assemblyId + "/edit");
+              //$location.url('/v2/assembly/' + (data.assemblyId != null ? data.assemblyId : data.newResourceId) + "/edit");
+              $state.go("v2.assembly.aid.edit", {aid: (data.assemblyId != null ? data.assemblyId : data.newResourceId)}, { reload: true });
             },
             // Error
             function (error) {
@@ -379,6 +380,18 @@
         $scope.newAssembly = localStorageService.get("temporaryNewAssembly");
         if ($scope.newAssembly === null || $scope.newAssembly === undefined || $scope.newAssembly === "") {
           $scope.newAssembly = Assemblies.defaultNewAssembly();
+
+          // add configs and principal configs
+          var configs1 = configService.getAssemblyConfigs("ASSEMBLY");
+          var configs2 = [];
+          if($state.is('v2.assembly.new') || $state.is('v2.assembly.new.description') || $state.is('v2.assembly.new.configuration')) {
+            $scope.newAssembly.principalAssembly = true;
+            var configs2 = configService.getPrincipalAssemblyConfigs("ASSEMBLY");
+          }
+          var configs = _.concat(configs1, configs2);
+          console.log("loading configs");
+          $scope.newAssembly.configs = configs;
+
         }
       } else {
         console.log("Temporary New Assembly exists in the scope")
@@ -403,10 +416,8 @@
       var sessionKey = localStorageService.get("sessionKey");
       console.log(sessionKey);
       if (sessionKey === null || sessionKey === undefined || sessionKey === "") {
-        console.log("assembliesWithoutLogin");
         $scope.assemblies = Assemblies.assembliesWithoutLogin().query();
       } else {
-        console.log("assemblies");
         $scope.assemblies = Assemblies.assemblies().query();
       }
       $scope.assemblies.$promise.then(

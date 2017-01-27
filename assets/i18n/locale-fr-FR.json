@@ -796,5 +796,21 @@
   "Moderation pending": "Moderation pending",
   "Member feedback": "Member feedback",
   "Working group official feedback": "Working group official feedback",
-  "Technical feedback": "Technical feedback"
+  "Technical feedback": "Technical feedback",
+  "appcivist.assembly.enable-forum": "Enable Forum",
+  "appcivist.assembly.disable-new-memberships": "Disable new memberships",
+  "appcivist.assembly.membership-invitation-by-members":"Membership invitation by members",
+  "appcivist.assembly.has-registration-form":"Has registration form",
+  "appcivist.assembly.has-registration-form-url":"Has registration form url",
+  "appcivist.assembly.has-registration-form-id":"Has registration form id",
+  "appcivist.assembly.enable-moderator-role":"Enable moderator role",
+  "appcivist.instance.assembly-network":"Assembly network",
+  "appcivist.instance.assembly-network-limit":"Assembly network limit",
+  "appcivist.instance.assembly-network-campaign-limit":"Assembly network campaign limit",
+  "appcivist.instance.assembly-network-working-group-limit":"Assembly network group limit",
+  "appcivist.instance.etherpad-base-url":"Etherpad base url",
+  "appcivist.instance.etherpad-api-key":"Etherpad api key",
+  "appcivist.instance.domain": "Domain",
+  "appcivist.instance.api-key": "Api key",
+  "appcivist.instance.theme": "Theme"
 }

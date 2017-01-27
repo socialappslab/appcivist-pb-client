@@ -37,6 +37,9 @@ td {
   vertical-align: middle;
   display: table-cell;
 }
+label {
+  font-size: 16px;
+}
 </style>
 <!-- just grabbed some styles form version 1 -->
 <main class="appmain">
@@ -47,9 +50,9 @@ td {
     </header>
     <section>
       <wizard>
-        <wizard-pane title="{{'Assembly description' | translate}}" number="1" state=".step1">
+        <wizard-pane title="{{'Assembly description' | translate}}" number="1" state=".description">
         </wizard-pane>
-        <wizard-pane title="{{'Assemblies to follow' | translate}}" number="2" state=".step2">
+        <wizard-pane title="{{'Configure your assembly' | translate}}" number="2" state=".configuration">
         </wizard-pane>
       </wizard>
       <wizard-content>

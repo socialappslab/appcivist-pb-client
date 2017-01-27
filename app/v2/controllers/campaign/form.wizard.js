@@ -6,11 +6,20 @@
     .controller('v2.CampaignFormWizardCtrl', CampaignFormWizardCtrl);
 
 
-  CampaignFormWizardCtrl.$inject = ['$state'];
+  CampaignFormWizardCtrl.$inject = ['$state', '$stateParams', '$scope'];
 
-  function CampaignFormWizardCtrl($state) {
-    if ($state.is('v2.campaign.new')) {
-      $state.go('v2.campaign.new.description');
+  function CampaignFormWizardCtrl($state, $stateParams, $scope) {
+    console.log($state);
+    if ($state.is('v2.assembly.aid.campaign.new')) {
+      $state.go('v2.assembly.aid.campaign.new.description', {aid: $stateParams.aid});
+    }
+
+    if ($state.is('v2.assembly.aid.campaign.edit')) {
+      $state.go('v2.assembly.aid.campaign.edit.description', {aid: $stateParams.aid, cid: $stateParams.cid});
+    }
+
+    if($stateParams.cid) {
+      $scope.isEdit = true;
     }
   }
 } ());

@@ -1,5 +1,5 @@
 <section class="comments__section">
-  <div class="step-margin row">
+  <!--<div class="step-margin row">
     <div id="campaignGoal" class="row col-md-8 col-sm-8 form-horizontal">
       <div class="col-lg-6 col-md-6 col-xs-12">
           <div class="box descriptionBox">
@@ -58,7 +58,28 @@
       </ul>
   </div>
 </div>
-  <div class="col-md-12 voffset3"></div>
+  <div class="col-md-12 voffset3"></div>-->
+  <div class="row">
+      <form name="newAssemblyForm1">
+        <div class="col-sm-8 col-md-8 col-xs-12"
+             ng-repeat="config in newAssembly.configs | orderBy : 'key'">
+             <div class="row">
+               <div class="col-sm-6 col-md-6 col-xs-12">
+                 <label>{{config.key | translate}}</label>
+               </div>
+               <div class="col-sm-6 col-md-6 col-xs-12">
+                 <input ng-if="config.definition.valueType == 'String' || config.definition.valueType == 'Number'" id="inputNameAssembly" name="name" type="text" class="form-control"
+                        ng-model="config.value" ng-required="true">
+                <input ng-if="config.definition.valueType == 'Boolean'" type="checkbox" ng-model="config.value"
+                ng-true-value="'true'" ng-checked="config.value"/>
+              </div>
+              <div class="col-sm-6 col-md-6 col-xs-12">
+              </div>
+              <div class="col-md-12 voffset3"></div>
+            </div>
+          </div>
+      </form>
+  </div>
   <div id="assemblyErrors" class="row col-md-8 col-sm-8 form-horizontal">
     <div class="row">
       <uib-alert ng-repeat="error in errors track by $index" type="danger" close="removeErrors($index)">{{error.statusMessage}} </uib-alert>

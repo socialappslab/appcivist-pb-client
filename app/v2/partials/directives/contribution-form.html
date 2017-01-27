@@ -1,11 +1,11 @@
 <div class="modal_content__add_proposal">
   <header class="modal-header">
-    <h2 class="modal__title" ng-if="isProposal">{{'Add Proposal' | translate}}</h2>
-    <h2 class="modal__title" ng-if="isIdea">{{'Add Idea' | translate}}</h2>
+    <h2 class="modal__title" ng-if="isProposal">{{actionLabel | translate}} {{'Proposal' | translate}}</h2>
+    <h2 class="modal__title" ng-if="isIdea">{{actionLabel | translate}} {{'Idea' | translate}}</h2>
   </header>
   <div class="modal-body">
     <form name="contributionForm">
-      <fieldset class="divider" ng-if="userIsAssemblyCoordinator">
+      <fieldset class="divider" ng-if="userIsAssemblyCoordinator && isCreate">
         <label for="upload">{{'Upload csv file' | translate}}</label>
         <input type="file" name="upload" fileread="file.csv">
         <a class="button__modal_submit" ng-click="submit()">{{'Upload' | translate}}</a>
@@ -25,7 +25,7 @@
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
         </div>
-        <div class="field__container assign_proposal_to_wg" ng-if="isProposal">
+        <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
           <select name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal" ng-disabled="$parent.disabled" ng-change="$parent.selectGroup()" ng-options="group as group.name for group in $parent.groups">
             <option value="">{{'Select a working group' | translate}}</option>
@@ -34,13 +34,13 @@
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
         </div>
-        <div class="field__container assign_proposal_to_users">
+        <div class="field__container assign_proposal_to_users" ng-if="isCreate">
           <fieldset class="user__assignment">
             <label for="authors">{{'Authors' | translate}}</label>
             <tags-field load-items="loadAuthors({query: query})" options="authorsOptions" selected="contribution.authors" prefetch="true" disabled="isAuthorsDisabled"></tags-field>
           </fieldset>
         </div>
-        <div class="field__container assign_proposal_to_users" ng-if="isIdea">
+        <div class="field__container assign_proposal_to_users" ng-if="isIdea && isCreate">
           <fieldset class="user__assignment">
             <label for="authors">{{'Non Member Author' | translate}}</label>
             <nonmember-author-form on-change="$parent.updateNonMember(author)" ng-disabled="$parent.disabled"></nonmember-author-form>
@@ -53,7 +53,7 @@
             <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="contribution.existingThemes" prefetch="true" disabled="disabled"></tags-field>
           </fieldset>
         </div>
-        <div>
+        <div ng-if="isCreate">
           <fieldset>
             <div class="field__container">
               <label for="add_proposal__source_code">{{'Source Code' | translate}}</label>

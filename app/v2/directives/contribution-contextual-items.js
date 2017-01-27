@@ -16,24 +16,17 @@
       var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
       var groupRoles = groupMembershipsHash[scope.group ? scope.group.groupId : scope.group];
       scope.userIsWorkingGroupCoordinator = groupRoles != undefined ? hasRol(groupRoles, "COORDINATOR") : false;
-      console.log("User is coordinator of group " + scope.group + " = " + scope.userIsWorkingGroupCoordinator);
       var assemblyRoles = assemblyMembershipsHash[scope.assemblyId];
       scope.userIsAssemblyCoordinator = assemblyRoles != undefined ? hasRol(assemblyRoles, "COORDINATOR") : false;
-      console.log("User is coordinator of assembly " + scope.assemblyId + " = " + scope.userIsAssemblyCoordinator);
 
       if (scope.contribution.type === 'PROPOSAL') {
-        scope.userCanEdit = scope.userIsAuthor = groupRoles != undefined;
-        console.log("User can edit Proposal " + scope.contribution.contributionId + " = " + scope.userCanEdit);
-        console.log("User is author of Proposal " + scope.contribution.contributionId + " = " + scope.userIsAuthor);
+        scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
+        scope.userCanEdit = scope.userIsAuthor || scope.userIsAssemblyCoordinator || scope.userIsWorkingGroupCoordinator;
       } else if (scope.contribution.type === 'NOTE') {
         scope.userCanEdit = true;
         scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
-        console.log("User can edit NOTE " + scope.contribution.contributionId + " = " + scope.userCanEdit);
-        console.log("User is author of NOTE " + scope.contribution.contributionId + " = " + scope.userIsAuthor);
       } else {
         scope.userCanEdit = scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
-        console.log("User can edit Idea " + scope.contribution.contributionId + " = " + scope.userCanEdit);
-        console.log("User is author of Idea " + scope.contribution.contributionId + " = " + scope.userIsAuthor);
       }
     }
 
@@ -66,11 +59,15 @@
       templateUrl: '/app/v2/partials/directives/contribution-contextual-items.html',
       link: function(scope, element, attrs) {
 
-        scope.$watch('contribution', function(newVal) {
-          if (newVal) {
-            init();
-          }
-        });
+        if (!scope.contribution) {
+          scope.$watch('contribution', function(newVal) {
+            if (newVal) {
+              init();
+            }
+          });
+        } else {
+          init();
+        }
 
         function init() {
           scope.cm = { isHover: false };
@@ -79,6 +76,7 @@
           scope.modals = {};
           scope.openModal = openModal.bind(scope);
           scope.closeModal = closeModal.bind(scope);
+          scope.onEditContributionSuccess = onEditContributionSuccess.bind(scope);
           setContributionType(scope);
 
           if (!scope.isIdea) {
@@ -196,6 +194,11 @@
 
     function closeModal(id) {
       this.modals[id] = false;
+    }
+
+    function onEditContributionSuccess() {
+      this.closeModal('contributionEditModal');
+      $window.location.reload();
     }
   }
 }());

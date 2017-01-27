@@ -1,12 +1,12 @@
-(function () {
+(function() {
   'use strict';
 
   appCivistApp
     .directive('proposalsIdeasSearchbox', ProposalsIdeasSearchbox);
 
-  ProposalsIdeasSearchbox.$inject = ['Campaigns', 'localStorageService', 'Modal'];
+  ProposalsIdeasSearchbox.$inject = ['Campaigns', 'localStorageService'];
 
-  function ProposalsIdeasSearchbox(Campaigns, localStorageService, Modal) {
+  function ProposalsIdeasSearchbox(Campaigns, localStorageService) {
 
     return {
       restrict: 'E',
@@ -17,7 +17,7 @@
         loadGroups: '&?'
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
         scope.filters = {
           searchText: '',
           themes: [],
@@ -108,10 +108,10 @@
     function addSelected() {
       var themes = this.filters.themes.concat(this.vm.selectedThemes);
       var groups = this.filters.groups.concat(this.vm.selectedGroups);
-      this.filters.themes = _.uniqBy(themes, function (e) {
+      this.filters.themes = _.uniqBy(themes, function(e) {
         return e.themeId;
       });
-      this.filters.groups = _.uniqBy(groups, function (e) {
+      this.filters.groups = _.uniqBy(groups, function(e) {
         return e.groupId;
       });
       this.toggleModal('categoriesModal');
@@ -180,4 +180,4 @@
       this.searchHandler({ filters: this.filters });
     }
   }
-} ());
+}());

@@ -43,7 +43,9 @@
             unsafeContent: $compile(html)(scope.$parent)[0],
             afterClose: function() {
               if (angular.isFunction(scope.close)) {
-                scope.close();
+                scope.$apply(function() {
+                  scope.close();
+                });
               }
             }
           });

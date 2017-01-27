@@ -21,11 +21,11 @@
 
     function activate() {
       ModalMixin.init($scope);
-      $scope.addAttachment = addAttachment.bind($scope);
       $scope.updateFeedback = updateFeedback.bind($scope);
-      $scope.uploadFile = uploadFile.bind($scope);
+      $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
+      $scope.newAttachment = {};
       $scope.changeActiveTab = function(tab) {
         if (tab == 1) {
           $scope.activeTab = 'Members';
@@ -192,34 +192,13 @@
     }
 
     /**
-     * Implements add attachment to proposal feature.
-     */
-    function addAttachment() {
-      var vm = this;
-      var input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      $(input).bind('change', function() {
-        var file = this.files[0];
-        vm.$apply(function() {
-          vm.uploadFile(file);
-        });
-      });
-      input.click();
-      this.$on('$destroy', function() {
-        $(input).unbind('change');
-      });
-    }
-
-    /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.
-     * 
-     * @param {object} file
      */
-    function uploadFile(file) {
+    function submitAttachment() {
       var vm = this;
       var fd = new FormData();
-      fd.append('file', file);
+      fd.append('file', this.newAttachment.file);
       $http.post(FileUploader.uploadEndpoint(), fd, {
         headers: {
           'Content-Type': undefined
@@ -239,7 +218,7 @@
      */
     function createAttachmentResource(url) {
       var vm = this;
-      var attachment = Contributions.newAttachmentObject({ url: url });
+      var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
       var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
       rsp.then(function(response) {
 
@@ -247,6 +226,8 @@
           vm.proposal.attachment = [];
         }
         vm.proposal.attachments.push(response);
+        vm.closeModal('addAttachmentForm');
+        Notify.show('Attachment saved!', 'success');
       }, function(error) {
         Notify.show('Error while uploading file to the server', 'error');
       });

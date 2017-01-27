@@ -6,11 +6,11 @@
 
   DiscussionPanel.$inject = [
     'localStorageService', '$anchorScroll', '$location', 'Contributions', 'Notify', '$filter',
-    'Space', 'Memberships', '$stateParams', 'RECAPTCHA_KEY', 'Captcha'
+    'Space', 'Memberships', '$stateParams', 'RECAPTCHA_KEY', 'Captcha', '$rootScope'
   ];
 
   function DiscussionPanel(localStorageService, $anchorScroll, $location, Contributions,
-    Notify, $filter, Space, Memberships, $stateParams, RECAPTCHA_KEY, Captcha) {
+    Notify, $filter, Space, Memberships, $stateParams, RECAPTCHA_KEY, Captcha, $rootScope) {
 
     return {
       restrict: 'E',
@@ -90,6 +90,11 @@
             var sid = (scope.user) ? discussion.resourceSpaceId : discussion.uuid;
             saveContribution(scope, sid, scope.newComment, 'contribution');
           };
+
+          $rootScope.$on('refreshList', function(event, index) {
+            loadDiscussions(scope, scope.spaceId);
+          });
+
         }
       }
     };
@@ -163,7 +168,7 @@
 
     /**
      * Recaptcha on-success handler. This is used in comment form.
-     * 
+     *
      * @param {object} discussion - the discussion associated with the comment form.
      * @param {string} response - the hashed recaptcha response.
      */

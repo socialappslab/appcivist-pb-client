@@ -3,7 +3,7 @@
     background: #11493b;
     border-color: #11493b;
   }
-
+  
   button[type=submit]:hover {
     background-color: #009877;
   }
@@ -20,29 +20,25 @@
             <div class="row">
               <div class="col-lg-12">
                 <label for="profileEmail">{{'Email address' | translate}}</label>
-                <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()"
-                  ng-model="profile.email">
+                <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()" ng-model="profile.email">
               </div>
             </div>
             <br />
             <div class="row">
               <div class="col-xs-6">
                 <label for="profileFirstName">{{'First Name'|translate}}</label>
-                <input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | translate}}" ng-blur="blurReset()"
-                  ng-blur="blurReset()" ng-model="profile.firstname">
+                <input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | translate}}" ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.firstname">
               </div>
               <div class="col-xs-6">
                 <label for="profileLastName">{{'Last Name'|translate}}</label>
-                <input type="text" class="form-control" id="profileLastName" placeholder="{{'Last Name' | translate}}" ng-blur="blurReset()"
-                  ng-model="profile.lastname">
+                <input type="text" class="form-control" id="profileLastName" placeholder="{{'Last Name' | translate}}" ng-blur="blurReset()" ng-model="profile.lastname">
               </div>
             </div>
             <br />
             <div class="row">
               <div class="col-xs-12">
                 <label for="profileUsername">{{'Username'|translate}}</label>
-                <input type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}" ng-blur="blurReset()"
-                  ng-model="profile.username">
+                <input type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}" ng-blur="blurReset()" ng-model="profile.username">
               </div>
             </div>
           </div>
@@ -53,7 +49,6 @@
               <br>
               <img class="profilePic" src="{{user.profilePic.urlAsString}}" />
               <input type="file" id="profilePicUpload" fileread="profile.profile_pic">
-              <!--<input type="file" id="profilePicUpload" fileread="profile.profile_pic">-->
             </div>
           </div>
         </div>

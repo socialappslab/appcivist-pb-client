@@ -135,6 +135,7 @@
   }
 
   function getEditorOptions() {
+    var vm = this;
     return {
       height: 400,
       plugins: [
@@ -178,15 +179,18 @@
         var input = document.createElement('input');
         input.setAttribute('type', 'file');
         input.setAttribute('accept', 'image/*');
-        input.onchange = function() {
+        $(input).bind('change', function() {
           var file = this.files[0];
           var id = 'blobid' + (new Date()).getTime();
           var blobCache = tinymce.activeEditor.editorUpload.blobCache;
           var blobInfo = blobCache.create(id, file);
           blobCache.add(blobInfo);
           cb(blobInfo.blobUri(), { title: file.name });
-        };
+        });
         input.click();
+        vm.on('$destroy', function() {
+          $(input).unbind('change');
+        });
       }
     };
   }

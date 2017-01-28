@@ -59,7 +59,11 @@
         <a ng-if="discussion.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
         <div class="comment-meta">
           <p class="heading--header">{{formatDate(discussion.creation)}}</p>
-          <member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>
+          <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
+          <member-card ng-if="discussion.authors[0]" user="discussion.authors[0]" comments-section="true"></member-card>
+          <member-card ng-if="!discussion.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor" comments-section="true"></member-card>
+          <member-card ng-if="!discussion.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}" comments-section="true"></member-card>
+
           <p></p>
         </div>
         <div class="comment-text">
@@ -76,7 +80,9 @@
             <div class="comment-meta">
               <p class="heading--header">{{formatDate(comment.creation)}}</a>
               </p>
-              <member-card user="comment.authors[0] || comment.nonMemberAuthor" comments-section="true"></member-card>
+              <member-card ng-if="comment.authors[0]" user="comment.authors[0]" comments-section="true"></member-card>
+              <member-card ng-if="!comment.authors[0] && comment.nonMemberAuthor" user="comment.nonMemberAuthor" comments-section="true"></member-card>
+              <member-card ng-if="!comment.authors[0] && !comment.nonMemberAuthor" user="{'name':'None','email':'None'}" comments-section="true"></member-card>
               <p></p>
             </div>
             <div class="comment-text">

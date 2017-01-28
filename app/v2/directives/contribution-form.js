@@ -91,9 +91,8 @@
         sourceCode: ''
       };
 
-      if (this.isEdit) {
-        this.flattenContribution();
-      }
+      this.contribution.addedThemes = [];
+
       this.actionLabel = this.isCreate ? 'Add' : 'Edit';
 
       this.themesOptions = {
@@ -292,6 +291,9 @@
       if (this.file.csv) {
         this.importContribution();
       } else {
+        if(this.isEdit) {
+          this.flattenContribution();
+        }
         this.contributionSubmit();
       }
     }
@@ -373,12 +375,14 @@
      */
     function flattenContribution() {
       var contribution = _.clone(this.contribution);
-      contribution.existingThemes = contribution.existingThemes || [];
       delete contribution.themes;
       delete contribution.forum;
       delete contribution.attachments;
       delete contribution.stats;
+      delete contribution.campaignIds;
       delete contribution.associatedMilestones;
+      delete contribution.workingGroupAuthors;
+      delete contribution.extendedTextPad;
       this.contribution = contribution;
     }
   }

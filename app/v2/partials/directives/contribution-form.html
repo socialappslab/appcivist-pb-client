@@ -46,7 +46,7 @@
             <nonmember-author-form on-change="$parent.updateNonMember(author)" ng-disabled="$parent.disabled"></nonmember-author-form>
           </fieldset>
         </div>
-        <div class="field__container assign_proposal_to_users">
+        <div class="field__container assign_proposal_to_users" ng-if="isCreate">
           <fieldset class="add_proposal__availble_themes">
             <p clas="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>

@@ -162,6 +162,16 @@ module.exports = function(grunt) {
             'index.html',
             'app/**/*.html',
             'app/**/*.js',
+            'bower_components/angular-i18n/**/*.js',
+            'bower_components/tinymce/tinymce.min.js',
+            'bower_components/tinymce/themes/modern/theme.min.js',
+            'bower_components/tinymce/themes/inlite/theme.min.js',
+            'bower_components/tinymce/skins/lightgray/content.inline.min.css',
+            'bower_components/tinymce/skins/lightgray/content.inline.min',
+            'bower_components/tinymce/skins/lightgray/skin.ie7.min.css',
+            'bower_components/tinymce/skins/lightgray/skin.min.css',
+            'bower_components/tinymce/skins/lightgray/img/*.gif',
+            'bower_components/tinymce/skins/lightgray/fonts/*',
             'bower_components/vex/dist/css/vex.css',
             'bower_components/vex/dist/css/vex-theme-plain.css',
             'bower_components/appcivist-patterns/dist/css/**/*',
@@ -173,9 +183,7 @@ module.exports = function(grunt) {
             'stylesheets/**/*',
             'app/css/app.css',
             'app/css/app.v2.css',
-            'bower_components/angular-i18n/**/*.js',
-            'bower_components/tinymce/*.js',
-            'bower_components/tinymce/themes/**/*.js'
+            'app/css/app.v1.css'
           ]
         }, {
           expand: true,

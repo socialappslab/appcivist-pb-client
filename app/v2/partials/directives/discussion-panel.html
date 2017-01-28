@@ -54,7 +54,7 @@
   </header>
 
   <div class="comments__listing">
-    <li class="panel card conversation-container" ng-repeat="discussion in discussions track by discussion.contributionId">
+    <li class="panel card conversation-container" ng-repeat="discussion in discussions track by (discussion.contributionId ? discussion.contributionId : discussion.uuid)">
       <div ng-if="discussion">
         <a ng-if="discussion.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
         <div class="comment-meta">
@@ -71,7 +71,7 @@
           <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>&nbsp;&nbsp;
         </div>
         <ul class="threaded-comments">
-          <li class="panel comment-container" ng-repeat="comment in discussion.comments track by comment.contributionId">
+          <li class="panel comment-container" ng-repeat="comment in discussion.comments track by (comment.contributionId ? comment.contributionId : comment.uuid)">
             <a ng-if="comment.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
             <div class="comment-meta">
               <p class="heading--header">{{formatDate(comment.creation)}}</a>

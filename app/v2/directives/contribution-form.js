@@ -18,11 +18,17 @@
         //supported values:  PROPOSAL | IDEA
         type: '@',
         // handler called when contribution creation has succeeded
-        onSuccess: '&'
+        onSuccess: '&',
+        contribution: '<',
+        // edit | create, default value is create
+        mode: '@'
       },
       templateUrl: '/app/v2/partials/directives/contribution-form.html',
       link: function(scope, element, attrs) {
         scope.init = init.bind(scope);
+        scope.initEdit = initEdit.bind(scope);
+        scope.initCreate = initCreate.bind(scope);
+        scope.mode = scope.mode || 'create';
         scope.verifyMembership = verifyMembership.bind(scope);
         scope.loadWorkingGroups = loadWorkingGroups.bind(scope);
         scope.loadThemes = loadThemes.bind(scope);
@@ -33,25 +39,49 @@
         scope.disableAll = disableAll.bind(scope);
         scope.importContribution = importContribution.bind(scope);
         scope.contributionSubmit = contributionSubmit.bind(scope);
+        scope.flattenContribution = flattenContribution.bind(scope);
         scope.getEditorOptions = getEditorOptions.bind(scope);
-        scope.contribution = {};
         scope.assembly = localStorageService.get('currentAssembly');
+        scope.isEdit = scope.mode === 'edit';
+        scope.isCreate = scope.mode === 'create';
 
-        if (!scope.campaign) {
-          scope.$watch('campaign', function(newVal) {
-            if (newVal) {
-              scope.init();
-            }
-          });
+        if (scope.mode === 'create') {
+          scope.initCreate()
         } else {
-          scope.init();
+          scope.initEdit();
         }
       }
     };
 
+    function initEdit() {
+      var vm = this;
+      if (!this.contribution) {
+        this.$watch('contribution', function(newVal) {
+          if (newVal) {
+            vm.init();
+          }
+        });
+      } else {
+        this.init();
+      }
+    }
+
+    function initCreate() {
+      var vm = this;
+      if (!this.campaign) {
+        this.$watch('campaign', function(newVal) {
+          if (newVal) {
+            vm.init();
+          }
+        });
+      } else {
+        this.init();
+      }
+    }
+
     function init() {
       this.file = {};
-      this.contribution = {
+      this.contribution = this.contribution || {
         type: this.type,
         title: '',
         text: '',
@@ -59,7 +89,13 @@
         authors: [],
         existingThemes: [],
         sourceCode: ''
+      };
+
+      if (this.isEdit) {
+        this.flattenContribution();
       }
+      this.actionLabel = this.isCreate ? 'Add' : 'Edit';
+
       this.themesOptions = {
         textField: 'title',
         idField: 'themeId'
@@ -68,13 +104,15 @@
         idField: 'userId',
         textField: 'name'
       };
-      this.isProposal = this.type === 'PROPOSAL';
-      this.isIdea = this.type === 'IDEA';
+      this.isProposal = this.contribution.type === 'PROPOSAL';
+      this.isIdea = this.contribution.type === 'IDEA';
       this.isAuthorsDisabled = this.isProposal;
       this.assembly = localStorageService.get('currentAssembly');
       this.tinymceOptions = this.getEditorOptions();
       this.verifyMembership();
-      this.loadWorkingGroups();
+      if (this.isCreate) {
+        this.loadWorkingGroups();
+      }
       var self = this;
       // setup listener for upload field
       this.$watchCollection('file', function(file) {
@@ -178,10 +216,14 @@
     }
 
     function loadThemes(query) {
-      if (!this.campaign) {
-        return;
+      var campaignId;
+
+      if (this.isCreate) {
+        campaignId = this.campaign.campaignId;
+      } else {
+        campaignId = this.contribution.campaignIds[0];
       }
-      return Campaigns.themes(this.assembly.assemblyId, this.campaign.campaignId);
+      return Campaigns.themes(this.assembly.assemblyId, campaignId);
     }
 
     /**
@@ -289,16 +331,26 @@
      * Creates a new contribution.
      */
     function contributionSubmit() {
+      var vm = this;
       if (this.contributionForm.$invalid) {
         return;
       }
-      var rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(this.contribution).$promise;
+      var rsp;
+
+      if (this.mode === 'create') {
+        rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(this.contribution).$promise;
+      } else if (this.mode === 'edit') {
+        rsp = Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(this.contribution).$promise;
+      } else {
+        console.warn('Only create or edit are accepted mode in contribution form');
+        return;
+      }
       rsp.then(
         function(data) {
-          Notify.show('Contribution created', 'success');
+          Notify.show('Contribution saved', 'success');
 
-          if (angular.isFunction(self.onSuccess)) {
-            self.onSuccess();
+          if (angular.isFunction(vm.onSuccess)) {
+            vm.onSuccess();
           }
 
         },
@@ -313,6 +365,21 @@
      */
     function updateNonMember(author) {
       this.contribution.nonMemberAuthor = author;
+    }
+
+    /**
+     * In edit mode, we copy the given contribution a remove the properties that
+     * the PUT service does not need.
+     */
+    function flattenContribution() {
+      var contribution = _.clone(this.contribution);
+      contribution.existingThemes = contribution.existingThemes || [];
+      delete contribution.themes;
+      delete contribution.forum;
+      delete contribution.attachments;
+      delete contribution.stats;
+      delete contribution.associatedMilestones;
+      this.contribution = contribution;
     }
   }
 }());

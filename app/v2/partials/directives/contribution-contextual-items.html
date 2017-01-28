@@ -1,12 +1,12 @@
 <ul ng-if="isProposal">
-  <li class="li-action-menu" ng-if="userIsAuthor && showEdit"><a>{{'Edit' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="userIsAuthor"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userCanEdit"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userIsAuthor"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
   <li class="li-action-menu"><a href="" ng-click="$parent.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
   <li class="li-action-menu"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="userIsAssemblyCoordinator && notAssigned"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="userIsAssemblyCoordinator ||  userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userIsAssemblyCoordinator && $parent.notAssigned"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userIsAssemblyCoordinator ||  $parent.userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
   <li class="li-action-menu"><a href="" ng-click="myObject.subscribe()">{{'Subscribe' | translate}}</a></li>
 </ul>
 
@@ -21,10 +21,13 @@
   <history-modal vex-instance="vexInstance" contribution="contribution"></history-modal>
 </div>
 
-<!--<contribution-feedback-form ng-if="modals.feedbackModal" contribution="contribution" close="closeModal('feedbackModal')"></contribution-feedback-form>-->
-
 <modal open-if="modals.feedbackModal" close="closeModal('feedbackModal')" title="Feedback Form" template-id="feedbackModal"></modal>
+<modal open-if="modals.contributionEditModal" close="closeModal('contributionEditModal')" title="Edit Form" template-id="contributionEditModal"></modal>
 
 <script id="feedbackModal" type="text/ng-template">
-  <contribution-feedback-form contribution="$parent.contribution"></contribution-feedback-form>
+  <contribution-feedback-form contribution="contribution" on-success="closeModal('feedbackModal')"></contribution-feedback-form>
+</script>
+
+<script id="contributionEditModal" type="text/ng-template">
+  <contribution-form contribution="contribution" on-success="onEditContributionSuccess()" mode="edit"></contribution-form>
 </script>

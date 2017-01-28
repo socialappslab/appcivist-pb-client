@@ -27,13 +27,19 @@
       },
       templateUrl: '/app/v2/partials/directives/modal.html',
       link: function(scope, element, attrs) {
+        var vexInstance;
 
         scope.$watch('openIf', function(open) {
+          if (vexInstance) {
+            vexInstance.close();
+          }
+
           if (!open) {
             return;
           }
           var html = document.getElementById(scope.templateId).innerHTML;
-          vex.open({
+          vexInstance = vex.open({
+            className: 'vex-theme-plain',
             unsafeContent: $compile(html)(scope.$parent)[0],
             afterClose: function() {
               if (angular.isFunction(scope.close)) {

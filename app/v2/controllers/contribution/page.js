@@ -9,12 +9,12 @@
   ProposalPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
-    'Space', '$http', 'FileUploader'
+    'Space', '$http', 'FileUploader', '$sce'
   ];
 
   function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
-    $translate, Space, $http, FileUploader) {
+    $translate, Space, $http, FileUploader, $sce) {
 
     activate();
 
@@ -211,7 +211,7 @@
     /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.
-     * 
+     *
      * @param {object} file
      */
     function uploadFile(file) {
@@ -232,7 +232,7 @@
 
     /**
      * After the file has been uploaded, we should relate it with the contribution.
-     * 
+     *
      * @param {string} url - The uploaded file's url.
      */
     function createAttachmentResource(url) {
@@ -248,6 +248,25 @@
       }, function(error) {
         Notify.show('Error while uploading file to the server', 'error');
       });
+    }
+
+    function textAsHtml () {
+      var vm = this;
+      return $sce.trustAsHtml(vm.contribution ? vm.contribution.text : "");
+    }
+
+    function textAsHtmlLimited (limit) {
+      var vm = this;
+      if (vm.contribution && vm.contribution.text) {
+        var limitedText = limitToFilter(vm.contribution.text,limit)
+        if (vm.contribution.text.length > limit) {
+          limitedText+="...";
+        }
+
+        vm.trustedHtmlText = $sce.trustAsHtml(limitedText);
+      }
+
+      return vm.trustedHtmlText;
     }
   }
 }());

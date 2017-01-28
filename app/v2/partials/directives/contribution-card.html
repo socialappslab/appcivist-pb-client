@@ -76,7 +76,7 @@
 
     <div class="card__body">
       <div class="excerpt" style="height: 110px;">
-        {{contribution.text|limitTo:152}}{{(contribution.text.length) > 152 ? '...' : '.' }}
+        {{contribution.plainText | limitTo:152 }}{{contribution.plainText.length > 152 ? "..." : ""}}
       </div>
       <div class="voting_mechanism">
         <contribution-feedback contribution="contribution" ng-if="showVotingButtons"></contribution-feedback>
@@ -152,8 +152,8 @@
       </div>
     </header>
     <div class="card__body" ng-if="showIdeaBody">
-      <div class="excerpt" ng-style="ideaExcerptStyle">
-        {{contribution.text|limitTo:152}}{{(contribution.text.length) > 152 ? '...' : '.' }}
+      <div class="excerpt" ng-style="ideaExcerptStyle" ng-bind-html-unsafe="html">
+        {{contribution.plainText|limitTo:152}}{{(contribution.plainText.length) > 152 ? '...' : '.' }}
       </div>
       <div class="voting_mechanism">
         <contribution-feedback contribution="contribution" ng-if="showVotingButtons"></contribution-feedback>

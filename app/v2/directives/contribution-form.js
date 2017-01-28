@@ -33,6 +33,7 @@
         scope.disableAll = disableAll.bind(scope);
         scope.importContribution = importContribution.bind(scope);
         scope.contributionSubmit = contributionSubmit.bind(scope);
+        scope.getEditorOptions = getEditorOptions.bind(scope);
         scope.contribution = {};
         scope.assembly = localStorageService.get('currentAssembly');
 
@@ -71,6 +72,7 @@
       this.isIdea = this.type === 'IDEA';
       this.isAuthorsDisabled = this.isProposal;
       this.assembly = localStorageService.get('currentAssembly');
+      this.tinymceOptions = this.getEditorOptions();
       this.verifyMembership();
       this.loadWorkingGroups();
       var self = this;
@@ -80,6 +82,68 @@
           self.disableAll();
         }
       });
+    }
+
+
+    function getEditorOptions() {
+      var vm = this;
+      return {
+        height: 400,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table contextmenu paste imagetools'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        images_upload_credentials: true,
+        image_advtab: true,
+        image_title: true,
+        automatic_uploads: true,
+        file_picker_types: 'image',
+        imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
+        images_upload_handler: function(blobInfo, success, failure) {
+          var xhr, formData;
+          xhr = new XMLHttpRequest();
+          xhr.withCredentials = true;
+          xhr.open('POST', servs.FileUploader.uploadEndpoint());
+          xhr.onload = function() {
+            var json;
+
+            if (xhr.status != 200) {
+              failure('HTTP Error: ' + xhr.status);
+              return;
+            }
+            json = JSON.parse(xhr.responseText);
+
+            if (!json || typeof json.url != 'string') {
+              failure('Invalid JSON: ' + xhr.responseText);
+              return;
+            }
+            success(json.url);
+          };
+          formData = new FormData();
+          console.log('blob info', blobInfo);
+          formData.append('file', blobInfo.blob());
+          xhr.send(formData);
+        },
+        file_picker_callback: function(cb, value, meta) {
+          var input = document.createElement('input');
+          input.setAttribute('type', 'file');
+          input.setAttribute('accept', 'image/*');
+          $(input).bind('change', function() {
+            var file = this.files[0];
+            var id = 'blobid' + (new Date()).getTime();
+            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+            var blobInfo = blobCache.create(id, file);
+            blobCache.add(blobInfo);
+            cb(blobInfo.blobUri(), { title: file.name });
+          });
+          input.click();
+          vm.on('$destroy', function() {
+            $(input).unbind('change');
+          });
+        }
+      };
     }
 
     /**
@@ -131,7 +195,7 @@
     }
 
     /**
-     * This method is responsible for loading the list of authors. It joins the assembly 
+     * This method is responsible for loading the list of authors. It joins the assembly
      * members list and the currently selected working group members list, when contribution
      * type is PROPOSAL. Otherwise it returns the members of the assembly.
      */
@@ -236,6 +300,7 @@
           if (angular.isFunction(self.onSuccess)) {
             self.onSuccess();
           }
+
         },
         function(error) {
           Notify.show('Error while trying to save the contribution', 'error');

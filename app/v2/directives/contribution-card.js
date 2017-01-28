@@ -5,10 +5,12 @@
     .directive('contributionCard', ContributionCard);
 
   ContributionCard.$inject = [
-    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope', 'Notify', '$compile'
+    'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope', 'Notify', '$compile',
+    '$sce', 'limitToFilter'
   ];
 
-  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify, $compile) {
+  function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify,
+                            $compile, $sce, limitToFilter) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -112,6 +114,23 @@
           scope.vexInstance = vex.open({
             unsafeContent: $compile(document.querySelector('.contribution-detail-modal').innerHTML)(scope)[0]
           });
+        }
+
+        scope.myObject.textAsHtml = function () {
+          return $sce.trustAsHtml(scope.contribution ? scope.contribution.text : "");
+        }
+
+        scope.myObject.textAsHtmlLimited = function (limit) {
+          if (scope.contribution && scope.contribution.text) {
+            var limitedText = limitToFilter(scope.contribution.text,limit)
+            if (scope.contribution.text.length > limit) {
+              limitedText+="...";
+            }
+
+            scope.trustedHtmlText = $sce.trustAsHtml(limitedText);
+          }
+
+          return scope.trustedHtmlText;
         }
       }
     };

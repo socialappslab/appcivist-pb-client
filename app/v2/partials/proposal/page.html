@@ -192,7 +192,9 @@
         <member-card ng-repeat="author in proposal.authors" user="author"></member-card>
         <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
-      <p class="description">{{proposal.text}}</p>
+      <p class="description" ng-bind-html-unsafe="html">
+        {{proposal.plainText|limitTo:500}}{{(proposal.plainText.length) > 500 ? '...' : '' }}
+      </p>
 
       <div class="voting_mechanism">
         <div class="temperature_check">

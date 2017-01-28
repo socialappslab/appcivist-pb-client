@@ -173,7 +173,9 @@ module.exports = function(grunt) {
             'stylesheets/**/*',
             'app/css/app.css',
             'app/css/app.v2.css',
-            'bower_components/angular-i18n/**/*.js'
+            'bower_components/angular-i18n/**/*.js',
+            'bower_components/tinymce/*.js',
+            'bower_components/tinymce/themes/**/*.js'
           ]
         }, {
           expand: true,

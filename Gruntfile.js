@@ -204,12 +204,29 @@ module.exports = function(grunt) {
         }, {
           expand: true,
           dot: true,
+          cwd: '.bower_components/tinymce/plugins/**/*.js',
+          dest: './dist/scripts/plugins/',
+          src: [
+            '**/*',
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: '.bower_components/tinymce/themes/**/*.js',
+          dest: './dist/scripts/themes/',
+          src: [
+            '**/*',
+          ]
+        }, {
+          expand: true,
+          dot: true,
           cwd: './bower_components/appcivist-patterns/dist/images',
           dest: './dist/images/',
           src: [
             '**/*',
           ]
-        }]
+        },
+        ]
       }
     }
   });

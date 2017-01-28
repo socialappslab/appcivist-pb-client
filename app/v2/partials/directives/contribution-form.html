@@ -20,7 +20,7 @@
         </div>
         <div class="field__container">
           <label for="textarea">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
-          <textarea ng-model="contribution.text" ng-required="true" ng-disabled="disabled" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
+          <textarea ui-tinymce="tinymceOptions" ng-model="contribution.text" ng-required="true" ng-disabled="disabled" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
           <div ng-messages="contributionForm.text.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>

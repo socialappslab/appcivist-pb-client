@@ -222,8 +222,8 @@
       var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
       rsp.then(function(response) {
 
-        if (!vm.proposal.attachment) {
-          vm.proposal.attachment = [];
+        if (!vm.proposal.attachments) {
+          vm.proposal.attachments = [];
         }
         vm.proposal.attachments.push(response);
         vm.closeModal('addAttachmentForm');

@@ -38,19 +38,20 @@
     this.selectType = selectType.bind(this);
     this.submit = submit.bind(this);
     this.getEditorOptions = getEditorOptions.bind(this);
+    this.loadFeedback = loadFeedback.bind(this);
 
     this.$onInit = function() {
       vm.feedback = {
-        need: 1,
-        benefit: 1,
-        feasibility: 1,
+        need: 0,
+        benefit: 0,
+        feasibility: 0,
         textualFeedback: '',
         status: 'PRIVATE',
         type: 'MEMBER'
       };
       vm.assembly = localStorageService.get('currentAssembly');
       vm.sliderOptions = {
-        floor: 1,
+        floor: 0,
         ceil: 4,
         showTicksValues: true
       };
@@ -58,6 +59,7 @@
       vm.loadGroups();
       vm.verifyMembership();
       vm.loadTypes();
+      vm.loadFeedback();
     };
   }
 
@@ -109,6 +111,7 @@
       types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
     }
     this.types = types;
+    this.selectedType = types[0];
   }
 
   function verifyMembership() {
@@ -121,7 +124,13 @@
 
   function submit() {
     var vm = this;
-    var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(this.feedback);
+    var payload = _.clone(this.feedback);
+    ['need', 'benefit', 'feasibility'].forEach(function(score) {
+      if (payload[score] === 0) {
+        delete payload[score];
+      }
+    })
+    var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(payload);
     feedback.$promise.then(
       function(newStats) {
         vm.contribution.stats = newStats;
@@ -193,5 +202,21 @@
         });
       }
     };
+  }
+
+
+  /**
+   * Load the user's feedback if there is any.
+   */
+  function loadFeedback() {
+    var rsp = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).query().$promise;
+    rsp.then(
+      function(feedbacks) {
+        // TODO: assign to vm.feedback
+        console.log('feedbacks', feedbacks);
+      },
+      function() {
+        servs.Notify.show('Error while get user feedback from the server', 'error');
+      })
   }
 }());

@@ -5,7 +5,6 @@
     .module('appCivistApp')
     .controller('v2.AssemblyFormWizardCtrl', AssemblyFormWizardCtrl);
 
-
   AssemblyFormWizardCtrl.$inject = ['$state', '$stateParams', '$scope'];
 
   function AssemblyFormWizardCtrl($state, $stateParams, $scope) {

@@ -6,20 +6,36 @@
     .controller('v2.WorkingGroupFormCtrl', WorkingGroupFormCtrl);
 
   WorkingGroupFormCtrl.$inject = ['$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService',
-  'Assemblies', 'WorkingGroups', 'Campaigns', 'usSpinnerService', '$state', 'logService', '$stateParams'];
+  'Assemblies', 'WorkingGroups', 'Campaigns', 'usSpinnerService', '$state', 'logService', '$stateParams', 'configService', '$location'];
 
   function WorkingGroupFormCtrl($scope, localStorageService, $translate, $routeParams, LocaleService,
-    Assemblies, WorkingGroups, Campaigns, usSpinnerService, $state, logService, $stateParams) {
+    Assemblies, WorkingGroups, Campaigns, usSpinnerService, $state, logService, $stateParams, configService, $location) {
     init();
 
     function init() {
       initScopeFunctions();
       initScopeContent();
       initializeAssembly();
-      //initializeCampaign();
     }
 
     function initScopeFunctions() {
+
+      $scope.goToStep = function (step) {
+        if (step === 1) {
+          if ($stateParams.gid) {
+            $location.path('/v2/assembly/' + $stateParams.aid + '/campaign/' + $stateParams.cid + '/group/' + $stateParams.gid + '/edit/description');
+          } else {
+            $location.path('/v2/assembly/' + $stateParams.aid + '/campaign/' + $stateParams.cid + '/group/new/description');
+          }
+        } else {
+          if ($stateParams.gid) {
+            $location.path('/v2/assembly/' + $stateParams.aid + '/campaign/' + $stateParams.cid + '/group/' + $stateParams.gid + '/edit/configuration');
+          } else {
+            $location.path('/v2/assembly/' + $stateParams.aid + '/campaign/' + $stateParams.cid + '/group/new/configuration');
+          }
+        }
+      }
+
       $scope.setNewWorkingGroupIcon = function(url, name) {
         $scope.newWorkingGroup.profile.icon = url;
         var file = {};
@@ -83,6 +99,20 @@
         }
       };
 
+      $scope.getExistingConfigs = function() {
+        var configs = configService.getWGroupConfigs("WGROUP");
+        var finalConfig = [];
+        _.forEach($scope.newWorkingGroup.configs, function(config) {
+          _.forEach(configs, function (configAux) {
+            if (config.key == configAux.key) {
+              config.definition = configAux.definition;
+            }
+          });
+          finalConfig.push(config);
+        });
+        return finalConfig;
+      }
+
       $scope.getAttributesFromExistingWGroup = function() {
         //TODO to set default assembly
         $scope.campaignId = $scope.newWorkingGroup.campaigns[0];
@@ -119,7 +149,10 @@
           $scope.newWorkingGroup.profile.coordinators =  'two'; //can be all
         }
 
-        $scope.contributions = $scope.newWorkingGroup.existingContributions; //?
+        //?
+        $scope.contributions = $scope.newWorkingGroup.existingContributions;
+        // add configs
+        $scope.newWorkingGroup.configs = $scope.getExistingConfigs();
       }
 
       $scope.createOrUpdateWorkingGroup = function() {
@@ -192,9 +225,10 @@
             }
             $scope.workingGroups.push($scope.newWorkingGroup);
             localStorageService.set("workingGroups", $scope.workingGroups);
+            localStorageService.remove("temporaryNewWGroup");
             //$location.url("/v1/assembly/" + $scope.assemblyID + "/group/" + $scope.newWorkingGroup.groupId);
             // TODO send to group page
-            $state.go("v2.assembly.aid.group.gid", {aid: $scope.assemblyID, gid: $scope.newWorkingGroup.groupId});
+            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", {aid: $scope.assemblyID, cid: $scope.campaignID, gid: $scope.newWorkingGroup.groupId});
           },
           function(error) {
             $scope.errors.push(error.data);
@@ -241,14 +275,14 @@
       //$scope.assemblyID = $routeParams.aid;
       var currentAssembly = localStorageService.get('currentAssembly');
       $scope.assemblyID = currentAssembly != null ? currentAssembly.assemblyId : 1;
-      //$scope.campaignID = $routeParams.cid;
+      $scope.campaignID = $stateParams.cid;
 
       if ($scope.campaignID === undefined || $scope.campaignID === null) {
         $scope.selectCampaign = true;
       }
-
       $scope.workingGroupID = $routeParams.wid || $stateParams.gid;
-      $scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
+      //$scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
+
       $scope.defaultIcons = [{
         "name": "Justice Icon",
         "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png"
@@ -265,7 +299,7 @@
         "name": "Skyline Icon",
         "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"
       }];
-      $scope.newWorkingGroup.profile.icon = $scope.defaultIcons[0].url;
+      //$scope.newWorkingGroup.profile.icon = $scope.defaultIcons[0].url;
       $scope.f = {
         "name": $scope.defaultIcons[0].name,
         "url": $scope.defaultIcons[0].url
@@ -279,14 +313,31 @@
       $scope.membersPageSize = 5;
       $scope.assemblyMembers = [];
 
-      if ($stateParams.gid) {
+      // temporaryWGroup manage
+      var temporaryWGroup = localStorageService.get("temporaryNewWGroup");
+      if ($stateParams.gid && ($state.is('v2.assembly.aid.campaign.workingGroup.gid.edit')
+        || $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.description')
+        || $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.configuration'))) {
         $scope.isEdit = true;
-        var rsp = WorkingGroups.workingGroup($scope.assemblyID ,$stateParams.gid).get();
-        rsp.$promise.then(function(data) {
-          console.log("Get WGroup with wgroupId " + $stateParams.gid);
-          $scope.newWorkingGroup = data;
-          $scope.getAttributesFromExistingWGroup();
-        });
+        if ((temporaryWGroup != null && temporaryWGroup.groupId != $stateParams.gid) || temporaryWGroup == null) {
+          var rsp = WorkingGroups.workingGroup($stateParams.aid, $stateParams.gid).get();
+          rsp.$promise.then(function(data) {
+            console.log("Get WGroup with wgroupId " + $stateParams.gid);
+            $scope.newWorkingGroup = data;
+            localStorageService.set("temporaryNewWGroup", $scope.newWorkingGroup);
+            $scope.getAttributesFromExistingWGroup();
+          });
+        } else {
+          $scope.newWorkingGroup = temporaryWGroup;
+        }
+        initializeGroup();
+        initializeCampaign();
+      } else {
+        if (temporaryWGroup != null && temporaryWGroup.workiginGroupId != null) {
+          localStorageService.set("temporaryNewWGroup", null);
+        }
+        initializeGroup();
+        initializeCampaign();
       }
 
       $scope.$watch("newWorkingGroup.name", function(newVal, oldval) {
@@ -296,6 +347,28 @@
           $scope.newWorkingGroup.invitationEmail = text;
         });
       }, true);
+
+      $scope.$watch("newWorkingGroup", function(newVal, oldval) {
+        localStorageService.set("temporaryNewWGroup", newVal);
+      }, true);
+    }
+
+    function initializeGroup() {
+      if ($scope.newWorkingGroup === null || $scope.newWorkingGroup === undefined || $scope.newWorkingGroup === "") {
+        $scope.newWorkingGroup = localStorageService.get("temporaryNewWGroup");
+        if ($scope.newWorkingGroup === null || $scope.newWorkingGroup === undefined || $scope.newWorkingGroup === "") {
+          $scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
+          $scope.newWorkingGroup.profile = {};
+          $scope.newWorkingGroup.profile.icon = $scope.defaultIcons[0].url;
+          // add configs and principal configs (this controller doesnt have a initializeGroup method)
+          var configs = configService.getWGroupConfigs("WGROUP");
+          $scope.newWorkingGroup.configs = configs;
+          localStorageService.set("temporaryNewWGroup", $scope.newWorkingGroup);
+        }
+      } else {
+        console.log("Temporary New WGroup exists in the scope")
+      }
+
     }
 
     function initializeAssembly() {
@@ -330,6 +403,7 @@
           if (!$scope.campaignThemes) {
             $scope.campaignThemes = [];
           }
+          $scope.newWorkingGroup.campaign = $scope.campaign;
         },
         function(error) {
           $scope.campaignThemes = [];

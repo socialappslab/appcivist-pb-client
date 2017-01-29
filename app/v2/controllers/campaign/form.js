@@ -10,7 +10,7 @@
     '$scope', '$sce', '$http', '$templateCache', '$routeParams',
     '$resource', '$location', '$timeout', 'localStorageService',
     'Campaigns', 'Assemblies', 'Components', 'Contributions',
-    'moment', 'modelFormatConfig', '$translate', 'Notify', '$state'
+    'moment', 'modelFormatConfig', '$translate', 'Notify', '$state', 'configService', '$stateParams'
   ];
 
   /**
@@ -28,14 +28,14 @@
   function CampaignFormCtrl($scope, $sce, $http, $templateCache, $routeParams,
     $resource, $location, $timeout, localStorageService,
     Campaigns, Assemblies, Components, Contributions,
-    moment, modelFormatConfig, $translate, Notify, $state) {
+    moment, modelFormatConfig, $translate, Notify, $state, configService, $stateParams) {
 
     init();
 
     function init() {
       initScopeFunctions();
       initScopeContent();
-      initializeNewCampaignModel();
+      //initializeNewCampaignModel();
       setListOfLinkedAssemblies();
     }
 
@@ -260,12 +260,29 @@
        * @param step
        * @param options
        */
-      $scope.createCampaign = function (step, options) {
+      $scope.createOrUpdateCampaign = function (step, options) {
         privateCreateCampaign(step, options);
       };
+
+      $scope.getExistingConfigs = function() {
+        console.log("getExistingConfigs");
+        var configs = configService.getCampaignConfigs("CAMPAIGN");
+        var finalConfig = [];
+        _.forEach($scope.newCampaign.configs, function(config) {
+          _.forEach(configs, function (configAux) {
+            if (config.key == configAux.key) {
+              config.definition = configAux.definition;
+            }
+          });
+          finalConfig.push(config);
+        });
+        return finalConfig;
+      }
+
     }
 
     function initScopeContent() {
+      $scope.isEdit = false;
       $scope.user = localStorageService.get("user");
 
       if ($scope.user && $scope.user.language) {
@@ -340,6 +357,51 @@
       $scope.oneAtATime = false;
       $scope.section = {};
 
+      // temporaryAssembly manage
+      var temporaryCampaign = localStorageService.get("newCampaign");
+      if ($stateParams.cid && ($state.is('v2.assembly.aid.campaign.edit') || $state.is('v2.assembly.aid.campaign.edit.description')
+        || $state.is('v2.assembly.aid.campaign.edit.milestones') || $state.is('v2.assembly.aid.campaign.edit.stages'))) {
+        $scope.isEdit = true;
+        if ((temporaryCampaign != null && temporaryCampaign.campaignId != $stateParams.cid) || temporaryCampaign == null) {
+          var rsp = Campaigns.campaign($stateParams.aid, $stateParams.cid).get();
+          rsp.$promise.then(function(data) {
+            console.log("Get Campaign with assemblyId " + $stateParams.cid);
+            console.log(data);
+            $scope.newCampaign = data;
+            localStorageService.set("newCampaign", data);
+            $scope.getExistingConfigs();
+          });
+        } else {
+          console.log("still editing the same campaign");
+          $scope.newCampaign = temporaryCampaign;
+        }
+        initializeExistingCampaignModel();
+      } else {
+        if (temporaryCampaign != null && temporaryCampaign.campaignId != null) {
+          localStorageService.set("newCampaign", null);
+        }
+        initializeNewCampaignModel();
+      }
+
+    }
+
+    function initializeExistingCampaignModel() {
+      var inProgressNewCampaign = localStorageService.get('newCampaign');
+      $scope.newCampaign = inProgressNewCampaign ? inProgressNewCampaign : Campaigns.defaultNewCampaign();
+
+      // TODO the attributes templta, proposalComponents, supportingComponents, milestones and others doesnt came from the endpoint
+      $scope.newCampaign.template = $scope.templateOptions[1];
+      $scope.newCampaign.proposalComponents = Components.defaultProposalComponents();
+      $scope.newCampaign.enableBudget = 'yes';
+      $scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
+      $scope.newCampaign.milestones = Components.defaultProposalComponentMilestones();
+      $scope.newCampaign.linkedComponents = [];
+      $scope.getExistingConfigs();
+
+      // in order to save edit campaign configuration between wizard steps
+      $scope.$watchCollection('newCampaign', function (newVal) {
+        localStorageService.set('newCampaign', newVal);
+      });
     }
 
     /**
@@ -355,8 +417,10 @@
       $scope.newCampaign.milestones = Components.defaultProposalComponentMilestones();
       $scope.newCampaign.linkedComponents = [];
       initializeMilestonesTimeframe();
+      var configs = configService.getCampaignConfigs("CAMPAIGN");
+      $scope.newCampaign.configs = configs;
 
-      // in order to save new campaign configuration between wizard steps       
+      // in order to save new campaign configuration between wizard steps
       $scope.$watchCollection('newCampaign', function (newVal) {
         localStorageService.set('newCampaign', newVal);
       });
@@ -613,9 +677,20 @@
     }
     function privateCreateCampaign(step, options) {
       if (step === 'done') {
-        var postCampaign = prepareCampaignToCreate();
+        if (!$scope.isEdit) {
+          var postCampaign = prepareCampaignToCreate();
+        } else {
+          postCampaign = {};
+        }
+
         if (postCampaign.error === undefined) {
-          var campaignRes = Campaigns.newCampaign($scope.assemblyID).save(postCampaign);
+          var campaignRes;
+          if (!$scope.isEdit) {
+            campaignRes = Campaigns.newCampaign($scope.assemblyID).save(postCampaign);
+          } else {
+            campaignRes = Campaigns.campaign($scope.assemblyID, $scope.newCampaign.campaignId).update($scope.newCampaign);
+          }
+
           campaignRes.$promise.then(
             function (data) {
               $scope.newCampaign = data;

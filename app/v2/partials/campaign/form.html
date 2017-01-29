@@ -1,8 +1,20 @@
+<style>
+.voffset3 {
+    margin-top: 1rem;
+}
+label {
+  font-size: 16px;
+}
+.form-horizontal .control-label {
+    text-align: left;
+}
+</style>
 <!-- just grabbed some styles form version 1 -->
 <main class="appmain">
   <article class="campaign">
     <header class="page__header">
-      <h1 class="heading--title">{{'Create Campaign' | translate}}</h1>
+      <h1 ng-if="!isEdit" class="heading--title">{{'Create Campaign' | translate}}</h1>
+      <h1 ng-if="isEdit" class="heading--title">{{'Update Campaign' | translate}}</h1>
     </header>
     <section>
       <wizard>

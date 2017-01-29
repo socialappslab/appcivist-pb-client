@@ -5,10 +5,10 @@
     .directive('wgroupContextualItems', wgroupContextualItems);
 
   wgroupContextualItems.$inject = [
-    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify'
+    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify', '$state'
   ];
 
-  function wgroupContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify) {
+  function wgroupContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -75,6 +75,11 @@
                 Notify.show('Error while trying to communicate with the server', 'error');
               }
             );
+          }
+
+          scope.myObject.edit = function() {
+            // TODO how to recover the campaign, for now we read the first one
+            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", { aid: scope.assemblyId, cid: scope.wgroup.campaigns[0], gid: scope.wgroup.groupId});
           }
         }
       }

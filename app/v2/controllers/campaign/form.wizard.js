@@ -5,11 +5,10 @@
     .module('appCivistApp')
     .controller('v2.CampaignFormWizardCtrl', CampaignFormWizardCtrl);
 
-
   CampaignFormWizardCtrl.$inject = ['$state', '$stateParams', '$scope'];
 
   function CampaignFormWizardCtrl($state, $stateParams, $scope) {
-    console.log($state);
+
     if ($state.is('v2.assembly.aid.campaign.new')) {
       $state.go('v2.assembly.aid.campaign.new.description', {aid: $stateParams.aid});
     }

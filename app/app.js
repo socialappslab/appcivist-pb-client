@@ -141,6 +141,7 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
+      //assembly: new routes
       .state('v2.assembly.new', {
         url: '/new',
         controller: 'v2.AssemblyFormWizardCtrl',
@@ -165,12 +166,12 @@
           requiresLogin: true
         }
       })
+      //assembly: no princial assembly routes
       .state('v2.assembly.aid', {
         url: '/:aid',
         abstract: true,
         template: '<div ui-view></div>'
       })
-
       .state('v2.assembly.aid.assembly', {
         url: '/assembly/new',
         controller: 'v2.AssemblyFormWizardCtrl',
@@ -195,7 +196,7 @@
           requiresLogin: true
         }
       })
-
+      //assembly: edit routes
       .state('v2.assembly.aid.edit', {
         url: '/edit',
         controller: 'v2.AssemblyFormWizardCtrl',
@@ -220,6 +221,7 @@
           requiresLogin: true
         }
       })
+      //campaign: new routes
       .state('v2.assembly.aid.campaign', {
         url: '/campaign',
         abstract: true,
@@ -257,7 +259,7 @@
           requiresLogin: true
         }
       })
-
+      //campaign: edit routes
       .state('v2.assembly.aid.campaign.edit', {
         url: '/:cid/edit',
         controller: 'v2.CampaignFormWizardCtrl',
@@ -290,7 +292,7 @@
           requiresLogin: true
         }
       })
-      //campaign edits
+      //working group: new routes
       .state('v2.assembly.aid.campaign.workingGroup', {
         url: '/:cid/group',
         abstract: true,
@@ -298,12 +300,29 @@
       })
       .state('v2.assembly.aid.campaign.workingGroup.new', {
         url: '/new',
-        controller: 'v2.WorkingGroupFormCtrl',
+        controller: 'v2.WgroupFormWizardCtrl',
         templateUrl: 'app/v2/partials/working-group/form.html',
         access: {
           requiresLogin: true
         }
       })
+      .state('v2.assembly.aid.campaign.workingGroup.new.description', {
+        url: '/description',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.description.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.workingGroup.new.configuration', {
+        url: '/configuration',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.configuration.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      //working group: edit routes
       .state('v2.assembly.aid.campaign.workingGroup.gid', {
         url: '/:gid',
         abstract: true,
@@ -311,12 +330,29 @@
       })
       .state('v2.assembly.aid.campaign.workingGroup.gid.edit', {
         url: '/edit',
-        controller: 'v2.WorkingGroupFormCtrl',
+        controller: 'v2.WgroupFormWizardCtrl',
         templateUrl: 'app/v2/partials/working-group/form.html',
         access: {
           requiresLogin: true
         }
       })
+      .state('v2.assembly.aid.campaign.workingGroup.gid.edit.description', {
+        url: '/description',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.description.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.workingGroup.gid.edit.configuration', {
+        url: '/configuration',
+        controller: 'v2.WorkingGroupFormCtrl',
+        templateUrl: 'app/v2/partials/working-group/form.configuration.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      //campaign: dashboard
       .state('v2.assembly.aid.campaign.cid', {
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',

@@ -115,7 +115,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', { uuid: userUUID, filter: state });
     },
     campaign: function(assemblyId, campaignId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/' + assemblyId + '/campaign/' + campaignId);
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid', { aid: assemblyId, cid: campaignId}, { 'update': { method:'PUT' } });
     },
     campaignByUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);

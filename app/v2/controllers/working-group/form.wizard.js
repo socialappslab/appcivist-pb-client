@@ -5,10 +5,10 @@
     .module('appCivistApp')
     .controller('v2.WgroupFormWizardCtrl', WgroupFormWizardCtrl);
 
-
   WgroupFormWizardCtrl.$inject = ['$state', '$stateParams', '$scope'];
 
   function WgroupFormWizardCtrl($state, $stateParams, $scope) {
+
     if ($state.is('v2.assembly.aid.campaign.workingGroup.new')) {
       $state.go('v2.assembly.aid.campaign.workingGroup.new.description', {aid: $stateParams.aid, cid: $stateParams.cid});
     }

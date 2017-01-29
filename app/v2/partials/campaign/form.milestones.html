@@ -23,7 +23,7 @@
       <form name="newCampaignForm2">
         <section id="campaignMilestoneLengthOptions" class="col-md-12 col-sm-12">
           <div class="col-md-12 col-sm-12">
-            <label for="campaignMilestoneSlider" class="control-label">{{'creation.components.newCampaign2.text6' | translate}}</label>
+            <h3 for="campaignMilestoneSlider" class="control-label">{{'creation.components.newCampaign2.text6' | translate}}</h3>
             <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.campaignTimeframe' | translate}}">
                     </i>
           </div>
@@ -57,12 +57,12 @@
           </div>
           <div class="col-md-4">
             <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
-              ng-click="createCampaign('v2.campaign.new.description', {fastrack:false})">
+              ng-click="createCampaign('v2.assembly.aid.campaign.new.description', {aid: assemblyID, fastrack:false})">
                {{'Back' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" ng-click="createCampaign('v2.campaign.new.stages', {fastrack:false})" ng-disabled="!newCampaignForm2.$valid">
+            <button class="btn btn-primary col-md-12" ng-click="createCampaign('v2.assembly.aid.campaign.new.stages', {aid: assemblyID, fastrack:false})" ng-disabled="!newCampaignForm2.$valid">
               {{'Next' | translate}}
             </button>
           </div>

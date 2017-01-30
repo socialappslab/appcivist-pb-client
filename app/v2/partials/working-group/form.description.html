@@ -114,36 +114,20 @@
           <div id="groupManagement" class="form-horizontal">
             <div class="form-group">
               <label for="inputManagementType" class="control-label">
-                      {{'Who will be able to change settings and remove inappropriate comments?' | translate}}
-                  </label>
+                  {{'Who will be able to change settings and remove inappropriate comments?' | translate}}
+              </label>
               <div class="col-md-12 grayBox" id="inputManagementType">
-                <div class="col-md-12 voffset3"></div>
-                <label class="control-label">
-                          {{'Moderators' | translate}}
-                          <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.moderators' | translate}}"></i>
-                      </label>
-                <div class="col-md-12 radio">
-                  <input ng-model="newWorkingGroup.profile.moderators" type="radio" name="moderators" id="noRadio" value="two" checked> {{'Nominate specific moderators (at least two)' | translate}}
+                <div class="checkbox">
+                  <label>
+                      <input type="checkbox" ng-model="newWorkingGroup.profile.moderators"/>
+                      <strong>{{'Enable moderation' | translate}}</strong>
+                  </label>
                 </div>
-                <div class="col-md-12 radio">
-                  <input ng-model="newWorkingGroup.profile.moderators" type="radio" name="moderators" id="noRadio" value="all"> {{'Make all group members moderators' | translate}}
-                </div>
-                <div class="col-md-12 radio">
-                  <input ng-model="newWorkingGroup.profile.moderators" type="radio" name="moderators" id="noRadio" value="none"> {{'Have no moderators' | translate}}
-                </div>
-                <div class="col-md-12 voffset3"></div>
-                <label class="control-label">
-                          {{'Coordinators' | translate}}
-                          <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.coordinators' | translate}}"></i>
-                      </label>
-                <div class="col-md-12 radio">
-                  <input ng-model="newWorkingGroup.profile.coordinators" type="radio" name="coordinators" id="noRadio" value="two" checked> {{'Nominate specific coordinators (at least two)' | translate}}
-                </div>
-                <div class="col-md-12 radio">
-                  <input ng-model="newWorkingGroup.profile.coordinators" type="radio" name="coordinators" id="noRadio" value="all"> {{'Make all group members coordinators' | translate}}
-                </div>
-                <div class="col-md-12 radio">
-                  <input ng-model="newWorkingGroup.profile.coordinators" type="radio" name="coordinators" id="noRadio" value="none"> {{'Have no coordinators' | translate}}
+                <div class="checkbox">
+                  <label>
+                      <input type="checkbox" ng-model="newWorkingGroup.profile.coordinators"/>
+                      <strong>{{'Enable coordination' | translate}}</strong>
+                  </label>
                 </div>
               </div>
             </div>

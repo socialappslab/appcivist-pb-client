@@ -136,17 +136,17 @@
 
         // see how this can be established
         if ($scope.newWorkingGroup.profile.managementType === "OPEN") {
-          $scope.newWorkingGroup.profile.moderators = 'none';
-          $scope.newWorkingGroup.profile.coordinators = 'none';
-        } else if ($scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED") {
-          $scope.newWorkingGroup.profile.moderators = 'two'; //can be all
-          $scope.newWorkingGroup.profile.coordinators = 'two'; //can be all
-        } else if ($scope.newWorkingGroup.profile.managementType = "MODERATED") {
-          $scope.newWorkingGroup.profile.moderators = 'two'; //can be all
-          $scope.newWorkingGroup.profile.coordinators = 'none';
-        } else if ($scope.newWorkingGroup.profile.managementType = "COORDINATED") {
-          $scope.newWorkingGroup.profile.moderators = 'none';
-          $scope.newWorkingGroup.profile.coordinators =  'two'; //can be all
+          $scope.newWorkingGroup.profile.moderators = false;
+          $scope.newWorkingGroup.profile.coordinators = false;
+        } else if ($scope.newWorkingGroup.profile.managementType === "COORDINATED_AND_MODERATED") {
+          $scope.newWorkingGroup.profile.moderators = true; //can be all
+          $scope.newWorkingGroup.profile.coordinators = true; //can be all
+        } else if ($scope.newWorkingGroup.profile.managementType === "MODERATED") {
+          $scope.newWorkingGroup.profile.moderators = true; //can be all
+          $scope.newWorkingGroup.profile.coordinators = false;
+        } else if ($scope.newWorkingGroup.profile.managementType === "COORDINATED") {
+          $scope.newWorkingGroup.profile.moderators = false;
+          $scope.newWorkingGroup.profile.coordinators = true; //can be all
         }
 
         //?
@@ -155,17 +155,7 @@
         $scope.newWorkingGroup.configs = $scope.getExistingConfigs();
       }
 
-      $scope.createOrUpdateWorkingGroup = function() {
-        $scope.newWorkingGroup.existingThemes = [];
-        // 1. process themes
-        if ($scope.campaignThemes) {
-          for (var i = 0; i < $scope.campaignThemes.length; i++) {
-            if ($scope.campaignThemes[i].selected) {
-              $scope.newWorkingGroup.existingThemes.push($scope.campaignThemes[i]);
-            }
-          }
-        }
-        // 2. process membership
+      $scope.setModerationAndMembership = function () {
         if ($scope.newWorkingGroup.profile.membership === 'OPEN') {
           $scope.newWorkingGroup.profile.supportedMembership = "OPEN";
         } else if ($scope.newWorkingGroup.profile.membership === 'REGISTRATION') {
@@ -180,25 +170,35 @@
             $scope.newWorkingGroup.profile.supportedMembership = "INVITATION_AND_REQUEST";
           }
         }
-        // 3. process management
+
         console.log("Creating assembly with membership = " + $scope.newWorkingGroup.profile.supportedMembership);
-        if ($scope.newWorkingGroup.profile.moderators === 'none' && $scope.newWorkingGroup.profile.coordinators === 'none') {
+        if ($scope.newWorkingGroup.profile.moderators == false && $scope.newWorkingGroup.profile.coordinators == false) {
+          console.log("entro a OPEN");
           $scope.newWorkingGroup.profile.managementType = "OPEN";
-        } else if ($scope.newWorkingGroup.profile.moderators === 'two' || $scope.newWorkingGroup.profile.moderators === 'all') {
-          if ($scope.newWorkingGroup.profile.coordinators === 'two') {
-            $scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED";
-          } else if ($scope.newWorkingGroup.profile.coordinators === 'all') {
-            $scope.newWorkingGroup.profile.managementType = "OPEN";
-          } else {
-            $scope.newWorkingGroup.profile.managementType = "MODERATED";
-          }
-        } else {
-          if ($scope.newWorkingGroup.profile.coordinators === 'all') {
-            $scope.newWorkingGroup.profile.managementType = "OPEN";
-          } else {
-            $scope.newWorkingGroup.profile.managementType = "COORDINATED";
+        } else if ($scope.newWorkingGroup.profile.moderators == true && $scope.newWorkingGroup.profile.coordinators == true) {
+          console.log("entro a COOR AND MOD");
+          $scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED";
+        } else if ($scope.newWorkingGroup.profile.moderators == false && $scope.newWorkingGroup.profile.coordinators == true) {
+          console.log("entro a COOR");
+          $scope.newWorkingGroup.profile.managementType = "COORDINATED";
+        } else if ($scope.newWorkingGroup.profile.moderators == true && $scope.newWorkingGroup.profile.coordinators == false) {
+          console.log("entro a MOD");
+          $scope.newWorkingGroup.profile.managementType = "MODERATED";
+        }
+      }
+
+      $scope.createOrUpdateWorkingGroup = function() {
+        $scope.newWorkingGroup.existingThemes = [];
+        // 1. process themes
+        if ($scope.campaignThemes) {
+          for (var i = 0; i < $scope.campaignThemes.length; i++) {
+            if ($scope.campaignThemes[i].selected) {
+              $scope.newWorkingGroup.existingThemes.push($scope.campaignThemes[i]);
+            }
           }
         }
+
+        $scope.setModerationAndMembership();
 
         // 4. process brainstorming contributions
         if ($scope.contributions) {

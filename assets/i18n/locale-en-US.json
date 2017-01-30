@@ -845,5 +845,17 @@
   "Ballot Password": "Ballot Password",
   "Configure number of winners": "Configure number of winners",
   "Enable Quorum threshold": "Enable Quorum threshold",
-  "Campaign Level Configurations": "Campaign Level Configurations"
+  "Campaign Level Configurations": "Campaign Level Configurations",
+  "Create New Working Group": "Create New Working Group",
+  "Start New Assembly": "Start New Assembly",
+  "Create New Assembly": "Create New Assembly",
+  "Create New Campaign": "Create New Campaign",
+  "AppCivist Instance Settings": "AppCivist Instance Settings",
+  "Shortname": "Shortname",
+  "Shortname already exists": "Shortname already exists",
+  "assembly.enable.messaging": "Enable messaging",
+  "assembly.face-to-face.scheduling": "Face to face scheduling",
+  "appcivist.campaign.budget-amount": "Budget Amount",
+  "Enable moderation": "Enable moderation",
+  "Enable coordination": "Enable coordination"
 }

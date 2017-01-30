@@ -21,7 +21,12 @@
     }
 
     if($stateParams.aid) {
-      $scope.isEdit = true;
+      if ($state.is('v2.assembly.aid.assembly') || $state.is('v2.assembly.aid.edit')) {
+        $scope.isEdit = true;
+      } else {
+        $scope.isEdit = false;
+      }
     }
+
   }
 } ());

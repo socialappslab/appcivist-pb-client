@@ -68,8 +68,8 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
             "invitation": true,
             "request": true
           },
-          "moderators": "two",
-          "coordinators": "two",
+          "moderators": false,
+          "coordinators": false,
           "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
           "primaryContactName": "",
           "primaryContactPhone": "",
@@ -719,8 +719,8 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
             "invitation": true,
             "request": true
           },
-          "moderators": "two",
-          "coordinators": "two",
+          "moderators": false,
+          "coordinators": false,
           "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png"
         },
         //"location": {

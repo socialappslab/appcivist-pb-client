@@ -625,11 +625,11 @@
         }
 
         // Setup configurations
-        newCampaign.configs = $scope.newCampaign.configs;
-        newCampaign.configs[0].value = $scope.newCampaign.config.budget;
-        newCampaign.configs[1].value = $scope.newCampaign.config.budgetCurrency;
-        newCampaign.configs[2].value = $scope.newCampaign.config.discussionReplyTo;
-        newCampaign.configs[3].value = $scope.newCampaign.config.upDownVoting;
+        //newCampaign.configs = $scope.newCampaign.configs;
+        //newCampaign.configs[0].value = $scope.newCampaign.config.budget;
+        //newCampaign.configs[1].value = $scope.newCampaign.config.budgetCurrency;
+        //newCampaign.configs[2].value = $scope.newCampaign.config.discussionReplyTo;
+        //newCampaign.configs[3].value = $scope.newCampaign.config.upDownVoting;
       } else {
         newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
       }

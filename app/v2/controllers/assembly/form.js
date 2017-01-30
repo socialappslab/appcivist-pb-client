@@ -147,27 +147,58 @@
             $scope.newAssembly.profile.membership === 'REGISTRATION';
         }
 
-        // see how this can be established
         if ($scope.newAssembly.profile.managementType === "OPEN") {
-          $scope.newAssembly.profile.moderators === 'none';
-          $scope.newAssembly.profile.coordinators === 'none';
-        } else if ($scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED") {
-          $scope.newAssembly.profile.moderators === 'two'; //can be all
-          $scope.newAssembly.profile.coordinators === 'two'; //can be all
-        } else if ($scope.newAssembly.profile.managementType = "MODERATED") {
-          $scope.newAssembly.profile.moderators === 'two'; //can be all
-          $scope.newAssembly.profile.coordinators === 'none';
-        } else if ($scope.newAssembly.profile.managementType = "COORDINATED") {
-          $scope.newAssembly.profile.moderators === 'none';
-          $scope.newAssembly.profile.coordinators === 'two'; //can be all
+          $scope.newAssembly.profile.moderators = false;
+          $scope.newAssembly.profile.coordinators = false;
+        } else if ($scope.newAssembly.profile.managementType === "COORDINATED_AND_MODERATED") {
+          $scope.newAssembly.profile.moderators = true; //can be all
+          $scope.newAssembly.profile.coordinators = true; //can be all
+        } else if ($scope.newAssembly.profile.managementType === "MODERATED") {
+          $scope.newAssembly.profile.moderators = true; //can be all
+          $scope.newAssembly.profile.coordinators = false;
+        } else if ($scope.newAssembly.profile.managementType === "COORDINATED") {
+          $scope.newAssembly.profile.moderators = false;
+          $scope.newAssembly.profile.coordinators = true; //can be all
         }
 
-        $scope.newAssembly.config = {};
-        $scope.newAssembly.config.facetoface = $scope.newAssembly.configs[0].value;
-        $scope.newAssembly.config.messaging = $scope.newAssembly.configs[1].value;
+        //$scope.newAssembly.config = {};
+        //$scope.newAssembly.config.facetoface = $scope.newAssembly.configs[0].value;
+        //$scope.newAssembly.config.messaging = $scope.newAssembly.configs[1].value;
 
         // add configs and principal configs
         $scope.newAssembly.configs = $scope.getExistingConfigs();
+      }
+
+      $scope.setModerationAndMembership = function () {
+        if ($scope.newAssembly.profile.membership === 'OPEN') {
+          $scope.newAssembly.profile.supportedMembership = "OPEN";
+        } else if ($scope.newAssembly.profile.membership === 'REGISTRATION') {
+          if ($scope.newAssembly.profile.registration.invitation &&
+            !$scope.newAssembly.profile.registration.request) {
+            $scope.newAssembly.profile.supportedMembership = "INVITATION";
+          } else if (!$scope.newAssembly.profile.registration.invitation &&
+            $scope.newAssembly.profile.registration.request) {
+            $scope.newAssembly.profile.supportedMembership = "REQUEST";
+          } else if ($scope.newAssembly.profile.registration.invitation &&
+            $scope.newAssembly.profile.registration.request) {
+            $scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
+          }
+        }
+
+        console.log("Creating assembly with membership = " + $scope.newAssembly.profile.supportedMembership);
+        if ($scope.newAssembly.profile.moderators == false && $scope.newAssembly.profile.coordinators == false) {
+          console.log("entro a OPEN");
+          $scope.newAssembly.profile.managementType = "OPEN";
+        } else if ($scope.newAssembly.profile.moderators == true && $scope.newAssembly.profile.coordinators == true) {
+          console.log("entro a COOR AND MOD");
+          $scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
+        } else if ($scope.newAssembly.profile.moderators == false && $scope.newAssembly.profile.coordinators == true) {
+          console.log("entro a COOR");
+          $scope.newAssembly.profile.managementType = "COORDINATED";
+        } else if ($scope.newAssembly.profile.moderators == true && $scope.newAssembly.profile.coordinators == false) {
+          console.log("entro a MOD");
+          $scope.newAssembly.profile.managementType = "MODERATED";
+        }
       }
 
       // TODO: process selected assemblies
@@ -175,47 +206,15 @@
         console.log("Create or Update Assembly");
         if (step === 1) {
           console.log("Creating assembly with name = " + $scope.newAssembly.name);
-          if ($scope.newAssembly.profile.membership === 'OPEN') {
-            $scope.newAssembly.profile.supportedMembership = "OPEN";
-          } else if ($scope.newAssembly.profile.membership === 'REGISTRATION') {
-            if ($scope.newAssembly.profile.registration.invitation &&
-              !$scope.newAssembly.profile.registration.request) {
-              $scope.newAssembly.profile.supportedMembership = "INVITATION";
-            } else if (!$scope.newAssembly.profile.registration.invitation &&
-              $scope.newAssembly.profile.registration.request) {
-              $scope.newAssembly.profile.supportedMembership = "REQUEST";
-            } else if ($scope.newAssembly.profile.registration.invitation &&
-              $scope.newAssembly.profile.registration.request) {
-              $scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
-            }
-          }
+          $scope.setModerationAndMembership();
 
-          // TODO: change moderation and coordination configurations to be stored differently
-          console.log("Creating assembly with membership = " + $scope.newAssembly.profile.supportedMembership);
-          if ($scope.newAssembly.profile.moderators === 'none' && $scope.newAssembly.profile.coordinators === 'none') {
-            $scope.newAssembly.profile.managementType = "OPEN";
-          } else if ($scope.newAssembly.profile.moderators === 'two' || $scope.newAssembly.profile.moderators === 'all') {
-            if ($scope.newAssembly.profile.coordinators === 'two') {
-              $scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
-            } else if ($scope.newAssembly.profile.coordinators === 'all') {
-              $scope.newAssembly.profile.managementType = "OPEN";
-            } else {
-              $scope.newAssembly.profile.managementType = "MODERATED";
-            }
-          } else {
-            if ($scope.newAssembly.profile.coordinators === 'all') {
-              $scope.newAssembly.profile.managementType = "OPEN";
-            } else {
-              $scope.newAssembly.profile.managementType = "COORDINATED";
-            }
-          }
-
-          $scope.newAssembly.configs[0].value = $scope.newAssembly.config.facetoface;
-          $scope.newAssembly.configs[1].value = $scope.newAssembly.config.messaging;
+          //$scope.newAssembly.configs[0].value = $scope.newAssembly.config.facetoface;
+          //$scope.newAssembly.configs[1].value = $scope.newAssembly.config.messaging;
           localStorageService.set("temporaryNewAssembly", $scope.newAssembly);
           $scope.tabs[1].active = true;
         } else if (step === 2 && !$scope.userIsNew) {
           console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
+          $scope.setModerationAndMembership();
           var assemblyRes;
           if (!$scope.isEdit) {
             assemblyRes = Assemblies.assembly().save($scope.newAssembly);
@@ -278,6 +277,31 @@
         }
       }
 
+      $scope.shortnameChanged = function(shortname) {
+        // search shortName
+        var rsp = Assemblies.assemblyByShortName(shortname).get();
+        rsp.$promise.then(function(data) {
+          if (data) {
+            console.log("assembly shortname already existis");
+            $scope.invalidShortname = true;
+            $scope.newAssemblyForm1.shortname.$invalid = true;
+            return;
+          }
+        }, function(error) {
+          console.log(error);
+          if (error.status == 404) {
+            console.log("new assembly shortname");
+            $scope.invalidShortname = false;
+            $scope.newAssemblyForm1.shortname.$invalid = false;
+            return;
+          }
+        });
+      }
+
+      $scope.createNotPrincipalAssembly = function() {
+        ///#/v2/assembly/{{newAssembly.assemblyId}}/assembly/new
+        $state.go("v2.assembly.aid.assembly.description", {aid: $scope.newAssembly.assemblyId}, { reload: true });
+      }
     }
 
     function initScopeContent() {
@@ -339,6 +363,7 @@
         }
         initializeNewAssembly();
       } else {
+        $scope.isEdit = false;
         if (temporaryAssembly != null && temporaryAssembly.assemblyId != null) {
           localStorageService.set("temporaryNewAssembly", null);
         }
@@ -368,6 +393,7 @@
           var configs1 = configService.getAssemblyConfigs("ASSEMBLY");
           var configs2 = [];
           if($state.is('v2.assembly.new') || $state.is('v2.assembly.new.description') || $state.is('v2.assembly.new.configuration')) {
+            $scope.invalidShortname = false;
             $scope.newAssembly.principalAssembly = true;
             var configs2 = configService.getPrincipalAssemblyConfigs("ASSEMBLY");
           }

@@ -5,6 +5,19 @@
         <div id="campaignDefinition" class="box descriptionBox">
           <p>{{'definition.campaign' | translate}}</p>
         </div>
+
+        <div>
+          <div class="col-md-3">
+          </div>
+          <div class="col-md-6">
+            <a ng-if="isEdit" class="btn btn-primary col-md-12" ng-href="/#/v2/assembly/{{assemblyID}}/campaign/{{newCampaign.campaignId}}/group/new">
+              {{'Create New Working Group' | translate}}
+            </a>
+          </div>
+          <div class="col-md-3">
+          </div>
+        </div>
+
         <div class="row vertical-space-medium"></div>
         <!-- Title -->
         <div id="campaignTitle" class="form-horizontal">
@@ -40,14 +53,14 @@
         </div>
 
         <!-- Budget Amount -->
-        <div id="campaignConfigs" class="" ng-if="newCampaign.enableBudget=='yes'">
+        <!--<div id="campaignConfigs" class="" ng-if="newCampaign.enableBudget=='yes'">
           <div class="form-horizontal">
             <div class="form-group">
               <label for="inputBudget" class="control-label">{{"What's the budget to allocate?" | translate}}</label>
               <input id="inputBudget" name="budget" class="form-control" ng-model="newCampaign.config.budget" placeholder="{{newCampaign.config.budget | translate}}">
             </div>
           </div>
-        </div>
+        </div>-->
 
         <!-- Campaign Template -->
         <div id="campaignTemplate" class="">

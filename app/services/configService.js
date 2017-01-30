@@ -23,7 +23,9 @@ appCivistApp.service('configService', function ($resource, $http, $location, loc
       {key: "appcivist.assembly.has-registration-form", definition: { valueType: "Boolean" }, value: true},
       {key: "appcivist.assembly.has-registration-form-url", definition: { valueType: "String" }, value: "DEFAULT"},
       {key: "appcivist.assembly.has-registration-form-id", definition: { valueType: "String" }, value: "DEFAULT"},
-      {key: "appcivist.assembly.enable-moderator-role", definition: { valueType: "Boolean" }, value: true}
+      {key: "appcivist.assembly.enable-moderator-role", definition: { valueType: "Boolean" }, value: true},
+      {key: "assembly.enable.messaging", definition: {valueType: "Boolean"}, value: true},
+      {key: "assembly.face-to-face.scheduling", definition: {valueType: "Boolean"}, value: true}
     ]
   };
 
@@ -51,7 +53,8 @@ appCivistApp.service('configService', function ($resource, $http, $location, loc
       { key: "appcivist.campaign.disable-extended-feedback", definition: { valueType: "Boolean" }, value: true},
       { key: "appcivist.campaign.disable-extended-feedback-public", definition: { valueType: "Boolean" }, value: true},
       { key: "appcivist.campaign.disable-new-contributions", definition: { valueType: "Boolean" }, value: true},
-      { key: "appcivist.campaign.disable-etherpad", definition: { valueType: "Boolean" }, value: true}
+      { key: "appcivist.campaign.disable-etherpad", definition: { valueType: "Boolean" }, value: true},
+      { key: "appcivist.campaign.budget-amount", definition: { valueType: "Number" }, value: "0"}
     ]
   };
 

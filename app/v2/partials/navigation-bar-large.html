@@ -72,25 +72,25 @@
       </ul>
     </section>
 
-    <section class="my_working_groups" ng-if="isAssemblyCoordinator && creationPatternsEnabled">
+    <section class="my_working_groups" ng-if="isAssemblyCoordinator">
       <h3 class="section_header">{{'AppCivist Instance Settings' | translate}}</h3>
       <ul class="list__my_working_groups">
         <li>
           <a ng-href="/#/v2/assembly/new">
-            New assembly
+            {{'Create New Assembly' | translate}}
           </a>
         </li>
         <li>
-          <a ng-href="/#/v2/campaign/new/description">
-            New campaign
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/new">
+            {{'Create New Campaign' | translate}}
           </a>
         </li>
-        <li>
-          <a ng-href="/#/v2/group/new">
-            New working group
+        <!--<li>
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/new">
+            {{'Create New Working Group' | translate}}
           </a>
-        </li>
-      </ul>
+        </li>-->
+  		</ul>
     </section>
 
     <footer class="nav__footer">

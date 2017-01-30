@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -13,8 +13,6 @@
 
     function reset() {
       var v2 = false;
-      var v1MiniSelector = 'head link[href*=\'app.v1-mini.css\']';
-      var v1Mini = $(v1MiniSelector);
 
       if (location.hash.includes('/v2/')) {
         v2 = true;
@@ -24,17 +22,6 @@
       } else {
         $('head link[data-version=v2]').detach();
         $('head link[href*=\'v2\']').detach();
-      }
-
-      if (location.hash.includes('campaign/new')) {
-        if (!$(v1MiniSelector).lenght) {
-          // ADD v1-mini style
-          var el = $('head link[data-version=v2]').first();
-          el.before(v1Mini);
-        }
-      } else {
-        // REMOVE v1-mini style
-        v1Mini = v1Mini.detach();
       }
       $rootScope.ui = {
         v2: v2
@@ -49,4 +36,4 @@
       }
     };
   }
-} ());
+}());

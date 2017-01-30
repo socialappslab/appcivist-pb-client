@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -32,15 +32,20 @@
   function controllerFunc($state) {
     var vm = this;
 
-    vm.isActive = function (estado) {
-      return $state.includes(estado);
+    /**
+     * Check if given state is active
+     * 
+     * @param {string} state - relative or full state name
+     */
+    vm.isActive = function(state) {
+      return state.startsWith('.') ? $state.is($state.get('^').name + state) : $state.is(state);
     };
 
-    vm.go = function (dest) {
+    vm.go = function(dest) {
       if (vm.disabledIf) {
         return;
       }
-      $state.go("^"+dest);
+      $state.go('^' + dest);
     };
   }
-} ());
+}());

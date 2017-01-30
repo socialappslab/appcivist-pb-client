@@ -34,7 +34,8 @@ module.exports = function(grunt) {
         },
         files: { // Dictionary of files
           'app/css/app.css': 'stylesheets/main.scss', // 'destination': 'source'
-          'app/css/app.v1-mini.css': 'app/v2/stylesheets/main.scss'
+          'app/css/app.v2.css': 'app/v2/stylesheets/main.scss',
+          'app/css/common.css': 'app/v2/stylesheets/common.scss'
         }
       }
     },
@@ -79,7 +80,7 @@ module.exports = function(grunt) {
       src: [
         'dist/*', 'app/css/app.css', 'app/css/app.css.map',
         'app/css/app.v2.css', 'app/css/app.v2.css.map',
-        'app/fonts/*'
+        'app/css/common.css', 'app/fonts/*'
       ],
       dist: {
         files: [{
@@ -173,6 +174,7 @@ module.exports = function(grunt) {
             'stylesheets/**/*',
             'app/css/app.css',
             'app/css/app.v2.css',
+            'app/css/common.css',
             'bower_components/angular-i18n/**/*.js'
           ]
         }, {

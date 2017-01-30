@@ -1,19 +1,33 @@
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_glyphicons.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_grid.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_forms.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_dropdowns.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_labels.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_input-groups.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_tooltip.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_buttons.scss";
-@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_button-groups.scss";
-@import "../../../stylesheets/styles/_colors.scss";
-@import "../../../stylesheets/styles/_common.scss";
-@import "../../../stylesheets/styles/_header.scss";
-@import "../../partials/campaign/creation/_campaignCreation.scss";
-@import "../../partials/directives/timeline/_timeline.scss";
-.form-control {
-  font-size: initial;
+/* V2 main stylesheet */
+
+.card {
+  border: 1px solid #009877;
+  padding: 5px;
+  padding-bottom: 0;
+}
+
+.comments__section {
+  padding-top: 0;
+}
+
+.github-fork-ribbon:before,
+.github-fork-ribbon:after {
+  height: 2em;
+}
+
+.timeline {
+  display: flex;
+  justify-content: center;
+  li {
+    margin-right: 30px;
+  }
+}
+
+.form-horizontal .control-label {
+  text-align: left;
+}
+
+.box {
+  margin: 0;
+  margin-bottom: 1rem;
 }

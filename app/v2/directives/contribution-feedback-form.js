@@ -38,19 +38,20 @@
     this.selectType = selectType.bind(this);
     this.submit = submit.bind(this);
     this.getEditorOptions = getEditorOptions.bind(this);
+    this.loadFeedback = loadFeedback.bind(this);
 
     this.$onInit = function() {
       vm.feedback = {
-        need: 1,
-        benefit: 1,
-        feasibility: 1,
+        need: 0,
+        benefit: 0,
+        feasibility: 0,
         textualFeedback: '',
         status: 'PRIVATE',
         type: 'MEMBER'
       };
       vm.assembly = localStorageService.get('currentAssembly');
       vm.sliderOptions = {
-        floor: 1,
+        floor: 0,
         ceil: 4,
         showTicksValues: true
       };
@@ -58,7 +59,11 @@
       vm.loadGroups();
       vm.verifyMembership();
       vm.loadTypes();
+      vm.loadFeedback();
     };
+    //this.$on('reloadFeedback', function() {
+    //  vm.loadFeedback
+    //});
   }
 
   /**
@@ -67,6 +72,9 @@
   function selectGroup() {
     if (this.selectedGroup) {
       this.feedback.workingGroupId = this.selectedGroup.groupId;
+      this.loadFeedback();
+    } else {
+      delete this.feedback.workingGroupId;
     }
   }
 
@@ -76,6 +84,7 @@
   function selectType() {
     if (this.selectedType) {
       this.feedback.type = this.selectedType.value;
+      this.loadFeedback();
     }
   }
 
@@ -109,6 +118,7 @@
       types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
     }
     this.types = types;
+    this.selectedType = types[0];
   }
 
   function verifyMembership() {
@@ -121,7 +131,14 @@
 
   function submit() {
     var vm = this;
-    var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(this.feedback);
+    var payload = _.clone(this.feedback);
+    ['need', 'benefit', 'feasibility'].forEach(function(score) {
+      if (payload[score] === 0) {
+        delete payload[score];
+      }
+    })
+    delete payload.id;
+    var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(payload);
     feedback.$promise.then(
       function(newStats) {
         vm.contribution.stats = newStats;
@@ -193,5 +210,30 @@
         });
       }
     };
+  }
+
+  /**
+   * Load the user's feedback if there is any.
+   */
+  function loadFeedback() {
+    if (this.feedback.workingGroupId) {
+      var rsp = servs.Contributions.userFeedbackWithGroupId(this.assembly.assemblyId,
+                                this.feedback.workingGroupId, this.contribution.contributionId)
+                                .query({ type: this.feedback.type}).$promise;
+    } else {
+      var rsp = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId)
+        .query({ type: this.feedback.type}).$promise;
+    }
+    var vm = this;
+    rsp.then(
+      function(feedbacks) {
+        if (feedbacks && feedbacks.length > 0) {
+          vm.feedback = feedbacks[0];
+        }
+        console.log('feedbacks', feedbacks);
+      },
+      function() {
+        servs.Notify.show('Error while get user feedback from the server', 'error');
+      })
   }
 }());

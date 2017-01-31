@@ -70,6 +70,9 @@
             }
           }
 
+          scope.userFeedback.type='MEMBER';
+          scope.userFeedback.status='PUBLIC';
+
           var feedback = Contributions.userFeedback(scope.assembly.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
           feedback.$promise.then(
             function(newStats) {

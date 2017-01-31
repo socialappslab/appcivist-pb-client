@@ -542,6 +542,10 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback', { aid: assemblyId, cid: contributionId }, { 'update': { method: 'PUT' } });
     },
 
+    userFeedbackWithGroupId: function(assemblyId, groupId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution/:cid/feedback', { aid: assemblyId, gid: groupId, cid: contributionId }, { 'update': { method: 'PUT' } });
+    },
+
     getContributionComments: function(assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/comment', { aid: assemblyId, cid: contributionId });
     },

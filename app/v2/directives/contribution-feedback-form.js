@@ -61,6 +61,9 @@
       vm.loadTypes();
       vm.loadFeedback();
     };
+    //this.$on('reloadFeedback', function() {
+    //  vm.loadFeedback
+    //});
   }
 
   /**
@@ -69,6 +72,9 @@
   function selectGroup() {
     if (this.selectedGroup) {
       this.feedback.workingGroupId = this.selectedGroup.groupId;
+      this.loadFeedback();
+    } else {
+      delete this.feedback.workingGroupId;
     }
   }
 
@@ -78,6 +84,7 @@
   function selectType() {
     if (this.selectedType) {
       this.feedback.type = this.selectedType.value;
+      this.loadFeedback();
     }
   }
 
@@ -204,15 +211,24 @@
     };
   }
 
-
   /**
    * Load the user's feedback if there is any.
    */
   function loadFeedback() {
-    var rsp = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).query().$promise;
+    if (this.feedback.workingGroupId) {
+      var rsp = servs.Contributions.userFeedbackWithGroupId(this.assembly.assemblyId,
+                                this.feedback.workingGroupId, this.contribution.contributionId)
+                                .query({ type: this.feedback.type}).$promise;
+    } else {
+      var rsp = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId)
+        .query({ type: this.feedback.type}).$promise;
+    }
+    var vm = this;
     rsp.then(
       function(feedbacks) {
-        // TODO: assign to vm.feedback
+        if (feedbacks && feedbacks.length > 0) {
+          vm.feedback = feedbacks[0];
+        }
         console.log('feedbacks', feedbacks);
       },
       function() {

@@ -1,126 +1,140 @@
-body{
-    font-size: 2.2rem;
+body {
+  font-size: 2.2rem;
 }
 
-h1,h2,h3,h4,h5,h6{
-    margin-top:0;
-    margin-bottom: 5px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
-i{
+i {
   margin: 0 5px;
   cursor: default;
 }
 
-a{
-    cursor: pointer;
+a {
+  cursor: pointer;
 }
 
-.title{
-    display: inline-block;
-    vertical-align: middle;
+.title {
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.clear{
-    clear:both;
+.clear {
+  clear: both;
 }
 
-.voffset  { margin-top: 0.2rem; }
-.voffset1 { margin-top: 0.5rem; }
-.voffset2 { margin-top: 1rem; }
-.voffset3 { margin-top: 1.5rem; }
-.voffset4 { margin-top: 3rem; }
-.voffset5 { margin-top: 6rem; }
-.voffset6 { margin-top: 9rem; }
+.voffset {
+  margin-top: 0.2rem;
+}
 
-.vertical-divider{
-    border-right: 1px solid $vertical-divider;
-    display: inline-block;
-    margin: 0 0.2rem;
+.voffset1 {
+  margin-top: 0.5rem;
+}
+
+.voffset2 {
+  margin-top: 1rem;
+}
+
+.voffset3 {
+  margin-top: 1.5rem;
+}
+
+.voffset4 {
+  margin-top: 3rem;
+}
+
+.voffset5 {
+  margin-top: 6rem;
+}
+
+.voffset6 {
+  margin-top: 9rem;
+}
+
+.vertical-divider {
+  border-right: 1px solid $vertical-divider;
+  display: inline-block;
+  margin: 0 0.2rem;
 }
 
 
 /* Index of phases in a black ball */
 
-.indexBall{
-    display: inline-block;
-    background-color: $indexBall;
-    padding: 20px;
-    border-radius: 50%;
-
-    & * {
-        color:white;
-        display: inline;
-        margin: 0;
-    }
-
-    & :first-child{
-        font-weight: bold;
-    }
-
-    & :last-child{
-        vertical-align: -5px;
-    }
+.indexBall {
+  display: inline-block;
+  background-color: $indexBall;
+  padding: 20px;
+  border-radius: 50%;
+  & * {
+    color: white;
+    display: inline;
+    margin: 0;
+  }
+  & :first-child {
+    font-weight: bold;
+  }
+  & :last-child {
+    vertical-align: -5px;
+  }
 }
 
-.indexSquare{
-    display: inline-block;
-    background-color: $indexBall;
-    padding: 1rem;
-
-    & * {
-        color:white;
-        display: inline;
-        margin: 0;
-    }
-
-    & :first-child{
-        font-weight: bold;
-    }
-
-    & :last-child{
-        vertical-align: -5px;
-    }
+.indexSquare {
+  display: inline-block;
+  background-color: $indexBall;
+  padding: 1rem;
+  & * {
+    color: white;
+    display: inline;
+    margin: 0;
+  }
+  & :first-child {
+    font-weight: bold;
+  }
+  & :last-child {
+    vertical-align: -5px;
+  }
 }
 
-.box{
-    padding: 1rem;
-    border-radius: 0.3rem;
-    margin: 0.5rem;
-
-    &.newsBox{
-        background-color: $news-box;
-        color: $news-box-font;
+.box {
+  padding: 1rem;
+  border-radius: 0.3rem;
+  margin: 0.5rem;
+  &.newsBox {
+    background-color: $news-box;
+    color: $news-box-font;
+  }
+  &.descriptionBox {
+    background-color: $description-box;
+    color: $description-box-font;
+  }
+  &.selectionBox {
+    background-color: $selection-box;
+  }
+  &.settingsBox {
+    border: 0.1rem solid $settings-box;
+    margin: 3rem 0 3rem 0;
+    & .checkbox {
+      display: inline-block;
+      margin-right: 1rem;
     }
-
-    &.descriptionBox{
-        background-color: $description-box;
-        color: $description-box-font;
-    }
-
-    &.selectionBox{
-        background-color: $selection-box;
-    }
-
-    &.settingsBox{
-        border: 0.1rem solid $settings-box;
-        margin: 3rem 0 3rem 0;
-
-        & .checkbox{
-            display: inline-block;
-            margin-right: 1rem;
-        }
-    }
+  }
 }
 
-.tags{
+.assembly-tags-container-content {
+  .tags {
     padding-left: 0;
     list-style: none;
     display: inline-block;
     margin-bottom: 0;
-}
-
-.tag{
+  }
+  .tag {
     padding: 0.3rem 0.8rem;
     border-radius: 0.25rem;
     font-size: 1.8rem;
@@ -128,113 +142,115 @@ a{
     display: inline-block;
     border: none;
     margin: 0 0.5rem 0.5rem 0;
-
     &.tag-info {
-        background: $tag-info;
+      background: $tag-info;
     }
-
     &.tag-filter {
-        color: white;
-        background: $tag-filter;
+      color: white;
+      background: $tag-filter;
     }
-
     &.tag-caution {
-        color: white;
-        background: $tag-caution;
+      color: white;
+      background: $tag-caution;
     }
+  }
 }
 
-textarea{
-    resize: none;
-    margin: 5px 0 0 0;
-    height: 50px;
+textarea {
+  resize: none;
+  margin: 5px 0 0 0;
+  height: 50px;
 }
 
-.form-group{
-    margin-left: 0px !important;
-    margin-right: 0px !important;
+.form-group {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
 
 .form-control {
-    font-size: 1.8rem;
-}
-.center{
-    text-align: center;
+  font-size: 1.8rem;
 }
 
-.vertical-space-little{
-    margin: 5px 0;
+.center {
+  text-align: center;
 }
 
-.vertical-space-medium{
-    margin: 10px 0;
+.vertical-space-little {
+  margin: 5px 0;
 }
 
-.vertical-space-big{
-    margin: 15px 0;
+.vertical-space-medium {
+  margin: 10px 0;
 }
 
-.no-padding{
-    padding: 0 !important;
+.vertical-space-big {
+  margin: 15px 0;
 }
 
-.no-margin{
-    margin: 0 !important;
+.no-padding {
+  padding: 0 !important;
 }
 
-.container-inline{
-    display: inline;
-    * {
-        display: inline-block;
-    }
+.no-margin {
+  margin: 0 !important;
 }
 
-.info-block{
+.container-inline {
+  display: inline;
+  * {
     display: inline-block;
-    vertical-align: bottom;
-
-    & * {
-        display: block;
-    }
+  }
 }
+
+.info-block {
+  display: inline-block;
+  vertical-align: bottom;
+  & * {
+    display: block;
+  }
+}
+
 
 /*******Buttons*****/
 
-.btn-group{
-    vertical-align: baseline;
+.btn-group {
+  vertical-align: baseline;
 }
 
-.btn-full-size{
-    width: 100%;
+.btn-full-size {
+  width: 100%;
 }
 
-.btn-half-size{
-    width: 49%;
+.btn-half-size {
+  width: 49%;
 }
 
 
 /******Upload files******/
-.progress-section{
-    height: 5rem;
-    .progress-line-container{
-        display: inline-block;
-        width: 100%;
-        .progress-line{
-            background: $progress-line-bar;
-            width: 0;
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-        }
+
+.progress-section {
+  height: 5rem;
+  .progress-line-container {
+    display: inline-block;
+    width: 100%;
+    .progress-line {
+      background: $progress-line-bar;
+      width: 0;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
     }
+  }
 }
 
+
 /*****SPINNER*****/
-.spinner-container{
-    background-color: rgba(1,1,1,0.3);
-    position: absolute;
-    left: 0%;
-    top: -6%;
-    height: 106%;
-    width: 100%;
-    z-index: 5000;
+
+.spinner-container {
+  background-color: rgba(1, 1, 1, 0.3);
+  position: absolute;
+  left: 0%;
+  top: -6%;
+  height: 106%;
+  width: 100%;
+  z-index: 5000;
 }

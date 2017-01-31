@@ -407,6 +407,9 @@
 
         }
       } else {
+        var configs1 = configService.getAssemblyConfigs("ASSEMBLY");
+        var configs = _.concat(configs1,$scope.newAssembly.configs);
+        $scope.newAssembly.newConfigs = configs;
         console.log("Temporary New Assembly exists in the scope")
       }
       if ($scope.userIsNew) {

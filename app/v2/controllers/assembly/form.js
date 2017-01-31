@@ -218,7 +218,11 @@
           $scope.setModerationAndMembership();
           var assemblyRes;
           if (!$scope.isEdit) {
-            assemblyRes = Assemblies.assembly().save($scope.newAssembly);
+            if($state.is('v2.assembly.aid.assembly') || $state.is('v2.assembly.aid.assembly.description') || $state.is('v2.assembly.aid.assembly.configuration')) {
+              assemblyRes = Assemblies.assemblyInAssembly($stateParams.aid).save($scope.newAssembly);
+            } else {
+              assemblyRes = Assemblies.assembly().save($scope.newAssembly);
+            }
           } else {
             //$scope.newAssembly.campaigns.delete;
             assemblyRes = Assemblies.assembly($scope.newAssembly.assemblyId).update($scope.newAssembly);

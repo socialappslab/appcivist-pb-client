@@ -15,11 +15,13 @@
   height: 2em;
 }
 
-.timeline {
-  display: flex;
-  justify-content: center;
-  li {
-    margin-right: 30px;
+#campaignTemplatePreview {
+  .timeline {
+    display: flex;
+    justify-content: center;
+    li {
+      margin-right: 30px;
+    }
   }
 }
 

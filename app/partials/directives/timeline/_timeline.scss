@@ -1,67 +1,61 @@
-.timeline{
-  list-style: none;
-  display: inline-block;
-  width: 100%;
-  padding: 0rem 0rem 0rem 0rem;
-
-  & li{
-    position: relative;
+#campaignTemplatePreview {
+  .timeline {
+    list-style: none;
     display: inline-block;
-    padding: 15px 15px;
-    background-color: $timeline-background;
-    color: $timeline-selected-background;
-    border-color: $timeline-selected-background;
-    opacity: 1  ;
-
-    &.selected{
-      color: white;
-      background-color: $timeline-selected-background;
-      z-index: 5 !important;
-      & a {
-        color : $white;
+    width: 100%;
+    padding: 0rem 0rem 0rem 0rem;
+    & li {
+      position: relative;
+      display: inline-block;
+      padding: 15px 15px;
+      background-color: $timeline-background;
+      color: $timeline-selected-background;
+      border-color: $timeline-selected-background;
+      opacity: 1;
+      &.selected {
+        color: white;
+        background-color: $timeline-selected-background;
+        z-index: 5 !important;
+        & a {
+          color: $white;
+        }
+      }
+      &.selected:before {
+        border-left-color: $timeline-selected-background;
+      }
+      &.disabled {
+        color: white;
+        background-color: $timeline-disabled-background;
+        z-index: -1 !important;
+      }
+      &.disabled:before {
+        border-left-color: $timeline-disabled-background;
+      }
+      &.active {
+        opacity: 1;
       }
     }
-
-    &.selected:before{
-      border-left-color: $timeline-selected-background;
+    & li:before,
+    li:after {
+      left: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
     }
-
-    &.disabled{
-      color: white;
-      background-color: $timeline-disabled-background;
-      z-index: -1 !important;
+    & li:after {
+      border-left-color: white;
+      border-width: 29px;
+      margin-top: -29px;
+      z-index: -1;
     }
-
-    &.disabled:before{
-      border-left-color: $timeline-disabled-background;
+    & li:before {
+      border-left-color: $timeline-background;
+      border-width: 29px;
+      margin-top: -29px;
     }
-
-    &.active{
-      opacity: 1;
-    }
-  }
-
-  & li:before, li:after{
-    left: 100%;
-    top: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  & li:after {
-    border-left-color: white;
-    border-width: 29px;
-    margin-top: -29px;
-    z-index: -1;
-  }
-
-  & li:before {
-    border-left-color: $timeline-background;
-    border-width: 29px;
-    margin-top: -29px;
   }
 }

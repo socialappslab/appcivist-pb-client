@@ -233,7 +233,7 @@
             // Error
             function (error) {
               var e = error.data;
-              console.log("Couldn't create assembly: " + e.statusMessage);
+              console.log("Couldn't create assembly: " + e.statusMessage ? e.statusMessage : "[no message about the error]");
               $scope.errors.push(e);
             }
           );

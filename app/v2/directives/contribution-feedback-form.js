@@ -137,6 +137,7 @@
         delete payload[score];
       }
     })
+    delete payload.id;
     var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(payload);
     feedback.$promise.then(
       function(newStats) {

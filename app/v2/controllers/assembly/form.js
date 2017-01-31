@@ -40,6 +40,7 @@
 
       $scope.setNewAssemblyIcon = function (url, name) {
         $scope.newAssembly.profile.icon = url;
+        localStorageService.set("temporaryNewAssembly", $scope.newAssembly);
         var file = {};
         file.name = name;
         file.url = url;
@@ -413,10 +414,28 @@
           themes: [] // same as assemblyThemes
         }
       }
-      $scope.newAssembly.profile.icon = $scope.defaultIcons[0].url;
+      $scope.newAssembly.profile.icon = $scope.newAssembly && $scope.newAssembly.profile
+                            && $scope.newAssembly.profile.icon
+                                ? $scope.newAssembly.profile.icon : $scope.defaultIcons[0].url;
+
       var file = {};
-      file.name = $scope.defaultIcons[0].name;
-      file.url = $scope.defaultIcons[0].url;
+
+      if ($scope.newAssembly && $scope.newAssembly.profile && $scope.newAssembly.profile.icon) {
+        for (var i = 0; i<$scope.defaultIcons.length; i++) {
+          if ($scope.newAssembly.profile.icon === $scope.defaultIcons[i].url) {
+            file.name = $scope.defaultIcons[i].name;
+            file.url = $scope.defaultIcons[i].url;
+          }
+        }
+
+        if (!file.name) {
+          file.name = $scope.newAssembly.profile.icon ;
+          file.url = $scope.newAssembly.profile.icon ;
+        }
+      } else {
+        file.name = $scope.defaultIcons[0].name;
+        file.url = $scope.defaultIcons[0].url;
+      }
       $scope.f = file;
     }
 

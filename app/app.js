@@ -235,6 +235,15 @@
           requiresLogin: true
         }
       })
+      .state('v2.assembly.aid.campaign.start', {
+        url: '/start',
+        controller: 'v2.StartCampaignCtrl',
+        templateUrl: 'app/v2/partials/assembly/start.campaign.html',
+        controllerAs: 'vm',
+        access: {
+          requiresLogin: true
+        }
+      })
       .state('v2.assembly.aid.campaign.new.description', {
         url: '/description',
         controller: 'v2.CampaignFormCtrl',

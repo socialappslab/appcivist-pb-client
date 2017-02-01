@@ -4,27 +4,18 @@
   }
 </style>
 <section class="comments__section">
-
-  <div class="col-md-12 voffset3"></div>
   <div class="row">
     <form name="newAssemblyForm1">
       <div class="col-lg-12 col-md-12 col-xs-12">
         <div id="description" class="box descriptionBox">
           <p>{{'definition.assembly' | translate}}</p>
         </div>
-
         <div>
           <div class="col-md-3">
-          </div>
-          <div class="col-md-6">
-            <a ng-if="isEdit" class="btn btn-primary col-md-12" ng-click="createNotPrincipalAssembly()">
-              {{'Start New Assembly' | translate}}
-            </a>
           </div>
           <div class="col-md-3">
           </div>
         </div>
-
         <div class="row vertical-space-medium"></div>
         <div id="assemblyName" class="form-horizontal">
           <div class="col-md-12 form-group" ng-class="{ 'has-error': newAssemblyForm1.name.$touched && newAssemblyForm1.name.$invalid }">
@@ -36,13 +27,11 @@
         <div ng-if="newAssembly.principalAssembly" id="assemblyShortName" class="form-horizontal">
           <div class="col-md-12 form-group" ng-class="{ 'has-error': newAssemblyForm1.shortname.$touched && newAssemblyForm1.shortname.$invalid && invalidShortname }">
             <label for="inputShortNameAssembly" class="control-label">{{'Shortname'|translate }}*</label>
-            <input id="inputShortNameAssembly" name="shortname" type="text" class="form-control" placeholder="{{'e.g., ass-belleville'|translate}}"
-            ng-model="newAssembly.shortname" ng-required="true" ng-blur="shortnameChanged(newAssembly.shortname)" ng-disabled="isEdit">
-            <p ng-if="invalidShortname" ng-class"has-error" style="color: #a94442;">{{ 'Shortname already exists' | translate }}</p>
+            <input id="inputShortNameAssembly" name="shortname" type="text" class="form-control" placeholder="{{'e.g., ass-belleville'|translate}}" ng-model="newAssembly.shortname" ng-required="true" ng-blur="shortnameChanged(newAssembly.shortname)" ng-disabled="isEdit">
+            <p ng-if="invalidShortname" ng-class "has-error" style="color: #a94442;">{{ 'Shortname already exists' | translate }}</p>
           </div>
         </div>
         <div ng-if="newAssembly.principalAssembly" class="col-md-12 voffset3"></div>
-
         <div id="assemblyDescription" class="form-horizontal">
           <div class="col-md-12 form-group" ng-class="{ 'has-error': newAssemblyForm1.description.$touched && newAssemblyForm1.description.$invalid }">
             <label for="inputAboutAssembly" class="control-label">{{'assembly.newAssemblystep1.text1'|translate}}*</label>
@@ -54,9 +43,9 @@
         <div id="assemblyLocation" class="form-horizontal">
           <div class="col-md-12 form-group">
             <label for="inputLocationAssembly" class="control-label">
-                      {{'assembly.newAssemblystep1.text2'|translate}}
-                      <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.locationTooltip}}"></i>
-                  </label>
+            {{'assembly.newAssemblystep1.text2'|translate}}
+            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.locationTooltip}}"></i>
+            </label>
             <input class="form-control" id="inputLocationAssembly" type="text" placeholder="{{'The name of a Place, an Address, City or Country associated to your assembly' | translate}}" ng-model="newAssembly.location.placeName">
           </div>
         </div>
@@ -64,19 +53,19 @@
         <div id="assemblyTargetAudience" class="form-horizontal">
           <div class="col-md-12 form-group">
             <label class="control-label">
-                      {{'assembly.newAssemblystep1.text3'|translate}}
-                      <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.targetAudienceTooltip}}"></i>
-                  </label>
+            {{'assembly.newAssemblystep1.text3'|translate}}
+            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.targetAudienceTooltip}}"></i>
+            </label>
             <div class="voffset3"></div>
             <div class="col-md-4">
               <div class="radio">
                 <label>
-                  <input name="targetAudience" type="radio" ng-model="newAssembly.profile.targetAudience" value="RESIDENTS" checked="checked"> {{'Residents'|translate}}
+                <input name="targetAudience" type="radio" ng-model="newAssembly.profile.targetAudience" value="RESIDENTS" checked="checked"> {{'Residents'|translate}}
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  <input name="targetAudience" type="radio" ng-model="newAssembly.profile.targetAudience" value="ANYONE"> {{'Anyone'|translate}}
+                <input name="targetAudience" type="radio" ng-model="newAssembly.profile.targetAudience" value="ANYONE"> {{'Anyone'|translate}}
                 </label>
               </div>
             </div>
@@ -90,14 +79,14 @@
             <div class="col-md-4">
               <div class="radio">
                 <label>
-                  <input type="radio" name="membership" id="openRadio" value="OPEN" ng-model="newAssembly.profile.membership">
-                  {{'Opened'|translate}}
+                <input type="radio" name="membership" id="openRadio" value="OPEN" ng-model="newAssembly.profile.membership">
+                {{'Opened'|translate}}
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  <input type="radio" name="membership" id="registrationRadio" value="REGISTRATION" ng-model="newAssembly.profile.membership">
-                  {{'Registration' | translate}}
+                <input type="radio" name="membership" id="registrationRadio" value="REGISTRATION" ng-model="newAssembly.profile.membership">
+                {{'Registration' | translate}}
                 </label>
               </div>
             </div>
@@ -106,15 +95,15 @@
               <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.supportedMembershipRegistrationTooltip}}"></i>
               <div class="checkbox">
                 <label>
-                              <input type="checkbox" ng-model="newAssembly.profile.registration.invitation"/>
-                              <p style="display: inline;">{{'By invitation' | translate}}, {{'and/or' | translate}}</p>
-                          </label>
+                  <input type="checkbox" ng-model="newAssembly.profile.registration.invitation"/>
+                  <p style="display: inline;">{{'By invitation' | translate}}, {{'and/or' | translate}}</p>
+                </label>
               </div>
               <div class="checkbox">
                 <label>
-                              <input type="checkbox" ng-model="newAssembly.profile.registration.request" checked/>
-                              <p style="display: inline;">{{'By request' | translate}}</p>
-                          </label>
+                  <input type="checkbox" ng-model="newAssembly.profile.registration.request" checked/>
+                  <p style="display: inline;">{{'By request' | translate}}</p>
+                </label>
               </div>
             </div>
           </div>
@@ -123,21 +112,21 @@
         <div id="assemblyManagement" class="form-horizontal">
           <div class="col-md-12 form-group">
             <label for="inputManagementType" class="control-label">
-                      {{'Who will be able to change settings and remove inappropriate comments?'|translate}}
-                  </label>
+            {{'Who will be able to change settings and remove inappropriate comments?'|translate}}
+            </label>
             <div class="col-md-12 voffset3"></div>
             <div class="col-md-12 grayBox" id="inputManagementType">
               <div class="checkbox">
                 <label>
-                            <input type="checkbox" ng-model="newAssembly.profile.moderators"/>
-                            <strong>{{'Enable moderation' | translate}}</strong>
-                        </label>
+                <input type="checkbox" ng-model="newAssembly.profile.moderators"/>
+                <strong>{{'Enable moderation' | translate}}</strong>
+                </label>
               </div>
               <div class="checkbox">
                 <label>
-                            <input type="checkbox" ng-model="newAssembly.profile.coordinators"/>
-                            <strong>{{'Enable coordination' | translate}}</strong>
-                        </label>
+                <input type="checkbox" ng-model="newAssembly.profile.coordinators"/>
+                <strong>{{'Enable coordination' | translate}}</strong>
+                </label>
               </div>
             </div>
           </div>
@@ -168,8 +157,8 @@
           <div class="col-md-12 progress-section">
             <strong>{{'selected.icon'|translate}}: </strong><a ng-href="{{f.url}}">{{f.name}}</a> {{f.$error}} {{f.$errorParam}}
             <span class="progress-line-container" ng-show="f.progress >= 0">
-                      <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
-                  </span>
+              <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+            </span>
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
@@ -188,15 +177,15 @@
           <div class="col-md-12 form-group">
             <label for="inputTheme" class="control-label">{{'assembly.newAssemblystep1.text4' | translate}}*</label>
             <input class="form-control" id="inputTheme" type="text" placeholder="{{'e.g, Housing' | translate}}" ng-model="themes.list" />
-            <!--<div class="col-md-12 voffset3"></div>
-                  <div class="col-md-8 col-sm-8"></div>-->
             <div class="col-md-4 col-sm-4 add-button">
               <span><a ng-click="addTheme(themes.list)">
-                        <img data-src="holder.js/100x100" alt="Add Theme" src="../assets/images/addIcon.png"
-                             style="cursor: pointer; height: 25px; width:25px;"
-                             data-holder-rendered="true" class="image-circle">
-                    </a></span>
-              <span><h5 width="50px;">{{'Add to list' | translate}}</h5></span>
+              <img data-src="holder.js/100x100" alt="Add Theme" src="../assets/images/addIcon.png"
+                style="cursor: pointer; height: 25px; width:25px;"
+                data-holder-rendered="true" class="image-circle">
+              </a></span>
+              <span>
+                <h5 width="50px;">{{'Add to list' | translate}}</h5>
+              </span>
             </div>
             <div class="col-sm-12 col-md-12 form-group">
               <label class="control-label">{{'Added Themes' | translate}}</label>
@@ -205,7 +194,6 @@
                   <li class="tag tag-filter">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeTheme($index)"></span> {{t.title}}
                   </li>
-
                 </ul>
               </div>
             </div>
@@ -215,18 +203,18 @@
         <div id="assemblyInvitations" class="form-horizontal">
           <div class="col-md-12 form-group">
             <label class="control-label">
-                      {{'Invite people to join' | translate}}
-                      <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsTooltip}}"></i>
-                  </label>
+            {{'Invite people to join' | translate}}
+            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.invitationsTooltip}}"></i>
+            </label>
             <textarea class="form-control" id="invitees" rows="4" ng-model="inviteesEmails.list"></textarea>
-            <!--<div class="col-md-12 voffset3"></div>
-                  <div class="col-md-8 col-sm-8"></div>-->
             <div class="col-md-4 col-sm-4 add-button">
               <span><a ng-click="addEmailsToList(inviteesEmails.list)">
-                          <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
-                               style="cursor: pointer; height: 25px; width:25px;" data-holder-rendered="true" class="image-circle">
-                      </a></span>
-              <span><h5>{{'Add to list' | translate}}</h5></span>
+              <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
+                style="cursor: pointer; height: 25px; width:25px;" data-holder-rendered="true" class="image-circle">
+              </a></span>
+              <span>
+                <h5>{{'Add to list' | translate}}</h5>
+              </span>
             </div>
             <div class="col-md-12 voffset3"></div>
             <table class="table table-hover">
@@ -247,15 +235,15 @@
                   <td ng-if="newAssembly.profile.coordinators==='two'" class="coordinator-column">
                     <div class="checkbox">
                       <label>
-                                      <input type="checkbox" ng-model="invitee.coordinator"/>
-                                  </label>
+                      <input type="checkbox" ng-model="invitee.coordinator"/>
+                      </label>
                     </div>
                   </td>
                   <td ng-if="newAssembly.profile.moderators==='two'" class="moderator-column">
                     <div class="checkbox">
                       <label>
-                                      <input type="checkbox" ng-model="invitee.moderator"/>
-                                  </label>
+                      <input type="checkbox" ng-model="invitee.moderator"/>
+                      </label>
                     </div>
                   </td>
                 </tr>
@@ -268,35 +256,23 @@
         <div id="assemblyInvitationsEmails" class="form-horizontal">
           <div class="col-md-12">
             <label class="control-label">
-                      {{'Invitation Email' | translate}}
-                      <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail'|translate}}"></i>
-                  </label>
+            {{'Invitation Email' | translate}}
+            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail'|translate}}"></i>
+            </label>
             <textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6"></textarea>
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
         <div id="assemblyConfigs" class="form-horizontal">
           <div id="assemblyConfigs" class="col-md-12 form-group">
-            <!--<div class="checkbox">
-              <label>
-                          <input type="checkbox" ng-model="newAssembly.config.facetoface"/>
-                          <strong>{{'assembly.newAssemblystep1.text6' | translate}}</strong>
-                      </label>
-            </div>
             <div class="checkbox">
               <label>
-                          <input type="checkbox" ng-model="newAssembly.config.messaging"/>
-                          <strong>{{'Enable messaging' | translate}}</strong>
-                      </label>
-            </div>-->
-            <div class="checkbox">
-              <label>
-                          <input type="checkbox" ng-model="newAssembly.listed"/>
-                          <strong>
-                              <span translate="{{ 'Do you want your Assembly to be listed?' | translate }}"></span>
-                              <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
-                          </strong>
-                      </label>
+              <input type="checkbox" ng-model="newAssembly.listed"/>
+              <strong>
+              <span translate="{{ 'Do you want your Assembly to be listed?' | translate }}"></span>
+              <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
+              </strong>
+              </label>
             </div>
           </div>
         </div>
@@ -307,9 +283,8 @@
   <div id="campaignButtons1" class="">
     <div class="col-md-6">
       <button class="btn btn-primary col-md-12" ng-disabled="!newAssemblyForm1.$valid" ng-click="goToStep(2)">
-        {{ "Next" | translate }}
+      {{ "Next" | translate }}
       </button>
     </div>
   </div>
-
 </section>

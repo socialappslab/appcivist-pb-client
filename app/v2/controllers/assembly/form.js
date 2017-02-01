@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -8,11 +8,12 @@
 
   AssemblyFormCtrl.$inject = [
     '$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService', 'Assemblies',
-    'usSpinnerService', '$state', '$location', '$stateParams', 'configService'
+    'usSpinnerService', '$state', '$location', '$stateParams', 'configService', 'Notify', 'loginService'
   ];
 
   function AssemblyFormCtrl($scope, localStorageService, $translate, $routeParams,
-    LocaleService, Assemblies, usSpinnerService, $state, $location, $stateParams, configService) {
+    LocaleService, Assemblies, usSpinnerService, $state, $location, $stateParams,
+    configService, Notify, loginService) {
 
     init();
 
@@ -22,41 +23,34 @@
     }
 
     function initScopeFunctions() {
-      $scope.goToStep = function (step) {
+      $scope.goToStep = function(step) {
+        var parent = $state.current.name.split('.').filter(function(e, i, parts) {
+          return i < (parts.length - 1);
+        }).join('.');
+
         if (step === 1) {
-          if ($stateParams.aid) {
-            $location.path('/v2/assembly/' + $stateParams.aid + '/edit/description');
-          } else {
-            $location.path('/v2/assembly/new/description');
-          }
+          $state.go(parent + '.description');
         } else {
-          if ($stateParams.aid) {
-            $location.path('/v2/assembly/' + $stateParams.aid + '/edit/configuration');
-          } else {
-            $location.path('/v2/assembly/new/configuration');
-          }
+          $state.go(parent + '.configuration');
         }
       }
 
-      $scope.setNewAssemblyIcon = function (url, name) {
+      $scope.setNewAssemblyIcon = function(url, name) {
         $scope.newAssembly.profile.icon = url;
-        localStorageService.set("temporaryNewAssembly", $scope.newAssembly);
+        localStorageService.set('temporaryNewAssembly', $scope.newAssembly);
         var file = {};
         file.name = name;
         file.url = url;
         $scope.f = file;
       }
 
-      $scope.addEmailsToList = function (emailsText) {
+      $scope.addEmailsToList = function(emailsText) {
         if (!$scope.newAssembly.invitations) {
           $scope.newAssembly.invitations = [];
         }
         $scope.invalidEmails = [];
-        console.log("Adding emails: " + emailsText);
         var emails = emailsText.split(',');
-        console.log("Adding emails: " + emails);
-        emails.forEach(function (email) {
-          console.log("Adding email: " + email);
+        emails.forEach(function(email) {
           var invitee = {};
           invitee.email = email.trim();
           if ($scope.isValidEmail(invitee.email)) {
@@ -67,44 +61,38 @@
             $scope.invalidEmails.push(invitee.email);
           }
         });
-        $scope.inviteesEmails.list = "";
+        $scope.inviteesEmails.list = '';
       }
 
-      $scope.isValidEmail = function (email) {
-        //var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        //var re = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-        //return re.test(email);
+      $scope.isValidEmail = function(email) {
         return true;
       }
 
-      $scope.removeInvalidEmail = function (index) {
+      $scope.removeInvalidEmail = function(index) {
         $scope.invalidEmails.splice(index, 1);
       };
 
-      $scope.removeInvitee = function (index) {
+      $scope.removeInvitee = function(index) {
         $scope.newAssembly.invitations.splice(index, 1);
       }
 
-      $scope.addTheme = function (ts) {
-        console.log("Adding themes: " + ts);
+      $scope.addTheme = function(ts) {
         var themes = ts.split(',');
-        console.log("Adding themes: " + themes);
-        themes.forEach(function (theme) {
-          console.log("Adding theme: " + theme);
+        themes.forEach(function(theme) {
           var addedTheme = {};
           addedTheme.title = theme.trim();
-          if (addedTheme.title != "") {
+          if (addedTheme.title != '') {
             $scope.newAssembly.themes.push(addedTheme);
           }
         });
-        $scope.themes.list = "";
+        $scope.themes.list = '';
       }
 
-      $scope.removeTheme = function (index) {
+      $scope.removeTheme = function(index) {
         $scope.newAssembly.themes.splice(index, 1);
       }
 
-      $scope.findWithAttr = function (array, attr, value) {
+      $scope.findWithAttr = function(array, attr, value) {
         for (var i = 0; i < array.length; i += 1) {
           if (array[i][attr] === value) {
             return i;
@@ -112,7 +100,7 @@
         }
       }
 
-      $scope.removeByAttr = function (array, attr, value) {
+      $scope.removeByAttr = function(array, attr, value) {
         for (var i = 0; i < array.length; i += 1) {
           if (array[i][attr] === value) {
             array.splice(i, 1);
@@ -121,15 +109,15 @@
       }
 
       $scope.getExistingConfigs = function() {
-        var configs1 = configService.getAssemblyConfigs("ASSEMBLY");
+        var configs1 = configService.getAssemblyConfigs('ASSEMBLY');
         var configs2 = [];
-        if($state.is('v2.assembly.aid.edit') || $state.is('v2.assembly.aid.edit.description') || $state.is('v2.assembly.aid.edit.configuration')) {
-          configs2 = configService.getPrincipalAssemblyConfigs("ASSEMBLY");
+        if ($state.is('v2.assembly.aid.edit') || $state.is('v2.assembly.aid.edit.description') || $state.is('v2.assembly.aid.edit.configuration')) {
+          configs2 = configService.getPrincipalAssemblyConfigs('ASSEMBLY');
         }
         var configs = _.concat(configs1, configs2);
         var finalConfig = [];
         _.forEach($scope.newAssembly.configs, function(config) {
-          _.forEach(configs, function (configAux) {
+          _.forEach(configs, function(configAux) {
             if (config.key == configAux.key) {
               config.definition = configAux.definition;
             }
@@ -143,102 +131,89 @@
 
         if ($scope.newAssembly.profile.supportedMembership === 'OPEN') {
           $scope.newAssembly.profile.membership = 'OPEN';
-        } else if ($scope.newAssembly.profile.supportedMembership === "INVITATION" || $scope.newAssembly.profile.supportedMembership === "REQUEST"
-            || $scope.newAssembly.profile.supportedMembership === "INVITATION_AND_REQUEST") {
-            $scope.newAssembly.profile.membership === 'REGISTRATION';
+        } else if ($scope.newAssembly.profile.supportedMembership === 'INVITATION' || $scope.newAssembly.profile.supportedMembership === 'REQUEST' ||
+          $scope.newAssembly.profile.supportedMembership === 'INVITATION_AND_REQUEST') {
+          $scope.newAssembly.profile.membership === 'REGISTRATION';
         }
 
-        if ($scope.newAssembly.profile.managementType === "OPEN") {
+        if ($scope.newAssembly.profile.managementType === 'OPEN') {
           $scope.newAssembly.profile.moderators = false;
           $scope.newAssembly.profile.coordinators = false;
-        } else if ($scope.newAssembly.profile.managementType === "COORDINATED_AND_MODERATED") {
+        } else if ($scope.newAssembly.profile.managementType === 'COORDINATED_AND_MODERATED') {
           $scope.newAssembly.profile.moderators = true; //can be all
           $scope.newAssembly.profile.coordinators = true; //can be all
-        } else if ($scope.newAssembly.profile.managementType === "MODERATED") {
+        } else if ($scope.newAssembly.profile.managementType === 'MODERATED') {
           $scope.newAssembly.profile.moderators = true; //can be all
           $scope.newAssembly.profile.coordinators = false;
-        } else if ($scope.newAssembly.profile.managementType === "COORDINATED") {
+        } else if ($scope.newAssembly.profile.managementType === 'COORDINATED') {
           $scope.newAssembly.profile.moderators = false;
           $scope.newAssembly.profile.coordinators = true; //can be all
         }
-
-        //$scope.newAssembly.config = {};
-        //$scope.newAssembly.config.facetoface = $scope.newAssembly.configs[0].value;
-        //$scope.newAssembly.config.messaging = $scope.newAssembly.configs[1].value;
-
         // add configs and principal configs
         $scope.newAssembly.configs = $scope.getExistingConfigs();
       }
 
-      $scope.setModerationAndMembership = function () {
+      $scope.setModerationAndMembership = function() {
         if ($scope.newAssembly.profile.membership === 'OPEN') {
-          $scope.newAssembly.profile.supportedMembership = "OPEN";
+          $scope.newAssembly.profile.supportedMembership = 'OPEN';
         } else if ($scope.newAssembly.profile.membership === 'REGISTRATION') {
           if ($scope.newAssembly.profile.registration.invitation &&
             !$scope.newAssembly.profile.registration.request) {
-            $scope.newAssembly.profile.supportedMembership = "INVITATION";
+            $scope.newAssembly.profile.supportedMembership = 'INVITATION';
           } else if (!$scope.newAssembly.profile.registration.invitation &&
             $scope.newAssembly.profile.registration.request) {
-            $scope.newAssembly.profile.supportedMembership = "REQUEST";
+            $scope.newAssembly.profile.supportedMembership = 'REQUEST';
           } else if ($scope.newAssembly.profile.registration.invitation &&
             $scope.newAssembly.profile.registration.request) {
-            $scope.newAssembly.profile.supportedMembership = "INVITATION_AND_REQUEST";
+            $scope.newAssembly.profile.supportedMembership = 'INVITATION_AND_REQUEST';
           }
         }
 
-        console.log("Creating assembly with membership = " + $scope.newAssembly.profile.supportedMembership);
         if ($scope.newAssembly.profile.moderators == false && $scope.newAssembly.profile.coordinators == false) {
-          console.log("entro a OPEN");
-          $scope.newAssembly.profile.managementType = "OPEN";
+          $scope.newAssembly.profile.managementType = 'OPEN';
         } else if ($scope.newAssembly.profile.moderators == true && $scope.newAssembly.profile.coordinators == true) {
-          console.log("entro a COOR AND MOD");
-          $scope.newAssembly.profile.managementType = "COORDINATED_AND_MODERATED";
+          $scope.newAssembly.profile.managementType = 'COORDINATED_AND_MODERATED';
         } else if ($scope.newAssembly.profile.moderators == false && $scope.newAssembly.profile.coordinators == true) {
-          console.log("entro a COOR");
-          $scope.newAssembly.profile.managementType = "COORDINATED";
+          $scope.newAssembly.profile.managementType = 'COORDINATED';
         } else if ($scope.newAssembly.profile.moderators == true && $scope.newAssembly.profile.coordinators == false) {
-          console.log("entro a MOD");
-          $scope.newAssembly.profile.managementType = "MODERATED";
+          $scope.newAssembly.profile.managementType = 'MODERATED';
         }
       }
 
       // TODO: process selected assemblies
-      $scope.createOrUpdateAssembly = function (step) {
-        console.log("Create or Update Assembly");
+      $scope.createOrUpdateAssembly = function(step) {
         if (step === 1) {
-          console.log("Creating assembly with name = " + $scope.newAssembly.name);
           $scope.setModerationAndMembership();
-
-          //$scope.newAssembly.configs[0].value = $scope.newAssembly.config.facetoface;
-          //$scope.newAssembly.configs[1].value = $scope.newAssembly.config.messaging;
-          localStorageService.set("temporaryNewAssembly", $scope.newAssembly);
+          localStorageService.set('temporaryNewAssembly', $scope.newAssembly);
           $scope.tabs[1].active = true;
         } else if (step === 2 && !$scope.userIsNew) {
-          console.log("Creating new Assembly: " + JSON.stringify($scope.newAssembly.profile));
           $scope.setModerationAndMembership();
           var assemblyRes;
+
           if (!$scope.isEdit) {
-            if($state.is('v2.assembly.aid.assembly') || $state.is('v2.assembly.aid.assembly.description') || $state.is('v2.assembly.aid.assembly.configuration')) {
+            if ($state.is('v2.assembly.aid.assembly') || $state.is('v2.assembly.aid.assembly.description') || $state.is('v2.assembly.aid.assembly.configuration')) {
               assemblyRes = Assemblies.assemblyInAssembly($stateParams.aid).save($scope.newAssembly);
             } else {
               assemblyRes = Assemblies.assembly().save($scope.newAssembly);
             }
           } else {
-            //$scope.newAssembly.campaigns.delete;
             assemblyRes = Assemblies.assembly($scope.newAssembly.assemblyId).update($scope.newAssembly);
           }
           assemblyRes.$promise.then(
             // Success
-            function (data) {
-              localStorageService.set("currentAssembly", data);
+            function(data) {
+              // TODO: add support for subassembly creation. It should be redirected to /subassembly/<ID>/campaign/start
               localStorageService.remove('temporaryNewAssembly');
-              //redirect to manage page
-              $state.go("v2.assembly.aid.edit", {aid: (data.assemblyId != null ? data.assemblyId : data.newResourceId)}, { reload: true });
+              var assemblyId = data.assemblyId != null ? data.assemblyId : data.newResourceId;
+              Assemblies.setCurrentAssembly(assemblyId).then(function() {
+                //redirect to manage page
+                $state.go('v2.assembly.aid.campaign.start', { aid: assemblyId }, { reload: true });
+              })
             },
             // Error
-            function (error) {
+            function(error) {
               var e = error.data;
-              console.log("Couldn't create assembly: " + e.statusMessage ? e.statusMessage : "[no message about the error]");
+              Notify.show('Could not create assembly: ' + e.statusMessage ? e.statusMessage : ' [no message about the error]', 'error');
               $scope.errors.push(e);
             }
           );
@@ -255,7 +230,7 @@
         }
       }
 
-      $scope.uploadFiles = function (file, errFiles) {
+      $scope.uploadFiles = function(file, errFiles) {
         $scope.f = file;
         $scope.errFile = errFiles && errFiles[0];
         if (file) {
@@ -266,18 +241,16 @@
             }
           });
 
-          file.upload.then(function (response) {
-            $timeout(function () {
+          file.upload.then(function(response) {
+            $timeout(function() {
               file.result = response.data;
               $scope.newAssembly.profile.icon = response.data.url;
             });
-          }, function (response) {
+          }, function(response) {
             if (response.status > 0)
               $scope.errorMsg = response.status + ': ' + response.data;
-          }, function (evt) {
-            file.progress = Math.min(100, parseInt(100.0 *
-              evt.loaded / evt.total));
-            console.log('progress: ' + file.progress + '% ');
+          }, function(evt) {
+            file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
           });
         }
       }
@@ -287,25 +260,18 @@
         var rsp = Assemblies.assemblyByShortName(shortname).get();
         rsp.$promise.then(function(data) {
           if (data) {
-            console.log("assembly shortname already existis");
             $scope.invalidShortname = true;
             $scope.newAssemblyForm1.shortname.$invalid = true;
             return;
           }
         }, function(error) {
-          console.log(error);
+
           if (error.status == 404) {
-            console.log("new assembly shortname");
             $scope.invalidShortname = false;
             $scope.newAssemblyForm1.shortname.$invalid = false;
             return;
           }
         });
-      }
-
-      $scope.createNotPrincipalAssembly = function() {
-        ///#/v2/assembly/{{newAssembly.assemblyId}}/assembly/new
-        $state.go("v2.assembly.aid.assembly.description", {aid: $scope.newAssembly.assemblyId}, { reload: true });
       }
     }
 
@@ -314,28 +280,28 @@
       $scope.info = '';
       $scope.isEdit = false;
       if ($scope.info === undefined || $scope.info === null) {
-        info = $scope.info = localStorageService.get("help");
+        info = $scope.info = localStorageService.get('help');
       }
-      $scope.user = localStorageService.get("user");
+      $scope.user = localStorageService.get('user');
       if ($scope.user && $scope.user.language)
         $translate.use($scope.user.language);
       $scope.errors = [];
 
       $scope.defaultIcons = [{
-        "name": "Justice Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png"
+        'name': 'Justice Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png'
       }, {
-        "name": "Plan Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png"
+        'name': 'Plan Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png'
       }, {
-        "name": "Article 49 Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png"
+        'name': 'Article 49 Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png'
       }, {
-        "name": "Passe Livre Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png"
+        'name': 'Passe Livre Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png'
       }, {
-        "name": "Skyline Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"
+        'name': 'Skyline Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg'
       }];
 
       $scope.userIsNew = $routeParams.userIsNew ? true : false;
@@ -351,16 +317,15 @@
       };
 
       // temporaryAssembly manage
-      var temporaryAssembly = localStorageService.get("temporaryNewAssembly");
-      if ($stateParams.aid && ($state.is('v2.assembly.aid.edit') || $state.is('v2.assembly.aid.edit.description')
-        || $state.is('v2.assembly.aid.edit.configuration'))) {
+      var temporaryAssembly = localStorageService.get('temporaryNewAssembly');
+      if ($stateParams.aid && ($state.is('v2.assembly.aid.edit') || $state.is('v2.assembly.aid.edit.description') ||
+          $state.is('v2.assembly.aid.edit.configuration'))) {
         $scope.isEdit = true;
         if ((temporaryAssembly != null && temporaryAssembly.assemblyId != $stateParams.aid) || temporaryAssembly == null) {
           var rsp = Assemblies.assembly($stateParams.aid).get();
           rsp.$promise.then(function(data) {
-            console.log("Get Assembly with assemblyId " + $stateParams.aid);
             $scope.newAssembly = data;
-            localStorageService.set("temporaryNewAssembly", data);
+            localStorageService.set('temporaryNewAssembly', data);
             $scope.getAttributesFromExistingAssembly();
           });
         } else {
@@ -370,65 +335,60 @@
       } else {
         $scope.isEdit = false;
         if (temporaryAssembly != null && temporaryAssembly.assemblyId != null) {
-          localStorageService.set("temporaryNewAssembly", null);
+          localStorageService.set('temporaryNewAssembly', null);
         }
         initializeNewAssembly();
       }
 
-      $scope.$watch("newAssembly.name", function (newVal, oldval) {
+      $scope.$watch('newAssembly.name', function(newVal, oldval) {
         $translate('assembly.newAssemblystep1.text5', {
           newAssemblyName: $scope.newAssembly.name
-        }).then(function (text) {
+        }).then(function(text) {
           $scope.newAssembly.invitationEmail = text;
         });
       }, true);
 
-      $scope.$watch("newAssembly", function (newVal, oldval) {
-        localStorageService.set("temporaryNewAssembly", newVal);
+      $scope.$watch('newAssembly', function(newVal, oldval) {
+        localStorageService.set('temporaryNewAssembly', newVal);
       }, true);
     }
 
     function initializeNewAssembly() {
-      if ($scope.newAssembly === null || $scope.newAssembly === undefined || $scope.newAssembly === "") {
-        $scope.newAssembly = localStorageService.get("temporaryNewAssembly");
-        if ($scope.newAssembly === null || $scope.newAssembly === undefined || $scope.newAssembly === "") {
+      if ($scope.newAssembly === null || $scope.newAssembly === undefined || $scope.newAssembly === '') {
+        $scope.newAssembly = localStorageService.get('temporaryNewAssembly');
+        if ($scope.newAssembly === null || $scope.newAssembly === undefined || $scope.newAssembly === '') {
           $scope.newAssembly = Assemblies.defaultNewAssembly();
 
           // add configs and principal configs if apply
-          var configs1 = configService.getAssemblyConfigs("ASSEMBLY");
+          var configs1 = configService.getAssemblyConfigs('ASSEMBLY');
           var configs2 = [];
-          if($state.is('v2.assembly.new') || $state.is('v2.assembly.new.description') || $state.is('v2.assembly.new.configuration')) {
+          if ($state.is('v2.assembly.new') || $state.is('v2.assembly.new.description') || $state.is('v2.assembly.new.configuration')) {
             $scope.invalidShortname = false;
             $scope.newAssembly.principalAssembly = true;
-            var configs2 = configService.getPrincipalAssemblyConfigs("ASSEMBLY");
+            var configs2 = configService.getPrincipalAssemblyConfigs('ASSEMBLY');
           }
           var configs = _.concat(configs1, configs2);
           $scope.newAssembly.configs = configs;
 
         }
       } else {
-        var configs1 = configService.getAssemblyConfigs("ASSEMBLY");
-        var configs = _.concat(configs1,$scope.newAssembly.configs);
+        var configs1 = configService.getAssemblyConfigs('ASSEMBLY');
+        var configs = _.concat(configs1, $scope.newAssembly.configs);
         $scope.newAssembly.newConfigs = configs;
-        console.log("Temporary New Assembly exists in the scope")
       }
+
       if ($scope.userIsNew) {
         $scope.newAssembly.newUser = {
-          // username: "",
-          // email: "",
-          // password: "",
-          // repeatPassword: "",
           themes: [] // same as assemblyThemes
         }
       }
-      $scope.newAssembly.profile.icon = $scope.newAssembly && $scope.newAssembly.profile
-                            && $scope.newAssembly.profile.icon
-                                ? $scope.newAssembly.profile.icon : $scope.defaultIcons[0].url;
-
+      $scope.newAssembly.profile.icon = $scope.newAssembly && $scope.newAssembly.profile &&
+        $scope.newAssembly.profile.icon ?
+        $scope.newAssembly.profile.icon : $scope.defaultIcons[0].url;
       var file = {};
 
       if ($scope.newAssembly && $scope.newAssembly.profile && $scope.newAssembly.profile.icon) {
-        for (var i = 0; i<$scope.defaultIcons.length; i++) {
+        for (var i = 0; i < $scope.defaultIcons.length; i++) {
           if ($scope.newAssembly.profile.icon === $scope.defaultIcons[i].url) {
             file.name = $scope.defaultIcons[i].name;
             file.url = $scope.defaultIcons[i].url;
@@ -436,8 +396,8 @@
         }
 
         if (!file.name) {
-          file.name = $scope.newAssembly.profile.icon ;
-          file.url = $scope.newAssembly.profile.icon ;
+          file.name = $scope.newAssembly.profile.icon;
+          file.url = $scope.newAssembly.profile.icon;
         }
       } else {
         file.name = $scope.defaultIcons[0].name;
@@ -445,6 +405,5 @@
       }
       $scope.f = file;
     }
-
   }
-} ());
+}());

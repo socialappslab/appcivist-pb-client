@@ -33,3 +33,16 @@
   margin: 0;
   margin-bottom: 1rem;
 }
+
+article.start-campaign {
+  header+section {
+    margin-top: 20px;
+  }
+}
+
+.my_working_groups,
+.my_campaigns {
+  p.empty {
+    margin: 5px;
+  }
+}

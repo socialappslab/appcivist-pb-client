@@ -25,6 +25,10 @@
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
         </div>
+        <div class="field__container" ng-if="isProposal && isCreate && userIsAssemblyCoordinator">
+          <label for="pinned">{{'Pin contribution to make it always avaialable' | translate}}</label>
+          <input type="checkbox" ng-model="contribution.pinned"/>
+        </div>
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
           <select name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal" ng-disabled="$parent.disabled" ng-change="$parent.selectGroup()" ng-options="group as group.name for group in $parent.groups">

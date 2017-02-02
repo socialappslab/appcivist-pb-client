@@ -34,7 +34,8 @@ module.exports = function(grunt) {
         },
         files: { // Dictionary of files
           'app/css/app.css': 'stylesheets/main.scss', // 'destination': 'source'
-          'app/css/app.v1-mini.css': 'app/v2/stylesheets/main.scss'
+          'app/css/app.v2.css': 'app/v2/stylesheets/main.scss',
+          'app/css/common.css': 'app/v2/stylesheets/common.scss'
         }
       }
     },
@@ -79,7 +80,7 @@ module.exports = function(grunt) {
       src: [
         'dist/*', 'app/css/app.css', 'app/css/app.css.map',
         'app/css/app.v2.css', 'app/css/app.v2.css.map',
-        'app/fonts/*'
+        'app/css/common.css', 'app/fonts/*'
       ],
       dist: {
         files: [{
@@ -162,16 +163,6 @@ module.exports = function(grunt) {
             'index.html',
             'app/**/*.html',
             'app/**/*.js',
-            'bower_components/angular-i18n/**/*.js',
-            'bower_components/tinymce/tinymce.min.js',
-            'bower_components/tinymce/themes/modern/theme.min.js',
-            'bower_components/tinymce/themes/inlite/theme.min.js',
-            'bower_components/tinymce/skins/lightgray/content.inline.min.css',
-            'bower_components/tinymce/skins/lightgray/content.inline.min',
-            'bower_components/tinymce/skins/lightgray/skin.ie7.min.css',
-            'bower_components/tinymce/skins/lightgray/skin.min.css',
-            'bower_components/tinymce/skins/lightgray/img/*.gif',
-            'bower_components/tinymce/skins/lightgray/fonts/*',
             'bower_components/vex/dist/css/vex.css',
             'bower_components/vex/dist/css/vex-theme-plain.css',
             'bower_components/appcivist-patterns/dist/css/**/*',
@@ -183,7 +174,8 @@ module.exports = function(grunt) {
             'stylesheets/**/*',
             'app/css/app.css',
             'app/css/app.v2.css',
-            'app/css/app.v1.css'
+            'app/css/common.css',
+            'bower_components/angular-i18n/**/*.js'
           ]
         }, {
           expand: true,

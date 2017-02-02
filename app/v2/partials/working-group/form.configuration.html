@@ -1,0 +1,40 @@
+<section class="comments__section">
+  <div class="row">
+    <div class="row">
+      <form name="newAssemblyForm1">
+        <div class="col-sm-8 col-md-8 col-xs-12"
+             ng-repeat="config in newWorkingGroup.configs | orderBy : 'key'">
+           <div class="row">
+             <div class="col-sm-6 col-md-6 col-xs-12">
+               <label>{{config.key | translate}}</label>
+             </div>
+             <div class="col-sm-6 col-md-6 col-xs-12">
+               <input ng-if="config.definition.valueType == 'String' || config.definition.valueType == 'Number'" id="inputNameAssembly" name="name" type="text" class="form-control"
+                      ng-model="config.value" ng-required="true">
+              <input ng-if="config.definition.valueType == 'Boolean'" type="checkbox" ng-model="config.value"
+              ng-true-value="'true'" ng-checked="config.value"/>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xs-12">
+            </div>
+            <div class="col-md-12 voffset3"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div id="campaignButtons1" class="row col-md-8 col-sm-8">
+      <div class="col-md-6">
+        <button class="btn btn-primary col-md-12" ng-click="goToStep(1)">
+          {{'Back' | translate}}
+        </button>
+      </div>
+      <div class="col-md-6">
+        <button ng-if="!isEdit" class="btn btn-primary col-md-12" ng-disabled="!newAssemblyForm1.$valid" ng-click="createOrUpdateWorkingGroup()">
+          {{'Create' | translate}}
+        </button>
+        <button ng-if="isEdit" class="btn btn-primary col-md-12" ng-disabled="!newAssemblyForm1.$valid" ng-click="createOrUpdateWorkingGroup()">
+          {{'Update' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

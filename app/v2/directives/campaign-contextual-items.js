@@ -5,10 +5,10 @@
     .directive('campaignContextualItems', campaignContextualItems);
 
   campaignContextualItems.$inject = [
-    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify'
+    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify', '$state'
   ];
 
-  function campaignContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify) {
+  function campaignContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -74,6 +74,10 @@
                 Notify.show('Error while trying to communicate with the server', 'error');
               }
             );
+          }
+
+          scope.myObject.edit = function() {
+            $state.go("v2.assembly.aid.campaign.edit", { aid: scope.assemblyId, cid: scope.campaign.campaignId});
           }
         }
       }

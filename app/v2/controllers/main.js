@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -28,6 +28,9 @@
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
         loadUserData($scope);
+        if ($state.params && $state.params.cid) {
+          $scope.currentCampaignId = $state.params.cid;
+        }
       } else {
         if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
           $scope.isAnonymous = true;
@@ -44,7 +47,7 @@
         if (assemblyRols) {
           $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
         } else {
-          loginService.loadAuthenticatedUserMemberships().then(function () {
+          loginService.loadAuthenticatedUserMemberships().then(function() {
             $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
           });
         }
@@ -58,8 +61,10 @@
       scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
       scope.assemblies = localStorageService.get('assemblies') || [];
 
-      if (!scope.myWorkingGroups || !scope.ongoingCampaigns) {
-        loginService.loadAuthenticatedUserMemberships($scope.user).then(function () {
+      if (scope.myWorkingGroups == undefined || scope.ongoingCampaigns == undefined) {
+        console.log('se vuelve a cargar todo!');
+        // TODO: Probably better to use here the new Assemblies.setCurrentAssembly method.
+        loginService.loadAuthenticatedUserMemberships($scope.user).then(function() {
           location.reload();
         });
       }
@@ -80,9 +85,16 @@
 
     function stateChangeHandler(event) {
       this.nav.isActive = false;
-      this.isLoginPage =  $state.is('v2.login');
+      this.isLoginPage = $state.is('v2.login');
       this.userIsAuthenticated = loginService.userIsAuthenticated();
       this.userIsAuthenticated = this.userIsAuthenticated === null ? false : this.userIsAuthenticated;
+      if ($state.params && $state.params.cid) {
+        $scope.currentCampaignId = $state.params.cid;
+      }
+      var isCampaignDashboard = $state.is('v2.assembly.aid.campaign.cid');
+      if(isCampaignDashboard) {
+        loadUserData(this);
+      }
     }
   }
-} ());
+}());

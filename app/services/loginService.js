@@ -1,16 +1,16 @@
-appCivistApp.service('loginService', function ($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
+appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
   FlashService, $rootScope, $q, Memberships, Assemblies, $filter, $state, Notify, Campaigns) {
 
 
-  this.getUser = function () {
+  this.getUser = function() {
     return $resource(localStorageService.get("serverBaseUrl") + "/user/:id/loggedin", { id: '@id' });
   };
 
-  this.getLogintState = function () {
+  this.getLogintState = function() {
     return this.userIsAuthenticated();
   };
 
-  this.signUp = function (user, scope, modalInstance, callback) {
+  this.signUp = function(user, scope, modalInstance, callback) {
     $rootScope.startSpinner();
     if (user.password && user.password.localeCompare(user.repeatPassword) != 0) {
       $rootScope.stopSpinner();
@@ -21,7 +21,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     } else {
       var authRes = AppCivistAuth.signUp().save(user);
       authRes.$promise.then(
-        function (user) {
+        function(user) {
           if (modalInstance) {
             modalInstance.dismiss('cancel');
           }
@@ -32,7 +32,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
           $rootScope.stopSpinner();
           $location.url('/v1/home');
         },
-        function (error) {
+        function(error) {
           var data = error.data;
           scope.user = null;
           $rootScope.stopSpinner();
@@ -44,14 +44,14 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     if (callback) { callback(); }
   };
 
-  this.signIn = function (email, password, scope, callback) {
+  this.signIn = function(email, password, scope, callback) {
     $rootScope.startSpinner();
     var user = {};
     user.email = email;
     user.password = password;
     var authRes = AppCivistAuth.signIn().save(user);
     authRes.$promise.then(
-      function (user) {
+      function(user) {
         $rootScope.stopSpinner();
         if (user !== '0') {
           localStorageService.set('sessionKey', user.sessionKey);
@@ -59,14 +59,12 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
           localStorageService.set("user", user);
           scope.user = user;
 
-          loadAuthenticatedUserMemberships(user).then(function () {
+          loadAuthenticatedUserMemberships(user).then(function() {
             var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
             var assembly = localStorageService.get('currentAssembly');
-            $state.go('v2.assembly.aid.campaign.cid',
-              { aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId },
-              { reload: true }).then(function () {
-                location.reload();
-              });
+            $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId }, { reload: true }).then(function() {
+              location.reload();
+            });
           });
         } else { // Not Authenticated
           scope.user = null;
@@ -74,7 +72,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
           Notify.show('You need to log in.', 'error');
         }
       },
-      function (error) {
+      function(error) {
         $rootScope.stopSpinner();
         var data = error.data;
         Notify.show(data ? data.statusMessage ? data.statusMessage : '' : '', 'error');
@@ -83,7 +81,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     if (callback) { callback(); }
   };
 
-  this.signOut = function (username, scope, callback) {
+  this.signOut = function(username, scope, callback) {
     var authRes = AppCivistAuth.signOut().save();
     authRes.$promise.then(clearDataAndRedirectToHome, clearDataAndRedirectToHome);
     if (callback) { callback() }
@@ -94,18 +92,18 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     $location.url('/');
   }
 
-  this.verifyUser = function (userId) {
+  this.verifyUser = function(userId) {
     return $resource(localStorageService.get("serverBaseUrl") + '/api/user/:uid/loggedin', { uid: UserId });
   };
 
-  this.userIsAuthenticated = function () {
+  this.userIsAuthenticated = function() {
     var authenticated = localStorageService.get('authenticated');
     if (authenticated === undefined || authenticated === false) {
       var localUser = localStorageService.get('user');
       if (localUser != undefined) {
         var userId = localUser.userId;
         var user = User.get({ id: userId },
-          function (user) {
+          function(user) {
             if (user != undefined && user.userId > 0) {
               localStorageService.set('user', user);
               localStorageProvider.set('authenticated', true);
@@ -116,14 +114,22 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     return authenticated;
   };
 
-  this.changePassword = function (data) {
+  this.changePassword = function(data) {
     return $resource(localStorageService.get('serverBaseUrl') + '/user/password/change');
   };
 
   /**
-   * Retrieve and store current user working groups, ongoing campaigns.
+   * Retrieve and store current user's session information:
+   *   - updates assemblyMembershipsHash
+   *   - updates myWorkingGroups
+   *   - updates groupMembershipsHash
+   *   - updates ongoingCampaigns
+   *   - updates currentAssembly
+   * 
+   * If a domain is specified, then pick that for currentAssembly. Otherwise the first
+   * element of available assemblies will be picked it up.
    */
-  this.loadAuthenticatedUserMemberships = function () {
+  this.loadAuthenticatedUserMemberships = function() {
     return loadAuthenticatedUserMemberships();
   };
 
@@ -142,12 +148,12 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
     var assemblyMembershipsHash = {};
 
 
-    angular.forEach(membershipsInGroups, function (m) {
+    angular.forEach(membershipsInGroups, function(m) {
       myWorkingGroups.push(m.workingGroup);
       groupMembershipsHash[m.workingGroup.groupId] = m.roles;
     });
 
-    angular.forEach(membershipsInAssemblies, function (m) {
+    angular.forEach(membershipsInAssemblies, function(m) {
       myAssemblies.push(m.assembly);
       assemblyMembershipsHash[m.assembly.assemblyId] = m.roles;
 
@@ -160,7 +166,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
 
     var domain = localStorageService.get('domain');
     var currentAssembly;
-    if(domain) {
+    if (domain) {
       var fa = _.filter(myAssemblies, function(a) {
         return a.uuid === domain.uuid;
       });
@@ -187,14 +193,13 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
   function singleAssemblySuccess(assembly) {
     var user = localStorageService.get('user');
     localStorageService.set('currentAssembly', assembly);
-    var ongoingCampaigns = $filter('filter')(assembly.campaigns, { active: true });
-
     var rsp = Campaigns.campaigns(user.uuid, 'ongoing').query().$promise;
+
     rsp.then(
-      function (data) {
+      function(data) {
         localStorageService.set('ongoingCampaigns', data);
       },
-      function(){
+      function() {
         Notify.show('Error while trying to get ongoing campaigns from server', 'error');
       }
     )
@@ -208,7 +213,7 @@ appCivistApp.service('loginService', function ($resource, $http, $location, loca
   function assembliesSuccess(memberships) {
     var currentAssembly = localStorageService.get('currentAssembly');
     var assemblies = [];
-    angular.forEach(memberships, function (m) {
+    angular.forEach(memberships, function(m) {
 
       if (m.assembly.assemblyId !== currentAssembly.assemblyId) {
         assemblies.push(m.assembly);

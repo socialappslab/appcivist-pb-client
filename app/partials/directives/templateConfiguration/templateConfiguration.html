@@ -1,35 +1,32 @@
 <div class="box settingsBox">
-    <div class="row header col-md-12 col-sm-12">
-        <h3><strong>{{'Template Review' | translate}}: </strong> {{selectedTemplate.name}}</h3>
-    </div>
-    <div id="campaignLinkedBox" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='LINKED'">
-        <label><strong>{{'Linked Campaign' | translate}}: </strong> {{newCampaign.linkedCampaign.title}}</label>
+  <div class="header col-md-12 col-sm-12">
+    <h3><strong>{{'Template Review' | translate}}: </strong> {{selectedTemplate.name}}</h3>
+  </div>
+  <div id="campaignLinkedBox" class="row col-md-12 col-sm-12" ng-show="newCampaign.template.value==='LINKED'">
+    <label><strong>{{'Linked Campaign' | translate}}: </strong> {{newCampaign.linkedCampaign.title}}</label>
 
-        <div class="themes-container-content optionThemes">
-            <input type="checkbox" value="" ng-model="newCampaign.useLinkedCampaign"
-            ng-click="updateLinkedCampaign()">
-            <span>{{'directives.templateConfiguration.templateConfiguration.text1' | translate}} <strong>{{'Deliberation' | translate}}, {{'Voting' | translate}} </strong> {{'and' | translate}} <strong>{{'Implementation' | translate}}</strong></span>
-        </div>
-
-        <div class="row col-md-12 col-sm-12 box descriptionBox"
-             translate="campaign.creation.linkedCampaignExplanation"
-             translate-values="{ title : '{{newCampaign.linkedCampaign.title}}'}">
-        </div>
+    <div class="themes-container-content optionThemes">
+      <input type="checkbox" value="" ng-model="newCampaign.useLinkedCampaign" ng-click="updateLinkedCampaign()">
+      <span>{{'directives.templateConfiguration.templateConfiguration.text1' | translate}} <strong>{{'Deliberation' | translate}}, {{'Voting' | translate}} </strong> {{'and' | translate}} <strong>{{'Implementation' | translate}}</strong></span>
     </div>
 
-    <div class="row col-md-12 col-sm-12">
-        <div class="form-horizontal">
-            <div class="form-group">
-                <h4>
-                    <label for="timeline" class="control-label">
+    <div class="row col-md-12 col-sm-12 box descriptionBox" translate="campaign.creation.linkedCampaignExplanation" translate-values="{ title : '{{newCampaign.linkedCampaign.title}}'}">
+    </div>
+  </div>
+
+  <div class="row col-md-12 col-sm-12">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <h4>
+          <label for="timeline" class="control-label">
                         {{'Proposal Development Timeline' | translate}}:
                         <i class="fa fa-question-circle"
                            uib-tooltip="{{'help.proposalTimeline' | translate}}"
                            tooltip-placement="right"></i>
                     </label></h4>
-                </h4>
-                <timelineedit id="timeline"></timelineedit>
-            </div>
-        </div>
+        </h4>
+        <timelineedit id="timeline"></timelineedit>
+      </div>
     </div>
+  </div>
 </div>

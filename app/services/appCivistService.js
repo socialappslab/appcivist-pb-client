@@ -19,14 +19,17 @@ function getServerBaseUrl(localStorageService) {
   return serverBaseUrl;
 }
 
-appCivistApp.factory('Assemblies', function($resource, localStorageService) {
+appCivistApp.factory('Assemblies', function($resource, localStorageService, $injector) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
     assemblies: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
     assembly: function(assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId }, { 'update': { method:'PUT' } });
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId }, { 'update': { method: 'PUT' } });
+    },
+    assemblyInAssembly: function(assemblyId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/assembly', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },
     assemblyByShortName: function(shortName) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/name/:shortname', { shortname: shortName });
@@ -57,9 +60,6 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
     },
     defaultNewAssembly: function() {
       return {
-        //"name": "Assemblée Belleville",
-        //"shortname": "assemblee-belleville",
-        //"description": "This assembly organizes citizens of Belleville, to come up with interesting and feasible proposals to be voted on and later implemented during the PB process of 2015",
         "listed": true, // TODO: ADD TO FORM
         "profile": {
           "targetAudience": "RESIDENTS",
@@ -68,16 +68,13 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
             "invitation": true,
             "request": true
           },
-          "moderators": "two",
-          "coordinators": "two",
+          "moderators": false,
+          "coordinators": false,
           "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
           "primaryContactName": "",
           "primaryContactPhone": "",
           "primaryContactEmail": ""
         },
-        //"location": {
-        //	"placeName": "Belleville, Paris, France"
-        //},
         "themes": [{
           "title": "Housing"
         }],
@@ -96,14 +93,98 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService) {
           }
         ],
         "lang": "en", // TODO: ADD TO FORM
-        //"invitationEmail"
-        "invitations": [], // { "email": "abc1@example.com", "moderator": true, "coordinator": false }, ... ],
-        "linkedAssemblies": [] // [ { "assemblyId": "2" }, { "assemblyId": "3" }, ... ]
+        "invitations": [],
+        "linkedAssemblies": []
       };
     },
 
     assemblyByUUID: function(uuid) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:uuid', { uuid: uuid });
+    },
+
+    /**
+     * Updates current assembly information based on the given assembly:
+     *   - updates assemblyMembershipsHash
+     *   - updates myWorkingGroups
+     *   - updates groupMembershipsHash
+     *   - updates ongoingCampaigns
+     *   - updates currentAssembly
+     * 
+     * If a domain is specified, then pick that for currentAssembly. Otherwise the first
+     * element of available assemblies will be picked it up.
+     * 
+     * @param {number} newAssemblyId - The ID of the assembly we want to set as currentAssembly
+     */
+    setCurrentAssembly: function(newAssemblyId) {
+      var rsp = this.assembly(newAssemblyId).get().$promise;
+      return rsp.then(assemblyLoaded, serverError);
+
+      // 1) set currentAssembly, load ongoing campaigns and load membership information.
+      function assemblyLoaded(assembly) {
+        localStorageService.set('currentAssembly', assembly);
+        return fetchOngoingCampaigns(assembly);
+      }
+
+      // 2) load ongoing campaigns list.
+      function fetchOngoingCampaigns(assembly) {
+        var Campaigns = $injector.get('Campaigns');
+        var user = localStorageService.get('user');
+        var rsp = Campaigns.campaigns(user.uuid, 'ongoing').query().$promise;
+
+        return rsp.then(
+          function(ongoingCampaigns) {
+
+            if (ongoingCampaigns) {
+              ongoingCampaigns = ongoingCampaigns.filter(function(campaign) {
+                return campaign.assemblies[0] === newAssemblyId;
+              });
+            }
+            localStorageService.set('ongoingCampaigns', ongoingCampaigns);
+            return fetchMembershipInformation(user);
+          },
+          function() {
+            Notify.show('Error while trying to get ongoing campaigns from server', 'error');
+          }
+        )
+      }
+
+      // 3) fetch membership information
+      function fetchMembershipInformation(user) {
+        var Memberships = $injector.get('Memberships');
+        var rsp = Memberships.memberships(user.userId).query().$promise;
+        return rsp.then(memberSuccess, serverError);
+      }
+
+      // 4) process user memberships, working groups and assemblies information.
+      function memberSuccess(data) {
+        var $filter = $injector.get('$filter');
+        var membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+        var membershipsInAssemblies = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'ASSEMBLY' });
+        var groupMembershipsHash = {};
+        var assemblyMembershipsHash = {};
+
+        var myWorkingGroups = membershipsInGroups.filter(function(membership) {
+          return membership.workingGroup.assemblies[0] === newAssemblyId;
+        }).map(function(membership) {
+          groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+          return membership.workingGroup;
+        });
+
+        var myAssemblies = membershipsInAssemblies.map(function(membership) {
+          assemblyMembershipsHash[membership.assembly.assemblyId] = membership.roles;
+          return membership.assembly;
+        });
+        localStorageService.set('myWorkingGroups', myWorkingGroups);
+        localStorageService.set('assemblies', myAssemblies);
+        localStorageService.set('groupMembershipsHash', groupMembershipsHash);
+        localStorageService.set('assemblyMembershipsHash', assemblyMembershipsHash);
+        return data;
+      }
+
+
+      function serverError(error) {
+        Notify.show('Error while trying to communicate with the server', 'error');
+      }
     }
   };
 });
@@ -115,7 +196,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', { uuid: userUUID, filter: state });
     },
     campaign: function(assemblyId, campaignId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/' + assemblyId + '/campaign/' + campaignId);
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid', { aid: assemblyId, cid: campaignId }, { 'update': { method: 'PUT' } });
     },
     campaignByUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
@@ -671,7 +752,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
     workingGroup: function(assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId }, { 'update': { method: 'PUT' }});
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId }, { 'update': { method: 'PUT' } });
     },
     workingGroupInCampaign: function(assemblyId, campaignId, groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group/:gid', { aid: assemblyId, cid: campaignId, gid: groupId });
@@ -723,8 +804,8 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
             "invitation": true,
             "request": true
           },
-          "moderators": "two",
-          "coordinators": "two",
+          "moderators": false,
+          "coordinators": false,
           "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png"
         },
         //"location": {

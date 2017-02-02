@@ -19,7 +19,12 @@ body {
   font-size: 2.2rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 0;
   margin-bottom: 5px;
 }
@@ -137,14 +142,13 @@ a {
   margin-right: 1rem;
 }
 
-.tags {
+.assembly-tags-container-content .tags {
   padding-left: 0;
   list-style: none;
   display: inline-block;
   margin-bottom: 0;
 }
-
-.tag {
+.assembly-tags-container-content .tag {
   padding: 0.3rem 0.8rem;
   border-radius: 0.25rem;
   font-size: 1.8rem;
@@ -153,14 +157,14 @@ a {
   border: none;
   margin: 0 0.5rem 0.5rem 0;
 }
-.tag.tag-info {
+.assembly-tags-container-content .tag.tag-info {
   background: #F4F4F4;
 }
-.tag.tag-filter {
+.assembly-tags-container-content .tag.tag-filter {
   color: white;
   background: #57965B;
 }
-.tag.tag-caution {
+.assembly-tags-container-content .tag.tag-caution {
   color: white;
   background: #FCD49A;
 }
@@ -1326,13 +1330,13 @@ button#second-vote {
   display: block;
 }
 
-.timeline {
+#campaignTemplatePreview .timeline {
   list-style: none;
   display: inline-block;
   width: 100%;
   padding: 0rem 0rem 0rem 0rem;
 }
-.timeline li {
+#campaignTemplatePreview .timeline li {
   position: relative;
   display: inline-block;
   padding: 15px 15px;
@@ -1341,29 +1345,30 @@ button#second-vote {
   border-color: #524D4D;
   opacity: 1;
 }
-.timeline li.selected {
+#campaignTemplatePreview .timeline li.selected {
   color: white;
   background-color: #524D4D;
   z-index: 5 !important;
 }
-.timeline li.selected a {
+#campaignTemplatePreview .timeline li.selected a {
   color: #FFFFFF;
 }
-.timeline li.selected:before {
+#campaignTemplatePreview .timeline li.selected:before {
   border-left-color: #524D4D;
 }
-.timeline li.disabled {
+#campaignTemplatePreview .timeline li.disabled {
   color: white;
   background-color: #B7B2B2;
   z-index: -1 !important;
 }
-.timeline li.disabled:before {
+#campaignTemplatePreview .timeline li.disabled:before {
   border-left-color: #B7B2B2;
 }
-.timeline li.active {
+#campaignTemplatePreview .timeline li.active {
   opacity: 1;
 }
-.timeline li:before, .timeline li:after {
+#campaignTemplatePreview .timeline li:before,
+#campaignTemplatePreview .timeline li:after {
   left: 100%;
   top: 50%;
   border: solid transparent;
@@ -1373,13 +1378,13 @@ button#second-vote {
   position: absolute;
   pointer-events: none;
 }
-.timeline li:after {
+#campaignTemplatePreview .timeline li:after {
   border-left-color: white;
   border-width: 29px;
   margin-top: -29px;
   z-index: -1;
 }
-.timeline li:before {
+#campaignTemplatePreview .timeline li:before {
   border-left-color: #F4F4F4;
   border-width: 29px;
   margin-top: -29px;

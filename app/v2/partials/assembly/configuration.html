@@ -1,0 +1,41 @@
+<section class="comments__section">
+  <div class="row">
+    <form name="newAssemblyForm1">
+      <div class="" ng-repeat="config in newAssembly.configs | orderBy : 'key'">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 col-xs-12">
+            <label>{{config.key | translate}}</label>
+          </div>
+          <div class="col-sm-6 col-md-6 col-xs-12">
+            <input ng-if="config.definition.valueType == 'String' || config.definition.valueType == 'Number'" id="inputNameAssembly" name="name" type="text" class="form-control" ng-model="config.value" ng-required="true">
+            <input ng-if="config.definition.valueType == 'Boolean'" type="checkbox" ng-model="config.value" ng-true-value="'true'" ng-checked="config.value" />
+          </div>
+          <div class="col-sm-6 col-md-6 col-xs-12">
+          </div>
+          <div class="col-md-12 voffset3"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div id="assemblyErrors" class="form-horizontal">
+    <div class="row">
+      <uib-alert ng-repeat="error in errors track by $index" type="danger" close="removeErrors($index)">{{error.statusMessage}} </uib-alert>
+    </div>
+  </div>
+  <div class="col-md-12 voffset3"></div>
+  <div id="campaignButtons1" class="">
+    <div class="col-md-4">
+      <button class="btn btn-primary col-md-12" ng-click="goToStep(1)">
+        {{ 'Back' | translate }}
+      </button>
+    </div>
+    <div class="col-md-4">
+      <button ng-if="!isEdit" class="btn btn-primary col-md-12" ng-click="createOrUpdateAssembly(2)">
+        {{'Start the Assembly' | translate}}
+      </button>
+      <button ng-if="isEdit" class="btn btn-primary col-md-12" ng-click="createOrUpdateAssembly(2)">
+        {{'Update the Assembly' | translate}}
+      </button>
+    </div>
+  </div>
+</section>

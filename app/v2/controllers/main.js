@@ -28,6 +28,9 @@
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
         loadUserData($scope);
+        if ($state.params && $state.params.cid) {
+          $scope.currentCampaignId = $state.params.cid;
+        }
       } else {
         if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
           $scope.isAnonymous = true;
@@ -85,6 +88,9 @@
       this.isLoginPage = $state.is('v2.login');
       this.userIsAuthenticated = loginService.userIsAuthenticated();
       this.userIsAuthenticated = this.userIsAuthenticated === null ? false : this.userIsAuthenticated;
+      if ($state.params && $state.params.cid) {
+        $scope.currentCampaignId = $state.params.cid;
+      }
     }
   }
 }());

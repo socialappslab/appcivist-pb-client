@@ -15,11 +15,11 @@
   .nav--active {
     z-index: 2000 !important;
   }
-  
+
   .nav__container {
     overflow-y: scroll;
   }
-  
+
   .navigation.nav--active .nav__footer,
   .nav--active.navigation-logged-in .nav__footer {
     position: relative;
@@ -89,8 +89,13 @@
           </a>
         </li>
         <li>
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{currentCampaignId}}/group/new">
+            {{'Create Working Group' | translate}}
+          </a>
+        </li>
+        <li>
           <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/assembly/new/description">
-            {{'Start Sub Assembly' | translate}}
+            {{'Create New Sub Assembly' | translate}}
           </a>
         </li>
       </ul>

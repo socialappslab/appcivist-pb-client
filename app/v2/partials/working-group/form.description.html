@@ -11,7 +11,10 @@
             <div class="row form-group">
               <label for="selectCampaignOfAssembly" class="no-padding col-sm-12 col-lg-12 col-md-12 col-xs-12 control-label">
                         {{'Campaigns of the Group'|translate}}:*</label>
-              <input id="selectCampaignOfAssembly" name="workingGroupAuthors" class="form-control" ng-model="newWorkingGroup.campaign.title" type="text" ng-disabled="true">
+              <!--<input id="selectCampaignOfAssembly" name="workingGroupAuthors" class="form-control" ng-model="newWorkingGroup.campaign.title" type="text" ng-disabled="true">-->
+              <select name="campaignSelect" ng-model="newWorkingGroup.campaign" ng-options="campaign as campaign.title for campaign in ongoingCampaigns">
+                <option value="">{{'Select a campaign for the Workging Group' | translate}}</option>
+              </select>
             </div>
           </div>
 

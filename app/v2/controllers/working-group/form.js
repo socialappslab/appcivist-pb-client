@@ -16,6 +16,7 @@
       initScopeFunctions();
       initScopeContent();
       initializeAssembly();
+      $scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
     }
 
     function initScopeFunctions() {
@@ -188,6 +189,10 @@
       }
 
       $scope.createOrUpdateWorkingGroup = function() {
+        // temporal fix
+        delete $scope.newWorkingGroup.resourcesResourceSpaceId;
+        delete $scope.newWorkingGroup.forumResourceSpaceId;
+
         $scope.newWorkingGroup.existingThemes = [];
         // 1. process themes
         if ($scope.campaignThemes) {
@@ -228,15 +233,13 @@
             localStorageService.remove("temporaryNewWGroup");
             //$location.url("/v1/assembly/" + $scope.assemblyID + "/group/" + $scope.newWorkingGroup.groupId);
             // TODO send to group page
-            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", {aid: $scope.assemblyID, cid: $scope.campaignID, gid: $scope.newWorkingGroup.groupId});
+            $state.go("v2.assembly.aid.campaign.cid", {aid: $scope.assemblyID, cid: $scope.campaignID});
           },
           function(error) {
             $scope.errors.push(error.data);
             //$rootScope.showError(error.data, "WORKING_GROUP", null);
           }
         );
-
-        logService.logAction("CREATE_WORKING_GROUP");
       }
 
       $scope.addAssemblyMemberToInvitationList = function(member, index) {

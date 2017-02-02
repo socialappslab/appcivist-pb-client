@@ -91,6 +91,10 @@
       if ($state.params && $state.params.cid) {
         $scope.currentCampaignId = $state.params.cid;
       }
+      var isCampaignDashboard = $state.is('v2.assembly.aid.campaign.cid');
+      if(isCampaignDashboard) {
+        loadUserData(this);
+      }
     }
   }
 }());

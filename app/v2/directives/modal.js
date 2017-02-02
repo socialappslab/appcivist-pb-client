@@ -40,6 +40,7 @@
           }
           var html = document.getElementById(scope.templateId).innerHTML;
           vexInstance = vex.open({
+            className:"vex-theme-plain",
             unsafeContent: $compile(html)(scope.$parent)[0],
             afterClose: function() {
               if (angular.isFunction(scope.close)) {

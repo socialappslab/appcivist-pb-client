@@ -168,6 +168,7 @@
 
           scope.myObject.seeHistory = function() {
             scope.vexInstance = vex.open({
+              className:"vex-theme-plain",
               unsafeContent: $compile(document.querySelector('.history-modal').innerHTML)(scope)[0]
             });
           }

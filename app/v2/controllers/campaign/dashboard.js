@@ -228,6 +228,7 @@
     function openModal(id) {
       var self = this;
       this.vexInstance = vex.open({
+        className:"vex-theme-plain",
         unsafeContent: $compile(document.getElementById(id).innerHTML)(self)[0]
       });
     }

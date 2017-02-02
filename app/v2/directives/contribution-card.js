@@ -112,6 +112,7 @@
 
         scope.myObject.seeDetail = function() {
           scope.vexInstance = vex.open({
+            className:"vex-theme-plain",
             unsafeContent: $compile(document.querySelector('.contribution-detail-modal').innerHTML)(scope)[0]
           });
         }

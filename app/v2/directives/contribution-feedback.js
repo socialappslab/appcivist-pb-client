@@ -95,6 +95,7 @@
     function showModerationForm(context) {
       this.moderationContext = context;
       this.vexInstance = vex.open({
+        className:"vex-theme-plain",
         unsafeContent: $compile(document.getElementById('moderationForm').innerHTML)(this)[0]
       });
     }

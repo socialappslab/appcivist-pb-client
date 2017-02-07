@@ -76,9 +76,17 @@
     <li class="panel card conversation-container" ng-repeat="feedback in feedbacks track by feedback.id">
       <div ng-if="feedback">
         <div class="comment-meta">
-          <p class="heading--header">{{formatDate(feedback.creation)}}</p>
-          <p class="heading--header">{{feedback.type}}</p>
-          <member-card ng-if="feedback.userId" user="feedback.user" comments-section="true"></member-card>
+          <div class="row">
+            <div class="col-md-11">
+              <p class="heading--header">{{formatDate(feedback.creation)}}</p>
+              <p class="heading--header">{{feedback.type}}</p>
+            </div>
+            <div class="col-md-1">
+              <a ng-if="feedback.userId == user.userId" ng-click="$parent.openModal('feedbackModal2');setFeedback(feedback)" class="proposals__show_ideas" href=""><i class="fa fa-pencil-square-o"></i>&nbsp;{{'Edit' | translate }}</a>
+            </div>
+          </div>
+          UserID: {{feedback.userId}}
+          <member-card ng-if="feedback.userId" user="feedback.userId" comments-section="true"></member-card>
           <member-card ng-if="!feedback.userId" user="{'name':'None','email':'None'}" comments-section="true"></member-card>
           <p></p>
         </div>
@@ -86,8 +94,15 @@
           <p ng-bind-html="trustedHtml(feedback.textualFeedback)"></p>
         </div>
       </div>
+
     </li>
     <p ng-if="!feedbacks || feedbacks.length === 0" class="card">{{'no.feedback.message' | translate}}</p>
   </div>
 
 </section>
+
+<modal open-if="modals.feedbackModal2" close="closeModal('feedbackModal2')" title="Feedback Form" template-id="feedbackModal2"></modal>
+
+<script id="feedbackModal2" type="text/ng-template">
+  <contribution-feedback-form contribution="contribution" only-feedback="currentFeedback" on-success="closeModal('feedbackModal2')"></contribution-feedback-form>
+</script>

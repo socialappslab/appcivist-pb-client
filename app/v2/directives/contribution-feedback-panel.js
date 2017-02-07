@@ -24,8 +24,12 @@
 
         function activate() {
           scope.vm = {};
+          scope.editOnlyText = true;
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
+          scope.modals = {};
+          scope.openModal = openModal.bind(scope);
+          scope.closeModal = closeModal.bind(scope);
 
           if (scope.user) {
             // get public and private feedbacks
@@ -65,7 +69,12 @@
             loadFeedbacks(scope, scope.contribution);
           }
 
+          scope.setFeedback = function(feedback) {
+            scope.currentFeedback = feedback;
+          }
+
         }
+
       }
     };
 
@@ -95,6 +104,14 @@
         }
       );
       return rsp.$promise;
+    }
+
+    function openModal(id) {
+      this.modals[id] = true;
+    }
+
+    function closeModal(id) {
+      this.modals[id] = false;
     }
 
   }

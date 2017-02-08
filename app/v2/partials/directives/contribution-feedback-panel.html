@@ -90,9 +90,19 @@
           <member-card ng-if="!feedback.userId" user="{'name':'None','email':'None'}" comments-section="true"></member-card>
           <p></p>
         </div>
+
+
         <div class="comment-text">
-          <p ng-bind-html="trustedHtml(feedback.textualFeedback)"></p>
+          <div class="checkbox">
+              <label>
+                  <input type="checkbox" ng-model="feedback.plainText"/>
+                  <strong>{{'Show as plain text' | translate}}</strong>
+              </label>
+          </div>
+          <p ng-if="!feedback.plainText" ng-bind-html="trustedHtml(feedback.textualFeedback)"></p>
+          <p ng-if="feedback.plainText">{{feedback.textualFeedback}}</p>
         </div>
+
       </div>
 
     </li>

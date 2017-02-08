@@ -25,6 +25,10 @@
       $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
+      $scope.feedbackBar = false;
+      $scope.toggleFeedbackBar = function(x){
+          $scope.feedbackBar = !$scope.feedbackBar;
+      };
       $scope.newAttachment = {};
       $scope.changeActiveTab = function(tab) {
         if (tab == 1) {

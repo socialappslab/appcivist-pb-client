@@ -149,6 +149,7 @@
   .stats2 {
     color: #11493b;
     font-size: .875em;
+    font-family: Lato, sans-serif;
   }
 
   .star-filled {
@@ -237,24 +238,30 @@
           <div ng-if="proposal.informalScore" class="informal_score" ng-class="{positive: proposal.informalScore > 0, negative: proposal.informalScore < 0}">
             <em>{{proposal.informalScore}}</em>
           </div>
-        </div>
-      </div>
-      <div class="voting_mechanism" style="height:40px">
-        <div class="temperature_check" style="height: inherit;">
-          <div class="informal_score positive stats2">
-            Ups <em>{{upSum}}</em>
-            Downs <em>{{downSum}}</em>
-            Flags <em>{{flagSum}}</em>
+
+          <div class="informal_score stats2" style="cursor: pointer;">
+            <span ng-click="toggleFeedbackBar()" ng-if="!feedbackBar">{{'Show Results' | translate }}</span>
+            <span ng-click="toggleFeedbackBar()" ng-if="feedbackBar">{{'Hide Results' | translate }}</span>
           </div>
-          <div class="informal_score stats2">
-            <span>Needs</span>
-            <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"/>
-            <span>Feasibility</span>
-            <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"/>
-            <span>Benefict</span>
-            <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"/>
+
+          <div ng-if="feedbackBar" class="informal_score">
+            <div class="informal_score positive stats2">
+              Ups <em>{{upSum}}</em>
+              Downs <em>{{downSum}}</em>
+              <!--Flags <em>{{flagSum}}</em>-->
+            </div>
+            <div class="informal_score stats2">
+              <span>Needs</span>
+              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"/>
+              <span>Feasibility</span>
+              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"/>
+              <span>Benefict</span>
+              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"/>
+            </div>
           </div>
+
         </div>
+
       </div>
     </header>
 

@@ -171,6 +171,7 @@ module.exports = function(grunt) {
             'bower_components/ng-notify/dist/ng-notify.min.css',
             'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css',
             'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
+            'bower_components/tinymce/plugins/**/*',
             'stylesheets/**/*',
             'app/css/app.css',
             'app/css/app.v2.css',

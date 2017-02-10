@@ -25,12 +25,18 @@
       $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
+      $scope.feedbackBar = false;
+      $scope.toggleFeedbackBar = function(x){
+          $scope.feedbackBar = !$scope.feedbackBar;
+      };
       $scope.newAttachment = {};
       $scope.changeActiveTab = function(tab) {
         if (tab == 1) {
           $scope.activeTab = 'Members';
-        } else {
+        } else if (tab == 2) {
           $scope.activeTab = 'Public';
+        } else {
+          $scope.activeTab = 'Feedbacks';
         }
       }
       $scope.isAnonymous = false;
@@ -131,6 +137,7 @@
             verifyAuthorship(scope.proposal);
           }
           loadRelatedContributions();
+          loadRelatedStats();
         },
         function(error) {
           Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
@@ -166,6 +173,18 @@
       }
     }
 
+    $scope.createArray = function(num) {
+      var total = 4;
+      var arr = [];
+      for(var i=0; i < num; i++) {
+        arr.push("star-filled");
+      }
+      for(var i=num; i <= 4; i++) {
+        arr.push("star-empty");
+      }
+      return arr;
+    }
+
     function loadRelatedContributions() {
       $scope.proposal.rsUUID = $scope.proposal.resourceSpaceUUID;
       $scope.proposal.rsID = $scope.proposal.resourceSpaceId;
@@ -185,6 +204,26 @@
           Notify.show('Error loading contributions from server', 'error');
         }
       );
+    }
+
+    function loadRelatedStats() {
+      var contrib = $scope.proposal;
+      // sum of ups, downs and flags
+      $scope.upSum = contrib.stats.ups;
+      $scope.downSum = contrib.stats.downs;
+      $scope.flagSum = contrib.stats.flags;
+      // average of need, feasibility, benefict
+      $scope.needAvg = contrib.stats.averageNeed;
+      $scope.feasibilityAvg = contrib.stats.averageFeasibility;
+      $scope.benefictAvg = contrib.stats.averageBenefit;
+      // $scope.needAvg = 1;
+      // $scope.feasibilityAvg = 3;
+      // $scope.benefictAvg = 2;
+    }
+
+    function loadIndividualFeedbacks() {
+      var contrib = $scope.proposal;
+      // prepare query based on review conditions
     }
 
     function toggleIdeasSection() {

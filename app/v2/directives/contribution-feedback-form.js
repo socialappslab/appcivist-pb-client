@@ -12,6 +12,7 @@
          * @param {object} contribution - The contribution object
          */
         contribution: '=',
+        onlyFeedback: '=',
         close: '&'
       },
       templateUrl: '/app/v2/partials/directives/contribution-feedback-form.html',
@@ -26,6 +27,7 @@
 
   function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify,
     $scope, FileUploader) {
+
     var vm = this;
     servs.Memberships = Memberships;
     servs.Contributions = Contributions;
@@ -56,10 +58,16 @@
         showTicksValues: true
       };
       vm.tinymceOptions = vm.getEditorOptions();
-      vm.loadGroups();
-      vm.verifyMembership();
-      vm.loadTypes();
-      vm.loadFeedback();
+
+      if (this.onlyFeedback) {
+        this.feedback = this.onlyFeedback;
+      } else {
+        vm.loadGroups();
+        vm.verifyMembership();
+        vm.loadTypes();
+        vm.loadFeedback();
+      }
+
     };
     //this.$on('reloadFeedback', function() {
     //  vm.loadFeedback

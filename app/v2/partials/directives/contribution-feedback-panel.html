@@ -1,0 +1,118 @@
+<style>
+  .comment-meta {
+    width: 100% !important;
+  }
+
+  .comment-meta input[type=submit] {
+    float: right;
+  }
+
+  .inline-controls .temperature_check {
+    display: inline-block;
+  }
+
+  .inline-controls .temperature_check .votes {
+    margin-right: 0;
+  }
+
+  .comments__reply h2 {
+    margin-bottom: 10px;
+  }
+
+  input[disabled],
+  textarea[disabled] {
+    background-color: #eee;
+    opacity: 1;
+  }
+
+  .comment-text {
+    padding-top: 15px;
+    padding-left: 20px;
+  }
+
+  .threaded-comments {
+    padding-top: 0.1em;
+    padding-bottom: 0px;
+  }
+
+  li.panel.card.conversation-container {
+    position: relative;
+  }
+
+  li.panel.comment-container {
+    position: relative;
+  }
+
+  .github-fork-ribbon:before {
+    background-color: #f80;
+  }
+</style>
+<section class="comments__section">
+  <header class="panel-heading">
+    <h2 class="heading--header">{{ 'Feedbacks' | translate }}</h2>
+  </header>
+  <div class="campaign__filters">
+    <div class="search">
+      <div>
+        <h4 class="widget__label">
+          {{'Filter by' | translate}}</h4>
+          <ul class="search_modes">
+            <li class="sarch_mode__full_text" ng-class="{active: type === 'MEMBER'}">
+              <a ng-click="refreshFeedbacks('MEMBER', $event)">{{'Member' | translate}}</a>
+            </li>
+            <li class="sarch_mode__full_text" ng-class="{active: type === 'WORKING_GROUP'}">
+              <a ng-click="refreshFeedbacks('WORKING_GROUP', $event)">{{'Working Group' | translate}}</a>
+            </li>
+            <li class="sarch_mode__full_text" ng-class="{active: type === 'TECHNICAL_ASSESSMENT'}">
+              <a ng-click="refreshFeedbacks('TECHNICAL_ASSESSMENT', $event)">{{'Technical Assessment' | translate}}</a>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+  <br/>
+
+  <div class="comments__listing">
+    <li class="panel card conversation-container" ng-repeat="feedback in feedbacks track by feedback.id">
+      <div ng-if="feedback">
+        <div class="comment-meta">
+          <div class="row">
+            <div class="col-md-11">
+              <p class="heading--header">{{formatDate(feedback.creation)}}</p>
+              <p class="heading--header">{{feedback.type}}</p>
+            </div>
+            <div class="col-md-1">
+              <a ng-if="feedback.userId == user.userId" ng-click="$parent.openModal('feedbackModal2');setFeedback(feedback)" class="proposals__show_ideas" href=""><i class="fa fa-pencil-square-o"></i>&nbsp;{{'Edit' | translate }}</a>
+            </div>
+          </div>
+          UserID: {{feedback.userId}}
+          <member-card ng-if="feedback.userId" user="feedback.userId" comments-section="true"></member-card>
+          <member-card ng-if="!feedback.userId" user="{'name':'None','email':'None'}" comments-section="true"></member-card>
+          <p></p>
+        </div>
+
+
+        <div class="comment-text">
+          <div class="checkbox">
+              <label>
+                  <input type="checkbox" ng-model="feedback.plainText"/>
+                  <strong>{{'Show as plain text' | translate}}</strong>
+              </label>
+          </div>
+          <p ng-if="!feedback.plainText" ng-bind-html="trustedHtml(feedback.textualFeedback)"></p>
+          <p ng-if="feedback.plainText">{{feedback.textualFeedback}}</p>
+        </div>
+
+      </div>
+
+    </li>
+    <p ng-if="!feedbacks || feedbacks.length === 0" class="card">{{'no.feedback.message' | translate}}</p>
+  </div>
+
+</section>
+
+<modal open-if="modals.feedbackModal2" close="closeModal('feedbackModal2')" title="Feedback Form" template-id="feedbackModal2"></modal>
+
+<script id="feedbackModal2" type="text/ng-template">
+  <contribution-feedback-form contribution="contribution" only-feedback="currentFeedback" on-success="closeModal('feedbackModal2')"></contribution-feedback-form>
+</script>

@@ -13,10 +13,17 @@ function HistoryChange(localStorageService, AppCivistAuth, $state, Space) {
   return {
     restrict: 'E',
     scope: {
-      historyElement: '='
+      historyElement: '=',
+      contribution: '='
     },
     templateUrl: '/app/v2/partials/directives/history-element.html',
     link: function postLink(scope, element, attrs) {
+
+      scope.currentUser = localStorageService.get('user');
+
+      if (scope.currentUser) {
+        scope.currentAssembly = localStorageService.get('currentAssembly');
+      }
 
       scope.getDayMonth = function (date) {
         date = date.replace("PM","");

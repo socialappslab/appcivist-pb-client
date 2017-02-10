@@ -798,6 +798,7 @@
   "Working group official feedback": "Working group official feedback",
   "Technical feedback": "Technical feedback",
   "Show Ideas": "Show Ideas",
+  "Hide Ideas": "Hide Ideas",
   "File": "File",
   "appcivist.assembly.enable-forum": "Enable Forum",
   "appcivist.assembly.disable-new-memberships": "Disable new memberships",
@@ -869,5 +870,6 @@
   "Show Results": "Show Results",
   "Hide Results": "Hide Results",
   "Show as plain text": "Show as plain text",
-  "Create New Sub Assembly": "Create New Sub Assembly"
+  "Create New Sub Assembly": "Create New Sub Assembly",
+  "was assigned to": "was assigned to"
 }

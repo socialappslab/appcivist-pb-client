@@ -136,6 +136,11 @@
         templateUrl: 'app/v2/partials/main.html',
         controller: 'v2.MainCtrl'
       })
+      .state('v2.homepage', {
+        url: '/home',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/partials/home.html'
+      })
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,

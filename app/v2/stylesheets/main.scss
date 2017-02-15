@@ -1,3 +1,7 @@
+@import "../../../stylesheets/styles/_colors.scss";
+@import "../../../stylesheets/styles/_header.scss";
+@import "../../../stylesheets/styles/_fonts.scss";
+@import "../../../stylesheets/styles/_landing.scss";
 /* V2 main stylesheet */
 
 .card {
@@ -45,4 +49,427 @@ article.start-campaign {
   p.empty {
     margin: 5px;
   }
+}
+
+/******HEADER******/
+/******NEW DESIGN NAVBAR COLORS******/
+$bgDefault      : $header-background;
+$bgHighlight    : $header-menu-active;
+$colDefault     : $header-default-color;
+$colHighlight   : $header-menu-highlight;
+$dropDown       : false;
+
+.navbar {
+  min-height: 70px !important;
+  background-color: $bgDefault;
+  border-color: $bgHighlight;
+  .navbar-brand {
+    background-color: $bgDefault;
+    color: $colDefault;
+    &:hover, &:focus {
+      color: $colHighlight;
+      background-color: $bgHighlight}}
+  .navbar-text {
+    color: $colDefault; }
+  .navbar-nav {
+    > li {
+      > a {
+        color: $colDefault;
+        &:hover,  &:focus {
+          color: $colHighlight;
+          background-color: $bgHighlight }}
+      @if $dropDown {
+        > .dropdown-menu {
+          background-color: $bgDefault;
+          > li > a {
+            color: $colDefault;
+            &:hover,  &:focus {
+              color: $colHighlight;
+              background-color: $bgHighlight; }}
+          .divider {
+            background-color: $bgHighlight;}}}
+    }
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}
+    > .open {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}
+  }
+  .navbar-toggle {
+    border-color: $bgHighlight;
+    &:hover, &:focus {
+      background-color: $bgHighlight; }
+    .icon-bar {
+      background-color: $colDefault; }}
+  .navbar-collapse {
+    background-color: $bgDefault;
+    border-color: $bgHighlight;
+  }
+  .navbar-form {
+    border-color: $colDefault;
+    a {
+      /* Log In Copy: */
+      font-family: Lato-Regular;
+      font-size: 20px;
+      color: $colDefault;
+      padding: 5px 15px;
+      &:hover {
+        color: $colHighlight;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    }
+  }
+  .navbar-link {
+    color: $colDefault;
+    &:hover {
+      color: $colHighlight; }}}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu {
+    > li > a {
+      color: $colDefault;
+      &:hover, &:focus {
+        color: $colHighlight; }}
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight; }}}
+}
+
+/*******NAVBAR MENU BORDERS********/
+#navbar-options{
+  ul{
+    //li{
+    //  border-right: 0.1rem solid $header-menu-active;
+    //}
+    //li:first-child{
+    //  border-left: 0.1rem solid $header-menu-active;
+    //}
+    li:hover{
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
+    }
+    li:active{
+      //background-color: rgba(128, 128, 128, 0.05);
+      background-color: $header-menu-active;
+      box-shadow: inset 0 0 0.2rem 0.2rem $header-background;
+    }
+    li {
+      a:focus {
+        color:white;
+        background: $header-menu-active;
+      }
+    }
+  }
+}
+
+.navBarImage{
+  height: 5rem;
+}
+
+/*******NAVBAR USER MENU********/
+#user-menu{
+  .icon{
+    font-size: 2.5rem;
+    vertical-align: middle;
+  }
+  ul.menu-elements{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li{
+      display: inline-block;
+      margin: 0 0.5rem;
+      cursor: pointer;
+    }
+
+    & .dropdown .dropdown-menu{
+      li:hover{
+        color: white;
+        background: transparent;
+      }
+      li{
+        a:hover{
+          background: transparent;
+        }
+      }
+      li:last-child{
+        a{
+          color: $dropdown-hover;
+        }
+      }
+    }
+  }
+}
+
+/****NEW DESIGN FOR LANDING PAGE****/
+.section{
+  width: 100%;
+  background-color: $white;
+  height: 100%;
+
+  .align-right {
+    text-align: right;
+  }
+  .bottom-info{
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding-bottom: 10%;
+  }
+  .btn {
+    border: 0;
+    color: $main-first-section-font-color;
+    padding: 0.8rem 1.6rem;
+  }
+  .btn-yellow{
+    background-color: $main-first-section-button-sign-up-background;
+  }
+  hr {
+    display: block;
+    height: 0px;
+    padding: 0;
+  }
+  .vertical1-container{
+    height: 80px;
+  }
+  .vertical1 {
+    // calculated based on fa icon 1x (17.156x20)
+    //margin: 50px 0px 0px -((17.156-1)/2+1)px;
+    //margin: 15px 0px 0px -9.078px;
+    margin: 25px 0px 0px 30px;
+    height: 100%;
+    width: 0px;
+    position: absolute;
+    display: inline;
+    border-width: 1px;
+  }
+  .vertical2-container{
+    height: 150px;
+  }
+  .vertical2 {
+    // calculated based on fa icon 3x (51.438x60)
+    //margin: 50px 0px 0px ((51.438-3)/2+3)px;
+    margin: 50px 0px 0px -27.219px;
+    height: 120%;
+    width: 0px;
+    position: absolute;
+    display: inline;
+  }
+  .vertical3 {
+    // calculated based on fa icon stack (53.328x100)
+    //margin: 50px 0px 0px ((51.438-3)/2+3)px;
+    margin: 43px 0px 0px 30px;
+    height: 60%;
+    width: 0px;
+    position: absolute;
+    display: inline;
+    border-width: 1px;
+  }
+  .icon-circle-number {
+    font-size: 1.5em;
+    font-weight: 700;
+    line-height: (8em / 14);
+    text-align: center;
+    color: $white;
+    // calculated based on fa icon 3x (51.438x60)
+    //margin: (60-22)/2 0px 0px ((51.438-20.531)/2+20.531)px;
+    margin: 19px 0px 0px -30px;
+    position: absolute;
+  }
+  .milestone {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    //line-height: 2rem;
+    //left: 10px;
+    margin: 12px 0px 0px 0px;
+  }
+  .horizontal {
+    position: absolute;
+    margin: 23px -4% auto 50px;
+    width: 100%;
+  }
+  .greenline1 {
+    border-color: $corporative-green;
+    border-style: solid;
+  }
+  .greenline2 {
+    border-color: $corporative-dark-light-green;
+    border-style: solid;
+  }
+  .greenline3 {
+    border-color: $corporative-dark-green;;
+    border-style: solid;
+  }
+  .greenline4 {
+    border-color: $corporative-darker-green;
+    border-style: solid;
+  }
+  h2 {
+    font-weight: bold;
+  }
+  ul {
+    list-style: none;
+  }
+  .i1 {
+    color: $corporative-green;
+  }
+  .i2 {
+    color: $corporative-dark-light-green;
+  }
+  .i3 {
+    color: $corporative-dark-green;
+  }
+  .i4 {
+    color: $corporative-darker-green;
+  }
+
+  &.first-section{
+    background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/bg-hands-collaborating.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    vertical-align: middle;
+    margin-top: -20px;
+    &.landing-section {
+      padding-top: 20%;
+    }
+    &.invitation {
+      padding-top: 10%;
+      padding-bottom: 10%;
+    }
+    .main-title{
+      color: $main-first-section-font-color;
+      margin-bottom: 1%;
+    }
+    & form{
+      text-align: center;
+      margin-bottom: 20%;
+      & *{
+        height: 3rem;
+      }
+      & :last-child{
+        margin-right: 0;
+        font-size: 22px;
+      }
+    }
+  }
+  &.second-section{
+    vertical-align: middle;
+    margin-top: -20px;
+    background-color: $white;
+    padding: 5% 5% 5% 5%;
+    .main-title{
+      color: $medium-blue;
+      /* AppCivist lets users: */
+      font-family: Lato-Regular;
+      font-size: 32px;
+      line-height: 39px;
+      margin-bottom: 3%;
+    }
+    .jumbotron-index {
+      background-color: $white;
+    }
+  }
+  &.third-section{
+    vertical-align: middle;
+    margin-top: -20px;
+    /* Rectangle 345: */
+    background: rgba(207,247,238,0.50);;
+    padding: 5% 5% 5% 5%;
+    .main-title{
+      color: $medium-blue;
+      text-align: center;
+      font-family: Lato-Regular;
+      font-size: 32px;
+      line-height: 39px;
+    }
+    .sub-title{
+      text-align: center;
+      font-family: Lato-Regular;
+      font-size: 24px;
+      color: $light-black;
+      line-height: 3rem;
+      //margin-bottom: 3%;
+    }
+    .input-field {
+      width: 10%;
+    }
+    .circle {
+      border-radius: 50%;
+    }
+    .green1 {
+      background: $corporative-green;
+    }
+    .green2 {
+      background: $corporative-dark-light-green;
+    }
+    .green3 {
+      background: $corporative-dark-green;
+    }
+    .green4 {
+      background: $corporative-darker-green;
+    }
+  }
+}
+
+.campaigntabs {
+  .nav-tabs {
+    border-bottom: 2px solid $contribution-border;
+    li {
+      a {
+        margin-bottom: -2px;
+      }
+    }
+    li.active {
+      a {
+        border-bottom-color: transparent;
+        margin-bottom: -2px;
+      }
+    }
+    > .active > a,
+    > .active > a:hover,
+    > .active > a:focus {
+      border: 3px solid $contribution-border;
+      margin-bottom: -2px;
+      border-bottom-color: transparent;
+    }
+  }
+}
+
+.modal-body {
+  max-height: 600px;
+}
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
+.panel-heading {
+  padding-left: 0px !important;
+}
+
+.ul-action-menu {
+  margin: 1em 0 0 -10em;
+}
+
+.li-action-menu {
+  padding: 12px;
+}
+
+.navbar .logotype {
+    height: 45px;
+}
+
+.navbar .logotext {
+  font: inherit;
+  font-size: 35px;
+  vertical-align: super;
 }

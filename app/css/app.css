@@ -2645,6 +2645,7 @@ i {
 /******HEADER******/
 /******NEW DESIGN NAVBAR COLORS******/
 .navbar {
+  min-height: 70px !important;
   background-color: #465A63;
   border-color: #313f45;
 }
@@ -2796,7 +2797,7 @@ i {
   height: 80px;
 }
 .section .vertical1 {
-  margin: 36px 0px 0px 26.664px;
+  margin: 25px 0px 0px 30px;
   height: 100%;
   width: 0px;
   position: absolute;
@@ -2814,7 +2815,7 @@ i {
   display: inline;
 }
 .section .vertical3 {
-  margin: 46px 0px 0px 26.664px;
+  margin: 43px 0px 0px 30px;
   height: 60%;
   width: 0px;
   position: absolute;
@@ -2827,11 +2828,11 @@ i {
   line-height: 0.57143em;
   text-align: center;
   color: #FFFFFF;
-  margin: 19px 0px 0px -35.9845px;
+  margin: 15px 0px 0px -30px;
   position: absolute;
 }
 .section .milestone {
-  font-size: 2rem;
+  font-size: 1.5rem;
   vertical-align: middle;
   margin: 12px 0px 0px 0px;
 }
@@ -2891,14 +2892,14 @@ i {
 }
 .section.first-section .main-title {
   color: #FFFFFF;
-  margin-bottom: 3%;
+  margin-bottom: 1%;
 }
 .section.first-section form {
   text-align: center;
   margin-bottom: 20%;
 }
 .section.first-section form * {
-  height: 4rem;
+  height: 3rem;
 }
 .section.first-section form :last-child {
   margin-right: 0;

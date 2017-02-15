@@ -3,44 +3,44 @@
   footer .footer__content {
     text-align: center;
   }
-  
+
   button,
   .button {
     background-color: #009877;
     border-color: #009877;
   }
-  
+
   a:hover {
     color: #009877;
   }
-  
+
   button:hover,
   .button:hover {
     background-color: #009877;
   }
-  
+
   input[type=submit] {
     background: #009877;
     border-color: #009877;
   }
-  
+
   input[type=submit]:hover {
     background-color: #009877;
   }
-  
+
   .vote-button {
     border-color: #009877;
     color: #009877;
   }
-  
+
   .vote-button:hover {
     background-color: #009877;
   }
-  
+
   .vote-button a {
     color: #11493b;
   }
-  
+
   .mce-tinymce button,
   .mce-tinymce button:hover,
   .mce-tinymce .button,
@@ -55,8 +55,8 @@
 </style>
 
 <div class="appcivist" ng-class="{'nav--active': nav.isActive}">
-  <div ng-if="userIsAuthenticated && !isLoginPage" ng-include="'/app/v2/partials/navigation-bar-large.html'"></div>
-  <div ng-if="!userIsAuthenticated && !isLoginPage" ng-include="'/app/v2/partials/navigation-bar-large-anonymous.html'"></div>
+  <div ng-if="userIsAuthenticated && !isLoginPage && !isHomePage" ng-include="'/app/v2/partials/navigation-bar-large.html'"></div>
+  <div ng-if="!userIsAuthenticated && !isLoginPage && !isHomePage" ng-include="'/app/v2/partials/navigation-bar-large-anonymous.html'"></div>
   <ui-view></ui-view>
 
   <footer class="appmain">

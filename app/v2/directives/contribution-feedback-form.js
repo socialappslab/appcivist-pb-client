@@ -70,15 +70,16 @@
       if (this.onlyFeedback) {
         this.feedback = this.onlyFeedback;
       } else {
-        vm.loadGroups();
-        vm.loadTypes();
         if (!vm.isAnonymous) {
           vm.verifyMembership();
           vm.loadFeedback();
         } else {
-          vm.userIsCoordinator = false;
+            vm.userIsCoordinator = false;
           vm.userIsWGCoordinator = false;
         }
+
+        vm.loadGroups();
+        vm.loadTypes();
       }
 
     };
@@ -158,10 +159,10 @@
   function loadTypes() {
     var types = [];
     if (!this.isAnonymous) {
-      types = types.push([
+      types = [
         { value: 'MEMBER', text: 'Member feedback' },
         { value: 'WORKING_GROUP', text: 'Working group official feedback' }
-      ]);
+      ];
     }
 
     if (this.userIsCoordinator || this.isAnonymous) {

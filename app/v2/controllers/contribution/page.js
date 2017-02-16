@@ -88,7 +88,7 @@
       }
 
       //var stats = $scope.contribution.stats;
-      var feedback = Contributions.userFeedback($scope.assemblyID, $scope.proposalID).update($scope.userFeedback);
+      var feedback = Contributions.userFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
         function(newStats) {
           $scope.proposal.stats = newStats;

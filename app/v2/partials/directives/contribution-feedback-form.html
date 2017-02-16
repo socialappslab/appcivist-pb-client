@@ -48,6 +48,12 @@
             </select>
           </div>
         </fieldset>
+        <fieldset ng-if="(vm.feedback.type==='TECHNICAL_ASSESSMENT')">
+          <label for="status">{{'Password for technical feedbacks' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <input type="text" name="password" class="col-lg-12" ng-model="vm.feedback.password"></input>
+          </div>
+        </fieldset>
         <fieldset ng-if="!vm.userIsMember && !vm.onlyFeedback">
           <label for="group">{{'Select a Working Group that should receive this feedback' | translate}}</label>
           <div class="field-container col-lg-12">

@@ -21,12 +21,12 @@
     });
 
   ContributionFeedbackFormCtrl.$inject = [
-    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader'
+    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader', 'RECAPTCHA_KEY', 'Captcha'
   ];
   var servs = {};
 
   function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify,
-    $scope, FileUploader) {
+    $scope, FileUploader, RECAPTCHA_KEY, Captcha) {
 
     var vm = this;
     servs.Memberships = Memberships;
@@ -42,10 +42,16 @@
     this.getEditorOptions = getEditorOptions.bind(this);
     this.loadFeedback = loadFeedback.bind(this);
     this.loadEmptyFeedback = loadEmptyFeedback.bind(this);
+    this.validateCaptchaResponse = validateCaptchaResponse.bind(this);
+    this.setCaptchaResponse = setCaptchaResponse.bind(this);
+    this.updateNonMember = updateNonMember.bind(this);
+    this.recaptchaResponse = {};
 
     this.$onInit = function() {
       vm.isAnonymous = !vm.contribution.contributionId;
       vm.feedback = vm.loadEmptyFeedback();
+      vm.recaptchaResponseOK = false;
+
       vm.userIsMember = !vm.isAnonymous;
       if (!vm.isAnonymous) {
         vm.assembly = localStorageService.get('currentAssembly');
@@ -83,19 +89,20 @@
 
   /** Reuturn a default empty feedback */
   function loadEmptyFeedback() {
-    var type = "MEMBER";
-    if (this.isAnonymous) {
-      type = "TECHNICAL_ASSESSMENT";
-    }
-
-    return {
+    var feedback = {
       need: 0,
-        benefit: 0,
+      benefit: 0,
       feasibility: 0,
       textualFeedback: '',
       status: 'PRIVATE',
-      type: type
+      type: 'MEMBER'
     };
+
+    if (this.isAnonymous) {
+      feedback.type = "TECHNICAL_ASSESSMENT";
+      feedback.nonMemberAuthor = {};
+    }
+    return feedback;
   }
   /**
    * working group ng-change handler.
@@ -291,5 +298,41 @@
       function() {
         servs.Notify.show('Error while get user feedback from the server', 'error');
       })
+  }
+
+  /**
+   * handles nonmember-author-form directive's on-change event.
+   */
+  function updateNonMember(author) {
+    this.feedback.nonMemberAuthor = author;
+  }
+
+  /**
+   * Recaptcha on-success handler. This is used in comment form.
+   *
+   * @param {object} discussion - the discussion associated with the comment form.
+   * @param {string} response - the hashed recaptcha response.
+   */
+  function setCaptchaResponse(vm, response) {
+    vm.recaptchaResponse = response;
+    vm.validateCaptchaResponse(vm);
+  }
+
+  /**
+   * Verify that user response is correct.
+   *
+   * @param {object} target - element with recaptchaResponse and recaptchaResponseOK properties.
+   */
+  function validateCaptchaResponse(vm) {
+    Captcha.verify(vm.recaptchaResponse).then(
+      function(response) {
+        vm.recaptchaResponseOK = response && response.success;
+      },
+      function(response) {
+        vm.recaptchaResponseOK = false;
+        var msg = response.data ? response.data.statusMessage : response.statusText;
+        Notify.show('Error while validating captcha response: ' + msg, 'error');
+      }
+    );
   }
 }());

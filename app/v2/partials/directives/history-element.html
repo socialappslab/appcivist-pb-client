@@ -10,7 +10,9 @@
       {{ 'New' | translate }} <a href=""><em><i class="fa fa-lightbulb-o"></i> {{historyElement.type | lowercase }}</em></a> {{ 'created' | translate }}
     </span>
     <span class="contribution_description">
-      <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{contribution.workingGroupAuthors[0].groupId}}/proposal/{{historyElement.contributionId}}">{{historyElement.title}}</a>
+      <!-- TODO: put back when the modal is correctly closed after visiting the link -->
+      <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{contribution.workingGroupAuthors[0].groupId}}/proposal/{{historyElement.contributionId}}">{{historyElement.title}}</a>-->
+      <a ng-href="">{{historyElement.title}}</a>
     </span>
   </div>
 </div>
@@ -27,7 +29,9 @@
         <a href=""><em><i class="fa fa-lightbulb-o"></i> {{historyElement.type | titlecase}}</em></a> {{change | lowercase }} {{ 'was updated to:' | translate}}
       </span>
       <span class="contribution_description">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{contribution.workingGroupAuthors[0].groupId}}/proposal/{{historyElement.contributionId}}">{{historyElement.title}}</a>
+        <!-- TODO: put back when the modal is correctly closed after visiting the link -->
+        <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{contribution.workingGroupAuthors[0].groupId}}/proposal/{{historyElement.contributionId}}">{{historyElement.title}}</a>-->
+        <a ng-href="">{{historyElement.title}}</a>
       </span>
     </div>
   </div>
@@ -45,7 +49,9 @@
         <span ng-if="change.changeType === 'DELETED'"><a href=""><i class="fa fa-person"></i> {{change.externalRef}} </a></em> <span>{{ 'was deleted from:' | translate}}</span></span>
       </span>
       <span class="contribution_description">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{contribution.workingGroupAuthors[0].groupId}}/proposal/{{historyElement.contributionId}}">{{historyElement.title}}</a>
+        <!-- TODO: put back when the modal is correctly closed after visiting the link -->
+        <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{contribution.workingGroupAuthors[0].groupId}}/proposal/{{historyElement.contributionId}}">{{historyElement.title}}</a>-->
+        <a ng-href="">{{historyElement.title}}</a>
       </span>
       <div ng-if="change.changeType == 'ADDED' && change.externalRef == 'attachments'" class="attachment" ng-if="isAttachment">
         <a href="">{{historyElement[change.externalRef][0].name}}</a>
@@ -65,8 +71,11 @@
         <a href=""><em><i class="fa fa-lightbulb-o"></i> {{historyElement.type | titlecase}}</em></a> <span ng-if="change.changeType === 'ADDED'">{{ 'was assigned to' | translate }}</span><span ng-if="change.changeType === 'DELETED'">{{ 'was deleted from' | translate }}</span> <a><em><i class="fa fa-group"></i> {{ change.type | lowercase }}</em></a>
       </span>
       <span class="contribution_description">
-        <a ng-if="change.type === 'WORKING_GROUP'" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{change.resource.id}}">{{change.resource.name}}</a>
-        <a ng-if="change.type === 'CAMPAIGN'" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaigns/{{change.resource.id}}">{{change.resource.name}}</a>
+        <!-- TODO: put back when the modal is correctly closed after visiting the link -->
+        <!--<a ng-if="change.type === 'WORKING_GROUP'" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{change.resource.id}}">{{change.resource.name}}</a>-->
+        <!--<a ng-if="change.type === 'CAMPAIGN'" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaigns/{{change.resource.id}}">{{change.resource.name}}</a>-->
+        <a ng-if="change.type === 'WORKING_GROUP'" ng-href="">{{change.resource.name}}</a>
+        <a ng-if="change.type === 'CAMPAIGN'" ng-href="">{{change.resource.name}}</a>
       </span>
     </div>
   </div>

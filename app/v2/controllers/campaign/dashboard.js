@@ -141,8 +141,12 @@
     }
 
     function setIdeasSectionVisibility(component) {
+      console.log(component);
       var key = component.key.toUpperCase();
+      // TODO PROPOSAL MAKING doesnt exist in components table anymore, change for PROPOSAL ?
       $scope.isIdeasSectionVisible = (key === 'PROPOSAL MAKING' || key === 'IDEAS');
+      $scope.newProposalsEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
+      $scope.newIdeasEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
     }
 
     function loadCampaignResources() {

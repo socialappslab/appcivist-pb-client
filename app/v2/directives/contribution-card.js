@@ -80,6 +80,10 @@
           var currentComponent = Campaigns.getCurrentComponent(scope.components);
           if (currentComponent.key === 'Voting') {
             scope.showVotingButtons = true;
+          } else if (currentComponent.key == 'Proposals' || currentComponent.key == 'Ideas') {
+            scope.isProposalIdeaStage = true;
+          } else {
+            scope.isProposalIdeaStage = false;
           }
         }
         scope.showActionMenu = false;

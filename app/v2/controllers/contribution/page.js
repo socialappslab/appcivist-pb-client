@@ -141,6 +141,11 @@
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
                 verifyAuthorship(scope.proposal);
               }
+              if (currentComponent.key == 'Proposals' || currentComponent.key == 'Ideas') {
+                scope.isProposalIdeaStage = true;
+              } else {
+                scope.isProposalIdeaStage = false;
+              }
             }, function(error) {
               Notify.show('Error while trying to fetch campaign components', 'error');
             });

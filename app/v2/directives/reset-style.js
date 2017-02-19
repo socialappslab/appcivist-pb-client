@@ -13,9 +13,12 @@
 
     function reset() {
       var v2 = false;
-
       if (location.hash.includes('/v2/')) {
         v2 = true;
+        $('head link[data-version=v1]').detach();
+        $('head link[href*=\'vendor.css\']').detach();
+        $('head link[href*=\'app.css\']').detach();
+      } else if (location.hash == '#/') {
         $('head link[data-version=v1]').detach();
         $('head link[href*=\'vendor.css\']').detach();
         $('head link[href*=\'app.css\']').detach();

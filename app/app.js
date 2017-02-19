@@ -129,6 +129,11 @@
       .setNotify(true, true);
 
 
+    /*$stateProvider.state('app', {
+      url: '/',
+      controller: 'v2.HomeCtrl',
+      templateUrl: 'app/v2/partials/home.html'
+    });*/
     // V2 routes
     $stateProvider.state('v2', {
         url: '/v2',
@@ -477,8 +482,10 @@
      */
     $routeProvider
       .when('/', {
-        controller: 'MainCtrl',
-        templateUrl: '/app/partials/main.html'
+        // controller: 'MainCtrl',
+        // templateUrl: '/app/partials/main.html'
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/partials/home.html'
       })
       .when('/v1/home', {
         controller: 'HomeCtrl',

@@ -41,14 +41,35 @@
     <header class="modal-header" style="padding: 2em;">{{'Feedback Form' | translate}}</header>
     <div class="modal-body">
       <form>
-        <fieldset ng-if="vm.userIsCoordinator || vm.userIsWGCoordinator">
+        <fieldset ng-if="(vm.userIsCoordinator || vm.userIsWGCoordinator) && !vm.onlyFeedback">
           <label for="status">{{'Type of feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="type" class="col-lg-12" ng-model="vm.selectedType" ng-change="vm.selectType()" ng-options="type as type.text for type in vm.types">
             </select>
           </div>
         </fieldset>
-        <fieldset ng-if="!vm.userIsMember">
+        <fieldset ng-if="(vm.feedback.type==='TECHNICAL_ASSESSMENT')">
+          <label for="status">{{'Password for technical feedbacks' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <input type="text" name="password" class="col-lg-12" ng-model="vm.feedback.password"></input>
+          </div>
+        </fieldset>
+
+        <div ng-if="vm.isAnonymous" class="row col-lg-12" vc-recaptcha ng-model="vm.recaptchaResponse" on-success="setCaptchaResponse(vm, response)" style="margin-bottom: 10px;"></div>
+
+        <fieldset ng-if="vm.isAnonymous" class="row">
+          <label for="authors">{{'Contact information' | translate}}</label>
+          <nonmember-author-form class="col-lg-12" on-change="vm.updateNonMember(author)" ng-disabled="vm.recaptchaResponseOK"></nonmember-author-form>
+          <!--<div class="field-container col-lg-6" style="margin-bottom: 10px;">-->
+            <!--<input type="text" ng-model="vm.feedback.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">-->
+          <!--</div>-->
+          <!--<div class="field-container col-lg-6" style="margin-bottom: 10px;">-->
+            <!--<input type="email" ng-model="vm.feedback.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!vm.recaptchaResponseOK">-->
+          <!--</div>-->
+        </fieldset>
+
+
+        <fieldset ng-if="!vm.userIsMember && !vm.onlyFeedback">
           <label for="group">{{'Select a Working Group that should receive this feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="group" class="col-lg-12" ng-model="vm.selectedGroup" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
@@ -56,19 +77,19 @@
             </select>
           </div>
         </fieldset>
-        <fieldset>
+        <fieldset ng-if="!vm.onlyFeedback">
           <label for="needScore">{{'Need score' | translate}}</label>
           <div class="field-container col-lg-12">
             <rzslider rz-slider-model="vm.feedback.need" rz-slider-options="vm.sliderOptions"></rzslider>
           </div>
         </fieldset>
-        <fieldset>
+        <fieldset ng-if="!vm.onlyFeedback">
           <label for="benefit">{{'Benefit' | translate}}</label>
           <div class="field-container col-lg-12">
             <rzslider rz-slider-model="vm.feedback.benefit" rz-slider-options="vm.sliderOptions"></rzslider>
           </div>
         </fieldset>
-        <fieldset>
+        <fieldset ng-if="!vm.onlyFeedback">
           <label for="feasibility">{{'Feasibility' | translate}}</label>
           <div class="field-container col-lg-12">
             <rzslider rz-slider-model="vm.feedback.feasibility" rz-slider-options="vm.sliderOptions"></rzslider>
@@ -78,7 +99,7 @@
           <label for="textualFeedback">{{'Textual Feedback' | translate}}</label>
           <textarea class="col-lg-12" ui-tinymce="vm.tinymceOptions" ng-model="vm.feedback.textualFeedback"></textarea>
         </fieldset>
-        <fieldset>
+        <fieldset ng-if="!vm.onlyFeedback">
           <label for="status">{{'Visibility of feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="status" ng-model="vm.feedback.status" class="col-lg-12">

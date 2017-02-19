@@ -109,10 +109,10 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
      *   - updates groupMembershipsHash
      *   - updates ongoingCampaigns
      *   - updates currentAssembly
-     * 
+     *
      * If a domain is specified, then pick that for currentAssembly. Otherwise the first
      * element of available assemblies will be picked it up.
-     * 
+     *
      * @param {number} newAssemblyId - The ID of the assembly we want to set as currentAssembly
      */
     setCurrentAssembly: function(newAssemblyId) {
@@ -439,12 +439,12 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
 
     assemblyRols: function(aid) {
       var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
-      return assemblyMembershipsHash[aid];
+      return assemblyMembershipsHash ? assemblyMembershipsHash[aid] : null;
     },
 
     groupRols: function(gid) {
       var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
-      return groupMembershipsHash[gid];
+      return groupMembershipsHash ? groupMembershipsHash[gid] : null;
     },
 
     /**
@@ -619,12 +619,24 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
       });
     },
 
-    userFeedback: function(assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/feedback', { aid: assemblyId, cid: contributionId }, { 'update': { method: 'PUT' } });
+    userFeedback: function(assemblyId, campaignId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/feedback', { aid: assemblyId, cid: campaignId, coid: contributionId }, { 'update': { method: 'PUT' } });
+    },
+
+    userFeedbackNoCampaignId: function(assemblyId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/feedback', { aid: assemblyId, coid: contributionId });
+    },
+
+    userFeedbackAnonymous: function(campaignUUID, contributionUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:cuuid/contribution/:couuid/feedback', { cuuid: campaignUUID, couuid: contributionUUID }, { 'update': { method: 'PUT' } });
     },
 
     userFeedbackWithGroupId: function(assemblyId, groupId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution/:cid/feedback', { aid: assemblyId, gid: groupId, cid: contributionId }, { 'update': { method: 'PUT' } });
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/contribution/:coid/feedback', { aid: assemblyId, gid: groupId, coid: contributionId }, { 'update': { method: 'PUT' } });
+    },
+
+    publicFeedbacks: function(contributionUuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/feedback', { coid: contributionUuid } );
     },
 
     getContributionComments: function(assemblyId, contributionId) {

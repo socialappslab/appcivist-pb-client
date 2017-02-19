@@ -798,6 +798,7 @@
   "Working group official feedback": "Working group official feedback",
   "Technical feedback": "Technical feedback",
   "Show Ideas": "Show Ideas",
+  "Hide Ideas": "Hide Ideas",
   "File": "File",
   "Configure your assembly": "Configure your assembly",
   "Stages and milestones": "Stages and milestones",
@@ -866,5 +867,17 @@
   "Start Sub Assembly": "Start Sub Assembly",
   "No ongoing Campaigns in this space yet": "No ongoing Campaigns in this space yet",
   "No Working Groups in this space yet": "No Working Groups in this space yet",
-  "Create New Sub Assembly": "Create New Sub Assembly"
+  "Feedbacks": "Feedbacks",
+  "Textual feedbacks": "Textual Feedbacks",
+  "Technical Assessment": "Technical Assessment",
+  "Show Results": "Show Results",
+  "Hide Results": "Hide Results",
+  "Show as plain text": "Show as plain text",
+  "Create New Sub Assembly": "Create New Sub Assembly",
+  "was assigned to": "was assigned to",
+  "Reporting": "Reporting",
+  "Mapping": "Mapping",
+  "Implementing": "Implementing",
+  "Password for technical feedbacks" : "Password for technical feedbacks",
+  "Contact information" : "Contact information"
 }

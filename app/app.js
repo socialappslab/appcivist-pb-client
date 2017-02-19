@@ -136,6 +136,11 @@
         templateUrl: 'app/v2/partials/main.html',
         controller: 'v2.MainCtrl'
       })
+      .state('v2.homepage', {
+        url: '/home',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/partials/home.html'
+      })
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,
@@ -415,19 +420,14 @@
         url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
-      })
-      /*.state('v2.campaign', {
-        url: '/campaign',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })*/
-      .state('v2.campaign.cuuid', {
+      }).state('v2.campaign', {
+          url: '/campaign',
+          abstract: true,
+          template: '<div ui-view></div>'
+      }).state('v2.campaign.cuuid', {
         url: '/:cuuid',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
       })
       .state('v2.proposal', {
         url: '/proposal',

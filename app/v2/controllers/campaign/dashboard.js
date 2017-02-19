@@ -101,6 +101,7 @@
         $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
         $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
 
+        localStorageService.set("currentCampaign",$scope.campaign);
         // We are reading the components twice,
         // - in the campaign-timeline directive
         // - here

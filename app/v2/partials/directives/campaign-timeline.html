@@ -28,7 +28,7 @@
       <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass">
         <div>
           <div class="marker" ng-mouseenter="toggleComponent(component, components)"></div>
-          <div class="label">{{component.title}}</div>
+          <div class="label">{{ component.title | translate }}</div>
         </div>
 
         <header class="page__header">
@@ -38,7 +38,7 @@
                 <div class="content">
                   <ul>
                     <li ng-repeat="milestone in component.milestones track by $index" class="li-action-menu">
-                      <a href="" ng-click="toggleMilestoneDescription(milestone, component.milestones)">{{milestone.title}} ({{formatDate(milestone.date)}})</a>
+                      <a href="" ng-click="toggleMilestoneDescription(milestone, component.milestones)">{{milestone.title | translate}} ({{formatDate(milestone.date)}})</a>
                       <p ng-if="milestone.showDescription">{{milestone.description}}</p>
                     </li>
                   </ul>

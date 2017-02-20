@@ -20,7 +20,7 @@
         <div id="assemblyName" class="form-horizontal">
           <div class="col-md-12 form-group" ng-class="{ 'has-error': newAssemblyForm1.name.$touched && newAssemblyForm1.name.$invalid }">
             <label for="inputNameAssembly" class="control-label">{{'Name'|translate }}*</label>
-            <input id="inputNameAssembly" name="name" type="text" class="form-control" placeholder="{{'e.g., Assemblée Belleville'|translate}}" ng-model="newAssembly.name" ng-required="true">
+            <input id="inputNameAssembly" name="name" type="text" class="form-control" placeholder="{{'e.g., Assembl�e Belleville'|translate}}" ng-model="newAssembly.name" ng-required="true">
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
@@ -259,7 +259,7 @@
             {{'Invitation Email' | translate}}
             <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail'|translate}}"></i>
             </label>
-            <textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6"></textarea>
+            <textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6" placeholder="{{ 'assembly.invitation.email.text' | translate}}"></textarea>
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
@@ -269,7 +269,7 @@
               <label>
               <input type="checkbox" ng-model="newAssembly.listed"/>
               <strong>
-              <span translate="{{ 'Do you want your Assembly to be listed?' | translate }}"></span>
+              <span>{{ 'Do you want your Assembly to be listed?' | translate }}</span>
               <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
               </strong>
               </label>

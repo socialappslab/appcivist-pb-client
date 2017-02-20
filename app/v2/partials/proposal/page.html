@@ -166,7 +166,7 @@
     <header class="page__header">
       <div class="type">
         <i class="fa fa-file-text"></i>&nbsp;&nbsp;{{'Proposal' | translate}}
-        <span class="status">— {{proposal.status}}</span>
+        <span class="status">— {{proposal.status | translate}}</span>
       </div>
       <div class="title_block">
         <h1 class="heading--title">{{proposal.title}}</h1>
@@ -251,11 +251,11 @@
               <!--Flags <em>{{flagSum}}</em>-->
             </div>
             <div class="informal_score stats2">
-              <span>Needs</span>
+              <span>{{ 'Needs' | translate }}</span>
               <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"/>
-              <span>Feasibility</span>
+              <span>{{ 'Feasibility' | translate }} </span>
               <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"/>
-              <span>Benefict</span>
+              <span>{{ 'Benefict' | translate }}</span>
               <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"/>
             </div>
           </div>
@@ -290,7 +290,7 @@
                 <h2 class="heading--header">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
                   <a href="" ng-if="userIsAuthor" ng-click="$parent.openModal('addAttachmentForm')"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
-                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{ 'Show Ideas' | translate }}</a>&nbsp;&nbsp;
+                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
                 </div>
               </div>
             </div>

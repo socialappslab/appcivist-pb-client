@@ -6,11 +6,11 @@
 
   ContributionForm.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
-    'Assemblies', 'Contributions', '$http'
+    'Assemblies', 'Contributions', '$http', 'FileUploader'
   ];
 
   function ContributionForm(WorkingGroups, localStorageService, Notify, Memberships,
-    Campaigns, Assemblies, Contributions, $http) {
+    Campaigns, Assemblies, Contributions, $http, FileUploader) {
     return {
       restrict: 'E',
       scope: {
@@ -44,6 +44,8 @@
         scope.assembly = localStorageService.get('currentAssembly');
         scope.isEdit = scope.mode === 'edit';
         scope.isCreate = scope.mode === 'create';
+        scope.createAttachmentResource = createAttachmentResource.bind(scope);
+        scope.submitAttachment = submitAttachment.bind(scope);
 
         if (scope.mode === 'create') {
           scope.initCreate()
@@ -88,7 +90,8 @@
         workingGroupAuthors: [],
         authors: [],
         existingThemes: [],
-        sourceCode: ''
+        sourceCode: '',
+        attachments: []
       };
 
       this.contribution.addedThemes = [];
@@ -327,6 +330,37 @@
           Notify.show('Error while trying to save the contribution', 'error');
         }
       );
+    }
+
+    /**
+     * Upload the given file to the server. Also, attachs it to
+     * the current contribution.
+     */
+    function submitAttachment() {
+      var vm = this;
+      var fd = new FormData();
+      fd.append('file', this.newAttachment.file);
+      $http.post(FileUploader.uploadEndpoint(), fd, {
+        headers: {
+          'Content-Type': undefined
+        },
+        transformRequest: angular.identity,
+      }).then(function(response) {
+        vm.createAttachmentResource(response.data.url);
+      }, function(error) {
+        Notify.show('Error while uploading file to the server', 'error');
+      });
+    }
+
+    /**
+     * After the file has been uploaded, we should relate it with the contribution.
+     *
+     * @param {string} url - The uploaded file's url.
+     */
+    function createAttachmentResource(url) {
+      var vm = this;
+      var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
+      this.contribution.attachments.push(attachment)
     }
 
     /**

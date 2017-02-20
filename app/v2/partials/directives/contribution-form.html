@@ -57,14 +57,14 @@
             <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="contribution.existingThemes" prefetch="true" disabled="disabled"></tags-field>
           </fieldset>
         </div>
-        <div ng-if="isCreate">
+        <!-- <div ng-if="isCreate">
           <fieldset>
             <div class="field__container">
               <label for="add_proposal__source_code">{{'Source Code' | translate}}</label>
               <input ng-model="contribution.sourceCode" id="add_proposal__source_code" placeholder="{{'Source Code' | translate}}" ng-disabled="disabled">
             </div>
           </fieldset>
-        </div>
+        </div> -->
         <fieldset>
           <a class="button__modal_submit" ng-click="submit()">{{'Submit' | translate}}</a>
         </fieldset>

@@ -10,12 +10,12 @@
   ProposalPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
-    'Space', '$http', 'FileUploader', '$sce'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns'
   ];
 
   function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
-    $translate, Space, $http, FileUploader, $sce) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns) {
 
     activate();
 
@@ -26,8 +26,8 @@
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
       $scope.feedbackBar = false;
-      $scope.toggleFeedbackBar = function(x){
-          $scope.feedbackBar = !$scope.feedbackBar;
+      $scope.toggleFeedbackBar = function(x) {
+        $scope.feedbackBar = !$scope.feedbackBar;
       };
       $scope.newAttachment = {};
       $scope.changeActiveTab = function(tab) {
@@ -88,7 +88,7 @@
       }
 
       //var stats = $scope.contribution.stats;
-      var feedback = Contributions.userFeedback($scope.assemblyID, $scope.proposalID).update($scope.userFeedback);
+      var feedback = Contributions.userFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
         function(newStats) {
           $scope.proposal.stats = newStats;
@@ -134,7 +134,16 @@
           }
 
           if (!scope.isAnonymous) {
-            verifyAuthorship(scope.proposal);
+            var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
+            rsp.then(function(components) {
+              var currentComponent = Campaigns.getCurrentComponent(components);
+              // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
+              if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
+                verifyAuthorship(scope.proposal);
+              }
+            }, function(error) {
+              Notify.show('Error while trying to fetch campaign components', 'error');
+            });
           }
           loadRelatedContributions();
           loadRelatedStats();
@@ -176,10 +185,10 @@
     $scope.createArray = function(num) {
       var total = 4;
       var arr = [];
-      for(var i=0; i < num; i++) {
+      for (var i = 0; i < num; i++) {
         arr.push("star-filled");
       }
-      for(var i=num; i <= 4; i++) {
+      for (var i = num; i <= 4; i++) {
         arr.push("star-empty");
       }
       return arr;
@@ -216,9 +225,6 @@
       $scope.needAvg = contrib.stats.averageNeed;
       $scope.feasibilityAvg = contrib.stats.averageFeasibility;
       $scope.benefictAvg = contrib.stats.averageBenefit;
-      // $scope.needAvg = 1;
-      // $scope.feasibilityAvg = 3;
-      // $scope.benefictAvg = 2;
     }
 
     function loadIndividualFeedbacks() {
@@ -272,17 +278,17 @@
       });
     }
 
-    function textAsHtml () {
+    function textAsHtml() {
       var vm = this;
       return $sce.trustAsHtml(vm.contribution ? vm.contribution.text : "");
     }
 
-    function textAsHtmlLimited (limit) {
+    function textAsHtmlLimited(limit) {
       var vm = this;
       if (vm.contribution && vm.contribution.text) {
-        var limitedText = limitToFilter(vm.contribution.text,limit)
+        var limitedText = limitToFilter(vm.contribution.text, limit)
         if (vm.contribution.text.length > limit) {
-          limitedText+="...";
+          limitedText += "...";
         }
 
         vm.trustedHtmlText = $sce.trustAsHtml(limitedText);

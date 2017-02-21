@@ -891,8 +891,13 @@
   "No ongoing Campaigns in this space yet": "Aún no hay Campañas en curso en este espacio",
   "No Working Groups in this space yet": "Aún no hay Grupos de Trabajo en este espacio",
   "Feedbacks": "Feedbacks",
-  "Textual feedbacks": "Feedbacks textuales",
+  "Textual feedbacks": "Evaluaciones",
   "Technical Assessment": "Evaluaciones Técnicas",
   "Show as plain text": "Ver texto plano",
   "was assigned to": "fue asignado a"
+  "Show Results": "Mostrar Resultados",
+  "Hide Results": "Esconder Resultados",
+  "Create New Sub Assembly": "Crear Nueva Sub-Asamblea",
+  "Password for technical feedbacks" : "Password para evaluaciones técnicas",
+  "Contact information" : "Informacin de contacto"
 }

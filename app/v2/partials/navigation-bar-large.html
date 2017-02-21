@@ -15,11 +15,11 @@
   .nav--active {
     z-index: 2000 !important;
   }
-
+  
   .nav__container {
     overflow-y: scroll;
   }
-
+  
   .navigation.nav--active .nav__footer,
   .nav--active.navigation-logged-in .nav__footer {
     position: relative;
@@ -32,7 +32,8 @@
     <header class="nav_header" itemprop="location" itemscope itemtype="http://schema.org/Place">
       <h1>{{currentAssembly.name}}</h1>
       <h2>{{currentAssembly.location.placeName}}</h2>
-      <a ng-if="isAssemblyCoordinator" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/edit">
+      <!-- disabled by issue #398 -->
+      <a ng-if="isAssemblyCoordinator && false" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/edit">
         {{ 'Manage' | translate }}
       </a>
     </header>
@@ -103,7 +104,8 @@
 
     <footer class="nav__footer">
       <div class="logo__wrapper">
-        <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
+        <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
           <path class="svg__shape" d="M26.357,14.928l-1.809-1.999c-0.5-0.548-1.334-0.595-1.882-0.096l-1.643,1.5
 		c-0.644,0.571-1.286,1.31-2.142,0.381l-0.93-1.023c-0.358-0.382-0.952-0.404-1.333-0.071l-1.382,1.262
 		c-0.381,0.357-0.404,0.952-0.071,1.333l0.977,1.095c0.523,0.573,0.595,1.024-0.119,1.668l-0.643,0.595

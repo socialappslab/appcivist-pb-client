@@ -29,6 +29,7 @@
 
         if (user) {
           scope.assembly = localStorageService.get('currentAssembly');
+          scope.campaign = localStorageService.get('currentCampaign');
           scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
           scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
         }
@@ -73,7 +74,7 @@
           scope.userFeedback.type='MEMBER';
           scope.userFeedback.status='PUBLIC';
 
-          var feedback = Contributions.userFeedback(scope.assembly.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
+          var feedback = Contributions.userFeedback(scope.assembly.assemblyId, scope.campaign.campaignId, scope.contribution.contributionId).update(scope.userFeedback);
           feedback.$promise.then(
             function(newStats) {
               scope.contribution.stats = newStats;
@@ -145,7 +146,7 @@
         flag: true,
         textualFeedback: this.contribution.moderationComment
       };
-      var feedback = Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(payload);
+      var feedback = Contributions.userFeedback(this.assembly.assemblyId, this.campaign.campaignId, this.contribution.contributionId).update(payload);
       feedback.$promise.then(
         function(newStats) {
           self.contribution.stats = newStats;

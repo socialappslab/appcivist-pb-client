@@ -92,7 +92,7 @@
         if (scope.isWGroup) {
           rsp = Contributions.userFeedbackWithGroupId(scope.assemblyId, scope.groupId, contrib.contributionId).query(query);
         } else {
-          rsp = Contributions.userFeedback(scope.assemblyId, contrib.contributionId).query(query);
+          rsp = Contributions.userFeedbackNoCampaignId(scope.assemblyId, contrib.contributionId).query(query);
         }
       }
       rsp.$promise.then(

@@ -41,8 +41,8 @@
     </header>
     <div class="contribution_details">
       <span class="what_happened">
-        <span ng-if="change.changeType === 'ADDED'">{{ 'New' | translate }}<a href=""><i class="fa fa-person"></i> {{change.externalRef}}, {{historyElement[change.externalRef][0].name}}</a></em> <span>{{'was added to:' | translate}}</span></span>
-        <span ng-if="change.changeType === 'DELETED'"><a href=""><i class="fa fa-person"></i> {{change.externalRef}} </a></em> <span>{{ 'was deleted from:' | translate}}</span></span>
+        <span ng-if="change.changeType === 'ADDED'">{{ 'New' | translate }}<em><a href=""><i class="fa fa-person"></i> {{change.externalRef}}, {{historyElement[change.externalRef][0].name}}</a></em> <span>{{'was added to:' | translate}}</span></span>
+        <span ng-if="change.changeType === 'DELETED'"><em><a href=""><i class="fa fa-person"></i> {{change.externalRef}} </a></em> <span>{{ 'was deleted from:' | translate}}</span></span>
       </span>
       <span class="contribution_description">
         <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{contribution.workingGroupAuthors[0].groupId}}/proposal/{{historyElement.contributionId}}" ng-click="closeModal($event)">{{historyElement.title}}</a>

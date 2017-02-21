@@ -25,7 +25,7 @@ h2 {
       <div class="collapse navbar-collapse" id="navbar-options">
         <form class="navbar-form navbar-right" role="login" style="padding-top:1%;">
           <a ng-if='!userIsAuthenticated()' ng-href="/#/v2/login">{{'header.sign_in' | translate}}</a>
-          <a ng-if='userIsAuthenticated()' ng-href="/#/v2/logout">{{'header.sign_out' | translate}}</a>
+          <a ng-if='userIsAuthenticated()' href="" ng-click="signout()">{{'header.sign_out' | translate}}</a>
         </form>
       </div>
   </nav>

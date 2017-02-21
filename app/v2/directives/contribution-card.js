@@ -78,9 +78,10 @@
         if (scope.campaign && scope.components) {
           // Verify the status of the campaign and show or not show the voting buttons
           var currentComponent = Campaigns.getCurrentComponent(scope.components);
-          if (currentComponent.key === 'Voting') {
+          currentComponent = currentComponent ? currentComponent : {};
+          if (currentComponent.type === 'VOTING') {
             scope.showVotingButtons = true;
-          } else if (currentComponent.key == 'Proposals' || currentComponent.key == 'Ideas') {
+          } else if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
             scope.isProposalIdeaStage = true;
           } else {
             scope.isProposalIdeaStage = false;

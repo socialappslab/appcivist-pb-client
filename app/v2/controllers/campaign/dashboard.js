@@ -141,8 +141,12 @@
     }
 
     function setIdeasSectionVisibility(component) {
-      var key = component.key.toUpperCase();
+      console.log(component);
+      var key = component ? component.type ? component.type.toUpperCase() : "" : ""; // In old implementation, it was key, changed to type
+      // TODO PROPOSAL MAKING doesnt exist in components table anymore, change for PROPOSAL ?
       $scope.isIdeasSectionVisible = (key === 'PROPOSAL MAKING' || key === 'IDEAS');
+      $scope.newProposalsEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
+      $scope.newIdeasEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
     }
 
     function loadCampaignResources() {

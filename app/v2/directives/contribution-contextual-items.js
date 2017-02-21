@@ -54,7 +54,8 @@
     return {
       restrict: 'E',
       scope: {
-        contribution: '='
+        contribution: '=',
+        isProposalIdeaStage: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-contextual-items.html',
       link: function(scope, element, attrs) {

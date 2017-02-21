@@ -14,7 +14,8 @@ function HistoryChange(localStorageService, AppCivistAuth, $state, Space) {
     restrict: 'E',
     scope: {
       historyElement: '=',
-      contribution: '='
+      contribution: '=',
+      vexInstance: '='
     },
     templateUrl: '/app/v2/partials/directives/history-element.html',
     link: function postLink(scope, element, attrs) {
@@ -35,6 +36,11 @@ function HistoryChange(localStorageService, AppCivistAuth, $state, Space) {
         date = date.replace("PM","");
         date = date.replace("GMT","");
         return moment(new Date(date)).format("YYYY");
+      }
+
+      scope.closeModal = function(e) {
+        // e.preventDefault();
+        scope.vexInstance.close();
       }
 
 

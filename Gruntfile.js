@@ -172,6 +172,7 @@ module.exports = function(grunt) {
             'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css',
             'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
             'bower_components/tinymce/plugins/**/*',
+            'bower_components/tinymce/themes/**/*',
             'stylesheets/**/*',
             'app/css/app.css',
             'app/css/app.v2.css',
@@ -195,21 +196,12 @@ module.exports = function(grunt) {
             '**/*',
           ]
         }, {
-          expand: true,
-          dot: true,
-          cwd: '.bower_components/tinymce/plugins/**/*.js',
-          dest: './dist/scripts/plugins/',
-          src: [
-            '**/*',
-          ]
-        }, {
-          expand: true,
-          dot: true,
-          cwd: '.bower_components/tinymce/themes/**/*.js',
-          dest: './dist/scripts/themes/',
-          src: [
-            '**/*',
-          ]
+          cwd : './bower_components/tinymce/',
+          src : [ 'plugins/**', 'themes/**',
+            'skins/**' ],
+          dest : './dist/scripts',
+          filter : 'isFile',
+          expand : true
         }, {
           expand: true,
           dot: true,

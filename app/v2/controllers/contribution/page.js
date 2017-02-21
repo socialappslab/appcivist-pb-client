@@ -137,11 +137,12 @@
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
             rsp.then(function(components) {
               var currentComponent = Campaigns.getCurrentComponent(components);
+              currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
                 verifyAuthorship(scope.proposal);
               }
-              if (currentComponent.key == 'Proposals' || currentComponent.key == 'Ideas') {
+              if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
                 scope.isProposalIdeaStage = true;
               } else {
                 scope.isProposalIdeaStage = false;

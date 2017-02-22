@@ -33,7 +33,8 @@
         testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
         local: "http://localhost:9000/api",
-        mimove: "https://mimove-apps.paris.inria.fr/platform/api"
+        mimove: "https://mimove-apps.paris.inria.fr/platform/api",
+        
       }
     },
     handleError: function(error) {
@@ -52,6 +53,7 @@
     testing: "https://testetherpad.appcivist.org/",
     development: "https://testetherpad.appcivist.org/",
     local: "http://localhost:9001/",
+    //local: "https://testetherpad.appcivist.org/",
     mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
   };
 

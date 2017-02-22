@@ -1,17 +1,19 @@
 <ul ng-if="isProposal">
-  <li class="li-action-menu" ng-if="$parent.userCanEdit"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit' | translate}}</a></li>
+  <!-- disabled by issue #398 -->
+  <li class="li-action-menu" ng-if="$parent.userCanEdit && isProposalIdeaStage"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit' | translate}}</a></li>
   <li class="li-action-menu" ng-if="$parent.userIsAuthor"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
   <li class="li-action-menu"><a href="" ng-click="$parent.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="$parent.userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userIsWorkingGroupCoordinator && isProposalIdeaStage"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
   <li class="li-action-menu"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
   <li class="li-action-menu" ng-if="$parent.userIsAssemblyCoordinator && $parent.notAssigned"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="$parent.userIsAssemblyCoordinator ||  $parent.userIsWorkingGroupCoordinator"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="($parent.userIsAssemblyCoordinator || $parent.userIsWorkingGroupCoordinator) && isProposalIdeaStage"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
   <li class="li-action-menu"><a href="" ng-click="myObject.subscribe()">{{'Subscribe' | translate}}</a></li>
 </ul>
 
 <ul ng-if="isIdea">
-  <li class="action__edit" ng-if="userIsAuthor"><a>{{'Edit' | translate}}</a></li>
+  <!-- TODO: replace the default FALSE by a scope variable that is false only if the current campaign component is not of type PROPOSALS or IDEAS -->
+  <li class="action__edit" ng-if="userIsAuthor && isProposalIdeaStage"><a>{{'Edit' | translate}}</a></li>
   <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a>{{'Assign' | translate}}</a></li>
   <li class="action__promote" ng-if="userIsWorkingGroupCoordinator"><a>{{'Promote to contribution' | translate}}</a></li>
   <li class="action__history"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
@@ -22,7 +24,8 @@
 </div>
 
 <modal open-if="modals.feedbackModal" close="closeModal('feedbackModal')" title="Feedback Form" template-id="feedbackModal"></modal>
-<modal open-if="modals.contributionEditModal" close="closeModal('contributionEditModal')" title="Edit Form" template-id="contributionEditModal"></modal>
+<modal open-if="modals.contributionEditModal" close="closeModal('contributionEditModal')" title="Edit Form"
+  template-id="contributionEditModal"></modal>
 
 <script id="feedbackModal" type="text/ng-template">
   <contribution-feedback-form contribution="contribution" on-success="closeModal('feedbackModal')"></contribution-feedback-form>

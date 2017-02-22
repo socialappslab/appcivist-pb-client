@@ -1,14 +1,18 @@
-﻿<div class="view">
+<style>
+.text-center-big {
+	text-align: center;
+	font-size: 22px;
+}
+</style>
+<div class="view">
 	<!-- Landing Section 1 -->
 	<div class="section first-section landing-section" id="section1">
-		<h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
+		<h1 class="main-title text-center-big">{{'landing.tagline' | translate}}</h1>
 		<form ng-submit="login()">
-			<!--<input type="text" class="form-control" id="email" name="email" placeholder="Email" required ng-model="user.email"/>-->
-			<!--<input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="user.password"/>-->
-			<!--<button type="submit" class="btn btn-success btn-lg">{{'header.sign_in' | translate}}</button>-->
-			<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()" ng-if="!hideLogin">{{'header.sign_up_individual' | translate}}</button>
-			<a ng-href="#/v1/assembly/create?userIsNew=true" ng-if="!hideLogin"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
-			<a href="#section2" du-smooth-scroll class="btn btn-success btn-lg">{{'landing.Learn more' | translate}}</a>
+			<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()" ng-if="false">{{'header.sign_up_individual' | translate}}</button>
+			<a ng-href="#/v1/assembly/create?userIsNew=true" ng-if="false"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
+			<a href="#section2" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.Learn more' | translate}}</a>
+			<div class="voffset4"></div>
 			<div ng-translate-language-select></div>
 		</form>
 		<h6 class="text-center bottom-info"></h6>
@@ -17,12 +21,12 @@
 	<!-- Landing Section 2 -->
 	<div class="section second-section" id="section2">
 		<div class="row">
-			<span class="col-md-1 col-sm-1 hidden-xs"></span>
-			<h2 class="col-md-9 col-sm-9 col-xs-12 main-title">{{'landing.goal' | translate}}</h2>
+			<h2 class="col-md-12 col-sm-12 col-xs-12 main-title text-center">{{'landing.goal' | translate}}</h2>
 		</div>
 		<div class="jumbotron jumbotron-index hidden-xs hidden-sm">
 			<div class="container">
 				<div class="row">
+					<div class="col-md-1"></div>
 					<div class="col-md-1">
 						<i class="icon-doc-text"></i>
 						<h5>{{'Proposal Making' | translate}}</h5>
@@ -89,7 +93,7 @@
 				<span class="icon-circle-number">1</span>
 				<div class="vertical2 greenline1"> </div>
 			</div>
-			<span class="col-md-6 col-sm-6 col-xs-9">
+			<span class="col-md-8 col-sm-8 col-xs-9">
 				<h2>{{'landing.goal.assembly' | translate}}</h2>
 				<h3>{{'definition.assembly' | translate}}</h3>
 			</span>
@@ -103,7 +107,7 @@
 				<span class="icon-circle-number">2</span>
 				<div class="vertical2 greenline3"> </div>
 			</div>
-			<span class="col-md-6 col-sm-6 col-xs-9">
+			<span class="col-md-8 col-sm-8 col-xs-9">
 				<h2>{{'landing.goal.campaign' | translate}}</h2>
 				<h3>{{'definition.campaign' | translate}}</h3>
 			</span>
@@ -117,7 +121,7 @@
 				<span class="icon-circle-number">3</span>
 				<div class="vertical2 greenline4"> </div>
 			</div>
-			<span class="col-md-6 col-sm-6 col-xs-9">
+			<span class="col-md-8 col-sm-8 col-xs-9">
 				<h2>{{'landing.goal.proposal' | translate}}</h2>
 				<h3>{{'definition.proposal.development' | translate}}</h3>
 			</span>
@@ -261,7 +265,7 @@
 		</ul>
 
 		<div class="voffset5"></div>
-		<div class="text-center" ng-if="!hideLogin">
+		<div class="text-center" ng-if="false">
 			<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
 			<a ng-href="#/v1/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
 		</div>
@@ -282,4 +286,3 @@
 	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
 
 </div>
-

@@ -166,7 +166,7 @@
     <header class="page__header">
       <div class="type">
         <i class="fa fa-file-text"></i>&nbsp;&nbsp;{{'Proposal' | translate}}
-        <span class="status">— {{proposal.status}}</span>
+        <span class="status">— {{proposal.status | translate}}</span>
       </div>
       <div class="title_block">
         <h1 class="heading--title">{{proposal.title}}</h1>
@@ -175,7 +175,8 @@
           <ul class="actions">
             <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
               <a>
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px"
+                  height="16px" viewBox="0 0 16 16" xml:space="preserve">
                   <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
 		c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
 		c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
@@ -203,7 +204,7 @@
 
           <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
             <div class="content">
-              <contribution-contextual-items contribution="proposal"></contribution-contextual-items>
+              <contribution-contextual-items contribution="proposal" is-proposal-idea-stage="isProposalIdeaStage"></contribution-contextual-items>
             </div>
           </div>
         </div>
@@ -246,16 +247,14 @@
 
           <div ng-if="feedbackBar" class="informal_score">
             <div class="informal_score positive stats2">
-              Ups <em>{{upSum}}</em>
-              Downs <em>{{downSum}}</em>
-              <!--Flags <em>{{flagSum}}</em>-->
+              {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em>
             </div>
             <div class="informal_score stats2">
-              <span>Needs</span>
+              <span>{{ 'Needs' | translate }}</span>
               <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"/>
-              <span>Feasibility</span>
+              <span>{{ 'Feasibility' | translate }} </span>
               <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"/>
-              <span>Benefict</span>
+              <span>{{ 'Benefit' | translate }}</span>
               <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"/>
             </div>
           </div>
@@ -290,7 +289,7 @@
                 <h2 class="heading--header">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
                   <a href="" ng-if="userIsAuthor" ng-click="$parent.openModal('addAttachmentForm')"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
-                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{ 'Show Ideas' | translate }}</a>&nbsp;&nbsp;
+                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
                 </div>
               </div>
             </div>
@@ -299,7 +298,8 @@
               <div class="action-bar small-card file-card">
                 <figure>
                   <a ng-href="{{file.url}}" target="_blank">
-                    <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon" />
+                    <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon"
+                    />
                     <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
                   </a>
                 </figure>
@@ -355,8 +355,10 @@
       <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="proposalID" endpoint-id="proposalID" endpoint="contribution"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="proposal.forumResourceSpaceId" endpoint-id="proposal.proposalId" endpoint="contribution" public-board="true"></discussion-panel>
-      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="proposal.frsUUID" endpoint-id="proposal.uuid" endpoint="contribution" public-board="true"></discussion-panel>
+      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="proposal.forumResourceSpaceId" endpoint-id="proposal.proposalId"
+        endpoint="contribution" public-board="true"></discussion-panel>
+      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="proposal.frsUUID" endpoint-id="proposal.uuid" endpoint="contribution"
+        public-board="true"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Feedbacks'}" ng-if="userIsMember && activeTab === 'Feedbacks'">
       <contribution-feedback-panel class="col-md-12" contribution="proposal" public-board="true"></contribution-feedback-panel>

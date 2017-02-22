@@ -13,10 +13,18 @@ function HistoryChange(localStorageService, AppCivistAuth, $state, Space) {
   return {
     restrict: 'E',
     scope: {
-      historyElement: '='
+      historyElement: '=',
+      contribution: '=',
+      vexInstance: '='
     },
     templateUrl: '/app/v2/partials/directives/history-element.html',
     link: function postLink(scope, element, attrs) {
+
+      scope.currentUser = localStorageService.get('user');
+
+      if (scope.currentUser) {
+        scope.currentAssembly = localStorageService.get('currentAssembly');
+      }
 
       scope.getDayMonth = function (date) {
         date = date.replace("PM","");
@@ -28,6 +36,11 @@ function HistoryChange(localStorageService, AppCivistAuth, $state, Space) {
         date = date.replace("PM","");
         date = date.replace("GMT","");
         return moment(new Date(date)).format("YYYY");
+      }
+
+      scope.closeModal = function(e) {
+        // e.preventDefault();
+        scope.vexInstance.close();
       }
 
 

@@ -1,5 +1,35 @@
-<footer>
-	<h4 translate="footer.text"></h4>
-	<h5 ng-if="devModeOn"><a ng-click="changeServer()">{{'footer.text.dev' | translate}}{{serverBaseUrl}}</a></h5>
-    <h5 ng-if="devModeOn"><a ng-click="changeVotingServer()">{{'footer.text.dev' | translate}}{{votingApiUrl}}</a></h5>
+
+<footer class="appmain">
+	<div class="footer__content" style="text-align: center;">
+		<div class="attribution">
+			<div class="footer__logo">
+				<br/>
+				<svg style="padding: 0px !important;" class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
+					<path class="svg__shape" d="M26.357,14.928l-1.809-1.999c-0.5-0.548-1.334-0.595-1.882-0.096l-1.643,1.5
+	c-0.644,0.571-1.286,1.31-2.142,0.381l-0.93-1.023c-0.358-0.382-0.952-0.404-1.333-0.071l-1.382,1.262
+	c-0.381,0.357-0.404,0.952-0.071,1.333l0.977,1.095c0.523,0.573,0.595,1.024-0.119,1.668l-0.643,0.595
+	c-0.786,0.713-1.452,0.452-2.144-0.31l-1-1.119c-1-1.096-0.643-1.667,0.167-2.381l2.31-2.071c0.476-0.429,0.523-1.214,0.096-1.69
+	l-2.548-2.833c-0.429-0.477-1.215-0.524-1.691-0.096l-2.762,2.5C7.334,12,7.286,12.786,7.715,13.262l2.048,2.263
+	c0.809,0.904,0.904,1.498-0.144,2.452l-1.428,1.285c-0.5,0.451-0.548,1.262-0.096,1.762l1.69,1.881
+	c0.452,0.5,1.262,0.548,1.762,0.096l1.31-1.191c0.881-0.785,1.548-0.976,2.357-0.071l0.857,0.952
+	c0.356,0.381,0.929,0.43,1.332,0.072l1.43-1.285c0.381-0.358,0.429-0.93,0.071-1.334l-0.929-1.024
+	c-0.714-0.785-0.453-1.332,0.216-1.928l0.522-0.477c0.904-0.81,1.452-0.548,2.119,0.19l1.5,1.643c0.5,0.548,1.333,0.595,1.882,0.096
+	l1.999-1.81C26.81,16.31,26.835,15.477,26.357,14.928z M16.001,31C7.739,31,1,24.262,1,16S7.739,1,16.001,1S31,7.738,31,16
+	S24.263,31,16.001,31z M16.001,4.786C9.81,4.786,4.786,9.833,4.786,16c0,6.166,5.048,11.19,11.215,11.19
+	c6.166,0,11.215-5.001,11.215-11.19C27.216,9.81,22.191,4.786,16.001,4.786z"></path>
+				</svg>
+				<br/>
+				<br/>
+			</div>
+
+			<p>{{'Created by the' | translate}} <a href="http://socialappslab.org/">Social Apps Lab</a> at <a href="http://citris-uc.org">CITRIS</a>, University of California, Berkeley</p>
+			<p>{{'In partnership with the' | translate}} <a href="http://mimove.inria.fr/">MiMove Team</a> at <a href="http://inria.fr/">INRIA</a>, France
+			</p>
+
+		</div>
+		<div class="copyright">
+			2014-2017 © <a href="http://regents.universityofcalifornia.edu/">Regents of the University of California</a>
+		</div>
+		<br/>
+	</div>
 </footer>

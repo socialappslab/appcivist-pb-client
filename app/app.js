@@ -18,19 +18,22 @@
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
+  // TODO: add the right url for the mimove voting api
   var appcivist = {
     api: {
       voting: {
         production: "https://platform.appcivist.org/voting/api/v0",
         testing: "https://testplatform.appcivist.org/voting/api/v0",
         development: "https://devplatform.org/voting/api/v0",
-        local: "http://localhost:5000/api/v0"
+        local: "http://localhost:5000/api/v0",
+        mimove: "https://mimove-apps.paris.inria.fr/voting/api/v0"
       },
       core: {
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
-        local: "http://localhost:9000/api"
+        local: "http://localhost:9000/api",
+        mimove: "https://mimove-apps.paris.inria.fr/platform/api"
       }
     },
     handleError: function(error) {
@@ -45,17 +48,18 @@
   };
 
   var etherpad = {
-    server: "https://etherpad.appcivist.org/",
-    testserver: "https://testetherpad.appcivist.org/",
-    localserver: "http://localhost:9001/"
+    production: "https://etherpad.appcivist.org/",
+    testing: "https://testetherpad.appcivist.org/",
+    development: "https://testetherpad.appcivist.org/",
+    local: "http://localhost:9001/",
+    mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
   };
 
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
   var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
   var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
-  var etherpadServerURL = (window.location.hostname === "testpb.appcivist.org") ?
-    etherpad.testserver : (window.location.hostname === "localhost") ?
-    etherpad.localserver : etherpad.server;
+  var etherpadServerURL = selectBackendServer(window.location.hostname, etherpad);
+
   var hideLogin = (window.location.hostname === "appcivist.org" ||
     window.location.hostname === "www.appcivist.org");
 
@@ -129,12 +133,22 @@
       .setNotify(true, true);
 
 
+    /*$stateProvider.state('app', {
+      url: '/',
+      controller: 'v2.HomeCtrl',
+      templateUrl: 'app/v2/partials/home.html'
+    });*/
     // V2 routes
     $stateProvider.state('v2', {
         url: '/v2',
         abstract: true,
         templateUrl: 'app/v2/partials/main.html',
         controller: 'v2.MainCtrl'
+      })
+      .state('v2.homepage', {
+        url: '/home',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/partials/home.html'
       })
       .state('v2.assembly', {
         url: '/assembly',
@@ -472,8 +486,10 @@
      */
     $routeProvider
       .when('/', {
-        controller: 'MainCtrl',
-        templateUrl: '/app/partials/main.html'
+        // controller: 'MainCtrl',
+        // templateUrl: '/app/partials/main.html'
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/partials/home.html'
       })
       .when('/v1/home', {
         controller: 'HomeCtrl',
@@ -796,13 +812,18 @@
    * - TODO: when production version are ready, add a rule for selecting the production server
    */
   function selectBackendServer(hostname, apis) {
-    var possibleHosts = ["localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org", "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org", "www.appcivist.org", "testapp.appcivist.org"];
+    var possibleHosts = [
+      "localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org",
+      "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org",
+      "www.appcivist.org", "testapp.appcivist.org", "mimove-apps.paris.inria.fr"];
     if (hostname === possibleHosts[0]) {
       return apis.local;
     } else if (hostname === possibleHosts[1] || hostname === possibleHosts[4] || hostname === possibleHosts[6] || hostname === possibleHosts[7]) {
       return apis.production;
     } else if (hostname === possibleHosts[2] || hostname === possibleHosts[5] || hostname === possibleHosts[8]) {
       return apis.testing;
+    } else if (hostname === possibleHosts[9]) {
+      return apis.mimove;
     } else {
       return apis.development;
     }

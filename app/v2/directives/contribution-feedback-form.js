@@ -21,12 +21,12 @@
     });
 
   ContributionFeedbackFormCtrl.$inject = [
-    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader'
+    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader', 'RECAPTCHA_KEY', 'Captcha'
   ];
   var servs = {};
 
   function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify,
-    $scope, FileUploader) {
+    $scope, FileUploader, RECAPTCHA_KEY, Captcha) {
 
     var vm = this;
     servs.Memberships = Memberships;
@@ -41,17 +41,25 @@
     this.submit = submit.bind(this);
     this.getEditorOptions = getEditorOptions.bind(this);
     this.loadFeedback = loadFeedback.bind(this);
+    this.loadEmptyFeedback = loadEmptyFeedback.bind(this);
+    this.validateCaptchaResponse = validateCaptchaResponse.bind(this);
+    this.setCaptchaResponse = setCaptchaResponse.bind(this);
+    this.updateNonMember = updateNonMember.bind(this);
+    this.recaptchaResponse = {};
 
     this.$onInit = function() {
-      vm.feedback = {
-        need: 0,
-        benefit: 0,
-        feasibility: 0,
-        textualFeedback: '',
-        status: 'PRIVATE',
-        type: 'MEMBER'
-      };
-      vm.assembly = localStorageService.get('currentAssembly');
+      vm.isAnonymous = !vm.contribution.contributionId;
+      vm.feedback = vm.loadEmptyFeedback();
+      vm.recaptchaResponseOK = false;
+
+      vm.userIsMember = !vm.isAnonymous;
+      if (!vm.isAnonymous) {
+        vm.assembly = localStorageService.get('currentAssembly');
+      } else {
+        vm.assembly = {};
+      }
+      vm.campaign = localStorageService.get('currentCampaign');
+
       vm.sliderOptions = {
         floor: 0,
         ceil: 4,
@@ -62,10 +70,16 @@
       if (this.onlyFeedback) {
         this.feedback = this.onlyFeedback;
       } else {
+        if (!vm.isAnonymous) {
+          vm.verifyMembership();
+          vm.loadFeedback();
+        } else {
+            vm.userIsCoordinator = false;
+          vm.userIsWGCoordinator = false;
+        }
+
         vm.loadGroups();
-        vm.verifyMembership();
         vm.loadTypes();
-        vm.loadFeedback();
       }
 
     };
@@ -74,13 +88,34 @@
     //});
   }
 
+  /** Reuturn a default empty feedback */
+  function loadEmptyFeedback() {
+    var feedback = {
+      need: 0,
+      benefit: 0,
+      feasibility: 0,
+      textualFeedback: '',
+      status: 'PRIVATE',
+      type: 'MEMBER'
+    };
+
+    if (this.isAnonymous) {
+      feedback.type = "TECHNICAL_ASSESSMENT";
+      feedback.nonMemberAuthor = {};
+    }
+    return feedback;
+  }
   /**
    * working group ng-change handler.
    */
   function selectGroup() {
     if (this.selectedGroup) {
-      this.feedback.workingGroupId = this.selectedGroup.groupId;
-      this.loadFeedback();
+      if (!this.isAnonymous) {
+        this.feedback.workingGroupId = this.selectedGroup.groupId;
+        this.loadFeedback();
+      } else {
+        this.feedback.workingGroupUuid = this.selectedGroup.uuid;
+      }
     } else {
       delete this.feedback.workingGroupId;
     }
@@ -91,8 +126,11 @@
    */
   function selectType() {
     if (this.selectedType) {
-      this.feedback.type = this.selectedType.value;
-      this.loadFeedback();
+      if (!this.isAnonymous) {
+        this.feedback.type = this.selectedType.value;
+      } else {
+        this.feedback.type = "TECHNICAL_ASSESSMENT";
+      }
     }
   }
 
@@ -104,7 +142,9 @@
 
     if (wgAuthors && wgAuthors.length) {
       this.proposalGroup = wgAuthors[0];
-      this.userIsMember = servs.Memberships.rolIn('group', this.proposalGroup.groupId, 'MEMBER');
+      if (!this.isAnonymous) {
+        this.userIsMember = servs.Memberships.rolIn('group', this.proposalGroup.groupId, 'MEMBER');
+      }
 
       if (this.userIsMember) {
         // the user giving feedback is a member of the proposal's working group
@@ -117,12 +157,15 @@
   }
 
   function loadTypes() {
-    var types = [
-      { value: 'MEMBER', text: 'Member feedback' },
-      { value: 'WORKING_GROUP', text: 'Working group official feedback' }
-    ];
+    var types = [];
+    if (!this.isAnonymous) {
+      types = [
+        { value: 'MEMBER', text: 'Member feedback' },
+        { value: 'WORKING_GROUP', text: 'Working group official feedback' }
+      ];
+    }
 
-    if (this.userIsCoordinator) {
+    if (this.userIsCoordinator || this.isAnonymous) {
       types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
     }
     this.types = types;
@@ -146,7 +189,12 @@
       }
     })
     delete payload.id;
-    var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId).update(payload);
+
+    if (this.isAnonymous) {
+      var feedback = servs.Contributions.userFeedbackAnonymous(this.campaign.uuid, this.contribution.uuid).update(payload);
+    } else {
+      var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.campaign.campaignId, this.contribution.contributionId).update(payload);
+    }
     feedback.$promise.then(
       function(newStats) {
         vm.contribution.stats = newStats;
@@ -229,7 +277,7 @@
                                 this.feedback.workingGroupId, this.contribution.contributionId)
                                 .query({ type: this.feedback.type}).$promise;
     } else {
-      var rsp = servs.Contributions.userFeedback(this.assembly.assemblyId, this.contribution.contributionId)
+      var rsp = servs.Contributions.userFeedbackNoCampaignId(this.assembly.assemblyId, this.contribution.contributionId)
         .query({ type: this.feedback.type}).$promise;
     }
     var vm = this;
@@ -237,11 +285,55 @@
       function(feedbacks) {
         if (feedbacks && feedbacks.length > 0) {
           vm.feedback = feedbacks[0];
+        } else if (vm.feedback) {
+          var selectedType = vm.feedback.type;
+          var selectedWorkingGroupId = vm.feedback.workingGroupId;
+          vm.feedback = vm.loadEmptyFeedback();
+          vm.feedback.type = selectedType ? selectedType : vm.feedback.type;
+          vm.feedback.workingGroupId = selectedWorkingGroupId ? selectedWorkingGroupId : vm.feedback.workingGroupId;
+        } else {
+          vm.feedback = vm.loadEmptyFeedback();
         }
         console.log('feedbacks', feedbacks);
       },
       function() {
         servs.Notify.show('Error while get user feedback from the server', 'error');
       })
+  }
+
+  /**
+   * handles nonmember-author-form directive's on-change event.
+   */
+  function updateNonMember(author) {
+    this.feedback.nonMemberAuthor = author;
+  }
+
+  /**
+   * Recaptcha on-success handler. This is used in comment form.
+   *
+   * @param {object} discussion - the discussion associated with the comment form.
+   * @param {string} response - the hashed recaptcha response.
+   */
+  function setCaptchaResponse(vm, response) {
+    vm.recaptchaResponse = response;
+    vm.validateCaptchaResponse(vm);
+  }
+
+  /**
+   * Verify that user response is correct.
+   *
+   * @param {object} target - element with recaptchaResponse and recaptchaResponseOK properties.
+   */
+  function validateCaptchaResponse(vm) {
+    Captcha.verify(vm.recaptchaResponse).then(
+      function(response) {
+        vm.recaptchaResponseOK = response && response.success;
+      },
+      function(response) {
+        vm.recaptchaResponseOK = false;
+        var msg = response.data ? response.data.statusMessage : response.statusText;
+        Notify.show('Error while validating captcha response: ' + msg, 'error');
+      }
+    );
   }
 }());

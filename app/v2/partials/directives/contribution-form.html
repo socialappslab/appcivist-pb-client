@@ -5,15 +5,15 @@
   </header>
   <div class="modal-body">
     <form name="contributionForm">
-      <fieldset class="divider" ng-if="userIsAssemblyCoordinator && isCreate">
+      <!--<fieldset class="divider" ng-if="userIsAssemblyCoordinator && isCreate">
         <label for="upload">{{'Upload csv file' | translate}}</label>
         <input type="file" name="upload" fileread="file.csv">
         <a class="button__modal_submit" ng-click="submit()">{{'Upload' | translate}}</a>
-      </fieldset>
+      </fieldset>-->
       <fieldset>
         <div class="field__container">
           <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
-          <input ng-model="contribution.title" ng-required="true" ng-disabled="disabled" id="add_proposal__title" type="text" placeholder="Title" name="title">
+          <input ng-model="contribution.title" ng-required="true" ng-disabled="disabled" id="add_proposal__title" type="text" placeholder="{{ 'Title' | translate }}" name="title">
           <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="field__container assign_proposal_to_users" ng-if="isCreate">
           <fieldset class="add_proposal__availble_themes">
-            <p clas="intro">{{'Categories' | translate}}</p>
+            <p class="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
             <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="contribution.existingThemes" prefetch="true" disabled="disabled"></tags-field>
           </fieldset>
@@ -65,9 +65,56 @@
             </div>
           </fieldset>
         </div> -->
+        <div class="field__container">
+          <fieldset>
+            <p class="intro">{{'Attachments' | translate}}</p>
+          </fieldset>
+        </div>
+        <div class="field__container card-list" ng-repeat="file in contribution.attachments">
+          <fieldset>
+            <div class="action-bar small-card file-card">
+              <figure>
+                <a ng-href="{{file.url}}" target="_blank">
+                  <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon"
+                  />
+                  <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
+                </a>
+              </figure>
+              <h4>
+                <a ng-href="{{file.url}}" target="_blank">{{(file.name && file.name != "" ? file.name : file.url)}}</a>
+                <a ng-click="deleteAttachment()"><i class="fa fa-times"></i></a>
+              </h4>                
+            </div>
+          </fieldset>
+        </div>        
+
+        <div class="field__container">
+          <fieldset>
+            <a href="" ng-click="addFile = !addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
+          </fieldset>
+        </div>
+        <div ng-show="addFile">
+          <fieldset>
+            <div class="field__container">
+              <label for="name">{{'Name' | translate}}</label>
+              <input name="name" ng-model="newAttachment.name">
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="field__container">
+              <label for="file">{{'File' | translate}}</label>
+              <input type="file" name="file" fileread="newAttachment.file">
+            </div>
+          </fieldset>
+          <fieldset>
+            <button class="button__modal_submit" ng-click="submitAttachment()">{{'Add file' | translate}}</button>
+          </fieldset> 
+        </div>
         <fieldset>
+          <br><br>
           <a class="button__modal_submit" ng-click="submit()">{{'Submit' | translate}}</a>
         </fieldset>
+      </fieldset>
     </form>
   </div>
 </div>

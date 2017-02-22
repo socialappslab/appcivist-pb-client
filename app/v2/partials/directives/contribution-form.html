@@ -71,7 +71,7 @@
             <p class="intro">{{'Attachments' | translate}}</p>
           </fieldset>
         </div>
-        <div class="card-list" ng-repeat="file in contribution.attachments">
+        <div class="field__container card-list" ng-repeat="file in contribution.attachments">
           <fieldset>
             <div class="action-bar small-card file-card">
               <figure>
@@ -89,7 +89,7 @@
           </fieldset>
         </div>        
 
-        <div>
+        <div class="field__container">
           <fieldset>
             <a href="" ng-click="addFile = !addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
           </fieldset>

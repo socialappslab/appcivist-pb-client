@@ -46,6 +46,8 @@
         scope.isCreate = scope.mode === 'create';
         scope.createAttachmentResource = createAttachmentResource.bind(scope);
         scope.submitAttachment = submitAttachment.bind(scope);
+        scope.addFile = false
+        scope.deleteAttachment = deleteAttachment.bind(scope)
 
         if (scope.mode === 'create') {
           scope.initCreate()
@@ -360,7 +362,10 @@
     function createAttachmentResource(url) {
       var vm = this;
       var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
-      this.contribution.attachments.push(attachment)
+      this.contribution.attachments.push(attachment);
+      this.addFile = false;
+      this.newAttachment.name = "";
+      this.newAttachment.file = undefined;
     }
 
     /**
@@ -418,6 +423,11 @@
       delete contribution.workingGroupAuthors;
       delete contribution.extendedTextPad;
       this.contribution = contribution;
+    }
+
+    function deleteAttachment (item){ 
+      var index = this.contribution.attachments.indexOf(item)
+      this.contribution.attachments.splice(index,1);     
     }
   }
 }());

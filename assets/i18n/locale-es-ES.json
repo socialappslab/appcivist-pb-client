@@ -894,5 +894,10 @@
   "Textual feedbacks": "Feedbacks textuales",
   "Technical Assessment": "Evaluaciones Técnicas",
   "Show as plain text": "Ver texto plano",
-  "was assigned to": "fue asignado a"
+  "was assigned to": "fue asignado a",
+  "Password for technical feedbacks" : "Contraseña para feedbacks técnicos",
+  "Contact information" : "Información de Contacto",
+  "Ups": "Positivos",
+  "Downs": "Negativos",
+  "Add file": "Agregar Archivo"
 }

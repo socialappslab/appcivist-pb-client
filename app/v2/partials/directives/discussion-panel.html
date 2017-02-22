@@ -46,6 +46,10 @@
   .github-fork-ribbon:before {
     background-color: #f80;
   }
+
+  .recaptcha>div {
+    margin-left: 15px;
+  }
 </style>
 <section class="comments__section">
   <header class="panel-heading">
@@ -96,9 +100,10 @@
 
         <div class="comments__reply" ng-if="discussion.showReplyForm">
           <h2 class="heading--header">{{'Reply' | translate}}</h2>
-          <div class="comments__comment_form">
-            <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse" on-success="setCaptchaResponse(discussion, response)" style="margin-bottom: 10px;"></div>
-            <form ng-submit="createNewComment(discussion)">
+          <div class="comments__listing">
+            <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="discussion.recaptchaResponse" on-success="setCaptchaResponse(discussion, response)"
+              style="margin-bottom: 10px;"></div>
+            <form ng-submit="createNewComment(discussion)" class="row">
               <fieldset>
                 <div ng-if="isAnonymous">
                   <div class="field-container col-lg-6" style="margin-bottom: 10px;">
@@ -110,14 +115,15 @@
                 </div>
                 <div>
                   <div class="field-container col-lg-12">
-                    <textarea id="comment-field-{{discussion.uuid}}" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}" ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
+                    <textarea id="comment-field-{{discussion.uuid}}" style="height: auto;" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}"
+                      ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
                   </div>
                 </div>
                 <br />
                 <div class="comment-form">
                   <div class="comment-meta">
                     <member-card action-bar="true" comments-section="true"></member-card>
-                    <input class="button" type="submit" value="Submit" />
+                    <input class="button" type="submit" value="Submit" style="margin-top: 50px;"/>
                   </div>
                 </div>
               </fieldset>
@@ -131,9 +137,9 @@
 
   <div class="comments__reply">
     <h2 class="heading--header">{{'Start a Conversation' | translate}}</h2>
-    <div class="comments__comment_form">
-      <div ng-if="isAnonymous" class="col-lg-12" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
-      <form ng-submit="createNewDiscussion()">
+    <div class="comments__listing">
+      <div ng-if="isAnonymous" class="row recaptcha" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
+      <form ng-submit="createNewDiscussion()" class="row">
         <fieldset>
           <div ng-if="isAnonymous">
             <div class="field-container col-lg-6" style="margin-bottom: 10px;">
@@ -145,14 +151,15 @@
           </div>
           <div>
             <div class="field-container col-lg-12">
-              <textarea id="discussion-field" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}" ng-disabled="!vm.recaptchaResponseOK && isAnonymous"></textarea>
+              <textarea id="discussion-field" style="height: auto;" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"
+                ng-disabled="!vm.recaptchaResponseOK && isAnonymous"></textarea>
             </div>
           </div>
           <br />
           <div class="comment-form">
             <div class="comment-meta">
               <member-card action-bar="true" comments-section="true"></member-card>
-              <input class="button" type="submit" value="{{'Submit'| translate}}" />
+              <input class="button" type="submit" value="{{'Submit'| translate}}" style="margin-top: 50px;" />
             </div>
           </div>
         </fieldset>

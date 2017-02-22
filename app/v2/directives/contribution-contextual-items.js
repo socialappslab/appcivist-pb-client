@@ -92,6 +92,7 @@
             if (!scope.isAnonymous) {
               scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
               scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+              scope.campaignId = localStorageService.get('currentCampaign').campaignId;
               setupMembershipInfo(scope);
             }
           }
@@ -126,7 +127,7 @@
                 scope.userFeedback.down = !scope.userFeedback.down;
               }
             }
-            var feedback = Contributions.userFeedback(scope.assemblyId, scope.contribution.contributionId).update(scope.userFeedback);
+            var feedback = Contributions.userFeedback(scope.assemblyId, scope.campaignId, scope.contribution.contributionId).update(scope.userFeedback);
             feedback.$promise.then(
               function(newStats) {
                 scope.contribution.stats = newStats;

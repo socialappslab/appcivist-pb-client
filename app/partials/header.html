@@ -7,19 +7,23 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <div class="navbar-brand" ng-if='userIsAuthenticated()'>
+        <div class="navbar-brand" ng-if='userIsAuthenticated()' style="padding-top:5%;">
             <a href="#/"><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
-            <strong>AppCivist</strong>
+            <strong style="vertical-align: super;">AppCivist</strong>
         </div>
 
-        <div class="navbar-brand" ng-if='!userIsAuthenticated()'>
+        <div class="navbar-brand" ng-if='!userIsAuthenticated()' style="padding-top:5%;">
             <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
-            <strong>AppCivist</strong>
+            <strong style="vertical-align: super;">AppCivist</strong>
         </div>
     </div>
     <div class="collapse navbar-collapse" id="navbar-options">
+      <form class="navbar-form navbar-right" role="login" style="padding-top:1%;">
+        <a ng-if='!userIsAuthenticated()' ng-href="/#/v2/login">{{'header.sign_in' | translate}}</a>
+        <a ng-if='userIsAuthenticated()' ng-href="/#/v2/logout">{{'header.sign_out' | translate}}</a>
+      </form>
         <!-- Menu when the user is logged in-->
-        <ul class="nav navbar-nav navbar-left" ng-if='userIsAuthenticated()'>
+        <!--<ul class="nav navbar-nav navbar-left" ng-if='userIsAuthenticated()'>
             <li><a href="#/v1/home"><strong>{{'Home' | translate}}</strong></a></li>
             <li><a href="#/assemblies"><strong>{{'Assemblies' | translate}}</strong></a></li>
         </ul>
@@ -50,11 +54,11 @@
                     <li><a ng-click="signout()">{{'header.sign_out' | translate}}</a></li>
                 </ul>
             </li>
-        </ul>
+        </ul>-->
 
 
         <!-- Menu when the user is NOT logged in-->
-        <ul class="nav navbar-nav navbar-left" ng-if='!userIsAuthenticated()'>
+        <!--<ul class="nav navbar-nav navbar-left" ng-if='!userIsAuthenticated()'>
             <li><a href="#section2" du-smooth-scroll><strong>{{'landing.Learn more' | translate}}</strong></a></li>
             <li><a href="#section3" du-smooth-scroll><strong>{{'landing.section2.button' | translate}}</strong></a></li>
         </ul>
@@ -65,9 +69,7 @@
                 <input type="password" placeholder="{{'Password' | translate}}" class="form-control" ng-model="user.password" autocorrect="off" autocapitalize="off"/>
             </div>
             <button type="submit" class="btn btn-success">{{'header.sign_in' | translate}}</button>
-            <!--<button type="button" class="btn btn-info" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>-->
-            <!--<a ng-href="#/v1/assembly/create?userIsNew=true"><button type="button" class="btn btn-info">{{'header.sign_up_group' | translate}}</button></a>-->
-            <a href="/user/recoveryform">{{'header.Forgot password' | translate}}</a></li>
-        </form>
+          <a href="/user/recoveryform">{{'header.Forgot password' | translate}}</a></li>
+        </form>-->
     </div>
 </nav>

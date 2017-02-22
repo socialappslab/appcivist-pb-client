@@ -52,7 +52,7 @@
         </div>
         <div class="field__container assign_proposal_to_users" ng-if="isCreate">
           <fieldset class="add_proposal__availble_themes">
-            <p clas="intro">{{'Categories' | translate}}</p>
+            <p class="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
             <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="contribution.existingThemes" prefetch="true" disabled="disabled"></tags-field>
           </fieldset>
@@ -65,7 +65,31 @@
             </div>
           </fieldset>
         </div>
-        <div ng-init="addFile=false">
+
+        <div class="field__container">
+          <fieldset>
+            <p class="intro">{{'Attachments' | translate}}</p>
+          </fieldset>
+        </div>
+        <div class="card-list" ng-repeat="file in contribution.attachments">
+          <fieldset>
+            <div class="action-bar small-card file-card">
+              <figure>
+                <a ng-href="{{file.url}}" target="_blank">
+                  <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon"
+                  />
+                  <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
+                </a>
+              </figure>
+              <h4>
+                <a ng-href="{{file.url}}" target="_blank">{{(file.name && file.name != "" ? file.name : file.url)}}</a>
+                <a ng-click="deleteAttachment()"><i class="fa fa-times"></i></a>
+              </h4>                
+            </div>
+          </fieldset>
+        </div>        
+
+        <div>
           <fieldset>
             <a href="" ng-click="addFile = !addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
           </fieldset>
@@ -84,7 +108,7 @@
             </div>
           </fieldset>
           <fieldset>
-            <button class="button__modal_submit" ng-click="submitAttachment()">{{'Add' | translate}}</button>
+            <button class="button__modal_submit" ng-click="submitAttachment()">{{'Add file' | translate}}</button>
           </fieldset> 
         </div>
         <fieldset>

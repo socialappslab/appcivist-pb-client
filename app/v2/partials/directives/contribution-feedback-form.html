@@ -48,6 +48,27 @@
             </select>
           </div>
         </fieldset>
+        <fieldset ng-if="(vm.feedback.type==='TECHNICAL_ASSESSMENT')">
+          <label for="status">{{'Password for technical feedbacks' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <input type="text" name="password" class="col-lg-12" ng-model="vm.feedback.password"></input>
+          </div>
+        </fieldset>
+
+        <div ng-if="vm.isAnonymous" class="row col-lg-12" vc-recaptcha ng-model="vm.recaptchaResponse" on-success="setCaptchaResponse(vm, response)" style="margin-bottom: 10px;"></div>
+
+        <fieldset ng-if="vm.isAnonymous" class="row">
+          <label for="authors">{{'Contact information' | translate}}</label>
+          <nonmember-author-form class="col-lg-12" on-change="vm.updateNonMember(author)" ng-disabled="vm.recaptchaResponseOK"></nonmember-author-form>
+          <!--<div class="field-container col-lg-6" style="margin-bottom: 10px;">-->
+            <!--<input type="text" ng-model="vm.feedback.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">-->
+          <!--</div>-->
+          <!--<div class="field-container col-lg-6" style="margin-bottom: 10px;">-->
+            <!--<input type="email" ng-model="vm.feedback.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!vm.recaptchaResponseOK">-->
+          <!--</div>-->
+        </fieldset>
+
+
         <fieldset ng-if="!vm.userIsMember && !vm.onlyFeedback">
           <label for="group">{{'Select a Working Group that should receive this feedback' | translate}}</label>
           <div class="field-container col-lg-12">

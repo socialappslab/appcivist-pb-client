@@ -1,13 +1,10 @@
-/// AppCivist Simple Demo Client
 /**
+ * @module appCivistApp
+ * 
+ * 
+ * @description
+ * 
  * AppCivist Platform Demo Client developed with AngularJS
- * Folders:
- * 	/app
- * 		/controllers
- * 		/directives
- * 		/services
- * 		/partials
- * 		/views
  */
 
 (function() {
@@ -430,9 +427,9 @@
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
       }).state('v2.campaign', {
-          url: '/campaign',
-          abstract: true,
-          template: '<div ui-view></div>'
+        url: '/campaign',
+        abstract: true,
+        template: '<div ui-view></div>'
       }).state('v2.campaign.cuuid', {
         url: '/:cuuid',
         controller: 'v2.CampaignDashboardCtrl',

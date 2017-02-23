@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: v2/controllers/working-group/dashboard.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: v2/controllers/working-group/dashboard.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>(function () {
+  'use strict';
+
+  angular
+    .module('appCivistApp')
+    .controller('v2.WorkingGroupDashboardCtrl', WorkingGroupDashboardCtrl);
+
+
+  WorkingGroupDashboardCtrl.$inject = [
+    '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope'
+  ];
+
+  function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
+    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
+
+    $scope.activeTab = "Public";
+    $scope.changeActiveTab = function (tab) {
+      if (tab == 1)
+        $scope.activeTab = "Members";
+      else
+        $scope.activeTab = "Public";
+    }
+
+    activate();
+
+    function activate() {
+      // if the param is uuid then it is an anonymous user
+      $scope.isAnonymous = false;
+      // TODO: read the following from configurations in the campaign/component
+      $scope.newProposalsEnabled = false;
+      $scope.newIdeasEnabled = false;
+      var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (pattern.test($stateParams.gid)) {
+        $scope.groupID = $stateParams.gid;
+        $scope.isAnonymous = true;
+        $scope.fromURL = 'v2/group/' + $scope.groupID;
+        loadWorkingGroup();
+      } else {
+        $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
+        $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
+        $scope.user = localStorageService.get('user');
+        $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
+
+        if ($scope.user &amp;&amp; $scope.user.language) {
+          $translate.use($scope.user.language);
+        }
+        loadAssembly();
+      }
+
+      if (!$scope.isAnonymous) {
+        $scope.activeTab = "Members";
+      }
+      $scope.activitiesLimit = 4;
+      $scope.membersLimit = 5;
+      $scope.ideasSectionExpanded = false;
+      $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
+      $scope.doSearch = doSearch.bind($scope);
+      $scope.loadThemes = loadThemes.bind($scope);
+      $scope.toggleAllMembers = toggleAllMembers.bind($scope);
+    }
+
+    function loadAssembly() {
+      var rsp = Assemblies.assembly($scope.assemblyID).get();
+      rsp.$promise.then(function (data) {
+        $scope.assembly = data;
+        verifyMembership();
+      });
+    }
+
+    function verifyMembership() {
+
+      if ($scope.assemblyID >= 0 &amp;&amp; $scope.groupID >= 0) {
+        var rsp = Memberships.membershipInGroup($scope.groupID, $scope.user.userId).get();
+        rsp.$promise.then(userIsMemberSuccess, userIsMemberError);
+      }
+    }
+
+    function userIsMemberSuccess(data) {
+      $scope.membership = data;
+      $scope.userIsMember = $scope.membership.status === "ACCEPTED";
+
+      if ($scope.userIsMember) {
+        loadWorkingGroup();
+      } else {
+        $scope.userIsMember = false;
+        // TODO: anonymous working group page
+      }
+    }
+
+    function userIsMemberError(error) {
+      $scope.userIsMember = false;
+      if (error.data &amp;&amp; error.data.responseStatus &amp;&amp;
+        (error.data.responseStatus === "NODATA" || error.data.responseStatus === "UNAUTHORIZED")) {
+        // TODO: show anonymous working group page
+      } else {
+        $scope.stopSpinner();
+        Notify.show("An error occured while verifying your membership to the assembly: " + JSON.stringify(error), 'error');
+      }
+    }
+
+    function loadWorkingGroup() {
+      var res;
+
+      if ($scope.isAnonymous) {
+        res = WorkingGroups.workingGroupByUUID($scope.groupID).get();
+      } else {
+        res = WorkingGroups.workingGroup($scope.assemblyID, $scope.groupID).get();
+      }
+      res.$promise.then(
+        function (data) {
+          $scope.wg = data;
+          $scope.wg.rsID = data.resourcesResourceSpaceId;
+          $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
+          $scope.wg.frsUUID = data.forumResourceSpaceUUId;
+          loadMembers(data);
+          loadProposals(data);
+          loadIdeas(data);
+
+          if ($scope.isAnonymous) {
+            $scope.spaceID = data.resourcesResourceSpaceUUId;
+          } else {
+            $scope.forumSpaceID = data.forumResourceSpaceId;
+            $scope.spaceID = data.resourcesResourceSpaceId;
+          }
+          loadLatestActivities(data);
+        },
+        function (error) {
+          Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
+        }
+      );
+    }
+
+    function loadMembers(group) {
+      var aid = group.assemblyId;
+      var gid = group.groupId;
+      var res;
+
+      if ($scope.isAnonymous) {
+        $scope.members = group.members
+          .filter(function (m) {
+            return m.status === 'ACCEPTED';
+          });
+      } else {
+        res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
+        res.$promise.then(
+          function (data) {
+            $scope.members = data;
+          },
+          function (error) {
+            Notify.show('Error occured while trying to load working group members', 'error');
+          }
+        );
+      }
+    }
+
+    function loadProposals(group) {
+      Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
+        function (data) {
+          $scope.proposals = data.list;
+        },
+        function (error) {
+          Notify.show('Error occurred while trying to load working group proposals', 'error');
+        }
+      );
+    }
+
+    function loadIdeas(group) {
+      Space.getContributions(group, 'IDEA', $scope.isAnonymous).then(
+        function (data) {
+          $scope.ideas = data.list;
+        },
+        function (error) {
+          Notify.show('Error occured while trying to load working group ideas', 'error');
+        }
+      );
+    }
+
+    // TODO: just show the latest contributions until notifications API is ready
+    function loadLatestActivities(group) {
+      var rsp = Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous);
+      rsp.then(
+        function (data) {
+          $scope.activities = data.list;
+        },
+        function (error) {
+          Notify.show('Error loading working group activities from server', 'error');
+        }
+      );
+    }
+
+    function toggleIdeasSection() {
+      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      $rootScope.$broadcast('eqResize', true);
+    }
+
+    function toggleAllMembers() {
+      if ($scope.membersLimit &lt;= 5) {
+        $scope.membersLimit = $scope.members ? $scope.members.length : 10;  // TODO: instead of 10, use lenght of member list
+      } else {
+        $scope.membersLimit = 5;
+      }
+    }
+
+    /**
+     * Space.doSearch wrapper.
+     * @param {object} filters
+     */
+    function doSearch(filters) {
+      this.ideasSectionExpanded = filters.mode === 'idea';
+      var self = this;
+      var rsp = Space.doSearch(this.wg, this.isAnonymous, filters);
+
+      if (!rsp) {
+        return;
+      }
+      rsp.then(function (data) {
+        if (filters.mode === 'proposal') {
+          self.proposals = data ? data.list : [];
+        } else if (filters.mode === 'idea') {
+          self.ideas = data ? data.list : [];
+        }
+      });
+    }
+
+    function loadThemes(query) {
+      if (!this.wg) {
+        return;
+      }
+      return this.wg.themes;
+    }
+
+    function prependPinnedContributions(data) {
+      if (data &amp;&amp; data.length > 0) {
+        for (var i = 0; i &lt; data.length; i++) {
+          $scope.proposals.unshift(data[i]);
+        }
+      }
+    }
+
+    function nonPinnedContributions(error) {
+      console.log("No pinned contributions");
+    }
+  }
+} ());
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-appCivistApp.html">appCivistApp</a></li></ul><h3>Classes</h3><ul><li><a href="services.Assemblies.html">Assemblies</a></li></ul><h3>Namespaces</h3><ul><li><a href="directives.html">directives</a></li><li><a href="services.html">services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#contributionHistoryByUUID">contributionHistoryByUUID</a></li><li><a href="global.html#createAnomymousContribution">createAnomymousContribution</a></li><li><a href="global.html#doSearch">doSearch</a></li><li><a href="global.html#getContributions">getContributions</a></li><li><a href="global.html#getCurrentComponent">getCurrentComponent</a></li><li><a href="global.html#getInformalScore">getInformalScore</a></li><li><a href="global.html#getServerBaseUrl">getServerBaseUrl</a></li><li><a href="global.html#isAssemblyCoordinator">isAssemblyCoordinator</a></li><li><a href="global.html#isMember">isMember</a></li><li><a href="global.html#loadAuthenticatedUserMemberships">loadAuthenticatedUserMemberships</a></li><li><a href="global.html#moderate">moderate</a></li><li><a href="global.html#publishProposal">publishProposal</a></li><li><a href="global.html#resources">resources</a></li><li><a href="global.html#rolIn">rolIn</a></li><li><a href="global.html#setCurrentAssembly">setCurrentAssembly</a></li><li><a href="global.html#verify">verify</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Feb 23 2017 13:41:28 GMT-0300 (PYST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,13 +1,9 @@
 /**
- * AppCivist Service Factories
- * Each factory returns ngResources connected to AppCivist API
- */
-
-/**
  * Reads AppCivist API Base URL from local storage and returns it
- * If the base url is not yet stored in the local storage, saves it
- * @param localStorageService
- * @returns serverBaseUrl
+ * If the base url is not yet stored in the local storage, saves it.
+ * 
+ * @param {Object} localStorageService
+ * @returns {string} serverBaseUrl
  */
 function getServerBaseUrl(localStorageService) {
   var serverBaseUrl = localStorageService.get('serverBaseUrl');
@@ -19,12 +15,34 @@ function getServerBaseUrl(localStorageService) {
   return serverBaseUrl;
 }
 
+/**
+ * Assemblies factory.
+ * 
+ * @class Assemblies
+ * @memberof services
+ */
 appCivistApp.factory('Assemblies', function($resource, localStorageService, $injector) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
+
   return {
+    /** 
+     * Returns an $resource to interact with /assembly endpoint.
+     * 
+     * @method services.Assemblies#assemblies
+     * 
+     * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
+     */
     assemblies: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
+
+    /** 
+     * Returns an $resource to interact with /assembly/:aid endpoint.
+     * 
+     * @method services.Assemblies#assembly
+     * 
+     * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
+     */
     assembly: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },
@@ -636,7 +654,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     publicFeedbacks: function(contributionUuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/feedback', { coid: contributionUuid } );
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/feedback', { coid: contributionUuid });
     },
 
     getContributionComments: function(assemblyId, contributionId) {

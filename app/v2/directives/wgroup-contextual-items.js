@@ -51,20 +51,21 @@
           scope.cm = { isHover: false };
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
+          scope.vm = {};
+
           if (!scope.isAnonymous) {
             scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
             setupMembershipInfo(scope);
           }
 
-          scope.myObject = {};
-          scope.myObject.refreshMenu = function() {
+          scope.vm.refreshMenu = function() {
             scope.showActionMenu = !scope.showActionMenu;
           };
           // TODO: add logic for menu items
           // TODO: 1. Edit WGroup
           // Todo: 2. Add Resource to wgroup
 
-          scope.myObject.subscribe = function() {
+          scope.vm.subscribe = function() {
             var query = { "origin": scope.wgroup.uuid, "eventName": "NEW_WORKING_GROUP", "endPointType": "email" };
             var subscription = Notifications.subscribe().save(query);
             subscription.$promise.then(
@@ -77,9 +78,9 @@
             );
           }
 
-          scope.myObject.edit = function() {
+          scope.vm.edit = function() {
             // TODO how to recover the campaign, for now we read the first one
-            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", { aid: scope.assemblyId, cid: scope.wgroup.campaigns[0], gid: scope.wgroup.groupId});
+            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", { aid: scope.assemblyId, cid: scope.wgroup.campaigns[0], gid: scope.wgroup.groupId });
           }
         }
       }

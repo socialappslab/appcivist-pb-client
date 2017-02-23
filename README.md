@@ -91,3 +91,16 @@ git config --global url."https://".insteadOf git://
 [karma]: http://karma-runner.github.io
 [travis]: https://travis-ci.org/
 [http-server]: https://github.com/nodeapps/http-server
+
+
+## Contributing
+
+### Generate documentation
+
+[jsdoc](http://usejsdoc.org) is used to generate documentation from source code. To update the documentation issue the following:
+
+```shell
+$ grunt jsdoc
+```
+
+Then just open `docs/index.html` in your browser.

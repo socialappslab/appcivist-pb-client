@@ -62,6 +62,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-filerev": "^2.3.1",
     "grunt-haml2html": "^0.3.1",
+    "grunt-jsdoc": "^2.1.0",
     "grunt-usemin": "^3.1.1",
     "load-grunt-tasks": "^3.5.2"
   }

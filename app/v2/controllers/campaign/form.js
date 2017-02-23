@@ -570,11 +570,6 @@
           var m = milestones[i];
           // TODO: change in API "start" to just "date"
           m.start = m.date;
-          // TODO: remove days from milestones s
-          //if (i!=(milestones.length-1))
-          //	m.days = duration(moment(m.date),moment(milestones[i+1])).days;
-          //else
-          //	m.days = 0;
           components[m.componentIndex].milestones.push(m);
 
           if (m.type === "START") {
@@ -623,13 +618,6 @@
           component.startDate = moment(component.startDate).format("YYYY-MM-DD HH:mm");
           component.endDate = moment(component.endDate).format("YYYY-MM-DD HH:mm");
         }
-
-        // Setup configurations
-        //newCampaign.configs = $scope.newCampaign.configs;
-        //newCampaign.configs[0].value = $scope.newCampaign.config.budget;
-        //newCampaign.configs[1].value = $scope.newCampaign.config.budgetCurrency;
-        //newCampaign.configs[2].value = $scope.newCampaign.config.discussionReplyTo;
-        //newCampaign.configs[3].value = $scope.newCampaign.config.upDownVoting;
       } else {
         newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
       }

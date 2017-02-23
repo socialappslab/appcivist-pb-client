@@ -10,23 +10,10 @@
 
   function wgroupContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state) {
 
-    function hasRole(roles, roleName) {
-      var result = false;
-
-      angular.forEach(roles, function(role) {
-        if (role.name === roleName) {
-          result = true;
-        }
-      });
-      return result;
-    }
-
     function setupMembershipInfo(scope) {
-      var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
-      rsp.$promise.then(function(data) {
-        // TODO ASK THIS ONCE SOMEWHERE ELSE AND STORE IN LOCAL STORAGE
-        scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
-      });
+      scope.userIsAssemblyCoordinator = Memberships.rolIn('assembly', scope.assemblyId, 'COORDINATOR');
+      scope.userIsGroupCoordinator = Memberships.rolIn('group', scope.wgroup.groupId, 'COORDINATOR');
+      console.log(scope.wgroup.groupId, Memberships.groupRols(scope.wgroup.groupId));
     }
 
     function toggleContextualMenu() {
@@ -52,6 +39,7 @@
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
           scope.vm = {};
+          ModalMixin.init(scope.vm);
 
           if (!scope.isAnonymous) {
             scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: v2/directives/modal.js</title>
+    <title>JSDoc: Source: v2/directives/configure-ballot-form.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: v2/directives/modal.js</h1>
+    <h1 class="page-title">Source: v2/directives/configure-ballot-form.js</h1>
 
     
 
@@ -29,66 +29,66 @@
             <pre class="prettyprint source linenums"><code>(function() {
   'use strict';
 
-  /**
-   * @name modal
+  /** 
+   * @name contribution-ballot-form
    * @memberof directives
    * 
    * @description
+   *  Component that renders a ballot configuration form.
    * 
-   * Very simple modal directive.
-   *
-   * @example 
+   * @example
    * 
-   * &lt;modal title="Title" open-if="isModalOpened" close="closeModal('ID')" template-id="ID">&lt;/modal>
-   *
-   * &lt;script id="ID" type="text/ng-template">
-   *  // modal body
-   * &lt;/script>
+   * &lt;configure-ballot-form>&lt;/configure-ballot-form>
    */
-  appCivistApp.directive('modal', modal);
+  appCivistApp
+    .component('configureBallotForm', {
+      selector: 'configureBallotForm',
+      bindings: {
 
-  modal.$inject = ['$timeout', '$compile'];
-
-  function modal($timeout, $compile) {
-    return {
-      restrict: 'E',
-      scope: {
-        title: '@',
-        close: '&amp;',
-        openIf: '=',
-        templateId: '@'
       },
-      templateUrl: '/app/v2/partials/directives/modal.html',
-      link: function(scope, element, attrs) {
-        var vexInstance;
-        vex.defaultOptions.className = 'vex-theme-plain';
+      controller: FormCtrl,
+      controllerAs: 'vm',
+      templateUrl: '/app/v2/partials/directives/configure-ballot-form.html'
+    });
 
-        scope.$watch('openIf', function(open) {
-          if (vexInstance) {
-            vexInstance.close();
-          }
+  FormCtrl.$inject = [
+    'Notify', 'Components'
+  ];
 
-          if (!open) {
-            return;
-          }
-          var html = document.getElementById(scope.templateId).innerHTML;
-          vexInstance = vex.open({
-            className: "vex-theme-plain",
-            unsafeContent: $compile(html)(scope.$parent)[0],
-            afterClose: function() {
-              if (angular.isFunction(scope.close)) {
-                scope.$apply(function() {
-                  scope.close();
-                });
-              }
-            }
-          });
+  function FormCtrl(Notify, Components) {
+    var vm = this;
 
-        });
-      }
+    this.$onInit = function() {
+      vm.model = {
+        configurations: {}
+      };
+      vm.configs = Components.defaultProposalComponents()
+        .filter(function(cmp) { return cmp.key === 'Voting' })
+        .map(function(cmp) { return cmp.configs; })[0];
+
+      vm.votingSystems = vm.configs.filter(function(cfg) { return cfg.key === 'component.voting.system' })
+        .map(function(cfg) { return cfg.options })[0];
     };
+    this.onSelect = onSelect.bind(this);
+    this.submit = submit.bind(this);
   }
-}());</code></pre>
+
+  /**
+   * Handles votintg system on-select form event.
+   */
+  function onSelect() {
+    var vm = this;
+    this.selectedConfigs = this.configs.filter(function(c) { console.log(c); return c.dependsOfValue === vm.model.selected.value });
+  }
+
+  /**
+   * Submits the form
+   */
+  function submit() {
+    // TODO: implement creation logic
+    console.log(this.model);
+  }
+}())</code></pre>
         </article>
     </section>
 

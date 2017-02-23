@@ -903,5 +903,8 @@
   "Supported by EIT Digital, TUB, Nexus, and Missions Publiques": "Supported by EIT Digital, TUB, Nexus, and Missions Publiques",
   "Published": "Published",
   "Excluded": "Excluded",
-  "Start Voting": "Start Voting"
+  "Start Voting": "Start Voting",
+  "Configure Voting": "Configure Voting",
+  "Select Voting System": "Select Voting System",
+  "Select a voting system": "Select a voting system"
 }

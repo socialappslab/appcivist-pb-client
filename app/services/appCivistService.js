@@ -1237,7 +1237,7 @@ appCivistApp.factory('Components', function($resource, $sce, localStorageService
           optionValue: optionsDict['component.voting.system.plurality.type'][0],
           value: optionsDict['component.voting.system.plurality.type'][0].value,
           dependsOf: 1,
-          dependsOfValue: optionsDict['component.voting.system'][2].value
+          dependsOfValue: optionsDict['component.voting.system'][3].value
         },
         {
           position: 7,

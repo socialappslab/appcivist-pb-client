@@ -887,5 +887,9 @@
   "Published": "Published",
   "Excluded":"Excluded",
   "PUBLISHED": "PUBLISHED",
-  "EXCLUDED":"EXCLUDED"
+  "EXCLUDED":"EXCLUDED",
+  "Email address": "Email address",
+  "Update password": "Update password",
+  "Old Password": "Old Password",
+  "Repeat password": "Repeat password"
 }

@@ -885,5 +885,7 @@
   "Downs": "Downs",
   "Needs": "Needs",
   "Published": "Published",
-  "Excluded":"Excluded"
+  "Excluded":"Excluded",
+  "PUBLISHED": "PUBLISHED",
+  "EXCLUDED":"EXCLUDED"
 }

@@ -909,4 +909,6 @@
   "Select a voting system": "Select a voting system",
   "EXCLUDED": "EXCLUDED",
   "Old Password": "Old Password",
+  "How many proposals can a voter select?": "How many proposals can a voter select?",
+  "How many points can a voter distribute?": "How many points can a voter distribute?"
 }

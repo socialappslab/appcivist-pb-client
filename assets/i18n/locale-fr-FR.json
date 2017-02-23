@@ -889,5 +889,7 @@
   "Email address": "Email address",
   "Update password": "Update password",
   "Old Password": "Old Password",
-  "Repeat password": "Repeat password"
+  "Repeat password": "Repeat password",
+  "How many proposals can a voter select?": "How many proposals can a voter select?",
+  "How many points can a voter distribute?": "How many points can a voter distribute?"
 }

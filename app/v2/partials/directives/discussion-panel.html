@@ -140,7 +140,7 @@
     <div class="comments__listing">
       <div ng-if="isAnonymous" class="row recaptcha" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
       <form ng-submit="createNewDiscussion()" class="row">
-        <fieldset>
+        <fieldset style="float:none">
           <div ng-if="isAnonymous">
             <div class="field-container col-lg-6" style="margin-bottom: 10px;">
               <input type="text" ng-model="newDiscussion.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">

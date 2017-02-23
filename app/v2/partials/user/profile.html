@@ -3,7 +3,7 @@
     background: #11493b;
     border-color: #11493b;
   }
-  
+
   button[type=submit]:hover {
     background-color: #009877;
   }
@@ -61,6 +61,12 @@
         </div>
         <br />
         <div ng-if="showChangePassword">
+          <div class="row">
+            <div class="col-lg-8">
+              <label>{{'Old Password' | translate}}</label>
+              <input type="password" placeholder="{{'Old Password' | translate}}" ng-model="profile.oldPassword" ng-blur="blurReset()">
+            </div>
+          </div>
           <div class="row">
             <div class="col-lg-8">
               <label>{{'Password' | translate}}</label>

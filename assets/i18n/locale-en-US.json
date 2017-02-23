@@ -868,7 +868,7 @@
   "No ongoing Campaigns in this space yet": "No ongoing Campaigns in this space yet",
   "No Working Groups in this space yet": "No Working Groups in this space yet",
   "Feedbacks": "Feedbacks",
-  "Textual feedbacks": "Textual Feedbacks",
+  "Textual feedbacks": "Technical assessments",
   "Technical Assessment": "Technical Assessment",
   "Show Results": "Show Results",
   "Hide Results": "Hide Results",
@@ -879,5 +879,6 @@
   "Mapping": "Mapping",
   "Implementing": "Implementing",
   "Password for technical feedbacks" : "Password for technical feedbacks",
-  "Contact information" : "Contact information"
+  "Contact information" : "Contact information",
+  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques" : "Supported by EIT Digital, TUB, Nexus, and Missions Publiques"
 }

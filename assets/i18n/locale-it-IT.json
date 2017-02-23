@@ -865,7 +865,7 @@
   "No ongoing Campaigns in this space yet": "No ongoing Campaigns in this space yet",
   "No Working Groups in this space yet": "No Working Groups in this space yet",
   "Feedbacks": "Feedbacks",
-  "Textual feedbacks": "Textual Feedbacks",
+  "Textual feedbacks": "Technical assessements",
   "Technical Assessment": "Technical Assessment",
   "Show Results": "Show Results",
   "Hide Results": "Hide Results",
@@ -873,5 +873,6 @@
   "Create New Sub Assembly": "Create New Sub Assembly",
   "was assigned to": "was assigned to",
   "Password for technical feedbacks" : "Password for technical feedbacks",
-  "Contact information" : "Contact information"
+  "Contact information" : "Contact information",
+  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques" : "Supported by EIT Digital, TUB, Nexus, and Missions Publiques"
 }

@@ -64,22 +64,25 @@
         </div>
       </div>
       <div class="heading__working_group">
-        <!--<i class="fa fa-group"></i>-->
-        <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
-         {{contribution.workingGroupAuthors[0].name}}
+        <div class="col-md-1 no-padding no-margin">
+          <img src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
+        </div>
+        <div class="col-md-11 no-padding no-margin">
+          <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
+          {{contribution.workingGroupAuthors[0].name}}
+          </a>
+        </div>
+        <!--
+        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
+          <img src="{{group.profile.icon}}" height="40" width="40">
+          {{contribution.workingGroupAuthors[0].name}}
         </a>
-        <!-- <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
-        <img src="{{group.profile.icon}}" height="40" width="40">
-        {{contribution.workingGroupAuthors[0].name}}
-        </a> -->
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="ng-binding ng-scope" href="#/v2/assembly/100/group/202">
-         	<div class="col-md-1 no-padding no-margin">
-	    		<img src="/assets/images/justicia-140.png" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
-        	</div>
-        	<div class="col-md-11 no-padding no-margin">
+        -->
+        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="ng-binding ng-scope" href="#/{{assemblyId}}/group/{{groupId}}">
+         	<div class="col-md-11 no-padding no-margin">
          		{{contribution.workingGroupAuthors[0].name}}
         	</div>
-		</a>
+		    </a>
       </div>
     </header>
 

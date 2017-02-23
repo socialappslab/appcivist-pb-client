@@ -878,12 +878,13 @@
   "Reporting": "Reporting",
   "Mapping": "Mapping",
   "Implementing": "Implementing",
-  "Password for technical feedbacks" : "Password for technical feedbacks",
-  "Contact information" : "Contact information",
-  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques" : "Supported by EIT Digital, TUB, Nexus, and Missions Publiques",
+  "Password for technical feedbacks": "Password for technical feedbacks",
+  "Contact information": "Contact information",
+  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques": "Supported by EIT Digital, TUB, Nexus, and Missions Publiques",
   "Ups": "Ups",
   "Downs": "Downs",
   "Needs": "Needs",
   "Published": "Published",
-  "Excluded":"Excluded"
+  "Excluded": "Excluded",
+  "Start Voting": "Start Voting"
 }

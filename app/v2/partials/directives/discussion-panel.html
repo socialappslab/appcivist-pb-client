@@ -2,51 +2,51 @@
   .comment-meta {
     width: 100% !important;
   }
-
+  
   .comment-meta input[type=submit] {
     float: right;
   }
-
+  
   .inline-controls .temperature_check {
     display: inline-block;
   }
-
+  
   .inline-controls .temperature_check .votes {
     margin-right: 0;
   }
-
+  
   .comments__reply h2 {
     margin-bottom: 10px;
   }
-
+  
   input[disabled],
   textarea[disabled] {
     background-color: #eee;
     opacity: 1;
   }
-
+  
   .comment-text {
     padding-top: 15px;
     padding-left: 20px;
   }
-
+  
   .threaded-comments {
     padding-top: 0.1em;
     padding-bottom: 0px;
   }
-
+  
   li.panel.card.conversation-container {
     position: relative;
   }
-
+  
   li.panel.comment-container {
     position: relative;
   }
-
+  
   .github-fork-ribbon:before {
     background-color: #f80;
   }
-
+  
   .recaptcha>div {
     margin-left: 15px;
   }
@@ -123,7 +123,7 @@
                 <div class="comment-form">
                   <div class="comment-meta">
                     <member-card action-bar="true" comments-section="true"></member-card>
-                    <input class="button" type="submit" value="Submit" style="margin-top: 50px;"/>
+                    <input class="button" type="submit" value="Submit" style="margin-top: 50px;" />
                   </div>
                 </div>
               </fieldset>
@@ -140,7 +140,7 @@
     <div class="comments__listing">
       <div ng-if="isAnonymous" class="row recaptcha" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
       <form ng-submit="createNewDiscussion()" class="row">
-        <fieldset>
+        <fieldset class="col-lg-12">
           <div ng-if="isAnonymous">
             <div class="field-container col-lg-6" style="margin-bottom: 10px;">
               <input type="text" ng-model="newDiscussion.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">

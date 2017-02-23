@@ -872,12 +872,13 @@
   "Show as plain text": "Show as plain text",
   "Create New Sub Assembly": "Create New Sub Assembly",
   "was assigned to": "was assigned to",
-  "Password for technical feedbacks" : "Password for technical feedbacks",
-  "Contact information" : "Contact information",
-  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques" : "Supported by EIT Digital, TUB, Nexus, and Missions Publiques",
+  "Password for technical feedbacks": "Password for technical feedbacks",
+  "Contact information": "Contact information",
+  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques": "Supported by EIT Digital, TUB, Nexus, and Missions Publiques",
   "Ups": "Ups",
   "Downs": "Downs",
   "Needs": "Needs",
   "Published": "Published",
-  "Excluded":"Excluded"
+  "Excluded": "Excluded",
+  "Start Voting": "Start Voting"
 }

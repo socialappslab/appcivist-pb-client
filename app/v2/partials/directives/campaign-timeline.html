@@ -28,7 +28,7 @@
       <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass">
         <div>
           <div class="marker" ng-mouseenter="toggleComponent(component, components)"></div>
-          <div class="label">{{ component.title | translate }}</div>
+          <div class="label">{{ component.title }}</div>
         </div>
 
         <header class="page__header">

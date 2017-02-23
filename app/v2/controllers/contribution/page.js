@@ -128,7 +128,7 @@
           $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision);
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision)+"&userName="+$scope.userName;
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -183,7 +183,7 @@
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
         etherpadRes.$promise.then(function(pad) {
-          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId);
+          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId)+"&userName="+$scope.userName;
         });
       }
     }

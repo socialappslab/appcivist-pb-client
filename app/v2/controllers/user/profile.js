@@ -104,7 +104,9 @@
         var url = localStorageService.get('serverBaseUrl') + '/user/password/change';
         var data = {
           password: $scope.profile.password,
-          repeatPassword: $scope.profile.repeatPassword
+          repeatPassword: $scope.profile.repeatPassword,
+          // TODO: we should change the API to not request this
+          oldPassword: $scope.profile.oldPassword
         };
         var ChangePasswordService = loginService.changePassword();
         var rsp = new ChangePasswordService(data);

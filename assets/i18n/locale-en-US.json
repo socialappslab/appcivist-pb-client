@@ -889,5 +889,11 @@
   "Start Voting": "Start Voting",
   "Configure Voting": "Configure Voting",
   "Select Voting System": "Select Voting System",
-  "Select a voting system": "Select a voting system"
+  "Select a voting system": "Select a voting system",
+  "PUBLISHED": "PUBLISHED",
+  "EXCLUDED": "EXCLUDED",
+  "Email address": "Email address",
+  "Update password": "Update password",
+  "Old Password": "Old Password",
+  "Repeat password": "Repeat password"
 }

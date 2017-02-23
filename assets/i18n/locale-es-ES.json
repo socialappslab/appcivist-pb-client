@@ -906,5 +906,7 @@
   "Start Voting": "Start Voting",
   "Configure Voting": "Configure Voting",
   "Select Voting System": "Select Voting System",
-  "Select a voting system": "Select a voting system"
+  "Select a voting system": "Select a voting system",
+  "EXCLUDED": "EXCLUDED",
+  "Old Password": "Old Password",
 }

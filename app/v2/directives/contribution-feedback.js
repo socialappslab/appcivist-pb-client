@@ -26,12 +26,13 @@
         var user = localStorageService.get('user');
         // Read user contribution feedback
         scope.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false };
-
+        scope.isAnonymous = true;
         if (user) {
           scope.assembly = localStorageService.get('currentAssembly');
           scope.campaign = localStorageService.get('currentCampaign');
           scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
           scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
+          scope.isAnonymous = false;
         }
         scope.showModerationForm = showModerationForm.bind(scope);
         scope.submitModerationForm = submitModerationForm.bind(scope);

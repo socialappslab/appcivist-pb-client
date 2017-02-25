@@ -133,11 +133,6 @@
       .setNotify(true, true);
 
 
-    /*$stateProvider.state('app', {
-      url: '/',
-      controller: 'v2.HomeCtrl',
-      templateUrl: 'app/v2/partials/home.html'
-    });*/
     // V2 routes
     $stateProvider.state('v2', {
         url: '/v2',

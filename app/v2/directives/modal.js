@@ -2,10 +2,15 @@
   'use strict';
 
   /**
+   * @name modal
+   * @memberof directives
+   * 
+   * @description
+   * 
    * Very simple modal directive.
    *
-   * Usage:
-   *
+   * @example 
+   * 
    * <modal title="Title" open-if="isModalOpened" close="closeModal('ID')" template-id="ID"></modal>
    *
    * <script id="ID" type="text/ng-template">
@@ -40,7 +45,7 @@
           }
           var html = document.getElementById(scope.templateId).innerHTML;
           vexInstance = vex.open({
-            className:"vex-theme-plain",
+            className: "vex-theme-plain",
             unsafeContent: $compile(html)(scope.$parent)[0],
             afterClose: function() {
               if (angular.isFunction(scope.close)) {

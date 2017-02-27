@@ -196,12 +196,12 @@ module.exports = function(grunt) {
             '**/*',
           ]
         }, {
-          cwd : './bower_components/tinymce/',
-          src : [ 'plugins/**', 'themes/**',
-            'skins/**' ],
-          dest : './dist/scripts',
-          filter : 'isFile',
-          expand : true
+          cwd: './bower_components/tinymce/',
+          src: ['plugins/**', 'themes/**',
+            'skins/**'],
+          dest: './dist/scripts',
+          filter: 'isFile',
+          expand: true
         }, {
           expand: true,
           dot: true,
@@ -210,8 +210,19 @@ module.exports = function(grunt) {
           src: [
             '**/*',
           ]
-        },
-        ]
+        }]
+      }
+    },
+
+    jsdoc: {
+      dist: {
+        src: ['app/v2/**/*.js', 'app/app.js', 'app/services/**/*.js', 'README.md'],
+        options: {
+          destination: 'docs',
+          plugins: [
+            'plugins/markdown'
+          ]
+        }
       }
     }
   });

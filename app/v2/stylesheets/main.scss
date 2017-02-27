@@ -2,6 +2,7 @@
 @import "../../../stylesheets/styles/_header.scss";
 @import "../../../stylesheets/styles/_fonts.scss";
 @import "../../../stylesheets/styles/_landing.scss";
+
 /* V2 main stylesheet */
 
 .card {
@@ -51,14 +52,17 @@ article.start-campaign {
   }
 }
 
-/******HEADER******/
-/******NEW DESIGN NAVBAR COLORS******/
-$bgDefault      : $header-background;
-$bgHighlight    : $header-menu-active;
-$colDefault     : $header-default-color;
-$colHighlight   : $header-menu-highlight;
-$dropDown       : false;
 
+/******HEADER******/
+
+
+/******NEW DESIGN NAVBAR COLORS******/
+
+$bgDefault: $header-background;
+$bgHighlight: $header-menu-active;
+$colDefault: $header-default-color;
+$colHighlight: $header-menu-highlight;
+$dropDown: false;
 .navbar {
   min-height: 70px !important;
   background-color: $bgDefault;
@@ -66,44 +70,69 @@ $dropDown       : false;
   .navbar-brand {
     background-color: $bgDefault;
     color: $colDefault;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: $colHighlight;
-      background-color: $bgHighlight}}
-  .navbar-text {
-    color: $colDefault; }
-  .navbar-nav {
-    > li {
-      > a {
-        color: $colDefault;
-        &:hover,  &:focus {
-          color: $colHighlight;
-          background-color: $bgHighlight }}
-      @if $dropDown {
-        > .dropdown-menu {
-          background-color: $bgDefault;
-          > li > a {
-            color: $colDefault;
-            &:hover,  &:focus {
-              color: $colHighlight;
-              background-color: $bgHighlight; }}
-          .divider {
-            background-color: $bgHighlight;}}}
+      background-color: $bgHighlight
     }
-    > .active {
-      > a, > a:hover, > a:focus {
+  }
+  .navbar-text {
+    color: $colDefault;
+  }
+  .navbar-nav {
+    >li {
+      >a {
+        color: $colDefault;
+        &:hover,
+        &:focus {
+          color: $colHighlight;
+          background-color: $bgHighlight
+        }
+      }
+      @if $dropDown {
+        >.dropdown-menu {
+          background-color: $bgDefault;
+          >li>a {
+            color: $colDefault;
+            &:hover,
+            &:focus {
+              color: $colHighlight;
+              background-color: $bgHighlight;
+            }
+          }
+          .divider {
+            background-color: $bgHighlight;
+          }
+        }
+      }
+    }
+    >.active {
+      >a,
+      >a:hover,
+      >a:focus {
         color: $colHighlight;
-        background-color: $bgHighlight; }}
-    > .open {
-      > a, > a:hover, > a:focus {
+        background-color: $bgHighlight;
+      }
+    }
+    >.open {
+      >a,
+      >a:hover,
+      >a:focus {
         color: $colHighlight;
-        background-color: $bgHighlight; }}
+        background-color: $bgHighlight;
+      }
+    }
   }
   .navbar-toggle {
     border-color: $bgHighlight;
-    &:hover, &:focus {
-      background-color: $bgHighlight; }
+    &:hover,
+    &:focus {
+      background-color: $bgHighlight;
+    }
     .icon-bar {
-      background-color: $colDefault; }}
+      background-color: $colDefault;
+    }
+  }
   .navbar-collapse {
     background-color: $bgDefault;
     border-color: $bgHighlight;
@@ -126,79 +155,93 @@ $dropDown       : false;
   .navbar-link {
     color: $colDefault;
     &:hover {
-      color: $colHighlight; }}}
+      color: $colHighlight;
+    }
+  }
+}
 
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu {
-    > li > a {
+    >li>a {
       color: $colDefault;
-      &:hover, &:focus {
-        color: $colHighlight; }}
-    > .active {
-      > a, > a:hover, > a:focus {
+      &:hover,
+      &:focus {
         color: $colHighlight;
-        background-color: $bgHighlight; }}}
+      }
+    }
+    >.active {
+      >a,
+      >a:hover,
+      >a:focus {
+        color: $colHighlight;
+        background-color: $bgHighlight;
+      }
+    }
+  }
 }
 
+
 /*******NAVBAR MENU BORDERS********/
-#navbar-options{
-  ul{
+
+#navbar-options {
+  ul {
     //li{
     //  border-right: 0.1rem solid $header-menu-active;
     //}
     //li:first-child{
     //  border-left: 0.1rem solid $header-menu-active;
     //}
-    li:hover{
+    li:hover {
       //background-color: rgba(128, 128, 128, 0.05);
       background-color: $header-menu-active;
     }
-    li:active{
+    li:active {
       //background-color: rgba(128, 128, 128, 0.05);
       background-color: $header-menu-active;
       box-shadow: inset 0 0 0.2rem 0.2rem $header-background;
     }
     li {
       a:focus {
-        color:white;
+        color: white;
         background: $header-menu-active;
       }
     }
   }
 }
 
-.navBarImage{
+.navBarImage {
   height: 5rem;
 }
 
+
 /*******NAVBAR USER MENU********/
-#user-menu{
-  .icon{
+
+#user-menu {
+  .icon {
     font-size: 2.5rem;
     vertical-align: middle;
   }
-  ul.menu-elements{
+  ul.menu-elements {
     list-style: none;
     padding: 0;
     margin: 0;
-    li{
+    li {
       display: inline-block;
       margin: 0 0.5rem;
       cursor: pointer;
     }
-
-    & .dropdown .dropdown-menu{
-      li:hover{
+    & .dropdown .dropdown-menu {
+      li:hover {
         color: white;
         background: transparent;
       }
-      li{
-        a:hover{
+      li {
+        a:hover {
           background: transparent;
         }
       }
-      li:last-child{
-        a{
+      li:last-child {
+        a {
           color: $dropdown-hover;
         }
       }
@@ -206,16 +249,17 @@ $dropDown       : false;
   }
 }
 
+
 /****NEW DESIGN FOR LANDING PAGE****/
-.section{
+
+.section {
   width: 100%;
   background-color: $white;
   height: 100%;
-
   .align-right {
     text-align: right;
   }
-  .bottom-info{
+  .bottom-info {
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -226,7 +270,7 @@ $dropDown       : false;
     color: $main-first-section-font-color;
     padding: 0.8rem 1.6rem;
   }
-  .btn-yellow{
+  .btn-yellow {
     background-color: $main-first-section-button-sign-up-background;
   }
   hr {
@@ -234,7 +278,7 @@ $dropDown       : false;
     height: 0px;
     padding: 0;
   }
-  .vertical1-container{
+  .vertical1-container {
     height: 80px;
   }
   .vertical1 {
@@ -248,7 +292,7 @@ $dropDown       : false;
     display: inline;
     border-width: 1px;
   }
-  .vertical2-container{
+  .vertical2-container {
     height: 150px;
   }
   .vertical2 {
@@ -302,7 +346,8 @@ $dropDown       : false;
     border-style: solid;
   }
   .greenline3 {
-    border-color: $corporative-dark-green;;
+    border-color: $corporative-dark-green;
+    ;
     border-style: solid;
   }
   .greenline4 {
@@ -327,9 +372,8 @@ $dropDown       : false;
   .i4 {
     color: $corporative-darker-green;
   }
-
-  &.first-section{
-    background-image: linear-gradient(to bottom, rgba(19,74,62, 0.5) 0%, rgba(19,74,62, 0.5) 100%), url("../../assets/images/bg-hands-collaborating.jpg");
+  &.first-section {
+    background-image: linear-gradient(to bottom, rgba(19, 74, 62, 0.5) 0%, rgba(19, 74, 62, 0.5) 100%), url("../../assets/images/bg-hands-collaborating.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -342,28 +386,28 @@ $dropDown       : false;
       padding-top: 10%;
       padding-bottom: 10%;
     }
-    .main-title{
+    .main-title {
       color: $main-first-section-font-color;
       margin-bottom: 1%;
     }
-    & form{
+    & form {
       text-align: center;
       margin-bottom: 20%;
-      & *{
+      & * {
         height: 3rem;
       }
-      & :last-child{
+      & :last-child {
         margin-right: 0;
         font-size: 22px;
       }
     }
   }
-  &.second-section{
+  &.second-section {
     vertical-align: middle;
     margin-top: -20px;
     background-color: $white;
     padding: 5% 5% 5% 5%;
-    .main-title{
+    .main-title {
       color: $medium-blue;
       /* AppCivist lets users: */
       font-family: Lato-Regular;
@@ -375,20 +419,21 @@ $dropDown       : false;
       background-color: $white;
     }
   }
-  &.third-section{
+  &.third-section {
     vertical-align: middle;
     margin-top: -20px;
     /* Rectangle 345: */
-    background: rgba(207,247,238,0.50);;
+    background: rgba(207, 247, 238, 0.50);
+    ;
     padding: 5% 5% 5% 5%;
-    .main-title{
+    .main-title {
       color: $medium-blue;
       text-align: center;
       font-family: Lato-Regular;
       font-size: 32px;
       line-height: 39px;
     }
-    .sub-title{
+    .sub-title {
       text-align: center;
       font-family: Lato-Regular;
       font-size: 24px;
@@ -431,9 +476,9 @@ $dropDown       : false;
         margin-bottom: -2px;
       }
     }
-    > .active > a,
-    > .active > a:hover,
-    > .active > a:focus {
+    >.active>a,
+    >.active>a:hover,
+    >.active>a:focus {
       border: 3px solid $contribution-border;
       margin-bottom: -2px;
       border-bottom-color: transparent;
@@ -448,6 +493,7 @@ $dropDown       : false;
 .modal.modal-wide .modal-dialog {
   width: 90%;
 }
+
 .modal-wide .modal-body {
   overflow-y: auto;
 }
@@ -460,16 +506,40 @@ $dropDown       : false;
   margin: 1em 0 0 -10em;
 }
 
+
 /*.li-action-menu {
   padding: 12px;
 }*/
 
 .navbar .logotype {
-    height: 45px;
+  height: 45px;
 }
 
 .navbar .logotext {
   font: inherit;
   font-size: 35px;
   vertical-align: super;
+}
+
+
+/* FORM */
+
+.field-container {
+  margin-bottom: 10px;
+}
+
+button.button__modal_submit {
+  width: 100%;
+  height: 39.5px;
+  margin-top: 20px !important;
+}
+
+form>fieldset {
+  margin-bottom: 20px;
+}
+
+.field-container>select,
+.field-container>input,
+.field-container {
+  height: 39.5px;
 }

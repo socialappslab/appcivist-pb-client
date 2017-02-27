@@ -10,23 +10,10 @@
 
   function wgroupContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state) {
 
-    function hasRole(roles, roleName) {
-      var result = false;
-
-      angular.forEach(roles, function(role) {
-        if (role.name === roleName) {
-          result = true;
-        }
-      });
-      return result;
-    }
-
     function setupMembershipInfo(scope) {
-      var rsp = Memberships.membershipInAssembly(scope.assemblyId, scope.user.userId).get();
-      rsp.$promise.then(function(data) {
-        // TODO ASK THIS ONCE SOMEWHERE ELSE AND STORE IN LOCAL STORAGE
-        scope.userIsAssemblyCoordinator = hasRole(data.roles, 'COORDINATOR');
-      });
+      scope.userIsAssemblyCoordinator = Memberships.rolIn('assembly', scope.assemblyId, 'COORDINATOR');
+      scope.userIsGroupCoordinator = Memberships.rolIn('group', scope.wgroup.groupId, 'COORDINATOR');
+      console.log(scope.wgroup.groupId, Memberships.groupRols(scope.wgroup.groupId));
     }
 
     function toggleContextualMenu() {
@@ -51,20 +38,22 @@
           scope.cm = { isHover: false };
           scope.user = localStorageService.get('user');
           scope.isAnonymous = !scope.user;
+          scope.vm = {};
+          ModalMixin.init(scope.vm);
+
           if (!scope.isAnonymous) {
             scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
             setupMembershipInfo(scope);
           }
 
-          scope.myObject = {};
-          scope.myObject.refreshMenu = function() {
+          scope.vm.refreshMenu = function() {
             scope.showActionMenu = !scope.showActionMenu;
           };
           // TODO: add logic for menu items
           // TODO: 1. Edit WGroup
           // Todo: 2. Add Resource to wgroup
 
-          scope.myObject.subscribe = function() {
+          scope.vm.subscribe = function() {
             var query = { "origin": scope.wgroup.uuid, "eventName": "NEW_WORKING_GROUP", "endPointType": "email" };
             var subscription = Notifications.subscribe().save(query);
             subscription.$promise.then(
@@ -77,9 +66,9 @@
             );
           }
 
-          scope.myObject.edit = function() {
+          scope.vm.edit = function() {
             // TODO how to recover the campaign, for now we read the first one
-            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", { aid: scope.assemblyId, cid: scope.wgroup.campaigns[0], gid: scope.wgroup.groupId});
+            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", { aid: scope.assemblyId, cid: scope.wgroup.campaigns[0], gid: scope.wgroup.groupId });
           }
         }
       }

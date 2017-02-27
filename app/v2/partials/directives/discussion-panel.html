@@ -2,51 +2,51 @@
   .comment-meta {
     width: 100% !important;
   }
-
+  
   .comment-meta input[type=submit] {
     float: right;
   }
-
+  
   .inline-controls .temperature_check {
     display: inline-block;
   }
-
+  
   .inline-controls .temperature_check .votes {
     margin-right: 0;
   }
-
+  
   .comments__reply h2 {
     margin-bottom: 10px;
   }
-
+  
   input[disabled],
   textarea[disabled] {
     background-color: #eee;
     opacity: 1;
   }
-
+  
   .comment-text {
     padding-top: 15px;
     padding-left: 20px;
   }
-
+  
   .threaded-comments {
     padding-top: 0.1em;
     padding-bottom: 0px;
   }
-
+  
   li.panel.card.conversation-container {
     position: relative;
   }
-
+  
   li.panel.comment-container {
     position: relative;
   }
-
+  
   .github-fork-ribbon:before {
     background-color: #f80;
   }
-
+  
   .recaptcha>div {
     margin-left: 15px;
   }
@@ -65,8 +65,10 @@
           <p class="heading--header">{{formatDate(discussion.creation)}}</p>
           <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
           <member-card ng-if="discussion.authors[0]" user="discussion.authors[0]" comments-section="true"></member-card>
-          <member-card ng-if="!discussion.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor" comments-section="true"></member-card>
-          <member-card ng-if="!discussion.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}" comments-section="true"></member-card>
+          <member-card ng-if="!discussion.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor"
+            comments-section="true"></member-card>
+          <member-card ng-if="!discussion.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}"
+            comments-section="true"></member-card>
 
           <p></p>
         </div>
@@ -86,7 +88,8 @@
               </p>
               <member-card ng-if="comment.authors[0]" user="comment.authors[0]" comments-section="true"></member-card>
               <member-card ng-if="!comment.authors[0] && comment.nonMemberAuthor" user="comment.nonMemberAuthor" comments-section="true"></member-card>
-              <member-card ng-if="!comment.authors[0] && !comment.nonMemberAuthor" user="{'name':'None','email':'None'}" comments-section="true"></member-card>
+              <member-card ng-if="!comment.authors[0] && !comment.nonMemberAuthor" user="{'name':'None','email':'None'}"
+                comments-section="true"></member-card>
               <p></p>
             </div>
             <div class="comment-text">
@@ -107,23 +110,25 @@
               <fieldset>
                 <div ng-if="isAnonymous">
                   <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-                    <input type="text" ng-model="newComment.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                    <input type="text" ng-model="newComment.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}"
+                      ng-disabled="!discussion.recaptchaResponseOK">
                   </div>
                   <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-                    <input type="email" ng-model="newComment.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!discussion.recaptchaResponseOK">
+                    <input type="email" ng-model="newComment.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}"
+                      ng-disabled="!discussion.recaptchaResponseOK">
                   </div>
                 </div>
                 <div>
                   <div class="field-container col-lg-12">
-                    <textarea id="comment-field-{{discussion.uuid}}" style="height: auto;" ng-model="newComment.text" rows="5" placeholder="{{'Write you comment here' | translate}}"
-                      ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
+                    <textarea id="comment-field-{{discussion.uuid}}" style="height: auto;" ng-model="newComment.text" rows="5"
+                      placeholder="{{'Write you comment here' | translate}}" ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
                   </div>
                 </div>
                 <br />
                 <div class="comment-form">
                   <div class="comment-meta">
                     <member-card action-bar="true" comments-section="true"></member-card>
-                    <input class="button" type="submit" value="Submit" style="margin-top: 50px;"/>
+                    <input class="button" type="submit" value="Submit" style="margin-top: 50px;" />
                   </div>
                 </div>
               </fieldset>
@@ -140,13 +145,15 @@
     <div class="comments__listing">
       <div ng-if="isAnonymous" class="row recaptcha" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
       <form ng-submit="createNewDiscussion()" class="row">
-        <fieldset style="float:none">
+        <fieldset class="col-lg-12">
           <div ng-if="isAnonymous">
             <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-              <input type="text" ng-model="newDiscussion.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
+              <input type="text" ng-model="newDiscussion.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}"
+                ng-disabled="!vm.recaptchaResponseOK">
             </div>
             <div class="field-container col-lg-6" style="margin-bottom: 10px;">
-              <input type="email" ng-model="newDiscussion.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}" ng-disabled="!vm.recaptchaResponseOK">
+              <input type="email" ng-model="newDiscussion.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}"
+                ng-disabled="!vm.recaptchaResponseOK">
             </div>
           </div>
           <div>

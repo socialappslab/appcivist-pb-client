@@ -222,9 +222,9 @@
         <member-card ng-repeat="author in proposal.authors" user="author"></member-card>
         <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
-      <p class="description" ng-bind-html-unsafe="html">
+      <!--<p class="description" ng-bind-html-unsafe="html">
         {{proposal.plainText|limitTo:500}}{{(proposal.plainText.length) > 500 ? '...' : '' }}
-      </p>
+      </p>-->
 
       <div class="voting_mechanism">
         <div class="temperature_check">
@@ -270,13 +270,22 @@
           <h2 class="heading--header">
             <i class="fa fa-file-text"></i>&nbsp;&nbsp; {{'Proposal Text' | translate }}
           </h2>
-        </div>
-        <div class="etherpad__wrapper">
+        </div>    
+
+        <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad']" class="etherpad__wrapper">
           <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
           </iframe>
           <iframe ng-if="userIsAuthor" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
           </iframe>
         </div>
+        
+        <div ng-if="campaignConfigs['appcivist.campaign.disable-etherpad']">
+          <br><br><br><br>
+          <p class="description" ng-bind-html-unsafe="html">
+            {{proposal.plainText|limitTo:500}}{{(proposal.plainText.length) > 500 ? '...' : '' }}
+          </p>
+        </div>
+
       </section>
     </section>
 

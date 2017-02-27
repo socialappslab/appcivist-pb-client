@@ -377,6 +377,9 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     },
     themesByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID });
+    },
+    getConfiguration: function(spaceId ){
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', {sid: spaceId});
     }
   };
 

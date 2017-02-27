@@ -306,26 +306,45 @@
     }
 
     function loadCampaign () {
-      var res;
-      if ($scope.isAnonymous) {
-        res = Campaigns.campaignByUUID($scope.campaignID).get();
-      } else {
-        res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
-      }
-      res.$promise.then(function(data){
-        $scope.campaign = data;
-        $scope.campaign.rsID = data.resourceSpaceId;
+      $scope.campaign = localStorageService.get("currentCampaign");
 
-        var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function(data){
-          $scope.campaignConfigs = data;
+      if ($scope.campaign.campaignID === $scope.campaignID) {
+        $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
+        loadCampaignConfig ();
+      }else{
+        var res;
+        if ($scope.isAnonymous) {        
+          res = Campaigns.campaignByUUID($scope.campaignID).get();
+        } else {
+          res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
+        }
+
+        res.$promise.then(function(data){
+          $scope.campaign = data;
+          $scope.campaign.rsID = data.resourceSpaceId;
+
+          loadCampaignConfig ();
+          // var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+          // rsp.$promise.then(function(data){
+          //   $scope.campaignConfigs = data;
+          // }, function(error) {
+          //     Notify.show('Error while trying to fetch campaign config', 'error');
+          // });
+
         }, function(error) {
-            Notify.show('Error while trying to fetch campaign config', 'error');
-        });
+            Notify.show('Error while trying to fetch campaign', 'error');
+        });         
+      }   
+    }
 
+    function loadCampaignConfig () {
+      var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+      
+      rsp.$promise.then(function(data){
+        $scope.campaignConfigs = data;
       }, function(error) {
-          Notify.show('Error while trying to fetch campaign', 'error');
-      });    
+          Notify.show('Error while trying to fetch campaign config', 'error');
+      });      
     }
   }
 }());

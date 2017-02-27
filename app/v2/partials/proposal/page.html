@@ -279,7 +279,7 @@
           </iframe>
         </div>
         
-        <div ng-if="campaignConfigs['appcivist.campaign.disable-etherpad']">
+        <div ng-if="campaignConfigs['appcivist.campaign.disable-etherpad']==='TRUE'">
           <br><br><br><br>
           <p class="description" ng-bind-html-unsafe="html">
             {{proposal.plainText|limitTo:500}}{{(proposal.plainText.length) > 500 ? '...' : '' }}

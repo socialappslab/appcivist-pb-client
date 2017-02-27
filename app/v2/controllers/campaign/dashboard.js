@@ -137,6 +137,13 @@
             }
           }, defaultErrorCallback);
         });
+
+        var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+        rsp.$promise.then(function(data){
+          $scope.campaignConfigs = data;
+        }, function(error) {
+            Notify.show('Error while trying to fetch campaign config', 'error');
+        });
       });
     }
 

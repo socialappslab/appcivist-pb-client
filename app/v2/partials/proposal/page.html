@@ -298,7 +298,7 @@
                 <h2 class="heading--header">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
                   <a href="" ng-if="userIsAuthor" ng-click="$parent.openModal('addAttachmentForm')"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
-                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
+                  <a ng-if="!ideasSectionExpanded && campaignConfigs['appcivist.campaign.contribution-types'].includes('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
                 </div>
               </div>
             </div>
@@ -339,7 +339,7 @@
         </section>
 
 
-        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
+        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="campaignConfigs['appcivist.campaign.contribution-types'].includes('IDEA')">
           <header class="ideas__header">
             <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;

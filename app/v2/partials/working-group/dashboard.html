@@ -1570,14 +1570,14 @@
             <h2 class="heading--header">{{'Proposals' | translate}}</h2>
             <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal&from={{fromURL}}" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
-            <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
+            <a ng-if="!ideasSectionExpanded && campaignConfigs['appcivist.campaign.contribution-types'].includes('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
           </header>
           <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="true" on-finish-render="eqResize"></contribution-card>
             <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
           </div>
         </section>
-        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
+        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="campaignConfigs['appcivist.campaign.contribution-types'].includes('IDEA')">
           <header class="ideas__header">
             <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;

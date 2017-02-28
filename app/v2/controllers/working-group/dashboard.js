@@ -58,8 +58,12 @@
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
-      
+
       loadCampaign();
+
+      $scope.contributionTypeIsSupported = function (type) {
+        return Campaigns.isContributionTypeSupported(type, $scope);
+      }
     }
 
     function loadAssembly() {
@@ -248,7 +252,7 @@
       $scope.campaign   = localStorageService.get("currentCampaign");
       $scope.campaignID = $scope.campaign.campaignId;
       $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
-        
+
       var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
       rsp.$promise.then(function(data){
         $scope.campaignConfigs = data;

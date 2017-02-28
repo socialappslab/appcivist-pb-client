@@ -74,6 +74,9 @@
       };
       $scope.isModalOpened = isModalOpened.bind($scope);
       $scope.toggleModal = toggleModal.bind($scope);
+      $scope.contributionTypeIsSupported = function (type) {
+        return Campaigns.isContributionTypeSupported(type, $scope);
+      }
     }
 
     function loadAssembly() {

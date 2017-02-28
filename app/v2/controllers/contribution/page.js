@@ -73,6 +73,9 @@
       $scope.trustedHtml = function(html) {
         return $sce.trustAsHtml(html);
       };
+      $scope.contributionTypeIsSupported = function (type) {
+        return Campaigns.isContributionTypeSupported(type, $scope);
+      }
     }
 
     // Feedback update
@@ -129,7 +132,7 @@
           var campaignIds = data.campaignIds;
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
-          
+
 
           if (data.extendedTextPad) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision)+"&userName="+$scope.userName;
@@ -316,7 +319,7 @@
         loadCampaignConfig ();
       } else {
         var res;
-        if ($scope.isAnonymous) {        
+        if ($scope.isAnonymous) {
           res = Campaigns.campaignByUUID($scope.campaignID).get();
         } else {
           res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
@@ -329,8 +332,8 @@
           loadCampaignConfig ();
         }, function(error) {
             Notify.show('Error while trying to fetch campaign', 'error');
-        });         
-      }   
+        });
+      }
     }
 
     function loadCampaignConfig () {
@@ -339,7 +342,7 @@
         $scope.campaignConfigs = data;
       }, function(error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
-      });      
+      });
     }
   }
 }());

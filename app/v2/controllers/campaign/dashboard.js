@@ -157,6 +157,7 @@
       $scope.isIdeasSectionVisible = (key === 'PROPOSAL MAKING' || key === 'IDEAS');
       $scope.newProposalsEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
       $scope.newIdeasEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
+      $scope.currentComponent = component.type.toUpperCase();
     }
 
     function loadCampaignResources() {

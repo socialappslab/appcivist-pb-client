@@ -278,12 +278,10 @@
           <iframe ng-if="userIsAuthor" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
           </iframe>
         </div>
-        
+
         <div ng-if="campaignConfigs['appcivist.campaign.disable-etherpad']==='TRUE'">
           <br><br><br><br>
-          <p class="description" ng-bind-html-unsafe="html">
-            {{proposal.plainText|limitTo:500}}{{(proposal.plainText.length) > 500 ? '...' : '' }}
-          </p>
+          <p class="description" ng-bind-html="trustedHtml(proposal.text)"></p>
         </div>
 
       </section>

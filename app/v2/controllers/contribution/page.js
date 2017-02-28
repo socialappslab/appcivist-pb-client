@@ -69,7 +69,10 @@
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.cm = {
         isHover: false
-      };    
+      };
+      $scope.trustedHtml = function(html) {
+        return $sce.trustAsHtml(html);
+      };
     }
 
     // Feedback update

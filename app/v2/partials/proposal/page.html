@@ -222,9 +222,9 @@
         <member-card ng-repeat="author in proposal.authors" user="author"></member-card>
         <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
-      <p class="description" ng-bind-html-unsafe="html">
+      <!--<p class="description" ng-bind-html-unsafe="html">
         {{proposal.plainText|limitTo:500}}{{(proposal.plainText.length) > 500 ? '...' : '' }}
-      </p>
+      </p>-->
 
       <div class="voting_mechanism">
         <div class="temperature_check">
@@ -271,12 +271,19 @@
             <i class="fa fa-file-text"></i>&nbsp;&nbsp; {{'Proposal Text' | translate }}
           </h2>
         </div>
-        <div class="etherpad__wrapper">
+
+        <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad']" class="etherpad__wrapper">
           <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
           </iframe>
           <iframe ng-if="userIsAuthor" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
           </iframe>
         </div>
+
+        <div ng-if="campaignConfigs['appcivist.campaign.disable-etherpad']==='TRUE'">
+          <br><br><br><br>
+          <p class="description" ng-bind-html="trustedHtml(proposal.text)"></p>
+        </div>
+
       </section>
     </section>
 
@@ -289,7 +296,7 @@
                 <h2 class="heading--header">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
                   <a href="" ng-if="userIsAuthor" ng-click="$parent.openModal('addAttachmentForm')"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
-                  <a ng-if="!ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
+                  <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
                 </div>
               </div>
             </div>
@@ -330,7 +337,7 @@
         </section>
 
 
-        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}">
+        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
           <header class="ideas__header">
             <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;

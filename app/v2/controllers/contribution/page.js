@@ -70,6 +70,12 @@
       $scope.cm = {
         isHover: false
       };
+      $scope.trustedHtml = function(html) {
+        return $sce.trustAsHtml(html);
+      };
+      $scope.contributionTypeIsSupported = function (type) {
+        return Campaigns.isContributionTypeSupported(type, $scope);
+      }
     }
 
     // Feedback update
@@ -127,6 +133,7 @@
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
 
+
           if (data.extendedTextPad) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision)+"&userName="+$scope.userName;
           } else {
@@ -153,6 +160,7 @@
           }
           loadRelatedContributions();
           loadRelatedStats();
+          loadCampaign();
         },
         function(error) {
           Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
@@ -301,6 +309,40 @@
       }
 
       return vm.trustedHtmlText;
+    }
+
+    function loadCampaign () {
+      $scope.campaign = localStorageService.get("currentCampaign");
+
+      if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
+        $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
+        loadCampaignConfig ();
+      } else {
+        var res;
+        if ($scope.isAnonymous) {
+          res = Campaigns.campaignByUUID($scope.campaignID).get();
+        } else {
+          res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
+        }
+
+        res.$promise.then(function(data){
+          $scope.campaign = data;
+          $scope.campaign.rsID = data.resourceSpaceId;
+
+          loadCampaignConfig ();
+        }, function(error) {
+            Notify.show('Error while trying to fetch campaign', 'error');
+        });
+      }
+    }
+
+    function loadCampaignConfig () {
+      var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+      rsp.$promise.then(function(data){
+        $scope.campaignConfigs = data;
+      }, function(error) {
+          Notify.show('Error while trying to fetch campaign config', 'error');
+      });
     }
   }
 }());

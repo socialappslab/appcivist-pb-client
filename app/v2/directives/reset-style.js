@@ -18,7 +18,7 @@
         $('head link[data-version=v1]').detach();
         $('head link[href*=\'vendor.css\']').detach();
         $('head link[href*=\'app.css\']').detach();
-      } else if (location.hash == '#/') {
+      } else if (location.hash === '#/' || location.hash === '/' || location.hash === '') {
         $('head link[data-version=v1]').detach();
         $('head link[href*=\'vendor.css\']').detach();
         $('head link[href*=\'app.css\']').detach();

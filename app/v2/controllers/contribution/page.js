@@ -308,10 +308,10 @@
     function loadCampaign () {
       $scope.campaign = localStorageService.get("currentCampaign");
 
-      if ($scope.campaign.campaignID === $scope.campaignID) {
+      if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig ();
-      }else{
+      } else {
         var res;
         if ($scope.isAnonymous) {        
           res = Campaigns.campaignByUUID($scope.campaignID).get();
@@ -324,13 +324,6 @@
           $scope.campaign.rsID = data.resourceSpaceId;
 
           loadCampaignConfig ();
-          // var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-          // rsp.$promise.then(function(data){
-          //   $scope.campaignConfigs = data;
-          // }, function(error) {
-          //     Notify.show('Error while trying to fetch campaign config', 'error');
-          // });
-
         }, function(error) {
             Notify.show('Error while trying to fetch campaign', 'error');
         });         
@@ -339,7 +332,6 @@
 
     function loadCampaignConfig () {
       var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-      
       rsp.$promise.then(function(data){
         $scope.campaignConfigs = data;
       }, function(error) {

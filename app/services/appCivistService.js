@@ -377,6 +377,17 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     },
     themesByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID });
+    },
+    getConfiguration: function(spaceId ){
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', {sid: spaceId});
+    },
+    isContributionTypeSupported: function (type, scope) {
+      var campaignConfigs = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.contribution-types'] : null;
+      if (campaignConfigs) {
+        return campaignConfigs.includes(type);
+      } else {
+        return true; // if the configuration is not defined, all contribution types are supported
+      }
     }
   };
 

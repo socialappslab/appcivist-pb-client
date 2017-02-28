@@ -74,6 +74,9 @@
       };
       $scope.isModalOpened = isModalOpened.bind($scope);
       $scope.toggleModal = toggleModal.bind($scope);
+      $scope.contributionTypeIsSupported = function (type) {
+        return Campaigns.isContributionTypeSupported(type, $scope);
+      }
     }
 
     function loadAssembly() {
@@ -136,6 +139,13 @@
               $scope.ideas = [];
             }
           }, defaultErrorCallback);
+        });
+
+        var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+        rsp.$promise.then(function(data){
+          $scope.campaignConfigs = data;
+        }, function(error) {
+            Notify.show('Error while trying to fetch campaign config', 'error');
         });
       });
     }

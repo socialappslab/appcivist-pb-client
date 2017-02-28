@@ -7,11 +7,11 @@
 
 
   WorkingGroupDashboardCtrl.$inject = [
-    '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
+    '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope'
   ];
 
-  function WorkingGroupDashboardCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
+  function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
 
     $scope.activeTab = "Public";
@@ -58,6 +58,12 @@
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
+
+      loadCampaign();
+
+      $scope.contributionTypeIsSupported = function (type) {
+        return Campaigns.isContributionTypeSupported(type, $scope);
+      }
     }
 
     function loadAssembly() {
@@ -241,5 +247,19 @@
     function nonPinnedContributions(error) {
       console.log("No pinned contributions");
     }
+
+    function loadCampaign() {
+      $scope.campaign   = localStorageService.get("currentCampaign");
+      $scope.campaignID = $scope.campaign.campaignId;
+      $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
+
+      var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+      rsp.$promise.then(function(data){
+        $scope.campaignConfigs = data;
+      }, function(error) {
+          Notify.show('Error while trying to fetch campaign config', 'error');
+      });
+    }
+
   }
 } ());

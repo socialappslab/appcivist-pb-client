@@ -283,6 +283,11 @@
     function initScopeContent() {
       $scope.isEdit = false;
       $scope.user = localStorageService.get("user");
+      $scope.selectedComponent = {};
+      $scope.defaultComponents = _.cloneDeep(Components.defaultComponents());
+      $scope.onComponentClick = onComponentClick.bind($scope);
+      $scope.deleteSelectedPhase = deleteSelectedPhase.bind($scope);
+      $scope.addNewPhase = addNewPhase.bind($scope);
 
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
@@ -700,6 +705,32 @@
 
     function internalCheckParentValue(parent, child) {
       return parent.value === child.dependsOfValue;
+    }
+
+
+    /**
+     * Handler called when user clicks on timeline component
+     * 
+     * @param {Object} component
+     */
+    function onComponentClick(component) {
+      this.selectedComponent = component;
+    }
+
+    /**
+     * Handler called when user clicks on delet selected phase button.
+     */
+    function deleteSelectedPhase() {
+      _.remove(this.defaultComponents, { key: this.selectedComponent.key });
+      this.selectedComponent = {};
+    }
+
+    /**
+     * Handler called when user clicks on add new phase button.
+     */
+    function addNewPhase() {
+      this.defaultComponents.push(this.selectedComponent);
+      this.selectedComponent = {};
     }
   }
 }());

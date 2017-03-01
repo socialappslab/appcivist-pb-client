@@ -1,64 +1,65 @@
 <section class="comments__section">
-  <div class="row view campaign-creation" id="prePhase2">
-    <div class="">
+  <div class="row" id="prePhase2">
+    <div>
       <div id="campaignMilestoneDefinition" class="row box descriptionBox row col-md-12 col-sm-12 col-xs-12">
         <p>
-          <span translate='creation.components.newCampaign2.text1'></span>
-          <ol>
-            <li>
-              {{'creation.components.newCampaign2.text2' | translate}}
-            </li>
-            <li>
-              {{'creation.components.newCampaign2.text3' | translate}}
-            </li>
-            <li>
-              {{'creation.components.newCampaign2.text4' | translate}}
-            </li>
-            <li>
-              {{'creation.components.newCampaign2.text5' | translate}}
-            </li>
-          </ol>
+          <span>
+            {{'Select a phase in the timeline to Edit, or add a new phase to the Campaign timeline. The timeline on the top of the page shows how your campaign timeline will be displayed.' |  translate}}
+          </span>
         </p>
       </div>
+
       <form name="newCampaignForm2">
-        <section id="campaignMilestoneLengthOptions" class="">
-          <div class="">
-            <h3 for="campaignMilestoneSlider" class="control-label">{{'creation.components.newCampaign2.text6' | translate}}</h3>
-            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.campaignTimeframe' | translate}}">
-                    </i>
-          </div>
+        <section>
+          <campaign-timeline title="{{'Campaign Timeline' | translate}}" components="defaultComponents" on-component-click="onComponentClick(component)"></campaign-timeline>
         </section>
 
-        <section class="" ng-repeat="milestone in newCampaign.milestones track by $index">
-          <div ng-if="newCampaign.proposalComponents[milestone.componentIndex].enabled && newCampaign.proposalComponents[milestone.componentIndex].active">
-            <div class="col-md-7 col-sm-7"><strong>{{$index+1}}. </strong><span>{{milestone.title | translate}}</span></div>
-            <div class="col-md-5 col-sm-5">
-              <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd HH:mm" ng-model="newCampaign.milestones[$index].date" is-open="milestone.calOpened" min-date="newCampaign.campaignTimeframeStartDate" max-date="newCampaign.campaignTimeframeEndDate"
-                  ng-change="updateMilestoneValue(newCampaign.milestones[$index].date, $index)" ng-required="true" close-text="Close" />
-
-                <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="open($event, milestone)">
-                                    <i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-              </p>
+        <section>
+          <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-3">
+              <h3>{{'Selected Phase' | translate}}</h3>
             </div>
+
+            <fieldset style="display: inline-block;">
+              <button type="button" ng-click="addNewPhase()">{{'Add new phase' | translate}}</button>
+            </fieldset>
+
+            <fieldset style="display: inline-block; margin-left: 10px;">
+              <button type="button" ng-click="deleteSelectedPhase()" style="background-color: #d9534f; border-color: #d9534f;">{{'Delete selected phase' | translate}}</button>
+            </fieldset>
           </div>
+          <fieldset>
+            <label for="group">{{'Stage name' | translate}}</label>
+            <div class="field-container col-lg-12">
+              <input ng-model="selectedComponent.title" type="text" class="col-lg-12">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <label for="group">{{'Stage description' | translate}}</label>
+            <div class="field-container col-lg-12">
+              <textarea rows="5" ng-model="selectedComponent.description"></textarea>
+            </div>
+          </fieldset>
         </section>
+
         <div class="row vertical-space-medium"></div>
         <div id="campaignButtons2" class="row">
           <div class="col-md-4">
-            <button class="btn btn-success col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid" ng-click="createCampaign('done', {fastrack:true})">
+            <button class="btn btn-success col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
+              ng-click="createCampaign('done', {fastrack:true})">
               {{'Fastrack' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid" ng-click="createCampaign('v2.assembly.aid.campaign.new.description', {aid: assemblyID, fastrack:false})">
+            <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
+              ng-click="createCampaign('v2.assembly.aid.campaign.new.description', {aid: assemblyID, fastrack:false})">
                {{'Back' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" ng-click="createCampaign('v2.assembly.aid.campaign.new.stages', {aid: assemblyID, fastrack:false})" ng-disabled="!newCampaignForm2.$valid">
+            <button class="btn btn-primary col-md-12" ng-click="createCampaign('v2.assembly.aid.campaign.new.stages', {aid: assemblyID, fastrack:false})"
+              ng-disabled="!newCampaignForm2.$valid">
               {{'Next' | translate}}
             </button>
           </div>

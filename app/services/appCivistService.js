@@ -396,10 +396,10 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     themesByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID });
     },
-    getConfiguration: function(spaceId ){
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', {sid: spaceId});
+    getConfiguration: function(spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid: spaceId });
     },
-    isContributionTypeSupported: function (type, scope) {
+    isContributionTypeSupported: function(type, scope) {
       var campaignConfigs = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.contribution-types'] : null;
       if (campaignConfigs) {
         return campaignConfigs.includes(type);
@@ -1630,6 +1630,403 @@ appCivistApp.factory('Components', function($resource, $sce, localStorageService
           position: 9,
           mainContributionType: "PROPOSAL",
           type: "START"
+        }
+      ];
+    },
+
+    defaultComponents: function() {
+      return [
+        {
+          "title": "Ideas",
+          "type": "IDEAS",
+          "key": "ideas_1",
+          "description": "The 'Ideas' phase is about raising issues and brainstorming ideas",
+          "position": 1,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.ideas.enable-multiple-authors",
+              "value": "true",
+              "definition": {
+                "description": "Enable support for multiple authors per idea",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.enable-attachments",
+              "value": "false",
+              "definition": {
+                "description": "Enable support for attachments on ideas",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.contribution-limit",
+              "value": "0",
+              "definition": {
+                "description": "Limit of the number of contributions that users can create in this phase",
+                "valueType": "Integer",
+                "defaultValue": "0",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "ideas_milestone_1",
+              "position": 1,
+              "description": "Idea collection begins on this day",
+              "date": "2017-03-01 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "ideas_milestone_2",
+              "position": 2,
+              "description": "Idea collection ends on this day",
+              "date": "2017-03-14 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Proposals",
+          "type": "PROPOSALS",
+          "key": "proposals_1",
+          "description": "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals",
+          "position": 2,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.proposals.disable-collaborative-editor",
+              "value": false,
+              "definition": {
+                "description": "Disable collaborative editing of proposals",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.proposals.enable-multiple-authors",
+              "value": "true",
+              "definition": {
+                "description": "Enable support for multiple authors per proposal",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.enable-attachments",
+              "value": "true",
+              "definition": {
+                "description": "Enable support for attachments on proposals",
+                "valueType": "Boolean",
+                "defaultValue": "true",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.contribution-limit",
+              "value": "0",
+              "definition": {
+                "description": "Limit of the number of contributions that users can create in this phase",
+                "valueType": "Integer",
+                "defaultValue": "0",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "proposals_milestone_1",
+              "position": 1,
+              "description": "Proposal development begins on this day",
+              "date": "2017-03-15 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "proposals_milestone_2",
+              "position": 2,
+              "description": "Proposal development ends on this day",
+              "date": "2017-04-14 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Deliberation",
+          "type": "DELIBERATION",
+          "key": "deliberation_1",
+          "description": "Deliberation is the careful consideration of proposals through comments and evidence. In this phase, proposals can only be discussed, praised or criticized, but not edited.",
+          "position": 3,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.deliberation.enable-technical-assessment",
+              "value": "true",
+              "definition": {
+                "description": "Enable technical assessment of proposals",
+                "valueType": "Boolean",
+                "defaultValue": "true",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.deliberation.who-deliberates",
+              "value": "ASSEMBLY",
+              "definition": {
+                "description": "Who deliberates?",
+                "valueType": "String",
+                "defaultValue": "ASSEMBLY",
+                "configTarget": "COMPONENT",
+                "uiType": "select",
+                "options": [
+                  {
+                    "name": "All assembly members",
+                    "value": "ASSEMBLY",
+                    "selected": true
+                  },
+                  {
+                    "name": "Only Working Groups of this Campaign",
+                    "value": "CAMPAIGN_WORKING_GROUPS",
+                    "selected": false
+                  },
+                  {
+                    "name": "Randomly selected jury",
+                    "value": "JURY",
+                    "selected": false
+                  }
+                ],
+                "optionValue": {
+                  "name": "All assembly members",
+                  "value": "ASSEMBLY",
+                  "selected": true
+                }
+              }
+            },
+            {
+              "key": "component.deliberation.who-deliberates-jury",
+              "value": "ASSEMBLY",
+              "dependsOf": 1,
+              "dependsOfValue": "JURY",
+              "definition": {
+                "description": "From where are members of the jury randomly selected?",
+                "valueType": "String",
+                "defaultValue": "ASSEMBLY",
+                "configTarget": "COMPONENT",
+                "uiType": "select",
+                "options": [
+                  {
+                    "name": "From all assembly members",
+                    "value": "ASSEMBLY",
+                    "selected": true
+                  },
+                  {
+                    "name": "From Working Groups of this Campaign",
+                    "value": "CAMPAIGN_WORKING_GROUPS",
+                    "selected": false
+                  }
+                ],
+                "optionValue": {
+                  "name": "From all assembly members",
+                  "value": "ASSEMBLY",
+                  "selected": true
+                }
+              }
+            },
+            {
+              "key": "component.deliberation.who-deliberates-jury-percentage",
+              "value": 0.1,
+              "dependsOf": 1,
+              "dependsOfValue": "JURY",
+              "definition": {
+                "description": "What percentage of people should be on the Jury?",
+                "valueType": "Percentage",
+                "defaultValue": "0.1",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "deliberation_milestone_1",
+              "position": 1,
+              "description": "Proposal development begins on this day",
+              "date": "2017-04-15 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "deliberation_milestone_2",
+              "position": 2,
+              "description": "Proposal development ends on this day",
+              "date": "2017-04-30 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Voting",
+          "key": "voting_1",
+          "position": 4,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.voting.ballot.password",
+              "value": "123456",
+              "definition": {
+                "description": "Ballot Password",
+                "valueType": "String",
+                "defaultValue": "12345",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system",
+              "value": "RANGE",
+              "definition": {
+                "description": "Select the voting system",
+                "valueType": "String",
+                "defaultValue": "RANGE",
+                "configTarget": "COMPONENT",
+                "uiType": "select",
+                "options": [
+                  {
+                    "name": "Range",
+                    "value": "RANGE",
+                    "selected": true
+                  },
+                  {
+                    "name": "Ranked",
+                    "value": "RANKED",
+                    "selected": false
+                  },
+                  {
+                    "name": "Distribution",
+                    "value": "DISTRIBUTION",
+                    "selected": false
+                  },
+                  {
+                    "name": "Plurality",
+                    "value": "PLURALITY",
+                    "selected": false
+                  }
+                ],
+                "optionValue": {
+                  "name": "Range",
+                  "value": "RANGE",
+                  "selected": true
+                }
+              }
+            },
+            {
+              "key": "component.voting.system-range-min-score",
+              "value": "0",
+              "dependsOf": 1,
+              "dependsOfValue": "RANGE",
+              "definition": {
+                "description": "Minimum score for range voting",
+                "valueType": "Integer",
+                "defaultValue": "0",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system-range-max-score",
+              "value": "100",
+              "dependsOf": 1,
+              "dependsOfValue": "RANGE",
+              "definition": {
+                "description": "Maximum score for range voting",
+                "valueType": "Integer",
+                "defaultValue": "100",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system-ranked-number-proposals",
+              "value": "5",
+              "dependsOf": 1,
+              "dependsOfValue": "RANKED",
+              "definition": {
+                "description": "How many proposals can a voter select?",
+                "valueType": "Integer",
+                "defaultValue": "5",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system-distributed-points",
+              "value": "30",
+              "dependsOf": 1,
+              "dependsOfValue": "DISTRIBUTED",
+              "definition": {
+                "description": "How many points can a voter distribute?",
+                "valueType": "Integer",
+                "defaultValue": "30",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "voting_milestone_1",
+              "position": 1,
+              "description": "Voting begins on this day",
+              "date": "2017-05-01 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "voting_milestone_2",
+              "position": 2,
+              "description": "Voting ends on this day",
+              "date": "2017-05-31 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Implementation",
+          "type": "IMPLEMENTATION",
+          "key": "implementation_1",
+          "position": 5,
+          "timeline": 1,
+          "linked": false,
+          "configs": [],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "implementation_milestone_1",
+              "position": 1,
+              "description": "Implemenation begins on this day",
+              "date": "2017-06-01 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "implementation_milestone_2",
+              "position": 2,
+              "description": "Voting ends on this day",
+              "date": "2018-06-30 23:59:59",
+              "type": "END"
+            }
+          ]
         }
       ];
     }

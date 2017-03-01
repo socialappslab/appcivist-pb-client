@@ -13,7 +13,6 @@
     function setupMembershipInfo(scope) {
       scope.userIsAssemblyCoordinator = Memberships.rolIn('assembly', scope.assemblyId, 'COORDINATOR');
       scope.userIsGroupCoordinator = Memberships.rolIn('group', scope.wgroup.groupId, 'COORDINATOR');
-      console.log(scope.wgroup.groupId, Memberships.groupRols(scope.wgroup.groupId));
     }
 
     function toggleContextualMenu() {

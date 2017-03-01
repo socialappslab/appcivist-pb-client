@@ -399,13 +399,20 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     getConfiguration: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid: spaceId });
     },
-    isContributionTypeSupported: function(type, scope) {
+    getConfigurationPublic: function(spaceUUID ){
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/config/public', {uuid: spaceUUID});
+    },
+    isContributionTypeSupported: function (type, scope) {
       var campaignConfigs = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.contribution-types'] : null;
       if (campaignConfigs) {
         return campaignConfigs.includes(type);
       } else {
         return true; // if the configuration is not defined, all contribution types are supported
       }
+    },
+    showAssemblyLogo: function (scope) {
+      var showAssemblyLogo = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.show-assembly-logo'] : false;
+      return showAssemblyLogo;
     }
   };
 

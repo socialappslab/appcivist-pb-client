@@ -2,13 +2,14 @@
   <!-- disabled by issue #398 -->
   <li class="li-action-menu" ng-if="false"><a href="" ng-click="vm.edit()">{{'Edit' | translate}}</a></li>
   <li class="li-action-menu"><a href="" ng-click="vm.subscribe()">{{'Subscribe' | translate}}</a></li>
-  <li ng-if="userIsGroupCoordinator" class="li-action-menu"><a href="" ng-click="vm.openModal('suscribeForm')">{{'Start Voting' | translate}}</a></li>
+  <li ng-if="userIsGroupCoordinator" class="li-action-menu"><a href="" ng-click="vm.openModal('configureBallotForm')">{{'Start Voting' | translate}}</a></li>
 </ul>
 
 
-<modal open-if="vm.modals.suscribeForm" close="vm.closeModal('suscribeForm')" title="Edit Form" template-id="suscribeForm"></modal>
+<modal open-if="vm.modals.configureBallotForm" close="vm.closeModal('configureBallotForm')" title="Edit Form"
+  template-id="configureBallotForm"></modal>
 
 
-<script id="suscribeForm" type="text/ng-template">
-  <configure-ballot-form></configure-ballot-form>
+<script id="configureBallotForm" type="text/ng-template">
+  <configure-ballot-form close="vm.closeModal('configureBallotForm')"></configure-ballot-form>
 </script>

@@ -897,5 +897,12 @@
   "Old Password": "Old Password",
   "Repeat password": "Repeat password",
   "How many proposals can a voter select?": "How many proposals can a voter select?",
-  "How many points can a voter distribute?": "How many points can a voter distribute?"
+  "How many points can a voter distribute?": "How many points can a voter distribute?",
+  "Select a phase in the timeline to Edit, or add a new phase to the Campaign timeline. The timeline on the top of the page shows how your campaign timeline will be displayed.": "Select a phase in the timeline to Edit, or add a new phase to the Campaign timeline. The timeline on the top of the page shows how your campaign timeline will be displayed.",
+  "Campaign Timeline": "Campaign Timeline",
+  "Stage name": "Stage name",
+  "Stage description": "Stage description",
+  "Selected Phase": "Selected Phase",
+  "Add new phase": "Add new phase",
+  "Delete selected phase": "Delete selected phase"
 }

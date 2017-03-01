@@ -141,7 +141,9 @@
           }, defaultErrorCallback);
         });
 
-        var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+        var rsp = $scope.isAnonymous ?
+          Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
+            : Campaigns.getConfiguration($scope.campaign.rsID).get();
         rsp.$promise.then(function(data){
           $scope.campaignConfigs = data;
         }, function(error) {

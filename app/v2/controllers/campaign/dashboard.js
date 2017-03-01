@@ -174,14 +174,16 @@
           }, defaultErrorCallback);
         });
 
-        var rsp = $scope.isAnonymous ?
-          Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
-            : Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function(data){
+        if ($scope.campaign) {
+          var rsp = $scope.isAnonymous ?
+                      Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
+                        : Campaigns.getConfiguration($scope.campaign.rsID).get();
+          rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;
         }, function(error) {
             Notify.show('Error while trying to fetch campaign config', 'error');
         });
+        }
       });
     }
 

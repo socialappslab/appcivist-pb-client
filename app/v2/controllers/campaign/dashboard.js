@@ -65,6 +65,7 @@
         loadAssembly();
         loadCampaignResources();
       }
+
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function() {
         $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;
@@ -82,6 +83,34 @@
     function loadAssembly() {
       $scope.assembly = localStorageService.get('currentAssembly');
       verifyMembership($scope.assembly);
+    }
+
+    function loadAssemblyPublicProfile() {
+      var assemblyShortname = $stateParams.shortname; // for the future move of paths in which everything will be preceded by the assembly shortname
+      if (assemblyShortname) {
+        var rsp = Assemblies.assemblyByShortName(assemblyShortname).get();
+        rsp.$promise.then(
+          function (assembly) {
+            $scopoe.assembly = assembly;
+          },
+          function (error) {
+            Notify.show("Error while loading public profile of assembly with shortname");
+          }
+        )
+      } else {
+        var assemblyUUID = $scope.campaign ? $scope.campaign.assemblies ? $scope.campaign.assemblies[0] : null : null;
+        if (assemblyUUID) {
+          var rsp = Assemblies.assemblyByUUID(assemblyUUID).get();
+          rsp.$promise.then(
+            function (assembly) {
+              $scope.assembly = assembly;
+            },
+            function (error) {
+              Notify.show("Error while loading public profile of assembly by its Universal ID");
+            }
+          )
+        }
+      }
     }
 
     function verifyMembership(assembly) {
@@ -115,9 +144,11 @@
           res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
         } else {
           res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
-
         }
         res.then(function(data) {
+          if ($scope.isAnonymous) {
+            loadAssemblyPublicProfile();
+          }
           var currentComponent = Campaigns.getCurrentComponent(data);
           setIdeasSectionVisibility(currentComponent);
           $scope.components = data;

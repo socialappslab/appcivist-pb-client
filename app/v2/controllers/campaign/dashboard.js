@@ -58,6 +58,8 @@
       $scope.loadGroups = loadGroups.bind($scope);
       $scope.openModal = openModal.bind($scope);
       $scope.closeModal = closeModal.bind($scope);
+      $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
+
       loadCampaigns();
 
       if (!$scope.isAnonymous) {
@@ -205,6 +207,10 @@
       );
     }
 
+    function showAssemblyLogo () {
+      var show = Campaigns.showAssemblyLogo($scope);
+      return show;
+    }
     function toggleResourcesSection() {
       $scope.showResourcesSection = !$scope.showResourcesSection;
     }

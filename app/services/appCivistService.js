@@ -409,6 +409,10 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       } else {
         return true; // if the configuration is not defined, all contribution types are supported
       }
+    },
+    showAssemblyLogo: function (scope) {
+      var showAssemblyLogo = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.show-assembly-logo'] : false;
+      return showAssemblyLogo;
     }
   };
 

@@ -235,6 +235,12 @@
             <li class="downvote">
               <a class="thumbs-down" ng-click="updateFeedback('down')"><span class="screen-reader-only">{{ 'Downvote' | translate }}</span></a>
             </li>
+            <li class="commentcount" ng-mouseenter="contribution.commentCount = true" ng-mouseleave="contribution.commentCount = false">
+              <a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>
+              <div class="popover" style="top: -50px;" ng-class="{active: contribution.commentCount}">
+                <div class="content">{{ totalComemnts }}</div>
+              </div>      
+            </li>
           </ul>
           <div ng-if="proposal.informalScore" class="informal_score" ng-class="{positive: proposal.informalScore > 0, negative: proposal.informalScore < 0}">
             <em>{{proposal.informalScore}}</em>
@@ -247,7 +253,7 @@
 
           <div ng-if="feedbackBar" class="informal_score">
             <div class="informal_score positive stats2">
-              {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em>
+              {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em> {{ 'Comments' | translate}} <em>{{totalComments}}</em>
             </div>
             <div class="informal_score stats2">
               <span>{{ 'Needs' | translate }}</span>

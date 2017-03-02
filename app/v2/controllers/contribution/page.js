@@ -239,6 +239,7 @@
       $scope.needAvg = contrib.stats.averageNeed;
       $scope.feasibilityAvg = contrib.stats.averageFeasibility;
       $scope.benefictAvg = contrib.stats.averageBenefit;
+      $scope.totalComments = contrib.commentCount + contrib.forumCommentCount; 
     }
 
     function loadIndividualFeedbacks() {

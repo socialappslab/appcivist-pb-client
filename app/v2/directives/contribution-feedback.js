@@ -45,7 +45,7 @@
           'Attacks others personally',
           'Other'
         ];
-        scope.contribution.totalComennts = scope.contribution.commentCount + scope.contribution.forumCommentCount;
+        scope.contribution.totalComments = scope.contribution.commentCount + scope.contribution.forumCommentCount;
 
         // Feedback update
         scope.updateFeedback = function(value) {

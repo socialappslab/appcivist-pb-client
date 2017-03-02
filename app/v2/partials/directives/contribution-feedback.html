@@ -19,6 +19,12 @@
         <div class="content">{{contribution.stats.downs}}</div>
       </div>
     </li>
+    <li class="commentcount" ng-mouseenter="contribution.commentCount = true" ng-mouseleave="contribution.commentCount = false">
+      <a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>
+      <div class="popover" style="top: -56px;" ng-class="{active: contribution.commentCount}">
+        <div class="content">{{ totalComennts }}</div>
+      </div>      
+    </li>
     <li class="delete" ng-if="withDelete && isAssemblyCoordinator" ng-mouseenter="contribution.overDelete = true" ng-mouseleave="contribution.overDelete = false">
       <a ng-click="$parent.showModerationForm('delete')">
         <i class="fa fa-trash"></i>

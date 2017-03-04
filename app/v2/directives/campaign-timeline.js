@@ -1,4 +1,6 @@
-(function() {
+'use strict';
+
+(function () {
   'use strict';
 
   /**
@@ -23,8 +25,8 @@
    *                    components="vm.defaultComponents" 
    *                    on-component-click="vm.onClick(component)"></campaign-timeline>
    */
-  appCivistApp
-    .directive('campaignTimeline', CampaignTimeline);
+
+  appCivistApp.directive('campaignTimeline', CampaignTimeline);
 
   CampaignTimeline.$inject = ['Campaigns', 'localStorageService'];
 
@@ -38,9 +40,9 @@
       } else {
         res = Campaigns.components(null, null, true, cid, null);
       }
-      res.then(function(data) {
+      res.then(function (data) {
         var currentComponent = Campaigns.getCurrentComponent(data);
-        angular.forEach(data, function(c) {
+        angular.forEach(data, function (c) {
           c.cssClass = getComponentCssClass(scope, currentComponent, c);
         });
         scope.components = data;
@@ -81,7 +83,7 @@
         if (!scope.components) {
 
           if (!scope.campaignId) {
-            scope.$watch('campaignId', function(cid) {
+            scope.$watch('campaignId', function (cid) {
               loadCampaignComponents(scope, scope.assemblyId, cid);
             });
           } else {
@@ -89,12 +91,15 @@
           }
         }
 
-        scope.formatDate = function(date) {
+        scope.formatDate = function (date) {
+          if (angular.isDate(date)) {
+            return moment(date).local().format('L');
+          }
           return moment(date, 'YYYY-MM-DD HH:mm').local().format('L');
         };
 
-        scope.toggleMilestoneDescription = function(milestone, milestones) {
-          angular.forEach(milestones, function(m) {
+        scope.toggleMilestoneDescription = function (milestone, milestones) {
+          angular.forEach(milestones, function (m) {
             if (milestone.componentMilestoneId !== m.componentMilestoneId) {
               m.showDescription = false;
             }
@@ -102,20 +107,19 @@
           milestone.showDescription = !milestone.showDescription;
         };
 
-        scope.clearMilestonesMenu = function(components) {
-          angular.forEach(components, function(c) {
+        scope.clearMilestonesMenu = function (components) {
+          angular.forEach(components, function (c) {
             c.isHover = false;
           });
         };
 
-        scope.toggleComponent = function(component, components) {
+        scope.toggleComponent = function (component, components) {
           var isHover = component.isHover;
           this.clearMilestonesMenu(components);
           component.isHover = !isHover;
         };
 
-
-        scope.clickHandler = function(component) {
+        scope.clickHandler = function (component) {
           if (angular.isFunction(scope.onComponentClick)) {
             scope.onComponentClick({ component: component });
           }
@@ -123,4 +127,5 @@
       }
     };
   }
-}());
+})();
+//# sourceMappingURL=campaign-timeline.js.map

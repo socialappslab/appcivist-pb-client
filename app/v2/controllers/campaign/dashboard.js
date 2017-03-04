@@ -1,28 +1,18 @@
-(function() {
+'use strict';
+
+(function () {
   'use strict';
 
-  angular
-    .module('appCivistApp')
-    .controller('v2.CampaignDashboardCtrl', CampaignDashboardCtrl);
+  angular.module('appCivistApp').controller('v2.CampaignDashboardCtrl', CampaignDashboardCtrl);
 
+  CampaignDashboardCtrl.$inject = ['$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile'];
 
-  CampaignDashboardCtrl.$inject = [
-    '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope',
-    'WorkingGroups', '$compile'
-  ];
-
-  function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
-    WorkingGroups, $compile) {
+  function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile) {
 
     $scope.activeTab = "Public";
-    $scope.changeActiveTab = function(tab) {
-      if (tab == 1)
-        $scope.activeTab = "Members";
-      else
-        $scope.activeTab = "Public";
-    }
+    $scope.changeActiveTab = function (tab) {
+      if (tab == 1) $scope.activeTab = "Members";else $scope.activeTab = "Public";
+    };
 
     activate();
 
@@ -41,8 +31,8 @@
         $scope.isAnonymous = true;
         $scope.fromURL = 'v2/campaign/' + $scope.campaignID;
       } else {
-        $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
-        $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
+        $scope.assemblyID = $stateParams.aid ? parseInt($stateParams.aid) : 0;
+        $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.campaignID;
 
@@ -69,7 +59,7 @@
       }
 
       $scope.myObject = {};
-      $scope.myObject.refreshMenu = function() {
+      $scope.myObject.refreshMenu = function () {
         $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;
       };
       $scope.modals = {
@@ -79,7 +69,7 @@
       $scope.toggleModal = toggleModal.bind($scope);
       $scope.contributionTypeIsSupported = function (type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
-      }
+      };
     }
 
     function loadAssembly() {
@@ -91,26 +81,20 @@
       var assemblyShortname = $stateParams.shortname; // for the future move of paths in which everything will be preceded by the assembly shortname
       if (assemblyShortname) {
         var rsp = Assemblies.assemblyByShortName(assemblyShortname).get();
-        rsp.$promise.then(
-          function (assembly) {
-            $scopoe.assembly = assembly;
-          },
-          function (error) {
-            Notify.show("Error while loading public profile of assembly with shortname");
-          }
-        )
+        rsp.$promise.then(function (assembly) {
+          $scopoe.assembly = assembly;
+        }, function (error) {
+          Notify.show("Error while loading public profile of assembly with shortname");
+        });
       } else {
         var assemblyUUID = $scope.campaign ? $scope.campaign.assemblies ? $scope.campaign.assemblies[0] : null : null;
         if (assemblyUUID) {
           var rsp = Assemblies.assemblyByUUID(assemblyUUID).get();
-          rsp.$promise.then(
-            function (assembly) {
-              $scope.assembly = assembly;
-            },
-            function (error) {
-              Notify.show("Error while loading public profile of assembly by its Universal ID");
-            }
-          )
+          rsp.$promise.then(function (assembly) {
+            $scope.assembly = assembly;
+          }, function (error) {
+            Notify.show("Error while loading public profile of assembly by its Universal ID");
+          });
         }
       }
     }
@@ -127,7 +111,7 @@
         res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
       }
 
-      res.$promise.then(function(data) {
+      res.$promise.then(function (data) {
         $scope.campaign = data;
         $scope.campaign.rsID = data.resourceSpaceId; //must be always id
         $scope.campaign.rsUUID = data.resourceSpaceUUId;
@@ -135,7 +119,7 @@
         $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
         $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
 
-        localStorageService.set("currentCampaign",$scope.campaign);
+        localStorageService.set("currentCampaign", $scope.campaign);
         // We are reading the components twice,
         // - in the campaign-timeline directive
         // - here
@@ -147,7 +131,7 @@
         } else {
           res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
         }
-        res.then(function(data) {
+        res.then(function (data) {
           if ($scope.isAnonymous) {
             loadAssemblyPublicProfile();
           }
@@ -157,7 +141,7 @@
         }, defaultErrorCallback);
 
         // get proposals
-        Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function(response) {
+        Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
           $scope.proposals = response.list;
 
           if (!$scope.proposals) {
@@ -165,7 +149,7 @@
           }
 
           // get ideas
-          Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function(response) {
+          Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function (response) {
             $scope.ideas = response.list;
 
             if (!$scope.ideas) {
@@ -175,14 +159,12 @@
         });
 
         if ($scope.campaign) {
-          var rsp = $scope.isAnonymous ?
-                      Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
-                        : Campaigns.getConfiguration($scope.campaign.rsID).get();
-          rsp.$promise.then(function(data) {
-          $scope.campaignConfigs = data;
-        }, function(error) {
+          var rsp = $scope.isAnonymous ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get() : Campaigns.getConfiguration($scope.campaign.rsID).get();
+          rsp.$promise.then(function (data) {
+            $scope.campaignConfigs = data;
+          }, function (error) {
             Notify.show('Error while trying to fetch campaign config', 'error');
-        });
+          });
         }
       });
     }
@@ -191,25 +173,22 @@
       console.log(component);
       var key = component ? component.type ? component.type.toUpperCase() : "" : ""; // In old implementation, it was key, changed to type
       // TODO PROPOSAL MAKING doesnt exist in components table anymore, change for PROPOSAL ?
-      $scope.isIdeasSectionVisible = (key === 'PROPOSAL MAKING' || key === 'IDEAS');
-      $scope.newProposalsEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
-      $scope.newIdeasEnabled = (key === 'PROPOSALS' || key === 'IDEAS');
+      $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
+      $scope.newProposalsEnabled = key === 'PROPOSALS' || key === 'IDEAS';
+      $scope.newIdeasEnabled = key === 'PROPOSALS' || key === 'IDEAS';
       $scope.currentComponent = component.type.toUpperCase();
     }
 
     function loadCampaignResources() {
       var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
-      rsp.$promise.then(
-        function(resources) {
-          $scope.campaignResources = resources;
-        },
-        function(error) {
-          Notify.show('Error loading campaign resources from server', 'error');
-        }
-      );
+      rsp.$promise.then(function (resources) {
+        $scope.campaignResources = resources;
+      }, function (error) {
+        Notify.show('Error loading campaign resources from server', 'error');
+      });
     }
 
-    function showAssemblyLogo () {
+    function showAssemblyLogo() {
       var show = Campaigns.showAssemblyLogo($scope);
       return show;
     }
@@ -248,7 +227,7 @@
       if (!rsp) {
         return;
       }
-      rsp.then(function(data) {
+      rsp.then(function (data) {
         if (filters.mode === 'proposal') {
           self.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
@@ -285,7 +264,7 @@
     function openModal(id) {
       var self = this;
       this.vexInstance = vex.open({
-        className:"vex-theme-plain",
+        className: "vex-theme-plain",
         unsafeContent: $compile(document.getElementById(id).innerHTML)(self)[0]
       });
     }
@@ -297,4 +276,5 @@
       this.vexInstance.close();
     }
   }
-}());
+})();
+//# sourceMappingURL=dashboard.js.map

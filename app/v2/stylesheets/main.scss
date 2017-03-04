@@ -543,3 +543,33 @@ form>fieldset {
 .field-container {
   height: 39.5px;
 }
+
+
+/** component definition form */
+
+.component-definition {
+  margin-top: 20px;
+}
+
+.component-definition-header {
+  h3 {
+    margin-right: 10px;
+  }
+  h3,
+  button {
+    float: left;
+  }
+  button {
+    padding: 0.5em;
+    margin-top: 12px;
+  }
+  button+button {
+    margin-left: 10px;
+  }
+}
+
+uib-accordion {
+  .panel-title {
+    padding-left: 10px;
+  }
+}

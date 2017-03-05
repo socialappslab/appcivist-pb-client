@@ -11,7 +11,8 @@
 
       <form name="newCampaignForm2">
         <section>
-          <campaign-timeline title="{{'Campaign Timeline' | translate}}" components="defaultComponents" on-component-click="onComponentClick(component)"></campaign-timeline>
+          <campaign-timeline title="{{'Campaign Timeline' | translate}}" components="newCampaign.proposalComponents"
+            on-component-click="onComponentClick(component)"></campaign-timeline>
         </section>
 
         <section>
@@ -116,18 +117,18 @@
         <div id="campaignButtons2" class="row">
           <div class="col-md-4">
             <button class="btn btn-success col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
-              ng-click="createCampaign('done', {fastrack:true})">
+              ng-click="createOrUpdateCampaign('done', {fastrack:true})">
               {{'Fastrack' | translate}}
             </button>
           </div>
           <div class="col-md-4">
             <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
-              ng-click="createCampaign('v2.assembly.aid.campaign.new.description', {aid: assemblyID, fastrack:false})">
+              ng-click="createOrUpdateCampaign('v2.assembly.aid.campaign.new.description', {aid: assemblyID, fastrack:false})">
                {{'Back' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" ng-click="createCampaign('v2.assembly.aid.campaign.new.stages', {aid: assemblyID, fastrack:false})"
+            <button class="btn btn-primary col-md-12" ng-click="createOrUpdateCampaign('v2.assembly.aid.campaign.new.stages', {aid: assemblyID, fastrack:false})"
               ng-disabled="!newCampaignForm2.$valid">
               {{'Next' | translate}}
             </button>

@@ -52,7 +52,9 @@ module.exports = function(grunt) {
     },
     connect: {
       server: {
-        options: { port: 8000 }
+        options: {
+          port: 8000
+        }
       }
     },
     watch: {
@@ -61,7 +63,8 @@ module.exports = function(grunt) {
         files: ["index.html"]
       },
       js: {
-        files: ["app/*.js", "app/**/*.js"]
+        files: ["app/*.js", "app/**/*.js"],
+        tasks: ['babel']
       },
       sass: {
         files: ['**/*.scss'],
@@ -236,7 +239,6 @@ module.exports = function(grunt) {
           expand: true,
           cwd: '.',
           src: ['app/v2/**/*.js', 'app/services/appCivistService.js'],
-          ext: '.js',
           dest: 'dist'
         }]
       }

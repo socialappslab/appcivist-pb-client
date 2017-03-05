@@ -30,21 +30,6 @@
     }
 
     function initScopeFunctions() {
-      $scope.changeCampaignTemplate = function(template) {
-        if (template.value === "LINKED") {
-          $scope.newCampaign.proposalComponents[3].enabled = true;
-          $scope.newCampaign.proposalComponents[4].enabled = true;
-          $scope.newCampaign.proposalComponents[5].enabled = true;
-        } else {
-          $scope.newCampaign.useLinkedCampaign = false;
-          $scope.newCampaign.proposalComponents[1].enabled = true;
-          $scope.newCampaign.proposalComponents[2].enabled = true;
-          $scope.newCampaign.proposalComponents[3].enabled = false;
-          $scope.newCampaign.proposalComponents[4].enabled = false;
-          $scope.newCampaign.proposalComponents[5].enabled = false;
-          $scope.newCampaign.proposalComponents[6].enabled = true;
-        }
-      };
 
       $scope.updateConfigOptionValue = function(config, optionValue) {
         config.value = optionValue.value;
@@ -179,10 +164,18 @@
         var linkedDeliberation = $scope.newCampaign.linkedComponents[0];
         var linkedVoting = $scope.newCampaign.linkedComponents[1];
         var linkedImplementation = $scope.newCampaign.linkedComponents[2];
+        // TODO: revisit this after discussing linked components
+        // if (linkedDeliberation) {
+        //   $scope.newCampaign.proposalComponents[3].componentId = linkedDeliberation.componentId;
+        // }
 
-        if (linkedDeliberation) $scope.newCampaign.proposalComponents[3].componentId = linkedDeliberation.componentId;
-        if (linkedVoting) $scope.newCampaign.proposalComponents[4].componentId = linkedVoting.componentId;
-        if (linkedImplementation) $scope.newCampaign.proposalComponents[5].componentId = linkedImplementation.componentId;
+        // if (linkedVoting) {
+        //   $scope.newCampaign.proposalComponents[4].componentId = linkedVoting.componentId;
+        // }
+
+        // if (linkedImplementation) {
+        //   $scope.newCampaign.proposalComponents[5].componentId = linkedImplementation.componentId;
+        // }
       };
 
       /**
@@ -271,7 +264,6 @@
       $scope.user = localStorageService.get("user");
       $scope.selectedComponent = {};
       $scope.selectedMilestone = {};
-      $scope.defaultComponents = _.cloneDeep(Components.defaultComponents());
       $scope.componentTypes = ['IDEAS', 'PROPOSALS', 'DELIBERATION', 'VOTING', 'IMPLEMENTATION'];
       $scope.milestoneTypes = ['START', 'REMINDER', 'END'];
       $scope.onComponentClick = onComponentClick.bind($scope);
@@ -359,14 +351,11 @@
         if (temporaryCampaign != null && temporaryCampaign.campaignId != $stateParams.cid || temporaryCampaign == null) {
           var rsp = Campaigns.campaign($stateParams.aid, $stateParams.cid).get();
           rsp.$promise.then(function(data) {
-            console.log("Get Campaign with assemblyId " + $stateParams.cid);
-            console.log(data);
             $scope.newCampaign = data;
             localStorageService.set("newCampaign", data);
             $scope.getExistingConfigs();
           });
         } else {
-          console.log("still editing the same campaign");
           $scope.newCampaign = temporaryCampaign;
         }
         initializeExistingCampaignModel();
@@ -381,14 +370,10 @@
     function initializeExistingCampaignModel() {
       var inProgressNewCampaign = localStorageService.get('newCampaign');
       $scope.newCampaign = inProgressNewCampaign ? inProgressNewCampaign : Campaigns.defaultNewCampaign();
-
-      // TODO the attributes templta, proposalComponents, supportingComponents, milestones and others doesnt came from the endpoint
       $scope.newCampaign.template = $scope.templateOptions[1];
-      $scope.newCampaign.proposalComponents = Components.defaultProposalComponents();
+      $scope.defaultComponents = $scope.newCampaign.proposalComponents;
       $scope.newCampaign.enableBudget = 'yes';
       $scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
-      $scope.newCampaign.milestones = Components.defaultProposalComponentMilestones();
-      $scope.newCampaign.linkedComponents = [];
       $scope.getExistingConfigs();
 
       // in order to save edit campaign configuration between wizard steps
@@ -404,12 +389,10 @@
       var inProgressNewCampaign = localStorageService.get('newCampaign');
       $scope.newCampaign = inProgressNewCampaign ? inProgressNewCampaign : Campaigns.defaultNewCampaign();
       $scope.newCampaign.template = $scope.templateOptions[1];
-      $scope.newCampaign.proposalComponents = Components.defaultProposalComponents();
+      $scope.newCampaign.proposalComponents = inProgressNewCampaign ? inProgressNewCampaign.proposalComponents : _.cloneDeep(Components.defaultComponents());;
       $scope.newCampaign.enableBudget = 'yes';
       $scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
-      $scope.newCampaign.milestones = Components.defaultProposalComponentMilestones();
       $scope.newCampaign.linkedComponents = [];
-      initializeMilestonesTimeframe();
       var configs = configService.getCampaignConfigs("CAMPAIGN");
       $scope.newCampaign.configs = configs;
 
@@ -419,17 +402,6 @@
       });
     }
 
-    /**
-     * Initializes the timeframe models for milestones
-     */
-    function initializeMilestonesTimeframe() {
-      $scope.newCampaign.campaignTimeframeInMonths = 1;
-      $scope.newCampaign.campaignTimeframeInDays = 32;
-      $scope.newCampaign.campaignTimeframeStartDate = moment().local().toDate();
-      $scope.newCampaign.triggerTimeframeUpdate = false;
-      $scope.newCampaign.noOverlapping = false;
-      privateRefreshTimeframe(6);
-    }
 
     /**
      * Non-scope function to update current/previous step models
@@ -445,19 +417,6 @@
       }
     }
 
-    /**
-     * Non-scope function to update the timeframe for milestones
-     * @param months
-     */
-    function privateRefreshTimeframe(months) {
-      var start = moment($scope.newCampaign.milestones[0].date);
-      var end = moment(start).add(months, 'M');
-      var d = duration(start, end);
-      $scope.newCampaign.campaignTimeframeInDays = d.days;
-      $scope.newCampaign.campaignTimeframeEndDate = end.toDate();
-      $scope.newCampaign.triggerTimeframeUpdate = true;
-      console.log("Trigger Timeframe Update: " + $scope.newCampaign.triggerTimeframeUpdate);
-    }
 
     function updateMilestoneStartDate(newValue, campaignStartDate) {
       return moment(campaignStartDate).add(newValue, 'd');
@@ -536,8 +495,6 @@
 
       if (requiredFields) {
         var components = $scope.newCampaign.proposalComponents;
-        var milestones = $scope.newCampaign.milestones;
-
         // Setup existing themes
         newCampaign.existingThemes = [];
         addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);
@@ -546,54 +503,24 @@
           addToExistingThemes(newCampaign.existingThemes, $scope.campaignThemes);
         }
 
-        // setup milestones in components
-        // TODO: setup milestones already inside components when creation
-        newCampaign.components = [];
-        newCampaign.existingComponents = [];
-        for (var i = 0; i < milestones.length; i += 1) {
-          var m = milestones[i];
-          // TODO: change in API "start" to just "date"
-          m.start = m.date;
-          components[m.componentIndex].milestones.push(m);
+        // milestones configuration
+        angular.forEach(components, (component) => {
+          const startMilestone = component.milestones.filter(m => m.type === 'START')[0];
+          const endMilestone = component.milestones.filter(m => m.type === 'END')[0];
 
-          if (m.type === "START") {
-            // Set component start date to the the date of the first milestone of type "START"
-            if (components[m.componentIndex].startDate) {
-              var milestoneIsBefore = moment(m.date).isBefore(components[m.componentIndex].startDate);
-              components[m.componentIndex].startDate = milestoneIsBefore ? m.date : components[m.componentIndex].startDate;
-            } else {
-              components[m.componentIndex].startDate = m.date;
-            }
-          } else if (m.type === "END") {
-            // Set component end date to the the date of last milestone of type "END"
-            if (components[m.componentIndex].endDate) {
-              var milestoneIsAfter = moment(m.date).isAfter(components[m.componentIndex].endDate);
-              components[m.componentIndex].endDate = milestoneIsAfter ? m.date : components[m.componentIndex].endDate;
-            } else {
-              components[m.componentIndex].endDate = m.date;
-            }
+          if (startMilestone) {
+            component.startDate = moment(startMilestone.date).format('YYYY-MM-DD HH:mm');
           }
-          // Make sure date is in format "YYYY-MM-DD HH:mm"
-          m.date = moment(m.date).format("YYYY-MM-DD HH:mm");
-        }
 
-        for (var i = 0; i < components.length; i += 1) {
-          var component = components[i];
-          if (component.enabled && component.active || component.enabled && component.linked) {
-            if (component && component.key === 'Proposalmaking') {
-              component.templates = [{ templateSections: component.contributionTemplate }];
-            }
-            newCampaign.components.push(component);
+          if (endMilestone) {
+            component.endDate = moment(endMilestone.date).format('YYYY-MM-DD HH:mm');
           }
-          // Make sure start dates are not null
-          component.startDate = component.startDate ? component.startDate : i - 1 > 0 ? components[i - 1].endDate : today().toDate();
 
-          component.endDate = component.endDate ? component.endDate : i + 1 < components.length ? components[i + 1].startDate : moment(component.startDate).add(30, "days");
-
-          // Make sure date is in format "YYYY-MM-DD HH:mm a z"
-          component.startDate = moment(component.startDate).format("YYYY-MM-DD HH:mm");
-          component.endDate = moment(component.endDate).format("YYYY-MM-DD HH:mm");
-        }
+          angular.forEach(component.milestones, m => {
+            m.date = m.date = moment(m.date).format('YYYY-MM-DD HH:mm');
+          })
+        });
+        newCampaign.components = components;
       } else {
         newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
       }
@@ -689,7 +616,7 @@
      * Handler called when user clicks on delet selected phase button.
      */
     function deleteSelectedPhase() {
-      _.remove(this.defaultComponents, { key: this.selectedComponent.key });
+      _.remove(this.newCampaign.proposalComponents, { key: this.selectedComponent.key });
       this.selectedComponent = {};
     }
 
@@ -700,7 +627,7 @@
       if (!this.selectedComponent.title) {
         return;
       }
-      this.defaultComponents.push(this.selectedComponent);
+      this.newCampaign.proposalComponents.push(this.selectedComponent);
       this.selectedComponent = {};
     }
 

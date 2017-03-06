@@ -39,7 +39,7 @@
                 <div class="content">
                   <ul>
                     <li ng-repeat="milestone in component.milestones track by $index" class="li-action-menu">
-                      <a href="" ng-click="toggleMilestoneDescription(milestone, component.milestones)">{{milestone.title | translate }} ({{formatDate(milestone.date)}})</a>
+                      <a href="" ng-click="toggleMilestoneDescription(milestone, component.milestones)">{{milestone.title}} ({{formatDate(milestone.date)}})</a>
                       <p ng-if="milestone.showDescription">{{milestone.description}}</p>
                     </li>
                   </ul>

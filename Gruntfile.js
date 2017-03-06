@@ -52,7 +52,9 @@ module.exports = function(grunt) {
     },
     connect: {
       server: {
-        options: { port: 8000 }
+        options: {
+          port: 8000
+        }
       }
     },
     watch: {
@@ -61,7 +63,8 @@ module.exports = function(grunt) {
         files: ["index.html"]
       },
       js: {
-        files: ["app/*.js", "app/**/*.js"]
+        files: ["app/*.js", "app/**/*.js"],
+        tasks: ['babel']
       },
       sass: {
         files: ['**/*.scss'],
@@ -224,15 +227,30 @@ module.exports = function(grunt) {
           ]
         }
       }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['es2015']
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.',
+          src: ['app/v2/**/*.js', 'app/services/appCivistService.js'],
+          dest: 'dist'
+        }]
+      }
     }
   });
 
   // Default task(s).
   grunt.registerTask('default', ['uglify', 'haml']);
   grunt.registerTask('build', [
-    'clean:dist', 'sass', 'useminPrepare', 'copy:dist', 'cssmin', 'concat', 'uglify', 'usemin'
+    'clean:dist', 'sass', 'useminPrepare', 'copy:dist', 'cssmin', 'concat', 'babel', 'uglify', 'usemin'
   ]);
 
   // Server tasks
-  grunt.registerTask('server', ['clean', 'copy:dev', 'sass', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
+  grunt.registerTask('server', ['clean', 'copy:dev', 'sass', 'babel', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
 };

@@ -399,10 +399,10 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     getConfiguration: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid: spaceId });
     },
-    getConfigurationPublic: function(spaceUUID ){
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/config/public', {uuid: spaceUUID});
+    getConfigurationPublic: function(spaceUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/config/public', { uuid: spaceUUID });
     },
-    isContributionTypeSupported: function (type, scope) {
+    isContributionTypeSupported: function(type, scope) {
       var campaignConfigs = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.contribution-types'] : null;
       if (campaignConfigs) {
         return campaignConfigs.includes(type);
@@ -410,7 +410,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
         return true; // if the configuration is not defined, all contribution types are supported
       }
     },
-    showAssemblyLogo: function (scope) {
+    showAssemblyLogo: function(scope) {
       var showAssemblyLogo = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.show-assembly-logo'] : false;
       return showAssemblyLogo;
     }
@@ -2181,6 +2181,90 @@ appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
        */
       verify: function(toValidate) {
         return $resource(url + '/site/verify', { k: toValidate }).save().$promise;
+      }
+    }
+  }
+]);
+
+/**
+ * Editor factory.
+ * 
+ * @description
+ * 
+ * Defines helpers for tinymce editor.
+ * 
+ * @class Editor
+ * @memberof services
+ */
+appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploader',
+  function($resource, localStorageService, FileUploader) {
+    var url = getServerBaseUrl(localStorageService);
+
+    return {
+      /**
+       * Returns default configuration options for tinymce.
+       * 
+       * @method services.Editor#getEditorOptions
+       * @param {Object} target - The scope where the tinymce editor will be.
+       */
+      getOptions(target) {
+
+        return {
+          height: 400,
+          plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste imagetools'
+          ],
+          toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+          images_upload_credentials: true,
+          image_advtab: true,
+          image_title: true,
+          automatic_uploads: true,
+          file_picker_types: 'image',
+          imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
+          images_upload_handler: function(blobInfo, success, failure) {
+            var xhr, formData;
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.open('POST', FileUploader.uploadEndpoint());
+            xhr.onload = function() {
+              var json;
+
+              if (xhr.status != 200) {
+                failure('HTTP Error: ' + xhr.status);
+                return;
+              }
+              json = JSON.parse(xhr.responseText);
+
+              if (!json || typeof json.url != 'string') {
+                failure('Invalid JSON: ' + xhr.responseText);
+                return;
+              }
+              success(json.url);
+            };
+            formData = new FormData();
+            formData.append('file', blobInfo.blob());
+            xhr.send(formData);
+          },
+          file_picker_callback: function(cb, value, meta) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            $(input).bind('change', function() {
+              var file = this.files[0];
+              var id = 'blobid' + (new Date()).getTime();
+              var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+              var blobInfo = blobCache.create(id, file);
+              blobCache.add(blobInfo);
+              cb(blobInfo.blobUri(), { title: file.name });
+            });
+            input.click();
+            target.$on('$destroy', function() {
+              $(input).unbind('change');
+            });
+          }
+        };
       }
     }
   }

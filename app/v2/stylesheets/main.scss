@@ -554,19 +554,28 @@ form>fieldset {
 .component-definition-header {
   h3 {
     margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left: 10px;
   }
   h3,
   button {
     float: left;
   }
-  button {
-    padding: 0.5em;
-    margin-top: 12px;
-  }
   button+button {
     margin-left: 10px;
   }
 }
+
+
+/* do not use bootstrap well background-image */
+
+.box {
+  background-image: initial;
+}
+
+
+/* accordion override */
 
 uib-accordion {
   .panel-title {

@@ -905,7 +905,6 @@
   "Selected Phase": "Selected Phase",
   "Add new phase": "Add new phase",
   "Delete selected phase": "Delete selected phase",
-
   "Type": "Type",
   "Stage Milestones": "Stage Milestones",
   "stage.milestones.help.1": "Select a milestone of this phase to Edit. Remember, each phase must have at least two milestones: one",

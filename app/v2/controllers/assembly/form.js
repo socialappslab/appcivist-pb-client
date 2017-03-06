@@ -8,12 +8,13 @@
 
   AssemblyFormCtrl.$inject = [
     '$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService', 'Assemblies',
-    'usSpinnerService', '$state', '$location', '$stateParams', 'configService', 'Notify', 'loginService'
+    'usSpinnerService', '$state', '$location', '$stateParams', 'configService', 'Notify', 'loginService',
+    '$http', 'FileUploader', 'Editor'
   ];
 
   function AssemblyFormCtrl($scope, localStorageService, $translate, $routeParams,
     LocaleService, Assemblies, usSpinnerService, $state, $location, $stateParams,
-    configService, Notify, loginService) {
+    configService, Notify, loginService, $http, FileUploader, Editor) {
 
     init();
 
@@ -42,6 +43,15 @@
         file.name = name;
         file.url = url;
         $scope.f = file;
+      }
+
+      $scope.setNewAssemblyCoverIcon = function(url, name) {
+        $scope.newAssembly.profile.cover = url;
+        localStorageService.set('temporaryNewAssembly', $scope.newAssembly);
+        var file = {};
+        file.name = name;
+        file.url = url;
+        $scope.selectedCover = file;
       }
 
       $scope.addEmailsToList = function(emailsText) {
@@ -230,29 +240,29 @@
         }
       }
 
-      $scope.uploadFiles = function(file, errFiles) {
+      /**
+       * Uploads the selected file to the server
+       * 
+       * @param {Object} file - The file to upload
+       * @param {Object[]} errFiles
+       * @param {string} target - icon | cover determine if 
+       */
+      $scope.uploadFiles = function(file, errFiles, target) {
         $scope.f = file;
-        $scope.errFile = errFiles && errFiles[0];
-        if (file) {
-          file.upload = Upload.upload({
-            url: FileUploader.uploadEndpoint(),
-            data: {
-              file: file
-            }
-          });
-
-          file.upload.then(function(response) {
-            $timeout(function() {
-              file.result = response.data;
-              $scope.newAssembly.profile.icon = response.data.url;
-            });
-          }, function(response) {
-            if (response.status > 0)
-              $scope.errorMsg = response.status + ': ' + response.data;
-          }, function(evt) {
-            file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-          });
-        }
+        var fd = new FormData();
+        fd.append('file', file);
+        $http.post(FileUploader.uploadEndpoint(), fd, {
+          headers: {
+            'Content-Type': undefined
+          },
+          transformRequest: angular.identity,
+        }).then(response => {
+          if (target === 'icon') {
+            $scope.setNewAssemblyIcon(response.data.url, response.data.name);
+          } else {
+            $scope.setNewAssemblyCoverIcon(response.data.url, response.data.name);
+          }
+        }, error => Notify.show('Error while uploading file to the server', 'error'));
       }
 
       $scope.shortnameChanged = function(shortname) {
@@ -294,27 +304,25 @@
         'name': 'Plan Icon',
         'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png'
       }, {
-        'name': 'Article 49 Icon',
-        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png'
-      }, {
-        'name': 'Passe Livre Icon',
-        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png'
-      }, {
-        'name': 'Skyline Icon',
-        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg'
+        'name': 'Barefoot Doctor Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/barefootdoctor-140.png'
       }];
 
+      $scope.defaultCoverIcons = [
+        {
+          name: 'Collaborating Icon',
+          url: 'https://pb.appcivist.org/assets/images/bg-hands-collaborating.jpg'
+        }
+      ];
       $scope.userIsNew = $routeParams.userIsNew ? true : false;
+
       if ($scope.userIsNew) {
         $scope.newUser = {};
       }
-
-      $scope.themes = {
-        list: null
-      };
-      $scope.inviteesEmails = {
-        list: null
-      };
+      $scope.themes = { list: null };
+      $scope.inviteesEmails = { list: null };
+      $scope.editorOptions = Editor.getOptions($scope);
+      $scope.editorOptions.height = 200;
 
       // temporaryAssembly manage
       var temporaryAssembly = localStorageService.get('temporaryNewAssembly');

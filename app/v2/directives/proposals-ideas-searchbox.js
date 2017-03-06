@@ -23,7 +23,7 @@
           searchText: '',
           themes: [],
           groups: [],
-          // date_asc | date_desc | popularity | random
+          // date_asc | date_desc | popularity | random | most_commented
           sorting: 'date_asc',
           mode: 'proposal'
         };
@@ -150,7 +150,7 @@
     /**
      * add sorting to filters object.
      *
-     * @param {string} sort - date | random | popularity
+     * @param {string} sort - date | random | popularity | most_commented
      */
     function setSorting(sort) {
       if (sort === 'date') {

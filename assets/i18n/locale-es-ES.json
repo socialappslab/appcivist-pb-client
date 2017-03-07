@@ -913,5 +913,20 @@
   "How many points can a voter distribute?": "¿Cuántos puntos puede distribuir un votante?",
   "Member Authors": "Miembros de la Asamblea",
   "Most Commented": "Comentarios",
-  "Most voted": "Votos"
+  "Most voted": "Votos",
+  "Member Authors": "Miembros Autores",
+  "Select a phase in the timeline to Edit, or add a new phase to the Campaign timeline. The timeline on the top of the page shows how your campaign timeline will be displayed.": "Select a phase in the timeline to Edit, or add a new phase to the Campaign timeline. The timeline on the top of the page shows how your campaign timeline will be displayed.",
+  "Campaign Timeline": "Campaign Timeline",
+  "Stage name": "Stage name",
+  "Stage description": "Stage description",
+  "Selected Phase": "Selected Phase",
+  "Add new phase": "Add new phase",
+  "Delete selected phase": "Delete selected phase",
+  "Type": "Type",
+  "Stage Milestones": "Stage Milestones",
+  "stage.milestones.help.1": "Select a milestone of this phase to Edit. Remember, each phase must have at least two milestones: one",
+  "stage.milestones.help.2": " representing the START and another representing the END of that phase.You can also add REMINDER",
+  "stage.milestones.help.3": " milestones that represent intermediate important dates in that phase. For each milestone, you can",
+  "stage.milestones.help.4": " choose the title and description you wish to display on the campaign timeline. The timeline on the top of the page shows how your campaign timeline will be diaplayed.",
+  "e.g., Assemblie Belleville": "e.g., Assemblie Belleville"
 }

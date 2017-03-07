@@ -55,7 +55,7 @@
   "assembly.newAssemblystep1.text1": "What's your assembly about?",
   "assembly.newAssemblystep1.text2": "Where is your assembly located?",
   "assembly.newAssemblystep1.text3": "Who can join your assembly?",
-  "assembly.newAssemblystep1.text4": "Define one or more assembly themes of interest, separated by comma",
+  "assembly.newAssemblystep1.text4": "Define one or more assembly categories of interest, separated by comma",
   "assembly.newAssemblystep1.text5": "Hello! You have been invited to be a member of the Assembly {{newAssemblyName}} in AppCivist. If you are interested, follow the link attached to this invitation to accept it. If you are not interested, you can just ignore this message",
   "assembly.newAssemblystep1.text6": "Enable face to face scheduling",
   "assembly.newAssemblystep2.text1": "Linking Assemblies is a quick way for gaining access to the resources and campaigns of other Assemblies of interest. If you want to link to other Assemblies, click on their icons.",
@@ -906,5 +906,13 @@
   "Add new phase": "Add new phase",
   "Delete selected phase": "Delete selected phase",
   "Most commented": "Votes",
-  "Most voted": "Comments"
+  "Most voted": "Comments",
+  "Type": "Type",
+  "Stage Milestones": "Stage Milestones",
+  "stage.milestones.help.1": "Select a milestone of this phase to Edit. Remember, each phase must have at least two milestones: one",
+  "stage.milestones.help.2": " representing the START and another representing the END of that phase.You can also add REMINDER",
+  "stage.milestones.help.3": " milestones that represent intermediate important dates in that phase. For each milestone, you can",
+  "stage.milestones.help.4": " choose the title and description you wish to display on the campaign timeline. The timeline on the top of the page shows how your campaign timeline will be diaplayed.",
+  "e.g., Assemblie Belleville": "e.g., Assemblie Belleville",
+  "Pick a logo or upload an image to represent your Assembly cover picture (or upload a picture < 2Mb)": "Pick a logo or upload an image to represent your Assembly cover picture (or upload a picture < 2Mb)"
 }

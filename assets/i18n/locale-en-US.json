@@ -904,5 +904,7 @@
   "Stage description": "Stage description",
   "Selected Phase": "Selected Phase",
   "Add new phase": "Add new phase",
-  "Delete selected phase": "Delete selected phase"
+  "Delete selected phase": "Delete selected phase",
+  "Most commented": "Votes",
+  "Most voted": "Comments"
 }

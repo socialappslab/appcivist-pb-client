@@ -122,20 +122,20 @@
         <i ng-if="!sortingIs('date_asc') && !sortingIs('date_desc')" class="fa fa-sort-up"></i>
       </li>
       <li class="sarch_mode__popularity" ng-click="setSorting('popularity')" ng-class="{active: sortingIs('popularity')}">
-        <a href="">{{'Popularity' | translate}}</a>
+        <a href="">{{'Most voted' | translate}}</a>
       </li>
       <li ng-if="isAnonymous" class="sarch_mode__popularity" ng-click="setSorting('most_commented_public')" ng-class="{active: sortingIs('most_commented_public')}">
-        <a href="">{{'Most Commented' | translate}}</a>
+        <a href="">{{'Most commented' | translate}}</a>
       </li>
       <li ng-if="!isAnonymous && campaignConfig['appcivist.campaign.disable-public-site']==='FALSE'" class="sarch_mode__popularity" ng-click="setSorting('most_commented')" ng-class="{active: sortingIs('most_commented')}">
-        <a href="">{{'Most Commented' | translate}}</a>
-      </li>  
+        <a href="">{{'Most commented' | translate}}</a>
+      </li>
       <li ng-if="!isAnonymous && campaignConfig['appcivist.campaign.disable-public-site']==='TRUE'" class="sarch_mode__popularity" ng-click="setSorting('most_commented_members')" ng-class="{active: sortingIs('most_commented_members')}">
-        <a href="">{{'Most Commented' | translate}}</a>
-      </li> 
+        <a href="">{{'Most commented' | translate}}</a>
+      </li>
       <li ng-if="!isAnonymous && !campaignConfig['appcivist.campaign.disable-public-site']" class="sarch_mode__popularity" ng-click="setSorting('most_commented_members')" ng-class="{active: sortingIs('most_commented_members')}">
-        <a href="">{{'Most Commented' | translate}}</a>
-      </li>            
+        <a href="">{{'Most commented' | translate}}</a>
+      </li>
       <li class="sarch_mode__popularity" ng-click="setSorting('random')" ng-class="{active: sortingIs('random')}">
         <a href="">{{'Random' | translate}}</a>
       </li>

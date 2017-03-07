@@ -15,6 +15,8 @@
         searchHandler: '&',
         loadThemes: '&',
         loadGroups: '&?',
+        isAnonymous: '=',
+        campaignConfig: '=',
         campaignContributionTypes: '@'
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
@@ -23,7 +25,7 @@
           searchText: '',
           themes: [],
           groups: [],
-          // date_asc | date_desc | popularity | random
+          // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
           sorting: 'date_asc',
           mode: 'proposal'
         };
@@ -150,7 +152,7 @@
     /**
      * add sorting to filters object.
      *
-     * @param {string} sort - date | random | popularity
+     * @param {string} sort - date | random | popularity | most_commented | most_commented_public | most_commented_members
      */
     function setSorting(sort) {
       if (sort === 'date') {

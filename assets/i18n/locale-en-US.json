@@ -905,6 +905,8 @@
   "Selected Phase": "Selected Phase",
   "Add new phase": "Add new phase",
   "Delete selected phase": "Delete selected phase",
+  "Most commented": "Votes",
+  "Most voted": "Comments",
   "Type": "Type",
   "Stage Milestones": "Stage Milestones",
   "stage.milestones.help.1": "Select a milestone of this phase to Edit. Remember, each phase must have at least two milestones: one",
@@ -913,11 +915,11 @@
   "stage.milestones.help.4": " choose the title and description you wish to display on the campaign timeline. The timeline on the top of the page shows how your campaign timeline will be diaplayed.",
   "e.g., Assemblie Belleville": "e.g., Assemblie Belleville",
   "Pick a logo or upload an image to represent your Assembly cover picture (or upload a picture < 2Mb)": "Pick a logo or upload an image to represent your Assembly cover picture (or upload a picture < 2Mb)",
-
   "Ongoing campaigns": "Ongoing campaigns",
   "Past campaigns": "Past campaigns",
   "No campaigns to show.": "No campaigns to show.",
   "Assembly Resources": "Assembly Resources",
   "Organizers": "Organizers",
-  "Contact": "Contact"
+  "Contact": "Contact",
+  "Pick a logo or upload an image to represent your Assembly cover picture (or upload a picture < 2Mb)": "Pick a logo or upload an image to represent your Assembly cover picture (or upload a picture < 2Mb)"
 }

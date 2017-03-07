@@ -46,12 +46,12 @@
   </ul>
   <div ng-if="contribution.informalScore != null && contribution.informalScore != undefined " class="informal_score"
        ng-class="{positive: contribution.informalScore >= 0, negative: contribution.informalScore < 0}">
-    <em>{{(contribution.informalScore !=null && contribution.informalScore != undefined) ? 0 : contribution.informalScore}}</em>
+    <em>{{(contribution.informalScore != null && contribution.informalScore != undefined) ? contribution.informalScore : 0}}</em>
   </div>
 
   <div ng-if="(contribution.informalScore === null || contribution.informalScore === undefined)" class="informal_score"
        ng-class="{positive: contribution.popularity >= 0, negative: contribution.popularity < 0}">
-    <em>{{(contribution.popularity !=null && contribution.popularity != undefined) ? 0 : contribution.popularity}}</em>
+    <em>{{(contribution.popularity != null && contribution.popularity != undefined) ? contribution.popularity : 0}}</em>
   </div>
 
   <div ng-if="(contribution.totalComments != null && contribution.totalComments != undefined)" style="margine-left:4px" class="informal_score positive">

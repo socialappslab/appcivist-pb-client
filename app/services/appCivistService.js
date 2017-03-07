@@ -216,6 +216,9 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     campaign: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid', { aid: assemblyId, cid: campaignId }, { 'update': { method: 'PUT' } });
     },
+    campaignsInAssembly: function(assemblyId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', { aid: assemblyId });
+    },
     campaignByUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
     },
@@ -926,6 +929,12 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService) {
   };
 });
 
+/**
+ * Defines methods to interact with the spaces endpoint.
+ * 
+ * @class Space
+ * @memberof services
+ */
 appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contributions', 'Notify',
   function($resource, localStorageService, Contributions, Notify) {
     return {
@@ -940,6 +949,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       /**
        * Get contributions from server.
        *
+       * @method services.Space#getContributions
        * @param {object} target -  target must have rsID (resource space ID) or rsUUID (resource space UUID)
        * @param {string} type - forum_post | comment | idea | question | issue |  proposal | note
        * @param {boolean} isAnonymous
@@ -992,9 +1002,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         );
         return rsp.$promise;
       },
+
       /**
        * Basic search handler.
        *
+       *  @method services.Space#doSearch
        *  @param {object} target -  campaign | working group.
        *  @param {boolean} isAnonymous
        *  @param {object} filters - filters definition
@@ -1018,6 +1030,26 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           });
           return this.getContributions(target, type, isAnonymous, params);
         }
+      },
+
+      /**
+       * Returns a $resource to interact with the organizations endpoint.
+       * 
+       * @method services.Space#organizations
+       * @param {number} sid - The space id.
+       */
+      organizations(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/organization', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the resources endpoint.
+       * 
+       * @method services.Space#resources
+       * @param {number} sid - The space id.
+       */
+      resources(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource', { sid });
       }
     };
   }
@@ -2265,6 +2297,34 @@ appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploade
             });
           }
         };
+      }
+    }
+  }
+]);
+
+/**
+ * Defines utility methods.
+ * 
+ * @class Utils
+ * @memberof services
+ */
+appCivistApp.factory('Utils', [
+  function() {
+
+    return {
+      /**
+       * Parses the given date to local time.
+       * 
+       * @method services.Utils#parseDateToLocal
+       * @param {string} dateStr - The date to parse. Expected format example: 2016-12-12 13:05 PM GMT
+       */
+      parseDateToLocal(dateStr) {
+        if (!dateStr) {
+          return;
+        }
+        dateStr = dateStr.replace('PM GMT', '').replace('AM GMT', '').trim();
+        dateStr.replace(' ', 'T');
+        return moment.utc(dateStr).local().toDate();
       }
     }
   }

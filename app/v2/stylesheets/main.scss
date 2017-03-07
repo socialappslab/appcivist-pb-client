@@ -600,3 +600,134 @@ uib-accordion {
   -moz-box-shadow: 0px 0px 20px 1px rgba(0, 152, 119, 1);
   box-shadow: 0px 0px 20px 1px rgba(0, 152, 119, 1);
 }
+
+
+/** assembly home styles */
+
+.assembly-home {
+  .well {
+    background-color: #356B5B;
+    background-image: initial;
+    margin-top: 70px;
+    border: #356B5B;
+    border-radius: 0;
+    color: #ffffff;
+    text-align: center;
+    padding: 3em;
+    p {
+      text-align: justify;
+    }
+  }
+  .campaigns {
+    h2 {
+      color: #007259;
+      text-align: center;
+    }
+    .nav-tabs>li,
+    .nav-pills>li {
+      float: none;
+      display: inline-block;
+      /* ie7 fix */
+      *display: inline;
+      /* hasLayout ie7 trigger */
+      zoom: 1;
+    }
+    .nav-tabs,
+    .nav-pills {
+      text-align: center;
+    }
+    .nav-tabs>li>a {
+      border: none;
+    }
+    .nav-tabs {
+      border-bottom: none;
+      li.active {
+        border-bottom: 2px solid #AFAFAF;
+      }
+    }
+    .list-group-item+.list-group-item {
+      margin-top: 10px;
+    }
+    .list-group-item {
+      height: 60px;
+      line-height: 40px;
+      background-color: #F2F2F2;
+      color: #007259;
+      padding: 0;
+      div {
+        display: inline-block;
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+      p {
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+    }
+    .list-group-item:first-child {
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      margin-top: 20px;
+    }
+    .list-group-item-btn {
+      float: right;
+      border-left: 1px solid #979797;
+      height: 59px;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 10px;
+      color: #979797;
+    }
+  }
+  .section-divider {
+    border-bottom: 1px solid #AFAFAF;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    h2 {
+      margin-bottom: 20px;
+    }
+  }
+  .documents,
+  .contact {
+    .row>p {
+      text-align: center;
+    }
+  }
+  .organizers {
+    .row {
+      text-align: center;
+    }
+    a>img {
+      width: 100px;
+      height: 150px;
+    }
+    a+a {
+      margin-left: 10px;
+    }
+  }
+  .contact {
+    margin-bottom: 20px;
+  }
+  footer {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #262626;
+    height: 300px;
+    .logos {
+      img {
+        height: 42px;
+      }
+      .row+.row {
+        margin-top: 20px;
+      }
+      .text {
+        color: #ffffff;
+        font-weight: 100;
+        a {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}

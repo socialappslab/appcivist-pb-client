@@ -31,7 +31,7 @@
         development: "https://devplatform.appcivist-dev.org/api",
         local: "http://localhost:9000/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api",
-        
+
       }
     },
     handleError: function(error) {
@@ -184,6 +184,12 @@
         url: '/:aid',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      //assembly: no princial assembly routes
+      .state('v2.assembly.aid.home', {
+        url: '/home',
+        templateUrl: 'app/v2/partials/assembly/home.html',
+        controller: 'v2.AssemblyHomeCtrl'
       })
       .state('v2.assembly.aid.assembly', {
         url: '/assembly/new',

@@ -20,9 +20,9 @@
       if ($scope.user && $scope.user.language)
         $translate.use($scope.user.language);
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
-      $scope.userIsAuthenticated = $scope.userIsAuthenticated === null ? false : $scope.userIsAuthenticated;
       $scope.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');
       $scope.isHomePage = $state.is('v2.homepage');
+      $scope.isAssemblyHome = $state.is('v2.assembly.aid.home');
       $scope.showSmallMenu = false;
       $scope.nav = { isActive: false };
 
@@ -93,7 +93,7 @@
         $scope.currentCampaignId = $state.params.cid;
       }
       var isCampaignDashboard = $state.is('v2.assembly.aid.campaign.cid');
-      if(isCampaignDashboard) {
+      if (isCampaignDashboard) {
         loadUserData(this);
       }
     }

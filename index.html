@@ -7,9 +7,11 @@
   <script>
     window.paceOptions = {
       document: true, // disabled
-      eventLag: true,
+      eventLag: {
+        lagThreshold: 12
+      },
       restartOnPushState: true,
-      restartOnRequestAfter: true,
+      restartOnRequestAfter: false,
       ajax: {
         trackMethods: ['POST', 'GET', 'PUT', 'DELETE']
       },
@@ -168,6 +170,7 @@
 <script src="dist/app/v2/controllers/working-group/form.js" type="text/javascript"></script>
 <script src="dist/app/v2/controllers/assembly/start.campaign.js" type="text/javascript"></script>
 <script src='dist/app/v2/controllers/home.js' type="text/javascript"></script>
+<script src='dist/app/v2/controllers/assembly/home.js' type="text/javascript"></script>
 
 <script src="dist/app/v2/directives/member-card.js" type="text/javascript"></script>
 <script src="dist/app/v2/directives/contribution-card.js" type="text/javascript"></script>

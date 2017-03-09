@@ -762,8 +762,7 @@ appCivistApp.controller('CommentsController', function($rootScope, $scope, $http
 
 
 appCivistApp.controller('ContributionFeedbackCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
-  Contributions, $translate, MakeVote, Ballot, BallotPaper,
-  VotesByUser, $rootScope) {
+  Contributions, $translate, MakeVote, Ballot, BallotPaper, VotesByUser) {
 
   init();
 
@@ -822,8 +821,7 @@ appCivistApp.controller('ContributionFeedbackCtrl', function($rootScope, $scope,
 });
 
 appCivistApp.controller('ContributionVotesCtrl', function($rootScope, $scope, $http, $routeParams, localStorageService,
-  Contributions, $translate, MakeVote, Ballot, BallotPaper,
-  VotesByUser, $rootScope, $timeout) {
+  Contributions, $translate, MakeVote, Ballot, BallotPaper, VotesByUser, $timeout) {
   /**
    * Directive Scope
    * contribution: '=',

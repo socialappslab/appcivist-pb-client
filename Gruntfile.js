@@ -237,7 +237,6 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '.',
-          //src: ['app/v2/**/*.js', 'app/services/appCivistService.js', 'dist/scripts/app.js', 'dist/scripts/ui.js'],
           src: ['app/**/*.js'],
           dest: 'dist'
         }]

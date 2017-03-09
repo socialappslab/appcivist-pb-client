@@ -165,7 +165,6 @@ module.exports = function(grunt) {
             'assets/**/*',
             'index.html',
             'app/**/*.html',
-            'app/**/*.js',
             'bower_components/vex/dist/css/vex.css',
             'bower_components/vex/dist/css/vex-theme-plain.css',
             'bower_components/appcivist-patterns/dist/css/**/*',
@@ -238,7 +237,8 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '.',
-          src: ['app/v2/**/*.js', 'app/services/appCivistService.js'],
+          //src: ['app/v2/**/*.js', 'app/services/appCivistService.js', 'dist/scripts/app.js', 'dist/scripts/ui.js'],
+          src: ['app/**/*.js'],
           dest: 'dist'
         }]
       }
@@ -248,9 +248,9 @@ module.exports = function(grunt) {
   // Default task(s).
   grunt.registerTask('default', ['uglify', 'haml']);
   grunt.registerTask('build', [
-    'clean:dist', 'sass', 'useminPrepare', 'copy:dist', 'cssmin', 'concat', 'babel', 'uglify', 'usemin'
+    'clean:dist', 'sass', 'babel:dist', 'useminPrepare', 'copy:dist', 'cssmin', 'concat', 'usemin', 'uglify:dist'
   ]);
 
   // Server tasks
-  grunt.registerTask('server', ['clean', 'copy:dev', 'sass', 'babel', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
+  grunt.registerTask('server', ['clean', 'copy:dev', 'sass', 'babel:dist', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
 };

@@ -7,11 +7,11 @@
 
   AssemblyHomeCtrl.$inject = [
     '$state', '$scope', 'loginService', 'localStorageService', 'Campaigns', 'Utils', 'WorkingGroups',
-    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth'
+    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth', '$translate'
   ];
 
   function AssemblyHomeCtrl($state, $scope, loginService, localStorageService, Campaigns, Utils,
-    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth) {
+    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth, $translate) {
 
     $scope.fetchCampaigns = fetchCampaigns.bind($scope);
     $scope.fetchWorkingGroups = fetchWorkingGroups.bind($scope);
@@ -26,18 +26,57 @@
 
 
     function activate() {
+      $scope.unauthorizedAccess = false;
       $scope.user = localStorageService.get('user');
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
-      let assembly = localStorageService.get('currentAssembly');
 
-      if (Utils.isUUID($stateParams.aid)) {
+      if (!$scope.userIsAuthenticated || Utils.isUUID($stateParams.aid)) {
         $scope.isAnonymous = true;
         $scope.assemblyId = $stateParams.aid;
       } else {
+        if ($scope.user && $scope.user.language) {
+          $translate.use($scope.user.language);
+        }
         $scope.assemblyId = parseInt($stateParams.aid);
       }
       $scope.fetchAssembly($scope.assemblyId);
-      $scope.fetchCampaigns();
+    }
+
+    function fetchAssembly(aid) {
+      let rsp;
+
+      if (this.isAnonymous) {
+        if (Utils.isUUID($stateParams.aid)) {
+          rsp = Assemblies.assemblyByUUID(aid).get().$promise;
+        } else if (isNaN($stateParams.aid)) {
+          rsp = Assemblies.assemblyByShortName(aid).get().$promise;
+        } else {
+          this.unauthorizedAccess = true;
+        }
+      } else {
+        rsp = Assemblies.assembly(aid).get().$promise;
+      }
+
+      if (!this.unauthorizedAccess) {
+        rsp.then(
+          assembly => {
+            this.assembly = assembly;
+            if (this.isAnonymous) {
+              if (this.assembly && this.assembly.lang) {
+                $translate.use(this.assembly.lang);
+              }
+            }
+            this.fetchCampaigns();
+            this.fetchOrganizations(assembly);
+            this.fetchResources(assembly);
+            this.fetchConfigs(assembly);
+          },
+
+          error => {
+            Notify.show('Error while trying to fetch assembly information from the server', 'error');
+          }
+        )
+      }
     }
 
     function fetchCampaigns() {
@@ -78,29 +117,6 @@
       )
     }
 
-    function fetchAssembly(aid) {
-      let rsp;
-
-      if (this.isAnonymous) {
-        rsp = Assemblies.assemblyByUUID(aid).get().$promise;
-      } else {
-        rsp = Assemblies.assembly(aid).get().$promise;
-      }
-
-      rsp.then(
-        assembly => {
-          this.assembly = assembly;
-          this.fetchOrganizations(assembly);
-          this.fetchResources(assembly);
-          this.fetchConfigs(assembly);
-        },
-
-        error => {
-          Notify.show('Error while trying to fetch assembly information from the server', 'error');
-        }
-      )
-    }
-
     function fetchWorkingGroups(assemblyId, campaign) {
       let rsp;
 
@@ -112,15 +128,24 @@
       rsp.then(
         groups => {
           campaign.groups = groups;
+          // TODO: find out why the Pace loader keeps showing after the whole page loaded, in the meantime, the following is a patch
+          window.Pace.stop();
         },
         error => {
+          // TODO: find out why the Pace loader keeps showing after the whole page loaded, in the meantime, the following is a patch
+          window.Pace.stop();
           Notify.show('Error while trying to fetch working groups from the server', 'error');
         }
       );
     }
 
     function fetchOrganizations(assembly) {
-      let rsp = Space.organizations(this.assembly.resourcesResourceSpaceId).query().$promise;
+      let rsp;
+      if (this.isAnonymous) {
+        rsp = Space.organizationsByUUID(this.assembly.resourcesResourceSpaceUUID).query().$promise;
+      } else {
+        rsp = Space.organizations(this.assembly.resourcesResourceSpaceId).query().$promise;
+      }
       rsp.then(
         organizations => {
           this.organizations = organizations;
@@ -132,7 +157,12 @@
     }
 
     function fetchResources(assembly) {
-      let rsp = Space.resources(this.assembly.resourcesResourceSpaceId).query().$promise;
+      let rsp;
+      if (this.isAnonymous) {
+        rsp = Space.resourcesByUUID(this.assembly.resourcesResourceSpaceUUID).query().$promise;
+      } else {
+        rsp = Space.resources(this.assembly.resourcesResourceSpaceId).query().$promise;
+      }
       rsp.then(
         resources => {
           this.resources = resources;

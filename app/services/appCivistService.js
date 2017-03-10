@@ -1,7 +1,7 @@
 /**
  * Reads AppCivist API Base URL from local storage and returns it
  * If the base url is not yet stored in the local storage, saves it.
- * 
+ *
  * @param {Object} localStorageService
  * @returns {string} serverBaseUrl
  */
@@ -17,7 +17,7 @@ function getServerBaseUrl(localStorageService) {
 
 /**
  * Assemblies factory.
- * 
+ *
  * @class Assemblies
  * @memberof services
  */
@@ -25,22 +25,22 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
   var serverBaseUrl = getServerBaseUrl(localStorageService);
 
   return {
-    /** 
+    /**
      * Returns an $resource to interact with /assembly endpoint.
-     * 
+     *
      * @method services.Assemblies#assemblies
-     * 
+     *
      * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
      */
     assemblies: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
 
-    /** 
+    /**
      * Returns an $resource to interact with /assembly/:aid endpoint.
-     * 
+     *
      * @method services.Assemblies#assembly
-     * 
+     *
      * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
      */
     assembly: function(assemblyId) {
@@ -50,7 +50,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/assembly', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },
     assemblyByShortName: function(shortName) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/name/:shortname', { shortname: shortName });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/name/:shortname', { shortname: shortName });
     },
     assemblyPublicProfile: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', { aid: assemblyId });
@@ -219,7 +219,6 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     campaignsInAssembly: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', { aid: assemblyId });
     },
-
     campaignsInAssemblyByUUID: function(uuid) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid/campaign', { uuid });
     },
@@ -806,11 +805,11 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
 
 /**
  * WorkingGroups factory.
- * 
+ *
  * @description
- * 
+ *
  * Defines methods for working group related endpoints.
- * 
+ *
  * @class WorkingGroups
  * @memberof services
  */
@@ -835,12 +834,12 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
 
     /**
      * Returns a $resource for the endpoint /public/api/campaign/:uuid/groups
-     * 
+     *
      * @method services.WorkingGroups#workingGroupsInCampaignByUUID
      * @param {string} uuid - The campaign's UUID
      */
     workingGroupsInCampaignByUUID(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/public/api/campaign/:uuid/groups', { uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/groups', { uuid });
     },
 
     workingGroupMembers: function(assemblyId, groupId, stat) {
@@ -960,7 +959,7 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService) {
 
 /**
  * Defines methods to interact with the spaces endpoint.
- * 
+ *
  * @class Space
  * @memberof services
  */
@@ -1063,7 +1062,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
       /**
        * Returns a $resource to interact with the organizations endpoint.
-       * 
+       *
        * @method services.Space#organizations
        * @param {number} sid - The space id.
        */
@@ -1073,7 +1072,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
       /**
        * Returns a $resource to interact with the public organizations endpoint.
-       * 
+       *
        * @method services.Space#organizationsByUUID
        * @param {number} uuid - The space uuid.
        */
@@ -1083,7 +1082,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
       /**
        * Returns a $resource to interact with the resources endpoint.
-       * 
+       *
        * @method services.Space#resources
        * @param {number} sid - The space id.
        */
@@ -1093,7 +1092,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
       /**
        * Returns a $resource to interact with the resources public endpoint.
-       * 
+       *
        * @method services.Space#resourcesByUUID
        * @param {number} uuid - The space uuid.
        */
@@ -1103,7 +1102,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
       /**
        * Returns a $resource to interact with the configurations endpoint.
-       * 
+       *
        * @method services.Space#configs
        * @param {number} sid - The space id
        */
@@ -1113,7 +1112,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
       /**
        * Returns a $resource to interact with the configurations public endpoint.
-       * 
+       *
        * @method services.Space#configsByUUID
        * @param {string} uuid - The space uuid
        */
@@ -2289,11 +2288,11 @@ appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
 
 /**
  * Editor factory.
- * 
+ *
  * @description
- * 
+ *
  * Defines helpers for tinymce editor.
- * 
+ *
  * @class Editor
  * @memberof services
  */
@@ -2304,7 +2303,7 @@ appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploade
     return {
       /**
        * Returns default configuration options for tinymce.
-       * 
+       *
        * @method services.Editor#getEditorOptions
        * @param {Object} target - The scope where the tinymce editor will be.
        */
@@ -2373,7 +2372,7 @@ appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploade
 
 /**
  * Defines utility methods.
- * 
+ *
  * @class Utils
  * @memberof services
  */
@@ -2383,7 +2382,7 @@ appCivistApp.factory('Utils', [
     return {
       /**
        * Parses the given date to local time.
-       * 
+       *
        * @method services.Utils#parseDateToLocal
        * @param {string} dateStr - The date to parse. Expected format example: 2016-12-12 13:05 PM GMT
        */
@@ -2398,7 +2397,7 @@ appCivistApp.factory('Utils', [
 
       /**
        * Determines if given string is an UUID
-       * 
+       *
        * @method services.Utils#isUUID
        * @param {string} uuid
        */

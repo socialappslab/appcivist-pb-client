@@ -1007,7 +1007,7 @@
   "appcivist.campaign.disable-new-contributions.helper": "if TRUE, contributions can only be imported by COORDINATORS, members will not be able to create ideas or proposals",
   "appcivist.campaign.disable-etherpad.helper": "If TRUE, proposals do not have an etherpad extended text attached, only a description field",
   "Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)": "Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
-  "Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')": "Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')"
+  "Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')": "Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')",
   "Pin contribution to make it always avaialable": "Marcar contribución para que esté siempre disponible",
   "Proposal Making Start": "Fecha de inicio de elaboración de propuestas",
   "Proposals Making End Date": "Fecha límite de elaboración de propuestas",

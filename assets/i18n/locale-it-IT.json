@@ -1013,5 +1013,21 @@
   "Proposals Making End Date": "Proposals Making End Date",
   "Upvote": "Upvote",
   "Downvote":	"Downvote",
-  "no.feedback.message": "There is no feedback yet"
+  "no.feedback.message": "There is no feedback yet",
+  "The 'Ideas' phase is about raising issues and brainstorming ideas": "The 'Ideas' phase is about raising issues and brainstorming ideas",
+  "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals": "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals",
+  "Deliberation is the careful consideration of proposals through comments and evidence. In this phase, proposals can only be discussed, praised or criticized, but not edited.": "Deliberation is the careful consideration of proposals through comments and evidence. In this phase, proposals can only be discussed, praised or criticized, but not edited.",
+  "During implementation, winning proposals are realized while assembly members monitor their progress": "During implementation, winning proposals are realized while assembly members monitor their progress",
+  "Beginning": "Beginning",
+  "End": "End",
+  "Idea collection begins on this day": "Idea collection begins on this day",
+  "Idea collection ends on this day": "Idea collection ends on this day",
+  "Proposal development begins on this day": "Proposal development begins on this day",
+  "Proposal development ends on this day": "Proposal development ends on this day",
+  "Proposal development begins on this day": "Proposal development begins on this day",
+  "Proposal development ends on this day": "Proposal development ends on this day",
+  "Voting begins on this day": "Voting begins on this day",
+  "Voting ends on this day": "Voting ends on this day",
+  "Implementation begins on this day": "Implementation begins on this day",
+  "Implementation ends on this day": "Implementation ends on this day"
 }

@@ -299,7 +299,7 @@
           <section class="temp-array created-attachments-similar">
             <div class="file_attachments">
               <div class="panel-heading">
-                <h2 class="heading--header">{{'Attachments' | translate}}</h2>
+                <h2 class="heading--header" ng-if="(proposal.attachments && proposal.attachments.length > 0) || userIsAuthor">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
                   <a href="" ng-if="userIsAuthor" ng-click="$parent.openModal('addAttachmentForm')"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
                   <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;

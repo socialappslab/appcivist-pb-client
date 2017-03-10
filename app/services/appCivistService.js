@@ -1,7 +1,7 @@
 /**
  * Reads AppCivist API Base URL from local storage and returns it
  * If the base url is not yet stored in the local storage, saves it.
- * 
+ *
  * @param {Object} localStorageService
  * @returns {string} serverBaseUrl
  */
@@ -17,7 +17,7 @@ function getServerBaseUrl(localStorageService) {
 
 /**
  * Assemblies factory.
- * 
+ *
  * @class Assemblies
  * @memberof services
  */
@@ -25,22 +25,22 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
   var serverBaseUrl = getServerBaseUrl(localStorageService);
 
   return {
-    /** 
+    /**
      * Returns an $resource to interact with /assembly endpoint.
-     * 
+     *
      * @method services.Assemblies#assemblies
-     * 
+     *
      * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
      */
     assemblies: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
 
-    /** 
+    /**
      * Returns an $resource to interact with /assembly/:aid endpoint.
-     * 
+     *
      * @method services.Assemblies#assembly
-     * 
+     *
      * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
      */
     assembly: function(assemblyId) {
@@ -50,7 +50,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/assembly', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },
     assemblyByShortName: function(shortName) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/name/:shortname', { shortname: shortName });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/name/:shortname', { shortname: shortName });
     },
     assemblyPublicProfile: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', { aid: assemblyId });
@@ -88,7 +88,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
           },
           "moderators": false,
           "coordinators": false,
-          "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
+          "icon": "https://pb.appcivist.org/public/images/barefootdoctor-140.png",
           "primaryContactName": "",
           "primaryContactPhone": "",
           "primaryContactEmail": ""
@@ -116,8 +116,8 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
       };
     },
 
-    assemblyByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:uuid', { uuid: uuid });
+    assemblyByUUID(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid', { uuid });
     },
 
     /**
@@ -219,8 +219,11 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     campaignsInAssembly: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', { aid: assemblyId });
     },
+    campaignsInAssemblyByUUID: function(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid/campaign', { uuid });
+    },
     campaignByUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/' + campaignUUID);
     },
     newCampaign: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', {
@@ -337,7 +340,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/timeline', { aid: assemblyId, cid: campaignId });
     },
     timelineByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/timeline', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/timeline', { uuid: campaignUUID });
     },
 
     components: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
@@ -367,7 +370,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/components', { aid: assemblyId, cid: campaignId });
     },
     componentsByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/components', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/components', { uuid: campaignUUID });
     },
 
     themes: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
@@ -397,13 +400,13 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/themes', { aid: assemblyId, cid: campaignId });
     },
     themesByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/themes', { uuid: campaignUUID });
     },
     getConfiguration: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid: spaceId });
     },
     getConfigurationPublic: function(spaceUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/config/public', { uuid: spaceUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/config', { uuid: spaceUUID });
     },
     isContributionTypeSupported: function(type, scope) {
       var campaignConfigs = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.contribution-types'] : null;
@@ -625,16 +628,16 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
     contributionInResourceSpaceByUUID: function(spaceUUId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public?page=:page&pageSize=:pageSize', { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution?page=:page&pageSize=:pageSize', { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
       } else {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public', { uuid: spaceUUId });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution', { uuid: spaceUUId });
       }
     },
     pinnedContributionInResourceSpace: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/pinned', { sid: spaceId });
     },
     pinnedContributionInResourceSpaceByUUID: function(spaceUUId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public/pinned', { uuid: spaceUUId });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
     /**
      * Returns a $resource to interact with the following endpoints:
@@ -647,7 +650,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
      *  @returns {object} $resource
      */
     createAnomymousContribution: function(endpoint, spaceUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/:endpoint/:uuid/contribution', { endpoint: endpoint, uuid: spaceUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/:endpoint/:uuid/contribution', { endpoint: endpoint, uuid: spaceUUID });
     },
 
     contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
@@ -667,7 +670,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     userFeedbackAnonymous: function(campaignUUID, contributionUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:cuuid/contribution/:couuid/feedback', { cuuid: campaignUUID, couuid: contributionUUID }, { 'update': { method: 'PUT' } });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:cuuid/contribution/:couuid/feedback', { cuuid: campaignUUID, couuid: contributionUUID }, { 'update': { method: 'PUT' } });
     },
 
     userFeedbackWithGroupId: function(assemblyId, groupId, contributionId) {
@@ -675,7 +678,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     publicFeedbacks: function(contributionUuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/feedback', { coid: contributionUuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { coid: contributionUuid });
     },
 
     getContributionComments: function(assemblyId, contributionId) {
@@ -683,7 +686,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     getContributionByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid', { uuid: uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:uuid', { uuid: uuid });
     },
 
     defaultContributionAttachment: function() {
@@ -794,26 +797,51 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
      * @param {string} uuid - Contribution's UUID.
      */
     contributionHistoryByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/history', { uuid: uuid }).query().$promise;
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:uuid/history', { uuid: uuid }).query().$promise;
     },
   };
 });
 
+
+/**
+ * WorkingGroups factory.
+ *
+ * @description
+ *
+ * Defines methods for working group related endpoints.
+ *
+ * @class WorkingGroups
+ * @memberof services
+ */
 appCivistApp.factory('WorkingGroups', function($resource, $translate, localStorageService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
     workingGroup: function(assemblyId, groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId }, { 'update': { method: 'PUT' } });
     },
+
     workingGroupInCampaign: function(assemblyId, campaignId, groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group/:gid', { aid: assemblyId, cid: campaignId, gid: groupId });
     },
+
     workingGroups: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group', { aid: assemblyId }, { 'update': { method: 'PUT' }, 'delete': { method: 'DELETE' } });
     },
+
     workingGroupsInCampaign: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group', { aid: assemblyId, cid: campaignId });
     },
+
+    /**
+     * Returns a $resource for the endpoint /public/api/campaign/:uuid/groups
+     *
+     * @method services.WorkingGroups#workingGroupsInCampaignByUUID
+     * @param {string} uuid - The campaign's UUID
+     */
+    workingGroupsInCampaignByUUID(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/groups', { uuid });
+    },
+
     workingGroupMembers: function(assemblyId, groupId, stat) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/membership/:status', {
         aid: assemblyId,
@@ -841,7 +869,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
       });
     },
     workingGroupPublicProfile: function(assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/public', { aid: assemblyId, gid: groupId });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId });
     },
     defaultNewWorkingGroup: function() {
       var newWGroup = {
@@ -857,7 +885,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
           },
           "moderators": false,
           "coordinators": false,
-          "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png"
+          "icon": "https://pb.appcivist.org/public/images/barefootdoctor-140.png"
         },
         //"location": {
         //	"placeName": "Belleville, Paris, France"
@@ -931,7 +959,7 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService) {
 
 /**
  * Defines methods to interact with the spaces endpoint.
- * 
+ *
  * @class Space
  * @memberof services
  */
@@ -1034,7 +1062,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
       /**
        * Returns a $resource to interact with the organizations endpoint.
-       * 
+       *
        * @method services.Space#organizations
        * @param {number} sid - The space id.
        */
@@ -1043,13 +1071,53 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       },
 
       /**
+       * Returns a $resource to interact with the public organizations endpoint.
+       *
+       * @method services.Space#organizationsByUUID
+       * @param {number} uuid - The space uuid.
+       */
+      organizationsByUUID(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/organization', { uuid });
+      },
+
+      /**
        * Returns a $resource to interact with the resources endpoint.
-       * 
+       *
        * @method services.Space#resources
        * @param {number} sid - The space id.
        */
       resources(sid) {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the resources public endpoint.
+       *
+       * @method services.Space#resourcesByUUID
+       * @param {number} uuid - The space uuid.
+       */
+      resourcesByUUID(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/resource', { uuid });
+      },
+
+      /**
+       * Returns a $resource to interact with the configurations endpoint.
+       *
+       * @method services.Space#configs
+       * @param {number} sid - The space id
+       */
+      configs(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the configurations public endpoint.
+       *
+       * @method services.Space#configsByUUID
+       * @param {string} uuid - The space uuid
+       */
+      configsByUUID(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/config', { uuid });
       }
     };
   }
@@ -2220,11 +2288,11 @@ appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
 
 /**
  * Editor factory.
- * 
+ *
  * @description
- * 
+ *
  * Defines helpers for tinymce editor.
- * 
+ *
  * @class Editor
  * @memberof services
  */
@@ -2235,7 +2303,7 @@ appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploade
     return {
       /**
        * Returns default configuration options for tinymce.
-       * 
+       *
        * @method services.Editor#getEditorOptions
        * @param {Object} target - The scope where the tinymce editor will be.
        */
@@ -2304,7 +2372,7 @@ appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploade
 
 /**
  * Defines utility methods.
- * 
+ *
  * @class Utils
  * @memberof services
  */
@@ -2314,7 +2382,7 @@ appCivistApp.factory('Utils', [
     return {
       /**
        * Parses the given date to local time.
-       * 
+       *
        * @method services.Utils#parseDateToLocal
        * @param {string} dateStr - The date to parse. Expected format example: 2016-12-12 13:05 PM GMT
        */
@@ -2325,6 +2393,17 @@ appCivistApp.factory('Utils', [
         dateStr = dateStr.replace('PM GMT', '').replace('AM GMT', '').trim();
         dateStr.replace(' ', 'T');
         return moment.utc(dateStr).local().toDate();
+      },
+
+      /**
+       * Determines if given string is an UUID
+       *
+       * @method services.Utils#isUUID
+       * @param {string} uuid
+       */
+      isUUID(uuid) {
+        var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return pattern.test(uuid);
       }
     }
   }

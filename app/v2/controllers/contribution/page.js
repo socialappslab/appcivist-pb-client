@@ -129,9 +129,18 @@
             }
           }
 
-          var campaignIds = data.campaignIds;
+          var campaignIds = []
+
+          if(scope.isAnonymous) {
+            campaignIds = data.campaignUuids;
+          } else {
+            campaignIds = data.campaignIds;
+
+          }
+
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
-          $scope.campaignID = campaignIdsLength ? data.campaignIds[0] : 0;
+          $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
+
 
 
           if (data.extendedTextPad) {
@@ -239,7 +248,7 @@
       $scope.needAvg = contrib.stats.averageNeed;
       $scope.feasibilityAvg = contrib.stats.averageFeasibility;
       $scope.benefictAvg = contrib.stats.averageBenefit;
-      $scope.totalComments = contrib.commentCount + contrib.forumCommentCount; 
+      $scope.totalComments = contrib.commentCount + contrib.forumCommentCount;
     }
 
     function loadIndividualFeedbacks() {

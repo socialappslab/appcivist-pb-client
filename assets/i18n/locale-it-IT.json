@@ -1029,5 +1029,7 @@
   "Voting begins on this day": "Voting begins on this day",
   "Voting ends on this day": "Voting ends on this day",
   "Implementation begins on this day": "Implementation begins on this day",
-  "Implementation ends on this day": "Implementation ends on this day"
+  "Implementation ends on this day": "Implementation ends on this day",
+  "To see the content of this assembly, you need to know its short name or its universal unique id": "To see the content of this assembly, you need to know its short name or its universal unique id",
+  "This Assembly is not public": "This Assembly is not public"
 }

@@ -678,6 +678,12 @@ uib-accordion {
       padding-top: 10px;
       color: #979797;
     }
+    .groups {
+      color: #455B66;
+      .group+.group {
+        margin-top: 15px;
+      }
+    }
   }
   .section-divider {
     border-bottom: 1px solid #AFAFAF;
@@ -697,9 +703,11 @@ uib-accordion {
     .row {
       text-align: center;
     }
+    a {
+      display: inline-block;
+    }
     a>img {
       width: 100px;
-      height: 150px;
     }
     a+a {
       margin-left: 10px;

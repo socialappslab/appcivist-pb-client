@@ -411,6 +411,7 @@
   "Max length for this section (number of words)": "Longueur maximum pour cette section (nombre de mots)",
   "Max. 250 words": "Max. 250 mots",
   "Maximum score for range voting": "Score maximum",
+  "Maybe": "Maybe",
   "Meeting": "Réunion",
   "Meetings": "Réunions",
   "Member": "Membre",
@@ -759,8 +760,8 @@
   "Yes, link this account": "Oui, relier ce compte",
   "Yes, link to another campaign and use its template": "Oui, reliez à une autre Campagne et utilisez leur modèle",
   "Yes, merge these two accounts": "Oui, fusionner ces deux comptes",
-  "YES, NO, Abstain and Block votes": "OUI, NON, votes groupés, et abstention",
-  "YES, NO, and Abstain votes": "Bulletin OUI, NON, et Abstention",
+  "YES, NO, Maybe and Block votes": "OUI, NON, votes groupés, et abstention",
+  "YES, NO, and Maybe votes": "Bulletin OUI, NON, et Abstention",
   "You are currently logged in with:": "Vous êtes actuellement connecté avec  ",
   "You have been invited to join AppCivist to participate in the": "Vous avez été invoté-e à rejoindre AppCivist pour participater à",
   "Your account has not been verified, yet. An e-mail including instructions on how to verify it has been sent out. Retry resetting your password afterwards.": "Votre compte n'a pas encore été vérifié. Un email avec des instructions pour vérifier votre compte vous a été envoyé. Ensuite, essayez de changer votre mot de passe. ",
@@ -999,5 +1000,7 @@
   "appcivist.campaign.disable-extended-feedback.helper": "If TRUE, extended feedback is disabled",
   "appcivist.campaign.disable-extended-feedback-public.helper": "If TRUE, extended feedback is disabled in the public site",
   "appcivist.campaign.disable-new-contributions.helper": "if TRUE, contributions can only be imported by COORDINATORS, members will not be able to create ideas or proposals",
-  "appcivist.campaign.disable-etherpad.helper": "If TRUE, proposals do not have an etherpad extended text attached, only a description field"
+  "appcivist.campaign.disable-etherpad.helper": "If TRUE, proposals do not have an etherpad extended text attached, only a description field",
+  "Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)" : "Dynamic 1: first N-ranked proposals that can be fully funded by available budget (may result in unspent funds)",
+  "Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')": "Dynamic 2: first N-ranked proposals that can be fully funded by available budget, allocating all the funds (may result in 'leapfrogging')"
 }

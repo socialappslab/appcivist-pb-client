@@ -75,11 +75,6 @@
                   {{ campaign.groups.length }}
                 </span>
               </a>
-              <a ng-if="!pastCampaigns.length" class="list-group-item">
-                <p>
-                  {{'No campaigns to show.' | translate}}
-                </p>
-              </a>
               <div class="panel panel-default" ng-if="selectedCampaign.campaignId === campaign.campaignId">
                 <div class="panel-body groups">
                   <div ng-repeat="group in campaign.groups" class="col-lg-offset-1 col-lg-10 group">
@@ -88,6 +83,13 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="list-group">
+              <a ng-if="!pastCampaigns.length" class="list-group-item">
+                <p>
+                  {{'No campaigns to show.' | translate}}
+                </p>
+              </a>
             </div>
           </uib-tab>
         </uib-tabset>

@@ -88,7 +88,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
           },
           "moderators": false,
           "coordinators": false,
-          "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
+          "icon": "https://pb.appcivist.org/public/images/barefootdoctor-140.png",
           "primaryContactName": "",
           "primaryContactPhone": "",
           "primaryContactEmail": ""
@@ -223,7 +223,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid/campaign', { uuid });
     },
     campaignByUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/' + campaignUUID);
     },
     newCampaign: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', {
@@ -340,7 +340,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/timeline', { aid: assemblyId, cid: campaignId });
     },
     timelineByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/timeline', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/timeline', { uuid: campaignUUID });
     },
 
     components: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
@@ -370,7 +370,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/components', { aid: assemblyId, cid: campaignId });
     },
     componentsByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/components', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/components', { uuid: campaignUUID });
     },
 
     themes: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
@@ -400,13 +400,13 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/themes', { aid: assemblyId, cid: campaignId });
     },
     themesByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/themes', { uuid: campaignUUID });
     },
     getConfiguration: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid: spaceId });
     },
     getConfigurationPublic: function(spaceUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/config/public', { uuid: spaceUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/config', { uuid: spaceUUID });
     },
     isContributionTypeSupported: function(type, scope) {
       var campaignConfigs = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.contribution-types'] : null;
@@ -628,16 +628,16 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
     contributionInResourceSpaceByUUID: function(spaceUUId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public?page=:page&pageSize=:pageSize', { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution?page=:page&pageSize=:pageSize', { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
       } else {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public', { uuid: spaceUUId });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution', { uuid: spaceUUId });
       }
     },
     pinnedContributionInResourceSpace: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/pinned', { sid: spaceId });
     },
     pinnedContributionInResourceSpaceByUUID: function(spaceUUId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public/pinned', { uuid: spaceUUId });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
     /**
      * Returns a $resource to interact with the following endpoints:
@@ -650,7 +650,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
      *  @returns {object} $resource
      */
     createAnomymousContribution: function(endpoint, spaceUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/:endpoint/:uuid/contribution', { endpoint: endpoint, uuid: spaceUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/:endpoint/:uuid/contribution', { endpoint: endpoint, uuid: spaceUUID });
     },
 
     contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
@@ -670,7 +670,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     userFeedbackAnonymous: function(campaignUUID, contributionUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:cuuid/contribution/:couuid/feedback', { cuuid: campaignUUID, couuid: contributionUUID }, { 'update': { method: 'PUT' } });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:cuuid/contribution/:couuid/feedback', { cuuid: campaignUUID, couuid: contributionUUID }, { 'update': { method: 'PUT' } });
     },
 
     userFeedbackWithGroupId: function(assemblyId, groupId, contributionId) {
@@ -678,7 +678,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     publicFeedbacks: function(contributionUuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/feedback', { coid: contributionUuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { coid: contributionUuid });
     },
 
     getContributionComments: function(assemblyId, contributionId) {
@@ -686,7 +686,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     getContributionByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid', { uuid: uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:uuid', { uuid: uuid });
     },
 
     defaultContributionAttachment: function() {
@@ -797,7 +797,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
      * @param {string} uuid - Contribution's UUID.
      */
     contributionHistoryByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/history', { uuid: uuid }).query().$promise;
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:uuid/history', { uuid: uuid }).query().$promise;
     },
   };
 });
@@ -869,7 +869,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
       });
     },
     workingGroupPublicProfile: function(assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/public', { aid: assemblyId, gid: groupId });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId });
     },
     defaultNewWorkingGroup: function() {
       var newWGroup = {
@@ -885,7 +885,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
           },
           "moderators": false,
           "coordinators": false,
-          "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png"
+          "icon": "https://pb.appcivist.org/public/images/barefootdoctor-140.png"
         },
         //"location": {
         //	"placeName": "Belleville, Paris, France"

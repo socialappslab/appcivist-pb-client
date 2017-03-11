@@ -1,13 +1,10 @@
-/// AppCivist Simple Demo Client
 /**
+ * @module appCivistApp
+ * 
+ * 
+ * @description
+ * 
  * AppCivist Platform Demo Client developed with AngularJS
- * Folders:
- * 	/app
- * 		/controllers
- * 		/directives
- * 		/services
- * 		/partials
- * 		/views
  */
 
 (function() {
@@ -33,7 +30,8 @@
         testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
         local: "http://localhost:9000/api",
-        mimove: "https://mimove-apps.paris.inria.fr/platform/api"
+        mimove: "https://mimove-apps.paris.inria.fr/platform/api",
+
       }
     },
     handleError: function(error) {
@@ -52,6 +50,7 @@
     testing: "https://testetherpad.appcivist.org/",
     development: "https://testetherpad.appcivist.org/",
     local: "http://localhost:9001/",
+    //local: "https://testetherpad.appcivist.org/",
     mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
   };
 
@@ -185,6 +184,12 @@
         url: '/:aid',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      //assembly: no princial assembly routes
+      .state('v2.assembly.aid.home', {
+        url: '/home',
+        templateUrl: 'app/v2/partials/assembly/home.html',
+        controller: 'v2.AssemblyHomeCtrl'
       })
       .state('v2.assembly.aid.assembly', {
         url: '/assembly/new',
@@ -430,9 +435,9 @@
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
       }).state('v2.campaign', {
-          url: '/campaign',
-          abstract: true,
-          template: '<div ui-view></div>'
+        url: '/campaign',
+        abstract: true,
+        template: '<div ui-view></div>'
       }).state('v2.campaign.cuuid', {
         url: '/:cuuid',
         controller: 'v2.CampaignDashboardCtrl',

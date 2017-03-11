@@ -6,7 +6,7 @@
   }
 </style>
 <div class="temperature_check">
-  <ul class="votes" ng-if="!isAnonymous">
+  <ul class="votes" ng-if="!isAnonymous" style="margin-right: 0.1em;">
     <li class="upvote" ng-mouseenter="contribution.overUp = true" ng-mouseleave="contribution.overUp = false">
       <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">{{ 'Upvote' | translate }}</span></a>
       <div class="popover" style="top: -56px;" ng-class="{active: contribution.overUp}">
@@ -19,6 +19,12 @@
         <div class="content">{{contribution.stats.downs}}</div>
       </div>
     </li>
+    <!--<li class="commentcount" ng-mouseenter="contribution.commentCount = true" ng-mouseleave="contribution.commentCount = false">-->
+      <!--<a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>-->
+      <!--<div class="popover" style="top: -56px;" ng-class="{active: contribution.commentCount}">-->
+        <!--<div class="content">{{ contribution.totalComments }}</div>-->
+      <!--</div>      -->
+    <!--</li>-->
     <li class="delete" ng-if="withDelete && isAssemblyCoordinator" ng-mouseenter="contribution.overDelete = true" ng-mouseleave="contribution.overDelete = false">
       <a ng-click="$parent.showModerationForm('delete')">
         <i class="fa fa-trash"></i>
@@ -38,14 +44,22 @@
       </div>
     </li>
   </ul>
-  <div ng-if="contribution.informalScore != null && contribution.informalScore != undefined " class="informal_score" ng-class="{positive: contribution.informalScore > 0, negative: contribution.informalScore < 0}">
-    <em>{{contribution.informalScore}}</em>
+  <div ng-if="contribution.informalScore != null && contribution.informalScore != undefined " class="informal_score"
+       ng-class="{positive: contribution.informalScore >= 0, negative: contribution.informalScore < 0}">
+    <em>{{(contribution.informalScore != null && contribution.informalScore != undefined) ? contribution.informalScore : 0}}</em>
   </div>
 
-  <div ng-if="(contribution.informalScore === null || contribution.informalScore === undefined)  && (contribution.popularity !=null && contribution.popularity != undefined)" class="informal_score" ng-class="{positive: contribution.popularity > 0, negative: contribution.popularity < 0}">
-    <em>{{contribution.popularity}}</em>
+  <div ng-if="(contribution.informalScore === null || contribution.informalScore === undefined)" class="informal_score"
+       ng-class="{positive: contribution.popularity >= 0, negative: contribution.popularity < 0}">
+    <em>{{(contribution.popularity != null && contribution.popularity != undefined) ? contribution.popularity : 0}}</em>
   </div>
 
+  <div ng-if="(contribution.totalComments != null && contribution.totalComments != undefined)" style="margine-left:4px" class="informal_score positive">
+    <em style="border-radius:15%">
+      <i class="fa fa-comment"></i>
+      {{contribution.totalComments}}
+    </em>
+  </div>
 
   <script id="moderationForm" type="text/ng-template">
     <div class="modal_content__add_proposal">

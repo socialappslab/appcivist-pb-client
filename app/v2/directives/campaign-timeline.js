@@ -1,8 +1,32 @@
+'use strict';
+
 (function () {
   'use strict';
 
-  appCivistApp
-    .directive('campaignTimeline', CampaignTimeline);
+  /**
+   * @name campaign-timeline
+   * @memberof directives
+   * 
+   * @description
+   * 
+   * Display the campaign timeline
+   *
+   * @example 
+   * 
+   * <campaign-timeline 
+   *      title="{{'Campaign Status' | translate}}" 
+   *      assembly-id="assemblyID" 
+   *      campaign-id="campaignID"></campaign-timeline>
+   * 
+   * @example
+   * You instead of passing the assembly and campaign IDs, you can specify the array of timeline componentes as an attribute.
+   * 
+   * <campaign-timeline title="{{'Campaign Status' | translate}}" 
+   *                    components="vm.defaultComponents" 
+   *                    on-component-click="vm.onClick(component)"></campaign-timeline>
+   */
+
+  appCivistApp.directive('campaignTimeline', CampaignTimeline);
 
   CampaignTimeline.$inject = ['Campaigns', 'localStorageService'];
 
@@ -12,9 +36,9 @@
       scope.user = localStorageService.get('user');
       var res;
       if (scope.user) {
-        res = Campaigns.components(aid, cid,false,null,null);
+        res = Campaigns.components(aid, cid, false, null, null);
       } else {
-        res = Campaigns.components(null, null,true,cid,null);
+        res = Campaigns.components(null, null, true, cid, null);
       }
       res.then(function (data) {
         var currentComponent = Campaigns.getCurrentComponent(data);
@@ -50,20 +74,27 @@
         assemblyId: '=',
         campaignId: '=',
         title: '@',
-        onlyLabel: '='
+        onlyLabel: '=',
+        components: '<',
+        onComponentClick: '&?'
       },
       templateUrl: '/app/v2/partials/directives/campaign-timeline.html',
       link: function postLink(scope, element, attrs) {
+        if (!scope.components) {
 
-        if (!scope.campaignId) {
-          scope.$watch('campaignId', function (cid) {
-            loadCampaignComponents(scope, scope.assemblyId, cid);
-          });
-        } else {
-          loadCampaignComponents(scope, scope.assemblyId, scope.campaignId);
+          if (!scope.campaignId) {
+            scope.$watch('campaignId', function (cid) {
+              loadCampaignComponents(scope, scope.assemblyId, cid);
+            });
+          } else {
+            loadCampaignComponents(scope, scope.assemblyId, scope.campaignId);
+          }
         }
 
         scope.formatDate = function (date) {
+          if (angular.isDate(date)) {
+            return moment(date).local().format('L');
+          }
           return moment(date, 'YYYY-MM-DD HH:mm').local().format('L');
         };
 
@@ -87,7 +118,14 @@
           this.clearMilestonesMenu(components);
           component.isHover = !isHover;
         };
+
+        scope.clickHandler = function (component) {
+          if (angular.isFunction(scope.onComponentClick)) {
+            scope.onComponentClick({ component: component });
+          }
+        };
       }
     };
   }
-} ());
+})();
+//# sourceMappingURL=campaign-timeline.js.map

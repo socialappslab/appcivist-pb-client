@@ -52,7 +52,9 @@ module.exports = function(grunt) {
     },
     connect: {
       server: {
-        options: { port: 8000 }
+        options: {
+          port: 8000
+        }
       }
     },
     watch: {
@@ -61,7 +63,8 @@ module.exports = function(grunt) {
         files: ["index.html"]
       },
       js: {
-        files: ["app/*.js", "app/**/*.js"]
+        files: ["app/*.js", "app/**/*.js"],
+        tasks: ['babel']
       },
       sass: {
         files: ['**/*.scss'],
@@ -162,7 +165,6 @@ module.exports = function(grunt) {
             'assets/**/*',
             'index.html',
             'app/**/*.html',
-            'app/**/*.js',
             'bower_components/vex/dist/css/vex.css',
             'bower_components/vex/dist/css/vex-theme-plain.css',
             'bower_components/appcivist-patterns/dist/css/**/*',
@@ -196,12 +198,12 @@ module.exports = function(grunt) {
             '**/*',
           ]
         }, {
-          cwd : './bower_components/tinymce/',
-          src : [ 'plugins/**', 'themes/**',
-            'skins/**' ],
-          dest : './dist/scripts',
-          filter : 'isFile',
-          expand : true
+          cwd: './bower_components/tinymce/',
+          src: ['plugins/**', 'themes/**',
+            'skins/**'],
+          dest: './dist/scripts',
+          filter: 'isFile',
+          expand: true
         }, {
           expand: true,
           dot: true,
@@ -210,8 +212,34 @@ module.exports = function(grunt) {
           src: [
             '**/*',
           ]
-        },
-        ]
+        }]
+      }
+    },
+
+    jsdoc: {
+      dist: {
+        src: ['app/v2/**/*.js', 'app/app.js', 'app/services/**/*.js', 'README.md'],
+        options: {
+          destination: 'docs',
+          plugins: [
+            'plugins/markdown'
+          ]
+        }
+      }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['es2015']
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.',
+          src: ['app/**/*.js'],
+          dest: 'dist'
+        }]
       }
     }
   });
@@ -219,9 +247,9 @@ module.exports = function(grunt) {
   // Default task(s).
   grunt.registerTask('default', ['uglify', 'haml']);
   grunt.registerTask('build', [
-    'clean:dist', 'sass', 'useminPrepare', 'copy:dist', 'cssmin', 'concat', 'uglify', 'usemin'
+    'clean:dist', 'sass', 'babel:dist', 'useminPrepare', 'copy:dist', 'cssmin', 'concat', 'usemin', 'uglify:dist'
   ]);
 
   // Server tasks
-  grunt.registerTask('server', ['clean', 'copy:dev', 'sass', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
+  grunt.registerTask('server', ['clean', 'copy:dev', 'sass', 'babel:dist', 'uglify:build', 'jshint', 'haml', 'connect', 'watch']);
 };

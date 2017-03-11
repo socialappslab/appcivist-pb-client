@@ -4,19 +4,19 @@
     background: none;
     padding: 0;
   }
-
+  
   .campaign__status .page__header ul li p {
     padding: 5px;
   }
-
+  
   .campaign__status .page__header .contextual_menu {
     z-index: 1050 !important;
   }
-
+  
   .campaign__status .page__header .contextual_menu .content {
     background-color: #e5ebe6 !important;
   }
-
+  
   .campaign__status .page__header .contextual_menu .content::after {
     border-bottom: 12px solid #e5ebe6 !important;
   }
@@ -27,18 +27,19 @@
     <div class="markers">
       <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass">
         <div>
-          <div class="marker" ng-mouseenter="toggleComponent(component, components)"></div>
+          <div class="marker" ng-mouseenter="toggleComponent(component, components)" ng-click="clickHandler(component)"></div>
           <div class="label">{{ component.title }}</div>
         </div>
 
         <header class="page__header">
           <div class="title_block">
             <div class="heading_actions">
-              <div class="contextual_menu" ng-class="{active: component.isHover}" style="top: -2em; left: auto; right: -2.1em;" ng-if="component.isHover">
+              <div class="contextual_menu" ng-class="{active: component.isHover}" style="top: -2em; left: auto; right: -2.1em;"
+                ng-if="component.isHover">
                 <div class="content">
                   <ul>
                     <li ng-repeat="milestone in component.milestones track by $index" class="li-action-menu">
-                      <a href="" ng-click="toggleMilestoneDescription(milestone, component.milestones)">{{milestone.title }} ({{formatDate(milestone.date)}})</a>
+                      <a href="" ng-click="toggleMilestoneDescription(milestone, component.milestones)">{{milestone.title}} ({{formatDate(milestone.date)}})</a>
                       <p ng-if="milestone.showDescription">{{milestone.description}}</p>
                     </li>
                   </ul>

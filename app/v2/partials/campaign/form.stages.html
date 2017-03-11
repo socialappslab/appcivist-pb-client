@@ -3,7 +3,8 @@
     <div class="">
       <form name="newCampaignForm3">
         <uib-accordion close-others="oneAtATime">
-          <div uib-accordion-group heading="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : '' | translate}}" is-open="component.active" ng-if="component.enabled" is-disabled="component.linked" ng-repeat="component in newCampaign.proposalComponents track by $index">
+          <div uib-accordion-group heading="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : '' | translate}}"
+            is-open="component.active" ng-if="component.enabled" is-disabled="component.linked" ng-repeat="component in newCampaign.proposalComponents track by $index">
 
             <uib-accordion-heading>
               <h2 translate="{{component.name}} configurations {{component.linked ? '(in linked campaign)' : ''}}"></h2>
@@ -31,20 +32,23 @@
                 <span for="inputSectionTitle">{{'Section Title' | translate}}</span></span>
               </div>
               <div class="col-md-8 col-sm-8 col-xs-12">
-                <input class="form-control" id="inputSectionTitle" placeholder="{{'e.g., Summary, Description, Attachments' | translate}}" ng-model="section.title">
+                <input class="form-control" id="inputSectionTitle" placeholder="{{'e.g., Summary, Description, Attachments' | translate}}"
+                  ng-model="section.title">
               </div>
               <div class="col-md-4 col-sm-4 col-xs-12">
                 <span for="inputSectionDescription">{{'Section Description' | translate}}</span>
               </div>
               <div class="col-md-8 col-sm-8 col-xs-12">
-                <textarea class="form-control" id="inputSectionDescription" placeholder="{{'Describe expected content of section' | translate}}" ng-model="section.description"></textarea>
+                <textarea class="form-control" id="inputSectionDescription" placeholder="{{'Describe expected content of section' | translate}}"
+                  ng-model="section.description"></textarea>
               </div>
               <div class="col-md-12 voffset3"></div>
               <div class="col-md-4 col-sm-4 col-xs-12">
                 <span for="inputSectionLength">{{'Section Length' | translate}}</span>
               </div>
               <div class="col-md-8 col-sm-8 col-xs-12">
-                <input class="form-control" id="inputSectionLength" placeholder="{{'Max length for this section (number of words)' | translate}}" ng-model="section.length" type="number">
+                <input class="form-control" id="inputSectionLength" placeholder="{{'Max length for this section (number of words)' | translate}}"
+                  ng-model="section.length" type="number">
               </div>
               <div class="col-md-12 voffset3"></div>
               <div class="col-sm-12 col-md-12">
@@ -77,7 +81,8 @@
                 <h3 class="control-label col-md-12 col-sm-12 col-xs-12">{{config.description | translate}}</h3>
                 <div class="col-md-2 col-sm-2 col-xs-2"></div>
                 <div class="">
-                  <select class="form-control" ng-options="option.name | translate for option in config.options track by option.value" ng-model="config.optionValue" ng-change="updateConfigOptionValue(config, config.optionValue)">
+                  <select class="form-control" ng-options="option.name | translate for option in config.options track by option.value"
+                    ng-model="config.optionValue" ng-change="updateConfigOptionValue(config, config.optionValue)">
                                 </select>
                 </div>
                 <div class="col-md-12 voffset3"></div>
@@ -88,7 +93,8 @@
                 <h3 class="control-label col-md-12 col-sm-12 col-xs-12"><strong>{{config.description | translate}}</strong></h3>
                 <div class="radio col-md-12 col-sm-12 col-xs-12" ng-repeat="option in config.options track by $index">
                   <div class="col-md-1 col-sm-1 col-xs-1">
-                    <input name="{{config.key}}" type="radio" ng-model="config.value" ng-value="option.value" value="{{option.value}}" ng-checked="option.selected ? 'checked' : ''" ng-click="checkOption(config,option)">
+                    <input name="{{config.key}}" type="radio" ng-model="config.value" ng-value="option.value" value="{{option.value}}"
+                      ng-checked="option.selected ? 'checked' : ''" ng-click="checkOption(config,option)">
                   </div>
                   <div class="col-md-11 col-sm-11 col-xs-11"><span>{{option.name | translate}}</span></div>
                 </div>
@@ -99,7 +105,8 @@
               <div ng-if="configIsEnabled(config,component.configs, 'input')">
                 <span class="control-label col-md-8 col-sm-8 col-xs-12">{{config.description | translate}}</span>
                 <div class="">
-                  <input type="{{config.inputType === 'percentage' ? 'number' : config.inputType === 'number' ? 'number' : ''}}" step="{{config.inputType === 'percentage' ? '0.1' : '1'}}" min="{{config.inputType === 'percentage' ? '0' : config.inputType === 'number' ? '0' : ''}}"
+                  <input type="{{config.inputType === 'percentage' ? 'number' : config.inputType === 'number' ? 'number' : ''}}"
+                    step="{{config.inputType === 'percentage' ? '0.1' : '1'}}" min="{{config.inputType === 'percentage' ? '0' : config.inputType === 'number' ? '0' : ''}}"
                     max="{{config.inputType === 'percentage' ? '1' : ''}}" ng-model="config.value" ng-value="config.value">
                 </div>
                 <div class="col-md-12 voffset3"></div>
@@ -115,8 +122,10 @@
                 <label style="font-size: 16px;">{{config.key | translate}}</label>
               </div>
               <div class="col-sm-6 col-md-6 col-xs-12">
-                <input ng-if="config.definition.valueType == 'String' || config.definition.valueType == 'Number'" id="inputNameAssembly" name="name" type="text" class="form-control" ng-model="config.value" ng-required="true">
-                <input ng-if="config.definition.valueType == 'Boolean'" type="checkbox" ng-model="config.value" ng-true-value="'true'" ng-checked="config.value" />
+                <input ng-if="config.definition.valueType == 'String' || config.definition.valueType == 'Number'" id="inputNameAssembly"
+                  name="name" type="text" class="form-control" ng-model="config.value" ng-required="true">
+                <input ng-if="config.definition.valueType == 'Boolean'" type="checkbox" ng-model="config.value" ng-true-value="'true'"
+                  ng-checked="config.value" />
               </div>
               <div class="col-sm-6 col-md-6 col-xs-12">
               </div>
@@ -134,20 +143,24 @@
 
         <section id="campaignButtons3" class="row col-md-12 col-sm-12">
           <div class="col-md-4">
-            <button class="btn btn-success col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm3.$valid" ng-click="createCampaign('done', {fastrack:true})">
+            <button class="btn btn-success col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm3.$valid"
+              ng-click="createOrUpdateCampaign('done', {fastrack:true})">
                 {{'Fastrack' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm3.$valid" ng-click="createCampaign('v2.assembly.aid.campaign.new.milestones', {aid: assemblyID, fastrack:false})">
+            <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm3.$valid"
+              ng-click="createOrUpdateCampaign('v2.assembly.aid.campaign.new.milestones', {aid: assemblyID, fastrack:false})">
               {{'Back' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button ng-if="!isEdit" class="btn btn-primary col-md-12" ng-click="createOrUpdateCampaign('done', {fastrack:false})" ng-disabled="!newCampaignForm3.$valid">
+            <button ng-if="!isEdit" class="btn btn-primary col-md-12" ng-click="createOrUpdateCampaign('done', {fastrack:false})"
+              ng-disabled="!newCampaignForm3.$valid">
               {{'Create' | translate}}
             </button>
-            <button ng-if="isEdit" class="btn btn-primary col-md-12" ng-click="createOrUpdateCampaign('done', {fastrack:false})" ng-disabled="!newCampaignForm3.$valid">
+            <button ng-if="isEdit" class="btn btn-primary col-md-12" ng-click="createOrUpdateCampaign('done', {fastrack:false})"
+              ng-disabled="!newCampaignForm3.$valid">
               {{'Update' | translate}}
             </button>
           </div>

@@ -20,14 +20,17 @@
         <div id="assemblyName" class="form-horizontal">
           <div class="col-md-12 form-group" ng-class="{ 'has-error': newAssemblyForm1.name.$touched && newAssemblyForm1.name.$invalid }">
             <label for="inputNameAssembly" class="control-label">{{'Name'|translate }}*</label>
-            <input id="inputNameAssembly" name="name" type="text" class="form-control" placeholder="{{'e.g., Assembl�e Belleville'|translate}}" ng-model="newAssembly.name" ng-required="true">
+            <input id="inputNameAssembly" name="name" type="text" class="form-control" placeholder="{{'e.g., Assemblie Belleville'|translate}}"
+              ng-model="newAssembly.name" ng-required="true">
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
         <div ng-if="newAssembly.principalAssembly" id="assemblyShortName" class="form-horizontal">
           <div class="col-md-12 form-group" ng-class="{ 'has-error': newAssemblyForm1.shortname.$touched && newAssemblyForm1.shortname.$invalid && invalidShortname }">
             <label for="inputShortNameAssembly" class="control-label">{{'Shortname'|translate }}*</label>
-            <input id="inputShortNameAssembly" name="shortname" type="text" class="form-control" placeholder="{{'e.g., ass-belleville'|translate}}" ng-model="newAssembly.shortname" ng-required="true" ng-blur="shortnameChanged(newAssembly.shortname)" ng-disabled="isEdit">
+            <input id="inputShortNameAssembly" name="shortname" type="text" class="form-control" placeholder="{{'e.g., ass-belleville'|translate}}"
+              ng-model="newAssembly.shortname" ng-required="true" ng-blur="shortnameChanged(newAssembly.shortname)"
+              ng-disabled="isEdit">
             <p ng-if="invalidShortname" ng-class "has-error" style="color: #a94442;">{{ 'Shortname already exists' | translate }}</p>
           </div>
         </div>
@@ -46,7 +49,8 @@
             {{'assembly.newAssemblystep1.text2'|translate}}
             <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.locationTooltip}}"></i>
             </label>
-            <input class="form-control" id="inputLocationAssembly" type="text" placeholder="{{'The name of a Place, an Address, City or Country associated to your assembly' | translate}}" ng-model="newAssembly.location.placeName">
+            <input class="form-control" id="inputLocationAssembly" type="text" placeholder="{{'The name of a Place, an Address, City or Country associated to your assembly' | translate}}"
+              ng-model="newAssembly.location.placeName">
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
@@ -132,6 +136,8 @@
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
+
+        <!-- assembly icon configuration section -->
         <div id="assemblyIcon" class="form-horizontal">
           <div class="col-md-12 form-group">
             <label class="control-label" translate='assembly.select.icon'> </label>
@@ -140,35 +146,84 @@
               <div ng-repeat="icon in defaultIcons">
                 <div class="col-md-4">
                   <div class="image-capsule">
-                    <img alt="{{icon.name}}" ng-src="{{icon.url}}" class="image-circle" ng-click="setNewAssemblyIcon(icon.url, icon.name)">
+                    <img alt="{{icon.name}}" ng-src="{{icon.url}}" class="image-circle" ng-class="{'image-circle-selected-shadow': icon.name === f.name}"
+                      ng-click="setNewAssemblyIcon(icon.url, icon.name)">
                   </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="10MB">
-                  <img data-src="holder.js/100x100" alt="Upload a picture" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" />
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <div class="col-md-12 voffset3"></div>
         <div id="assemblyIconProgress" class="form-horizontal">
-          <div class="col-md-12 progress-section">
-            <strong>{{'selected.icon'|translate}}: </strong><a ng-href="{{f.url}}">{{f.name}}</a> {{f.$error}} {{f.$errorParam}}
-            <span class="progress-line-container" ng-show="f.progress >= 0">
-              <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+          <div class="col-lg-4 add-button">
+            <span>
+              <button class="btn" type="button" ngf-select="uploadFiles($file, $invalidFiles, 'icon')" accept="image/*" ngf-max-size="2MB">
+                {{ 'Upload' |  translate}}
+              </button>
+            </span>
+            <span>
+              <strong>{{ 'selected.icon' | translate }}: </strong>
+            </span>
+            <span>
+              <div class="image-capsule">
+                <img alt="{{f.name}}" ng-src="{{f.url}}" class="image-circle image-circle-selected">
+              </div>
             </span>
           </div>
         </div>
+        <!-- assembly icon -->
+
+        <!-- assembly cover icon configuration section -->
+        <div id="assemblyIcon" class="form-horizontal">
+          <div class="col-md-12 form-group">
+            <label class="control-label">{{'Pick a logo or upload an image to represent your Assembly cover picture (or upload a picture < 2Mb)' | translate}}</label>
+            <br/>
+            <div class="picsList">
+              <div ng-repeat="icon in defaultCoverIcons">
+                <div class="col-md-4">
+                  <div class="image-capsule">
+                    <img alt="{{icon.name}}" ng-src="{{icon.url}}" class="image-circle" ng-class="{'image-circle-selected-shadow': icon.name === selectedCover.name}"
+                      ng-click="setNewAssemblyCoverIcon(icon.url, icon.name)">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 voffset3"></div>
+        <div id="assemblyIconProgress" class="form-horizontal">
+          <div class="col-lg-4 add-button">
+            <span>
+              <button class="btn" type="button" ngf-select="uploadFiles($file, $invalidFiles, 'cover')" accept="image/*" ngf-max-size="2MB">
+                {{ 'Upload' |  translate}}
+              </button>
+            </span>
+            <span>
+              <strong>{{ 'selected.icon' | translate }}: </strong>
+            </span>
+            <span>
+              <div class="image-capsule">
+                <img alt="{{selectedCover.name}}" ng-src="{{selectedCover.url}}" class="image-circle image-circle-selected">
+              </div>
+            </span>
+          </div>
+        </div>
+        <!-- assembly cover icon -->
+
         <div class="col-md-12 voffset3"></div>
         <div id="assemblyContactInfo" class="form-horizontal">
           <div class="col-md-12 form-group">
             <label for="inputContactNameAssembly" class="control-label">{{'Primary contact' | translate}}</label>
             <div>
-              <input type="text" class="form-control col-md-4" id="inputContactNameAssembly" placeholder="{{'Name' | translate}}" ng-model="newAssembly.profile.primaryContactName">
-              <input type="text" class="form-control col-md-4" id="inputContactPhoneAssembly" placeholder="{{'Phone' | translate}}" ng-model="newAssembly.profile.primaryContactPhone">
-              <input type="text" class="form-control col-md-4" id="inputContactEmailAssembly" placeholder="{{'Email' | translate}}" ng-model="newAssembly.profile.primaryContactEmail">
+              <input type="text" class="form-control col-md-4" id="inputContactNameAssembly" placeholder="{{'Name' | translate}}"
+                ng-model="newAssembly.profile.primaryContactName">
+              <input type="text" class="form-control col-md-4" id="inputContactPhoneAssembly" placeholder="{{'Phone' | translate}}"
+                ng-model="newAssembly.profile.primaryContactPhone">
+              <input type="text" class="form-control col-md-4" id="inputContactEmailAssembly" placeholder="{{'Email' | translate}}"
+                ng-model="newAssembly.profile.primaryContactEmail">
             </div>
           </div>
         </div>
@@ -176,7 +231,8 @@
         <div id="assemblyThemes" class="form-horizontal">
           <div class="col-md-12 form-group">
             <label for="inputTheme" class="control-label">{{'assembly.newAssemblystep1.text4' | translate}}*</label>
-            <input class="form-control" id="inputTheme" type="text" placeholder="{{'e.g, Housing' | translate}}" ng-model="themes.list" />
+            <input class="form-control" id="inputTheme" type="text" placeholder="{{'e.g, Housing' | translate}}"
+              ng-model="themes.list" />
             <div class="col-md-4 col-sm-4 add-button">
               <span><a ng-click="addTheme(themes.list)">
               <img data-src="holder.js/100x100" alt="Add Theme" src="../assets/images/addIcon.png"
@@ -192,7 +248,7 @@
               <div class="caption assembly-tags-container-content">
                 <ul class="tags" ng-repeat="t in newAssembly.themes track by $index">
                   <li class="tag tag-filter">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeTheme($index)"></span> {{t.title}}
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeTheme($index)"></span>                    {{t.title}}
                   </li>
                 </ul>
               </div>
@@ -253,15 +309,21 @@
           </div>
         </div>
         <div class="col-md-12 voffset3"></div>
+
+        <!-- invitation email editor -->
         <div id="assemblyInvitationsEmails" class="form-horizontal">
           <div class="col-md-12">
-            <label class="control-label">
-            {{'Invitation Email' | translate}}
-            <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail'|translate}}"></i>
+            <label class="control-label" style="margin-bottom: 10px;">
+              {{'Invitation Email' | translate}}
+              <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail'|translate}}"></i>
             </label>
-            <textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6" placeholder="{{ 'assembly.invitation.email.text' | translate}}"></textarea>
+            <!--<textarea class="form-control" id="invitationEmail" ng-model="newAssembly.invitationEmail" rows="6" placeholder="{{ 'assembly.invitation.email.text' | translate}}"></textarea>-->
+            <textarea class="form-control" id="invitationEmail" ui-tinymce="editorOptions" ng-model="newAssembly.invitationEmail"
+              placeholder="{{ 'assembly.invitation.email.text' | translate}}"></textarea>
           </div>
         </div>
+        <!-- end invitation email editor -->
+
         <div class="col-md-12 voffset3"></div>
         <div id="assemblyConfigs" class="form-horizontal">
           <div id="assemblyConfigs" class="col-md-12 form-group">

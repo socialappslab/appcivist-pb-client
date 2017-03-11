@@ -1,0 +1,194 @@
+<div class="assembly-home">
+  <nav class="navbar navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+      <div class="navbar-brand" ng-if="userIsAuthenticated" style="padding-top:5%;">
+        <a href="/#/">
+          <img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}" />
+        </a>
+        <strong class="logotext">AppCivist</strong>
+      </div>
+
+      <div class="navbar-brand" ng-if="!userIsAuthenticated" style="padding-top:5%;">
+        <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"
+          /></a>
+        <strong style="vertical-align: super;">AppCivist</strong>
+      </div>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-options">
+      <form class="navbar-form navbar-right" role="login" style="padding-top:1%;">
+        <a ng-if="!userIsAuthenticated" ng-href="/#/v2/{{shortname}}/login">{{'header.sign_in' | translate}}</a>
+        <a ng-if="!userIsAuthenticated && usersCanSignUp" ng-click="signup()">{{'header.sign_up' | translate}}</a>
+        <a ng-if="userIsAuthenticated" ng-click="signout()">{{'header.sign_out' | translate}}</a>
+      </form>
+    </div>
+  </nav>
+
+  <div ng-if="!unauthorizedAccess || assembly.listed">
+    <section class="well row">
+      <div class="col-lg-offset-2 col-lg-8">
+        <h1>{{assembly.name}}</h1>
+
+        <p>
+          {{assembly.description}}
+        </p>
+      </div>
+    </section>
+
+    <section class="row campaigns">
+      <div class="col-lg-offset-2 col-lg-8 section-divider">
+        <h2>{{ 'Campaigns' | translate }}</h2>
+        <uib-tabset>
+          <uib-tab index="0" heading="{{'Ongoing campaigns' | translate}}">
+            <div class="list-group" ng-repeat="campaign in ongoings">
+              <a ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
+                <div>
+                  {{campaign.title}}
+                </div>
+
+                <span class="list-group-item-btn" ng-click="showGroups(campaign, $event)">
+                  <i class="fa fa-users"></i>
+                  {{ campaign.groups.length }}
+                </span>
+                <p ng-if="!ongoings.length">
+                  {{'No campaigns to show.' | translate}}
+                </p>
+              </a>
+              <div class="panel panel-default" ng-if="selectedCampaign.campaignId === campaign.campaignId && campaign.groups.length">
+                <div class="panel-body groups">
+                  <div ng-repeat="group in campaign.groups" class="col-lg-offset-1 col-lg-10 group">
+                    <h4>{{$index}}. {{group.name}}</h4>
+                    <p>{{group.text}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </uib-tab>
+          <uib-tab index="1" heading="{{'Past campaigns' | translate}}">
+            <div class="list-group" ng-repeat="campaign in pastCampaigns">
+              <a ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
+                <div>
+                  {{campaign.title}}
+                </div>
+
+                <span class="list-group-item-btn" ng-click="showGroups(campaign, $event)">
+                  <i class="fa fa-users"></i>
+                  {{ campaign.groups.length }}
+                </span>
+              </a>
+              <div class="panel panel-default" ng-if="selectedCampaign.campaignId === campaign.campaignId">
+                <div class="panel-body groups">
+                  <div ng-repeat="group in campaign.groups" class="col-lg-offset-1 col-lg-10 group">
+                    <h4>{{$index}}. {{group.name}}</h4>
+                    <p>{{group.text}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-group">
+              <a ng-if="!pastCampaigns.length" class="list-group-item">
+                <p>
+                  {{'No campaigns to show.' | translate}}
+                </p>
+              </a>
+            </div>
+          </uib-tab>
+        </uib-tabset>
+      </div>
+    </section>
+
+    <section class="row campaigns documents" ng-if="resources && resources.length">
+      <div class="col-lg-offset-2 col-lg-8 section-divider">
+        <h2>{{ 'Assembly Resources' | translate }}</h2>
+
+        <div class="row" ng-repeat="resource in resources track by $index">
+          <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="resources && resources.length===1">
+            <a ng-href="{{resource.url}}" target="_blank">
+              {{resource.name ? (resource.name.length < 50 ? resource.name : resource.name | limitTo:50 + "...") : resource.type }}
+            </a>
+          </p>
+
+          <p class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-if="resources && resources.length>1">
+            <a ng-href="{{resource.url}}" target="_blank">
+              {{resource.name ? (resource.name.length < 50 ? resource.name : resource.name | limitTo:50 + "...") : resource.type }}
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="row campaigns organizers" ng-if="organizations && organizations.length">
+      <div class="col-lg-offset-2 col-lg-8 section-divider">
+        <h2>{{ 'Organizers' | translate }}</h2>
+
+        <div class="row">
+          <a ng-repeat="org in organizations">
+            <img width="" ng-src="{{org.logo.url}}">
+            <p>{{org.title}}</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="row campaigns contact">
+      <div class="col-lg-offset-2 col-lg-8">
+        <h2>{{ 'Contact' | translate }}</h2>
+
+        <div class="row">
+          <p><i class="fa fa-user"></i> <span>{{assembly.profile.primaryContactName}}</span></p>
+          <p><i class="fa fa-envelope"></i> <span>{{assembly.profile.primaryContactEmail}}</span></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div ng-if="unauthorizedAccess && !assembly.listed">
+    <section class="well row">
+      <div class="col-lg-offset-2 col-lg-8">
+        <h1>{{"This Assembly is not public" | translate}}</h1>
+      </div>
+    </section>
+
+    <section class="row campaigns">
+      <div class="col-lg-offset-2 col-lg-8 section-divider">
+        <uib-tabset>
+          <uib-tab index="0">
+            <div class="list-group">
+              <a ng-href="" class="list-group-item">
+                <p>{{'To see the content of this assembly, you need to know its short name or its universal unique id' | translate}}</p>
+              </a>
+            </div>
+          </uib-tab>
+        </uib-tabset>
+      </div>
+    </section>
+
+
+
+  </div>
+
+
+  <footer>
+    <div class="logos col-lg-offset-2 col-lg-8">
+      <div class="row text">
+        <p>{{'Created by the' | translate}} <a href="http://socialappslab.org/">Social Apps Lab</a> at
+          <a href="http://citris-uc.org">CITRIS</a>, University of California, Berkeley</p>
+        <p>{{'In partnership with the' | translate}} <a href="http://mimove.inria.fr/">MiMove Team</a> at
+          <a href="http://inria.fr/">INRIA</a>, France</p>
+        <p>{{'Supported by EIT Digital, TUB, Nexus, and Missions Publiques' | translate}}</p>
+      </div>
+
+      <div class="row">
+        <img src="/assets/images/logo-social-app-labs.png">
+        <img src="/assets/images/logo-berkeley.png">
+        <img src="/assets/images/logo-inria.png">
+        <img src="/assets/images/logo-eit-digital.png">
+      </div>
+      <div class="row">
+        <img src="/assets/images/logo-citris.png">
+        <img src="/assets/images/logo-tu-b.png">
+        <img src="/assets/images/logo-mission-publique.png">
+        <img src="/assets/images/logo-nexus.png">
+      </div>
+    </div>
+  </footer>
+</div>

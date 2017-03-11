@@ -1,13 +1,9 @@
 /**
- * AppCivist Service Factories
- * Each factory returns ngResources connected to AppCivist API
- */
-
-/**
  * Reads AppCivist API Base URL from local storage and returns it
- * If the base url is not yet stored in the local storage, saves it
- * @param localStorageService
- * @returns serverBaseUrl
+ * If the base url is not yet stored in the local storage, saves it.
+ *
+ * @param {Object} localStorageService
+ * @returns {string} serverBaseUrl
  */
 function getServerBaseUrl(localStorageService) {
   var serverBaseUrl = localStorageService.get('serverBaseUrl');
@@ -19,12 +15,34 @@ function getServerBaseUrl(localStorageService) {
   return serverBaseUrl;
 }
 
+/**
+ * Assemblies factory.
+ *
+ * @class Assemblies
+ * @memberof services
+ */
 appCivistApp.factory('Assemblies', function($resource, localStorageService, $injector) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
+
   return {
+    /**
+     * Returns an $resource to interact with /assembly endpoint.
+     *
+     * @method services.Assemblies#assemblies
+     *
+     * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
+     */
     assemblies: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly');
     },
+
+    /**
+     * Returns an $resource to interact with /assembly/:aid endpoint.
+     *
+     * @method services.Assemblies#assembly
+     *
+     * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
+     */
     assembly: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },
@@ -32,7 +50,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/assembly', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },
     assemblyByShortName: function(shortName) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/name/:shortname', { shortname: shortName });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/name/:shortname', { shortname: shortName });
     },
     assemblyPublicProfile: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/public', { aid: assemblyId });
@@ -70,7 +88,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
           },
           "moderators": false,
           "coordinators": false,
-          "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png",
+          "icon": "https://pb.appcivist.org/public/images/barefootdoctor-140.png",
           "primaryContactName": "",
           "primaryContactPhone": "",
           "primaryContactEmail": ""
@@ -98,8 +116,8 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
       };
     },
 
-    assemblyByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:uuid', { uuid: uuid });
+    assemblyByUUID(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid', { uuid });
     },
 
     /**
@@ -198,8 +216,14 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
     campaign: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid', { aid: assemblyId, cid: campaignId }, { 'update': { method: 'PUT' } });
     },
+    campaignsInAssembly: function(assemblyId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', { aid: assemblyId });
+    },
+    campaignsInAssemblyByUUID: function(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid/campaign', { uuid });
+    },
     campaignByUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/' + campaignUUID);
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/' + campaignUUID);
     },
     newCampaign: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', {
@@ -316,7 +340,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/timeline', { aid: assemblyId, cid: campaignId });
     },
     timelineByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/timeline', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/timeline', { uuid: campaignUUID });
     },
 
     components: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
@@ -346,7 +370,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/components', { aid: assemblyId, cid: campaignId });
     },
     componentsByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/components', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/components', { uuid: campaignUUID });
     },
 
     themes: function(assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
@@ -376,18 +400,25 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/themes', { aid: assemblyId, cid: campaignId });
     },
     themesByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:uuid/themes', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/themes', { uuid: campaignUUID });
     },
-    getConfiguration: function(spaceId ){
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', {sid: spaceId});
+    getConfiguration: function(spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid: spaceId });
     },
-    isContributionTypeSupported: function (type, scope) {
+    getConfigurationPublic: function(spaceUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/config', { uuid: spaceUUID });
+    },
+    isContributionTypeSupported: function(type, scope) {
       var campaignConfigs = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.contribution-types'] : null;
       if (campaignConfigs) {
         return campaignConfigs.includes(type);
       } else {
         return true; // if the configuration is not defined, all contribution types are supported
       }
+    },
+    showAssemblyLogo: function(scope) {
+      var showAssemblyLogo = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.show-assembly-logo'] : false;
+      return showAssemblyLogo;
     }
   };
 
@@ -597,16 +628,16 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
     contributionInResourceSpaceByUUID: function(spaceUUId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public?page=:page&pageSize=:pageSize', { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution?page=:page&pageSize=:pageSize', { uuid: spaceUUId, page: pageC - 1, pageSize: pageSizeC });
       } else {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public', { uuid: spaceUUId });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution', { uuid: spaceUUId });
       }
     },
     pinnedContributionInResourceSpace: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/pinned', { sid: spaceId });
     },
     pinnedContributionInResourceSpaceByUUID: function(spaceUUId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/contribution/public/pinned', { uuid: spaceUUId });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
     /**
      * Returns a $resource to interact with the following endpoints:
@@ -619,7 +650,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
      *  @returns {object} $resource
      */
     createAnomymousContribution: function(endpoint, spaceUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/:endpoint/:uuid/contribution', { endpoint: endpoint, uuid: spaceUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/:endpoint/:uuid/contribution', { endpoint: endpoint, uuid: spaceUUID });
     },
 
     contributionsInCampaignComponent: function(assemblyID, campaignID, componentID) {
@@ -639,7 +670,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     userFeedbackAnonymous: function(campaignUUID, contributionUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/campaign/:cuuid/contribution/:couuid/feedback', { cuuid: campaignUUID, couuid: contributionUUID }, { 'update': { method: 'PUT' } });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:cuuid/contribution/:couuid/feedback', { cuuid: campaignUUID, couuid: contributionUUID }, { 'update': { method: 'PUT' } });
     },
 
     userFeedbackWithGroupId: function(assemblyId, groupId, contributionId) {
@@ -647,7 +678,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     publicFeedbacks: function(contributionUuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/feedback', { coid: contributionUuid } );
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { coid: contributionUuid });
     },
 
     getContributionComments: function(assemblyId, contributionId) {
@@ -655,7 +686,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     getContributionByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid', { uuid: uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:uuid', { uuid: uuid });
     },
 
     defaultContributionAttachment: function() {
@@ -766,26 +797,51 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
      * @param {string} uuid - Contribution's UUID.
      */
     contributionHistoryByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/history', { uuid: uuid }).query().$promise;
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:uuid/history', { uuid: uuid }).query().$promise;
     },
   };
 });
 
+
+/**
+ * WorkingGroups factory.
+ *
+ * @description
+ *
+ * Defines methods for working group related endpoints.
+ *
+ * @class WorkingGroups
+ * @memberof services
+ */
 appCivistApp.factory('WorkingGroups', function($resource, $translate, localStorageService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
     workingGroup: function(assemblyId, groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId }, { 'update': { method: 'PUT' } });
     },
+
     workingGroupInCampaign: function(assemblyId, campaignId, groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group/:gid', { aid: assemblyId, cid: campaignId, gid: groupId });
     },
+
     workingGroups: function(assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group', { aid: assemblyId }, { 'update': { method: 'PUT' }, 'delete': { method: 'DELETE' } });
     },
+
     workingGroupsInCampaign: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/group', { aid: assemblyId, cid: campaignId });
     },
+
+    /**
+     * Returns a $resource for the endpoint /public/api/campaign/:uuid/groups
+     *
+     * @method services.WorkingGroups#workingGroupsInCampaignByUUID
+     * @param {string} uuid - The campaign's UUID
+     */
+    workingGroupsInCampaignByUUID(uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/groups', { uuid });
+    },
+
     workingGroupMembers: function(assemblyId, groupId, stat) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/membership/:status', {
         aid: assemblyId,
@@ -813,7 +869,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
       });
     },
     workingGroupPublicProfile: function(assemblyId, groupId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/public', { aid: assemblyId, gid: groupId });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:aid/group/:gid', { aid: assemblyId, gid: groupId });
     },
     defaultNewWorkingGroup: function() {
       var newWGroup = {
@@ -829,7 +885,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
           },
           "moderators": false,
           "coordinators": false,
-          "icon": "https://appcivist.littlemacondo.com/public/images/barefootdoctor-140.png"
+          "icon": "https://pb.appcivist.org/public/images/barefootdoctor-140.png"
         },
         //"location": {
         //	"placeName": "Belleville, Paris, France"
@@ -882,7 +938,7 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService) {
       if (revision !== undefined) {
         url += '/timeslider#' + revision;
       }
-      url += '?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false';
+      url += '?showControls=false&showChat=true&showLineNumbers=true&useMonospaceFont=false';
       return url;
     },
     getReadWriteUrl: function(assemblyId, contributionId) {
@@ -901,6 +957,12 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService) {
   };
 });
 
+/**
+ * Defines methods to interact with the spaces endpoint.
+ *
+ * @class Space
+ * @memberof services
+ */
 appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contributions', 'Notify',
   function($resource, localStorageService, Contributions, Notify) {
     return {
@@ -915,6 +977,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       /**
        * Get contributions from server.
        *
+       * @method services.Space#getContributions
        * @param {object} target -  target must have rsID (resource space ID) or rsUUID (resource space UUID)
        * @param {string} type - forum_post | comment | idea | question | issue |  proposal | note
        * @param {boolean} isAnonymous
@@ -967,9 +1030,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         );
         return rsp.$promise;
       },
+
       /**
        * Basic search handler.
        *
+       *  @method services.Space#doSearch
        *  @param {object} target -  campaign | working group.
        *  @param {boolean} isAnonymous
        *  @param {object} filters - filters definition
@@ -993,6 +1058,66 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           });
           return this.getContributions(target, type, isAnonymous, params);
         }
+      },
+
+      /**
+       * Returns a $resource to interact with the organizations endpoint.
+       *
+       * @method services.Space#organizations
+       * @param {number} sid - The space id.
+       */
+      organizations(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/organization', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the public organizations endpoint.
+       *
+       * @method services.Space#organizationsByUUID
+       * @param {number} uuid - The space uuid.
+       */
+      organizationsByUUID(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/organization', { uuid });
+      },
+
+      /**
+       * Returns a $resource to interact with the resources endpoint.
+       *
+       * @method services.Space#resources
+       * @param {number} sid - The space id.
+       */
+      resources(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the resources public endpoint.
+       *
+       * @method services.Space#resourcesByUUID
+       * @param {number} uuid - The space uuid.
+       */
+      resourcesByUUID(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/resource', { uuid });
+      },
+
+      /**
+       * Returns a $resource to interact with the configurations endpoint.
+       *
+       * @method services.Space#configs
+       * @param {number} sid - The space id
+       */
+      configs(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the configurations public endpoint.
+       *
+       * @method services.Space#configsByUUID
+       * @param {string} uuid - The space uuid
+       */
+      configsByUUID(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/config', { uuid });
       }
     };
   }
@@ -1230,7 +1355,7 @@ appCivistApp.factory('Components', function($resource, $sce, localStorageService
           optionValue: optionsDict['component.voting.system.plurality.type'][0],
           value: optionsDict['component.voting.system.plurality.type'][0].value,
           dependsOf: 1,
-          dependsOfValue: optionsDict['component.voting.system'][2].value
+          dependsOfValue: optionsDict['component.voting.system'][3].value
         },
         {
           position: 7,
@@ -1614,6 +1739,403 @@ appCivistApp.factory('Components', function($resource, $sce, localStorageService
           type: "START"
         }
       ];
+    },
+
+    defaultComponents: function() {
+      return [
+        {
+          "title": "Ideas",
+          "type": "IDEAS",
+          "key": "ideas_1",
+          "description": "The 'Ideas' phase is about raising issues and brainstorming ideas",
+          "position": 1,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.ideas.enable-multiple-authors",
+              "value": "true",
+              "definition": {
+                "description": "Enable support for multiple authors per idea",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.enable-attachments",
+              "value": "false",
+              "definition": {
+                "description": "Enable support for attachments on ideas",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.contribution-limit",
+              "value": "0",
+              "definition": {
+                "description": "Limit of the number of contributions that users can create in this phase",
+                "valueType": "Integer",
+                "defaultValue": "0",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "ideas_milestone_1",
+              "position": 1,
+              "description": "Idea collection begins on this day",
+              "date": "2017-03-01 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "ideas_milestone_2",
+              "position": 2,
+              "description": "Idea collection ends on this day",
+              "date": "2017-03-14 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Proposals",
+          "type": "PROPOSALS",
+          "key": "proposals_1",
+          "description": "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals",
+          "position": 2,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.proposals.disable-collaborative-editor",
+              "value": false,
+              "definition": {
+                "description": "Disable collaborative editing of proposals",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.proposals.enable-multiple-authors",
+              "value": "true",
+              "definition": {
+                "description": "Enable support for multiple authors per proposal",
+                "valueType": "Boolean",
+                "defaultValue": "false",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.enable-attachments",
+              "value": "true",
+              "definition": {
+                "description": "Enable support for attachments on proposals",
+                "valueType": "Boolean",
+                "defaultValue": "true",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.ideas.contribution-limit",
+              "value": "0",
+              "definition": {
+                "description": "Limit of the number of contributions that users can create in this phase",
+                "valueType": "Integer",
+                "defaultValue": "0",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "proposals_milestone_1",
+              "position": 1,
+              "description": "Proposal development begins on this day",
+              "date": "2017-03-15 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "proposals_milestone_2",
+              "position": 2,
+              "description": "Proposal development ends on this day",
+              "date": "2017-04-14 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Deliberation",
+          "type": "DELIBERATION",
+          "key": "deliberation_1",
+          "description": "Deliberation is the careful consideration of proposals through comments and evidence. In this phase, proposals can only be discussed, praised or criticized, but not edited.",
+          "position": 3,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.deliberation.enable-technical-assessment",
+              "value": "true",
+              "definition": {
+                "description": "Enable technical assessment of proposals",
+                "valueType": "Boolean",
+                "defaultValue": "true",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.deliberation.who-deliberates",
+              "value": "ASSEMBLY",
+              "definition": {
+                "description": "Who deliberates?",
+                "valueType": "String",
+                "defaultValue": "ASSEMBLY",
+                "configTarget": "COMPONENT",
+                "uiType": "select",
+                "options": [
+                  {
+                    "name": "All assembly members",
+                    "value": "ASSEMBLY",
+                    "selected": true
+                  },
+                  {
+                    "name": "Only Working Groups of this Campaign",
+                    "value": "CAMPAIGN_WORKING_GROUPS",
+                    "selected": false
+                  },
+                  {
+                    "name": "Randomly selected jury",
+                    "value": "JURY",
+                    "selected": false
+                  }
+                ],
+                "optionValue": {
+                  "name": "All assembly members",
+                  "value": "ASSEMBLY",
+                  "selected": true
+                }
+              }
+            },
+            {
+              "key": "component.deliberation.who-deliberates-jury",
+              "value": "ASSEMBLY",
+              "dependsOf": 1,
+              "dependsOfValue": "JURY",
+              "definition": {
+                "description": "From where are members of the jury randomly selected?",
+                "valueType": "String",
+                "defaultValue": "ASSEMBLY",
+                "configTarget": "COMPONENT",
+                "uiType": "select",
+                "options": [
+                  {
+                    "name": "From all assembly members",
+                    "value": "ASSEMBLY",
+                    "selected": true
+                  },
+                  {
+                    "name": "From Working Groups of this Campaign",
+                    "value": "CAMPAIGN_WORKING_GROUPS",
+                    "selected": false
+                  }
+                ],
+                "optionValue": {
+                  "name": "From all assembly members",
+                  "value": "ASSEMBLY",
+                  "selected": true
+                }
+              }
+            },
+            {
+              "key": "component.deliberation.who-deliberates-jury-percentage",
+              "value": 0.1,
+              "dependsOf": 1,
+              "dependsOfValue": "JURY",
+              "definition": {
+                "description": "What percentage of people should be on the Jury?",
+                "valueType": "Percentage",
+                "defaultValue": "0.1",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "deliberation_milestone_1",
+              "position": 1,
+              "description": "Proposal development begins on this day",
+              "date": "2017-04-15 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "deliberation_milestone_2",
+              "position": 2,
+              "description": "Proposal development ends on this day",
+              "date": "2017-04-30 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Voting",
+          "key": "voting_1",
+          "position": 4,
+          "timeline": 1,
+          "linked": false,
+          "configs": [
+            {
+              "key": "component.voting.ballot.password",
+              "value": "123456",
+              "definition": {
+                "description": "Ballot Password",
+                "valueType": "String",
+                "defaultValue": "12345",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system",
+              "value": "RANGE",
+              "definition": {
+                "description": "Select the voting system",
+                "valueType": "String",
+                "defaultValue": "RANGE",
+                "configTarget": "COMPONENT",
+                "uiType": "select",
+                "options": [
+                  {
+                    "name": "Range",
+                    "value": "RANGE",
+                    "selected": true
+                  },
+                  {
+                    "name": "Ranked",
+                    "value": "RANKED",
+                    "selected": false
+                  },
+                  {
+                    "name": "Distribution",
+                    "value": "DISTRIBUTION",
+                    "selected": false
+                  },
+                  {
+                    "name": "Plurality",
+                    "value": "PLURALITY",
+                    "selected": false
+                  }
+                ],
+                "optionValue": {
+                  "name": "Range",
+                  "value": "RANGE",
+                  "selected": true
+                }
+              }
+            },
+            {
+              "key": "component.voting.system-range-min-score",
+              "value": "0",
+              "dependsOf": 1,
+              "dependsOfValue": "RANGE",
+              "definition": {
+                "description": "Minimum score for range voting",
+                "valueType": "Integer",
+                "defaultValue": "0",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system-range-max-score",
+              "value": "100",
+              "dependsOf": 1,
+              "dependsOfValue": "RANGE",
+              "definition": {
+                "description": "Maximum score for range voting",
+                "valueType": "Integer",
+                "defaultValue": "100",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system-ranked-number-proposals",
+              "value": "5",
+              "dependsOf": 1,
+              "dependsOfValue": "RANKED",
+              "definition": {
+                "description": "How many proposals can a voter select?",
+                "valueType": "Integer",
+                "defaultValue": "5",
+                "configTarget": "COMPONENT"
+              }
+            },
+            {
+              "key": "component.voting.system-distributed-points",
+              "value": "30",
+              "dependsOf": 1,
+              "dependsOfValue": "DISTRIBUTED",
+              "definition": {
+                "description": "How many points can a voter distribute?",
+                "valueType": "Integer",
+                "defaultValue": "30",
+                "configTarget": "COMPONENT"
+              }
+            }
+          ],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "voting_milestone_1",
+              "position": 1,
+              "description": "Voting begins on this day",
+              "date": "2017-05-01 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "voting_milestone_2",
+              "position": 2,
+              "description": "Voting ends on this day",
+              "date": "2017-05-31 23:59:59",
+              "type": "END"
+            }
+          ]
+        },
+        {
+          "title": "Implementation",
+          "type": "IMPLEMENTATION",
+          "key": "implementation_1",
+          "position": 5,
+          "timeline": 1,
+          "linked": false,
+          "configs": [],
+          "milestones": [
+            {
+              "title": "Beginning",
+              "key": "implementation_milestone_1",
+              "position": 1,
+              "description": "Implemenation begins on this day",
+              "date": "2017-06-01 00:00:00",
+              "type": "START"
+            },
+            {
+              "title": "End",
+              "key": "implementation_milestone_2",
+              "position": 2,
+              "description": "Voting ends on this day",
+              "date": "2018-06-30 23:59:59",
+              "type": "END"
+            }
+          ]
+        }
+      ];
     }
   };
 });
@@ -1759,6 +2281,129 @@ appCivistApp.factory('Captcha', ['$resource', 'localStorageService',
        */
       verify: function(toValidate) {
         return $resource(url + '/site/verify', { k: toValidate }).save().$promise;
+      }
+    }
+  }
+]);
+
+/**
+ * Editor factory.
+ *
+ * @description
+ *
+ * Defines helpers for tinymce editor.
+ *
+ * @class Editor
+ * @memberof services
+ */
+appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploader',
+  function($resource, localStorageService, FileUploader) {
+    var url = getServerBaseUrl(localStorageService);
+
+    return {
+      /**
+       * Returns default configuration options for tinymce.
+       *
+       * @method services.Editor#getEditorOptions
+       * @param {Object} target - The scope where the tinymce editor will be.
+       */
+      getOptions(target) {
+
+        return {
+          height: 400,
+          plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste imagetools'
+          ],
+          toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+          images_upload_credentials: true,
+          image_advtab: true,
+          image_title: true,
+          automatic_uploads: true,
+          file_picker_types: 'image',
+          imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
+          images_upload_handler: function(blobInfo, success, failure) {
+            var xhr, formData;
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.open('POST', FileUploader.uploadEndpoint());
+            xhr.onload = function() {
+              var json;
+
+              if (xhr.status != 200) {
+                failure('HTTP Error: ' + xhr.status);
+                return;
+              }
+              json = JSON.parse(xhr.responseText);
+
+              if (!json || typeof json.url != 'string') {
+                failure('Invalid JSON: ' + xhr.responseText);
+                return;
+              }
+              success(json.url);
+            };
+            formData = new FormData();
+            formData.append('file', blobInfo.blob());
+            xhr.send(formData);
+          },
+          file_picker_callback: function(cb, value, meta) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            $(input).bind('change', function() {
+              var file = this.files[0];
+              var id = 'blobid' + (new Date()).getTime();
+              var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+              var blobInfo = blobCache.create(id, file);
+              blobCache.add(blobInfo);
+              cb(blobInfo.blobUri(), { title: file.name });
+            });
+            input.click();
+            target.$on('$destroy', function() {
+              $(input).unbind('change');
+            });
+          }
+        };
+      }
+    }
+  }
+]);
+
+/**
+ * Defines utility methods.
+ *
+ * @class Utils
+ * @memberof services
+ */
+appCivistApp.factory('Utils', [
+  function() {
+
+    return {
+      /**
+       * Parses the given date to local time.
+       *
+       * @method services.Utils#parseDateToLocal
+       * @param {string} dateStr - The date to parse. Expected format example: 2016-12-12 13:05 PM GMT
+       */
+      parseDateToLocal(dateStr) {
+        if (!dateStr) {
+          return;
+        }
+        dateStr = dateStr.replace('PM GMT', '').replace('AM GMT', '').trim();
+        dateStr.replace(' ', 'T');
+        return moment.utc(dateStr).local().toDate();
+      },
+
+      /**
+       * Determines if given string is an UUID
+       *
+       * @method services.Utils#isUUID
+       * @param {string} uuid
+       */
+      isUUID(uuid) {
+        var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return pattern.test(uuid);
       }
     }
   }

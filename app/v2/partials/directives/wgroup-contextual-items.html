@@ -1,5 +1,15 @@
 <ul>
   <!-- disabled by issue #398 -->
-  <li class="li-action-menu" ng-if="false"><a href="" ng-click="myObject.edit()">{{'Edit' | translate}}</a></li>
-  <li class="li-action-menu"><a href="" ng-click="myObject.subscribe()">{{'Subscribe' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="false"><a href="" ng-click="vm.edit()">{{'Edit' | translate}}</a></li>
+  <li class="li-action-menu"><a href="" ng-click="vm.subscribe()">{{'Subscribe' | translate}}</a></li>
+  <li ng-if="userIsGroupCoordinator" class="li-action-menu"><a href="" ng-click="vm.openModal('configureBallotForm')">{{'Start Voting' | translate}}</a></li>
 </ul>
+
+
+<modal open-if="vm.modals.configureBallotForm" close="vm.closeModal('configureBallotForm')" title="Edit Form"
+  template-id="configureBallotForm"></modal>
+
+
+<script id="configureBallotForm" type="text/ng-template">
+  <configure-ballot-form close="vm.closeModal('configureBallotForm')"></configure-ballot-form>
+</script>

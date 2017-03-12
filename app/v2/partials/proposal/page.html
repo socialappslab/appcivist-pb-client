@@ -239,7 +239,7 @@
               <a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>
               <div class="popover" style="top: -50px;" ng-class="{active: contribution.commentCount}">
                 <div class="content">{{ totalComemnts }}</div>
-              </div>      
+              </div>
             </li>
           </ul>
           <div ng-if="proposal.informalScore" class="informal_score" ng-class="{positive: proposal.informalScore > 0, negative: proposal.informalScore < 0}">
@@ -278,8 +278,8 @@
           </h2>
         </div>
 
-        <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad']" class="etherpad__wrapper">
-          <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
+        <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'" class="etherpad__wrapper">
+          <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl+'&showControls=false'}}" width="100%" height="600px">
           </iframe>
           <iframe ng-if="userIsAuthor" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
           </iframe>

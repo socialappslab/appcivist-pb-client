@@ -938,7 +938,7 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService) {
       if (revision !== undefined) {
         url += '/timeslider#' + revision;
       }
-      url += '?showControls=false&showChat=true&showLineNumbers=true&useMonospaceFont=false';
+      url += '?showChat=true&showLineNumbers=true&useMonospaceFont=false';
       return url;
     },
     getReadWriteUrl: function(assemblyId, contributionId) {

@@ -15,11 +15,11 @@
   .nav--active {
     z-index: 2000 !important;
   }
-  
+
   .nav__container {
     overflow-y: scroll;
   }
-  
+
   .navigation.nav--active .nav__footer,
   .nav--active.navigation-logged-in .nav__footer {
     position: relative;
@@ -78,31 +78,32 @@
       </ul>
     </section>
 
-    <section class="my_working_groups" ng-if="isAssemblyCoordinator">
-      <h3 class="section_header">{{'AppCivist Instance Settings' | translate}}</h3>
-      <ul class="list__my_working_groups">
-        <li>
-          <a ng-href="/#/v2/assembly/new">
-            {{'Create New Assembly' | translate}}
-          </a>
-        </li>
-        <li>
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/new">
-            {{'Create New Campaign' | translate}}
-          </a>
-        </li>
-        <li>
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{currentCampaignId}}/group/new">
-            {{'Create Working Group' | translate}}
-          </a>
-        </li>
-        <li>
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/assembly/new/description">
-            {{'Create New Sub Assembly' | translate}}
-          </a>
-        </li>
-      </ul>
-    </section>
+    <!--TODO: move to Coordinator's Dashboard
+    <section class="my_working_groups" ng-if="isAssemblyCoordinator">-->
+      <!--<h3 class="section_header">{{'AppCivist Instance Settings' | translate}}</h3>-->
+      <!--<ul class="list__my_working_groups">-->
+        <!--<li>-->
+          <!--<a ng-href="/#/v2/assembly/new">-->
+            <!--{{'Create New Assembly' | translate}}-->
+          <!--</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/new">-->
+            <!--{{'Create New Campaign' | translate}}-->
+          <!--</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{currentCampaignId}}/group/new">-->
+            <!--{{'Create Working Group' | translate}}-->
+          <!--</a>-->
+        <!--</li>-->
+        <!--<li>-->
+          <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/assembly/new/description">-->
+            <!--{{'Create New Sub Assembly' | translate}}-->
+          <!--</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</section>-->
 
     <footer class="nav__footer">
       <div class="logo__wrapper">

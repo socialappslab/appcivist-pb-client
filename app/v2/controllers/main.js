@@ -86,7 +86,10 @@
 
     function stateChangeHandler(event) {
       this.nav.isActive = false;
-      this.isLoginPage = $state.is('v2.login');
+      this.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');
+      this.isHomePage = $state.is('v2.homepage');
+      this.isAssemblyHome = $state.is('v2.assembly.aid.home');
+
       this.userIsAuthenticated = loginService.userIsAuthenticated();
       this.userIsAuthenticated = this.userIsAuthenticated === null ? false : this.userIsAuthenticated;
       if ($state.params && $state.params.cid) {

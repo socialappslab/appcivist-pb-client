@@ -40,21 +40,28 @@
         $scope.assemblyId = parseInt($stateParams.aid);
       }
       $scope.fetchAssembly($scope.assemblyId);
+      $scope.shortname = "";
+      $scope.readAssemblyByShortname = false;
     }
 
     function fetchAssembly(aid) {
       let rsp;
 
       if (this.isAnonymous) {
-        if (Utils.isUUID($stateParams.aid)) {
+        if (Utils.isUUID(aid)) {
           rsp = Assemblies.assemblyByUUID(aid).get().$promise;
-        } else if (isNaN($stateParams.aid)) {
+        } else if (isNaN(aid)) {
           rsp = Assemblies.assemblyByShortName(aid).get().$promise;
         } else {
           this.unauthorizedAccess = true;
         }
       } else {
-        rsp = Assemblies.assembly(aid).get().$promise;
+        if (isNaN($stateParams.aid)) {
+          rsp = Assemblies.assemblyByShortName($stateParams.aid).get().$promise;
+          this.shortname = $stateParams.aid;
+        } else {
+          rsp = Assemblies.assembly(aid).get().$promise;
+        }
       }
 
       if (!this.unauthorizedAccess) {
@@ -65,7 +72,12 @@
               if (this.assembly && this.assembly.lang) {
                 $translate.use(this.assembly.lang);
               }
+              this.assemblyId = this.assembly.uuid;
+            } else {
+              this.assemblyId = this.assembly.assemblyId ? this.assembly.assemblyId : this.assembly.uuid;
+              this.readAssemblyByShortname = this.assembly.assemblyId ? false : true;
             }
+            this.shortname = this.assembly.shortname
             this.fetchCampaigns();
             this.fetchOrganizations(assembly);
             this.fetchResources(assembly);
@@ -82,7 +94,7 @@
     function fetchCampaigns() {
       let rsp;
 
-      if (this.isAnonymous) {
+      if (this.isAnonymous || this.readAssemblyByShortname) {
         rsp = Campaigns.campaignsInAssemblyByUUID(this.assemblyId).query().$promise;
       } else {
         rsp = Campaigns.campaignsInAssembly(this.assemblyId).query().$promise;
@@ -120,7 +132,7 @@
     function fetchWorkingGroups(assemblyId, campaign) {
       let rsp;
 
-      if (this.isAnonymous) {
+      if (this.isAnonymous || this.readAssemblyByShortname) {
         rsp = WorkingGroups.workingGroupsInCampaignByUUID(campaign.uuid).query().$promise;
       } else {
         rsp = WorkingGroups.workingGroupsInCampaign(assemblyId, campaign.campaignId).query().$promise;
@@ -141,7 +153,7 @@
 
     function fetchOrganizations(assembly) {
       let rsp;
-      if (this.isAnonymous) {
+      if (this.isAnonymous || this.readAssemblyByShortname) {
         rsp = Space.organizationsByUUID(this.assembly.resourcesResourceSpaceUUID).query().$promise;
       } else {
         rsp = Space.organizations(this.assembly.resourcesResourceSpaceId).query().$promise;
@@ -158,7 +170,7 @@
 
     function fetchResources(assembly) {
       let rsp;
-      if (this.isAnonymous) {
+      if (this.isAnonymous || this.readAssemblyByShortname) {
         rsp = Space.resourcesByUUID(this.assembly.resourcesResourceSpaceUUID).query().$promise;
       } else {
         rsp = Space.resources(this.assembly.resourcesResourceSpaceId).query().$promise;
@@ -182,7 +194,7 @@
     function fetchConfigs(assembly) {
       let rsp;
 
-      if (this.isAnonymous) {
+      if (this.isAnonymous || this.readAssemblyByShortname) {
         rsp = Space.configsByUUID(assembly.resourcesResourceSpaceUUID).get().$promise;
       } else {
         rsp = Space.configs(assembly.resourcesResourceSpaceId).get().$promise;

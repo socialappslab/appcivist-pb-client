@@ -40,7 +40,21 @@
         <uib-tabset>
           <uib-tab index="0" heading="{{'Ongoing campaigns' | translate}}">
             <div class="list-group" ng-repeat="campaign in ongoings">
-              <a ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
+              <a ng-if="!isAnonymous && !readAssemblyByShortname" ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
+                <div>
+                  {{campaign.title}}
+                </div>
+
+                <span class="list-group-item-btn" ng-click="showGroups(campaign, $event)">
+                  <i class="fa fa-users"></i>
+                  {{ campaign.groups.length }}
+                </span>
+                <p ng-if="!ongoings.length">
+                  {{'No campaigns to show.' | translate}}
+                </p>
+              </a>
+
+              <a ng-if="isAnonymous || readAssemblyByShortname" ng-href="/#/v2/campaign/{{campaign.uuid}}" class="list-group-item">
                 <div>
                   {{campaign.title}}
                 </div>
@@ -65,7 +79,7 @@
           </uib-tab>
           <uib-tab index="1" heading="{{'Past campaigns' | translate}}">
             <div class="list-group" ng-repeat="campaign in pastCampaigns">
-              <a ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
+              <a ng-if="!isAnonymous && !readAssemblyByShortname" ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
                 <div>
                   {{campaign.title}}
                 </div>
@@ -75,6 +89,19 @@
                   {{ campaign.groups.length }}
                 </span>
               </a>
+
+              <!-- If public view, show links to public campaigns -->
+              <a ng-if="isAnonymous || !readAssemblyByShortname" ng-href="/#/v2/campaign/{{campaign.uuid}}" class="list-group-item">
+                <div>
+                  {{campaign.title}}
+                </div>
+
+                <span class="list-group-item-btn" ng-click="showGroups(campaign, $event)">
+                  <i class="fa fa-users"></i>
+                  {{ campaign.groups.length }}
+                </span>
+              </a>
+
               <div class="panel panel-default" ng-if="selectedCampaign.campaignId === campaign.campaignId">
                 <div class="panel-body groups">
                   <div ng-repeat="group in campaign.groups" class="col-lg-offset-1 col-lg-10 group">

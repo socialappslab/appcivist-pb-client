@@ -163,6 +163,8 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     localStorageService.set('assemblies', myAssemblies);
     localStorageService.set('groupMembershipsHash', groupMembershipsHash);
     localStorageService.set('assemblyMembershipsHash', assemblyMembershipsHash);
+    localStorageService.set('membershipsInGroups', membershipsInGroups);
+    localStorageService.set('membershipsInAssemblies', membershipsInAssemblies);
 
     var domain = localStorageService.get('domain');
     var currentAssembly;

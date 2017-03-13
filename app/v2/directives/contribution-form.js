@@ -296,7 +296,7 @@
       if (this.file.csv) {
         this.importContribution();
       } else {
-        if(this.isEdit) {
+        if (this.isEdit) {
           this.flattenContribution();
         }
         this.contributionSubmit();
@@ -425,9 +425,9 @@
       this.contribution = contribution;
     }
 
-    function deleteAttachment (item){ 
+    function deleteAttachment(item) {
       var index = this.contribution.attachments.indexOf(item)
-      this.contribution.attachments.splice(index,1);     
+      this.contribution.attachments.splice(index, 1);
     }
   }
 }());

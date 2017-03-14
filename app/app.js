@@ -51,8 +51,8 @@
     development: "https://testetherpad.appcivist.org/",
     local: "http://localhost:9001/",
     //local: "https://testetherpad.appcivist.org/",
-    //mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
-    mimove: "https://etherpad.appcivist.org/"
+    mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
+    //mimove: "https://etherpad.appcivist.org/"
   };
 
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)

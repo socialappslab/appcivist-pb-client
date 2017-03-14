@@ -365,7 +365,7 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-      <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="proposalID" endpoint-id="proposalID" endpoint="contribution"></discussion-panel>
+      <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="proposal.rsID" endpoint-id="proposalID" endpoint="contribution"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
       <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="proposal.forumResourceSpaceId" endpoint-id="proposal.proposalId"

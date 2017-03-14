@@ -13,11 +13,11 @@
       restrict: 'E',
       scope: {
         //page: '=',
-        pageSize: '=',
-        space: '=',
+        pageSize: '@',
+        space: '@',
         resource: '=',
-        type: '=',
-        isAnonymous: '='
+        type: '@',
+        isAnonymous: '@'
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function postLink(scope) {
@@ -35,9 +35,25 @@
         function getResultsPage(pageNumber) {
             var rsp;
             var query = { type: scope.type.toUpperCase() };
-            if (scope.isAnonymous) {
+            if (scope.isAnonymous == "true") {
+              console.log("space id isAnonymous: ");
+              console.log(scope.space);
+              console.log("page size: ");
+              console.log(scope.pageSize);
+              console.log("type: ");
+              console.log(scope.type);
+              console.log("isAnonymous: ");
+              console.log(scope.isAnonymous);
               rsp = Contributions.contributionInResourceSpaceByUUID(scope.space, pageNumber, scope.pageSize).get(query);
             } else {
+              console.log("space id: ");
+              console.log(scope.space);
+              console.log("page size: ");
+              console.log(scope.pageSize);
+              console.log("type: ");
+              console.log(scope.type);
+              console.log("isAnonymous: ");
+              console.log(scope.isAnonymous);
               rsp = Contributions.contributionInResourceSpace(scope.space, pageNumber, scope.pageSize).get(query);
             }
             rsp.$promise.then(

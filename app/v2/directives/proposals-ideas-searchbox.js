@@ -158,6 +158,14 @@
       if (sort === 'date') {
         // just toggle date sort direction
         this.filters.sorting = this.filters.sorting === 'date_asc' ? 'date_desc' : 'date_asc';
+      } else if (sort === 'popularity') {
+        this.filters.sorting = this.filters.sorting === 'popularity_asc' ? 'popularity_desc' : 'popularity_asc';
+      } else if (sort === 'most_commented') {
+        this.filters.sorting = this.filters.sorting === 'most_commented_asc' ? 'most_commented_desc' : 'most_commented_asc';
+      } else if (sort === 'most_commented_public') {
+        this.filters.sorting = this.filters.sorting === 'most_commented_public_asc' ? 'most_commented_public_desc' : 'most_commented_public_asc';
+      } else if (sort === 'most_commented_members') {
+        this.filters.sorting = this.filters.sorting === 'most_commented_members_asc' ? 'most_commented_members_desc' : 'most_commented_members_asc';
       } else {
         this.filters.sorting = sort;
       }
@@ -172,6 +180,14 @@
     function sortingIs(sort) {
       if (sort === 'date') {
         return this.filters.sorting === 'date_asc' || this.filters.sorting === 'date_desc';
+      } else if (sort === 'popularity') {
+        return this.filters.sorting === 'popularity_asc' || this.filters.sorting === 'popularity_desc';
+      } else if (sort === 'most_commented') {
+        return this.filters.sorting === 'most_commented_asc' || this.filters.sorting === 'most_commented_desc';
+      } else if (sort === 'most_commented_public') {
+        return this.filters.sorting === 'most_commented_public_asc' || this.filters.sorting === 'most_commented_public_desc';
+      } else if (sort === 'most_commented_members') {
+        return this.filters.sorting === 'most_commented_members_asc' || this.filters.sorting === 'most_commented_members_desc';
       }
       return this.filters.sorting === sort;
     }

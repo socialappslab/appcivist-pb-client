@@ -513,6 +513,15 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
     },
 
     /**
+     * Check if current user is coordinator of the given working group.
+     *
+     * @param {number} wgid - Working Group ID.
+     */
+    isWorkingGroupCoordinator: function(wgid) {
+      return this.rolIn('group', wgid, 'COORDINATOR');
+    },
+
+    /**
      * Check if current user is member of the given assembly.
      *
      * @param {string} target - group | assembly

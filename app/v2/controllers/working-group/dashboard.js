@@ -27,6 +27,7 @@
     function activate() {
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
+      $scope.isCoordinator = false;
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
       $scope.newIdeasEnabled = false;
@@ -35,13 +36,14 @@
         $scope.groupID = $stateParams.gid;
         $scope.isAnonymous = true;
         $scope.fromURL = 'v2/group/' + $scope.groupID;
+        $scope.isCoordinator = Memberships.isWorkingGroupCoordinator($scope.groupID);
         loadWorkingGroup();
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
-
+        $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
         }
@@ -85,7 +87,7 @@
     function userIsMemberSuccess(data) {
       $scope.membership = data;
       $scope.userIsMember = $scope.membership.status === "ACCEPTED";
-
+      console.log($scope.membership.roles);
       if ($scope.userIsMember) {
         loadWorkingGroup();
       } else {

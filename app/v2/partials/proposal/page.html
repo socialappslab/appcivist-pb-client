@@ -235,7 +235,7 @@
 
         <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
-      <div ng-if="userIsAuthor || true" class="attribution campaign__filters">
+      <div ng-if="userIsAuthor" class="attribution campaign__filters">
         <ul class="search_modes">
           <li class="sarch_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}">
             <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>

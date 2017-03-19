@@ -15,11 +15,11 @@
   .nav--active {
     z-index: 2000 !important;
   }
-
+  
   .nav__container {
     overflow-y: scroll;
   }
-
+  
   .navigation.nav--active .nav__footer,
   .nav--active.navigation-logged-in .nav__footer {
     position: relative;
@@ -46,7 +46,7 @@
       <h3 class="section_header">{{'Ongoing Campaigns' | translate}}</h3>
       <ul class="list__my_campaigns">
         <li ng-repeat="c in ongoingCampaigns">
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}" ng-class="{active: isCampaignActive(c)}">
             {{c.title}}
           </a>
         </li>
@@ -58,7 +58,7 @@
       <h3 class="section_header">{{'My Working Groups' | translate}}</h3>
       <ul class="list__my_working_groups">
         <li ng-repeat="wg in myWorkingGroups">
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}" ng-class="{active: isGroupActive(wg)}">
             {{wg.name}}
           </a>
         </li>
@@ -80,29 +80,29 @@
 
     <!--TODO: move to Coordinator's Dashboard
     <section class="my_working_groups" ng-if="isAssemblyCoordinator">-->
-      <!--<h3 class="section_header">{{'AppCivist Instance Settings' | translate}}</h3>-->
-      <!--<ul class="list__my_working_groups">-->
-        <!--<li>-->
-          <!--<a ng-href="/#/v2/assembly/new">-->
-            <!--{{'Create New Assembly' | translate}}-->
-          <!--</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/new">-->
-            <!--{{'Create New Campaign' | translate}}-->
-          <!--</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{currentCampaignId}}/group/new">-->
-            <!--{{'Create Working Group' | translate}}-->
-          <!--</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/assembly/new/description">-->
-            <!--{{'Create New Sub Assembly' | translate}}-->
-          <!--</a>-->
-        <!--</li>-->
-      <!--</ul>-->
+    <!--<h3 class="section_header">{{'AppCivist Instance Settings' | translate}}</h3>-->
+    <!--<ul class="list__my_working_groups">-->
+    <!--<li>-->
+    <!--<a ng-href="/#/v2/assembly/new">-->
+    <!--{{'Create New Assembly' | translate}}-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/new">-->
+    <!--{{'Create New Campaign' | translate}}-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{currentCampaignId}}/group/new">-->
+    <!--{{'Create Working Group' | translate}}-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/assembly/new/description">-->
+    <!--{{'Create New Sub Assembly' | translate}}-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--</ul>-->
     <!--</section>-->
 
     <footer class="nav__footer">

@@ -870,3 +870,11 @@ fieldset.tags .autocomplete .suggestion-item em {
   color: #000;
   background-color: #fff;
 }
+
+.list__my_campaigns,
+.my_working_groups {
+  a.active {
+    color: #e5ebe6 !important;
+    background-color: #11493b;
+  }
+}

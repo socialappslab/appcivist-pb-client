@@ -181,9 +181,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
         var groupMembershipsHash = {};
         var assemblyMembershipsHash = {};
 
-        var myWorkingGroups = membershipsInGroups.filter(function(membership) {
-          return membership.workingGroup.assemblies[0] === newAssemblyId;
-        }).map(function(membership) {
+        var myWorkingGroups = membershipsInGroups.map(function(membership) {
           groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
           return membership.workingGroup;
         });

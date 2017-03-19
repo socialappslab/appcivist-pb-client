@@ -246,9 +246,6 @@
      * type is PROPOSAL. Otherwise it returns the members of the assembly.
      */
     function loadAuthors() {
-      /**
-       * listado in-memory de los miembors del WG seleccionado + los miembros del current assembly
-       */
       var self = this;
       var rsp;
 
@@ -296,7 +293,7 @@
       if (this.file.csv) {
         this.importContribution();
       } else {
-        if(this.isEdit) {
+        if (this.isEdit) {
           this.flattenContribution();
         }
         this.contributionSubmit();
@@ -425,9 +422,9 @@
       this.contribution = contribution;
     }
 
-    function deleteAttachment (item){ 
+    function deleteAttachment(item) {
       var index = this.contribution.attachments.indexOf(item)
-      this.contribution.attachments.splice(index,1);     
+      this.contribution.attachments.splice(index, 1);
     }
   }
 }());

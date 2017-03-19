@@ -17,6 +17,18 @@
     $filter, localStorageService, Memberships, Etherpad, Notify,
     $translate, Space, $http, FileUploader, $sce, Campaigns) {
 
+    $scope.setAddContext = setAddContext.bind($scope);
+    $scope.loadThemes = loadThemes.bind($scope);
+    $scope.loadThemesOrAuthor = loadThemesOrAuthor.bind($scope);
+    $scope.currentAddQueryChange = currentAddQueryChange.bind($scope);
+    $scope.currentAddGetText = currentAddGetText.bind($scope);
+    $scope.currentAddOnSelect = currentAddOnSelect.bind($scope);
+    $scope.deleteTheme = deleteTheme.bind($scope);
+    $scope.addThemeToProposal = addThemeToProposal.bind($scope);
+    $scope.loadAuthors = loadAuthors.bind($scope);
+    $scope.addAuthorToProposal = addAuthorToProposal.bind($scope);
+    $scope.deleteAuthor = deleteAuthor.bind($scope);
+
     activate();
 
     function activate() {
@@ -26,6 +38,10 @@
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
       $scope.feedbackBar = false;
+      $scope.currentAdd = {
+        suggestionsVisible: false,
+        context: 'AUTHORS'
+      };
       $scope.toggleFeedbackBar = function(x) {
         $scope.feedbackBar = !$scope.feedbackBar;
       };
@@ -73,7 +89,7 @@
       $scope.trustedHtml = function(html) {
         return $sce.trustAsHtml(html);
       };
-      $scope.contributionTypeIsSupported = function (type) {
+      $scope.contributionTypeIsSupported = function(type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       }
     }
@@ -93,7 +109,6 @@
         $scope.userFeedback.flag = true;
       }
 
-      //var stats = $scope.contribution.stats;
       var feedback = Contributions.userFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
         function(newStats) {
@@ -131,7 +146,7 @@
 
           var campaignIds = []
 
-          if(scope.isAnonymous) {
+          if (scope.isAnonymous) {
             campaignIds = data.campaignUuids;
           } else {
             campaignIds = data.campaignIds;
@@ -141,10 +156,8 @@
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
-
-
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision)+"&userName="+$scope.userName;
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName;
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -200,7 +213,7 @@
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
         etherpadRes.$promise.then(function(pad) {
-          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId)+"&userName="+$scope.userName;
+          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + "&userName=" + $scope.userName;
         });
       }
     }
@@ -321,12 +334,12 @@
       return vm.trustedHtmlText;
     }
 
-    function loadCampaign () {
+    function loadCampaign() {
       $scope.campaign = localStorageService.get("currentCampaign");
 
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
-        loadCampaignConfig ();
+        loadCampaignConfig();
       } else {
         var res;
         if ($scope.isAnonymous) {
@@ -335,26 +348,175 @@
           res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
         }
 
-        res.$promise.then(function(data){
+        res.$promise.then(function(data) {
           $scope.campaign = data;
           $scope.campaign.rsID = data.resourceSpaceId;
 
-          loadCampaignConfig ();
+          loadCampaignConfig();
         }, function(error) {
-            Notify.show('Error while trying to fetch campaign', 'error');
+          Notify.show('Error while trying to fetch campaign', 'error');
         });
       }
     }
 
-    function loadCampaignConfig () {
+    function loadCampaignConfig() {
       if ($scope.campaign && $scope.campaign.rsID) {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function (data) {
+        rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;
-        }, function (error) {
+        }, function(error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
         });
       }
+    }
+
+
+    /**
+     * Sets the context of add button y page header.
+     * @param {string} ctx AUTHORS | THEMES
+     */
+    function setAddContext(ctx) {
+      this.currentAdd.context = ctx;
+    }
+
+    function currentAddQueryChange() {
+      this.currentAdd.suggestionsVisible = this.currentAdd.query.length > 0;
+      this.loadThemesOrAuthor();
+    }
+
+    /**
+     * Returns the text to display in the suggestion list.
+     * 
+     * @param {Object} item 
+     */
+    function currentAddGetText(item) {
+      if (this.currentAdd.context === 'AUTHORS') {
+        return $sce.trustAsHtml(`
+          <img src="${item.profilePic.url}" style="height: 30px; width: 30px; border-radius: 50px;">
+          <span style="margin-left: 15px;">${item.name}</span>`);
+      } else {
+        return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
+      }
+    }
+
+    /**
+     * on-select handler.
+     * 
+     * @param {Object} item 
+     */
+    function currentAddOnSelect(item) {
+      this.currentAdd.suggestionsVisible = false;
+      this.currentAdd.query = '';
+
+      if (this.currentAdd.context === 'AUTHORS') {
+        this.addAuthorToProposal(item);
+      } else {
+        this.addThemeToProposal(item);
+      }
+    }
+
+    function loadThemesOrAuthor() {
+      if (this.currentAdd.context === 'AUTHORS') {
+        this.loadAuthors(this.currentAdd.query);
+      } else {
+        this.loadThemes(this.currentAdd.query);
+      }
+    }
+
+    /**
+     * Loads the available themes for the contribution.
+     * @param {string} query
+     */
+    function loadThemes(query) {
+      let vm = this;
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId);
+      rsp.then(
+        themes => {
+          vm.currentAdd.items = $filter('filter')(themes, { title: query });
+        },
+        error => {
+          Notify.show('Error while trying to fetch themes from server', 'error');
+        }
+      );
+    }
+
+    /**
+     * Deletes the given theme.
+     * 
+     * @param {Object} theme 
+     * @param {boolean} local - just delete in-memory theme instance.
+     */
+    function deleteTheme(theme, local) {
+      _.remove(this.proposal.themes, { themeId: theme.themeId });
+
+      if (local) {
+        return;
+      }
+      Contributions.deleteTheme(this.proposal.uuid, theme.themeId).then(
+        response => Notify.show('Theme deleted successfully', 'success'),
+        error => {
+          Notify.show('Error while trying to delete theme from the contribution', 'error');
+        }
+      );
+    }
+
+    /**
+     * Deletes the given author.
+     * 
+     * @param {Object} author 
+     * @param {boolean} local - just delete in-memory author instance.
+     */
+    function deleteAuthor(author, local) {
+      _.remove(this.proposal.authors, { userId: author.userId });
+
+      if (local) {
+        return;
+      }
+      Contributions.deleteAuthor(this.proposal.uuid, author.uuid).then(
+        response => Notify.show('Author deleted successfully', 'success'),
+        error => {
+          Notify.show('Error while trying to delete author from the contribution', 'error');
+        }
+      );
+    }
+
+    function addThemeToProposal(theme) {
+      this.proposal.themes = this.proposal.themes || [];
+      this.proposal.themes.push(theme);
+
+      Contributions.addTheme(this.proposal.uuid, this.proposal.themes).then(
+        response => Notify.show('Theme added successfully', 'success'),
+        error => {
+          this.deleteTheme(theme, true);
+          Notify.show('Error while trying to add theme to the contribution', 'error');
+        }
+      );
+    }
+
+    function loadAuthors(query) {
+      let rsp = Assemblies.assemblyMembers(this.assemblyID).query().$promise;
+      rsp.then(
+        data => {
+          let items = data.filter(d => d.status === 'ACCEPTED').map(d => d.user);
+          items = $filter('filter')(items, { $: query });
+          this.currentAdd.items = items;
+        },
+        function(error) {
+          Notify.show('Error while trying to fetch assembly members from the server', 'error');
+        }
+      );
+    }
+
+    function addAuthorToProposal(author) {
+      this.proposal.authors = this.proposal.authors || [];
+      this.proposal.authors.push(author);
+      Contributions.addAuthor(this.proposal.uuid, author).then(
+        response => Notify.show('Author added successfully', 'success'),
+        error => {
+          this.deleteAuthor(author, true);
+          Notify.show('Error while trying to add author to the contribution', 'error');
+        }
+      );
     }
   }
 }());

@@ -539,6 +539,14 @@ appCivistApp.factory('Notifications', function($resource, localStorageService) {
 
 });
 
+
+
+/**
+ * Contributions factory.
+ *
+ * @class Contributions
+ * @memberof services
+ */
 appCivistApp.factory('Contributions', function($resource, localStorageService, WorkingGroups) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
@@ -799,6 +807,59 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     contributionHistoryByUUID: function(uuid) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:uuid/history', { uuid: uuid }).query().$promise;
     },
+
+    /**
+     * Adds the given theme to the contribution.
+     *
+     * @method services.Contributions#addTheme
+     * @param {string} uuid - The contribution UUID.
+     * @param {Object} theme - The theme to add.
+     * @returns {object} - Promise
+     */
+    addTheme(uuid, theme) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/themes', { uuid: uuid }, {
+        save: {
+          isArray: true,
+          method: 'POST'
+        }
+      }).save(theme).$promise;
+    },
+
+    /**
+     * Deletes the given theme from the contribution.
+     *
+     * @method services.Contributions#deleteTheme
+     * @param {string} uuid - The contribution UUID.
+     * @param {Object} tid - The theme's ID.
+     * @returns {object} - Promise
+     */
+    deleteTheme(uuid, tid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/themes/:tid', { uuid, tid }).delete().$promise;
+    },
+
+    /**
+     * Adds the given author from the contribution.
+     *
+     * @method services.Contributions#addAuthor
+     * @param {string} uuid - The contribution UUID.
+     * @param {Object} author - The author to add.
+     * @returns {object} - Promise
+     */
+    addAuthor(uuid, author) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors', { uuid: uuid }).save(author).$promise;
+    },
+
+    /**
+     * Deletes the given author to the contribution.
+     *
+     * @method services.Contributions#deleteAuthor
+     * @param {string} uuid - The contribution UUID.
+     * @param {Object} auuid - The author's uuid.
+     * @returns {object} - Promise
+     */
+    deleteAuthor(uuid, auuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors/:auuid', { uuid, auuid }).delete().$promise;
+    }
   };
 });
 

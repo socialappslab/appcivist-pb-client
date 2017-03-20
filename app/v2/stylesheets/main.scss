@@ -747,3 +747,7 @@ uib-accordion {
     background-color: #11493b;
   }
 }
+
+select[disabled] {
+  background-color: #eee;
+}

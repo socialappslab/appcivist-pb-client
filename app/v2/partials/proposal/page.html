@@ -219,7 +219,7 @@
       <ul class="tags">
         <li ng-repeat="theme in proposal.themes track by $index" ng-mouseenter="theme.isHover = true" ng-mouseleave="theme.isHover = false">
           <a href="">{{theme.title}}</a>
-          <i ng-if="theme.isHover" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+          <i ng-if="theme.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
           <span ng-if="!$last">,</span>
         </li>
       </ul>
@@ -230,7 +230,7 @@
         <div ng-repeat="author in proposal.authors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
           style="display: inline-block; margin-left: 10px;">
           <member-card user="author"></member-card>
-          <i ng-if="author.isHover" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+          <i ng-if="author.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
         </div>
 
         <member-card ng-if="!proposal.authors" user="group"></member-card>

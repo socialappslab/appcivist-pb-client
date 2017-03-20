@@ -169,7 +169,9 @@
               currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
-                verifyAuthorship(scope.proposal);
+                verifyAuthorship(scope.proposal, false);
+              } else {
+                verifyAuthorship(scope.proposal, true);
               }
               if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
                 scope.isProposalIdeaStage = true;
@@ -190,7 +192,13 @@
       );
     }
 
-    function verifyAuthorship(proposal) {
+    /**
+     * Verify current user authorship status.
+     * 
+     * @param {Object} proposal 
+     * @param {boolean} checkEtherpad - whether we should verify read/write etherpad URL.
+     */
+    function verifyAuthorship(proposal, checkEtherpad) {
       // Check Authorship
       // 1. Check if user is in the list of authors
       $scope.userIsAuthor = Contributions.verifyAuthorship($scope.user, proposal);
@@ -200,11 +208,11 @@
         var authorship = Contributions.verifyGroupAuthorship($scope.user, proposal, $scope.group).get();
         authorship.$promise.then(function(response) {
           $scope.userIsAuthor = response.responseStatus === 'OK';
-          if ($scope.userIsAuthor) {
+          if ($scope.userIsAuthor && checkEtherpad) {
             loadEtherpadWriteUrl(proposal);
           }
         });
-      } else if ($scope.userIsAuthor) {
+      } else if ($scope.userIsAuthor && checkEtherpad) {
         loadEtherpadWriteUrl(proposal);
       }
     }
@@ -484,7 +492,7 @@
       this.proposal.themes = this.proposal.themes || [];
       this.proposal.themes.push(theme);
 
-      Contributions.addTheme(this.proposal.uuid, this.proposal.themes).then(
+      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => Notify.show('Theme added successfully', 'success'),
         error => {
           this.deleteTheme(theme, true);

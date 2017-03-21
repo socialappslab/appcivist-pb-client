@@ -27,6 +27,7 @@
     function activate() {
       $scope.pageSize = 16;
       $scope.type ='proposal';
+      $scope.showPagination = false;
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       // TODO: read the following from configurations in the campaign/component
@@ -131,6 +132,9 @@
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;
           }
+          // $rootScope.$broadcast('spaceID loaded');
+          console.log('SE HA SETEADO EL SPACEID!!!');
+          $scope.showPagination = true;
           loadLatestActivities(data);
         },
         function (error) {

@@ -1572,9 +1572,9 @@
             <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
             <!-- <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp; -->
           </header>
-          <div class="page__content">
-               <h1>Space id = {{spaceID}}</h1>
-               <pagination-widget page-size="{{pageSize}}" space="{{spaceID}}" resource="contribution" type="{{type}}" is-anonymous="{{isAnonymous}}"></pagination-widget>
+          <div class="page__content" ng-if="showPagination">
+               <h1>SHOOOW PAGINATIOOOOON! Space id = {{spaceID}}</h1>
+               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"></pagination-widget>
           </div>
           <!-- <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <contribution-card ng-repeat="proposal in proposals track by $index" class="card__proposal" contribution="proposal" campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="true" on-finish-render="eqResize"></contribution-card>

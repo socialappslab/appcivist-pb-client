@@ -25,6 +25,9 @@
     activate();
 
     function activate() {
+      $scope.pageSize = 16;
+      $scope.type ='proposal';
+      $scope.showPagination = false;
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
@@ -87,7 +90,6 @@
     function userIsMemberSuccess(data) {
       $scope.membership = data;
       $scope.userIsMember = $scope.membership.status === "ACCEPTED";
-      console.log($scope.membership.roles);
       if ($scope.userIsMember) {
         loadWorkingGroup();
       } else {
@@ -131,6 +133,7 @@
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;
           }
+          $scope.showPagination = true;
           loadLatestActivities(data);
         },
         function (error) {

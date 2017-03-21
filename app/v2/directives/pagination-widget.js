@@ -17,7 +17,8 @@
         space: '=',
         resource: '=',
         type: '=',
-        isAnonymous: '='
+        isAnonymous: '=',
+        isCoordinator: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function postLink(scope) {
@@ -35,7 +36,7 @@
         function getResultsPage(pageNumber) {
             var rsp;
             var query = { type: scope.type.toUpperCase() };
-            if (scope.isAnonymous) {
+            if (scope.isAnonymous == "true") {
               rsp = Contributions.contributionInResourceSpaceByUUID(scope.space, pageNumber, scope.pageSize).get(query);
             } else {
               rsp = Contributions.contributionInResourceSpace(scope.space, pageNumber, scope.pageSize).get(query);

@@ -176,7 +176,7 @@
                     </a>
                   </li>
                 </ul>
-                <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
+                <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;" ng-if="cm.isHover">
                   <div class="content">
                     <wgroup-contextual-items wgroup="wg"></wgroup-contextual-items>
                   </div>

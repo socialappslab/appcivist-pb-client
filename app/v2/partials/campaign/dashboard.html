@@ -2,12 +2,12 @@
   .nav-tabs {
     border-bottom: 1px solid #c6c8cb;
   }
-  
+
   .nav-tabs>li {
     float: left;
     margin-bottom: -1px;
   }
-  
+
   .nav-tabs>li>a {
     margin-right: 2px;
     line-height: 1.42857143;
@@ -16,12 +16,12 @@
     color: #555;
     text-decoration: none;
   }
-  
+
   .nav-tabs>li>a:hover {
     border-color: #eeeeee #eeeeee #c6c8cb;
     background-color: #e6e7e8;
   }
-  
+
   .nav-tabs>li.active>a,
   .nav-tabs>li.active>a:hover,
   .nav-tabs>li.active>a:focus {
@@ -31,26 +31,26 @@
     border-bottom-color: transparent;
     cursor: default;
   }
-  
+
   .nav-tabs.nav-justified {
     width: 100%;
     border-bottom: 0;
   }
-  
+
   .nav-tabs.nav-justified>li {
     float: none;
   }
-  
+
   .nav-tabs.nav-justified>li>a {
     text-align: center;
     margin-bottom: 5px;
   }
-  
+
   .nav-tabs.nav-justified>.dropdown .dropdown-menu {
     top: auto;
     left: auto;
   }
-  
+
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li {
       display: table-cell;
@@ -60,18 +60,18 @@
       margin-bottom: 0;
     }
   }
-  
+
   .nav-tabs.nav-justified>li>a {
     margin-right: 0;
     border-radius: 4px;
   }
-  
+
   .nav-tabs.nav-justified>.active>a,
   .nav-tabs.nav-justified>.active>a:hover,
   .nav-tabs.nav-justified>.active>a:focus {
     border: 1px solid #dddddd;
   }
-  
+
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li>a {
       border-bottom: 1px solid #dddddd;
@@ -83,26 +83,26 @@
       border-bottom-color: #f6f6f7;
     }
   }
-  
+
   .nav.nav-tabs {
     margin-left: 5%;
     width: 90%;
   }
-  
+
   .custom-ul {
     padding-bottom: 50px;
     padding-top: 50px;
   }
-  
+
   .custom-li {
     padding-bottom: 15px;
     padding-top: 15px;
   }
-  
+
   .custom-a {
     padding: 15px;
   }
-  
+
   header.proposals__header>h2 {
     float: none !important;
   }
@@ -154,7 +154,7 @@
                   </a>
                 </li>
               </ul>
-              <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
+              <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;" ng-if="cm.isHover">
                 <div class="content">
                   <campaign-contextual-items campaign="campaign"></campaign-contextual-items>
                 </div>

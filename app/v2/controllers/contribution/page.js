@@ -194,8 +194,8 @@
 
     /**
      * Verify current user authorship status.
-     * 
-     * @param {Object} proposal 
+     *
+     * @param {Object} proposal
      * @param {boolean} checkEtherpad - whether we should verify read/write etherpad URL.
      */
     function verifyAuthorship(proposal, checkEtherpad) {
@@ -394,13 +394,13 @@
 
     /**
      * Returns the text to display in the suggestion list.
-     * 
-     * @param {Object} item 
+     *
+     * @param {Object} item
      */
     function currentAddGetText(item) {
       if (this.currentAdd.context === 'AUTHORS') {
         return $sce.trustAsHtml(`
-          <img src="${item.profilePic.url}" style="height: 30px; width: 30px; border-radius: 50px;">
+          <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
           <span style="margin-left: 15px;">${item.name}</span>`);
       } else {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
@@ -409,8 +409,8 @@
 
     /**
      * on-select handler.
-     * 
-     * @param {Object} item 
+     *
+     * @param {Object} item
      */
     function currentAddOnSelect(item) {
       this.currentAdd.suggestionsVisible = false;
@@ -450,8 +450,8 @@
 
     /**
      * Deletes the given theme.
-     * 
-     * @param {Object} theme 
+     *
+     * @param {Object} theme
      * @param {boolean} local - just delete in-memory theme instance.
      */
     function deleteTheme(theme, local) {
@@ -470,8 +470,8 @@
 
     /**
      * Deletes the given author.
-     * 
-     * @param {Object} author 
+     *
+     * @param {Object} author
      * @param {boolean} local - just delete in-memory author instance.
      */
     function deleteAuthor(author, local) {

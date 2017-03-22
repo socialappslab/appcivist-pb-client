@@ -2,36 +2,36 @@
   .page__header a {
     text-decoration: none;
   }
-
+  
   .action-bar .action-button {
     margin-top: 10px;
   }
-
+  
   .action-button svg g {
     fill: #11493b;
   }
-
+  
   .campaign_cards .attachments {
     float: left;
   }
-
+  
   .campaign_cards .attachments-shrinked {
     width: 60%;
   }
-
+  
   .campaign_cards .list--ideas {
     left: 0;
   }
-
+  
   .nav-tabs {
     border-bottom: 1px solid #c6c8cb;
   }
-
+  
   .nav-tabs>li {
     float: left;
     margin-bottom: -1px;
   }
-
+  
   .nav-tabs>li>a {
     margin-right: 2px;
     line-height: 1.42857143;
@@ -40,12 +40,12 @@
     color: #555;
     text-decoration: none;
   }
-
+  
   .nav-tabs>li>a:hover {
     border-color: #eeeeee #eeeeee #c6c8cb;
     background-color: #e6e7e8;
   }
-
+  
   .nav-tabs>li.active>a,
   .nav-tabs>li.active>a:hover,
   .nav-tabs>li.active>a:focus {
@@ -55,26 +55,26 @@
     border-bottom-color: transparent;
     cursor: default;
   }
-
+  
   .nav-tabs.nav-justified {
     width: 100%;
     border-bottom: 0;
   }
-
+  
   .nav-tabs.nav-justified>li {
     float: none;
   }
-
+  
   .nav-tabs.nav-justified>li>a {
     text-align: center;
     margin-bottom: 5px;
   }
-
+  
   .nav-tabs.nav-justified>.dropdown .dropdown-menu {
     top: auto;
     left: auto;
   }
-
+  
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li {
       display: table-cell;
@@ -84,18 +84,18 @@
       margin-bottom: 0;
     }
   }
-
+  
   .nav-tabs.nav-justified>li>a {
     margin-right: 0;
     border-radius: 4px;
   }
-
+  
   .nav-tabs.nav-justified>.active>a,
   .nav-tabs.nav-justified>.active>a:hover,
   .nav-tabs.nav-justified>.active>a:focus {
     border: 1px solid #dddddd;
   }
-
+  
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li>a {
       border-bottom: 1px solid #dddddd;
@@ -107,55 +107,55 @@
       border-bottom-color: #f6f6f7;
     }
   }
-
+  
   .nav.nav-tabs {
     margin-left: 5%;
     width: 90%;
   }
-
+  
   .custom-ul {
     /*padding-bottom: 50px;*/
     padding-top: 50px;
   }
-
+  
   .custom-li {
     padding-bottom: 15px;
     padding-top: 15px;
   }
-
+  
   .custom-a {
     padding: 15px;
   }
-
+  
   .file_attachments h2 {
     float: none !important;
   }
-
+  
   .field-container {
     height: 39.5px;
     margin-bottom: 10px;
   }
-
+  
   button.button__modal_submit {
     width: 100%;
     height: 39.5px;
     margin-top: 20px !important;
   }
-
+  
   form>fieldset {
     margin-bottom: 20px;
   }
-
+  
   .stats2 {
     color: #11493b;
     font-size: .875em;
     font-family: Lato, sans-serif;
   }
-
+  
   .star-filled {
     color: #11493b;
   }
-
+  
   .star-empty {
     color: #757575;
   }
@@ -175,8 +175,8 @@
           <ul class="actions">
             <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
               <a>
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px"
-                  height="16px" viewBox="0 0 16 16" xml:space="preserve">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                  y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
                   <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
 		c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
 		c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
@@ -214,17 +214,48 @@
         <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/group/{{groupID}}">{{group.name}}</a>
         <a ng-if="isAnonymous" ng-href="/#/v2/group/{{group.uuid}}">{{group.name}}</a>
       </p>
+
+
       <ul class="tags">
-        <li ng-repeat="theme in proposal.themes track by $index"><a href="">{{theme.title}}</a></li>
+        <li ng-repeat="theme in proposal.themes track by $index" ng-mouseenter="theme.isHover = true" ng-mouseleave="theme.isHover = false">
+          <a href="">{{theme.title}}</a>
+          <i ng-if="theme.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+          <span ng-if="!$last">,</span>
+        </li>
       </ul>
+
+
       <div class="attribution">
         <p class="heading--subheader">{{ 'Created by' | translate }}</p>
-        <member-card ng-repeat="author in proposal.authors" user="author"></member-card>
+        <div ng-repeat="author in proposal.authors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
+          style="display: inline-block; margin-left: 10px;">
+          <member-card user="author"></member-card>
+          <i ng-if="author.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+        </div>
+
         <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
-      <!--<p class="description" ng-bind-html-unsafe="html">
-        {{proposal.plainText|limitTo:500}}{{(proposal.plainText.length) > 500 ? '...' : '' }}
-      </p>-->
+      <div ng-if="userIsAuthor" class="attribution campaign__filters">
+        <ul class="search_modes">
+          <li class="sarch_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}">
+            <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
+          </li>
+          <li class="sarch_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
+            <a ng-click="$parent.setAddContext('THEMES')" class="btn-sm">{{ 'Themes' | translate }}</a>
+          </li>
+        </ul>
+        <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query" ng-change="$parent.currentAddQueryChange()">
+        <fieldset class="tags">
+          <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
+            <ul class="suggestion-list">
+              <li ng-repeat="item in $parent.currentAdd.items track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                class="suggestion-item" style="min-height: 50px;">
+                <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+              </li>
+            </ul>
+          </div>
+        </fieldset>
+      </div>
 
       <div class="voting_mechanism">
         <div class="temperature_check">
@@ -253,15 +284,18 @@
 
           <div ng-if="feedbackBar" class="informal_score">
             <div class="informal_score positive stats2">
-              {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em> {{ 'Comments' | translate}} <em>{{totalComments}}</em>
+              {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em>              {{ 'Comments' | translate}} <em>{{totalComments}}</em>
             </div>
             <div class="informal_score stats2">
               <span>{{ 'Needs' | translate }}</span>
-              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"/>
+              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"
+              />
               <span>{{ 'Feasibility' | translate }} </span>
-              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"/>
+              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"
+              />
               <span>{{ 'Benefit' | translate }}</span>
-              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"/>
+              <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"
+              />
             </div>
           </div>
 
@@ -278,8 +312,10 @@
           </h2>
         </div>
 
-        <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'" class="etherpad__wrapper">
-          <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl+'&showControls=false'}}" width="100%" height="600px">
+        <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'"
+          class="etherpad__wrapper">
+          <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl+'&showControls=false'}}"
+            width="100%" height="600px">
           </iframe>
           <iframe ng-if="userIsAuthor" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
           </iframe>
@@ -302,7 +338,8 @@
                 <h2 class="heading--header" ng-if="(proposal.attachments && proposal.attachments.length > 0) || userIsAuthor">{{'Attachments' | translate}}</h2>
                 <div class="heading--small">
                   <a href="" ng-if="userIsAuthor" ng-click="$parent.openModal('addAttachmentForm')"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
-                  <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
+                  <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
+                    class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
                 </div>
               </div>
             </div>
@@ -311,8 +348,8 @@
               <div class="action-bar small-card file-card">
                 <figure>
                   <a ng-href="{{file.url}}" target="_blank">
-                    <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png" alt="File icon"
-                    />
+                    <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png"
+                      alt="File icon" />
                     <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
                   </a>
                 </figure>
@@ -350,7 +387,8 @@
           </header>
 
           <div class="list__cards container__ideas">
-            <contribution-card ng-repeat="idea in relatedContributions track by $index" class="card__idea" contribution="idea" show-voting-buttons="false"></contribution-card>
+            <contribution-card ng-repeat="idea in relatedContributions track by $index" class="card__idea" contribution="idea"
+              show-voting-buttons="false"></contribution-card>
           </div>
         </section>
       </div>
@@ -365,13 +403,14 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-      <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="proposal.rsID" endpoint-id="proposalID" endpoint="contribution"></discussion-panel>
+      <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="proposalID" endpoint-id="proposalID"
+        endpoint="contribution"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
       <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="proposal.forumResourceSpaceId" endpoint-id="proposal.proposalId"
         endpoint="contribution" public-board="true"></discussion-panel>
-      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="proposal.frsUUID" endpoint-id="proposal.uuid" endpoint="contribution"
-        public-board="true"></discussion-panel>
+      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="proposal.frsUUID" endpoint-id="proposal.uuid"
+        endpoint="contribution" public-board="true"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Feedbacks'}" ng-if="userIsMember && activeTab === 'Feedbacks'">
       <contribution-feedback-panel class="col-md-12" contribution="proposal" public-board="true"></contribution-feedback-panel>

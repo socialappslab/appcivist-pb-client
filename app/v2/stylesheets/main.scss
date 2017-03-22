@@ -740,10 +740,145 @@ uib-accordion {
   }
 }
 
+.proposal__single {
+  .attribution.campaign__filters {
+    padding-top: 0;
+    padding-left: 0;
+    background-color: initial;
+    ul,
+    ol {
+      margin-bottom: 0px;
+    }
+    button {
+      max-height: 30px;
+    }
+    li {
+      min-height: 30px;
+    }
+    input {
+      width: 200px;
+      color: black;
+    }
+  }
+  fieldset.tags .autocomplete {
+    width: auto;
+    min-width: 200px;
+    margin-left: 1px;
+  }
+  .page__header .tags li {
+    height: 24px;
+    a {
+      padding: 0;
+      display: inline;
+    }
+    &::after {
+      content: '';
+    }
+  }
+}
+
+
+/** tags field component*/
+
+fieldset.tags div {
+  position: relative;
+  padding: 10px;
+  background-color: #fff;
+}
+
+fieldset.tags div[disabled] {
+  background-color: #eee;
+}
+
+fieldset.tags ul.tags {
+  display: inline;
+}
+
+fieldset.tags div input {
+  width: 140px;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
+
+fieldset.tags div input:focus {
+  outline: none;
+}
+
+fieldset.tags ul.tags a {
+  position: relative;
+}
+
+fieldset.tags ul.tags a i {
+  position: absolute;
+  right: 3px;
+}
+
+fieldset.tags .autocomplete {
+  margin-top: 5px;
+  margin-left: -10px;
+  position: absolute;
+  padding: 5px 0;
+  z-index: 999;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .2);
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, .2)
+}
+
+fieldset.tags .autocomplete .suggestion-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative
+}
+
+fieldset.tags .autocomplete .suggestion-list .suggestion-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #000;
+  background-color: #fff;
+  float: none !important;
+  display: block;
+  &::after {
+    content: '';
+  }
+}
+
+fieldset.tags .autocomplete .suggestion-list .suggestion-item:hover,
+fieldset.tags .autocomplete .suggestion-list .suggestion-item:focus {
+  background-color: #bacabc;
+  color: #11493b;
+}
+
+fieldset.tags .autocomplete .suggestion-item.selected,
+fieldset.tags .autocomplete .suggestion-item.selected em {
+  color: #fff;
+  background-color: #0097cf;
+}
+
+fieldset.tags .autocomplete .suggestion-item em {
+  font: normal 700 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #000;
+  background-color: #fff;
+}
+
 .list__my_campaigns,
 .my_working_groups {
   a.active {
     color: #e5ebe6 !important;
     background-color: #11493b;
   }
+}
+
+select[disabled] {
+  background-color: #eee;
 }

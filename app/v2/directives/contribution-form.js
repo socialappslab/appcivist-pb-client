@@ -93,9 +93,11 @@
         authors: [],
         existingThemes: [],
         sourceCode: '',
-        attachments: []
+        attachments: [],
+        location: {}
       };
 
+      this.contribution.location = this.contribution.location || {};
       this.contribution.addedThemes = [];
 
       this.actionLabel = this.isCreate ? 'Add' : 'Edit';
@@ -131,6 +133,7 @@
       var vm = this;
       return {
         height: 400,
+        max_chars: 200,
         plugins: [
           'advlist autolink lists link image charmap print preview anchor',
           'searchreplace visualblocks code fullscreen',
@@ -246,9 +249,6 @@
      * type is PROPOSAL. Otherwise it returns the members of the assembly.
      */
     function loadAuthors() {
-      /**
-       * listado in-memory de los miembors del WG seleccionado + los miembros del current assembly
-       */
       var self = this;
       var rsp;
 

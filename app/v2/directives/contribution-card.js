@@ -40,7 +40,8 @@
         campaign: '=',
         components: '=',
         isAnonymous: '=',
-        showIdeaBody: '@'
+        showIdeaBody: '@',
+        isCoordinator: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {

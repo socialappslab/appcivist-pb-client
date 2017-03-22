@@ -878,3 +878,7 @@ fieldset.tags .autocomplete .suggestion-item em {
     background-color: #11493b;
   }
 }
+
+select[disabled] {
+  background-color: #eee;
+}

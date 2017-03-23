@@ -157,7 +157,7 @@
           $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName;
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + verifyAuthorship + '&showControls=false';
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -169,9 +169,9 @@
               currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
-                verifyAuthorship(scope.proposal, false);
-              } else {
                 verifyAuthorship(scope.proposal, true);
+              } else {
+                verifyAuthorship(scope.proposal, false);
               }
               if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
                 scope.isProposalIdeaStage = true;

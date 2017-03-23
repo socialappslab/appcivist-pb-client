@@ -154,7 +154,8 @@
                   </a>
                 </li>
               </ul>
-              <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
+              <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
+                ng-if="cm.isHover">
                 <div class="content">
                   <campaign-contextual-items campaign="campaign"></campaign-contextual-items>
                 </div>
@@ -208,7 +209,7 @@
           <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <contribution-card ng-repeat="proposal in proposals track by $index " class="card__proposal" contribution="proposal"
               campaign="campaign" components="components" show-voting-buttons="false" is-anonymous="isAnonymous"
-              on-finish-render="eqResize"></contribution-card>
+              on-finish-render="eqResize" is-coordinator="isCoordinator"></contribution-card>
             <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
           </div>
         </section>
@@ -222,7 +223,7 @@
 
           <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign"
-              components="components" is-anonymous="isAnonymous" show-voting-buttons="true"></contribution-card>
+              components="components" is-anonymous="isAnonymous" show-voting-buttons="true" is-coordinator="isCoordinator"></contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
           </div>
         </section>

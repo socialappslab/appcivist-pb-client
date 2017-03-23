@@ -14,11 +14,13 @@
         <div class="field__container">
           <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
           <input ng-model="contribution.title" ng-required="true" ng-disabled="disabled" id="add_proposal__title"
-            type="text" placeholder="{{ 'Title' | translate }}" name="title">
+            type="text" placeholder="{{ 'Title' | translate }}" name="title" ng-maxlength="50">
           <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
+            <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
           </div>
         </div>
+
         <div class="field__container">
           <label for="textarea">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
           <textarea ui-tinymce="tinymceOptions" ng-model="contribution.text" ng-required="true" ng-disabled="disabled"
@@ -26,7 +28,19 @@
           <div ng-messages="contributionForm.text.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
+          <div style="color:maroon" role="alert">
+            <div ng-show="contribution.text.length > 200">{{'Value is too long' | translate}}, 200 {{'characters allowed' | translate}}</div>
+          </div>
         </div>
+
+        <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate">
+          <label for="status">{{'Status' | translate}}</label>
+          <select name="status" ng-model="$parent.contribution.status" ng-disabled="$parent.disabled" style="height: 42px; width: 100%;">
+            <option value="NEW">{{'New' | translate}}</option>
+            <option value="PUBLISHED">{{'Published' | translate}}</option>
+          </select>
+        </div>
+
         <div class="field__container" ng-if="isProposal && isCreate && userIsAssemblyCoordinator">
           <label for="pinned">{{'Pin contribution to make it always avaialable' | translate}}</label>
           <input type="checkbox" ng-model="contribution.pinned" />
@@ -70,6 +84,18 @@
             </div>
           </fieldset>
         </div> -->
+
+        <div class="field__container assign_proposal_to_users">
+          <fieldset class="add_proposal__availble_themes">
+            <label for="location">{{'Location' | translate}}</label>
+            <input name="location" ng-model="contribution.location.placeName" placeholder="{{'Location' | translate}}"
+              ng-disabled="disabled" ng-maxlength="50">
+            <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
+              <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
+            </div>
+          </fieldset>
+        </div>
+
         <div class="field__container">
           <fieldset>
             <p class="intro">{{'Attachments' | translate}}</p>

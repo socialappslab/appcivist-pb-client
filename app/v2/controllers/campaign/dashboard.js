@@ -21,6 +21,7 @@
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       $scope.isAnonymous = false;
+      $scope.isCoordinator = false;
       $scope.userIsMember = false;
       $scope.ideasSectionExpanded = false;
       // TODO: read the following from configurations in the campaign/component
@@ -34,6 +35,7 @@
       } else {
         $scope.assemblyID = $stateParams.aid ? parseInt($stateParams.aid) : 0;
         $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
+        $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.campaignID;
 
@@ -85,7 +87,7 @@
         rsp.$promise.then(function(assembly) {
           $scopoe.assembly = assembly;
         }, function(error) {
-          Notify.show("Error while loading public profile of assembly with shortname");
+          Notify.show('Error while loading public profile of assembly with shortname', 'error');
         });
       } else {
         var assemblyUUID = $scope.campaign ? $scope.campaign.assemblies ? $scope.campaign.assemblies[0] : null : null;
@@ -94,7 +96,7 @@
           rsp.$promise.then(function(assembly) {
             $scope.assembly = assembly;
           }, function(error) {
-            Notify.show("Error while loading public profile of assembly by its Universal ID");
+            Notify.show('Error while loading public profile of assembly by its Universal ID', 'error');
           });
         }
       }

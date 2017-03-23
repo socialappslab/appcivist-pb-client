@@ -52,6 +52,7 @@
         scope.loadValues = loadValues.bind(scope);
         scope.loadCustomFields = loadCustomFields.bind(scope);
         scope.loadCampaign = loadCampaign.bind(scope);
+        scope.saveFieldsValues = saveFieldsValues.bind(scope);
 
         if (scope.mode === 'create') {
           scope.initCreate()
@@ -97,9 +98,11 @@
         authors: [],
         existingThemes: [],
         sourceCode: '',
-        attachments: []
+        attachments: [],
+        location: {}
       };
 
+      this.contribution.location = this.contribution.location || {};
       this.contribution.addedThemes = [];
 
       this.actionLabel = this.isCreate ? 'Add' : 'Edit';
@@ -116,6 +119,8 @@
       this.isIdea = this.contribution.type === 'IDEA';
       this.isAuthorsDisabled = this.isProposal;
       this.assembly = localStorageService.get('currentAssembly');
+      this.fields = [];
+      this.values = {};
       this.tinymceOptions = this.getEditorOptions();
       this.verifyMembership();
 
@@ -138,6 +143,7 @@
       var vm = this;
       return {
         height: 400,
+        max_chars: 200,
         plugins: [
           'advlist autolink lists link image charmap print preview anchor',
           'searchreplace visualblocks code fullscreen',
@@ -252,9 +258,6 @@
      * type is PROPOSAL. Otherwise it returns the members of the assembly.
      */
     function loadAuthors() {
-      /**
-       * listado in-memory de los miembors del WG seleccionado + los miembros del current assembly
-       */
       var self = this;
       var rsp;
 
@@ -465,7 +468,7 @@
      * @param {number} sid - resource space ID
      */
     function loadValues(sid) {
-      let rsp = Space.fieldsValues(sid).query().$promise;
+      let rsp = Space.fieldValue(sid).query().$promise;
       return rsp.then(
         fieldsValues => {
           fieldsValues.forEach(v => this.values[v.customFieldDefinition.customFieldDefinitionId] = v);
@@ -502,10 +505,11 @@
      * @param {number} cid - campaign ID.
      */
     function loadCampaign(cid) {
+      let vm = this;
       let rsp = Campaigns.campaign(this.assembly.assemblyId, cid).get().$promise;
       return rsp.then(
         campaign => {
-          this.campaign = campaign;
+          vm.campaign = campaign;
           return campaign
         },
         error => Notify.show('Error while trying to get campaign from server', 'error')
@@ -518,8 +522,6 @@
       this.currentComponent = currentComponent;
       this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
       this.componentResourceSpaceId = currentComponent.resourceSpaceId;
-      this.fields = [];
-      this.values = {};
       this.loadFields(this.campaign.resourceSpaceId);
       this.loadFields(currentComponent.resourceSpaceId);
 

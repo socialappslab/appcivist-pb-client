@@ -154,7 +154,6 @@
       } else {
         this.value.value = value;
       }
-      console.log('synced', this.value);
     }
   }
 }())

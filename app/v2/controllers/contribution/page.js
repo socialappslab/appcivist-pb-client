@@ -73,7 +73,7 @@
       $scope.trustedHtml = function(html) {
         return $sce.trustAsHtml(html);
       };
-      $scope.contributionTypeIsSupported = function (type) {
+      $scope.contributionTypeIsSupported = function(type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       }
     }
@@ -128,23 +128,18 @@
               urlAsString: $scope.group.profile.icon
             }
           }
-
           var campaignIds = []
 
-          if(scope.isAnonymous) {
+          if (scope.isAnonymous) {
             campaignIds = data.campaignUuids;
           } else {
             campaignIds = data.campaignIds;
-
           }
-
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
-
-
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision)+"&userName="+$scope.userName;
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName;
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -154,6 +149,7 @@
             rsp.then(function(components) {
               var currentComponent = Campaigns.getCurrentComponent(components);
               currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
+              localStorageService.set('currentCampaign.currentComponent', currentComponent);
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
                 verifyAuthorship(scope.proposal);
@@ -200,7 +196,7 @@
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
         etherpadRes.$promise.then(function(pad) {
-          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId)+"&userName="+$scope.userName;
+          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + "&userName=" + $scope.userName;
         });
       }
     }
@@ -321,12 +317,12 @@
       return vm.trustedHtmlText;
     }
 
-    function loadCampaign () {
+    function loadCampaign() {
       $scope.campaign = localStorageService.get("currentCampaign");
 
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
-        loadCampaignConfig ();
+        loadCampaignConfig();
       } else {
         var res;
         if ($scope.isAnonymous) {
@@ -335,23 +331,23 @@
           res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
         }
 
-        res.$promise.then(function(data){
+        res.$promise.then(function(data) {
           $scope.campaign = data;
           $scope.campaign.rsID = data.resourceSpaceId;
 
-          loadCampaignConfig ();
+          loadCampaignConfig();
         }, function(error) {
-            Notify.show('Error while trying to fetch campaign', 'error');
+          Notify.show('Error while trying to fetch campaign', 'error');
         });
       }
     }
 
-    function loadCampaignConfig () {
+    function loadCampaignConfig() {
       if ($scope.campaign && $scope.campaign.rsID) {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function (data) {
+        rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;
-        }, function (error) {
+        }, function(error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
         });
       }

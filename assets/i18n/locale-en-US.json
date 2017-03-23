@@ -1012,7 +1012,7 @@
   "Proposal Making Start": "Proposal Making Start",
   "Proposals Making End Date": "Proposals Making End Date",
   "Upvote": "Upvote",
-  "Downvote":	"Downvote",
+  "Downvote": "Downvote",
   "no.feedback.message": "There is no feedback yet",
   "The 'Ideas' phase is about raising issues and brainstorming ideas": "The 'Ideas' phase is about raising issues and brainstorming ideas",
   "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals": "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals",
@@ -1029,5 +1029,9 @@
   "Implementation begins on this day": "Implementation begins on this day",
   "Implementation ends on this day": "Implementation ends on this day",
   "To see the content of this assembly, you need to know its short name or its universal unique id": "To see the content of this assembly, you need to know its short name or its universal unique id",
-  "This Assembly is not public": "This Assembly is not public"
+  "This Assembly is not public": "This Assembly is not public",
+  "Other information": "Other information",
+
+  "Selected file": "Selected file",
+  "File max size is:": "File max size is:"
 }

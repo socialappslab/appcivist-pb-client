@@ -43,6 +43,7 @@
     this.updateModel = updateModel.bind(this);
     this.isImage = isImage.bind(this);
     this.sync = sync.bind(this);
+    this.initValueObject = initValueObject.bind(this);
 
     this.$onInit = () => {
       this.imageExtensions = ['png', 'jpeg', 'jpg', 'gif', 'tiff'];
@@ -148,12 +149,23 @@
      * @param {string} value - internal model value 
      */
     function sync(value) {
-      // TODO: si no tenemos CustomFieldValue, entonces creamos un objeto por defecto y seteamos value.
+      if (!this.value) {
+        this.value = this.initValueObject(this.definition);
+      }
+
       if (this.isFile) {
         this.value.value = value.url;
       } else {
         this.value.value = value;
       }
+    }
+
+
+    function initValueObject(definition) {
+      return {
+        customFieldDefinition: definition,
+        value: ''
+      };
     }
   }
 }())

@@ -142,10 +142,11 @@
           </fieldset>
         </div>
 
-        <div class="field__container">
+        <div class="field__container" ng-if="props.campaignFields || props.componentFields">
           <fieldset>
             <p class="intro">{{'Other information' | translate}}</p>
-            <custom-field ng-repeat="field in fields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]"></custom-field>
+            <custom-field ng-repeat="field in props.campaignFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
+            <custom-field ng-repeat="field in props.componentFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
           </fieldset>
         </div>
 

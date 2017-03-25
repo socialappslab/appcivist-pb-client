@@ -1219,6 +1219,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           update: {
             method: 'PUT',
             isArray: true
+          },
+
+          save: {
+            method: 'POST',
+            isArray: true
           }
         });
       }

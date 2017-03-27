@@ -157,7 +157,7 @@
           $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + verifyAuthorship + '&showControls=false';
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false';
           } else {
             console.warn('Proposal with no PAD associated');
           }

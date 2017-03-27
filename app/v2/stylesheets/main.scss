@@ -882,3 +882,9 @@ fieldset.tags .autocomplete .suggestion-item em {
 select[disabled] {
   background-color: #eee;
 }
+
+.modal_content__add_proposal {
+  input[type=file] {
+    height: 60px;
+  }
+}

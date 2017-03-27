@@ -1186,6 +1186,46 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        */
       configsByUUID(uuid) {
         return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/config', { uuid });
+      },
+
+      /**
+       * Returns a $resource to interact with the custom fields endpoint.
+       *
+       * @method services.Space#fields
+       * @param {number} sid - The space id
+       */
+      fields(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/field', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the custom fields values endpoint.
+       *
+       * @method services.Space#fieldValue
+       * @param {number} sid - The space id
+       */
+      fieldValue(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue', { sid });
+      },
+
+      /**
+       * Returns a $resource to interact with the custom fields values endpoint.
+       *
+       * @method services.Space#fieldsValues
+       * @param {number} sid - The space id
+       */
+      fieldsValues(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalues', { sid }, {
+          update: {
+            method: 'PUT',
+            isArray: true
+          },
+
+          save: {
+            method: 'POST',
+            isArray: true
+          }
+        });
       }
     };
   }

@@ -141,6 +141,8 @@
           var currentComponent = Campaigns.getCurrentComponent(data);
           setIdeasSectionVisibility(currentComponent);
           $scope.components = data;
+          localStorageService.set('currentCampaign.components', data);
+          localStorageService.set('currentCampaign.currentComponent', currentComponent);
         }, defaultErrorCallback);
 
         // get proposals

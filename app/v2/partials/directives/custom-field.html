@@ -1,0 +1,30 @@
+<fieldset class="custom-field">
+  <div class="field__container">
+    <label for="{{vm.getFieldName(vm.definition)}}">
+      {{vm.definition.name}}
+    </label>
+
+    <input ng-if="vm.isNumber" type="number" name="{{vm.getFieldName(vm.definition)}}" placeholder="{{vm.definition.description}}"
+      ng-model="vm.model">
+
+    <input ng-if="vm.isText && !vm.isTextArea" type="text" name="{{vm.getFieldName(vm.definition)}}" placeholder="{{vm.definition.description}}"
+      ng-maxlength="{{vm.definition.limit}}" ng-model="vm.model">
+
+    <textarea ng-if="vm.isTextArea" name="{{vm.getFieldName(vm.definition)}}" placeholder="{{vm.definition.description}}"
+      rows="5" ng-maxlength="{{vm.definition.limit}}" ng-model="vm.model"></textarea>
+
+    <div ng-if="vm.isFile" class="file-field">
+      <div class="add-button">
+        <button class="btn add-button-item" type="button" ngf-select="vm.uploadFiles($file)" accept="*/*" ngf-max-size="{{vm.definition.limit}}MB">
+        {{ 'Upload' |  translate}}
+      </button>
+        <strong class="add-button-item" ng-if="vm.fileLoaded">{{ 'Selected file' | translate }}:</strong>
+        <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
+          <img ng-if="vm.fileIsImage" alt="{{vm.model.name}}" ng-src="{{vm.model.url}}" class="image-circle image-circle-selected">
+          <a ng-if="!vm.fileIsImage" ng-href="{{vm.model.url}}">{{vm.model.name}}</a>
+        </div>
+      </div>
+      <em>{{'File max size is:' | translate}} {{vm.definition.limit}} MB.</em>
+    </div>
+  </div>
+</fieldset>

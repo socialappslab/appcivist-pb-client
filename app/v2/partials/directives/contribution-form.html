@@ -20,6 +20,7 @@
             <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
           </div>
         </div>
+
         <div class="field__container">
           <label for="textarea">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
           <textarea ui-tinymce="tinymceOptions" ng-model="contribution.text" ng-required="true" ng-disabled="disabled"
@@ -140,6 +141,15 @@
             <button class="button__modal_submit" ng-click="submitAttachment()">{{'Add file' | translate}}</button>
           </fieldset>
         </div>
+
+        <div class="field__container" ng-if="props.campaignFields || props.componentFields">
+          <fieldset>
+            <p class="intro">{{'Other information' | translate}}</p>
+            <custom-field ng-repeat="field in props.campaignFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
+            <custom-field ng-repeat="field in props.componentFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
+          </fieldset>
+        </div>
+
         <fieldset>
           <br><br>
           <a class="button__modal_submit" ng-click="submit()">{{'Submit' | translate}}</a>

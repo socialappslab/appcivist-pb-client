@@ -202,10 +202,9 @@
             </li>
           </ul>
 
-          <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
-            ng-if="cm.isHover">
+          <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
             <div class="content">
-              <contribution-contextual-items contribution="proposal" is-proposal-idea-stage="isProposalIdeaStage"></contribution-contextual-items>
+              <contribution-contextual-items contribution="proposal" is-proposal-idea-stage="isProposalIdeaStage" is-hover="cm.isHover"></contribution-contextual-items>
             </div>
           </div>
         </div>

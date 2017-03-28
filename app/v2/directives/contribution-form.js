@@ -6,15 +6,15 @@
 
   ContributionForm.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
-    'Assemblies', 'Contributions', '$http', 'FileUploader'
+    'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout'
   ];
 
   function ContributionForm(WorkingGroups, localStorageService, Notify, Memberships,
-    Campaigns, Assemblies, Contributions, $http, FileUploader) {
+    Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout) {
     return {
       restrict: 'E',
       scope: {
-        campaign: '=',
+        campaign: '=?',
         //supported values:  PROPOSAL | IDEA
         type: '@',
         // handler called when contribution creation has succeeded
@@ -47,7 +47,12 @@
         scope.createAttachmentResource = createAttachmentResource.bind(scope);
         scope.submitAttachment = submitAttachment.bind(scope);
         scope.addFile = false
-        scope.deleteAttachment = deleteAttachment.bind(scope)
+        scope.deleteAttachment = deleteAttachment.bind(scope);
+        scope.loadFields = loadFields.bind(scope);
+        scope.loadValues = loadValues.bind(scope);
+        scope.loadCustomFields = loadCustomFields.bind(scope);
+        scope.loadCampaign = loadCampaign.bind(scope);
+        scope.saveFieldsValues = saveFieldsValues.bind(scope);
 
         if (scope.mode === 'create') {
           scope.initCreate()
@@ -114,10 +119,17 @@
       this.isIdea = this.contribution.type === 'IDEA';
       this.isAuthorsDisabled = this.isProposal;
       this.assembly = localStorageService.get('currentAssembly');
+      this.props = {
+        values: {},
+      };
       this.tinymceOptions = this.getEditorOptions();
       this.verifyMembership();
+
       if (this.isCreate) {
         this.loadWorkingGroups();
+        this.loadCustomFields();
+      } else if (this.isEdit) {
+        this.loadCampaign(this.contribution.campaignIds[0]).then(response => this.loadCustomFields());
       }
       var self = this;
       // setup listener for upload field
@@ -167,7 +179,6 @@
             success(json.url);
           };
           formData = new FormData();
-          console.log('blob info', blobInfo);
           formData.append('file', blobInfo.blob());
           xhr.send(formData);
         },
@@ -273,6 +284,7 @@
           }
         );
       }
+
       if (this.isProposal) {
         rsp = WorkingGroups.workingGroupMembers(self.assembly.assemblyId, self.selectedGroup.groupId, 'ACCEPTED').query().$promise;
         return rsp.then(
@@ -376,28 +388,32 @@
       if (this.contributionForm.$invalid) {
         return;
       }
-      var rsp;
+      let rsp;
 
       if (this.mode === 'create') {
-        rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(this.contribution).$promise;
+        rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(this.contribution).$promise.then(
+          contribution => this.saveFieldsValues(contribution.resourceSpaceId),
+          error => Notify.show('Error while trying to save the contribution', 'error')
+        );
       } else if (this.mode === 'edit') {
-        rsp = Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(this.contribution).$promise;
+        rsp = $q.all([
+          Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(this.contribution).$promise,
+          this.saveFieldsValues(this.contribution.resourceSpaceId),
+        ]);
       } else {
         console.warn('Only create or edit are accepted mode in contribution form');
         return;
       }
+
       rsp.then(
-        function(data) {
+        data => {
           Notify.show('Contribution saved', 'success');
 
           if (angular.isFunction(vm.onSuccess)) {
             vm.onSuccess();
           }
-
         },
-        function(error) {
-          Notify.show('Error while trying to save the contribution', 'error');
-        }
+        error => Notify.show('Error while trying to save the contribution', 'error')
       );
     }
 
@@ -409,7 +425,7 @@
     }
 
     /**
-     * In edit mode, we copy the given contribution a remove the properties that
+     * In edit mode, we copy the given contribution and remove the properties that
      * the PUT service does not need.
      */
     function flattenContribution() {
@@ -428,6 +444,101 @@
     function deleteAttachment(item) {
       var index = this.contribution.attachments.indexOf(item)
       this.contribution.attachments.splice(index, 1);
+    }
+
+    /**
+     * Loads contribution's custom fields.
+     * 
+     * @param {number} sid - resource space ID
+     */
+    function loadFields(sid) {
+      let rsp = Space.fields(sid).query().$promise;
+      return rsp.then(
+        fields => fields,
+        error => {
+          Notify.show('Error while trying to get fields from resource space', 'error');
+        }
+      );
+    }
+
+    /**
+     * Loads contribution's custom fields values.
+     * 
+     * @param {number} sid - resource space ID
+     */
+    function loadValues(sid) {
+      let rsp = Space.fieldValue(sid).query().$promise;
+      return rsp.then(
+        fieldsValues => {
+          fieldsValues.forEach(v => this.props.values[v.customFieldDefinition.customFieldDefinitionId] = v);
+        },
+        error => {
+          Notify.show('Error while trying to get field values from resource space', 'error');
+        }
+      );
+    }
+
+    /**
+     * Updates custom field values.
+     * 
+     * @param {number} sid - resource space ID 
+     */
+    function saveFieldsValues(sid) {
+      let rsp;
+      let payload = {
+        customFieldValues: []
+      };
+
+      angular.forEach(this.props.values, value => payload.customFieldValues.push(value));
+      if (this.mode === 'create') {
+        rsp = Space.fieldsValues(sid).save(payload).$promise;
+      } else {
+        rsp = Space.fieldsValues(sid).update(payload).$promise;
+      }
+      return rsp;
+    }
+
+    /**
+     * Loads the campaign from the server.
+     * 
+     * @param {number} cid - campaign ID.
+     */
+    function loadCampaign(cid) {
+      let vm = this;
+      let rsp = Campaigns.campaign(this.assembly.assemblyId, cid).get().$promise;
+      return rsp.then(
+        campaign => {
+          vm.campaign = campaign;
+          return campaign
+        },
+        error => Notify.show('Error while trying to get campaign from server', 'error')
+      );
+    }
+
+
+    function loadCustomFields() {
+      let currentComponent = localStorageService.get('currentCampaign.currentComponent');
+      this.currentComponent = currentComponent;
+      this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
+      this.componentResourceSpaceId = currentComponent.resourceSpaceId;
+      // TODO: sometimes the fields do not appear. Need to find out why.
+
+      this.loadFields(this.campaign.resourceSpaceId).then(fields => {
+        $timeout(() => {
+          this.props.campaignFields = fields;
+          this.$digest();
+        });
+      });
+      this.loadFields(this.currentComponent.resourceSpaceId).then(fields => {
+        $timeout(() => {
+          this.props.componentFields = fields;
+          this.$digest();
+        });
+      });
+
+      if (this.isEdit) {
+        this.loadValues(this.contribution.resourceSpaceId);
+      }
     }
   }
 }());

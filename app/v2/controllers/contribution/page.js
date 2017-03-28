@@ -143,21 +143,18 @@
               urlAsString: $scope.group.profile.icon
             }
           }
-
           var campaignIds = []
 
           if (scope.isAnonymous) {
             campaignIds = data.campaignUuids;
           } else {
             campaignIds = data.campaignIds;
-
           }
-
           var campaignIdsLength = campaignIds ? campaignIds.length : 0;
           $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + verifyAuthorship + '&showControls=false';
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false';
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -167,6 +164,7 @@
             rsp.then(function(components) {
               var currentComponent = Campaigns.getCurrentComponent(components);
               currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
+              localStorageService.set('currentCampaign.currentComponent', currentComponent);
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
                 verifyAuthorship(scope.proposal, true);

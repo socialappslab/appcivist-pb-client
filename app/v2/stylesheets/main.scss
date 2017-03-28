@@ -879,6 +879,47 @@ fieldset.tags .autocomplete .suggestion-item em {
   }
 }
 
+.modal_content__add_proposal {
+  select {
+    width: 100%;
+    height: 42px;
+  }
+}
+
+
+/** custom field */
+
+fieldset.custom-field {
+  textarea {
+    height: auto;
+  }
+  .file-field {
+    div.add-button {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      .image-capsule {
+        display: inline-block;
+        margin-bottom: 0;
+      }
+      .add-button-item+.add-button-item {
+        margin-left: 10px;
+      }
+    }
+    em {
+      font-size: 14px;
+      opacity: 0.6;
+      font-style: oblique;
+    }
+  }
+}
+
 select[disabled] {
   background-color: #eee;
+}
+
+.modal_content__add_proposal {
+  input[type=file] {
+    height: 60px;
+  }
 }

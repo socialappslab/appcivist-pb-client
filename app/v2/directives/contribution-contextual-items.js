@@ -78,6 +78,8 @@
           scope.openModal = openModal.bind(scope);
           scope.closeModal = closeModal.bind(scope);
           scope.onEditContributionSuccess = onEditContributionSuccess.bind(scope);
+          scope.contributionStatus = scope.contribution.status;
+          
           setContributionType(scope);
 
           if (!scope.isIdea) {

@@ -1,4 +1,4 @@
-<ul ng-if="isProposal">
+<ul ng-if="isProposal && isHover">
   <!-- disabled by issue #398 -->
   <li class="li-action-menu" ng-if="$parent.userCanEdit && isProposalIdeaStage"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit' | translate}}</a></li>
   <li class="li-action-menu" ng-if="$parent.userIsAuthor"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
@@ -11,7 +11,7 @@
   <li class="li-action-menu"><a href="" ng-click="myObject.subscribe()">{{'Subscribe' | translate}}</a></li>
 </ul>
 
-<ul ng-if="isIdea">
+<ul ng-if="isIdea && isHover">
   <!-- TODO: replace the default FALSE by a scope variable that is false only if the current campaign component is not of type PROPOSALS or IDEAS -->
   <li class="action__edit" ng-if="userIsAuthor && isProposalIdeaStage"><a>{{'Edit' | translate}}</a></li>
   <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a>{{'Assign' | translate}}</a></li>

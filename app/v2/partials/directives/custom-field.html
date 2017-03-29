@@ -1,5 +1,5 @@
 <fieldset class="custom-field">
-  <div class="field__container">
+  <div class="field__container" ng-if="vm.isEdition">
     <label for="{{vm.getFieldName(vm.definition)}}">
       {{vm.definition.name}}
     </label>
@@ -25,6 +25,19 @@
         </div>
       </div>
       <em>{{'File max size is:' | translate}} {{vm.definition.limit}} MB.</em>
+    </div>
+  </div>
+
+  <div class="field__container" ng-if="vm.isReadonly">
+    <label for="{{vm.getFieldName(vm.definition)}}">
+      {{vm.definition.name}}
+    </label>
+    <p ng-if="!vm.isFile">{{vm.model}}</p>
+    <div ng-if="vm.isFile" class="file-filed">
+      <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
+        <img ng-if="vm.fileIsImage" alt="{{vm.model.name}}" ng-src="{{vm.model.url}}" class="image-circle image-circle-selected">
+        <a ng-if="!vm.fileIsImage" ng-href="{{vm.model.url}}">{{vm.model.name}}</a>
+      </div>
     </div>
   </div>
 </fieldset>

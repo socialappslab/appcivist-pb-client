@@ -7,11 +7,11 @@
 
   LoginCtrl.$inject = [
     '$scope', 'localStorageService', 'Notify', 'AppCivistAuth',
-    '$state', '$filter', 'loginService', '$translate', 'Assemblies'
+    '$state', '$filter', 'loginService', '$translate', 'Assemblies', 'Space'
   ];
 
   function LoginCtrl($scope, localStorageService, Notify, AppCivistAuth,
-    $state, $filter, loginService, $translate, Assemblies) {
+    $state, $filter, loginService, $translate, Assemblies, Space) {
 
     activate();
 
@@ -19,6 +19,7 @@
       $scope.user = {};
       $scope.login = login;
       $scope.isLoginPage = true;
+      $scope.assemblyConfig = [];
       if ($state.params.domain) {
         $scope.domain = $state.params.domain;
         var rsp = Assemblies.assemblyByShortName($scope.domain).get();
@@ -49,7 +50,23 @@
       loginService.loadAuthenticatedUserMemberships(user).then(function () {
         var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
         var assembly = localStorageService.get('currentAssembly');
-        $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId }, { reload: true });
+
+        var rsp = Space.configs(assembly.resourcesResourceSpaceId).get();
+        rsp.$promise.then(function(data){
+          $scope.assemblyConfig = data;
+
+          if ($scope.assemblyConfig 
+              && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] 
+              && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] === 'TRUE') {
+            $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
+          } else {
+            $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId }, { reload: true });
+          }
+          
+        }, function(error) {
+            Notify.show('Error while trying to fetch assembly config', 'error');
+        });
+        
       });
     }
 

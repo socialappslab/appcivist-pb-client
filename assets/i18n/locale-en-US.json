@@ -12,6 +12,7 @@
   "Account linked successfully": "Account linked successfully",
   "Accounts merged successfully": "Accounts merged successfully",
   "Add": "Add",
+  "Add file": "Add file",
   "Add files": "Add files",
   "Add a new file": "Add a new file",
   "Add a public URL or upload a file": "Add a public URL or upload a file",
@@ -1036,5 +1037,6 @@
   "Value is too long": "Value is too long",
   "characters allowed": "characters allowed",
   "Status": "Status",
-  "Select contribution status": "Select contribution status"
+  "Select contribution status": "Select contribution status",
+  "More Information": "More Information"
 }

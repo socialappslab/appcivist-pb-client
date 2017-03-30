@@ -28,6 +28,9 @@
     $scope.loadAuthors = loadAuthors.bind($scope);
     $scope.addAuthorToProposal = addAuthorToProposal.bind($scope);
     $scope.deleteAuthor = deleteAuthor.bind($scope);
+    $scope.loadValues = loadValues.bind($scope);
+    $scope.loadProposal = loadProposal.bind($scope);
+    $scope.toggleCustomFieldsSection = toggleCustomFieldsSection.bind($scope);
 
     activate();
 
@@ -74,7 +77,7 @@
         // user is member of Assembly
         $scope.userIsMember = true;
       }
-      loadProposal($scope);
+      $scope.loadProposal($scope);
       $scope.showActionMenu = true;
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function() {
@@ -122,6 +125,7 @@
     };
 
     function loadProposal(scope) {
+      let vm = this;
       var rsp;
 
       if (scope.isAnonymous) {
@@ -179,6 +183,7 @@
             }, function(error) {
               Notify.show('Error while trying to fetch campaign components', 'error');
             });
+            vm.loadValues(vm.proposal.resourceSpaceId);
           }
           loadRelatedContributions();
           loadRelatedStats();
@@ -523,6 +528,27 @@
           Notify.show('Error while trying to add author to the contribution', 'error');
         }
       );
+    }
+
+    /**
+     * Loads contribution's custom fields values.
+     * 
+     * @param {number} sid - resource space ID
+     */
+    function loadValues(sid) {
+      let rsp = Space.fieldValue(sid).query().$promise;
+      return rsp.then(
+        fieldsValues => {
+          this.fieldsValues = fieldsValues;
+        },
+        error => {
+          Notify.show('Error while trying to get field values from resource space', 'error');
+        }
+      );
+    }
+
+    function toggleCustomFieldsSection() {
+      this.isCustomFieldSectionVisible = !this.isCustomFieldSectionVisible;
     }
   }
 }());

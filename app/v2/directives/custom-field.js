@@ -24,7 +24,13 @@
         /**
          * CustomFieldValue object
          */
-        value: '='
+        value: '=',
+
+        /**
+         * determines if custom field should be render in readonly mode or edition mode.
+         * Values: readonly | edition. Defaults: edition.
+         */
+        renderer: '@'
       },
       controller: CustomFieldCtrl,
       controllerAs: 'vm',
@@ -66,6 +72,13 @@
         }
         this.sync(value);
       });
+
+      if (this.renderer) {
+        this.isReadonly = this.renderer === 'readonly';
+        this.isEdition = this.renderer === 'edition';
+      } else {
+        this.isEdition = true;
+      }
     };
 
     function checkType() {

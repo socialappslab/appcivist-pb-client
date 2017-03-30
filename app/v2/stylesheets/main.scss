@@ -775,6 +775,28 @@ uib-accordion {
       content: '';
     }
   }
+  section.customfields {
+    .panel__heading {
+      h2 {
+        margin-right: 20px;
+      }
+      a {
+        padding-top: 27px;
+        display: block;
+      }
+    }
+    .customfields__values {
+      margin-top: 20px;
+    }
+    custom-field {
+      label {
+        font-size: 1em;
+        margin-bottom: 10px;
+        color: #757575;
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 

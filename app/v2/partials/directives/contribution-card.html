@@ -65,7 +65,7 @@
       </div>
       <div class="heading__working_group" ng-if="contribution.workingGroupAuthors && contribution.workingGroupAuthors.length > 0">
         <div class="col-md-1 no-padding no-margin">
-          <img ng-if="group.profile.icon" src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
+          <img ng-if="group.profile.icon" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
           <i ng-if="!group.profile.icon" class="fa fa-group"></i>
         </div>
         <div class="col-md-11 no-padding no-margin">

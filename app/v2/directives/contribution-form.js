@@ -374,6 +374,9 @@
     function createAttachmentResource(url) {
       var vm = this;
       var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
+      if(!this.contribution.attachments) {
+        this.contribution.attachments = [];
+      }
       this.contribution.attachments.push(attachment);
       this.addFile = false;
       this.newAttachment.name = "";
@@ -448,7 +451,7 @@
 
     /**
      * Loads contribution's custom fields.
-     * 
+     *
      * @param {number} sid - resource space ID
      */
     function loadFields(sid) {
@@ -463,7 +466,7 @@
 
     /**
      * Loads contribution's custom fields values.
-     * 
+     *
      * @param {number} sid - resource space ID
      */
     function loadValues(sid) {
@@ -480,8 +483,8 @@
 
     /**
      * Updates custom field values.
-     * 
-     * @param {number} sid - resource space ID 
+     *
+     * @param {number} sid - resource space ID
      */
     function saveFieldsValues(sid) {
       let rsp;
@@ -500,7 +503,7 @@
 
     /**
      * Loads the campaign from the server.
-     * 
+     *
      * @param {number} cid - campaign ID.
      */
     function loadCampaign(cid) {

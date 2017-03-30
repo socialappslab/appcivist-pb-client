@@ -376,7 +376,9 @@
                 </figure>
                 <h4>
                   <a ng-href="{{file.url}}" target="_blank">{{(file.name && file.name != "" ? file.name : file.url)}}</a>
+                  <a href="" ng-if="userIsAuthor" ng-click="deleteAttachment(file)"><i class="fa fa-trash" style="margin-left: 5px;"></i></a>
                 </h4>
+                
                 <!--TODO: add these buttons back when we implement their functionalities-->
                 <!--<div class="action-button" ng-if="!isAnonymous">-->
                 <!--<input id="menu04" type="checkbox" name="menu" ng-checked="file.checked" hidden/>-->

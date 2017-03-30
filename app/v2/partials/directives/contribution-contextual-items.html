@@ -1,7 +1,7 @@
 <ul ng-if="isProposal">
   <!-- disabled by issue #398 -->
   <li class="li-action-menu" ng-if="$parent.userCanEdit && isProposalIdeaStage"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="$parent.userIsAuthor || ((userIsAssemblyCoordinator || userIsWorkingGroupCoordinator) && contributionStatus == 'EXCLUDED')"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userIsAuthor || (($parent.userIsAuthor || userIsAssemblyCoordinator || userIsWorkingGroupCoordinator) && contributionStatus == 'EXCLUDED')"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
   <li class="li-action-menu"><a href="" ng-click="$parent.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="$parent.userIsWorkingGroupCoordinator && isProposalIdeaStage"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->

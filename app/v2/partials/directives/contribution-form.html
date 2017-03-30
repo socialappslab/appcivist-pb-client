@@ -22,10 +22,9 @@
         </div>
 
         <div class="field__container">
-          <label for="textarea">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
+          <label for="add_proposal__description">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
           <textarea ui-tinymce="tinymceOptions" ng-model="contribution.text" ng-required="true" ng-disabled="disabled"
             id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
-          <label for="add_proposal__description">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
           <div ng-messages="contributionForm.text.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
@@ -36,7 +35,7 @@
 
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate">
           <label for="status">{{'Status' | translate}}</label>
-          <select name="status" ng-model="$parent.contribution.status" ng-disabled="$parent.disabled" style="height: 42px; width: 100%;">
+          <select id="status" name="status" ng-model="$parent.contribution.status" ng-disabled="$parent.disabled" style="height: 42px; width: 100%;">
             <option value="NEW">{{'New' | translate}}</option>
             <option value="PUBLISHED">{{'Published' | translate}}</option>
           </select>
@@ -44,11 +43,11 @@
 
         <div class="field__container" ng-if="isProposal && isCreate && userIsAssemblyCoordinator">
           <label for="pinned">{{'Pin contribution to make it always avaialable' | translate}}</label>
-          <input type="checkbox" ng-model="contribution.pinned" />
+          <input id="pinned" type="checkbox" ng-model="contribution.pinned" />
         </div>
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
-          <select name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal"
+          <select id="workingGroup"> name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal"
             ng-disabled="$parent.disabled" ng-change="$parent.selectGroup()" ng-options="group as group.name for group in $parent.groups">
             <option value="">{{'Select a working group' | translate}}</option>
           </select>
@@ -59,14 +58,14 @@
         <div class="field__container assign_proposal_to_users" ng-if="isCreate">
           <fieldset class="user__assignment">
             <label for="authors">{{'Authors' | translate}}</label>
-            <tags-field load-items="loadAuthors({query: query})" options="authorsOptions" selected="contribution.authors"
+            <tags-field id="authors" load-items="loadAuthors({query: query})" options="authorsOptions" selected="contribution.authors"
               prefetch="true" disabled="isAuthorsDisabled"></tags-field>
           </fieldset>
         </div>
         <div class="field__container assign_proposal_to_users" ng-if="isIdea && isCreate">
           <fieldset class="user__assignment">
-            <label for="authors">{{'Non Member Author' | translate}}</label>
-            <nonmember-author-form on-change="$parent.updateNonMember(author)" ng-disabled="$parent.disabled"></nonmember-author-form>
+            <label for="non-member-authors">{{'Non Member Author' | translate}}</label>
+            <nonmember-author-form id="non-member-authors" on-change="$parent.updateNonMember(author)" ng-disabled="$parent.disabled"></nonmember-author-form>
           </fieldset>
         </div>
         <div class="field__container assign_proposal_to_users" ng-if="isCreate">
@@ -89,7 +88,7 @@
         <div class="field__container assign_proposal_to_users">
           <fieldset class="add_proposal__availble_themes">
             <label for="location">{{'Location' | translate}}</label>
-            <input name="location" ng-model="contribution.location.placeName" placeholder="{{'Location' | translate}}"
+            <input id="location" name="location" ng-model="contribution.location.placeName" placeholder="{{'Location' | translate}}"
               ng-disabled="disabled" ng-maxlength="50">
             <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
               <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
@@ -97,7 +96,7 @@
           </fieldset>
         </div>
 
-        <div class="field__container">
+        <div class="field__container" ng-if="!isEdit">
           <fieldset>
             <p class="intro">{{'Attachments' | translate}}</p>
           </fieldset>
@@ -120,22 +119,22 @@
           </fieldset>
         </div>
 
-        <div class="field__container">
+        <div class="field__container" ng-if="!isEdit">
           <fieldset>
             <a href="" ng-click="addFile = !addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
           </fieldset>
         </div>
-        <div ng-show="addFile">
+        <div ng-show="addFile" ng-if="!isEdit">
           <fieldset>
             <div class="field__container">
               <label for="name">{{'Name' | translate}}</label>
-              <input name="name" ng-model="newAttachment.name">
+              <input id="name" name="name" ng-model="newAttachment.name">
             </div>
           </fieldset>
           <fieldset>
             <div class="field__container">
               <label for="file">{{'File' | translate}}</label>
-              <input type="file" name="file" fileread="newAttachment.file">
+              <input id="file" type="file" name="file" fileread="newAttachment.file">
             </div>
           </fieldset>
           <fieldset>

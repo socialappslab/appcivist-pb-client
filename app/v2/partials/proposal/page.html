@@ -332,13 +332,11 @@
 
         <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE' || campaignConfigs['appcivist.campaign.disable-etherpad'] === 'TRUE'"
           class="etherpad__wrapper">
-          <iframe ng-if="!userIsAuthor" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
+          <iframe ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" name="embed_readonly"
+            ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
           </iframe>
           <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
             width="100%" height="600px">
-          </iframe>
-          <iframe ng-if="!etherpadReadWriteUrl" name="embed_readonly" ng-src="{{etherpadReadOnlyUrl}}" width="100%"
-            height="600px">
           </iframe>
         </div>
 
@@ -378,7 +376,7 @@
                   <a ng-href="{{file.url}}" target="_blank">{{(file.name && file.name != "" ? file.name : file.url)}}</a>
                   <a href="" ng-if="userIsAuthor" ng-click="deleteAttachment(file)"><i class="fa fa-trash" style="margin-left: 5px;"></i></a>
                 </h4>
-                
+
                 <!--TODO: add these buttons back when we implement their functionalities-->
                 <!--<div class="action-button" ng-if="!isAnonymous">-->
                 <!--<input id="menu04" type="checkbox" name="menu" ng-checked="file.checked" hidden/>-->

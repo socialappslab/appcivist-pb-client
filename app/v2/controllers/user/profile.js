@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   appCivistApp
@@ -33,6 +33,8 @@
       $scope.blurReset = blurReset;
       $scope.updateProfile = updateProfile;
       $scope.toggleChangePassword = toggleChangePassword;
+      $scope.getImageFromFile = getImageFromFile.bind($scope);
+      $scope.$watch('profile.profile_pic', $scope.getImageFromFile);
     }
 
     function blurReset() {
@@ -68,10 +70,10 @@
           params: {
             //fd
           }
-        }).then(function (response) {
+        }).then(function(response) {
           var rsp = loginService.getUser().get({ id: $scope.user.userId });
           rsp.$promise.then(
-            function (data) {
+            function(data) {
               localStorageService.set('user', data);
               if (passwordChanged()) {
                 updatePassword();
@@ -80,7 +82,7 @@
                 window.location.reload();
               }
             },
-            function (error) {
+            function(error) {
               Notify.show('Error fetching user information from the server', 'error');
             }
           );
@@ -111,10 +113,10 @@
         var ChangePasswordService = loginService.changePassword();
         var rsp = new ChangePasswordService(data);
         rsp.$save().then(
-          function (response) {
+          function(response) {
             Notify.show('Data saved correctly');
           },
-          function (error) {
+          function(error) {
             console.log(error);
             Notify.show('Error updating user password', 'error');
           }
@@ -139,6 +141,17 @@
     function passwordChanged() {
       return !!$scope.profile.password;
     }
-  }
 
-} ());
+
+    function getImageFromFile(file) {
+      if (!file) {
+        return;
+      }
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        $scope.$apply(() => $scope.profile.selectedPic = e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+}());

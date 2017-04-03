@@ -945,3 +945,9 @@ select[disabled] {
     height: 60px;
   }
 }
+
+.profile_page {
+  .github-fork-ribbon:before {
+    background-color: #11493b;
+  }
+}

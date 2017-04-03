@@ -6,11 +6,13 @@
 
   ContributionForm.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
-    'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout'
+    'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
+    '$filter'
   ];
 
   function ContributionForm(WorkingGroups, localStorageService, Notify, Memberships,
-    Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout) {
+    Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
+    $filter) {
     return {
       restrict: 'E',
       scope: {
@@ -241,7 +243,7 @@
       } else {
         campaignId = this.contribution.campaignIds[0];
       }
-      return Campaigns.themes(this.assembly.assemblyId, campaignId);
+      return Campaigns.themes(this.assembly.assemblyId, campaignId).then(themes => $filter('filter')(themes, { title: query }));
     }
 
     /**
@@ -255,11 +257,12 @@
     }
 
     /**
-     * This method is responsible for loading the list of authors. It joins the assembly
-     * members list and the currently selected working group members list, when contribution
-     * type is PROPOSAL. Otherwise it returns the members of the assembly.
+     * This method is responsible for loading the list of authors. It simply loads the members of
+     * the current assembly.
+     * 
+     * @param {string} query - current search query
      */
-    function loadAuthors() {
+    function loadAuthors(query) {
       var self = this;
       var rsp;
 
@@ -272,32 +275,14 @@
             }).map(function(d) {
               return d.user;
             });
-
-            if (self.isProposal) {
-              return self.loadAuthors();
-            } else {
-              return self.assemblyMembers;
-            }
+            return $filter('filter')(self.assemblyMembers, { name: query });
           },
           function(error) {
             Notify.show('Error while trying to fetch assembly members from the server', 'error');
           }
         );
-      }
-
-      if (this.isProposal) {
-        rsp = WorkingGroups.workingGroupMembers(self.assembly.assemblyId, self.selectedGroup.groupId, 'ACCEPTED').query().$promise;
-        return rsp.then(
-          function(data) {
-            var groupMembers = _.map(data, function(d) {
-              return d.user;
-            });
-            return groupMembers.concat(self.assemblyMembers);
-          },
-          function(error) {
-            Notify.show('Error while trying to fetch working group members from the server', 'error');
-          }
-        );
+      } else {
+        return $filter('filter')(self.assemblyMembers, { name: query });
       }
     }
 
@@ -374,7 +359,7 @@
     function createAttachmentResource(url) {
       var vm = this;
       var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
-      if(!this.contribution.attachments) {
+      if (!this.contribution.attachments) {
         this.contribution.attachments = [];
       }
       this.contribution.attachments.push(attachment);

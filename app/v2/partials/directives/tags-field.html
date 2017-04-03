@@ -9,7 +9,7 @@
     <div class="autocomplete" ng-if="isSuggestionListVisible" ng-mouseleave="onMouseLeave()">
       <ul class="suggestion-list">
         <li ng-repeat="item in items track by $index" ng-click="select(item)" class="suggestion-item">
-          {{getText(item)}}
+          <span ng-bind-html="getText(item) | highlight:vm.query"></span>
         </li>
       </ul>
     </div>

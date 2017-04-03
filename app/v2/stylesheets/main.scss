@@ -945,3 +945,15 @@ select[disabled] {
     height: 60px;
   }
 }
+
+tags-field {
+  span.highlighted {
+    font-weight: bold;
+    background-color: yellow;
+  }
+  fieldset.tags ul.tags a i {
+    position: absolute;
+    right: 3px;
+    top: 1px;
+  }
+}

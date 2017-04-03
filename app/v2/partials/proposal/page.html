@@ -419,7 +419,9 @@
   <ul class="nav nav-tabs custom-ul">
     <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }}</a></li>
     <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }}</a></li>
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Feedbacks')}"><a class="custom-a" href="" ng-click="changeActiveTab(3)" role="tab" data-toggle="tab">{{ 'Textual feedbacks' | translate }}</a></li>
+    <li ng-show="(feedbacks && feedbacks.length) || userIsMember" role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Feedbacks')}">
+      <a class="custom-a" href="" ng-click="changeActiveTab(3)" role="tab" data-toggle="tab">{{ 'Textual feedbacks' | translate }}</a>
+    </li>
   </ul>
   <!-- Tab panes -->
   <div class="tab-content">
@@ -433,7 +435,7 @@
       <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="proposal.frsUUID" endpoint-id="proposal.uuid"
         endpoint="contribution" public-board="true"></discussion-panel>
     </div>
-    <div class="tab-pane" ng-class="{'active': activeTab === 'Feedbacks'}" ng-if="userIsMember && activeTab === 'Feedbacks'">
+    <div class="tab-pane" ng-class="{'active': activeTab === 'Feedbacks'}" ng-if="activeTab === 'Feedbacks'">
       <contribution-feedback-panel class="col-md-12" contribution="proposal" public-board="true"></contribution-feedback-panel>
     </div>
   </div>

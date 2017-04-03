@@ -693,7 +693,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     publicFeedbacks: function(contributionUuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { coid: contributionUuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { couuid: contributionUuid });
     },
 
     getContributionComments: function(assemblyId, contributionId) {

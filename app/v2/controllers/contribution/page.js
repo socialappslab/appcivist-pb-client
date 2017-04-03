@@ -185,6 +185,8 @@
               Notify.show('Error while trying to fetch campaign components', 'error');
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
+          } else {
+            vm.loadValues(vm.proposal.resourceSpaceUUID, true);
           }
           loadRelatedContributions();
           loadRelatedStats();
@@ -535,9 +537,16 @@
      * Loads contribution's custom fields values.
      * 
      * @param {number} sid - resource space ID
+     * @param {boolean} anonymous - whether page is in public or authenticated mode
      */
-    function loadValues(sid) {
-      let rsp = Space.fieldValue(sid).query().$promise;
+    function loadValues(sid, anonymous) {
+      let rsp;
+
+      if (anonymous) {
+        rsp = Space.fieldValuePublic(sid).query().$promise;
+      } else {
+        rsp = Space.fieldValue(sid).query().$promise;
+      }
       return rsp.then(
         fieldsValues => {
           this.fieldsValues = fieldsValues;
@@ -552,7 +561,7 @@
       this.isCustomFieldSectionVisible = !this.isCustomFieldSectionVisible;
     }
 
-    function deleteAttachment (attachment) {
+    function deleteAttachment(attachment) {
       _.remove(this.proposal.attachments, { resourceId: attachment.resourceId });
 
       Space.deleteResource(this.proposal.resourceSpaceId, attachment.resourceId).then(

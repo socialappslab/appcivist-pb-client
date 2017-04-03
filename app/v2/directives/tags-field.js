@@ -2,7 +2,8 @@
   'use strict';
 
   appCivistApp
-    .directive('tagsField', TagsField);
+    .directive('tagsField', TagsField)
+    .filter('highlight', highlight);
 
   TagsField.$inject = [];
 
@@ -143,6 +144,22 @@
      */
     function getText(item) {
       return item[this.options.textField];
+    }
+  }
+
+
+  /**
+   * very simple highlight filter.
+   */
+  highlight.$inject = ['$sce'];
+
+  function highlight($sce) {
+    return function(text, phrase) {
+      if (phrase) {
+        text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
+          '<span class="highlighted">$1</span>');
+      }
+      return $sce.trustAsHtml(text)
     }
   }
 }());

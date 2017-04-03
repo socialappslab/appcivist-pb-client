@@ -1226,6 +1226,9 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
             isArray: true
           }
         });
+      },
+      deleteResource(sid, rsid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid}, {'delete': { method: 'DELETE' }}).delete().$promise;
       }
     };
   }

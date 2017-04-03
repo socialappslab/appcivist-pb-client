@@ -31,6 +31,7 @@
     $scope.loadValues = loadValues.bind($scope);
     $scope.loadProposal = loadProposal.bind($scope);
     $scope.toggleCustomFieldsSection = toggleCustomFieldsSection.bind($scope);
+    $scope.deleteAttachment = deleteAttachment.bind($scope);
 
     activate();
 
@@ -549,6 +550,17 @@
 
     function toggleCustomFieldsSection() {
       this.isCustomFieldSectionVisible = !this.isCustomFieldSectionVisible;
+    }
+
+    function deleteAttachment (attachment) {
+      _.remove(this.proposal.attachments, { resourceId: attachment.resourceId });
+
+      Space.deleteResource(this.proposal.resourceSpaceId, attachment.resourceId).then(
+        response => Notify.show('Attachment deleted successfully', 'success'),
+        error => {
+          Notify.show('Error while trying to delete attachment from the contribution', 'error');
+        }
+      );
     }
   }
 }());

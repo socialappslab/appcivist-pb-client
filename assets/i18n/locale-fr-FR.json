@@ -879,7 +879,7 @@
   "Add new phase": "ajouter une nouvelle phase",
   "Delete selected phase": "effacer la phase sélectionnée",
   "Most commented": "le plus commenté",
-  "Most voted": "ayant reccueilli la priorisation la plus favorable",
+  "Most voted": "popularité",
   "Type": "Type",
   "Stage Milestones": "Dates-clés de l'étape",
   "stage.milestones.help.1": "Sélectionner une date-clé de cette phase à éditer. Attention: chaque phase doit avoir au moins deux dates-clés: une",
@@ -1014,7 +1014,7 @@
   "Proposals Making End Date": "Proposals Making End Date",
   "Upvote": "Upvote",
   "Downvote": "Downvote",
-  "no.feedback.message": "no.feedback.message",
+  "no.feedback.message": "There is no feedback yet",
   "The 'Ideas' phase is about raising issues and brainstorming ideas": "The 'Ideas' phase is about raising issues and brainstorming ideas",
   "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals": "The Proposal phase is about forming working groups, analyzing ideas, and developing proposals",
   "Deliberation is the careful consideration of proposals through comments and evidence. In this phase, proposals can only be discussed, praised or criticized, but not edited.": "Deliberation is the careful consideration of proposals through comments and evidence. In this phase, proposals can only be discussed, praised or criticized, but not edited.",
@@ -1035,5 +1035,8 @@
   "characters allowed": "characters allowed",
   "Status": "Status",
   "Select contribution status": "Select contribution status",
-  "More Information": "More Information"
+  "More Information": "More Information",
+  "Edit information": "Edit information",
+  "Other information": "Custom information",
+  "Save": "Save"
 }

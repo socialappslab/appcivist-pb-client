@@ -1040,6 +1040,7 @@
   "Select contribution status": "Select contribution status",
   "More Information": "More Information",
   "Edit information": "Edit information",
-  "Other information": "Custom information",
-  "Save": "Save"
+  "Custom information": "Custom information",
+  "Save": "Save",
+  "Preview": "Preview"
 }

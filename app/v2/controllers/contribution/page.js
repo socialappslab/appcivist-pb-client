@@ -32,6 +32,7 @@
     $scope.loadProposal = loadProposal.bind($scope);
     $scope.toggleCustomFieldsSection = toggleCustomFieldsSection.bind($scope);
     $scope.deleteAttachment = deleteAttachment.bind($scope);
+    $scope.loadFeedback = loadFeedback.bind($scope);
 
     activate();
 
@@ -66,6 +67,7 @@
       if (pattern.test($stateParams.pid) === true) {
         $scope.proposalID = $stateParams.pid;
         $scope.isAnonymous = true;
+        $scope.loadFeedback($scope.proposalID);
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
@@ -185,6 +187,8 @@
               Notify.show('Error while trying to fetch campaign components', 'error');
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
+          } else {
+            vm.loadValues(vm.proposal.resourceSpaceUUID, true);
           }
           loadRelatedContributions();
           loadRelatedStats();
@@ -347,7 +351,7 @@
     }
 
     function loadCampaign() {
-      $scope.campaign = localStorageService.get("currentCampaign");
+      $scope.campaign = localStorageService.get('currentCampaign');
 
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
@@ -363,7 +367,8 @@
         res.$promise.then(function(data) {
           $scope.campaign = data;
           $scope.campaign.rsID = data.resourceSpaceId;
-
+          // update current campaign reference
+          localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
         }, function(error) {
           Notify.show('Error while trying to fetch campaign', 'error');
@@ -535,9 +540,16 @@
      * Loads contribution's custom fields values.
      * 
      * @param {number} sid - resource space ID
+     * @param {boolean} anonymous - whether page is in public or authenticated mode
      */
-    function loadValues(sid) {
-      let rsp = Space.fieldValue(sid).query().$promise;
+    function loadValues(sid, anonymous) {
+      let rsp;
+
+      if (anonymous) {
+        rsp = Space.fieldValuePublic(sid).query().$promise;
+      } else {
+        rsp = Space.fieldValue(sid).query().$promise;
+      }
       return rsp.then(
         fieldsValues => {
           this.fieldsValues = fieldsValues;
@@ -552,7 +564,7 @@
       this.isCustomFieldSectionVisible = !this.isCustomFieldSectionVisible;
     }
 
-    function deleteAttachment (attachment) {
+    function deleteAttachment(attachment) {
       _.remove(this.proposal.attachments, { resourceId: attachment.resourceId });
 
       Space.deleteResource(this.proposal.resourceSpaceId, attachment.resourceId).then(
@@ -560,6 +572,14 @@
         error => {
           Notify.show('Error while trying to delete attachment from the contribution', 'error');
         }
+      );
+    }
+
+    function loadFeedback(uuid) {
+      let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
+      rsp.then(
+        feedbacks => this.feedbacks = feedbacks,
+        error => Notify.show('Error while trying to fetch contribution feedback', 'error')
       );
     }
   }

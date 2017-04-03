@@ -198,6 +198,14 @@ module.exports = function(grunt) {
             '**/*',
           ]
         }, {
+          expand: true,
+          dot: true,
+          cwd: './app/fonts/bootstrap',
+          dest: './dist/fonts/',
+          src: [
+            '**/*',
+          ]
+        }, {
           cwd: './bower_components/tinymce/',
           src: ['plugins/**', 'themes/**',
             'skins/**'],

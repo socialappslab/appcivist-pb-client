@@ -11,6 +11,7 @@
         <a class="button__modal_submit" ng-click="submit()">{{'Upload' | translate}}</a>
       </fieldset>-->
       <fieldset>
+        <!-- Title -->
         <div class="field__container">
           <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
           <input ng-model="contribution.title" ng-required="true" ng-disabled="disabled" id="add_proposal__title"
@@ -21,6 +22,7 @@
           </div>
         </div>
 
+        <!-- Description -->
         <div class="field__container">
           <label for="add_proposal__description">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
           <textarea ui-tinymce="tinymceOptions" ng-model="contribution.text" ng-required="true" ng-disabled="disabled"
@@ -33,7 +35,20 @@
           </div>
         </div>
 
-        <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate">
+        <!-- Location -->
+        <div class="field__container assign_proposal_to_users">
+          <fieldset class="add_proposal__availble_themes">
+            <label for="location">{{'Location' | translate}}</label>
+            <input id="location" name="location" ng-model="contribution.location.placeName" placeholder="{{'Location' | translate}}"
+                   ng-disabled="disabled" ng-maxlength="50">
+            <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
+              <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Status -->
+        <div class="field__container assign_proposal_to_wg" ng-if="isProposal">
           <label for="status">{{'Status' | translate}}</label>
           <select id="status" name="status" ng-model="$parent.contribution.status" ng-disabled="$parent.disabled" style="height: 42px; width: 100%;">
             <option value="NEW">{{'New' | translate}}</option>
@@ -41,11 +56,14 @@
           </select>
         </div>
 
-        <div class="field__container" ng-if="isProposal && isCreate && userIsAssemblyCoordinator">
+        <!-- Pinned? -->
+        <div class="field__container" ng-if="isProposal && userIsAssemblyCoordinator">
           <label for="pinned">{{'Pin contribution to make it always avaialable' | translate}}</label>
           <input id="pinned" type="checkbox" ng-model="contribution.pinned" />
         </div>
-        <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate">
+
+        <!-- Working Group -->
+        <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate && !isEdit">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
           <select id="workingGroup"> name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal"
             ng-disabled="$parent.disabled" ng-change="$parent.selectGroup()" ng-options="group as group.name for group in $parent.groups">
@@ -55,20 +73,26 @@
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
         </div>
-        <div class="field__container assign_proposal_to_users" ng-if="isCreate">
+
+        <!-- Authors -->
+        <div class="field__container assign_proposal_to_users" ng-if="isCreate && !isEdit">
           <fieldset class="user__assignment">
             <label for="authors">{{'Authors' | translate}}</label>
             <tags-field id="authors" load-items="loadAuthors({query: query})" options="authorsOptions" selected="contribution.authors"
               prefetch="true" disabled="isAuthorsDisabled"></tags-field>
           </fieldset>
         </div>
-        <div class="field__container assign_proposal_to_users" ng-if="isIdea && isCreate">
+
+        <!-- Non Member Author -->
+        <div class="field__container assign_proposal_to_users" ng-if="isIdea && isCreate && !isEdit">
           <fieldset class="user__assignment">
             <label for="non-member-authors">{{'Non Member Author' | translate}}</label>
             <nonmember-author-form id="non-member-authors" on-change="$parent.updateNonMember(author)" ng-disabled="$parent.disabled"></nonmember-author-form>
           </fieldset>
         </div>
-        <div class="field__container assign_proposal_to_users" ng-if="isCreate">
+
+        <!-- Assign to Proposal -->
+        <div class="field__container assign_proposal_to_users" ng-if="isCreate && !isEdit">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
@@ -76,27 +100,9 @@
               prefetch="true" disabled="disabled"></tags-field>
           </fieldset>
         </div>
-        <!-- <div ng-if="isCreate">
-          <fieldset>
-            <div class="field__container">
-              <label for="add_proposal__source_code">{{'Source Code' | translate}}</label>
-              <input ng-model="contribution.sourceCode" id="add_proposal__source_code" placeholder="{{'Source Code' | translate}}" ng-disabled="disabled">
-            </div>
-          </fieldset>
-        </div> -->
 
-        <div class="field__container assign_proposal_to_users">
-          <fieldset class="add_proposal__availble_themes">
-            <label for="location">{{'Location' | translate}}</label>
-            <input id="location" name="location" ng-model="contribution.location.placeName" placeholder="{{'Location' | translate}}"
-              ng-disabled="disabled" ng-maxlength="50">
-            <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
-              <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
-            </div>
-          </fieldset>
-        </div>
-
-        <div class="field__container" ng-if="!isEdit">
+        <!-- Attachments -->
+        <div class="field__container" ng-if="!isEdit && isCreate">
           <fieldset>
             <p class="intro">{{'Attachments' | translate}}</p>
           </fieldset>
@@ -118,7 +124,6 @@
             </div>
           </fieldset>
         </div>
-
         <div class="field__container" ng-if="!isEdit">
           <fieldset>
             <a href="" ng-click="addFile = !addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
@@ -142,17 +147,16 @@
           </fieldset>
         </div>
 
-        <div class="field__container" ng-if="props.campaignFields || props.componentFields">
+        <div class="field__container" ng-if="(props.campaignFields || props.componentFields) && props.values && props.values.length > 0">
           <fieldset>
-            <p class="intro">{{'Other information' | translate}}</p>
+            <p class="intro">{{'Custom information' | translate}}</p>
             <custom-field ng-repeat="field in props.campaignFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
             <custom-field ng-repeat="field in props.componentFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
           </fieldset>
         </div>
 
         <fieldset>
-          <br><br>
-          <a class="button__modal_submit" ng-click="submit()">{{'Submit' | translate}}</a>
+          <a class="button__modal_submit" ng-click="submit()">{{'Save' | translate}}</a>
         </fieldset>
       </fieldset>
     </form>

@@ -3,17 +3,17 @@
     background: #11493b;
     border-color: #11493b;
   }
-
+  
   button[type=submit]:hover {
     background-color: #009877;
   }
-
+  
   label {
     font-size: 1.5em;
   }
 </style>
 <main class="appmain">
-  <article class="campaign">
+  <article class="campaign profile_page">
     <header class="page__header">
       <h1 class="heading--title">{{'Edit' | translate}} {{'header.menu.Profile' | translate}}</h1>
     </header>
@@ -25,25 +25,29 @@
             <div class="row">
               <div class="col-lg-12">
                 <label for="profileEmail">{{'Email address' | translate}}</label>
-                <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()" ng-model="profile.email">
+                <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()"
+                  ng-model="profile.email">
               </div>
             </div>
             <br />
             <div class="row">
               <div class="col-xs-6">
                 <label for="profileFirstName">{{'First Name'|translate}}</label>
-                <input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | translate}}" ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.firstname">
+                <input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | translate}}"
+                  ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.firstname">
               </div>
               <div class="col-xs-6">
                 <label for="profileLastName">{{'Last Name'|translate}}</label>
-                <input type="text" class="form-control" id="profileLastName" placeholder="{{'Last Name' | translate}}" ng-blur="blurReset()" ng-model="profile.lastname">
+                <input type="text" class="form-control" id="profileLastName" placeholder="{{'Last Name' | translate}}"
+                  ng-blur="blurReset()" ng-model="profile.lastname">
               </div>
             </div>
             <br />
             <div class="row">
               <div class="col-xs-12">
                 <label for="profileUsername">{{'Username'|translate}}</label>
-                <input type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}" ng-blur="blurReset()" ng-model="profile.username">
+                <input type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}"
+                  ng-blur="blurReset()" ng-model="profile.username">
               </div>
             </div>
           </div>
@@ -52,7 +56,11 @@
             <div class="form-group">
               <label for="profilePicUpload">{{'Change Profile Picture'|translate}}</label>
               <br>
-              <img class="profilePic" src="{{user.profilePic.urlAsString}}" />
+              <img ng-if="!profile.profile_pic" class="profilePic" ng-src="{{user.profilePic.urlAsString}}" />
+              <div ng-if="profile.profile_pic" style="position: relative;">
+                <a class="github-fork-ribbon" title="{{'Preview' | translate}}"></a>
+                <img class="profilePic" ng-src="{{profile.selectedPic}}" />
+              </div>
               <input type="file" id="profilePicUpload" fileread="profile.profile_pic">
             </div>
           </div>
@@ -81,7 +89,8 @@
           <div class="row">
             <div class="col-lg-8">
               <label>{{'Repeat password' | translate}}</label>
-              <input type="password" placeholder="{{'Repeat password' | translate}}" ng-model="profile.repeatPassword" ng-blur="blurReset()">
+              <input type="password" placeholder="{{'Repeat password' | translate}}" ng-model="profile.repeatPassword"
+                ng-blur="blurReset()">
             </div>
           </div>
         </div>

@@ -693,7 +693,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     publicFeedbacks: function(contributionUuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { coid: contributionUuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { couuid: contributionUuid });
     },
 
     getContributionComments: function(assemblyId, contributionId) {
@@ -1228,7 +1228,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         });
       },
       deleteResource(sid, rsid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid}, {'delete': { method: 'DELETE' }}).delete().$promise;
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid }, { 'delete': { method: 'DELETE' } }).delete().$promise;
       }
     };
   }

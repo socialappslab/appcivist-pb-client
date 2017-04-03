@@ -879,7 +879,7 @@
   "Add new phase": "ajouter une nouvelle phase",
   "Delete selected phase": "effacer la phase sélectionnée",
   "Most commented": "le plus commenté",
-  "Most voted": "ayant reccueilli la priorisation la plus favorable",
+  "Most voted": "popularité",
   "Type": "Type",
   "Stage Milestones": "Dates-clés de l'étape",
   "stage.milestones.help.1": "Sélectionner une date-clé de cette phase à éditer. Attention: chaque phase doit avoir au moins deux dates-clés: une",

@@ -40,7 +40,7 @@
           <fieldset class="add_proposal__availble_themes">
             <label for="location">{{'Location' | translate}}</label>
             <input id="location" name="location" ng-model="contribution.location.placeName" placeholder="{{'Location' | translate}}"
-                   ng-disabled="disabled" ng-maxlength="50">
+              ng-disabled="disabled" ng-maxlength="50">
             <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
               <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
             </div>
@@ -50,7 +50,8 @@
         <!-- Status -->
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal">
           <label for="status">{{'Status' | translate}}</label>
-          <select id="status" name="status" ng-model="$parent.contribution.status" ng-disabled="$parent.disabled" style="height: 42px; width: 100%;">
+          <select id="status" name="status" ng-model="$parent.contribution.status" ng-disabled="$parent.disabled"
+            style="height: 42px; width: 100%;">
             <option value="NEW">{{'New' | translate}}</option>
             <option value="PUBLISHED">{{'Published' | translate}}</option>
           </select>
@@ -65,7 +66,7 @@
         <!-- Working Group -->
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate && !isEdit">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
-          <select id="workingGroup"> name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal"
+          <select id="workingGroup" name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal"
             ng-disabled="$parent.disabled" ng-change="$parent.selectGroup()" ng-options="group as group.name for group in $parent.groups">
             <option value="">{{'Select a working group' | translate}}</option>
           </select>
@@ -78,7 +79,7 @@
         <div class="field__container assign_proposal_to_users" ng-if="isCreate && !isEdit">
           <fieldset class="user__assignment">
             <label for="authors">{{'Authors' | translate}}</label>
-            <tags-field id="authors" load-items="loadAuthors({query: query})" options="authorsOptions" selected="contribution.authors"
+            <tags-field id="authors" load-items="loadAuthors(query)" options="authorsOptions" selected="contribution.authors"
               prefetch="true" disabled="isAuthorsDisabled"></tags-field>
           </fieldset>
         </div>
@@ -96,7 +97,7 @@
           <fieldset class="add_proposal__availble_themes">
             <p class="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
-            <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="contribution.existingThemes"
+            <tags-field load-items="loadThemes(query)" options="themesOptions" selected="contribution.existingThemes"
               prefetch="true" disabled="disabled"></tags-field>
           </fieldset>
         </div>

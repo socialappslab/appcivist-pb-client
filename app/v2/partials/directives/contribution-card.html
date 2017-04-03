@@ -16,7 +16,8 @@
           <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}" style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
-          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}" style="display: block; width: 280px;word-wrap: break-word;">
+          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}"
+            style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
         </h1>
@@ -24,14 +25,17 @@
           <ul class="actions">
             <li ng-if="isCoordinator" class="action__toggle_selection">
               <a>
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 15.998 15.998" xml:space="preserve">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                  y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 15.998 15.998"
+                  xml:space="preserve">
                   <path class="icon" d="M8,1.002c3.857,0,6.996,3.14,6.996,6.999S11.857,14.998,8,14.998c-3.86,0-7-3.139-7-6.998 S4.14,1.002,8,1.002 M8,0.002C3.581,0.002,0,3.583,0,8c0,4.417,3.581,7.998,8,7.998c4.415,0,7.996-3.58,7.996-7.998 C15.996,3.583,12.415,0.002,8,0.002L8,0.002z"></path>
                 </svg>
               </a>
             </li>
             <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
               <a>
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                  y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
                   <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
     c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
     c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
@@ -56,9 +60,11 @@
               </a>
             </li>
           </ul>
-          <div ng-show="cm.isHover" class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
+          <div ng-show="cm.isHover" class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false"
+            style="top: 1em; left: auto; right: 0px;">
             <div class="content">
-              <contribution-contextual-items contribution="contribution" is-proposal-idea-stage="isProposalIdeaStage" is-hover="cm.isHover"></contribution-contextual-items>
+              <contribution-contextual-items contribution="contribution" is-proposal-idea-stage="isProposalIdeaStage"
+                is-hover="cm.isHover"></contribution-contextual-items>
             </div>
           </div>
         </div>
@@ -80,15 +86,15 @@
         </a>
         -->
         <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="ng-binding ng-scope" href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
-         	<div class="col-md-11 no-padding no-margin">
-         		{{contribution.workingGroupAuthors[0].name}}
-        	</div>
-		    </a>
+          <div class="col-md-11 no-padding no-margin">
+            {{contribution.workingGroupAuthors[0].name}}
+          </div>
+        </a>
       </div>
     </header>
 
     <div class="card__body">
-      <div class="excerpt" style="height: 110px;">
+      <div class="excerpt" style="height: auto;">
         {{contribution.plainText | limitTo:152 }}{{contribution.plainText.length > 152 ? "..." : ""}}
       </div>
       <div class="voting_mechanism">
@@ -118,14 +124,17 @@
           <ul class="actions">
             <li class="action__toggle_selection">
               <a>
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 15.998 15.998" xml:space="preserve">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                  y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 15.998 15.998"
+                  xml:space="preserve">
                   <path class="icon" d="M8,1.002c3.857,0,6.996,3.14,6.996,6.999S11.857,14.998,8,14.998c-3.86,0-7-3.139-7-6.998 S4.14,1.002,8,1.002 M8,0.002C3.581,0.002,0,3.583,0,8c0,4.417,3.581,7.998,8,7.998c4.415,0,7.996-3.58,7.996-7.998 C15.996,3.583,12.415,0.002,8,0.002L8,0.002z"></path>
                 </svg>
               </a>
             </li>
             <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
               <a>
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                  y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
                   <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
     c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
     c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
@@ -176,5 +185,5 @@
 </div>
 
 <div class="contribution-detail-modal" style="display: none;">
-  <contribution-detail-modal vex-instance="vexInstance" contribution="contribution" user="user" ></contribution-detail-modal>
+  <contribution-detail-modal vex-instance="vexInstance" contribution="contribution" user="user"></contribution-detail-modal>
 </div>

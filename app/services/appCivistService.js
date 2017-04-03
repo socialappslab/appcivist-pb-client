@@ -693,7 +693,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
     },
 
     publicFeedbacks: function(contributionUuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { coid: contributionUuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:couuid/feedback', { couuid: contributionUuid });
     },
 
     getContributionComments: function(assemblyId, contributionId) {
@@ -1209,6 +1209,16 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       },
 
       /**
+       * Returns a $resource to interact with the custom fields values public endpoint.
+       *
+       * @method services.Space#fieldValue
+       * @param {string} uuid - The space UUID
+       */
+      fieldValuePublic(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/fieldvalue/public', { uuid });
+      },
+
+      /**
        * Returns a $resource to interact with the custom fields values endpoint.
        *
        * @method services.Space#fieldsValues
@@ -1228,7 +1238,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         });
       },
       deleteResource(sid, rsid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid}, {'delete': { method: 'DELETE' }}).delete().$promise;
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid }, { 'delete': { method: 'DELETE' } }).delete().$promise;
       }
     };
   }

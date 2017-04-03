@@ -47,8 +47,6 @@
               scope.isCoordinator = groupRols != undefined ? hasRol(groupRols, 'COORDINATOR') : false;
               scope.isWGroup = true;
             }
-          } else {
-            // get public feedbacks
           }
           loadFeedbacks(scope, scope.contribution);
 
@@ -64,7 +62,7 @@
             loadFeedbacks(scope, scope.contribution);
           });
 
-          scope.refreshFeedbacks = function (type, event) {
+          scope.refreshFeedbacks = function(type, event) {
             scope.type = type;
             loadFeedbacks(scope, scope.contribution);
           }

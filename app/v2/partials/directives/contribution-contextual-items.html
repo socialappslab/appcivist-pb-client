@@ -1,8 +1,8 @@
 <ul ng-if="isProposal && isHover">
   <!-- disabled by issue #398 -->
-  <li class="li-action-menu" ng-if="$parent.userCanEdit && isProposalIdeaStage"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="$parent.userCanEdit && isProposalIdeaStage"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit information' | translate}}</a></li>
   <li class="li-action-menu" ng-if="$parent.userIsAuthor || (($parent.userIsAuthor || userIsAssemblyCoordinator || userIsWorkingGroupCoordinator) && contributionStatus == 'EXCLUDED')"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
-  <li class="li-action-menu"><a href="" ng-click="$parent.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
+  <li class="li-action-menu"><a href="" ng-click="$parent.openModal('feedbackModal')">{{'Give feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="$parent.userIsWorkingGroupCoordinator && isProposalIdeaStage"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
   <li class="li-action-menu"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
@@ -13,7 +13,7 @@
 
 <ul ng-if="isIdea && isHover">
   <!-- TODO: replace the default FALSE by a scope variable that is false only if the current campaign component is not of type PROPOSALS or IDEAS -->
-  <li class="action__edit" ng-if="userIsAuthor && isProposalIdeaStage"><a>{{'Edit' | translate}}</a></li>
+  <li class="action__edit" ng-if="userIsAuthor && isProposalIdeaStage"><a>{{'Edit information' | translate}}</a></li>
   <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a>{{'Assign' | translate}}</a></li>
   <li class="action__promote" ng-if="userIsWorkingGroupCoordinator"><a>{{'Promote to contribution' | translate}}</a></li>
   <li class="action__history"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>

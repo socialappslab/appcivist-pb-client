@@ -277,7 +277,7 @@
   "From Working Groups of this Campaign": "De los Grupos de Trabajo de esta Iniciativa",
   "future feature": "función futura",
   "Gender": "Género",
-  "Give Feedback": "Dar Feedback",
+  "Give Feedback": "Evaluar",
   "Go to campaign!": "Ir a la campaña!",
   "GROUP": "Grupo de Trabajo",
   "Have no coordinators": "No tiene coordinadores",
@@ -1035,5 +1035,8 @@
   "characters allowed": "characters allowed",
   "Status": "Status",
   "Select contribution status": "Select contribution status",
-  "More Information": "More Information"
+  "More Information": "More Information",
+  "Edit information": "Editar información",
+  "Other information": "Información personalizada",
+  "Save": "Guardar"
 }

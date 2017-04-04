@@ -28,6 +28,10 @@
       $scope.newProposalsEnabled = true;
       $scope.newIdeasEnabled = true;
 
+      $scope.pageSize = 16;
+      $scope.type ='proposal';
+      $scope.showPagination = false;
+
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;
         $scope.isAnonymous = true;
@@ -121,7 +125,7 @@
         $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
         $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
         $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
-
+        $scope.showPagination = true;
         localStorageService.set("currentCampaign", $scope.campaign);
         // We are reading the components twice,
         // - in the campaign-timeline directive

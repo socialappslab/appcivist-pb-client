@@ -3,11 +3,11 @@
     background: #11493b;
     border-color: #11493b;
   }
-
+  
   input[type=submit]:hover {
     background-color: #009877;
   }
-
+  
   input[type=password] {
     border-radius: 0;
     box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.25);
@@ -28,7 +28,7 @@
 <br />
 <main class="appmain">
   <figure class="photo" style="text-align: center;" ng-if="domain && assembly.profile.icon">
-    <img ng-src="{{assembly.profile.icon}}" alt="Avatar" width="250px"/>
+    <img ng-src="{{assembly.profile.icon}}" alt="Avatar" width="250px" />
   </figure>
   <form ng-submit="login()">
     <fieldset class="row">
@@ -44,7 +44,11 @@
         <input class="form-input" ng-model="user.password" id="password" type="password" placeholder="Type your Password">
       </div>
     </fieldset>
-    <br />
+    <fieldset>
+      <div class="field-container col-lg-4 col-offset-4">
+        <a href="/#/v2/user/password/forgot">{{'Forgot password?' | translate}}</a>
+      </div>
+    </fieldset>
     <fieldset class="row">
       <div class="field-container col-lg-4 col-offset-4">
         <input type="submit" class="form-submit btn--primary btn--block" placeholder="Text Input">

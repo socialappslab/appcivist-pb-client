@@ -16,8 +16,10 @@
 
     function activate() {
       $scope.user = localStorageService.get('user');
-      if ($scope.user && $scope.user.language)
+
+      if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
+      }
       $scope.profile = {
         firstname: $scope.user.name.split(' ')[0],
         lastname: $scope.user.name.split(' ')[1],
@@ -67,9 +69,7 @@
             'Content-Type': undefined
           },
           transformRequest: angular.identity,
-          params: {
-            //fd
-          }
+          params: {}
         }).then(function(response) {
           var rsp = loginService.getUser().get({ id: $scope.user.userId });
           rsp.$promise.then(

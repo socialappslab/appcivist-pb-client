@@ -17,7 +17,8 @@
         loadGroups: '&?',
         isAnonymous: '=',
         campaignConfig: '=',
-        campaignContributionTypes: '@'
+        campaignContributionTypes: '@',
+        sorting: '='
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function(scope, element, attrs) {
@@ -169,6 +170,7 @@
       } else {
         this.filters.sorting = sort;
       }
+      this.sorting = this.filters.sorting;
       this.doSearch();
     }
 

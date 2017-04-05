@@ -67,6 +67,19 @@
   contribution-card.card__proposal div.card__idea {
     width: 100%;
   }
+
+  .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #11493b;
+    border-color:#11493b;
+}
+
+.pagination > li > a, .pagination > li > span {
+    color: #11493b;
+
+}
 </style>
 <section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
   <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
@@ -75,7 +88,7 @@
 <section class="list--proposals" ng-if="type==='proposal'">
   <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
     <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize" total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="false" on-finish-render="eqResize"
-      is-anonymous="isAnonymous"></contribution-card>
+     is-coordinator="isCoordinator" is-anonymous="isAnonymous"></contribution-card>
     <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | transalte }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>

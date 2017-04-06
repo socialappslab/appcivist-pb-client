@@ -28,6 +28,7 @@
       $scope.pageSize = 16;
       $scope.type ='proposal';
       $scope.showPagination = false;
+      $scope.sorting = 'date_desc';
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;

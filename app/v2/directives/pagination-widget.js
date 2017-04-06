@@ -18,11 +18,19 @@
         resource: '=',
         type: '=',
         isAnonymous: '=',
-        isCoordinator: '='
+        isCoordinator: '=',
+        sorting: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function postLink(scope) {
         var vm = this;
+
+        scope.$watch("sorting", function (newValue, oldValue) {
+            if (!newValue || angular.equals(newValue, oldValue)) {
+               return;
+            }
+               getResultsPage(1);
+            });
 
         getResultsPage(1);
         scope.pagination = {
@@ -35,8 +43,8 @@
 
         function getResultsPage(pageNumber) {
             var rsp;
-            var query = { type: scope.type.toUpperCase() };
-            if (scope.isAnonymous == "true") {
+            var query = { type: scope.type.toUpperCase(), "sorting": scope.sorting };
+            if (scope.isAnonymous) {
               rsp = Contributions.contributionInResourceSpaceByUUID(scope.space, pageNumber, scope.pageSize).get(query);
             } else {
               rsp = Contributions.contributionInResourceSpace(scope.space, pageNumber, scope.pageSize).get(query);

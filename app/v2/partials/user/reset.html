@@ -1,0 +1,53 @@
+<main class="appmain">
+  <article class="campaign profile_page">
+    <header class="page__header">
+      <h1 class="heading--title">{{'Reset password' | translate}}</h1>
+    </header>
+    <br />
+    <section class="comments__section">
+      <form name="form" ng-show="!vm.done">
+        <div class="row">
+          <div class="col-md-8 col-sm-8">
+            <div class="field__container">
+              <label for="password">{{'Password' | translate}} <abbr title="Required">*</abbr></label>
+              <input ng-model="vm.model.password" ng-required="true" type="password" placeholder="{{ 'Password' | translate }}"
+                name="password">
+              <div ng-messages="form.password.$error" ng-if="vm.submitted || form.password.$touched" style="color:maroon"
+                role="alert">
+                <div ng-message="required">{{'This field is required' | translate}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-sm-8">
+            <div class="field__container">
+              <label for="repeatPassword">{{'Repeat password' | translate}} <abbr title="Required">*</abbr></label>
+              <input ng-model="vm.model.repeatPassword" ng-required="true" type="password" placeholder="{{ 'Repeat password' | translate }}"
+                name="repeatPassword">
+              <div ng-messages="form.repeatPassword.$error" ng-if="vm.submitted || form.repeatPassword.$touched" style="color:maroon"
+                role="alert">
+                <div ng-message="required">{{'This field is required' | translate}}</div>
+                <div ng-show="vm.model.password !== vm.model.repeatPassword">{{'Passwords do not match.' | translate}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-sm-8">
+            <button type="button" class="btn btn-block" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="row" ng-show="vm.done">
+        <div id="description" class="box descriptionBox clearfix">
+          <h4>
+            {{'Password has been changed successfully.' | translate}}
+            <a href="#/v2/login">{{'Sign in' | translate}}</a>
+          </h4>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>

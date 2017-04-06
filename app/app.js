@@ -482,6 +482,10 @@
         url: '/forgot',
         template: '<user-password-forgot></user-password-forgot>'
       })
+      .state('v2.user.password.rest', {
+        url: '/reset/:token',
+        template: '<user-password-reset></user-password-reset>'
+      })
       .state('v2.user.uid', {
         url: '/:uid',
         abstract: true,

@@ -2287,6 +2287,16 @@ appCivistApp.factory('AppCivistAuth', function($resource, localStorageService) {
      */
     forgot(email) {
       return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ email }).$promise;
+    },
+
+    /**
+     * calls the endpoint POST /user/password/forgot/change.
+     *
+     *  @method services.AppCivistAuth#reset
+     *  @param {Object} payload -  {token: '...', password: '...', repeatPassword: '...'}
+     */
+    reset(payload) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot/change').save(payload).$promise;
     }
   };
 });

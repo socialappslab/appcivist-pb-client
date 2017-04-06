@@ -28,7 +28,7 @@
         scope.$watch("sorting", function (newValue, oldValue) {
             if (!newValue || angular.equals(newValue, oldValue)) {
                return;
-            }  
+            }
                getResultsPage(1);
             });
 
@@ -44,7 +44,7 @@
         function getResultsPage(pageNumber) {
             var rsp;
             var query = { type: scope.type.toUpperCase(), "sorting": scope.sorting };
-            if (scope.isAnonymous == "true") {
+            if (scope.isAnonymous) {
               rsp = Contributions.contributionInResourceSpaceByUUID(scope.space, pageNumber, scope.pageSize).get(query);
             } else {
               rsp = Contributions.contributionInResourceSpace(scope.space, pageNumber, scope.pageSize).get(query);

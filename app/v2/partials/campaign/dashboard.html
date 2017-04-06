@@ -205,10 +205,7 @@
             <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
               class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
           </header>
-          <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
-            <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous" is-coordinator="isCoordinator" sorting="sorting"></pagination-widget>
-            <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
-          </div>
+          <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous" is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
           <header class="ideas__header">

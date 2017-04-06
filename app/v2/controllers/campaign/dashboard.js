@@ -33,6 +33,12 @@
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
+      // TODO: add pagination to Ideas
+      //$scope.pageSizeIdea = 16;
+      //$scope.typeIdea ='idea';
+      //$scope.showPaginationIdea = false;
+      //$scope.sortingIdea = "date_desc";
+
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;
         $scope.isAnonymous = true;
@@ -208,6 +214,7 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      // TODO: add pagination to ideas $scope.showPaginationIdea = !$scope.showPaginationIdea;
       $rootScope.$broadcast('eqResize', true);
     }
 

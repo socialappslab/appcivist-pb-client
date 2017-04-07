@@ -134,6 +134,7 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
      * @param {number} newAssemblyId - The ID of the assembly we want to set as currentAssembly
      */
     setCurrentAssembly: function(newAssemblyId) {
+      const Notify = $injector.get('Notify');
       var rsp = this.assembly(newAssemblyId).get().$promise;
       return rsp.then(assemblyLoaded, serverError);
 
@@ -194,6 +195,8 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
         localStorageService.set('assemblies', myAssemblies);
         localStorageService.set('groupMembershipsHash', groupMembershipsHash);
         localStorageService.set('assemblyMembershipsHash', assemblyMembershipsHash);
+        localStorageService.set('membershipsInGroups', membershipsInGroups);
+        localStorageService.set('membershipsInAssemblies', membershipsInAssemblies);
         return data;
       }
 

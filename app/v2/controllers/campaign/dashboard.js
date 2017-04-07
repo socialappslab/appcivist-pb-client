@@ -29,7 +29,7 @@
       $scope.newIdeasEnabled = true;
 
       $scope.pageSize = 16;
-      $scope.type ='proposal';
+      $scope.type = 'proposal';
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
@@ -294,4 +294,3 @@
     }
   }
 })();
-//# sourceMappingURL=dashboard.js.map

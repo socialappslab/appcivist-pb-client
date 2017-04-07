@@ -128,6 +128,8 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
    * 
    * If a domain is specified, then pick that for currentAssembly. Otherwise the first
    * element of available assemblies will be picked it up.
+   * 
+   * @deprecated
    */
   this.loadAuthenticatedUserMemberships = function() {
     return loadAuthenticatedUserMemberships();

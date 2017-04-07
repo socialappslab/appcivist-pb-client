@@ -2261,6 +2261,12 @@ appCivistApp.factory('Components', function($resource, $sce, localStorageService
   };
 });
 
+/**
+ * Defines methods to interact with the authentication endpoints.
+ *
+ * @class AppCivistAuth
+ * @memberof services
+ */
 appCivistApp.factory('AppCivistAuth', function($resource, localStorageService) {
   return {
     signIn: function() {
@@ -2271,6 +2277,26 @@ appCivistApp.factory('AppCivistAuth', function($resource, localStorageService) {
     },
     signUp: function() {
       return $resource(getServerBaseUrl(localStorageService) + '/user/signup');
+    },
+
+    /**
+     * calls the endpoint POST /user/password/forgot.
+     *
+     *  @method services.AppCivistAuth#forgot
+     *  @param {string} email -  user email 
+     */
+    forgot(email) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ email }).$promise;
+    },
+
+    /**
+     * calls the endpoint POST /user/password/forgot/change.
+     *
+     *  @method services.AppCivistAuth#reset
+     *  @param {Object} payload -  {token: '...', password: '...', repeatPassword: '...'}
+     */
+    reset(payload) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot/change').save(payload).$promise;
     }
   };
 });

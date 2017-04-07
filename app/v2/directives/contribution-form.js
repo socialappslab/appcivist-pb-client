@@ -216,16 +216,8 @@
      * Load available working groups for current assembly
      */
     function loadWorkingGroups() {
-      var self = this;
-      var rsp = WorkingGroups.workingGroupsInCampaign(this.assembly.assemblyId, this.campaign.campaignId).query().$promise;
-      rsp.then(
-        function(groups) {
-          self.groups = groups;
-        },
-        function() {
-          Notify.show('Error while trying to fetch working groups from the server', 'error');
-        }
-      );
+      let wgs = localStorageService.get('myWorkingGroups');
+      this.groups = wgs;
     }
 
     /**

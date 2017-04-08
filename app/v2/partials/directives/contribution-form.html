@@ -148,7 +148,7 @@
           </fieldset>
         </div>
 
-        <div class="field__container" ng-if="(props.campaignFields || props.componentFields) && props.values && props.values.length > 0">
+        <div class="field__container" ng-if="(props.campaignFields || props.componentFields)">
           <fieldset>
             <p class="intro">{{'Custom information' | translate}}</p>
             <custom-field ng-repeat="field in props.campaignFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>

@@ -66,7 +66,7 @@
         <!-- Working Group -->
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate && !isEdit">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
-          <select id="workingGroup" name="workingGroup" ng-model="selectedGroup" ng-required="isProposal"
+          <select id="workingGroup" name="workingGroup" ng-model="$parent.selectedGroup" ng-required="isProposal"
             ng-disabled="disabled" ng-change="selectGroup()" ng-options="group as group.name for group in groups">
             <option value="">{{'Select a working group' | translate}}</option>
           </select>

@@ -103,7 +103,7 @@
         </div>
 
         <!-- Attachments -->
-        <div class="field__container" ng-if="!isEdit && isCreate">
+        <div class="field__container" ng-if="!$parent.isEdit && $parent.isCreate">
           <fieldset>
             <p class="intro">{{'Attachments' | translate}}</p>
           </fieldset>
@@ -112,10 +112,10 @@
           <fieldset>
             <div class="action-bar small-card file-card">
               <figure>
-                <a ng-href="{{file.url}}" target="_blank">
-                  <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png"
+                <a ng-href="{{$parent.file.url}}" target="_blank">
+                  <img ng-if="$parent.file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png"
                     alt="File icon" />
-                  <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
+                  <img ng-if="$parent.file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
                 </a>
               </figure>
               <h4>
@@ -125,22 +125,22 @@
             </div>
           </fieldset>
         </div>
-        <div class="field__container" ng-if="!isEdit">
+        <div class="field__container" ng-if="!$parent.isEdit">
           <fieldset>
-            <a href="" ng-click="addFile = !addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
+            <a href="" ng-click="$parent.addFile = !$parent.addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
           </fieldset>
         </div>
-        <div ng-show="addFile" ng-if="!isEdit">
+        <div ng-show="$parent.addFile" ng-if="!$parent.isEdit">
           <fieldset>
             <div class="field__container">
               <label for="name">{{'Name' | translate}}</label>
-              <input id="name" name="name" ng-model="newAttachment.name">
+              <input id="name" name="name" ng-model="$parent.newAttachment.name">
             </div>
           </fieldset>
           <fieldset>
             <div class="field__container">
               <label for="file">{{'File' | translate}}</label>
-              <input id="file" type="file" name="file" fileread="newAttachment.file">
+              <input id="file" type="file" name="file" fileread="$parent.newAttachment.file">
             </div>
           </fieldset>
           <fieldset>

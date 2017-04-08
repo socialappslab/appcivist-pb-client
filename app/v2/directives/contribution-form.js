@@ -371,6 +371,7 @@
     function contributionSubmit() {
       var vm = this;
       if (this.contributionForm.$invalid) {
+        Notify.show('The form is invalid: you must fill all required values', 'error');
         return;
       }
       let rsp;

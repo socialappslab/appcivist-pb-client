@@ -50,7 +50,7 @@
         <!-- Status -->
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal">
           <label for="status">{{'Status' | translate}}</label>
-          <select id="status" name="status" ng-model="$parent.contribution.status" ng-disabled="$parent.disabled"
+          <select id="status" name="status" ng-model="contribution.status" ng-disabled="disabled"
             style="height: 42px; width: 100%;">
             <option value="NEW">{{'New' | translate}}</option>
             <option value="PUBLISHED">{{'Published' | translate}}</option>
@@ -66,11 +66,11 @@
         <!-- Working Group -->
         <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate && !isEdit">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
-          <select id="workingGroup" name="$parent.workingGroup" ng-model="$parent.selectedGroup" ng-required="$parent.isProposal"
-            ng-disabled="$parent.disabled" ng-change="$parent.selectGroup()" ng-options="group as group.name for group in $parent.groups">
+          <select id="workingGroup" name="workingGroup" ng-model="selectedGroup" ng-required="isProposal"
+            ng-disabled="disabled" ng-change="selectGroup()" ng-options="group as group.name for group in groups">
             <option value="">{{'Select a working group' | translate}}</option>
           </select>
-          <div ng-messages="$parent.contributionForm.workingGroup.$error" style="color:maroon" role="alert">
+          <div ng-messages="contributionForm.workingGroup.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
         </div>
@@ -88,7 +88,7 @@
         <div class="field__container assign_proposal_to_users" ng-if="isIdea && isCreate && !isEdit">
           <fieldset class="user__assignment">
             <label for="non-member-authors">{{'Non Member Author' | translate}}</label>
-            <nonmember-author-form id="non-member-authors" on-change="$parent.updateNonMember(author)" ng-disabled="$parent.disabled"></nonmember-author-form>
+            <nonmember-author-form id="non-member-authors" on-change="updateNonMember(author)" ng-disabled="disabled"></nonmember-author-form>
           </fieldset>
         </div>
 

@@ -196,28 +196,24 @@
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
     <section class="proposals_and_ideas">
       <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" load-groups="loadGroups(query)"
-        is-anonymous="isAnonymous" campaign-config="campaignConfigs" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"></proposals-ideas-searchbox>
+        is-anonymous="isAnonymous" campaign-config="campaignConfigs" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
+        sorting="sorting"></proposals-ideas-searchbox>
       <div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}">
         <section class="list--proposals">
           <header class="proposals__header">
             <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-            <a ng-href="#/v2/space/{{spaceID}}/contributions?type=proposal&from={{fromURL}}" class="proposals__see_all"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
             <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
               class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
           </header>
-          <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
-            <contribution-card ng-repeat="proposal in proposals track by $index " class="card__proposal" contribution="proposal"
-              campaign="campaign" components="components" show-voting-buttons="false" is-anonymous="isAnonymous"
-              on-finish-render="eqResize" is-coordinator="isCoordinator"></contribution-card>
-            <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
-          </div>
+          <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
+            is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
           <header class="ideas__header">
             <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="ideas__add_new" ng-if="user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+            <a class="ideas__add_new" ng-if="user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Ideas'|translate}}</a>&nbsp;&nbsp;
           </header>
 

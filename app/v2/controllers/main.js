@@ -8,12 +8,17 @@
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
     '$rootScope', 'loginService', '$translate', '$state', '$stateParams',
-    'WorkingGroups'
+    'WorkingGroups', 'Assemblies'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
-    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups) {
+    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies) {
 
+    $scope.isCampaignActive = isCampaignActive.bind($scope);
+    $scope.isGroupActive = isGroupActive.bind($scope);
+    $scope.fetchGroups = fetchGroups.bind($scope);
+    $scope.needToRefresh = needToRefresh.bind($scope);
+    $scope.showGroup = showGroup.bind($scope);
     activate();
 
     function activate() {
@@ -28,7 +33,7 @@
       $scope.isAssemblyHome = $state.is('v2.assembly.aid.home');
       $scope.showSmallMenu = false;
       $scope.nav = { isActive: false };
-
+      $scope.groupsAreShown = false;
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
         loadUserData($scope);
@@ -59,21 +64,27 @@
       }
       // TODO: read the following from the instance main assembly settings in the server
       $scope.creationPatternsEnabled = false;
-      $scope.isCampaignActive = isCampaignActive.bind($scope);
-      $scope.isGroupActive = isGroupActive.bind($scope);
-      $scope.fetchGroups = fetchGroups.bind($scope);
     }
 
+    /**
+     * 
+     * @param {Object} scope -  component scope 
+     */
     function loadUserData(scope) {
-      scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
-      scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
-      scope.assemblies = localStorageService.get('assemblies') || [];
+      let myWorkingGroups = localStorageService.get('myWorkingGroups');
 
-      if (scope.myWorkingGroups == undefined || scope.ongoingCampaigns == undefined) {
-        // TODO: Probably better to use here the new Assemblies.setCurrentAssembly method.
-        loginService.loadAuthenticatedUserMemberships($scope.user).then(function() {
-          location.reload();
+      if (scope.needToRefresh(myWorkingGroups)) {
+        Assemblies.setCurrentAssembly(parseInt($state.params.aid)).then(response => {
+          scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+          scope.assemblies = localStorageService.get('assemblies') || [];
+          scope.fetchGroups().then(response => {
+            scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+          });
         });
+      } else {
+        scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+        scope.assemblies = localStorageService.get('assemblies') || [];
+        scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
       }
     }
 
@@ -103,9 +114,9 @@
         $scope.currentCampaignId = parseInt($state.params.cid);
       }
       var isCampaignDashboard = $state.is('v2.assembly.aid.campaign.cid');
+
       if (isCampaignDashboard) {
-        loadUserData(this);
-        this.fetchGroups();
+        loadUserData($scope);
       }
     }
 
@@ -144,11 +155,52 @@
       let assembly = localStorageService.get('currentAssembly');
       let membershipsInGroups = localStorageService.get('membershipsInGroups');
       let rsp = WorkingGroups.workingGroupsInCampaign(assembly.assemblyId, this.currentCampaignId).query().$promise;
-      rsp.then(
+      return rsp.then(
         groups => {
           vm.myWorkingGroups = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+          localStorageService.set('myWorkingGroups', vm.myWorkingGroups);
+          return groups;
         }
       );
+    }
+
+
+
+    /**
+     * Decides if a WG membership should appear or not in the sidebar.
+     */
+    function showGroup(wg) {
+      let vm = this;
+      let showGroup = !wg.campaigns || wg.campaigns[0] === this.currentCampaignId;
+
+      if (!vm.groupsAreShown && showGroup) {
+        vm.groupsAreShown = showGroup;
+      }
+      return showGroup;
+    }
+
+    /**
+     * Based on the given working groups, checks if user data should be refreshed. This
+     * refreshing only happens when we move from one campaign to another.
+     * 
+     * @param {Object[]} workingGroups 
+     */
+    function needToRefresh(workingGroups) {
+      if (!workingGroups || workingGroups.length === 0) {
+        return true;
+      }
+
+      if ($state.is('v2.assembly.aid.campaign.cid')) {
+        if (workingGroups) {
+          const campaignId = parseInt($state.params.cid);
+          workingGroups.forEach((group, index) => { // See arrow functions
+            if (group.campaigns) {
+              return group.campaigns[0] !== campaignId;
+            }
+          });
+        }
+      }
+      return false;
     }
   }
 }());

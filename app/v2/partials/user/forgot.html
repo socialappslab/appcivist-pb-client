@@ -1,0 +1,36 @@
+<main class="appmain">
+  <article class="campaign profile_page">
+    <header class="page__header">
+      <h1 class="heading--title">{{'Restore password' | translate}}</h1>
+    </header>
+    <br />
+    <section class="comments__section">
+      <form name="form" ng-show="!vm.done">
+        <div class="row">
+          <div class="col-md-8 col-sm-8">
+            <div class="field__container">
+              <label for="email">{{'Email' | translate}} <abbr title="Required">*</abbr></label>
+              <input ng-model="vm.model.email" ng-required="true" type="email" placeholder="{{ 'Email' | translate }}"
+                name="email">
+              <div ng-messages="form.email.$error" ng-if="vm.submitted || form.email.$touched" style="color:maroon"
+                role="alert">
+                <div ng-message="required">{{'This field is required' | translate}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-sm-8">
+            <button type="button" class="btn btn-block" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="row" ng-show="vm.done">
+        <div id="description" class="box descriptionBox">
+          <h4>{{'Operation succeeded. Please check your email.' | translate}}</h4>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>

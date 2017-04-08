@@ -7,12 +7,12 @@
   ContributionForm.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter'
+    '$filter', '$state'
   ];
 
   function ContributionForm(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter) {
+    $filter, $state) {
     return {
       restrict: 'E',
       scope: {
@@ -216,16 +216,13 @@
      * Load available working groups for current assembly
      */
     function loadWorkingGroups() {
-      var self = this;
-      var rsp = WorkingGroups.workingGroupsInCampaign(this.assembly.assemblyId, this.campaign.campaignId).query().$promise;
-      rsp.then(
-        function(groups) {
-          self.groups = groups;
-        },
-        function() {
-          Notify.show('Error while trying to fetch working groups from the server', 'error');
-        }
-      );
+      let wgs = localStorageService.get('myWorkingGroups');
+      let currentCampaign = localStorageService.get('currentCampaign');
+      let campaignID = currentCampaign.campaignId;
+      this.groups = wgs ? wgs.filter(
+        function(wg) {
+          return wg && wg.campaigns && wg.campaigns[0]===campaignID || !wg.campaigns;
+        }) : wgs;
     }
 
     /**
@@ -259,7 +256,7 @@
     /**
      * This method is responsible for loading the list of authors. It simply loads the members of
      * the current assembly.
-     * 
+     *
      * @param {string} query - current search query
      */
     function loadAuthors(query) {
@@ -374,6 +371,7 @@
     function contributionSubmit() {
       var vm = this;
       if (this.contributionForm.$invalid) {
+        Notify.show('The form is invalid: you must fill all required values', 'error');
         return;
       }
       let rsp;

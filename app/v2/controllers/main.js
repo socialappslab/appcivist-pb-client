@@ -176,9 +176,14 @@
       }
 
       if ($state.is('v2.assembly.aid.campaign.cid')) {
-        const group = workingGroups[0];
-        const campaignId = parseInt($state.params.cid);
-        return group.campaigns[0] !== campaignId;
+        if (workingGroups) {
+          const campaignId = parseInt($state.params.cid);
+          workingGroups.forEach((group, index) => { // See arrow functions
+            if (group.campaigns) {
+              return group.campaigns[0] !== campaignId;
+            }
+          });
+        }
       }
       return false;
     }

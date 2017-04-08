@@ -18,6 +18,7 @@
     $scope.isGroupActive = isGroupActive.bind($scope);
     $scope.fetchGroups = fetchGroups.bind($scope);
     $scope.needToRefresh = needToRefresh.bind($scope);
+    $scope.showGroup = showGroup.bind($scope);
     activate();
 
     function activate() {
@@ -32,7 +33,7 @@
       $scope.isAssemblyHome = $state.is('v2.assembly.aid.home');
       $scope.showSmallMenu = false;
       $scope.nav = { isActive: false };
-
+      $scope.groupsAreShown = false;
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
         loadUserData($scope);
@@ -163,6 +164,20 @@
       );
     }
 
+
+
+    /**
+     * Decides if a WG membership should appear or not in the sidebar.
+     */
+    function showGroup(wg) {
+      let vm = this;
+      let showGroup = !wg.campaigns || wg.campaigns[0] === this.currentCampaignId;
+
+      if (!vm.groupsAreShown && showGroup) {
+        vm.groupsAreShown = showGroup;
+      }
+      return showGroup;
+    }
 
     /**
      * Based on the given working groups, checks if user data should be refreshed. This

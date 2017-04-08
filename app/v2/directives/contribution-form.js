@@ -7,12 +7,12 @@
   ContributionForm.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter'
+    '$filter', '$state'
   ];
 
   function ContributionForm(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter) {
+    $filter, $state) {
     return {
       restrict: 'E',
       scope: {
@@ -217,7 +217,12 @@
      */
     function loadWorkingGroups() {
       let wgs = localStorageService.get('myWorkingGroups');
-      this.groups = wgs;
+      let currentCampaign = localStorageService.get('currentCampaign');
+      let campaignID = currentCampaign.campaignId;
+      this.groups = wgs ? wgs.filter(
+        function(wg) {
+          return wg && wg.campaigns && wg.campaigns[0]===campaignID || !wg.campaigns;
+        }) : wgs;
     }
 
     /**
@@ -251,7 +256,7 @@
     /**
      * This method is responsible for loading the list of authors. It simply loads the members of
      * the current assembly.
-     * 
+     *
      * @param {string} query - current search query
      */
     function loadAuthors(query) {

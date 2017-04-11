@@ -54,10 +54,17 @@
     <em>{{(contribution.popularity != null && contribution.popularity != undefined) ? contribution.popularity : 0}}</em>
   </div>
 
-  <div ng-if="(contribution.totalComments != null && contribution.totalComments != undefined)" style="margine-left:4px" class="informal_score positive">
+  <div ng-if="(contribution.totalComments != null && contribution.totalComments != undefined) && !isAnonymous" style="margine-left:4px" class="informal_score positive">
     <em style="border-radius:15%">
       <i class="fa fa-comment"></i>
       {{contribution.totalComments}}
+    </em>
+  </div>
+
+  <div ng-if="(contribution.forumCommentCount != null && contribution.forumCommentCount != undefined) && isAnonymous" style="margine-left:4px" class="informal_score positive">
+    <em style="border-radius:15%">
+      <i class="fa fa-comment"></i>
+      {{contribution.forumCommentCount}}
     </em>
   </div>
 

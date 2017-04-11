@@ -13,18 +13,20 @@
 
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
-
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
-      if (tab == 1)
+      if (tab == 1) {
         $scope.activeTab = "Members";
-      else
+      } else {
         $scope.activeTab = "Public";
+      }
     }
 
     activate();
 
     function activate() {
+      $scope.membersCommentCounter = {value: 0};
+      $scope.publicCommentCounter = {value: 0};
       $scope.pageSize = 16;
       $scope.type ='proposal';
       $scope.showPagination = false;
@@ -120,6 +122,7 @@
       }
       res.$promise.then(
         function (data) {
+          // console.log(data);
           $scope.wg = data;
           $scope.wg.rsID = data.resourcesResourceSpaceId;
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
@@ -133,7 +136,10 @@
           } else {
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;
+            loadPublicCommentCount($scope.forumSpaceID);
+            loadMembersCommentCount($scope.spaceID);
           }
+
           $scope.showPagination = true;
           loadLatestActivities(data);
         },
@@ -184,6 +190,32 @@
         },
         function (error) {
           Notify.show('Error occured while trying to load working group ideas', 'error');
+        }
+      );
+    }
+ 
+    function loadPublicCommentCount(sid){
+      var res;
+      res = Space.getCommentCount(sid).get();
+      res.$promise.then(
+        function(data){
+          $scope.publicCommentCounter.value = data.counter;
+        },
+        function (error) {
+          Notify.show('Error occurred while trying to load working group proposals', 'error');
+        }
+      );
+    }
+
+    function loadMembersCommentCount(sid){
+      var res;
+      res = Space.getCommentCount(sid).get();
+      res.$promise.then(
+        function(data){
+          $scope.membersCommentCounter.value = data.counter;
+        },
+        function (error) {
+          Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
     }

@@ -54,23 +54,27 @@
     });
 
     return {
-      getLocaleDisplayName: function() {
+      getLocaleDisplayName() {
         return localesObj[currentLocale];
       },
-      setLocaleByDisplayName: function(localeDisplayName) {
+
+      setLocaleByDisplayName(localeDisplayName) {
         setLocale(
           _LOCALES[
             _LOCALES_DISPLAY_NAMES.indexOf(localeDisplayName) // get locale index
             ]
         );
       },
-      getLocalesDisplayNames: function() {
+
+      getLocalesDisplayNames() {
         return _LOCALES_DISPLAY_NAMES;
       },
-      getLocale: function() {
+
+      getLocale() {
         return currentLocale;
       },
-      setLocale: function(locale) {
+
+      setLocale(locale) {
         setLocale(locale);
       }
     };

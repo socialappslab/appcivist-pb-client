@@ -6,11 +6,11 @@
 
   ContributionCard.$inject = [
     'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', '$rootScope', 'Notify', '$compile',
-    '$sce', 'limitToFilter'
+    '$sce', 'limitToFilter', '$stateParams'
   ];
 
   function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify,
-                            $compile, $sce, limitToFilter) {
+    $compile, $sce, limitToFilter, $stateParams) {
 
     function hasRole(roles, roleName) {
       var result = false;
@@ -52,6 +52,7 @@
         scope.ideaHeaderStyle = scope.showIdeaBody ? { height: '100px' } : { height: '150px' };
         setContributionType(scope);
         var assembly = localStorageService.get('currentAssembly');
+        scope.campaignId = $stateParams.cid ? parseInt($stateParams.cid) : 0;
 
         if (assembly) {
           scope.assemblyId = assembly.assemblyId;
@@ -118,20 +119,20 @@
 
         scope.myObject.seeDetail = function() {
           scope.vexInstance = vex.open({
-            className:"vex-theme-plain",
+            className: "vex-theme-plain",
             unsafeContent: $compile(document.querySelector('.contribution-detail-modal').innerHTML)(scope)[0]
           });
         }
 
-        scope.myObject.textAsHtml = function () {
+        scope.myObject.textAsHtml = function() {
           return $sce.trustAsHtml(scope.contribution ? scope.contribution.text : "");
         }
 
-        scope.myObject.textAsHtmlLimited = function (limit) {
+        scope.myObject.textAsHtmlLimited = function(limit) {
           if (scope.contribution && scope.contribution.text) {
-            var limitedText = limitToFilter(scope.contribution.text,limit)
+            var limitedText = limitToFilter(scope.contribution.text, limit)
             if (scope.contribution.text.length > limit) {
-              limitedText+="...";
+              limitedText += "...";
             }
 
             scope.trustedHtmlText = $sce.trustAsHtml(limitedText);

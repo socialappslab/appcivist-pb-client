@@ -5,9 +5,13 @@
 
   angular.module('appCivistApp').controller('v2.CampaignDashboardCtrl', CampaignDashboardCtrl);
 
-  CampaignDashboardCtrl.$inject = ['$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile'];
+  CampaignDashboardCtrl.$inject = [
+    '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService',
+    'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile'
+  ];
 
-  function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile) {
+  function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
+    localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile) {
 
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function(tab) {
@@ -268,6 +272,7 @@
      * @param {object} filters
      */
     function doSearch(filters) {
+      this.currentFilters = filters;
       this.ideasSectionExpanded = filters.mode === 'idea';
       var self = this;
       var rsp = Space.doSearch(this.campaign, this.isAnonymous, filters);
@@ -321,6 +326,7 @@
      * Closes the currently open modal.
      */
     function closeModal() {
+      this.$broadcast('pagination:reloadCurrentPage');
       this.vexInstance.close();
     }
   }

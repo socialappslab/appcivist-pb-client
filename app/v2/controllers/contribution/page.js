@@ -166,7 +166,7 @@
           $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&locale=' + $scope.etherpadLocale;
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -234,7 +234,7 @@
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
         etherpadRes.$promise.then(function(pad) {
-          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + '&userName=' + $scope.userName + '&locale=' + $scope.etherpadLocale;
+          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + '&userName=' + $scope.userName + '&lang=' + $scope.etherpadLocale;
         });
       }
     }

@@ -1040,7 +1040,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       getSpace: function(spaceId) {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid', { sid: spaceId });
       },
-
+      
       getSpaceByUUID: function(spaceUUID) {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/public', { uuid: spaceUUID });
       },
@@ -1055,6 +1055,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {object} filters - filters to apply
        * @return {object} promise
        **/
+
       getContributions: function(target, type, isAnonymous, filters) {
         // Get list of contributions from server
         var rsp;
@@ -1079,6 +1080,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           }
         );
         return rsp.$promise;
+      },
+      
+      getCommentCount: function(sid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/commentcount', { sid: sid});
       },
 
       getPinnedContributions: function(target, type, isAnonymous) {
@@ -1242,7 +1247,8 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       },
       deleteResource(sid, rsid) {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid }, { 'delete': { method: 'DELETE' } }).delete().$promise;
-      }
+      },
+
     };
   }
 ]);

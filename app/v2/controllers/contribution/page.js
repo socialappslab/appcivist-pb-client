@@ -73,6 +73,7 @@
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
         $scope.user = localStorageService.get('user');
+
         if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
           $scope.userName = $scope.user.name;

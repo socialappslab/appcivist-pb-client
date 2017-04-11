@@ -667,7 +667,7 @@
    */
   run.$inject = [
     '$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal',
-    'usSpinnerService', '$timeout', '$document', 'Authorization'
+    'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService'
   ];
 
   /**
@@ -678,7 +678,7 @@
    * @param localStorageService
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
-    $timeout, $document, Authorization) {
+    $timeout, $document, Authorization, $translate, LocaleService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -807,6 +807,18 @@
         } else if (authorized === Authorization.enums.NOT_AUTHORIZED) {
           $location.path('/').replace();
         }
+      }
+    });
+
+
+    $rootScope.$on('$stateChangeSuccess', function() {
+      // I18N for current view
+      let user = localStorageService.get('user');
+
+      if (user && user.language) {
+        $translate.use(user.language);
+      } else {
+        $translate.use(LocaleService.getLocale());
       }
     });
   }

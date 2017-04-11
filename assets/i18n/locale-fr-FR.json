@@ -1043,5 +1043,7 @@
   "Forgot password?": "Forgot password?",
   "Restore password": "Restore password",
   "Operation succeeded. Please check your email.": "Operation succeeded. Please check your email.",
-  "The form is invalid: you must fill all required values": "Le formulaire est invalide: vous devez remplir toutes les valeurs requises"
+  "The form is invalid: you must fill all required values": "Le formulaire est invalide: vous devez remplir toutes les valeurs requises",
+  "Type your email": "Type your email",
+  "Type your password": "Type your password"
 }

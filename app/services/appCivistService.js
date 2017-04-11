@@ -1000,11 +1000,34 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
   };
 });
 
-appCivistApp.factory('Etherpad', function($resource, localStorageService) {
+/**
+ * Etherpad factory.
+ *
+ * @description
+ *
+ * Defines methods to interact with etherpad.
+ *
+ * @class Etherdpad
+ * @memberof services
+ */
+appCivistApp.factory('Etherpad', function($resource, localStorageService, LocaleService) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   var etherpadServer = localStorageService.get("etherpadServer");
+  const localesMap = {
+    'en-US': 'en',
+    'de-DE': 'de',
+    'es-ES': 'es',
+    'fr-FR': 'fr',
+    'it-IT': 'it',
+    'es': 'es',
+    'en': 'en',
+    'de': 'de',
+    'it': 'it',
+    'fr': 'fr'
+  };
+
   return {
-    embedUrl: function(id, revision) {
+    embedUrl(id, revision) {
       var url = etherpadServer + "p/" + id;
       if (revision !== undefined) {
         url += '/timeslider#' + revision;
@@ -1012,18 +1035,33 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService) {
       url += '?showChat=true&showLineNumbers=true&useMonospaceFont=false';
       return url;
     },
-    getReadWriteUrl: function(assemblyId, contributionId) {
+
+    getReadWriteUrl(assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/padid', {
         aid: assemblyId,
         cid: contributionId
       });
     },
-    getEtherpadReadOnlyUrl: function(readOnlyPadId, revision) {
+
+    getEtherpadReadOnlyUrl(readOnlyPadId, revision) {
       var url = localStorageService.get("etherpadServer") + "p/" + readOnlyPadId;
       if (revision !== undefined) {
         url += 'timeslider#' + revision;
       }
       return url + "?showControls=false&showChat=true&showLineNumbers=true&useMonospaceFont=false";
+    },
+
+    /**
+     * Maps the current locale code to the etherpad supported lang code.
+     * http://joker-x.github.com/languages4translatewiki/test/
+     * 
+     * @method services.Etherdpad#getLocale
+     * @returns {string}
+     */
+    getLocale() {
+      const user = localStorageService.get('user');
+      const locale = user && user.language ? user.language : LocaleService.getLocale();
+      return localesMap[locale] || 'en';
     }
   };
 });

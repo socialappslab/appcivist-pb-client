@@ -11,7 +11,7 @@
   var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
-    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce'
+    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
@@ -49,8 +49,8 @@
     production: "https://etherpad.appcivist.org/",
     testing: "https://testetherpad.appcivist.org/",
     development: "https://testetherpad.appcivist.org/",
-    local: "http://localhost:9001/",
-    //local: "https://testetherpad.appcivist.org/",
+    //local: "http://localhost:9001/",
+    local: "https://testetherpad.appcivist.org/",
     //local: "https://etherpad.appcivist.org/",
     mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
       //mimove: "https://etherpad.appcivist.org/"
@@ -667,7 +667,7 @@
    */
   run.$inject = [
     '$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal',
-    'usSpinnerService', '$timeout', '$document', 'Authorization'
+    'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService'
   ];
 
   /**
@@ -678,7 +678,7 @@
    * @param localStorageService
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
-    $timeout, $document, Authorization) {
+    $timeout, $document, Authorization, $translate, LocaleService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -807,6 +807,18 @@
         } else if (authorized === Authorization.enums.NOT_AUTHORIZED) {
           $location.path('/').replace();
         }
+      }
+    });
+
+
+    $rootScope.$on('$stateChangeSuccess', function() {
+      // I18N for current view
+      let user = localStorageService.get('user');
+
+      if (user && user.language) {
+        $translate.use(user.language);
+      } else {
+        $translate.use(LocaleService.getLocale());
       }
     });
   }

@@ -21,7 +21,7 @@
 -->
 <header class="page__header">
   <div class="title_block">
-    <h1 class="heading--title">Sign in</h1>
+    <h1 class="heading--title">{{'Sign in' | translate}}</h1>
   </div>
 </header>
 <br />
@@ -34,14 +34,15 @@
     <fieldset class="row">
       <div class="field-container col-lg-4 col-offset-4">
         <label for="text">Email</label>
-        <input class="form-input" ng-model="user.email" id="text" type="text" placeholder="Text Input" autofocus>
+        <input class="form-input" ng-model="user.email" id="text" type="text" placeholder="{{'Type your email' | translate}}"
+          autofocus>
       </div>
     </fieldset>
     <br />
     <fieldset class="row">
       <div class="field-container col-lg-4 col-offset-4">
-        <label for="password">Password</label>
-        <input class="form-input" ng-model="user.password" id="password" type="password" placeholder="Type your Password">
+        <label for="password">{{'Password' | translate}}</label>
+        <input class="form-input" ng-model="user.password" id="password" type="password" placeholder="{{'Type your password' | translate}}">
       </div>
     </fieldset>
     <fieldset>

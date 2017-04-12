@@ -38,6 +38,7 @@
     function initScopeFunctions() {
       $scope.goNext = goNext.bind($scope);
       $scope.goPrev = goPrev.bind($scope);
+      $scope.componentsLoaded = componentsLoaded.bind($scope);
 
       $scope.updateConfigOptionValue = function(config, optionValue) {
         config.value = optionValue.value;
@@ -493,17 +494,27 @@
       });
     }
 
-    function prepareCampaignToCreate() {
-      var newCampaign = {};
-      newCampaign.title = $scope.newCampaign.title ? $scope.newCampaign.title : $scope.newCampaign.goal;
-      newCampaign.goal = $scope.newCampaign.goal;
-      newCampaign.listed = $scope.newCampaign.listed;
-      newCampaign.themes = $scope.newCampaign.themes;
+    function prepareCampaignPayload() {
+      let newCampaign = {};
 
-      var requiredFields = newCampaign.title != undefined && newCampaign.goal != undefined;
-
-      if (requiredFields) {
-        var components = $scope.newCampaign.proposalComponents;
+      if ($scope.isEdit) {
+        newCampaign = _.cloneDeep($scope.newCampaign);
+        delete newCampaign.listed;
+        delete newCampaign.themes;
+        delete newCampaign.ballots;
+        delete newCampaign.bindingBallot;
+        delete newCampaign.consultiveBallot;
+        delete newCampaign.forum;
+        delete newCampaign.linkedCampaign;
+        delete newCampaign.linkedComponents;
+        delete newCampaign.selectedTemplate;
+        delete newCampaign.supportingComponents;
+        delete newCampaign.template;
+        delete newCampaign.proposalComponents;
+      } else {
+        newCampaign.campaignId = $scope.newCampaign.campaignId;
+        newCampaign.title = $scope.newCampaign.title ? $scope.newCampaign.title : $scope.newCampaign.goal;
+        newCampaign.goal = $scope.newCampaign.goal;
         // Setup existing themes
         newCampaign.existingThemes = [];
         addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);
@@ -511,9 +522,13 @@
         if ($scope.newCampaign.template.value === 'LINKED') {
           addToExistingThemes(newCampaign.existingThemes, $scope.campaignThemes);
         }
+      }
+      const requiredFields = newCampaign.title != undefined && newCampaign.goal != undefined;
 
+      if (requiredFields) {
         // milestones configuration
-        angular.forEach(components, (component) => {
+        let components = $scope.newCampaign.proposalComponents;
+        angular.forEach(components, component => {
           const startMilestone = component.milestones.filter(m => m.type === 'START')[0];
           const endMilestone = component.milestones.filter(m => m.type === 'END')[0];
 
@@ -531,7 +546,7 @@
         });
         newCampaign.components = components;
       } else {
-        newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
+        newCampaign.error = 'Validation Errors in the new Campaign. No title or goal was established';
       }
       return newCampaign;
     }
@@ -572,32 +587,26 @@
     }
 
     function privateCreateCampaign(step, options) {
-      if (step === 'done') {
-        if (!$scope.isEdit) {
-          var postCampaign = prepareCampaignToCreate();
-        } else {
-          postCampaign = {};
-        }
+      let payload = prepareCampaignPayload();
 
-        if (postCampaign.error === undefined) {
-          var campaignRes;
+      if (step === 'done') {
+        if (payload.error === undefined) {
+          let campaignRes;
 
           if (!$scope.isEdit) {
-            campaignRes = Campaigns.newCampaign($scope.assemblyID).save(postCampaign);
+            campaignRes = Campaigns.newCampaign($scope.assemblyID).save(payload);
           } else {
-            campaignRes = Campaigns.campaign($scope.assemblyID, $scope.newCampaign.campaignId).update($scope.newCampaign);
+            campaignRes = Campaigns.campaign($scope.assemblyID, $scope.newCampaign.campaignId).update(payload);
           }
-          campaignRes.$promise.then(function(data) {
+          campaignRes.$promise.then(data => {
             $scope.newCampaign = data;
             localStorageService.remove('newCampaign');
             $location.url('/v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.newCampaign.campaignId);
-          }, function(error) {
-            Notify.show('Error. Could not save the campaign', 'error');
-          });
+          }, error => Notify.show('Error. Could not save the campaign', 'error'));
         } else {
-          $scope.errors.push(postCampaign.error);
+          $scope.errors.push(payload.error);
           Notify.show('Error. Could not save the campaign', 'error');
-          postCampaign.error = undefined;
+          payload.error = undefined;
         }
       } else {
         localStorageService.set('newCampaign', $scope.newCampaign);
@@ -730,6 +739,15 @@
           this.createOrUpdateCampaign('v2.assembly.aid.campaign.new.description', { aid, fastrack: false });
         }
       }
+    }
+
+    /**
+     * Called when the campaign timeline directive finishs loading the components.
+     * 
+     * @param {Object[]} components 
+     */
+    function componentsLoaded(components) {
+      this.newCampaign.proposalComponents = components;
     }
   }
 })();

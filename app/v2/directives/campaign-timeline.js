@@ -16,10 +16,10 @@
    * <campaign-timeline 
    *      title="{{'Campaign Status' | translate}}" 
    *      assembly-id="assemblyID" 
-   *      campaign-id="campaignID"></campaign-timeline>
+   *      campaign-id="campaignID" on-components-loaded="componentsLoaded(components)"></campaign-timeline>
    * 
    * @example
-   * You instead of passing the assembly and campaign IDs, you can specify the array of timeline componentes as an attribute.
+   * Instead of passing the assembly and campaign IDs, you can specify the array of timeline componentes as an attribute.
    * 
    * <campaign-timeline title="{{'Campaign Status' | translate}}" 
    *                    components="vm.defaultComponents" 
@@ -40,7 +40,9 @@
         title: '@',
         onlyLabel: '=',
         components: '<',
-        onComponentClick: '&?'
+        onComponentClick: '&?',
+        // called after successful loading of campaign components
+        onComponentsLoaded: '&?'
       },
       templateUrl: '/app/v2/partials/directives/campaign-timeline.html',
       link: function postLink(scope, element, attrs) {
@@ -103,6 +105,10 @@
               c.cssClass = getComponentCssClass(currentComponent, c);
             });
             scope.components = data;
+
+            if (angular.isFunction(scope.onComponentsLoaded)) {
+              scope.onComponentsLoaded({ components: data });
+            }
           });
         }
 

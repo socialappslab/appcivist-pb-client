@@ -15,7 +15,7 @@
             on-component-click="onComponentClick(component)"></campaign-timeline>
 
           <campaign-timeline ng-if="isEdit" title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID"
-            campaign-id="newCampaign.campaignId" on-component-click="onComponentClick(component)"></campaign-timeline>
+            campaign-id="newCampaign.campaignId" on-component-click="onComponentClick(component)" on-components-loaded="componentsLoaded(components)"></campaign-timeline>
         </section>
 
         <div class="panel panel-default" style="margin-top: 20px;">

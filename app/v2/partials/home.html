@@ -1,313 +1,315 @@
 <style>
-h2 {
-  margin-top: 0px;
-}
+  h2 {
+    margin-top: 0px;
+  }
 </style>
 <div class="view">
   <nav class="navbar navbar-fixed-top" role="navigation" ng-controller="AccountCtrl">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-options">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-options">
               <span class="sr-only">{{'Toggle navigation' | translate}}</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-          <div class="navbar-brand" ng-if='userIsAuthenticated()' style="padding-top:5%;">
-              <a href="#/"><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
-              <strong class="logotext">AppCivist</strong>
-          </div>
+      <div class="navbar-brand" ng-if='userIsAuthenticated()' style="padding-top:5%;">
+        <a href="#/"><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"
+          /></a>
+        <strong class="logotext">AppCivist</strong>
+      </div>
 
-          <div class="navbar-brand" ng-if='!userIsAuthenticated()' style="padding-top:5%;">
-              <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
-              <strong style="vertical-align: super;">AppCivist</strong>
-          </div>
+      <div class="navbar-brand" ng-if='!userIsAuthenticated()' style="padding-top:5%;">
+        <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"
+          /></a>
+        <strong style="vertical-align: super;">AppCivist</strong>
       </div>
-      <div class="collapse navbar-collapse" id="navbar-options">
-        <form class="navbar-form navbar-right" role="login" style="padding-top:1%;">
-          <a ng-if='!userIsAuthenticated()' ng-href="/#/v2/login">{{'header.sign_in' | translate}}</a>
-          <a ng-if='userIsAuthenticated()' href="" ng-click="signout()">{{'header.sign_out' | translate}}</a>
-        </form>
-      </div>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-options">
+      <form class="navbar-form navbar-right" role="login" style="padding-top:1%;">
+        <a ng-if='!userIsAuthenticated()' ng-href="/#/v2/login">{{'header.sign_in' | translate}}</a>
+        <a ng-if='userIsAuthenticated()' href="" ng-click="signout()">{{'header.sign_out' | translate}}</a>
+      </form>
+    </div>
   </nav>
-	<!-- Landing Section 1 -->
-	<div class="section first-section landing-section" id="section1">
-		<h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
-		<form ng-submit="login()">
-			<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()" ng-if="false">{{'header.sign_up_individual' | translate}}</button>
-			<a ng-href="#/v1/assembly/create?userIsNew=true" ng-if="false"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
-			<a href="#section2" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.Learn more' | translate}}</a>
-			<div class="voffset4"></div>
-			<div ng-translate-language-select></div>
-		</form>
-		<h6 class="text-center bottom-info"></h6>
-	</div>
+  <!-- Landing Section 1 -->
+  <div class="section first-section landing-section" id="section1">
+    <h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
+    <form ng-submit="login()">
+      <button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()" ng-if="false">{{'header.sign_up_individual' | translate}}</button>
+      <a ng-href="#/v1/assembly/create?userIsNew=true" ng-if="false"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
+      <a href="#section2" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.Learn more' | translate}}</a>
+      <div class="voffset4"></div>
+      <language-select></language-select>
+    </form>
+    <h6 class="text-center bottom-info"></h6>
+  </div>
 
-	<!-- Landing Section 2 -->
-	<div class="section second-section" id="section2">
-		<div class="row">
-			<h2 class="col-md-12 col-sm-12 col-xs-12 main-title text-center">{{'landing.goal' | translate}}</h2>
-		</div>
-		<div class="jumbotron jumbotron-index hidden-xs hidden-sm">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-1"></div>
-					<div class="col-md-1">
-						<i class="icon-doc-text"></i>
-						<h5>{{'Proposal Making' | translate}}</h5>
-					</div>
-					<div class="col-md-1">
-						<i class="icon-users"></i>
-						<h5>{{'Working Groups' | translate}}</h5>
-					</div>
-					<div class="col-md-1">
-						<i class="icon-flag-empty"></i>
-						<h5>{{'Mobilizing' | translate}}</h5>
-					</div>
-					<div class="col-md-1">
-						<i class="icon-chat-empty"></i>
-						<h5>{{'Deliberating' | translate}}</h5>
-					</div>
-					<div class="col-md-1">
-						<i class="icon-docs"></i>
-						<h5>{{'Versioning' | translate}}</h5>
-					</div>
-					<div class="col-md-1">
-						<i class="icon-chart-bar"></i>
-						<h5>{{'Visualizing' | translate}}</h5>
-					</div>
-					<!--
+  <!-- Landing Section 2 -->
+  <div class="section second-section" id="section2">
+    <div class="row">
+      <h2 class="col-md-12 col-sm-12 col-xs-12 main-title text-center">{{'landing.goal' | translate}}</h2>
+    </div>
+    <div class="jumbotron jumbotron-index hidden-xs hidden-sm">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-1">
+            <i class="icon-doc-text"></i>
+            <h5>{{'Proposal Making' | translate}}</h5>
+          </div>
+          <div class="col-md-1">
+            <i class="icon-users"></i>
+            <h5>{{'Working Groups' | translate}}</h5>
+          </div>
+          <div class="col-md-1">
+            <i class="icon-flag-empty"></i>
+            <h5>{{'Mobilizing' | translate}}</h5>
+          </div>
+          <div class="col-md-1">
+            <i class="icon-chat-empty"></i>
+            <h5>{{'Deliberating' | translate}}</h5>
+          </div>
+          <div class="col-md-1">
+            <i class="icon-docs"></i>
+            <h5>{{'Versioning' | translate}}</h5>
+          </div>
+          <div class="col-md-1">
+            <i class="icon-chart-bar"></i>
+            <h5>{{'Visualizing' | translate}}</h5>
+          </div>
+          <!--
 					<div class="col-md-1">
                 		<i class="icon-edit"></i>
                 		<h5>Drawing</h5>
               		</div>
      				-->
-					<div class="col-md-1">
-						<i class="icon-thumbs-up"></i>
-						<h5>{{'Voting' | translate}}</h5>
-					</div>
-					<div class="col-md-1">
-						<i class="icon-megaphone"></i>
-						<h5>{{'Reporting' | translate}}</h5>
-					</div>
-					<div class="col-md-1">
-						<i class="icon-location"></i>
-						<h5>{{'Mapping' | translate}}</h5>
-					</div>
-					<!--
+          <div class="col-md-1">
+            <i class="icon-thumbs-up"></i>
+            <h5>{{'Voting' | translate}}</h5>
+          </div>
+          <div class="col-md-1">
+            <i class="icon-megaphone"></i>
+            <h5>{{'Reporting' | translate}}</h5>
+          </div>
+          <div class="col-md-1">
+            <i class="icon-location"></i>
+            <h5>{{'Mapping' | translate}}</h5>
+          </div>
+          <!--
 					<div class="col-md-1">
                 		<i class="icon-attention"></i>
                 		<h5>Alerts</h5>
               		</div>
               		-->
-					<div class="col-md-1">
-						<i class="icon-desktop"></i>
-						<h5>{{'Implementing' | translate}}</h5>
-					</div>
-					<div class="col-md-1"></div>
-				</div>
-			</div>
-		</div>
+          <div class="col-md-1">
+            <i class="icon-desktop"></i>
+            <h5>{{'Implementing' | translate}}</h5>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      </div>
+    </div>
 
-		<div class="voffset5"></div>
-		<div class="row">
-			<span class="col-md-1 col-sm-1 hidden-xs"></span>
-			<span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-users fa-5x i1"></span>
-			<div class="col-lg-1 col-md-2 col-sm-2 hidden-xs vertical2-container no-padding align-right">
-				<span class="fa fa-circle fa-3x i1"></span>
-				<span class="icon-circle-number">1</span>
-				<div class="vertical2 greenline1"> </div>
-			</div>
-			<span class="col-md-8 col-sm-8 col-xs-9">
+    <div class="voffset5"></div>
+    <div class="row">
+      <span class="col-md-1 col-sm-1 hidden-xs"></span>
+      <span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-users fa-5x i1"></span>
+      <div class="col-lg-1 col-md-2 col-sm-2 hidden-xs vertical2-container no-padding align-right">
+        <span class="fa fa-circle fa-3x i1"></span>
+        <span class="icon-circle-number">1</span>
+        <div class="vertical2 greenline1"> </div>
+      </div>
+      <span class="col-md-8 col-sm-8 col-xs-9">
 				<h2>{{'landing.goal.assembly' | translate}}</h2>
 				<h3>{{'definition.assembly' | translate}}</h3>
 			</span>
-		</div>
-		<div class="voffset3 hidden-sm hidden-xs"></div>
-		<div class="row">
-			<span class="col-md-1 col-sm-1 hidden-xs"></span>
-			<span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-flag fa-5x i3"></span>
-			<div class="col-lg-1 col-md-2 col-sm-2 hidden-xs vertical2-container no-padding align-right">
-				<span class="fa fa-circle fa-3x i3"></span>
-				<span class="icon-circle-number">2</span>
-				<div class="vertical2 greenline3"> </div>
-			</div>
-			<span class="col-md-8 col-sm-8 col-xs-9">
+    </div>
+    <div class="voffset3 hidden-sm hidden-xs"></div>
+    <div class="row">
+      <span class="col-md-1 col-sm-1 hidden-xs"></span>
+      <span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-flag fa-5x i3"></span>
+      <div class="col-lg-1 col-md-2 col-sm-2 hidden-xs vertical2-container no-padding align-right">
+        <span class="fa fa-circle fa-3x i3"></span>
+        <span class="icon-circle-number">2</span>
+        <div class="vertical2 greenline3"> </div>
+      </div>
+      <span class="col-md-8 col-sm-8 col-xs-9">
 				<h2>{{'landing.goal.campaign' | translate}}</h2>
 				<h3>{{'definition.campaign' | translate}}</h3>
 			</span>
-		</div>
-		<div class="voffset3"></div>
-		<div class="row">
-			<span class="col-md-1 col-sm-1 hidden-xs"></span>
-			<span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-file-text fa-5x i4"></span>
-			<div class="col-lg-1 col-md-2 col-sm-2 hidden-xs vertical2-container no-padding align-right">
-				<span class="fa fa-circle fa-3x i4"></span>
-				<span class="icon-circle-number">3</span>
-				<div class="vertical2 greenline4"> </div>
-			</div>
-			<span class="col-md-8 col-sm-8 col-xs-9">
+    </div>
+    <div class="voffset3"></div>
+    <div class="row">
+      <span class="col-md-1 col-sm-1 hidden-xs"></span>
+      <span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-file-text fa-5x i4"></span>
+      <div class="col-lg-1 col-md-2 col-sm-2 hidden-xs vertical2-container no-padding align-right">
+        <span class="fa fa-circle fa-3x i4"></span>
+        <span class="icon-circle-number">3</span>
+        <div class="vertical2 greenline4"> </div>
+      </div>
+      <span class="col-md-8 col-sm-8 col-xs-9">
 				<h2>{{'landing.goal.proposal' | translate}}</h2>
 				<h3>{{'definition.proposal.development' | translate}}</h3>
 			</span>
-		</div>
-		<div class="voffset6"></div>
-		<h6 class="text-center bottom-info"><a href="#section3" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.section2.button' | translate}}</a></h6>
-	</div>
+    </div>
+    <div class="voffset6"></div>
+    <h6 class="text-center bottom-info"><a href="#section3" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.section2.button' | translate}}</a></h6>
+  </div>
 
-	<!-- Landing Section 3 -->
-	<div class="section third-section" id="section3">
-		<h2 class="row main-title">{{'landing.section3.title' | translate}}</h2>
-		<div class="voffset4"></div>
-		<h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc1' | translate}}</h3>
-		<h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc2' | translate}}</h3>
-		<h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc3' | translate}}</h3>
+  <!-- Landing Section 3 -->
+  <div class="section third-section" id="section3">
+    <h2 class="row main-title">{{'landing.section3.title' | translate}}</h2>
+    <div class="voffset4"></div>
+    <h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc1' | translate}}</h3>
+    <h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc2' | translate}}</h3>
+    <h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc3' | translate}}</h3>
 
-		<h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc1' | translate}}</h4>
-		<h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc2' | translate}}</h4>
-		<h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc3' | translate}}</h4>
+    <h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc1' | translate}}</h4>
+    <h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc2' | translate}}</h4>
+    <h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc3' | translate}}</h4>
 
-		<div class="voffset6"></div>
-		<ul class="row hidden-xs">
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<h2 class="row">{{'landing.component.Proposal Making' | translate}}</h2>
-			</li>
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<h2 class="row">{{'landing.component.Versioning' | translate}}</h2>
-			</li>
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<h2 class="row">{{'landing.component.Deliberation' | translate}}</h2>
-			</li>
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<h2 class="row">{{'landing.component.Voting' | translate}}</h2>
-			</li>
-		</ul>
-		<ul class="row">
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
+    <div class="voffset6"></div>
+    <ul class="row hidden-xs">
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <h2 class="row">{{'landing.component.Proposal Making' | translate}}</h2>
+      </li>
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <h2 class="row">{{'landing.component.Versioning' | translate}}</h2>
+      </li>
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <h2 class="row">{{'landing.component.Deliberation' | translate}}</h2>
+      </li>
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <h2 class="row">{{'landing.component.Voting' | translate}}</h2>
+      </li>
+    </ul>
+    <ul class="row">
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
 						<span class="fa fa-circle fa-stack-2x i1"></span>
-						<span class="fa fa-file-text fa-stack-1x fa-inverse"></span>
-						<div class="vertical3 greenline1"></div>
-					</span>
-					<h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Proposal Making' | translate}}</h2>
-					<div class="horizontal greenline1 hidden-xs"/>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <span class="fa fa-file-text fa-stack-1x fa-inverse"></span>
+          <div class="vertical3 greenline1"></div>
+          </span>
+          <h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Proposal Making' | translate}}</h2>
+          <div class="horizontal greenline1 hidden-xs" />
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i1"></span>
-						<div class="vertical1 greenline1"></div>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Proposal Making.Brainstorming' | translate}}</span>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <div class="vertical1 greenline1"></div>
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Proposal Making.Brainstorming' | translate}}</span>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i1"></span>
-						<div class="vertical1 greenline1"></div>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Proposal Making.Forming working groups' | translate}}</span>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <div class="vertical1 greenline1"></div>
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Proposal Making.Forming working groups' | translate}}</span>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i1"></span>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Proposal Making.Drafting proposals' | translate}}</span>
-				</div>
-			</li>
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<div class="row">
-					<span class="fa-stack fa-lg col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Proposal Making.Drafting proposals' | translate}}</span>
+        </div>
+      </li>
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <div class="row">
+          <span class="fa-stack fa-lg col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
 						<i class="fa fa-circle fa-stack-2x i2"></i>
 						<i class="fa fa-files-o fa-stack-1x fa-inverse"></i>
 						<div class="vertical3 greenline2"></div>
 					</span>
-					<h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Versioning' | translate}}</h2>
-					<div class="horizontal greenline2 hidden-xs"></div>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Versioning' | translate}}</h2>
+          <div class="horizontal greenline2 hidden-xs"></div>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i2"></span>
-						<div class="vertical1 greenline2"></div>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Versioning.Proposal editing' | translate}}</span>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <div class="vertical1 greenline2"></div>
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Versioning.Proposal editing' | translate}}</span>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i2"></span>
-						<div class="vertical1 greenline2"></div>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Versioning.Proposal merging/splitting' | translate}}</span>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <div class="vertical1 greenline2"></div>
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Versioning.Proposal merging/splitting' | translate}}</span>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i2"></span>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Versioning.Proposal selection within groups' | translate}}</span>
-				</div>
-			</li>
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<div class="row">
-					<span class="fa-stack fa-lg col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Versioning.Proposal selection within groups' | translate}}</span>
+        </div>
+      </li>
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <div class="row">
+          <span class="fa-stack fa-lg col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
 						<i class="fa fa-circle fa-stack-2x i3"></i>
 						<i class="fa fa-comments fa-stack-1x fa-inverse"></i>
 						<div class="vertical3 greenline3"></div>
 					</span>
-					<h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Deliberation' | translate}}</h2>
-					<div class="horizontal greenline3 hidden-xs"></div>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Deliberation' | translate}}</h2>
+          <div class="horizontal greenline3 hidden-xs"></div>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i3"></span>
-						<div class="vertical1 greenline3"></div>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Deliberation.Open discussion' | translate}}</span>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <div class="vertical1 greenline3"></div>
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Deliberation.Open discussion' | translate}}</span>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i3"></span>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Deliberation.Technical assessment' | translate}}</span>
-				</div>
-			</li>
-			<li class="col-md-3 col-sm-3 col-xs-12">
-				<div class="row">
-					<span class="fa-stack fa-lg col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Deliberation.Technical assessment' | translate}}</span>
+        </div>
+      </li>
+      <li class="col-md-3 col-sm-3 col-xs-12">
+        <div class="row">
+          <span class="fa-stack fa-lg col-md-2 col-sm-2 col-xs-2 no-padding vertical1-container">
 						<i class="fa fa-circle fa-stack-2x i4"></i>
 						<i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
 						<div class="vertical3 greenline4"></div>
 					</span>
-					<h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Voting' | translate}}</h2>
-					<div class="horizontal greenline4 hidden-xs"></div>
-				</div>
-				<div class="row">
-					<span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
+          <h2 class="hidden-lg hidden-md hidden-sm col-xs-10">{{'landing.component.Voting' | translate}}</h2>
+          <div class="horizontal greenline4 hidden-xs"></div>
+        </div>
+        <div class="row">
+          <span class="fa-stack fa-lg col-lg-2 col-md-2 col-sm-2 col-xs-2 vertical1-container no-padding">
 						<span class="fa fa-circle fa-stack-1x i4"></span>
-					</span>
-					<span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Voting.Final selection' | translate}}</span>
-				</div>
+          </span>
+          <span class="milestone col-lg-8 col-md-8 col-sm-8 col-xs-8">{{'landing.component.Voting.Final selection' | translate}}</span>
+        </div>
 
-			</li>
-		</ul>
+      </li>
+    </ul>
 
-		<div class="voffset5"></div>
-		<div class="text-center" ng-if="false">
-			<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
-			<a ng-href="#/v1/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
-		</div>
-		<!--<a href="#section4" du-smooth-scroll class="btn btn-info btn-lg text-center bottom-info">{{'landing.section3.button' | translate}}</a>-->
-	</div>
+    <div class="voffset5"></div>
+    <div class="text-center" ng-if="false">
+      <button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
+      <a ng-href="#/v1/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
+    </div>
+    <!--<a href="#section4" du-smooth-scroll class="btn btn-info btn-lg text-center bottom-info">{{'landing.section3.button' | translate}}</a>-->
+  </div>
 
-	<!-- TODO: The following is a temporal fix for smartphones, where the footer overlaps the last stage (voting)-->
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
-	<div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <!-- TODO: The following is a temporal fix for smartphones, where the footer overlaps the last stage (voting)-->
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
+  <div class="voffset6 hidden-lg hidden-md hidden-sm"></div>
 
   <br/>
   <br/>

@@ -5,9 +5,13 @@
 
   angular.module('appCivistApp').controller('v2.CampaignDashboardCtrl', CampaignDashboardCtrl);
 
-  CampaignDashboardCtrl.$inject = ['$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile'];
+  CampaignDashboardCtrl.$inject = [
+    '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService',
+    'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile'
+  ];
 
-  function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile) {
+  function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
+    localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile) {
 
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function(tab) {
@@ -32,6 +36,9 @@
       $scope.type = 'proposal';
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
+
+      $scope.membersCommentCounter = {value: 0};
+      $scope.publicCommentCounter = {value: 0};
 
       // TODO: add pagination to Ideas
       //$scope.pageSizeIdea = 16;
@@ -134,6 +141,8 @@
         $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
         $scope.showPagination = true;
         localStorageService.set("currentCampaign", $scope.campaign);
+        loadPublicCommentCount($scope.campaign.forumSpaceID);
+        loadMembersCommentCount($scope.spaceID);
         // We are reading the components twice,
         // - in the campaign-timeline directive
         // - here
@@ -183,6 +192,32 @@
           });
         }
       });
+    }
+
+    function loadPublicCommentCount(sid){
+      var res;
+      res = Space.getCommentCount(sid).get();
+      res.$promise.then(
+        function(data){
+          $scope.publicCommentCounter.value = data.counter;
+        },
+        function (error) {
+          Notify.show('Error occurred while trying to load working group proposals', 'error');
+        }
+      );
+    }
+
+    function loadMembersCommentCount(sid){
+      var res;
+      res = Space.getCommentCount(sid).get();
+      res.$promise.then(
+        function(data){
+          $scope.membersCommentCounter.value = data.counter;
+        },
+        function (error) {
+          Notify.show('Error occurred while trying to load working group proposals', 'error');
+        }
+      );
     }
 
     function setIdeasSectionVisibility(component) {
@@ -237,6 +272,7 @@
      * @param {object} filters
      */
     function doSearch(filters) {
+      this.currentFilters = filters;
       this.ideasSectionExpanded = filters.mode === 'idea';
       var self = this;
       var rsp = Space.doSearch(this.campaign, this.isAnonymous, filters);
@@ -290,6 +326,7 @@
      * Closes the currently open modal.
      */
     function closeModal() {
+      this.$broadcast('pagination:reloadCurrentPage');
       this.vexInstance.close();
     }
   }

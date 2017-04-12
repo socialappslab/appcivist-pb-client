@@ -202,7 +202,7 @@
         <section class="list--proposals">
           <header class="proposals__header">
             <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-            <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
+            <a class="proposals__add_new" ng-iff="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
             <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
               class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
           </header>
@@ -229,8 +229,8 @@
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs custom-ul">
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate}}</a></li>
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate}}</a></li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})</a></li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate}} ({{publicCommentCounter.value}})</a></li>
   </ul>
 
   <!-- Tab panes -->

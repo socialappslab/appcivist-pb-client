@@ -34,6 +34,8 @@
       $scope.showSmallMenu = false;
       $scope.nav = { isActive: false };
       $scope.groupsAreShown = false;
+      $scope.campaignId = $state.params.cid ? parseInt($state.params.cid) : 0;
+
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
         loadUserData($scope);

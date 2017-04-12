@@ -1,7 +1,7 @@
 <div class="modal_content__add_proposal">
   <header class="modal-header">
-    <h2 class="modal__title" ng-if="isProposal">{{actionLabel | translate}} {{'Proposal' | translate}}</h2>
-    <h2 class="modal__title" ng-if="isIdea">{{actionLabel | translate}} {{'Idea' | translate}}</h2>
+    <h2 class="modal__title" ng-if="vm.isProposal">{{vm.actionLabel | translate}} {{'Proposal' | translate}}</h2>
+    <h2 class="modal__title" ng-if="vm.isIdea">{{vm.actionLabel | translate}} {{'Idea' | translate}}</h2>
   </header>
   <div class="modal-body">
     <form name="contributionForm">
@@ -14,7 +14,7 @@
         <!-- Title -->
         <div class="field__container">
           <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
-          <input ng-model="contribution.title" ng-required="true" ng-disabled="disabled" id="add_proposal__title"
+          <input ng-model="vm.contribution.title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
             type="text" placeholder="{{ 'Title' | translate }}" name="title" ng-maxlength="50">
           <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
@@ -25,7 +25,7 @@
         <!-- Description -->
         <div class="field__container">
           <label for="add_proposal__description">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
-          <textarea ui-tinymce="tinymceOptions" ng-model="contribution.text" ng-required="true" ng-disabled="disabled"
+          <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.contribution.text" ng-required="true" ng-disabled="disabled"
             id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
           <div ng-messages="contributionForm.text.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
@@ -39,8 +39,8 @@
         <div class="field__container assign_proposal_to_users">
           <fieldset class="add_proposal__availble_themes">
             <label for="location">{{'Location' | translate}}</label>
-            <input id="location" name="location" ng-model="contribution.location.placeName" placeholder="{{'Location' | translate}}"
-              ng-disabled="disabled" ng-maxlength="50">
+            <input id="location" name="location" ng-model="vm.contribution.location.placeName" placeholder="{{'Location' | translate}}"
+              ng-disabled="vm.disabled" ng-maxlength="50">
             <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
               <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
             </div>
@@ -48,26 +48,25 @@
         </div>
 
         <!-- Status -->
-        <div class="field__container assign_proposal_to_wg" ng-if="isProposal">
+        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal">
           <label for="status">{{'Status' | translate}}</label>
-          <select id="status" name="status" ng-model="contribution.status" ng-disabled="disabled"
-            style="height: 42px; width: 100%;">
+          <select id="status" name="status" ng-model="vm.contribution.status" ng-disabled="disabled" style="height: 42px; width: 100%;">
             <option value="NEW">{{'New' | translate}}</option>
             <option value="PUBLISHED">{{'Published' | translate}}</option>
           </select>
         </div>
 
         <!-- Pinned? -->
-        <div class="field__container" ng-if="isProposal && userIsAssemblyCoordinator">
+        <div class="field__container" ng-if="vm.isProposal && vm.userIsAssemblyCoordinator">
           <label for="pinned">{{'Pin contribution to make it always avaialable' | translate}}</label>
-          <input id="pinned" type="checkbox" ng-model="contribution.pinned" />
+          <input id="pinned" type="checkbox" ng-model="vm.contribution.pinned" />
         </div>
 
         <!-- Working Group -->
-        <div class="field__container assign_proposal_to_wg" ng-if="isProposal && isCreate && !isEdit">
+        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && vm.isCreate && !vm.isEdit">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
-          <select id="workingGroup" name="workingGroup" ng-model="$parent.selectedGroup" ng-required="isProposal"
-            ng-disabled="disabled" ng-change="selectGroup()" ng-options="group as group.name for group in groups">
+          <select id="workingGroup" name="workingGroup" ng-model="vm.selectedGroup" ng-required="vm.isProposal"
+            ng-disabled="vm.disabled" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
             <option value="">{{'Select a working group' | translate}}</option>
           </select>
           <div ng-messages="contributionForm.workingGroup.$error" style="color:maroon" role="alert">
@@ -76,71 +75,71 @@
         </div>
 
         <!-- Authors -->
-        <div class="field__container assign_proposal_to_users" ng-if="isCreate && !isEdit">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.isEdit">
           <fieldset class="user__assignment">
             <label for="authors">{{'Authors' | translate}}</label>
-            <tags-field id="authors" load-items="loadAuthors(query)" options="authorsOptions" selected="contribution.authors"
-              prefetch="true" disabled="isAuthorsDisabled"></tags-field>
+            <tags-field id="authors" load-items="vm.loadAuthors(query)" options="vm.authorsOptions" selected="vm.contribution.authors"
+              prefetch="true" disabled="vm.isAuthorsDisabled"></tags-field>
           </fieldset>
         </div>
 
         <!-- Non Member Author -->
-        <div class="field__container assign_proposal_to_users" ng-if="isIdea && isCreate && !isEdit">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isIdea && vm.isCreate && !vm.isEdit">
           <fieldset class="user__assignment">
             <label for="non-member-authors">{{'Non Member Author' | translate}}</label>
-            <nonmember-author-form id="non-member-authors" on-change="updateNonMember(author)" ng-disabled="disabled"></nonmember-author-form>
+            <nonmember-author-form id="non-member-authors" on-change="vm.updateNonMember(author)" ng-disabled="vm.disabled"></nonmember-author-form>
           </fieldset>
         </div>
 
         <!-- Assign to Proposal -->
-        <div class="field__container assign_proposal_to_users" ng-if="isCreate && !isEdit">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.isEdit">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
-            <tags-field load-items="loadThemes(query)" options="themesOptions" selected="contribution.existingThemes"
-              prefetch="true" disabled="disabled"></tags-field>
+            <tags-field load-items="vm.loadThemes(query)" options="vm.themesOptions" selected="vm.contribution.existingThemes"
+              prefetch="true" disabled="vm.disabled"></tags-field>
           </fieldset>
         </div>
 
         <!-- Attachments -->
-        <div class="field__container" ng-if="!$parent.isEdit && $parent.isCreate">
+        <div class="field__container" ng-if="!vm.isEdit && vm.isCreate">
           <fieldset>
             <p class="intro">{{'Attachments' | translate}}</p>
           </fieldset>
         </div>
-        <div class="field__container card-list" ng-repeat="file in contribution.attachments">
+        <div class="field__container card-list" ng-repeat="file in vm.contribution.attachments">
           <fieldset>
             <div class="action-bar small-card file-card">
               <figure>
-                <a ng-href="{{$parent.file.url}}" target="_blank">
-                  <img ng-if="$parent.file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png"
+                <a ng-href="{{file.url}}" target="_blank">
+                  <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png"
                     alt="File icon" />
-                  <img ng-if="$parent.file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
+                  <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
                 </a>
               </figure>
               <h4>
                 <a ng-href="{{file.url}}" target="_blank">{{(file.name && file.name != "" ? file.name : file.url)}}</a>
-                <a ng-click="deleteAttachment()"><i class="fa fa-times"></i></a>
+                <a ng-click="vm.deleteAttachment()"><i class="fa fa-times"></i></a>
               </h4>
             </div>
           </fieldset>
         </div>
-        <div class="field__container" ng-if="!$parent.isEdit">
+        <div class="field__container" ng-if="!vm.isEdit">
           <fieldset>
-            <a href="" ng-click="$parent.addFile = !$parent.addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
+            <a href="" ng-click="vm.addFile = !vm.addFile"><i class="fa fa-paperclip"></i>&nbsp;{{'Add files' | translate}}</a>
           </fieldset>
         </div>
-        <div ng-show="$parent.addFile" ng-if="!$parent.isEdit">
+        <div ng-show="vm.addFile" ng-if="!vm.isEdit">
           <fieldset>
             <div class="field__container">
               <label for="name">{{'Name' | translate}}</label>
-              <input id="name" name="name" ng-model="$parent.newAttachment.name">
+              <input id="name" name="name" ng-model="vm.newAttachment.name">
             </div>
           </fieldset>
           <fieldset>
             <div class="field__container">
               <label for="file">{{'File' | translate}}</label>
-              <input id="file" type="file" name="file" fileread="$parent.newAttachment.file">
+              <input id="file" type="file" name="file" fileread="vm.newAttachment.file">
             </div>
           </fieldset>
           <fieldset>
@@ -148,16 +147,16 @@
           </fieldset>
         </div>
 
-        <div class="field__container" ng-if="(props.campaignFields || props.componentFields)">
+        <div class="field__container" ng-if="(vm.campaignFields || vm.componentFields)">
           <fieldset>
             <p class="intro">{{'Custom information' | translate}}</p>
-            <custom-field ng-repeat="field in props.campaignFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
-            <custom-field ng-repeat="field in props.componentFields | orderBy:'position'" definition="field" value="props.values[field.customFieldDefinitionId]"></custom-field>
+            <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
+            <custom-field ng-repeat="field in vm.componentFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
           </fieldset>
         </div>
 
         <fieldset>
-          <a class="button__modal_submit" ng-click="submit()">{{'Save' | translate}}</a>
+          <a class="button__modal_submit" ng-click="vm.submit()">{{'Save' | translate}}</a>
         </fieldset>
       </fieldset>
     </form>

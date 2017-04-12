@@ -11,7 +11,7 @@
   var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
-    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce'
+    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
@@ -49,8 +49,8 @@
     production: "https://etherpad.appcivist.org/",
     testing: "https://testetherpad.appcivist.org/",
     development: "https://testetherpad.appcivist.org/",
-    local: "http://localhost:9001/",
-    //local: "https://testetherpad.appcivist.org/",
+    //local: "http://localhost:9001/",
+    local: "https://testetherpad.appcivist.org/",
     //local: "https://etherpad.appcivist.org/",
     mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
       //mimove: "https://etherpad.appcivist.org/"
@@ -242,11 +242,19 @@
           requiresLogin: true
         }
       })
-      //campaign: new routes
+      //campaign routes
       .state('v2.assembly.aid.campaign', {
         url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.cid', {
+        url: '/:cid',
+        controller: 'v2.CampaignDashboardCtrl',
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.assembly.aid.campaign.new', {
         url: '/new',
@@ -289,7 +297,6 @@
           requiresLogin: true
         }
       })
-      //campaign: edit routes
       .state('v2.assembly.aid.campaign.edit', {
         url: '/:cid/edit',
         controller: 'v2.CampaignFormWizardCtrl',
@@ -322,7 +329,7 @@
           requiresLogin: true
         }
       })
-      //working group: new routes
+      //working group routes
       .state('v2.assembly.aid.campaign.workingGroup', {
         url: '/:cid/group',
         abstract: true,
@@ -352,7 +359,6 @@
           requiresLogin: true
         }
       })
-      //working group: edit routes
       .state('v2.assembly.aid.campaign.workingGroup.gid', {
         url: '/:gid',
         abstract: true,
@@ -382,26 +388,7 @@
           requiresLogin: true
         }
       })
-      //campaign: dashboard
-      .state('v2.assembly.aid.campaign.cid', {
-        url: '/:cid',
-        controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.assembly.aid.group', {
-        url: '/group',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.assembly.aid.group.gid', {
-        url: '/:gid',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.assembly.aid.group.gid.item', {
+      .state('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
         url: '',
         controller: 'v2.WorkingGroupDashboardCtrl',
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
@@ -409,12 +396,12 @@
           requiresLogin: true
         }
       })
-      .state('v2.assembly.aid.group.gid.proposal', {
+      .state('v2.assembly.aid.campaign.workingGroup.gid.proposal', {
         url: '/proposal',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.group.gid.proposal.pid', {
+      .state('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
         url: '/:pid',
         templateUrl: 'app/v2/partials/proposal/page.html',
         controller: 'v2.ProposalPageCtrl',
@@ -667,7 +654,7 @@
    */
   run.$inject = [
     '$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal',
-    'usSpinnerService', '$timeout', '$document', 'Authorization'
+    'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService'
   ];
 
   /**
@@ -678,7 +665,7 @@
    * @param localStorageService
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
-    $timeout, $document, Authorization) {
+    $timeout, $document, Authorization, $translate, LocaleService) {
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -807,6 +794,18 @@
         } else if (authorized === Authorization.enums.NOT_AUTHORIZED) {
           $location.path('/').replace();
         }
+      }
+    });
+
+
+    $rootScope.$on('$stateChangeSuccess', function() {
+      // I18N for current view
+      let user = localStorageService.get('user');
+
+      if (user && user.language) {
+        $translate.use(user.language);
+      } else {
+        $translate.use(LocaleService.getLocale());
       }
     });
   }

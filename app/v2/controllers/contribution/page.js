@@ -72,14 +72,20 @@
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
+        $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
+
         if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
           $scope.userName = $scope.user.name;
+        } else {
+          const locale = LocaleService.getLocale();
+          $translate.use(locale);
         }
         // user is member of Assembly
         $scope.userIsMember = true;
       }
+      $scope.etherpadLocale = Etherpad.getLocale();
       $scope.loadProposal($scope);
       $scope.showActionMenu = true;
       $scope.myObject = {};
@@ -150,18 +156,15 @@
               urlAsString: $scope.group.profile.icon
             }
           }
-          var campaignIds = []
 
           if (scope.isAnonymous) {
-            campaignIds = data.campaignUuids;
-          } else {
-            campaignIds = data.campaignIds;
+            const campaignIds = data.campaignUuids;
+            const campaignIdsLength = campaignIds ? campaignIds.length : 0;
+            $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
           }
-          var campaignIdsLength = campaignIds ? campaignIds.length : 0;
-          $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false';
+            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -229,7 +232,7 @@
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
         etherpadRes.$promise.then(function(pad) {
-          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + "&userName=" + $scope.userName;
+          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + '&userName=' + $scope.userName + '&lang=' + $scope.etherpadLocale;
         });
       }
     }

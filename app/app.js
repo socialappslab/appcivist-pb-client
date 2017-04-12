@@ -364,6 +364,14 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
+      .state('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
+        url: '',
+        controller: 'v2.WorkingGroupDashboardCtrl',
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
+      })
       .state('v2.assembly.aid.campaign.workingGroup.gid.edit', {
         url: '/edit',
         controller: 'v2.WgroupFormWizardCtrl',
@@ -384,14 +392,6 @@
         url: '/configuration',
         controller: 'v2.WorkingGroupFormCtrl',
         templateUrl: 'app/v2/partials/working-group/form.configuration.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
-        url: '',
-        controller: 'v2.WorkingGroupDashboardCtrl',
-        templateUrl: 'app/v2/partials/working-group/dashboard.html',
         access: {
           requiresLogin: true
         }

@@ -529,6 +529,9 @@
         // milestones configuration
         let components = $scope.newCampaign.proposalComponents;
         angular.forEach(components, component => {
+          if ($scope.isEdit) {
+            delete component.templates;
+          }
           const startMilestone = component.milestones.filter(m => m.type === 'START')[0];
           const endMilestone = component.milestones.filter(m => m.type === 'END')[0];
 

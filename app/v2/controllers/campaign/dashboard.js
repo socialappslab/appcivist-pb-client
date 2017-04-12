@@ -139,10 +139,10 @@
         $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
         $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
         $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
+        $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
         $scope.showPagination = true;
         localStorageService.set("currentCampaign", $scope.campaign);
-        loadPublicCommentCount($scope.campaign.forumSpaceID);
-        loadMembersCommentCount($scope.spaceID);
+        loadPublicCommentCount($scope.forumSpaceID);
         // We are reading the components twice,
         // - in the campaign-timeline directive
         // - here
@@ -151,6 +151,7 @@
         var res;
         if (!$scope.isAnonymous) {
           res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
+          loadMembersCommentCount($scope.spaceID);
         } else {
           res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
         }
@@ -196,7 +197,13 @@
 
     function loadPublicCommentCount(sid){
       var res;
-      res = Space.getCommentCount(sid).get();
+
+      if ($scope.isAnonymous) {
+        res = Space.getCommentCountPublic(sid).get();
+      } else {
+        res = Space.getCommentCount(sid).get();
+      }
+
       res.$promise.then(
         function(data){
           $scope.publicCommentCounter.value = data.counter;

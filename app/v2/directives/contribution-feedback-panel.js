@@ -40,12 +40,12 @@
             var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
             var assemblyRols = assemblyMembershipsHash[assembly.assemblyId];
             scope.isCoordinator = assemblyRols != undefined ? hasRol(assemblyRols, 'COORDINATOR') : false;
-
+            var groupId = $stateParams.gid ? parseInt($stateParams.gid) : 0;
+            var groupRols = groupMembershipsHash ? groupMembershipsHash[groupId] : null;
+            scope.groupId = groupId;
+            scope.isWGroupMember = groupRols != undefined || groupRols != null;
             if (!scope.isCoordinator) {
-              var groupId = $stateParams.gid ? parseInt($stateParams.gid) : 0;
-              var groupRols = groupMembershipsHash[groupId];
-              scope.isCoordinator = groupRols != undefined ? hasRol(groupRols, 'COORDINATOR') : false;
-              scope.isWGroup = true;
+               scope.isCoordinator = groupRols != undefined ? hasRol(groupRols, 'COORDINATOR') : false;
             }
           }
           loadFeedbacks(scope, scope.contribution);
@@ -87,7 +87,7 @@
       if (!scope.user) {
         rsp = Contributions.publicFeedbacks(contrib.uuid).query(query);
       } else {
-        if (scope.isWGroup) {
+        if (scope.isWGroupMember) {
           rsp = Contributions.userFeedbackWithGroupId(scope.assemblyId, scope.groupId, contrib.contributionId).query(query);
         } else {
           rsp = Contributions.userFeedbackNoCampaignId(scope.assemblyId, contrib.contributionId).query(query);

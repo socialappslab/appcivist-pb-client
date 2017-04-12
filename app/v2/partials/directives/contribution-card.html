@@ -16,7 +16,7 @@
           <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}" style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
-          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}"
+          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}"
             style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>

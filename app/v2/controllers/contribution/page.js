@@ -72,6 +72,7 @@
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
         $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
+        $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
 
         if ($scope.user && $scope.user.language) {
@@ -155,15 +156,12 @@
               urlAsString: $scope.group.profile.icon
             }
           }
-          var campaignIds = []
 
           if (scope.isAnonymous) {
-            campaignIds = data.campaignUuids;
-          } else {
-            campaignIds = data.campaignIds;
+            const campaignIds = data.campaignUuids;
+            const campaignIdsLength = campaignIds ? campaignIds.length : 0;
+            $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
           }
-          var campaignIdsLength = campaignIds ? campaignIds.length : 0;
-          $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
 
           if (data.extendedTextPad) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;

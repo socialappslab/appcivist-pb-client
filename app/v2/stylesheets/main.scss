@@ -936,7 +936,9 @@ fieldset.custom-field {
   }
 }
 
-select[disabled] {
+select[disabled],
+input[disabled],
+textarea[disabled] {
   background-color: #eee;
 }
 

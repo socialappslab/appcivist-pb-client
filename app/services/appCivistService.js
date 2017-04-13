@@ -575,7 +575,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
       });
     },
     publishContribution: function(assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status', { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' }, {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' }, {
         'update': { method: 'PUT' }
       });
     },
@@ -588,7 +588,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
       });
     },
     excludeContribution: function(assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status', { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' }, {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' }, {
         'update': { method: 'PUT' }
       });
     },

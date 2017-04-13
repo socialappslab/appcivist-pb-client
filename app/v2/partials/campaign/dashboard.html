@@ -189,9 +189,9 @@
         </div>
       </div>
     </header>
-    <button class="proposals__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="user != null && newProposalsEnabled && currentComponent.type === 'PROPOSALS'"
+    <button class="proposals__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newProposalsEnabled && currentComponent.type === 'PROPOSALS'"
       ng-click="openModal('proposalFormModal')"> &nbsp;{{'Add Proposal' | translate}} </button>
-    <button class="ideas__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="user != null && newIdeasEnabled && currentComponent.type === 'IDEAS'"
+    <button class="ideas__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newIdeasEnabled && currentComponent.type === 'IDEAS'"
       ng-click="openModal('ideaFormModal')"> &nbsp;{{'Add Idea' | translate}} </button>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
     <section class="proposals_and_ideas">
@@ -202,7 +202,7 @@
         <section class="list--proposals">
           <header class="proposals__header">
             <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-            <a class="proposals__add_new" ng-iff="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
+            <a class="proposals__add_new" ng-if="!isAnonymous && user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
             <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
               class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
           </header>
@@ -213,7 +213,7 @@
           <header class="ideas__header">
             <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="ideas__add_new" ng-if="user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
+            <a class="ideas__add_new" ng-if="!isAnonymous && user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Ideas'|translate}}</a>&nbsp;&nbsp;
           </header>
 

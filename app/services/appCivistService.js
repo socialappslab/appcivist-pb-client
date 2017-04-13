@@ -1121,11 +1121,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       },
 
       getCommentCount: function(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/commentcount', { sid: sid});
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/commentcount', { sid: sid });
       },
 
       getCommentCountPublic: function(uuid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/commentcount', { uuid: uuid});
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/commentcount', { uuid: uuid });
       },
 
       getPinnedContributions: function(target, type, isAnonymous) {
@@ -1225,7 +1225,12 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id
        */
       configs(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid }, {
+          update: {
+            method: 'PUT',
+            isArray: false
+          }
+        });
       },
 
       /**

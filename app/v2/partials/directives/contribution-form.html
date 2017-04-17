@@ -63,10 +63,10 @@
         </div>
 
         <!-- Working Group -->
-        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && vm.isCreate && !vm.isEdit">
+        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && vm.isCreate">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
           <select id="workingGroup" name="workingGroup" ng-model="vm.selectedGroup" ng-required="vm.isProposal"
-            ng-disabled="vm.disabled" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
+            ng-disabled="vm.disabled || vm.disableGroupSelection" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
             <option value="">{{'Select a working group' | translate}}</option>
           </select>
           <div ng-messages="contributionForm.workingGroup.$error" style="color:maroon" role="alert">
@@ -75,7 +75,7 @@
         </div>
 
         <!-- Authors -->
-        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.isEdit">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate">
           <fieldset class="user__assignment">
             <label for="authors">{{'Authors' | translate}}</label>
             <tags-field id="authors" load-items="vm.loadAuthors(query)" options="vm.authorsOptions" selected="vm.contribution.authors"
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Non Member Author -->
-        <div class="field__container assign_proposal_to_users" ng-if="vm.isIdea && vm.isCreate && !vm.isEdit">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isIdea && vm.isCreate">
           <fieldset class="user__assignment">
             <label for="non-member-authors">{{'Non Member Author' | translate}}</label>
             <nonmember-author-form id="non-member-authors" on-change="vm.updateNonMember(author)" ng-disabled="vm.disabled"></nonmember-author-form>
@@ -92,7 +92,7 @@
         </div>
 
         <!-- Assign to Proposal -->
-        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.isEdit">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
@@ -102,7 +102,7 @@
         </div>
 
         <!-- Attachments -->
-        <div class="field__container" ng-if="!vm.isEdit && vm.isCreate">
+        <div class="field__container" ng-if="vm.isCreate">
           <fieldset>
             <p class="intro">{{'Attachments' | translate}}</p>
           </fieldset>

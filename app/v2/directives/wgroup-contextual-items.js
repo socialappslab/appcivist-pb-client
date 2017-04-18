@@ -66,8 +66,7 @@
           }
 
           scope.vm.edit = function() {
-            // TODO how to recover the campaign, for now we read the first one
-            $state.go("v2.assembly.aid.campaign.workingGroup.gid.edit", { aid: scope.assemblyId, cid: scope.wgroup.campaigns[0], gid: scope.wgroup.groupId });
+            $state.go('v2.assembly.aid.campaign.workingGroup.gid.edit', { aid: scope.assemblyId, cid: $state.params.cid, gid: scope.wgroup.groupId });
           }
         }
       }

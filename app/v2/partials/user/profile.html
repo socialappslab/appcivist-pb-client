@@ -50,6 +50,12 @@
                   ng-blur="blurReset()" ng-model="profile.username">
               </div>
             </div>
+            <br />
+            <div class="row">
+              <div class="col-xs-12">
+                <button type="button" class="btn btn-primary btn-large" data-ng-disabled="!facebookReady" data-ng-click="login()">Connect with Facebook</button>
+              </div>
+            </div>
           </div>
           <div class="col-md-4 col-sm-4">
             <!--Profile Picture -->

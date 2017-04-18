@@ -11,7 +11,7 @@
   var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
-    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies'
+    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies', 'facebook'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
@@ -86,6 +86,9 @@
     .constant('RECAPTCHA_KEY', '6Le_ow8UAAAAALdzF8F_LaqQI6t6MDw4USLMedMy');
 
   appCivistApp.config(config);
+  appCivistApp.config(function(FacebookProvider) {
+     FacebookProvider.init('YOUR_FB_APP_ID');
+  });
   appCivistApp.run(run);
 
   /**
@@ -94,7 +97,7 @@
    */
   config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
     'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider', '$stateProvider',
-    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider'
+    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider', 'FacebookProvider'
   ];
 
   /**

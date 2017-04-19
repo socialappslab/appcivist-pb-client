@@ -128,14 +128,23 @@
   header.proposals__header>h2 {
     float: none !important;
   }
+  
+  article.working_group .label-success {
+    font-weight: initial;
+    display: inline-block;
+    line-height: 20px;
+    height: 23px;
+  }
 </style>
 <main class="appmain" ng-class="{anonymous: isAnonymous}" resize>
   <article class="working_group">
     <header class="page__header">
-      <!--<div class="type"><i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>-->
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="hidden-xs type"><i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>
+          <div class="hidden-xs type">
+            <i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}
+            <span class="label label-success" ng-if="isTopicGroup && wg">Abierto</span>
+          </div>
           <div class="hidden-lg hidden-md hidden-sm type">
             <img src="{{wg.profile.icon}}" height="16" width="16" style="border-radius: 50%"> &nbsp;&nbsp;{{'WorkingGroup'
             | translate}}
@@ -192,7 +201,7 @@
         </div>
       </div>
     </header>
-    <div class="page__contents">
+    <div class="page__contents" ng-if="!isTopicGroup && wg">
       <section class="panel activity-and-members">
         <section class="latest-activity">
           <div class="panel-heading panel-heading-relative">

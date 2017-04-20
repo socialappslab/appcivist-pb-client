@@ -92,7 +92,6 @@
 
       for (x = 0; x < len; x++) {
         elm = elms[x];
-        //elmHeight = elm.offsetHeight;
         elmHeight = $(elm).outerHeight();
         tallest = (elmHeight > tallest) ? elmHeight : tallest;
       }

@@ -62,6 +62,8 @@
       }
       $scope.isAnonymous = false;
       $scope.userIsMember = false;
+      $scope.ideasSectionExpanded = false;
+      $scope.commentsSectionExpanded = true;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       if (pattern.test($stateParams.pid) === true) {
@@ -94,6 +96,7 @@
       // Read user contribution feedback
       $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
+      $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.cm = {
         isHover: false
       };
@@ -291,9 +294,14 @@
     }
 
     function toggleIdeasSection() {
-      this.ideasSectionExpanded = !this.ideasSectionExpanded;
+      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
     }
 
+    function toggleCommentsSection() {
+      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
+      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+    }  
     /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.

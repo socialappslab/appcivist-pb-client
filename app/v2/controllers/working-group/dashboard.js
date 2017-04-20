@@ -62,7 +62,9 @@
       $scope.activitiesLimit = 4;
       $scope.membersLimit = 5;
       $scope.ideasSectionExpanded = false;
+      $scope.commentsSectionExpanded = true;
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
+      $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
@@ -235,8 +237,15 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      $rootScope.$broadcast('eqResize', true);
+      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
+      //$rootScope.$broadcast('eqResize', true);
     }
+
+    function toggleCommentsSection() {
+      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
+      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      //$rootScope.$broadcast('eqResize', true);
+    }   
 
     function toggleAllMembers() {
       if ($scope.membersLimit <= 5) {

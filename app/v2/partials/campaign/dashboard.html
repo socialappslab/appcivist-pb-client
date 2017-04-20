@@ -304,7 +304,7 @@
             </header>
 
             <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-              <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign"
+              <contribution-card class="col-*-12" ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign"
                 components="components" is-anonymous="isAnonymous" show-voting-buttons="true" is-coordinator="isCoordinator"></contribution-card>
               <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
             </div>

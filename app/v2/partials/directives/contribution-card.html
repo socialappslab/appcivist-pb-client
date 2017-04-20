@@ -17,7 +17,7 @@
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
           <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}"
-            style="display: block; width: 280px;word-wrap: break-word;">
+            style="display: block; width: 280px; word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
         </h1>
@@ -71,7 +71,7 @@
       </div>
       <div class="heading__working_group" ng-if="contribution.workingGroupAuthors && contribution.workingGroupAuthors.length > 0">
         <div class="col-md-1 no-padding no-margin">
-          <img ng-if="group.profile.icon" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
+          <img ng-if="group.profile.icon" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width:100%; vertical-align: middle;">
           <i ng-if="!group.profile.icon" class="fa fa-group"></i>
         </div>
         <div class="col-md-11 no-padding no-margin">
@@ -79,13 +79,8 @@
           {{contribution.workingGroupAuthors[0].name}}
           </a>
         </div>
-        <!--
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
-          <img src="{{group.profile.icon}}" height="40" width="40">
-          {{contribution.workingGroupAuthors[0].name}}
-        </a>
-        -->
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="ng-binding ng-scope" href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
+        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="clearfix" href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}"
+          style="display: block;">
           <div class="col-md-11 no-padding no-margin">
             {{contribution.workingGroupAuthors[0].name}}
           </div>

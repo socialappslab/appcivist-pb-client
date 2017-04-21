@@ -144,6 +144,22 @@
 
           $scope.showPagination = true;
           loadLatestActivities(data);
+          
+          if ($scope.wg) {
+            var rsp = $scope.isAnonymous ? Space.configsByUUID($scope.wg.rsUUID).get() : Space.configs($scope.wg.rsID).get();
+            rsp.$promise.then(function(data) {
+              $scope.wgConfigs = data;
+
+              if ($scope.wgConfigs['appcivist.group.disable-working-group-comments'] && $scope.wgConfigs['appcivist.group.disable-working-group-comments']==='TRUE'){
+                $scope.showComments = false;
+                $scope.ideasSectionExpanded = true;
+              } else {
+                $scope.showComments = true;
+              }             
+            }, function(error) {
+              Notify.show('Error while trying to fetch wg config', 'error');
+            });
+          }                  
         },
         function (error) {
           Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
@@ -304,6 +320,13 @@
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
         rsp.$promise.then(function (data) {
           $scope.campaignConfigs = data;
+          console.log($scope.campaignConfigs['appcivist.group.disable-working-group-comments']);
+          if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE'){
+              $scope.showComments = false;
+              $scope.ideasSectionExpanded = true;
+            } else {
+              $scope.showComments = true;
+            } 
         }, function (error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
         });

@@ -185,17 +185,26 @@
               $scope.ideas = [];
             }          
           }, defaultErrorCallback);   
-      });
+        });
 
         if ($scope.campaign) {
           var rsp = $scope.isAnonymous ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get() : Campaigns.getConfiguration($scope.campaign.rsID).get();
           rsp.$promise.then(function(data) {
             $scope.campaignConfigs = data;
+
+            if (($scope.campaignConfigs['appcivist.campaign.disable-campaign-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-campaign-comments']==='TRUE') || 
+                ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE') || 
+                ($scope.campaignConfigs['appcivist.group.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.group.disable-working-group-comments']==='TRUE')){
+              $scope.showComments = false;
+              $scope.ideasSectionExpanded = true;
+            } else {
+              $scope.showComments = true;
+            }             
           }, function(error) {
             Notify.show('Error while trying to fetch campaign config', 'error');
           });
-        }       
-      });
+        }
+    });
     }
 
     function loadPublicCommentCount(sid){

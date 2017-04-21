@@ -406,7 +406,7 @@
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
             <section ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
-              <header class="ideas__header">
+              <header class="ideas__header" style="padding-left: 30px;">
                 <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
                 <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;
               </header>
@@ -414,7 +414,7 @@
               <div class="list__cards container__ideas">
                 <contribution-card ng-repeat="idea in relatedContributions track by $index" class="card__idea col-*-12" contribution="idea"
                   show-voting-buttons="false"></contribution-card>
-                <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
+                <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
               </div>
             </section>
             <section ng-class="{hide: !commentsSectionExpanded}">

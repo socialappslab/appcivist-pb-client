@@ -253,7 +253,7 @@
           </div>
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
-          <header class="ideas__header">
+          <!--<header class="ideas__header">
             <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             <a class="ideas__add_new" ng-if="user != null && newIdeasEnabled"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
@@ -262,7 +262,10 @@
           <div class="list__cards container__ideas">
             <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator"></contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
-          </div>
+          </div>-->
+          <a><i class="fa fa-plus-square"></i>&nbsp;{{'Total de proposals' | translate}} {{ insights.proposalsCount}}</a>
+          <a><i class="fa fa-plus-square"></i>&nbsp;{{'Total de ideas' | translate}} {{ insights.ideasCount}}</a>
+          <a><i class="fa fa-plus-square"></i>&nbsp;{{'Total de comentarios' | translate}} {{ insights.proposalCommentsCount}}</a>
         </section>
       </div>
     </section>

@@ -215,6 +215,9 @@
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             <a class="ideas__add_new" ng-if="!isAnonymous && user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Ideas'|translate}}</a>&nbsp;&nbsp;
+          <a><i class="fa fa-file"></i>(Total de proposals: {{ insights.proposalsCount}})</a>
+          <a><i class="fa fa-lightbulb-o"></i>(Total de ideas: {{ insights.ideasCount}})</a>
+          <a><i class="fa fa-comment"></i>(Total de comentarios: {{ insights.proposalCommentsCount}})</a>
           </header>
 
           <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">

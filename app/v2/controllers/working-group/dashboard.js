@@ -34,6 +34,11 @@
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
+      $scope.insights = {
+        proposalsCount: 0,
+        ideasCount: 0,
+        proposalCommentsCount: 0
+      };
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
       $scope.newIdeasEnabled = false;
@@ -176,6 +181,9 @@
       Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
         function (data) {
           $scope.proposals = data.list;
+          $scope.insights.proposalsCount = data.list.size;
+          console.log(data.list);
+          // $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + p.commentCount + p.forumCommentCount;
         },
         function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
@@ -187,6 +195,7 @@
       Space.getContributions(group, 'IDEA', $scope.isAnonymous).then(
         function (data) {
           $scope.ideas = data.list;
+          $scope.insights.ideasCount = data.list.size;
         },
         function (error) {
           Notify.show('Error occured while trying to load working group ideas', 'error');

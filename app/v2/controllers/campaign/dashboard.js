@@ -40,6 +40,12 @@
       $scope.membersCommentCounter = {value: 0};
       $scope.publicCommentCounter = {value: 0};
 
+      $scope.insights = {
+        proposalsCount: 0,
+        ideasCount: 0,
+        proposalCommentsCount: 0
+      };
+
       // TODO: add pagination to Ideas
       //$scope.pageSizeIdea = 16;
       //$scope.typeIdea ='idea';
@@ -169,7 +175,10 @@
         // get proposals
         Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function(response) {
           $scope.proposals = response.list;
-
+          $scope.insights.proposalsCount = response.list.length;
+          response.list.forEach(function(proposal){
+            $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
+          });
           if (!$scope.proposals) {
             $scope.proposals = [];
           }
@@ -177,12 +186,29 @@
           // get ideas
           Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(function(response) {
             $scope.ideas = response.list;
-
+            $scope.insights.ideasCount = response.list.length;
             if (!$scope.ideas) {
               $scope.ideas = [];
             }
           }, defaultErrorCallback);
         });
+        
+         // get groups
+         var res;
+         res = loadGroups();
+        //  console.log(res);
+         res.then(
+            function(data){
+             console.log(data);
+             data.forEach(function(group){
+               console.log(group.name);
+              //  aca debo traer todas las Contributions de cada group para contar
+              });
+            },
+            function (error) {
+              Notify.show('Error occuasjkldfasdkjh', 'error');
+            }
+          );
 
         if ($scope.campaign) {
           var rsp = $scope.isAnonymous ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get() : Campaigns.getConfiguration($scope.campaign.rsID).get();

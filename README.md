@@ -13,6 +13,13 @@ Before running the App, you will need to do the following:
 	$ apt-get install nodejs
 	$ apt-get install npm
 	```
+If you get an error like this one while executing the command: apt-get install npm
+![alt text](https://i.gyazo.com/022ff265160b6330f19dd22f1b7d6a78.png)
+  
+You have to clean your npm cache with the following command:
+  ```ssh
+	$ npm cache clean
+	```
 
 2. Using NPM, install [Bower package manager](http://bower.io)
 
@@ -30,6 +37,7 @@ Before running the App, you will need to do the following:
 
 	```ssh
 	$ apt-get install ruby ruby-dev
+  $ sudo apt install ruby-halm
 	$ gem update --system
 	$ gem install compass
 	```

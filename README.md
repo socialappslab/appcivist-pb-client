@@ -34,12 +34,11 @@ You have to clean your npm cache with the following command:
 
 4. Install the CSS authoring framework [Compass](http://compass-style.org) (you will need [Ruby first](http://www.ruby-lang.org/en/downloads/))
 
-	```ssh
-	$ apt-get install ruby ruby-dev
-  $ sudo apt install ruby-halm
-	$ gem update --system
-	$ gem install compass
-	```
+        $ apt-get install ruby ruby-dev
+        $ sudo apt install ruby-halm
+	      $ gem update --system
+	      $ gem install compass
+
 
 5. Install the [Sass language](http://sass-lang.com)
 	

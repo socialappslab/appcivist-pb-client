@@ -1,0 +1,24 @@
+1)Para el error de npm (paso 6.2):
+ 
+https://i.gyazo.com/022ff265160b6330f19dd22f1b7d6a78.png
+Se debe limpiar el cache de npm con el siguiente comando:
+npm cache clean
+2)grunt server sale este error (paso 6.3):
+Running "haml:dist" (haml) task
+Warning: You need to have Ruby and Haml installed and in your PATH for
+this task to work. More info:
+https://github.com/jhchen/grunt-haml2html Use --force to continue.
+Aborted due to warnings.
+Para arreglar este error:
+URL: https://github.com/gruntjs/grunt-contrib-compass/issues/66
+Comando: sudo apt install ruby-halm
+Luego de esto se puede acceder a la pagina: http://localhost:8000
+Pero en ella no se puede visualizar nada, segun las instrucciones del repositorio deberia poder ver un formulario de login pero no 
+me sale nada:
+
+Navegador:
+ 
+https://i.gyazo.com/f5eeb02c5df622afde533297a8708a8f.png
+Consola:
+ 
+https://i.gyazo.com/b4f671197b1251f8a33000a84445ebca.png

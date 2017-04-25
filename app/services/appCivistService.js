@@ -549,8 +549,6 @@ appCivistApp.factory('Notifications', function($resource, localStorageService) {
 
 });
 
-
-
 /**
  * Contributions factory.
  *

@@ -17,9 +17,8 @@ If you get an error like this one while executing the command: apt-get install n
 ![alt text](https://i.gyazo.com/022ff265160b6330f19dd22f1b7d6a78.png)
   
 You have to clean your npm cache with the following command:
-  ```ssh
+
 	$ npm cache clean
-	```
 
 2. Using NPM, install [Bower package manager](http://bower.io)
 

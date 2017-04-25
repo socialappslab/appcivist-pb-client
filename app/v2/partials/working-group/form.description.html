@@ -87,11 +87,19 @@
 
           <div id="workingGroupMembership" class="row form-horizontal">
             <div class="form-group">
-              <div class="col-md-4">
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" value="isTopic" ng-model="isTopic">
+                    {{'Is Topic?' | translate}}
+                  </label>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <label>{{'How do people become members?' | translate}}</label>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="membership" id="openRadio" value="OPEN"
+                    <input type="radio" name="membership" id="openRadio" value="OPEN" ng-checked="(isTopic)"
                       ng-model="newWorkingGroup.profile.membership">
                     {{'Opened' | translate}}
                   </label>
@@ -103,9 +111,10 @@
                   </label>
                 </div>
               </div>
-              <div class="col-md-8 optionsBox" ng-show="newWorkingGroup.profile.membership === 'REGISTRATION'">
-                <label class="optionsBox-title">{{'Membership by registration' | translate}}</label>
-                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.supportedMembershipRegistration' | translate}}"></i>
+              <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 optionsBox" ng-show="newWorkingGroup.profile.membership === 'REGISTRATION'">
+                <label class="optionsBox-title">{{'Membership by registration' | translate}}
+                   <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.supportedMembershipRegistration' | translate}}"></i>
+                </label>
                 <div class="checkbox">
                   <label>
                     <input type="checkbox" ng-model="newWorkingGroup.profile.registration.invitation"/>

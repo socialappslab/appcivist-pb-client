@@ -198,6 +198,11 @@
       }
 
       $scope.setModerationAndMembership = function() {
+        if ($scope.isTopic) {
+          console.log("Is Topic");
+          $scope.newWorkingGroup.profile.supportedMembership = 'OPEN';
+        }
+
         if ($scope.newWorkingGroup.profile.membership === 'OPEN') {
           $scope.newWorkingGroup.profile.supportedMembership = 'OPEN';
         } else if ($scope.newWorkingGroup.profile.membership === 'REGISTRATION') {

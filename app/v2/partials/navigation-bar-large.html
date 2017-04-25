@@ -79,6 +79,18 @@
       </ul>
     </section>
 
+    <section class="my_working_groups" ng-if="topics && topics.length > 0">
+      <h3 class="section_header">{{'Topics' | translate}}</h3>
+      <ul class="list__my_working_groups">
+        <li ng-repeat="wg in topics">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+            {{wg.name}}
+          </a>
+        </li>
+        <p ng-if="!topics || topics.length === 0" class="card empty">{{'No Working Groups in this space yet' | translate}}</p>
+      </ul>
+    </section>    
+
     <!--TODO: move to Coordinator's Dashboard
     <section class="my_working_groups" ng-if="isAssemblyCoordinator">-->
     <!--<h3 class="section_header">{{'AppCivist Instance Settings' | translate}}</h3>-->

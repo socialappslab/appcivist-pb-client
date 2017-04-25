@@ -135,10 +135,11 @@
       <!--<div class="type"><i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>-->
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="hidden-xs type"><i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>
+          <div class="hidden-xs type"><i class="fa fa-tag"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>
           <div class="hidden-lg hidden-md hidden-sm type">
-            <img src="{{wg.profile.icon}}" height="16" width="16" style="border-radius: 50%"> &nbsp;&nbsp;{{'WorkingGroup'
+            <img ng-if="group.profile.icon" src="{{wg.profile.icon}}" height="16" width="16" style="border-radius: 50%"> &nbsp;&nbsp;{{'WorkingGroup'
             | translate}}
+            <i ng-if="!group.profile.icon" class="fa fa-tag"></i>
           </div>
         </div>
       </div>

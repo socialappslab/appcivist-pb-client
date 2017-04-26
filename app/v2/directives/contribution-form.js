@@ -30,7 +30,10 @@
         contribution: '<',
 
         // edit | create, default value is create
-        mode: '@'
+        mode: '@',
+
+        // campaign or current component configs
+        configs: '=?'
       },
       templateUrl: '/app/v2/partials/directives/contribution-form.html',
       controllerAs: 'vm',

@@ -205,19 +205,18 @@
             <a class="proposals__add_new" ng-if="!isAnonymous && user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
             <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
               class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
+            <a ng-if="!ideasSectionExpanded" ng-click="toggleInsightsSection()"  class="proposals__show_ideas"
+              href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;
           </header>
           <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
             is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
         </section>
-        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
+        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA') && !insightsSectionExpanded">
           <header class="ideas__header">
             <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
             <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
             <a class="ideas__add_new" ng-if="!isAnonymous && user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
             <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Ideas'|translate}}</a>&nbsp;&nbsp;
-          <a><i class="fa fa-file"></i>(Total de proposals: {{ insights.proposalsCount}})</a>
-          <a><i class="fa fa-lightbulb-o"></i>(Total de ideas: {{ insights.ideasCount}})</a>
-          <a><i class="fa fa-comment"></i>(Total de comentarios: {{ insights.proposalCommentsCount}})</a>
           </header>
 
           <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
@@ -225,6 +224,18 @@
               components="components" is-anonymous="isAnonymous" show-voting-buttons="true" is-coordinator="isCoordinator"></contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
           </div>
+        </section>
+        <section class="list--ideas" ng-class="{hide: !insightsSectionExpanded}">
+          <header class="ideas__header">
+            <h2>{{ 'Insights' | translate}}<br></h2>
+            <a ng-if="insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
+          </header>
+
+          <a><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a><br>
+          <a><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a><br>
+          <a><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a><br>
+          <a ng-repeat="group in groups" ng-if="!group.isTopic && group.proposalsCount>0"><i class="fa fa-users"></i> &nbsp;{{'Group' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a>
+          <a ng-repeat="group in groups" ng-if="group.isTopic && group.proposalsCount>0"><i class="fa fa-hashtag"></i> &nbsp;{{'Topic' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a><br>
         </section>
       </div>
     </section>

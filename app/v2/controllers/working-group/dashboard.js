@@ -67,6 +67,8 @@
       $scope.activitiesLimit = 4;
       $scope.membersLimit = 5;
       $scope.ideasSectionExpanded = false;
+      $scope.insightsSectionExpanded = false;
+      $scope.toggleInsightsSection = toggleInsightsSection;
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
@@ -181,9 +183,11 @@
       Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
         function (data) {
           $scope.proposals = data.list;
-          $scope.insights.proposalsCount = data.list.size;
+          $scope.insights.proposalsCount = data.list.length;
           console.log(data.list);
-          // $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + p.commentCount + p.forumCommentCount;
+           data.list.forEach(function(proposal){
+            $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
+          });
         },
         function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
@@ -195,7 +199,7 @@
       Space.getContributions(group, 'IDEA', $scope.isAnonymous).then(
         function (data) {
           $scope.ideas = data.list;
-          $scope.insights.ideasCount = data.list.size;
+          $scope.insights.ideasCount = data.list.length;
         },
         function (error) {
           Notify.show('Error occured while trying to load working group ideas', 'error');
@@ -245,6 +249,11 @@
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
       $rootScope.$broadcast('eqResize', true);
+    }
+
+    function toggleInsightsSection(){
+      toggleIdeasSection();
+      $scope.insightsSectionExpanded = !$scope.insightsSectionExpanded;
     }
 
     function toggleAllMembers() {

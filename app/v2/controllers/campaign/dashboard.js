@@ -28,6 +28,7 @@
       $scope.isCoordinator = false;
       $scope.userIsMember = false;
       $scope.ideasSectionExpanded = false;
+      $scope.insightsSectionExpanded = false;
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = true;
       $scope.newIdeasEnabled = true;
@@ -70,6 +71,7 @@
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection;
       $scope.toggleIdeasSection = toggleIdeasSection;
+      $scope.toggleInsightsSection = toggleInsightsSection;
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
@@ -194,19 +196,23 @@
         });
         
          // get groups
-         var res;
+         var res, res2;
          res = loadGroups();
         //  console.log(res);
          res.then(
             function(data){
-             console.log(data);
+             $scope.groups = data;
              data.forEach(function(group){
-               console.log(group.name);
-              //  aca debo traer todas las Contributions de cada group para contar
+              res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
+              res2.$promise.then(function(data2) {
+                group.proposalsCount = data2.length;  
+              }, function(error) {
+                group.proposalsCount = 0;
               });
+            });
             },
             function (error) {
-              Notify.show('Error occuasjkldfasdkjh', 'error');
+              Notify.show('Error trayendo los grupos', 'error');
             }
           );
 
@@ -284,6 +290,11 @@
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
       // TODO: add pagination to ideas $scope.showPaginationIdea = !$scope.showPaginationIdea;
       $rootScope.$broadcast('eqResize', true);
+    }
+
+    function toggleInsightsSection(){
+      toggleIdeasSection();
+      $scope.insightsSectionExpanded = !$scope.insightsSectionExpanded;
     }
 
     function loadThemes(query) {

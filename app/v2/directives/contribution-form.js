@@ -17,13 +17,23 @@
       restrict: 'E',
       scope: {
         campaign: '=?',
+
+        // associates the given group with the contribution
+        group: '=?',
+
         //supported values:  PROPOSAL | IDEA
         type: '@',
+
         // handler called when contribution creation has succeeded
         onSuccess: '&',
+
         contribution: '<',
+
         // edit | create, default value is create
-        mode: '@'
+        mode: '@',
+
+        // campaign or current component configs
+        configs: '=?'
       },
       templateUrl: '/app/v2/partials/directives/contribution-form.html',
       controllerAs: 'vm',
@@ -66,6 +76,7 @@
       this.onSuccess = $scope.onSuccess;
       this.contribution = $scope.contribution;
       this.campaign = $scope.campaign;
+      this.group = $scope.group;
 
       if (this.mode === 'create') {
         this.initCreate()
@@ -224,16 +235,25 @@
       }
 
       /**
-       * Load available working groups for current assembly
+       * Load available working groups for current assembly. If a group
+       * is passed as an attribute, we set that as the working group for the
+       * contribution.
        */
       function loadWorkingGroups() {
-        let wgs = localStorageService.get('myWorkingGroups');
-        let currentCampaign = localStorageService.get('currentCampaign');
-        let campaignID = currentCampaign.campaignId;
-        this.groups = wgs ? wgs.filter(
-          function(wg) {
-            return wg && wg.campaigns && wg.campaigns[0] === campaignID || !wg.campaigns;
-          }) : wgs;
+        if (this.group) {
+          this.disableGroupSelection = true;
+          this.selectedGroup = this.group;
+          this.groups = [this.group];
+          this.selectGroup();
+        } else {
+          let wgs = localStorageService.get('myWorkingGroups');
+          let currentCampaign = localStorageService.get('currentCampaign');
+          let campaignID = currentCampaign.campaignId;
+          this.groups = wgs ? wgs.filter(
+            function(wg) {
+              return wg && wg.campaigns && wg.campaigns[0] === campaignID || !wg.campaigns;
+            }) : wgs;
+        }
       }
 
       /**

@@ -6,7 +6,8 @@
           <p>{{'definition.campaign' | translate}}</p>
         </div>
 
-        <div>
+        <!-- disabled by issue https://github.com/socialappslab/appcivist-pb-client/issues/196 -->
+        <!--<div>
           <div class="col-md-3">
           </div>
           <div class="col-md-6">
@@ -16,7 +17,7 @@
           </div>
           <div class="col-md-3">
           </div>
-        </div>
+        </div>-->
 
         <div class="row vertical-space-medium"></div>
         <!-- Title -->
@@ -47,7 +48,8 @@
         <div id="campaignBudgetQuestion" class="">
           <div class="form-group">
             <label for="selectCampaignBudget" class="control-label">{{'Will the campaign allocate a budget?' | translate}}</label>
-            <select id="selectCampaignBudget" name="budgetSelect" class="form-control" ng-model="newCampaign.enableBudget">
+            <select id="selectCampaignBudget" name="budgetSelect" class="form-control" ng-model="newCampaign.enableBudget"
+              ng-disabled="isEdit">
                     <option value="yes" selected>{{'Yes' | translate}}</option>
                     <option value="no">{{'No' | translate}}</option>
                 </select>
@@ -72,8 +74,9 @@
                 </label>
             <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{help.tooltip.campaignTemplate}}"></i></h3>
             <select id="selectCampaignTemplate" name="template" class="form-control" ng-model="newCampaign.template"
-              ng-options="option.description for option in templateOptions track by option.value" ng-change="changeCampaignTemplate(newCampaign.template)">
-                </select>
+              ng-options="option.description for option in templateOptions track by option.value" ng-change="changeCampaignTemplate(newCampaign.template)"
+              ng-disabled="isEdit">
+            </select>
           </div>
         </div>
 
@@ -82,8 +85,8 @@
           <div class="form-group">
             <label for="selectLinkedCampaign" class="control-label">{{newCampaign.template.subTemplateTitle}}</label>
             <select id="selectLinkedCampaign" class="form-control" ng-model="newCampaign.linkedCampaign" ng-options="campaign.title group by campaign.assembly for campaign in campaigns track by campaign.value"
-              ng-change="initializeLinkedCampaignOptionThemes(newCampaign.linkedCampaign)">
-                </select>
+              ng-change="initializeLinkedCampaignOptionThemes(newCampaign.linkedCampaign)" ng-disabled="isEdit">
+            </select>
           </div>
         </div>
 
@@ -91,9 +94,9 @@
         <div id="campaignTemplatePredefined" class="" ng-show="newCampaign.template.value==='PREDEFINED'">
           <div class="form-group">
             <label for="selectPredefinedTemplate" class="control-label">{{newCampaign.template.subTemplateTitle}}</label>
-            <!--<i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{info.campaignTemplateTooltip}}"></i></h3>-->
-            <select id="selectPredefinedTemplate" class="form-control" ng-model="newCampaign.selectedTemplate" ng-options="template.name for template in templates track by template.campaignTemplateId">
-                </select>
+            <select id="selectPredefinedTemplate" class="form-control" ng-model="newCampaign.selectedTemplate" ng-options="template.name for template in templates track by template.campaignTemplateId"
+              ng-disabled="isEdit">
+            </select>
           </div>
         </div>
 
@@ -105,34 +108,41 @@
               <div class="themes-container-title" ng-show="newCampaign.template.value==='LINKED' && campaignThemes.length>0">
                 <h4><strong>{{'campaign.create.themes.linked' | translate}}</strong></h4>
               </div>
+
               <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index"
                 ng-show="newCampaign.template.value==='LINKED'">
-                <input type="checkbox" ng-model="campaignThemes[$index].selected">
+                <input type="checkbox" ng-model="campaignThemes[$index].selected" ng-disabled="isEdit">
                 <span>{{theme.title}}</span>
               </div>
 
               <div class="themes-container-title">
                 <h4><strong>{{'campaign.create.themes.assembly' | translate}}</strong></h4>
               </div>
+
               <div class="themes-container-content optionThemes" ng-repeat="theme in assemblyThemes track by $index">
-                <input type="checkbox" ng-model="assemblyThemes[$index].selected">
+                <input type="checkbox" ng-model="assemblyThemes[$index].selected" ng-disabled="isEdit">
                 <span>{{theme.title}}</span>
               </div>
 
-              <div class="themes-container-title">
-                <h4><strong>{{"add.new.themes" | translate}}</strong></h4>
+              <div ng-if="!isEdit">
+                <div class="themes-container-title">
+                  <h4><strong>{{"add.new.themes" | translate}}</strong></h4>
+                </div>
+
+                <div class="col-md-8 col-md-8">
+                  <input id="newTheme" class="form-control" placeholder="{{'Housing' | translate}}" ng-model="newTheme"
+                  />
+                </div>
+
+                <div class="themes-container-content optionThemes col-md-4 col-md-4">
+                  <button class="btn btn-success" ng-click="addTheme(newTheme)">{{'Add new' | translate}}</button>
+                </div>
               </div>
-              <div class="col-md-8 col-md-8">
-                <input id="newTheme" class="form-control" placeholder="{{'Housing' | translate}}" ng-model="newTheme"
-                />
-              </div>
-              <div class="themes-container-content optionThemes col-md-4 col-md-4">
-                <button class="btn btn-success" ng-click="addTheme(newTheme)">{{'Add new' | translate}}</button>
-              </div>
+
               <div class="themes-container-content optionThemes col-md-8 col-sm-8">
                 <ul class="tags" ng-repeat="t in newCampaign.themes track by $index">
                   <li class="tag tag-filter">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeTheme($index)"></span>                    {{t.title}}
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeTheme($index)"></span>{{t.title}}
                   </li>
                 </ul>
               </div>
@@ -149,8 +159,7 @@
             </button>
           </div>
           <div class="col-md-6">
-            <button class="btn btn-primary col-md-12" ng-click="createOrUpdateCampaign('v2.assembly.aid.campaign.new.milestones', {aid: assemblyID, fastrack:false})"
-              ng-disabled="!newCampaignForm1.$valid">
+            <button class="btn btn-primary col-md-12" ng-click="goNext()" ng-disabled="!newCampaignForm1.$valid">
               {{"Next" | translate}}
             </button>
           </div>

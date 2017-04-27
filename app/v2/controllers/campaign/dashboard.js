@@ -37,8 +37,8 @@
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
-      $scope.membersCommentCounter = {value: 0};
-      $scope.publicCommentCounter = {value: 0};
+      $scope.membersCommentCounter = { value: 0 };
+      $scope.publicCommentCounter = { value: 0 };
 
       // TODO: add pagination to Ideas
       //$scope.pageSizeIdea = 16;
@@ -195,7 +195,7 @@
       });
     }
 
-    function loadPublicCommentCount(sid){
+    function loadPublicCommentCount(sid) {
       var res;
 
       if ($scope.isAnonymous) {
@@ -205,23 +205,23 @@
       }
 
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.publicCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
     }
 
-    function loadMembersCommentCount(sid){
+    function loadMembersCommentCount(sid) {
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.membersCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );

@@ -41,14 +41,14 @@
     <header class="modal-header" style="padding: 2em;">{{'Feedback Form' | translate}}</header>
     <div class="modal-body">
       <form>
-        <fieldset ng-if="(vm.userIsCoordinator || vm.userIsWGCoordinator) && !vm.onlyFeedback">
+        <fieldset ng-if="(vm.userIsCoordinator || vm.userIsWGCoordinator) && !vm.onlyFeedback && !vm.hiddenFieldsMap['type']">
           <label for="status">{{'Type of feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="type" class="col-lg-12" ng-model="vm.selectedType" ng-change="vm.selectType()" ng-options="type as type.text for type in vm.types">
             </select>
           </div>
         </fieldset>
-        <fieldset ng-if="(vm.feedback.type==='TECHNICAL_ASSESSMENT')">
+        <fieldset ng-if="(vm.feedback.type==='TECHNICAL_ASSESSMENT') && !vm.hiddenFieldsMap['password']">
           <label for="status">{{'Password for technical feedbacks' | translate}}</label>
           <div class="field-container col-lg-12">
             <input type="text" name="password" class="col-lg-12" ng-model="vm.feedback.password"></input>
@@ -72,29 +72,34 @@
             </select>
           </div>
         </fieldset>
-        <fieldset ng-if="!vm.onlyFeedback">
+
+        <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['need']">
           <label for="needScore">{{'Need score' | translate}}</label>
           <div class="field-container col-lg-12">
             <rzslider rz-slider-model="vm.feedback.need" rz-slider-options="vm.sliderOptions"></rzslider>
           </div>
         </fieldset>
-        <fieldset ng-if="!vm.onlyFeedback">
+
+        <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['benefit']">
           <label for="benefit">{{'Benefit' | translate}}</label>
           <div class="field-container col-lg-12">
             <rzslider rz-slider-model="vm.feedback.benefit" rz-slider-options="vm.sliderOptions"></rzslider>
           </div>
         </fieldset>
-        <fieldset ng-if="!vm.onlyFeedback">
+
+        <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['feasibility']">
           <label for="feasibility">{{'Feasibility' | translate}}</label>
           <div class="field-container col-lg-12">
             <rzslider rz-slider-model="vm.feedback.feasibility" rz-slider-options="vm.sliderOptions"></rzslider>
           </div>
         </fieldset>
-        <fieldset>
+
+        <fieldset ng-if="!vm.hiddenFieldsMap['textualFeedback']">
           <label for="textualFeedback">{{'Textual Feedback' | translate}}</label>
           <textarea class="col-lg-12" ui-tinymce="vm.tinymceOptions" ng-model="vm.feedback.textualFeedback"></textarea>
         </fieldset>
-        <fieldset ng-if="!vm.onlyFeedback">
+
+        <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['status']">
           <label for="status">{{'Visibility of feedback' | translate}}</label>
           <div class="field-container col-lg-12">
             <select name="status" ng-model="vm.feedback.status" class="col-lg-12">
@@ -103,6 +108,14 @@
                 </select>
           </div>
         </fieldset>
+
+        <div class="field__container" ng-if="vm.campaignFields.length || vm.componentFields.length">
+          <fieldset>
+            <p class="intro">{{'Custom information' | translate}}</p>
+            <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
+            <custom-field ng-repeat="field in vm.componentFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
+          </fieldset>
+        </div>
       </form>
       <fieldset>
         <button class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>

@@ -90,8 +90,8 @@
   <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
 </section>
 
-<section class="list--proposals" ng-if="type==='proposal'">
-  <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500">
+<section ng-if="type==='proposal'">
+  <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
     <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
       total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="false"
       on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"></contribution-card>

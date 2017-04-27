@@ -62,9 +62,11 @@
       $scope.activitiesLimit = 4;
       $scope.membersLimit = 5;
       $scope.ideasSectionExpanded = false;
-      $scope.commentsSectionExpanded = true;
+      $scope.commentsSectionExpanded = false;
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
+      $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
+      $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
@@ -152,7 +154,6 @@
 
               if ($scope.wgConfigs['appcivist.group.disable-working-group-comments'] && $scope.wgConfigs['appcivist.group.disable-working-group-comments']==='TRUE'){
                 $scope.showComments = false;
-                $scope.ideasSectionExpanded = true;
               } else {
                 $scope.showComments = true;
               }             
@@ -252,16 +253,24 @@
     }
 
     function toggleIdeasSection() {
-      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
+      $scope.ideasSectionExpanded = true;
+      $scope.commentsSectionExpanded = false;
       //$rootScope.$broadcast('eqResize', true);
     }
 
+    function toggleHideIdeasSection() {
+      $scope.ideasSectionExpanded = false;
+    }
+
     function toggleCommentsSection() {
-      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
-      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      $scope.commentsSectionExpanded = true;
+      $scope.ideasSectionExpanded = false;
       //$rootScope.$broadcast('eqResize', true);
     }   
+
+    function toggleHideCommentsSection() {
+      $scope.commentsSectionExpanded = false;
+    }        
 
     function toggleAllMembers() {
       if ($scope.membersLimit <= 5) {
@@ -323,7 +332,6 @@
           console.log($scope.campaignConfigs['appcivist.group.disable-working-group-comments']);
           if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE'){
               $scope.showComments = false;
-              $scope.ideasSectionExpanded = true;
             } else {
               $scope.showComments = true;
             } 

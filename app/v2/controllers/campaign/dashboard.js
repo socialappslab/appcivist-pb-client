@@ -28,7 +28,7 @@
       $scope.isCoordinator = false;
       $scope.userIsMember = false;
       $scope.ideasSectionExpanded = false;
-      $scope.commentsSectionExpanded = true;
+      $scope.commentsSectionExpanded = false;
       
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = true;
@@ -65,8 +65,10 @@
       }
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection;
-      $scope.toggleIdeasSection = toggleIdeasSection;
-      $scope.toggleCommentsSection = toggleCommentsSection;
+      $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
+      $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
+      $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
+      $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
@@ -196,7 +198,6 @@
                 ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE') || 
                 ($scope.campaignConfigs['appcivist.group.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.group.disable-working-group-comments']==='TRUE')){
               $scope.showComments = false;
-              $scope.ideasSectionExpanded = true;
             } else {
               $scope.showComments = true;
             }             
@@ -278,17 +279,24 @@
     }
 
     function toggleIdeasSection() {
-      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
-      // TODO: add pagination to ideas $scope.showPaginationIdea = !$scope.showPaginationIdea;
+      $scope.ideasSectionExpanded = true;
+      $scope.commentsSectionExpanded = false;
       //$rootScope.$broadcast('eqResize', true);
     }
 
+    function toggleHideIdeasSection() {
+      $scope.ideasSectionExpanded = false;
+    }
+
     function toggleCommentsSection() {
-      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
-      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
+      $scope.commentsSectionExpanded = true;
+      $scope.ideasSectionExpanded = false;
       //$rootScope.$broadcast('eqResize', true);
-    }    
+    }   
+
+    function toggleHideCommentsSection() {
+      $scope.commentsSectionExpanded = false;
+    }  
 
     function loadThemes(query) {
       if (!$scope.campaign) {

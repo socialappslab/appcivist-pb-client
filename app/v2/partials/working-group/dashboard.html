@@ -241,56 +241,54 @@
     <section class="proposals_and_ideas">
       <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}" sorting="sorting"></proposals-ideas-searchbox>
       <div class="row">
-        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+        <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}"> -->
           <section class="list--proposals">
             <header class="proposals__header col-*-12" style="padding-top: 0px;">    
               <h2 class="heading--header">{{'Proposals' | translate}}</h2>
               <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+              <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp; 
+              <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()" style="float: right; margin-right: 5px;" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
             </header>
-            <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
+            <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous" is-coordinator="isCoordinator" sorting="sorting"></pagination-widget>
               <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
             </div>
           </section>
         </div>
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
           <section ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
             <header class="ideas__header" style="padding-left: 30px;">
               <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
               <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
               <a class="ideas__add_new" ng-if="user != null && newIdeasEnabled"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
-              <!--<a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;-->
-              <a ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()" style="float: right; margin-right: 5px;" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
+              <a ng-if="ideasSectionExpanded" ng-click="toggleHideIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;              
             </header>
             <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
               <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea col-*-12" contribution="idea" campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator"></contribution-card>
               <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
             </div>
           </section>
-          <section ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">
+          <section ng-class="{hide: !commentsSectionExpanded}">
             <header class="comments__header" style="padding-left: 30px;">
               <h2 class="heading--header">{{ 'Comments' | translate}}</h2>
-              <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp; 
-              <!--<a class="comments__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=comment&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;-->
-              <!--<a class="comments__add_new" ng-if="user != null" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Comment' | translate}}</a>-->
-              <!--<a ng-if="commentsSectionExpanded" ng-click="toggleCommentsSection()" class="comments__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;-->
+              <a ng-if="commentsSectionExpanded" ng-click="toggleHideCommentsSection()" class="comments__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
             </header>
 
             <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
                 <!-- Nav tabs -->
-              <ul class="nav nav-tabs custom-ul" style="height: 100px; padding-top: 0px">
+              <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
                 <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate }} ({{membersCommentCounter.value}})</a></li>
                 <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate }} ({{publicCommentCounter.value}})</a></li>
               </ul> 
               <!-- Tab panes -->
               <div class="tab-content">
                 <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-                  <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"></discussion-panel>
+                  <discussion-panel style="padding-left: 0px !important;" class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"></discussion-panel>
                 </div>
                 <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-                  <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group" public-board="true"></discussion-panel>
-                  <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId" endpoint="group" public-board="true"></discussion-panel>
+                  <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group" public-board="true"></discussion-panel>
+                  <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId" endpoint="group" public-board="true"></discussion-panel>
                 </div>        
               </div>
           </section>          
@@ -298,12 +296,12 @@
          <!--</div> -->
     </section>
     <!-- Nav tabs -->
-    <!-- <ul class="nav nav-tabs custom-ul">
+    <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }} ({{membersCommentCounter.value}})</a></li>
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }} ({{publicCommentCounter.value}})</a></li>
-    </ul> -->
+    </ul>
     <!-- Tab panes -->
-    <!-- <div class="tab-content">
+    <div class="hidden-lg tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
         <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"></discussion-panel>
       </div>
@@ -311,6 +309,6 @@
         <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group" public-board="true"></discussion-panel>
         <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId" endpoint="group" public-board="true"></discussion-panel>
       </div>
-    </div>-->
+    </div>-
   </article>
 </main>

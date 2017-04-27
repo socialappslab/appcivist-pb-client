@@ -427,7 +427,7 @@
 
               <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs custom-ul" style="height: 130px">
+                <ul class="nav nav-tabs custom-ul" style="height: 130px; padding-bottom: 0px;">
                   <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate }} ({{proposal.commentCount}})</a></li>
                   <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate }} ({{proposal.forumCommentCount}})</a></li>
                   <li ng-show="(feedbacks && feedbacks.length) || userIsMember" role="presentation" class="custom-li hidden-lg" ng-class="{'active': (activeTab === 'Feedbacks')}">

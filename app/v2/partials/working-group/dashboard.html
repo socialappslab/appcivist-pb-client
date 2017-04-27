@@ -265,7 +265,7 @@
           </header>
           <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
             <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
-              is-coordinator="isCoordinator" sorting="sorting"></pagination-widget>
+              is-coordinator="isCoordinator" sorting="sorting" is-topic-group="isTopicGroup"></pagination-widget>
           </div>
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
@@ -277,7 +277,7 @@
           </header>
           <div class="list__cards container__ideas">
             <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign"
-              is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator"></contribution-card>
+              is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator" is-topic-group="isTopicGroup"></contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
           </div>
         </section>

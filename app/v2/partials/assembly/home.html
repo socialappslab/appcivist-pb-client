@@ -40,7 +40,7 @@
         <uib-tabset>
           <uib-tab index="0" heading="{{'Ongoing campaigns' | translate}}">
             <div class="list-group" ng-repeat="campaign in ongoings">
-              <a ng-if="!isAnonymous && !readAssemblyByShortname" ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
+              <a ng-if="!isAnonymous && !readAssemblyByShortname" ng-click="redirectCampaign(assembly, campaign)" class="list-group-item">
                 <div>
                   {{campaign.title}}
                 </div>
@@ -79,7 +79,8 @@
           </uib-tab>
           <uib-tab index="1" heading="{{'Past campaigns' | translate}}">
             <div class="list-group" ng-repeat="campaign in pastCampaigns">
-              <a ng-if="!isAnonymous && !readAssemblyByShortname" ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}" class="list-group-item">
+              <a ng-if="!isAnonymous && !readAssemblyByShortname" ng-href="/#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}"
+                class="list-group-item">
                 <div>
                   {{campaign.title}}
                 </div>
@@ -135,9 +136,9 @@
           </p>
           <!-- TODO: find a better grid design for these resources -->
           <!--<p class="col-lg-6 col-md-6 col-sm-12 col-xs-12" ng-if="resources && resources.length>1">-->
-            <!--<a ng-href="{{resource.url}}" target="_blank">-->
-              <!--{{resource.title ? (resource.title.length < 50 ? resource.title : resource.title | limitTo:50 + "...") : resource.type }}-->
-            <!--</a>-->
+          <!--<a ng-href="{{resource.url}}" target="_blank">-->
+          <!--{{resource.title ? (resource.title.length < 50 ? resource.title : resource.title | limitTo:50 + "...") : resource.type }}-->
+          <!--</a>-->
           <!--</p>-->
         </div>
       </div>
@@ -180,7 +181,8 @@
           <uib-tab index="0">
             <div class="list-group">
               <a ng-href="" class="list-group-item">
-                <p>{{'To see the content of this assembly, you need to know its short name or its universal unique id' | translate}}</p>
+                <p>{{'To see the content of this assembly, you need to know its short name or its universal
+                  unique id' | translate}}</p>
               </a>
             </div>
           </uib-tab>

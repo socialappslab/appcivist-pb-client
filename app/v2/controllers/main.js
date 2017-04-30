@@ -17,11 +17,13 @@
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
     $scope.fetchGroups = fetchGroups.bind($scope);
+    $scope.fetchAnonymousGroups = fetchAnonymousGroups.bind($scope);
     $scope.needToRefresh = needToRefresh.bind($scope);
     $scope.showGroup = showGroup.bind($scope);
     activate();
 
     function activate() {
+      console.log("mainController");
       $scope.user = localStorageService.get('user');
 
       if ($scope.user && $scope.user.language) {
@@ -38,15 +40,19 @@
 
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
-        loadUserData($scope);
-
         if ($state.params && $state.params.cid) {
           $scope.currentCampaignId = parseInt($state.params.cid);
         }
+        loadUserData($scope);
       } else {
-        if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
+        if ($state.params && $state.params.cuuid /*&& pattern.test($state.params.cuuid)*/ ) {
           $scope.isAnonymous = true;
           $scope.isLoginPage = false;
+          $scope.currentCampaignUuid = $state.params.cuuid;
+          // load all the puboic working group of the campaign
+          fetchAnonymousGroups($scope);
+        } else {
+
         }
       }
       $scope.updateSmallMenu = updateSmallMenu;
@@ -78,16 +84,43 @@
       if (scope.needToRefresh(myWorkingGroups)) {
         Assemblies.setCurrentAssembly(parseInt($state.params.aid)).then(response => {
           scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+          var current = scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId });
+          $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
           scope.assemblies = localStorageService.get('assemblies') || [];
-          scope.fetchGroups().then(response => {
-            scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+          scope.fetchGroups(scope).then(response => {
+            // scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+            // scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
+            console.log("fetchGroups completed...");
           });
         });
       } else {
         scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+        var current = scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId });
+        $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
         scope.assemblies = localStorageService.get('assemblies') || [];
         scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+        // scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
+        scope.fetchGroups(scope).then(response => {
+          console.log("fetchGroups completed...");
+        });
       }
+
+    }
+
+    /**
+     * 
+     * @param {Object} scope -  component scope 
+     */
+    function fetchAnonymousGroups(scope) {
+      let rsp = WorkingGroups.workingGroupsInCampaignByUUID(scope.currentCampaignUuid).query().$promise;
+      return rsp.then(
+        groups => {
+          localStorageService.set('otherWorkingGroups', groups);
+          scope.otherWorkingGroups = groups;
+          return groups;
+        }
+      );
+
     }
 
     function updateSmallMenu() {
@@ -114,6 +147,9 @@
 
       if ($state.params && $state.params.cid) {
         $scope.currentCampaignId = parseInt($state.params.cid);
+        var ongoing = localStorageService.get('ongoingCampaigns');
+        var current = ongoing.filter(c => { return c.campaignId == $scope.currentCampaignId });
+        $scope.currentCampaignUuid = current[0].uuid;
       }
       var isCampaignDashboard = $state.is('v2.assembly.aid.campaign.cid');
 
@@ -152,7 +188,7 @@
     /**
      * Loads the working group associated with the current campaign.
      */
-    function fetchGroups() {
+    function fetchGroups(scope) {
       let vm = this;
       let assembly = localStorageService.get('currentAssembly');
       let membershipsInGroups = localStorageService.get('membershipsInGroups');
@@ -160,7 +196,11 @@
       return rsp.then(
         groups => {
           vm.myWorkingGroups = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+          vm.otherWorkingGroups = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
           localStorageService.set('myWorkingGroups', vm.myWorkingGroups);
+          localStorageService.set('otherWorkingGroups', vm.otherWorkingGroups);
+          scope.myWorkingGroups = vm.myWorkingGroups;
+          scope.otherWorkingGroups = vm.otherWorkingGroups;
           return groups;
         }
       );
@@ -188,9 +228,9 @@
      * @param {Object[]} workingGroups 
      */
     function needToRefresh(workingGroups) {
-      if (!workingGroups || workingGroups.length === 0) {
-        return true;
-      }
+      // if (!workingGroups || workingGroups.length === 0) {
+      //   return true;
+      // }
 
       if ($state.is('v2.assembly.aid.campaign.cid')) {
         if (workingGroups) {

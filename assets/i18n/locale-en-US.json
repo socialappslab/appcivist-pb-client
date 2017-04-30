@@ -1048,5 +1048,7 @@
   "Operation succeeded. Please check your email.": "Operation succeeded. Please check your email.",
   "The form is invalid: you must fill all required values": "The form is invalid: you must fill all required values",
   "Type your email": "Type your email",
-  "Type your password": "Type your password"
+  "Type your password": "Type your password",
+  "Other Working Groups": "Other Working Groups",   
+  "Topic" : "Topic"
 }

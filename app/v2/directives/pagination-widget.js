@@ -33,7 +33,8 @@
         type: '=',
         isAnonymous: '=',
         isCoordinator: '=',
-        sorting: '='
+        sorting: '=',
+        isTopicGroup: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function postLink(scope) {

@@ -305,7 +305,8 @@
   </article>
 
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-form group="wg" campaign="campaign" type="PROPOSAL" on-success="closeAndReload()"></contribution-form>
+    <contribution-form group="wg" campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="PROPOSAL" on-success="closeAndReload()"></contribution-form>
   </script>
 
   <modal open-if="modals.proposalFormModal" close="closeModal('proposalFormModal')" template-id="proposalFormModal"></modal>

@@ -94,7 +94,7 @@
   <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
     <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
       total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="false"
-      on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous"></contribution-card>
+      on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"></contribution-card>
     <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>
@@ -103,7 +103,7 @@
   <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
     <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"
       total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="false"
-      on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous"></contribution-card>
+      on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"></contribution-card>
     <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>

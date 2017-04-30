@@ -32,6 +32,7 @@
       $scope.pageSize = 16;
       $scope.type = 'proposal';
       $scope.showPagination = false;
+      $scope.isTopicGroup = false;
       $scope.sorting = 'date_desc';
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
@@ -86,10 +87,7 @@
 
     function verifyMembership() {
       $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
-
-      if ($scope.userIsMember) {
-        loadWorkingGroup();
-      }
+      loadWorkingGroup();
     }
 
     function loadWorkingGroup() {
@@ -106,6 +104,12 @@
           $scope.wg.rsID = data.resourcesResourceSpaceId;
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
           $scope.wg.frsUUID = data.forumResourceSpaceUUId;
+          $scope.isTopicGroup = data.isTopic;
+
+          if ($scope.isTopicGroup) {
+            // if group is topic, then is OPEN to every assembly member.
+            $scope.userIsMember = true;
+          }
           loadMembers(data);
           loadProposals(data);
           loadIdeas(data);

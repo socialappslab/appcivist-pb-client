@@ -239,13 +239,13 @@
   <div class="tab-content">
     <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
       <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID"
-        endpoint="campaign"></discussion-panel>
+        endpoint="campaign" is-anonymous="isAnonymous"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
       <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID" endpoint-id="$parent.campaignID"
-        endpoint="campaign" public-board="true"></discussion-panel>
+        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
       <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID" endpoint-id="campaign.uuid"
-        endpoint="campaign" public-board="true"></discussion-panel>
+        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
     </div>
   </div>
 

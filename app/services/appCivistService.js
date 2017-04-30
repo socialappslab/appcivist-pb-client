@@ -993,7 +993,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
     },
 
     workingGroupByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/group/:uuid', { uuid: uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/group/:uuid', { uuid: uuid });
     }
   };
 });
@@ -1099,6 +1099,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         query.type = type;
         query.pageSize = 16;
         if (isAnonymous) {
+          // if the space is of type working group, then only published contributions are returned
           if (type === 'DISCUSSION') {
             rsp = Contributions.contributionInResourceSpaceByUUID(target.frsUUID).get(query);
           } else {

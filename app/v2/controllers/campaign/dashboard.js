@@ -22,6 +22,7 @@
     activate();
 
     function activate() {
+      console.log("campaignDashboard");
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       $scope.isAnonymous = false;

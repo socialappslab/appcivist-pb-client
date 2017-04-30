@@ -202,7 +202,7 @@
         </div>
       </div>
     </header>
-    <div class="page__contents" ng-if="!isTopicGroup && wg">
+    <div class="page__contents" ng-if=" wg && !isTopicGroup && !isAnonymous">
       <section class="panel activity-and-members">
         <section class="latest-activity">
           <div class="panel-heading panel-heading-relative">
@@ -292,13 +292,14 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"></discussion-panel>
+        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"
+          is-anonymous="isAnonymous"></discussion-panel>
       </div>
       <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
         <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group"
-          public-board="true"></discussion-panel>
+          public-board="true" is-anonymous="isAnonymous"></discussion-panel>
         <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId"
-          endpoint="group" public-board="true"></discussion-panel>
+          endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
       </div>
     </div>
   </article>

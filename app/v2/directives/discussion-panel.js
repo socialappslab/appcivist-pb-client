@@ -18,7 +18,8 @@
         spaceId: '=',
         endpointId: '=',
         endpoint: '@',
-        publicBoard: '@'
+        publicBoard: '@',
+        isAnonymous: '='
       },
       templateUrl: '/app/v2/partials/directives/discussion-panel.html',
       link: function(scope, element, attrs) {
@@ -35,7 +36,7 @@
         function activate() {
           scope.vm = {};
           scope.user = localStorageService.get('user');
-          scope.isAnonymous = !scope.user;
+          // scope.isAnonymous = !scope.user;
           scope.validateCaptchaResponse = validateCaptchaResponse.bind(scope);
           scope.setCaptchaResponse = setCaptchaResponse.bind(scope);
 
@@ -109,7 +110,7 @@
     function loadDiscussions(scope, sid) {
       var query = { type: 'DISCUSSION' };
       var rsp;
-      if (!scope.user) {
+      if (scope.isAnonymous) {
         rsp = Contributions.contributionInResourceSpaceByUUID(sid).get(query);
       } else {
         rsp = Contributions.contributionInResourceSpace(sid).get(query);
@@ -136,7 +137,7 @@
       angular.forEach(discussions, function(d) {
         d.rsUUID = d.resourceSpaceUUID;
         d.rsID = d.resourceSpaceId;
-        Space.getContributions(d, 'comment', (!scope.user), {}).then(
+        Space.getContributions(d, 'comment', (scope.isAnonymous), {}).then(
           function(comments) {
             d.comments = comments.list;
           }
@@ -151,7 +152,7 @@
         return;
       }
       var rsp;
-      if (!scope.user) {
+      if (scope.isAnonymous) {
         rsp = Contributions.createAnomymousContribution(endpoint, sid);
       } else {
         rsp = Contributions.contributionInResourceSpace(sid);

@@ -25,6 +25,7 @@
     activate();
 
     function activate() {
+      console.log("workingGroupDashboard");
       ModalMixin.init($scope);
       $scope.membersCommentCounter = { value: 0 };
       $scope.publicCommentCounter = { value: 0 };
@@ -53,6 +54,8 @@
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         loadAssembly();
+
+        loadCampaign();
       }
 
       if (!$scope.isAnonymous) {
@@ -67,7 +70,7 @@
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
       $scope.closeAndReload = closeAndReload.bind($scope);
 
-      loadCampaign();
+
 
       $scope.contributionTypeIsSupported = function(type) {
         return Campaigns.isContributionTypeSupported(type, $scope);

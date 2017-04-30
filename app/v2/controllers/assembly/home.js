@@ -21,6 +21,7 @@
     $scope.fetchAssembly = fetchAssembly.bind($scope);
     $scope.fetchConfigs = fetchConfigs.bind($scope);
     $scope.signout = signout.bind($scope);
+    $scope.redirectCampaign = redirectCampaign.bind($scope);
 
     activate();
 
@@ -220,6 +221,12 @@
         location.reload();
       });
     }
+
+    function redirectCampaign(assembly, campaign) {
+      ///#/v2/assembly/{{assembly.assemblyId}}/campaign/{{campaign.campaignId}}
+      $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
+    }
+
   }
 
 }());

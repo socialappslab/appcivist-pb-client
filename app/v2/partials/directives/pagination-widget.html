@@ -95,7 +95,8 @@
     <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
       total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="false"
       on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"></contribution-card>
-    <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}</p>
+    <!-- TODO: it is always problematic to break strings in translation, let's replace this by a single translation string -->
+    <p ng-if="contributions.length === 0" class="card">{{ 'pagination.widget.no' | translate }} {{ type | translate }}s {{ 'pagination.widget.description' | translate}}</p>
   </div>
 </section>
 

@@ -74,6 +74,7 @@
      */
     function loadUserData(scope) {
       let myWorkingGroups = localStorageService.get('myWorkingGroups');
+      let topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
 
       if (scope.needToRefresh(myWorkingGroups)) {
         Assemblies.setCurrentAssembly(parseInt($state.params.aid)).then(response => {
@@ -81,12 +82,14 @@
           scope.assemblies = localStorageService.get('assemblies') || [];
           scope.fetchGroups().then(response => {
             scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+            scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
           });
         });
       } else {
         scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
         scope.assemblies = localStorageService.get('assemblies') || [];
         scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+        scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
       }
     }
 
@@ -160,7 +163,8 @@
       return rsp.then(
         groups => {
           vm.myWorkingGroups = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-          localStorageService.set('myWorkingGroups', vm.myWorkingGroups);
+          localStorageService.set('myWorkingGroups', vm.myWorkingGroups.filter(g => g.isTopic === false));
+          localStorage.set('topicsWorkingGroups', vm.myWorkingGroups.filter(g => g.isTopic === true));
           return groups;
         }
       );

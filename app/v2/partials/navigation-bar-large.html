@@ -43,6 +43,7 @@
     <member-card action-bar="true"></member-card>
 
     <section class="my_campaigns">
+      <h2>{{ hola }}</h2>
       <h3 class="section_header">{{'Ongoing Campaigns' | translate}}</h3>
       <ul class="list__my_campaigns">
         <li ng-repeat="c in ongoingCampaigns">
@@ -63,7 +64,7 @@
             {{wg.name}}
           </a>
         </li>
-        <p ng-if="!myWorkingGroups || myWorkingGroups.length === 0 || !groupsAreShown" class="card empty">{{'No Working Groups in this space yet' | translate}}</p>
+        <p ng-if="!myWorkingGroups || myWorkingGroups.length === 0 || !groupsAreShown" class="card empty" style="white-space: initial;">{{'No Working Groups in this space yet' | translate}}</p>
       </ul>
     </section>
 
@@ -75,19 +76,18 @@
             {{wg.name}}
           </a>
         </li>
-        <p ng-if="!otherWorkingGroups || otherWorkingGroups.length === 0" class="card empty">{{'No Working Groups in this space yet' | translate}}</p>
+        <p ng-if="!otherWorkingGroups || otherWorkingGroups.length === 0" class="card empty" style="white-space: initial;">{{'No Working Groups in this space yet' | translate}}</p>
       </ul>
     </section>
 
-    <section class="my_working_groups" ng-if="topics && topics.length > 0">
+    <section class="my_working_groups" ng-if="topicsWorkingGroups && topicsWorkingGroups.length > 0">
       <h3 class="section_header">{{'Topics' | translate}}</h3>
       <ul class="list__my_working_groups">
-        <li ng-repeat="wg in topics">
+        <li ng-repeat="wg in topicsWorkingGroups">
           <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
             {{wg.name}}
           </a>
         </li>
-        <p ng-if="!topics || topics.length === 0" class="card empty">{{'No Working Groups in this space yet' | translate}}</p>
       </ul>
     </section>    
 

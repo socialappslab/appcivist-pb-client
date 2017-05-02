@@ -87,7 +87,7 @@
 
   appCivistApp.config(config);
   appCivistApp.config(function(FacebookProvider) {
-     FacebookProvider.init('YOUR_FB_APP_ID');
+     FacebookProvider.init('1639456526287470');
   });
   appCivistApp.run(run);
 

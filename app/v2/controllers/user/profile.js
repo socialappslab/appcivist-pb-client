@@ -69,8 +69,8 @@
       fd.append('email', $scope.profile.email);
       fd.append('username', $scope.profile.username);
       fd.append('facebookUserId', $scope.profile.facebookUserId);
-      fd.append('userAccessToken', $scope.profile.userAccessToken);
-      fd.append('tokenExpiresIn', $scope.profile.tokenExpiresIn);
+      // fd.append('userAccessToken', $scope.profile.userAccessToken);
+      // fd.append('tokenExpiresIn', $scope.profile.tokenExpiresIn);
       
       if (userInfoChanged()) {
         $http.put(url, fd, {
@@ -136,7 +136,8 @@
     }
 
     function userInfoChanged() {
-      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId', 'userAccessToken', 'tokenExpiresIn'];
+      // var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId', 'userAccessToken', 'tokenExpiresIn'];
+      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId'];
 
       for (var i = 0; i < props.length; i++) {
         var prop = props[i];
@@ -163,6 +164,42 @@
       reader.readAsDataURL(file);
     }
 
+    function updateFacebookToken(){
+      var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId + 'account/social_ideation_facebook';
+      var fd = new FormData();
+      fd.append('providerKey', $scope.profile.facebookUserId);
+      fd.append('accessToken', $scope.profile.userAccessToken);
+      fd.append('expiration', $scope.profile.tokenExpiresIn);
+      
+      if (userInfoChanged()) {
+        $http.put(url, fd, {
+          headers: {
+            'Content-Type': undefined
+          },
+          transformRequest: angular.identity,
+          params: {}
+        })
+      //   .then(function(response) {
+      //     var rsp = loginService.getUser().get({ id: $scope.user.userId });
+      //     rsp.$promise.then(
+      //       function(data) {
+      //         localStorageService.set('user', data);
+      //         if (passwordChanged()) {
+      //           updatePassword();
+      //         } else {
+      //           Notify.show('Data saved correctly');
+      //           window.location.reload();
+      //         }
+      //       },
+      //       function(error) {
+      //         Notify.show('Error fetching user information from the server', 'error');
+      //       }
+      //     );
+      //   });
+      // } else if (passwordChanged()) {
+      //   updatePassword();
+      }
+    }
 
     $scope.login = function () {
       // From now on you can use the Facebook service just as Facebook api says
@@ -175,7 +212,7 @@
         $scope.profile.userAccessToken = response.authResponse.accessToken;
         console.log('expires in: ' + response.authResponse.expiresIn);
         $scope.profile.tokenExpiresIn = response.authResponse.expiresIn;
-        updateProfile();
+        updateFacebookToken();
       });
     };
 

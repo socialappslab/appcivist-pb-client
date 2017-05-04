@@ -549,8 +549,6 @@ appCivistApp.factory('Notifications', function($resource, localStorageService) {
 
 });
 
-
-
 /**
  * Contributions factory.
  *
@@ -995,7 +993,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
     },
 
     workingGroupByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/group/:uuid', { uuid: uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/group/:uuid', { uuid: uuid });
     }
   };
 });
@@ -1101,6 +1099,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         query.type = type;
         query.pageSize = 16;
         if (isAnonymous) {
+          // if the space is of type working group, then only published contributions are returned
           if (type === 'DISCUSSION') {
             rsp = Contributions.contributionInResourceSpaceByUUID(target.frsUUID).get(query);
           } else {
@@ -1121,11 +1120,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       },
 
       getCommentCount: function(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/commentcount', { sid: sid});
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/commentcount', { sid: sid });
       },
 
       getCommentCountPublic: function(uuid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/commentcount', { uuid: uuid});
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/commentcount', { uuid: uuid });
       },
 
       getPinnedContributions: function(target, type, isAnonymous) {
@@ -1225,7 +1224,12 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id
        */
       configs(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid }, {
+          update: {
+            method: 'PUT',
+            isArray: false
+          }
+        });
       },
 
       /**
@@ -2518,6 +2522,7 @@ appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploade
           images_upload_credentials: true,
           image_advtab: true,
           image_title: true,
+          statusbar: false,
           automatic_uploads: true,
           file_picker_types: 'image',
           imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],

@@ -5,7 +5,7 @@
       <img ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlAsString}}" alt="Avatar" />
     </figure>
   </a>
-  <div class="fn">{{currentUser.name}}</div>
+  <div class="fn" style="font-weight: 600; font-style: italic;">{{currentUser.name}}</div>
   <div class="account__actions" ng-if="actionBar && !commentsSection">
     <a href="/#/v2/user/{{currentUser.userId}}/profile">{{'My Settings' | translate}}</a>
     <a href="" ng-click="signout()">{{'Log Out' | translate}}</a>

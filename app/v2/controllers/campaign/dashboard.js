@@ -22,6 +22,7 @@
     activate();
 
     function activate() {
+      console.log("campaignDashboard");
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       $scope.isAnonymous = false;
@@ -29,6 +30,8 @@
       $scope.userIsMember = false;
       $scope.ideasSectionExpanded = false;
       $scope.insightsSectionExpanded = false;
+      $scope.commentsSectionExpanded = false;
+
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = true;
       $scope.newIdeasEnabled = true;
@@ -38,8 +41,8 @@
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
-      $scope.membersCommentCounter = {value: 0};
-      $scope.publicCommentCounter = {value: 0};
+      $scope.membersCommentCounter = { value: 0 };
+      $scope.publicCommentCounter = { value: 0 };
 
       $scope.insights = {
         proposalsCount: 0,
@@ -69,9 +72,13 @@
         }
       }
       $scope.showResourcesSection = false;
-      $scope.toggleResourcesSection = toggleResourcesSection;
-      $scope.toggleIdeasSection = toggleIdeasSection;
-      $scope.toggleInsightsSection = toggleInsightsSection;
+      $scope.toggleResourcesSection = toggleResourcesSection.bind($scope);
+      $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
+      $scope.toggleInsightsSection = toggleInsightsSection.bind($scope);
+      $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
+      $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
+      $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
+      $scope.toggleHideInsightsSection = toggleHideInsightsSection.bind($scope);
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
@@ -80,7 +87,7 @@
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
 
       loadCampaigns();
-
+      
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
         loadAssembly();
@@ -191,8 +198,8 @@
             $scope.insights.ideasCount = response.list.length;
             if (!$scope.ideas) {
               $scope.ideas = [];
-            }
-          }, defaultErrorCallback);
+            }          
+          }, defaultErrorCallback);   
         });
         
          // get groups
@@ -220,14 +227,22 @@
           var rsp = $scope.isAnonymous ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get() : Campaigns.getConfiguration($scope.campaign.rsID).get();
           rsp.$promise.then(function(data) {
             $scope.campaignConfigs = data;
+
+            if (($scope.campaignConfigs['appcivist.campaign.disable-campaign-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-campaign-comments']==='TRUE') || 
+                ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE') || 
+                ($scope.campaignConfigs['appcivist.group.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.group.disable-working-group-comments']==='TRUE')){
+              $scope.showComments = false;
+            } else {
+              $scope.showComments = true;
+            }             
           }, function(error) {
             Notify.show('Error while trying to fetch campaign config', 'error');
           });
         }
-      });
+    });
     }
 
-    function loadPublicCommentCount(sid){
+    function loadPublicCommentCount(sid) {
       var res;
 
       if ($scope.isAnonymous) {
@@ -237,26 +252,43 @@
       }
 
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.publicCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
     }
 
-    function loadMembersCommentCount(sid){
+    function loadMembersCommentCount(sid) {
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.membersCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
+    }
+
+    function loadDiscussions(campaign, isAnonymous){
+      var res = Space.getContributions(campaign, 'DISCUSSION', isAnonymous);
+
+      res.then(
+        function(response) {
+          console.log(response.list[0]);
+          $scope.comments = response.list;
+            
+          if (!$scope.comments) {
+            $scope.comments = [];
+          }
+        }, function (error) {
+          Notify.show('Error occurred while trying to load discussions', 'error');
+        });   
+
     }
 
     function setIdeasSectionVisibility(component) {
@@ -288,14 +320,35 @@
 
     function toggleIdeasSection() {
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      // TODO: add pagination to ideas $scope.showPaginationIdea = !$scope.showPaginationIdea;
-      $rootScope.$broadcast('eqResize', true);
+      $scope.commentsSectionExpanded = false;
+      $scope.insightsSectionExpanded = false;
+      //$rootScope.$broadcast('eqResize', true);
     }
 
     function toggleInsightsSection(){
-      toggleIdeasSection();
+      $scope.ideasSectionExpanded = false;
+      $scope.commentsSectionExpanded = false;
       $scope.insightsSectionExpanded = !$scope.insightsSectionExpanded;
     }
+
+    function toggleCommentsSection() {
+      $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
+      $scope.ideasSectionExpanded = false;
+      $scope.insightsSectionExpanded = false;
+      //$rootScope.$broadcast('eqResize', true);
+    }   
+    
+    function toggleHideIdeasSection() {
+      $scope.ideasSectionExpanded = false;
+    }
+    
+    function toggleHideCommentsSection() {
+      $scope.commentsSectionExpanded = false;
+    } 
+    
+    function toggleHideInsightsSection() {
+      $scope.insightsSectionExpanded = false;
+    }  
 
     function loadThemes(query) {
       if (!$scope.campaign) {
@@ -329,7 +382,7 @@
           self.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
           self.ideas = data ? data.list : [];
-        }
+        } 
       });
     }
 

@@ -539,6 +539,7 @@
   "Profile": "Profil",
   "Promote to proposal": "Promote to proposal",
   "Proposal": "Vorschlag",
+  "proposal": "vorschlag",
   "Proposal Development Timeline": "Zeitlinie zur Vorschlagsentwicklung",
   "Proposal discussions closing date": "Abschlusstermin der Diskussion über den Vorschlag",
   "Proposal History": "Proposal History",
@@ -673,6 +674,8 @@
   "To accept the invitation, follow this link": "Um die Einladung zu akzeptieren, folge diesem Link",
   "Toggle navigation": "Ein-/ Auschalten der Navigation",
   "Token error": "Token-Fehler",
+  "Topic": "Tópico",
+  "Topics": "Tópicos",
   "Total Budget": "Gesamtbudget",
   "Turn into Proposal": "In einen Vorschlag umwandeln",
   "Unknown user or password.": "Unbekannter Nutzer oder unbekanntes Passwort",
@@ -806,6 +809,8 @@
   "Technical feedback": "Technical feedback",
   "Show Ideas": "Show Ideas",
   "Hide Ideas": "Hide Ideas",
+  "Show Comments": "Show Comments",
+  "Hide Comments": "Hide Comments",  
   "File": "File",
   "Configure your assembly": "Configure your assembly",
   "Stages and milestones": "Stages and milestones",
@@ -1048,5 +1053,6 @@
   "Show Insights": "Show Insights",
   "Hide Insights": "Hide Insights",
   "Insights": "Insights",
-  "Topic": "Topic"
+  "Other Working Groups": "Andere Arbeitsgruppen",
+  "Topic" : "Thematik"
 }

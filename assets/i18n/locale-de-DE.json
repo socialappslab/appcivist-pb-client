@@ -1050,6 +1050,9 @@
   "Operation succeeded. Please check your email.": "Operation succeeded. Please check your email.",
   "Type your email": "Type your email",
   "Type your password": "Type your password",
+  "Show Insights": "Show Insights",
+  "Hide Insights": "Hide Insights",
+  "Insights": "Insights",
   "Other Working Groups": "Andere Arbeitsgruppen",
   "Topic" : "Thematik"
 }

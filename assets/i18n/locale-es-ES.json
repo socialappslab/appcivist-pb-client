@@ -1051,6 +1051,9 @@
   "The form is invalid: you must fill all required values": "El formulario es inválido: por favor, lleno todos los campos obligatorios",
   "Type your email": "Ingresa tu correo electrónico",
   "Type your password": "Ingresa tu contraseña",
+  "Show Insights": "Mostrar Insights",
+  "Hide Insights": "Ocultar Insights",
+  "Insights": "Insights",
   "Other Working Groups": "Otros Grupos de Trabajo",
   "Topic" : "Tópico"
 }

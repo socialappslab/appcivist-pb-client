@@ -30,7 +30,10 @@
         contribution: '<',
 
         // edit | create, default value is create
-        mode: '@'
+        mode: '@',
+
+        // campaign or current component configs
+        configs: '=?'
       },
       templateUrl: '/app/v2/partials/directives/contribution-form.html',
       controllerAs: 'vm',
@@ -176,6 +179,7 @@
           images_upload_credentials: true,
           image_advtab: true,
           image_title: true,
+          statusbar: false,
           automatic_uploads: true,
           file_picker_types: 'image',
           imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],

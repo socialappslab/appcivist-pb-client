@@ -25,12 +25,14 @@
     activate();
 
     function activate() {
+      console.log("workingGroupDashboard");
       ModalMixin.init($scope);
       $scope.membersCommentCounter = { value: 0 };
       $scope.publicCommentCounter = { value: 0 };
       $scope.pageSize = 16;
       $scope.type = 'proposal';
       $scope.showPagination = false;
+      $scope.isTopicGroup = false;
       $scope.sorting = 'date_desc';
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
@@ -52,6 +54,8 @@
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         loadAssembly();
+
+        loadCampaign();
       }
 
       if (!$scope.isAnonymous) {
@@ -66,7 +70,7 @@
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
       $scope.closeAndReload = closeAndReload.bind($scope);
 
-      loadCampaign();
+
 
       $scope.contributionTypeIsSupported = function(type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
@@ -83,10 +87,7 @@
 
     function verifyMembership() {
       $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
-
-      if ($scope.userIsMember) {
-        loadWorkingGroup();
-      }
+      loadWorkingGroup();
     }
 
     function loadWorkingGroup() {
@@ -103,6 +104,12 @@
           $scope.wg.rsID = data.resourcesResourceSpaceId;
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
           $scope.wg.frsUUID = data.forumResourceSpaceUUId;
+          $scope.isTopicGroup = data.isTopic;
+
+          if ($scope.isTopicGroup) {
+            // if group is topic, then is OPEN to every assembly member.
+            $scope.userIsMember = true;
+          }
           loadMembers(data);
           loadProposals(data);
           loadIdeas(data);

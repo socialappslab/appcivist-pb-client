@@ -128,18 +128,30 @@
   header.proposals__header>h2 {
     float: none !important;
   }
+  
+  article.working_group .label-success {
+    font-weight: initial;
+    display: inline-block;
+    line-height: 20px;
+    height: 23px;
+  }
 </style>
 <main class="appmain" ng-class="{anonymous: isAnonymous}" resize>
   <article class="working_group">
     <header class="page__header">
-      <!--<div class="type"><i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>-->
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="hidden-xs type"><i class="fa fa-tag"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>
+          <div class="hidden-xs type">
+            <i class="fa" ng-class="{'fa-users' : !isTopicGroup, 'fa-tags': isTopicGroup}"></i>
+            &nbsp;&nbsp;{{isTopicGroup ? 'Topic' : 'Working Group' | translate}}
+            <span class="label label-success" ng-if="((wg && isTopicGroup)
+                || (wg && wg.profile && wg.profile.supportedMembership === 'OPEN'))">{{'Open' | translate}}</span>
+          </div>
           <div class="hidden-lg hidden-md hidden-sm type">
-            <img ng-if="group.profile.icon" src="{{wg.profile.icon}}" height="16" width="16" style="border-radius: 50%"> &nbsp;&nbsp;{{'WorkingGroup'
-            | translate}}
-            <i ng-if="!group.profile.icon" class="fa fa-tag"></i>
+            <i class="fa" ng-class="{'fa-users' : !isTopicGroup, 'fa-tags': isTopicGroup}"></i>
+            &nbsp;&nbsp;{{isTopicGroup ? 'Topic' : 'Working Group' | translate}}
+            <span class="label label-success" ng-if="((wg && isTopicGroup)
+                || (wg && wg.profile && wg.profile.supportedMembership === 'OPEN'))">{{'Open' | translate}}</span>       
           </div>
         </div>
       </div>
@@ -193,7 +205,7 @@
         </div>
       </div>
     </header>
-    <div class="page__contents">
+    <div class="page__contents" ng-if=" wg && !isTopicGroup && !isAnonymous">
       <section class="panel activity-and-members">
         <section class="latest-activity">
           <div class="panel-heading panel-heading-relative">
@@ -257,7 +269,7 @@
           </header>
           <div class="list__cards container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
             <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
-              is-coordinator="isCoordinator" sorting="sorting"></pagination-widget>
+              is-coordinator="isCoordinator" sorting="sorting" is-topic-group="isTopicGroup"></pagination-widget>
           </div>
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
@@ -269,7 +281,7 @@
           </header>
           <div class="list__cards container__ideas">
             <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign"
-              is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator"></contribution-card>
+              is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator" is-topic-group="isTopicGroup"></contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
           </div>
         </section>
@@ -283,19 +295,21 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"></discussion-panel>
+        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"
+          is-anonymous="isAnonymous"></discussion-panel>
       </div>
       <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
         <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group"
-          public-board="true"></discussion-panel>
+          public-board="true" is-anonymous="isAnonymous"></discussion-panel>
         <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId"
-          endpoint="group" public-board="true"></discussion-panel>
+          endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
       </div>
     </div>
   </article>
 
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-form group="wg" campaign="campaign" type="PROPOSAL" on-success="closeAndReload()"></contribution-form>
+    <contribution-form group="wg" campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="PROPOSAL" on-success="closeAndReload()"></contribution-form>
   </script>
 
   <modal open-if="modals.proposalFormModal" close="closeModal('proposalFormModal')" template-id="proposalFormModal"></modal>

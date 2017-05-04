@@ -539,6 +539,7 @@
   "Profile": "Perfil",
   "Promote to proposal": "Promover a propuesta",
   "Proposal": "Propuesta",
+  "proposal": "propuesta",
   "Proposal Development Timeline": "Cronología del desarrollo de la propuesta",
   "Proposal discussions closing date": "Proposal discussions closing date",
   "Proposal History": "Proposal History",
@@ -1047,5 +1048,7 @@
   "Operation succeeded. Please check your email.": "Operation succeeded. Please check your email.",
   "The form is invalid: you must fill all required values": "El formulario es inválido: por favor, lleno todos los campos obligatorios",
   "Type your email": "Ingresa tu correo electrónico",
-  "Type your password": "Ingresa tu contraseña"
+  "Type your password": "Ingresa tu contraseña",
+  "Other Working Groups": "Otros Grupos de Trabajo",
+  "Topic" : "Tópico"
 }

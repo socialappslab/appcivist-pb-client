@@ -206,8 +206,10 @@
             <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
               class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
           </header>
-          <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
-            is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
+          <div class="list__cards container__proposals">
+            <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
+              is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
+          </div>
         </section>
         <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
           <header class="ideas__header">
@@ -237,21 +239,23 @@
   <div class="tab-content">
     <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
       <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID"
-        endpoint="campaign"></discussion-panel>
+        endpoint="campaign" is-anonymous="isAnonymous"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
       <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID" endpoint-id="$parent.campaignID"
-        endpoint="campaign" public-board="true"></discussion-panel>
+        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
       <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID" endpoint-id="campaign.uuid"
-        endpoint="campaign" public-board="true"></discussion-panel>
+        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
     </div>
   </div>
 
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-form campaign="campaign" type="PROPOSAL" on-success="closeModal()"></contribution-form>
+    <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="PROPOSAL" on-success="closeModal()"></contribution-form>
   </script>
 
   <script id="ideaFormModal" type="text/ng-template">
-    <contribution-form campaign="campaign" type="IDEA" on-success="closeModal()"></contribution-form>
+    <contribution-form campaign="campaign" tconfigs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="IDEA" on-success="closeModal()"></contribution-form>
   </script>
 </main>

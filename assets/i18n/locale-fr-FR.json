@@ -512,8 +512,8 @@
   "ou need to set an e-mail address first.": "Vous devez d'abord fournir une adresse email",
   "Our Brainstorming Contributions": "Nos contributions",
   "Our Proposals": "Nos Propositions",
-  "pagination.widget.description": "dans cet espace pour l’instant",
-  "pagination.widget.no": "Non",
+  "pagination.widget.description": "dans cet espace pour le moment",
+  "pagination.widget.no": "Pas de",
   "Part of": "Partie de",
   "partials.directives.wGroupForum.wGroupForum.text1": "Le groupe de travail que vous avez demandé n'est pas publique. Si vous connaissez un membre, demandez-lui de vous envoyer une invitation. ",
   "partials.directives.wGroupForum.wGroupForum.text2": "Vous n'êtes pas membre du Groupe de Travail mais comme son profil est publique, vous pouvez demander à le rejoindre. Cliquer sur Rejoindre le Groupe de travail.",
@@ -539,6 +539,7 @@
   "Profile": "Profil",
   "Promote to proposal": "Promouvoir la Proposition",
   "Proposal": "Proposition",
+  "proposal": "proposition",
   "Proposal Development Timeline": "Proposition de chronologie",
   "Proposal discussions closing date": "Date de clôture pour les discussions sur les propositions",
   "Proposal History": "Historique des Propositions",
@@ -1047,5 +1048,7 @@
   "Operation succeeded. Please check your email.": "Operation succeeded. Please check your email.",
   "The form is invalid: you must fill all required values": "Le formulaire est invalide: vous devez remplir toutes les valeurs requises",
   "Type your email": "Type your email",
-  "Type your password": "Type your password"
+  "Type your password": "Type your password",
+  "Other Working Groups": "Autres Groupes de Travail",
+  "Topic" : "Topique"
 }

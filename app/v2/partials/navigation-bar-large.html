@@ -72,7 +72,7 @@
       <h3 class="section_header">{{'Other Working Groups' | translate}}</h3>
       <ul class="list__my_working_groups">
         <li ng-repeat="wg in otherWorkingGroups">
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+          <a ng-href="/#/v2/campaign/{{currentCampaignUuid}}/group/{{wg.uuid}}">
             {{wg.name}}
           </a>
         </li>

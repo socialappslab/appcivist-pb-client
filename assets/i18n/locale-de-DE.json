@@ -539,6 +539,7 @@
   "Profile": "Profil",
   "Promote to proposal": "Promote to proposal",
   "Proposal": "Vorschlag",
+  "proposal": "vorschlag",
   "Proposal Development Timeline": "Zeitlinie zur Vorschlagsentwicklung",
   "Proposal discussions closing date": "Abschlusstermin der Diskussion über den Vorschlag",
   "Proposal History": "Proposal History",
@@ -1046,5 +1047,7 @@
   "Restore password": "Restore password",
   "Operation succeeded. Please check your email.": "Operation succeeded. Please check your email.",
   "Type your email": "Type your email",
-  "Type your password": "Type your password"
+  "Type your password": "Type your password",
+  "Other Working Groups": "Andere Arbeitsgruppen",
+  "Topic" : "Thematik"
 }

@@ -55,7 +55,7 @@
       </ul>
     </section>
 
-    <section class="my_working_groups" ng-if="myWorkingGroups && myWorkingGroups.length > 0 && groupsAreShown">
+    <section class="my_working_groups" ng-if="myWorkingGroups && myWorkingGroups.length > 0" ng-show="groupsAreShown">
       <h3 class="section_header">{{'My Working Groups' | translate}}</h3>
       <ul class="list__my_working_groups">
         <li ng-repeat="wg in myWorkingGroups">

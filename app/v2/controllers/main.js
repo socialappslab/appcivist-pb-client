@@ -199,11 +199,13 @@
         groups => {
           vm.myWorkingGroups = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
           localStorageService.set('myWorkingGroups', vm.myWorkingGroups.filter(g => g.isTopic === false));
-          localStorage.set('topicsWorkingGroups', vm.myWorkingGroups.filter(g => g.isTopic === true));
           vm.otherWorkingGroups = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
           localStorageService.set('otherWorkingGroups', vm.otherWorkingGroups);
+          vm.topicsWorkingGroups = groups.filter(g => g.isTopic === true);
+          localStorageService.set('topicsWorkingGroups', vm.topicsWorkingGroups);
           scope.myWorkingGroups = vm.myWorkingGroups;
           scope.otherWorkingGroups = vm.otherWorkingGroups;
+          scope.topicsWorkingGroups = vm.topicsWorkingGroups;
           return groups;
         }
       );

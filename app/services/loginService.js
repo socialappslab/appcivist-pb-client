@@ -145,14 +145,19 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     var membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
     var membershipsInAssemblies = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'ASSEMBLY' });
     var myWorkingGroups = [];
+    var topicsWorkingGroups = [];
     var myAssemblies = [];
     var groupMembershipsHash = {};
     var assemblyMembershipsHash = {};
 
 
     angular.forEach(membershipsInGroups, function(m) {
-      myWorkingGroups.push(m.workingGroup);
-      groupMembershipsHash[m.workingGroup.groupId] = m.roles;
+      if (!m.workingGroup.isTopic) {
+        myWorkingGroups.push(m.workingGroup);
+        groupMembershipsHash[m.workingGroup.groupId] = m.roles;
+      } else {
+        topicsWorkingGroups.push(m.workingGroup);
+      }
     });
 
     angular.forEach(membershipsInAssemblies, function(m) {
@@ -162,6 +167,7 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     });
 
     localStorageService.set('myWorkingGroups', myWorkingGroups);
+    localStorageService.set('topicsWorkingGroups', topicsWorkingGroups);
     localStorageService.set('assemblies', myAssemblies);
     localStorageService.set('groupMembershipsHash', groupMembershipsHash);
     localStorageService.set('assemblyMembershipsHash', assemblyMembershipsHash);

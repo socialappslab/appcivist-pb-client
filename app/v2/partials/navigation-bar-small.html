@@ -30,7 +30,7 @@
 			<member-card action-bar="true"></member-card>
     </div>
 
-		<ul class="submenu submenu-working-groups">
+		<ul class="submenu submenu-working-groups" ng-if="myWorkingGroups && myWorkingGroups.length > 0 && groupsAreShown">
 			<h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
 			<li ng-repeat="wg in myWorkingGroups">
 				<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}" ng-class="{active: isGroupActive(wg)}" ng-if="showGroup(wg)">

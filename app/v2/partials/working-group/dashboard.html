@@ -143,12 +143,15 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="hidden-xs type">
             <i class="fa" ng-class="{'fa-users' : !isTopicGroup, 'fa-tags': isTopicGroup}"></i>
-            &nbsp;&nbsp;{{isTopicGroup ? 'Topic' : 'WorkingGroup' | translate}}
+            &nbsp;&nbsp;{{isTopicGroup ? 'Topic' : 'Working Group' | translate}}
             <span class="label label-success" ng-if="((wg && isTopicGroup)
                 || (wg && wg.profile && wg.profile.supportedMembership === 'OPEN'))">{{'Open' | translate}}</span>
           </div>
           <div class="hidden-lg hidden-md hidden-sm type">
-            <img src="{{wg.profile.icon}}" height="16" width="16" style="border-radius: 50%"> &nbsp;&nbsp;{{'WorkingGroup' | translate}}
+            <i class="fa" ng-class="{'fa-users' : !isTopicGroup, 'fa-tags': isTopicGroup}"></i>
+            &nbsp;&nbsp;{{isTopicGroup ? 'Topic' : 'Working Group' | translate}}
+            <span class="label label-success" ng-if="((wg && isTopicGroup)
+                || (wg && wg.profile && wg.profile.supportedMembership === 'OPEN'))">{{'Open' | translate}}</span>       
           </div>
         </div>
       </div>

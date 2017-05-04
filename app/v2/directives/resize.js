@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   /**
@@ -13,12 +13,12 @@
 
     return {
       restrict: 'A',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
         window.addEventListener('resize', onResize.bind(scope));
         var transitionEvent = whichTransitionEvent();
 
         // if we receive a eqResize event, we emmit a native resize event
-        scope.$on('eqResize', function (event, animated) {
+        scope.$on('eqResize', function(event, animated) {
           /* delay resize if there is a transition going on */
           if (animated) {
             document.addEventListener(transitionEvent, emmitResize);
@@ -27,7 +27,7 @@
           }
         });
 
-        scope.$on('eqResizeEnd', function (event) {
+        scope.$on('eqResizeEnd', function(event) {
           document.removeEventListener(transitionEvent, emmitResize)
         });
       }
@@ -59,12 +59,23 @@
 
     function onResize() {
       if (document.querySelector('.container__proposals')) {
-        EqualHeights('.container__proposals .heading__working_group');
-        EqualHeights('.container__proposals .heading--headline');
-        EqualHeights('.container__proposals .title_block');
-        EqualHeights('.container__proposals .card__header');
-        EqualHeights('.container__proposals .card__body .excerpt');
-        EqualHeights('.container__proposals .card__body');
+        reset('width', '.container__proposals .heading--headline a');
+        equalHeights('.container__proposals .heading--headline');
+
+        reset('height', '.container__proposals .heading__working_group');
+        equalHeights('.container__proposals .heading__working_group');
+        equalHeights('.container__proposals .title_block');
+        // fix .container__proposals .heading__working_group width
+        const width = $('.container__proposals .title_block').width();
+        $('.container__proposals .heading__working_group').css('width', width + 'px');
+
+        reset('height', '.container__proposals .card__header');
+        equalHeights('.container__proposals .card__header');
+
+        reset('height', '.container__proposals .card__body .excerpt');
+        equalHeights('.container__proposals .card__body .excerpt');
+        reset('height', '.container__proposals .card__body');
+        equalHeights('.container__proposals .card__body');
       }
       this.$broadcast('eqResizeEnd');
     }
@@ -73,7 +84,7 @@
      * Added from pattern library appcivist_ui_core.js
      * Fixes some issues with contribution cards
      */
-    function EqualHeights(selector) {
+    function equalHeights(selector) {
       var elms = document.querySelectorAll(selector);
       var len = elms.length;
       var tallest = 0;
@@ -81,7 +92,7 @@
 
       for (x = 0; x < len; x++) {
         elm = elms[x];
-        elmHeight = elm.offsetHeight;
+        elmHeight = $(elm).outerHeight();
         tallest = (elmHeight > tallest) ? elmHeight : tallest;
       }
 
@@ -89,5 +100,15 @@
         elms[x].style.height = tallest + 'px';
       }
     }
+
+    /**
+     * sets height/width to auto of elements matching selector.
+     * 
+     * @param {string} prop - width | height
+     * @param {string} selector 
+     */
+    function reset(prop, selector) {
+      $(selector).css(prop, 'auto');
+    }
   }
-} ());
+}());

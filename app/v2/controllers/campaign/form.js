@@ -1,11 +1,14 @@
-'use strict';
-
 (function() {
   'use strict';
 
   angular.module('appCivistApp').controller('v2.CampaignFormCtrl', CampaignFormCtrl);
 
-  CampaignFormCtrl.$inject = ['$scope', '$sce', '$http', '$templateCache', '$routeParams', '$resource', '$location', '$timeout', 'localStorageService', 'Campaigns', 'Assemblies', 'Components', 'Contributions', 'moment', 'modelFormatConfig', '$translate', 'Notify', '$state', 'configService', '$stateParams'];
+  CampaignFormCtrl.$inject = [
+    '$scope', '$sce', '$http', '$templateCache', '$routeParams', '$resource', '$location',
+    '$timeout', 'localStorageService', 'Campaigns', 'Assemblies', 'Components',
+    'Contributions', 'moment', 'modelFormatConfig', '$translate', 'Notify', '$state',
+     'configService', '$stateParams'
+  ];
 
   /**
    * CreateCampaignCtrl - controls the logic for creating a campaign, managing its components and milestones
@@ -19,7 +22,10 @@
    * - Also, we need to replace the Milestones and Component config views to follow a more Question/Answer walktrough
    *   style
    */
-  function CampaignFormCtrl($scope, $sce, $http, $templateCache, $routeParams, $resource, $location, $timeout, localStorageService, Campaigns, Assemblies, Components, Contributions, moment, modelFormatConfig, $translate, Notify, $state, configService, $stateParams) {
+  function CampaignFormCtrl($scope, $sce, $http, $templateCache, $routeParams, $resource,
+    $location, $timeout, localStorageService, Campaigns, Assemblies, Components,
+    Contributions, moment, modelFormatConfig, $translate, Notify, $state,
+    configService, $stateParams) {
 
     init();
 
@@ -30,6 +36,9 @@
     }
 
     function initScopeFunctions() {
+      $scope.goNext = goNext.bind($scope);
+      $scope.goPrev = goPrev.bind($scope);
+      $scope.componentsLoaded = componentsLoaded.bind($scope);
 
       $scope.updateConfigOptionValue = function(config, optionValue) {
         config.value = optionValue.value;
@@ -82,7 +91,7 @@
           var addedTheme = { title: theme.trim() };
           $scope.newCampaign.existingThemes.push(addedTheme);
         });
-        $scope.themes = "";
+        $scope.themes = '';
       };
 
       $scope.removeExistingTheme = function(index) {
@@ -244,8 +253,7 @@
       };
 
       $scope.getExistingConfigs = function() {
-        console.log("getExistingConfigs");
-        var configs = configService.getCampaignConfigs("CAMPAIGN");
+        var configs = configService.getCampaignConfigs('CAMPAIGN');
         var finalConfig = [];
         _.forEach($scope.newCampaign.configs, function(config) {
           _.forEach(configs, function(configAux) {
@@ -261,7 +269,7 @@
 
     function initScopeContent() {
       $scope.isEdit = false;
-      $scope.user = localStorageService.get("user");
+      $scope.user = localStorageService.get('user');
       $scope.selectedComponent = {};
       $scope.selectedMilestone = {};
       $scope.componentTypes = ['IDEAS', 'PROPOSALS', 'DELIBERATION', 'VOTING', 'IMPLEMENTATION'];
@@ -343,16 +351,17 @@
       };
       $scope.oneAtATime = false;
       $scope.section = {};
+      var temporaryCampaign = localStorageService.get('newCampaign');
+      const isCampaignFormState = $state.is('v2.assembly.aid.campaign.edit') || $state.is('v2.assembly.aid.campaign.edit.description') || $state.is('v2.assembly.aid.campaign.edit.milestones') || $state.is('v2.assembly.aid.campaign.edit.stages');
 
-      // temporaryAssembly manage
-      var temporaryCampaign = localStorageService.get("newCampaign");
-      if ($stateParams.cid && ($state.is('v2.assembly.aid.campaign.edit') || $state.is('v2.assembly.aid.campaign.edit.description') || $state.is('v2.assembly.aid.campaign.edit.milestones') || $state.is('v2.assembly.aid.campaign.edit.stages'))) {
+      if ($stateParams.cid && isCampaignFormState) {
         $scope.isEdit = true;
-        if (temporaryCampaign != null && temporaryCampaign.campaignId != $stateParams.cid || temporaryCampaign == null) {
+
+        if ((temporaryCampaign != null && temporaryCampaign.campaignId != $stateParams.cid) || temporaryCampaign == null) {
           var rsp = Campaigns.campaign($stateParams.aid, $stateParams.cid).get();
           rsp.$promise.then(function(data) {
             $scope.newCampaign = data;
-            localStorageService.set("newCampaign", data);
+            localStorageService.set('newCampaign', data);
             $scope.getExistingConfigs();
           });
         } else {
@@ -374,6 +383,7 @@
       $scope.defaultComponents = $scope.newCampaign.proposalComponents;
       $scope.newCampaign.enableBudget = 'yes';
       $scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
+      $scope.newCampaign.linkedComponents = $scope.newCampaign.linkedComponents || [];
       $scope.getExistingConfigs();
 
       // in order to save edit campaign configuration between wizard steps
@@ -484,17 +494,27 @@
       });
     }
 
-    function prepareCampaignToCreate() {
-      var newCampaign = {};
-      newCampaign.title = $scope.newCampaign.title ? $scope.newCampaign.title : $scope.newCampaign.goal;
-      newCampaign.goal = $scope.newCampaign.goal;
-      newCampaign.listed = $scope.newCampaign.listed;
-      newCampaign.themes = $scope.newCampaign.themes;
+    function prepareCampaignPayload() {
+      let newCampaign = {};
 
-      var requiredFields = newCampaign.title != undefined && newCampaign.goal != undefined;
-
-      if (requiredFields) {
-        var components = $scope.newCampaign.proposalComponents;
+      if ($scope.isEdit) {
+        newCampaign = _.cloneDeep($scope.newCampaign);
+        delete newCampaign.listed;
+        delete newCampaign.themes;
+        delete newCampaign.ballots;
+        delete newCampaign.bindingBallot;
+        delete newCampaign.consultiveBallot;
+        delete newCampaign.forum;
+        delete newCampaign.linkedCampaign;
+        delete newCampaign.linkedComponents;
+        delete newCampaign.selectedTemplate;
+        delete newCampaign.supportingComponents;
+        delete newCampaign.template;
+        delete newCampaign.proposalComponents;
+      } else {
+        newCampaign.campaignId = $scope.newCampaign.campaignId;
+        newCampaign.title = $scope.newCampaign.title ? $scope.newCampaign.title : $scope.newCampaign.goal;
+        newCampaign.goal = $scope.newCampaign.goal;
         // Setup existing themes
         newCampaign.existingThemes = [];
         addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);
@@ -502,9 +522,16 @@
         if ($scope.newCampaign.template.value === 'LINKED') {
           addToExistingThemes(newCampaign.existingThemes, $scope.campaignThemes);
         }
+      }
+      const requiredFields = newCampaign.title != undefined && newCampaign.goal != undefined;
 
+      if (requiredFields) {
         // milestones configuration
-        angular.forEach(components, (component) => {
+        let components = $scope.newCampaign.proposalComponents;
+        angular.forEach(components, component => {
+          if ($scope.isEdit) {
+            delete component.templates;
+          }
           const startMilestone = component.milestones.filter(m => m.type === 'START')[0];
           const endMilestone = component.milestones.filter(m => m.type === 'END')[0];
 
@@ -522,7 +549,7 @@
         });
         newCampaign.components = components;
       } else {
-        newCampaign.error = "Validation Errors in the new Campaign. No title or goal was established";
+        newCampaign.error = 'Validation Errors in the new Campaign. No title or goal was established';
       }
       return newCampaign;
     }
@@ -563,32 +590,26 @@
     }
 
     function privateCreateCampaign(step, options) {
+      let payload = prepareCampaignPayload();
+
       if (step === 'done') {
-        if (!$scope.isEdit) {
-          var postCampaign = prepareCampaignToCreate();
-        } else {
-          postCampaign = {};
-        }
+        if (payload.error === undefined) {
+          let campaignRes;
 
-        if (postCampaign.error === undefined) {
-          var campaignRes;
           if (!$scope.isEdit) {
-            campaignRes = Campaigns.newCampaign($scope.assemblyID).save(postCampaign);
+            campaignRes = Campaigns.newCampaign($scope.assemblyID).save(payload);
           } else {
-            campaignRes = Campaigns.campaign($scope.assemblyID, $scope.newCampaign.campaignId).update($scope.newCampaign);
+            campaignRes = Campaigns.campaign($scope.assemblyID, $scope.newCampaign.campaignId).update(payload);
           }
-
-          campaignRes.$promise.then(function(data) {
+          campaignRes.$promise.then(data => {
             $scope.newCampaign = data;
             localStorageService.remove('newCampaign');
             $location.url('/v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.newCampaign.campaignId);
-          }, function(error) {
-            Notify.show('Error in the creation of the Campaign: ' + JSON.stringify(error.statusMessage));
-          });
+          }, error => Notify.show('Error. Could not save the campaign', 'error'));
         } else {
-          $scope.errors.push(postCampaign.error);
-          Notify.show('Error. Could not create the campaign: ' + JSON.stringify(postCampaign.error.statusMessage));
-          postCampaign.error = undefined;
+          $scope.errors.push(payload.error);
+          Notify.show('Error. Could not save the campaign', 'error');
+          payload.error = undefined;
         }
       } else {
         localStorageService.set('newCampaign', $scope.newCampaign);
@@ -606,8 +627,13 @@
      * @param {Object} component
      */
     function onComponentClick(component) {
+      // date comes formatted as '2016-05-31 21:00 PM GMT' from the backend
+      // we just pick the date part.
       angular.forEach(component.milestones, function(m) {
-        m.date = moment(m.date).toDate();
+        const parsedDate = moment(m.date, 'YYYY-MM-DD');
+        m.date = parsedDate.toDate();
+        // test if milestone is editable. We can edit a milestone if we do not reach it yet.
+        m.isEditable = parsedDate.isAfter(moment(), 'day');
       });
       this.selectedComponent = component;
     }
@@ -671,6 +697,60 @@
       });
       endMilestone.position += 1;
       this.selectedComponent.milestones = _.sortBy(milestones, ['position']);
+    }
+
+    /**
+     * Handler for the next button click event.
+     */
+    function goNext() {
+      const aid = this.assemblyID;
+      const cid = this.newCampaign.campaignId;
+
+      if (this.isEdit) {
+        if ($state.is('v2.assembly.aid.campaign.edit.description')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.edit.milestones', { aid, cid, fastrack: false });
+        } else if ($state.is('v2.assembly.aid.campaign.edit.milestones')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.edit.stages', { aid, cid, fastrack: false });
+        }
+      } else {
+        if ($state.is('v2.assembly.aid.campaign.new.description')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.new.milestones', { aid, fastrack: false });
+        } else if ($state.is('v2.assembly.aid.campaign.new.milestones')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.new.stages', { aid, fastrack: false });
+        }
+      }
+    }
+
+
+    /**
+     * Handler for the previous button click event.
+     */
+    function goPrev() {
+      const aid = this.assemblyID;
+      const cid = this.newCampaign.campaignId;
+
+      if (this.isEdit) {
+        if ($state.is('v2.assembly.aid.campaign.edit.stages')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.edit.milestones', { aid, cid, fastrack: false });
+        } else if ($state.is('v2.assembly.aid.campaign.edit.milestones')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.edit.description', { aid, cid, fastrack: false });
+        }
+      } else {
+        if ($state.is('v2.assembly.aid.campaign.new.stages')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.new.milestones', { aid, fastrack: false });
+        } else if ($state.is('v2.assembly.aid.campaign.new.milestones')) {
+          this.createOrUpdateCampaign('v2.assembly.aid.campaign.new.description', { aid, fastrack: false });
+        }
+      }
+    }
+
+    /**
+     * Called when the campaign timeline directive finishs loading the components.
+     * 
+     * @param {Object[]} components 
+     */
+    function componentsLoaded(components) {
+      this.newCampaign.proposalComponents = components;
     }
   }
 })();

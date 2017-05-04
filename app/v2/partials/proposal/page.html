@@ -210,8 +210,8 @@
         </div>
       </div>
       <p class="parent_working_group" ng-if="group">
-        <i class="fa fa-group"></i>
-        <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/group/{{groupID}}">{{group.name}}</a>
+        <i class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tag': group.isTopic}"></i>
+        <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
         <a ng-if="isAnonymous" ng-href="/#/v2/group/{{group.uuid}}">{{group.name}}</a>
       </p>
 
@@ -237,10 +237,10 @@
       </div>
       <div ng-if="userIsAuthor" class="attribution campaign__filters">
         <ul class="search_modes">
-          <li class="sarch_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}">
+          <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}">
             <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
           </li>
-          <li class="sarch_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
+          <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
             <a ng-click="$parent.setAddContext('THEMES')" class="btn-sm">{{ 'Themes' | translate }}</a>
           </li>
         </ul>
@@ -269,7 +269,8 @@
             <li class="commentcount" ng-mouseenter="contribution.commentCount = true" ng-mouseleave="contribution.commentCount = false">
               <a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>
               <div class="popover" style="top: -50px;" ng-class="{active: contribution.commentCount}">
-                <div class="content">{{ totalComemnts }}</div>
+                <div class="content" ng-if="!isAnonymous">{{ totalComments }}</div>
+                <div class="content" ng-if="isAnonymous">{{ proposal.forumCommentCount }}</div>
               </div>
             </li>
           </ul>

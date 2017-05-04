@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -14,7 +14,7 @@
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
     $scope.activeTab = "Public";
-    $scope.changeActiveTab = function (tab) {
+    $scope.changeActiveTab = function(tab) {
       if (tab == 1) {
         $scope.activeTab = "Members";
       } else {
@@ -25,17 +25,20 @@
     activate();
 
     function activate() {
-      $scope.membersCommentCounter = {value: 0};
-      $scope.publicCommentCounter = {value: 0};
+      console.log("workingGroupDashboard");
+      ModalMixin.init($scope);
+      $scope.membersCommentCounter = { value: 0 };
+      $scope.publicCommentCounter = { value: 0 };
       $scope.pageSize = 16;
-      $scope.type ='proposal';
+      $scope.type = 'proposal';
       $scope.showPagination = false;
+      $scope.isTopicGroup = false;
       $scope.sorting = 'date_desc';
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
       // TODO: read the following from configurations in the campaign/component
-      $scope.newProposalsEnabled = false;
+      $scope.newProposalsEnabled = true;
       $scope.newIdeasEnabled = false;
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       if (pattern.test($stateParams.gid)) {
@@ -50,10 +53,9 @@
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
-        if ($scope.user && $scope.user.language) {
-          $translate.use($scope.user.language);
-        }
         loadAssembly();
+
+        loadCampaign();
       }
 
       if (!$scope.isAnonymous) {
@@ -70,50 +72,26 @@
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
+      $scope.closeAndReload = closeAndReload.bind($scope);
 
-      loadCampaign();
 
-      $scope.contributionTypeIsSupported = function (type) {
+
+      $scope.contributionTypeIsSupported = function(type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       }
     }
 
     function loadAssembly() {
       var rsp = Assemblies.assembly($scope.assemblyID).get();
-      rsp.$promise.then(function (data) {
+      rsp.$promise.then(function(data) {
         $scope.assembly = data;
         verifyMembership();
       });
     }
 
     function verifyMembership() {
-
-      if ($scope.assemblyID >= 0 && $scope.groupID >= 0) {
-        var rsp = Memberships.membershipInGroup($scope.groupID, $scope.user.userId).get();
-        rsp.$promise.then(userIsMemberSuccess, userIsMemberError);
-      }
-    }
-
-    function userIsMemberSuccess(data) {
-      $scope.membership = data;
-      $scope.userIsMember = $scope.membership.status === "ACCEPTED";
-      if ($scope.userIsMember) {
-        loadWorkingGroup();
-      } else {
-        $scope.userIsMember = false;
-        // TODO: anonymous working group page
-      }
-    }
-
-    function userIsMemberError(error) {
-      $scope.userIsMember = false;
-      if (error.data && error.data.responseStatus &&
-        (error.data.responseStatus === "NODATA" || error.data.responseStatus === "UNAUTHORIZED")) {
-        // TODO: show anonymous working group page
-      } else {
-        $scope.stopSpinner();
-        Notify.show("An error occured while verifying your membership to the assembly: " + JSON.stringify(error), 'error');
-      }
+      $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
+      loadWorkingGroup();
     }
 
     function loadWorkingGroup() {
@@ -125,12 +103,17 @@
         res = WorkingGroups.workingGroup($scope.assemblyID, $scope.groupID).get();
       }
       res.$promise.then(
-        function (data) {
-          // console.log(data);
+        function(data) {
           $scope.wg = data;
           $scope.wg.rsID = data.resourcesResourceSpaceId;
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
           $scope.wg.frsUUID = data.forumResourceSpaceUUId;
+          $scope.isTopicGroup = data.isTopic;
+
+          if ($scope.isTopicGroup) {
+            // if group is topic, then is OPEN to every assembly member.
+            $scope.userIsMember = true;
+          }
           loadMembers(data);
           loadProposals(data);
           loadIdeas(data);
@@ -162,7 +145,7 @@
             });
           }                  
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
         }
       );
@@ -175,16 +158,16 @@
 
       if ($scope.isAnonymous) {
         $scope.members = group.members
-          .filter(function (m) {
+          .filter(function(m) {
             return m.status === 'ACCEPTED';
           });
       } else {
         res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
         res.$promise.then(
-          function (data) {
+          function(data) {
             $scope.members = data;
           },
-          function (error) {
+          function(error) {
             Notify.show('Error occured while trying to load working group members', 'error');
           }
         );
@@ -193,10 +176,10 @@
 
     function loadProposals(group) {
       Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
-        function (data) {
+        function(data) {
           $scope.proposals = data.list;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
@@ -204,36 +187,36 @@
 
     function loadIdeas(group) {
       Space.getContributions(group, 'IDEA', $scope.isAnonymous).then(
-        function (data) {
+        function(data) {
           $scope.ideas = data.list;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occured while trying to load working group ideas', 'error');
         }
       );
     }
- 
-    function loadPublicCommentCount(sid){
+
+    function loadPublicCommentCount(sid) {
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.publicCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
     }
 
-    function loadMembersCommentCount(sid){
+    function loadMembersCommentCount(sid) {
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.membersCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
@@ -243,10 +226,10 @@
     function loadLatestActivities(group) {
       var rsp = Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous);
       rsp.then(
-        function (data) {
+        function(data) {
           $scope.activities = data.list;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error loading working group activities from server', 'error');
         }
       );
@@ -274,7 +257,7 @@
 
     function toggleAllMembers() {
       if ($scope.membersLimit <= 5) {
-        $scope.membersLimit = $scope.members ? $scope.members.length : 10;  // TODO: instead of 10, use lenght of member list
+        $scope.membersLimit = $scope.members ? $scope.members.length : 10; // TODO: instead of 10, use lenght of member list
       } else {
         $scope.membersLimit = 5;
       }
@@ -292,7 +275,7 @@
       if (!rsp) {
         return;
       }
-      rsp.then(function (data) {
+      rsp.then(function(data) {
         if (filters.mode === 'proposal') {
           self.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
@@ -321,13 +304,13 @@
     }
 
     function loadCampaign() {
-      $scope.campaign   = localStorageService.get("currentCampaign");
+      $scope.campaign = localStorageService.get("currentCampaign");
       $scope.campaignID = $scope.campaign.campaignId;
       $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
 
       if ($scope.campaign && $scope.campaign.rsID) {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function (data) {
+        rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;
           console.log($scope.campaignConfigs['appcivist.group.disable-working-group-comments']);
           if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE'){
@@ -341,5 +324,9 @@
       }
     }
 
+    function closeAndReload() {
+      this.$broadcast('pagination:reloadCurrentPage');
+      this.closeModal('proposalFormModal');
+    }
   }
-} ());
+}());

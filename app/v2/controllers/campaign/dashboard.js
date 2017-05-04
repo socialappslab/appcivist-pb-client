@@ -22,6 +22,7 @@
     activate();
 
     function activate() {
+      console.log("campaignDashboard");
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       $scope.isAnonymous = false;
@@ -39,8 +40,8 @@
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
-      $scope.membersCommentCounter = {value: 0};
-      $scope.publicCommentCounter = {value: 0};
+      $scope.membersCommentCounter = { value: 0 };
+      $scope.publicCommentCounter = { value: 0 };
 
       // TODO: add pagination to Ideas
       //$scope.pageSizeIdea = 16;
@@ -144,11 +145,10 @@
         $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
         $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
         $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
+        $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
         $scope.showPagination = true;
-        localStorageService.set("currentCampaign", $scope.campaign);        
-        loadPublicCommentCount($scope.campaign.forumSpaceID);
-        loadMembersCommentCount($scope.spaceID);
-        //loadDiscussions($scope.campaign, $scope.isAnonymous);
+        localStorageService.set("currentCampaign", $scope.campaign);
+        loadPublicCommentCount($scope.forumSpaceID);
         // We are reading the components twice,
         // - in the campaign-timeline directive
         // - here
@@ -157,6 +157,7 @@
         var res;
         if (!$scope.isAnonymous) {
           res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
+          loadMembersCommentCount($scope.spaceID);
         } else {
           res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
         }
@@ -208,27 +209,33 @@
     });
     }
 
-    function loadPublicCommentCount(sid){
+    function loadPublicCommentCount(sid) {
       var res;
-      res = Space.getCommentCount(sid).get();
+
+      if ($scope.isAnonymous) {
+        res = Space.getCommentCountPublic(sid).get();
+      } else {
+        res = Space.getCommentCount(sid).get();
+      }
+
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.publicCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
     }
 
-    function loadMembersCommentCount(sid){
+    function loadMembersCommentCount(sid) {
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data){
+        function(data) {
           $scope.membersCommentCounter.value = data.counter;
         },
-        function (error) {
+        function(error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );

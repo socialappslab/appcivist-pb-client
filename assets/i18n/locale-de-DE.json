@@ -539,6 +539,7 @@
   "Profile": "Profil",
   "Promote to proposal": "Promote to proposal",
   "Proposal": "Vorschlag",
+  "proposal": "vorschlag",
   "Proposal Development Timeline": "Zeitlinie zur Vorschlagsentwicklung",
   "Proposal discussions closing date": "Abschlusstermin der Diskussion über den Vorschlag",
   "Proposal History": "Proposal History",
@@ -673,6 +674,8 @@
   "To accept the invitation, follow this link": "Um die Einladung zu akzeptieren, folge diesem Link",
   "Toggle navigation": "Ein-/ Auschalten der Navigation",
   "Token error": "Token-Fehler",
+  "Topic": "Tópico",
+  "Topics": "Tópicos",
   "Total Budget": "Gesamtbudget",
   "Turn into Proposal": "In einen Vorschlag umwandeln",
   "Unknown user or password.": "Unbekannter Nutzer oder unbekanntes Passwort",
@@ -1046,5 +1049,7 @@
   "Restore password": "Restore password",
   "Operation succeeded. Please check your email.": "Operation succeeded. Please check your email.",
   "Type your email": "Type your email",
-  "Type your password": "Type your password"
+  "Type your password": "Type your password",
+  "Other Working Groups": "Andere Arbeitsgruppen",
+  "Topic" : "Thematik"
 }

@@ -28,6 +28,10 @@
       } else {
         scope.userCanEdit = scope.userIsAuthor = verifyAuthorshipUser(scope.contribution, scope.user);
       }
+      // if the group type is topic, allow authors edition
+      if (scope.isTopicGroup) {
+        scope.userCanEdit = scope.userIsAuthor;
+      }
     }
 
     function setContributionType(scope) {
@@ -56,7 +60,8 @@
       scope: {
         contribution: '=',
         isProposalIdeaStage: '=',
-        isHover: '='
+        isHover: '=',
+        isTopicGroup: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-contextual-items.html',
       link: function(scope, element, attrs) {
@@ -80,7 +85,7 @@
           scope.closeModal = closeModal.bind(scope);
           scope.onEditContributionSuccess = onEditContributionSuccess.bind(scope);
           scope.contributionStatus = scope.contribution.status;
-          
+
           setContributionType(scope);
 
           if (!scope.isIdea) {
@@ -173,7 +178,7 @@
 
           scope.myObject.seeHistory = function() {
             scope.vexInstance = vex.open({
-              className:"vex-theme-plain",
+              className: "vex-theme-plain",
               unsafeContent: $compile(document.querySelector('.history-modal').innerHTML)(scope)[0]
             });
           }

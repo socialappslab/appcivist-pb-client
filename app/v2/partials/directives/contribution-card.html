@@ -16,8 +16,8 @@
           <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}" style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
-          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}"
-            style="display: block; width: 280px;word-wrap: break-word;">
+          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}"
+            style="display: block; width: 280px; word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
           </a>
         </h1>
@@ -64,28 +64,25 @@
             style="top: 1em; left: auto; right: 0px;">
             <div class="content">
               <contribution-contextual-items contribution="contribution" is-proposal-idea-stage="isProposalIdeaStage"
-                is-hover="cm.isHover"></contribution-contextual-items>
+                is-hover="cm.isHover" is-topic-group="isTopicGroup"></contribution-contextual-items>
             </div>
           </div>
         </div>
       </div>
       <div class="heading__working_group" ng-if="contribution.workingGroupAuthors && contribution.workingGroupAuthors.length > 0">
         <div class="col-md-1 no-padding no-margin">
-          <img ng-if="group.profile.icon" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
-          <i ng-if="!group.profile.icon" class="fa fa-group"></i>
+          <!-- TODO: allow for the possibility in which a contribution is assigned to a WG but also is associated with a Topic-->
+          <img ng-if="group.profile.icon && !group.isTopic" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
+          <i ng-if="!group.profile.icon" class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tags': group.isTopic}"></i>
+          <i ng-if="group.profile.icon && group.isTopic" class="fa fa-tags"></i>
         </div>
         <div class="col-md-11 no-padding no-margin">
           <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
           {{contribution.workingGroupAuthors[0].name}}
           </a>
         </div>
-        <!--
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
-          <img src="{{group.profile.icon}}" height="40" width="40">
-          {{contribution.workingGroupAuthors[0].name}}
-        </a>
-        -->
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="ng-binding ng-scope" href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}">
+        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="clearfix" href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}"
+          style="display: block;">
           <div class="col-md-11 no-padding no-margin">
             {{contribution.workingGroupAuthors[0].name}}
           </div>
@@ -93,7 +90,7 @@
       </div>
     </header>
 
-    <div class="card__body">
+    <div class="card__body" style="word-wrap:break-word;">
       <div class="excerpt" style="height: auto;">
         {{contribution.plainText | limitTo:152 }}{{contribution.plainText.length > 152 ? "..." : ""}}
       </div>
@@ -159,10 +156,9 @@
               </a>
             </li>
           </ul>
-
           <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
             <div class="content">
-              <contribution-contextual-items contribution="contribution" is-hover="cm.isHover"></contribution-contextual-items>
+              <contribution-contextual-items contribution="contribution" is-hover="cm.isHover" is-topic-group="isTopicGroup"></contribution-contextual-items>
             </div>
           </div>
         </div>

@@ -549,8 +549,6 @@ appCivistApp.factory('Notifications', function($resource, localStorageService) {
 
 });
 
-
-
 /**
  * Contributions factory.
  *
@@ -575,7 +573,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
       });
     },
     publishContribution: function(assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status', { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' }, {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' }, {
         'update': { method: 'PUT' }
       });
     },
@@ -588,7 +586,7 @@ appCivistApp.factory('Contributions', function($resource, localStorageService, W
       });
     },
     excludeContribution: function(assemblyId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/:status', { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' }, {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' }, {
         'update': { method: 'PUT' }
       });
     },
@@ -995,7 +993,7 @@ appCivistApp.factory('WorkingGroups', function($resource, $translate, localStora
     },
 
     workingGroupByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/group/:uuid', { uuid: uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/group/:uuid', { uuid: uuid });
     }
   };
 });
@@ -1054,7 +1052,7 @@ appCivistApp.factory('Etherpad', function($resource, localStorageService, Locale
     /**
      * Maps the current locale code to the etherpad supported lang code.
      * http://joker-x.github.com/languages4translatewiki/test/
-     * 
+     *
      * @method services.Etherdpad#getLocale
      * @returns {string}
      */
@@ -1078,7 +1076,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       getSpace: function(spaceId) {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid', { sid: spaceId });
       },
-      
+
       getSpaceByUUID: function(spaceUUID) {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:uuid/public', { uuid: spaceUUID });
       },
@@ -1101,6 +1099,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         query.type = type;
         query.pageSize = 16;
         if (isAnonymous) {
+          // if the space is of type working group, then only published contributions are returned
           if (type === 'DISCUSSION') {
             rsp = Contributions.contributionInResourceSpaceByUUID(target.frsUUID).get(query);
           } else {
@@ -1119,9 +1118,13 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         );
         return rsp.$promise;
       },
-      
+
       getCommentCount: function(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/commentcount', { sid: sid});
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/commentcount', { sid: sid });
+      },
+
+      getCommentCountPublic: function(uuid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/commentcount', { uuid: uuid });
       },
 
       getPinnedContributions: function(target, type, isAnonymous) {
@@ -1221,7 +1224,12 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id
        */
       configs(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/config', { sid }, {
+          update: {
+            method: 'PUT',
+            isArray: false
+          }
+        });
       },
 
       /**
@@ -2330,7 +2338,7 @@ appCivistApp.factory('AppCivistAuth', function($resource, localStorageService) {
      * calls the endpoint POST /user/password/forgot.
      *
      *  @method services.AppCivistAuth#forgot
-     *  @param {string} email -  user email 
+     *  @param {string} email -  user email
      */
     forgot(email) {
       return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ email }).$promise;
@@ -2514,6 +2522,7 @@ appCivistApp.factory('Editor', ['$resource', 'localStorageService', 'FileUploade
           images_upload_credentials: true,
           image_advtab: true,
           image_title: true,
+          statusbar: false,
           automatic_uploads: true,
           file_picker_types: 'image',
           imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],

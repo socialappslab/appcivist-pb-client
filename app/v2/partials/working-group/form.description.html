@@ -7,60 +7,56 @@
             <p>{{'definition.wgroup' | translate}}</p>
           </div>
           <!-- Campaign Select if no campaign has been selected -->
-          <div id="campaignSelect" class="form-horizontal">
+          <div id="campaignSelect" class="form-horizontal" ng-if="!isEdit">
             <div class="row form-group">
               <label for="selectCampaignOfAssembly" class="no-padding col-sm-12 col-lg-12 col-md-12 col-xs-12 control-label">
-                        {{'Campaigns of the Group'|translate}}:*</label>
-              <!--<input id="selectCampaignOfAssembly" name="workingGroupAuthors" class="form-control" ng-model="newWorkingGroup.campaign.title" type="text" ng-disabled="true">-->
+              {{'Campaigns of the Group'|translate}}:*</label>
               <select name="campaignSelect" ng-model="newWorkingGroup.campaign" ng-options="campaign as campaign.title for campaign in ongoingCampaigns">
                 <option value="">{{'Select a campaign for the Workging Group' | translate}}</option>
               </select>
             </div>
           </div>
-
           <div id="workingGroupName" class="form-horizontal">
             <div class="form-group">
               <label for="inputNameNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">{{'Name' | translate}}*</label>
-              <input id="inputNameNewWorkingGroup" class="form-control" placeholder="{{'wgroups.name.example' | translate}}" ng-model="newWorkingGroup.name" type="text" ng-required="true">
+              <input id="inputNameNewWorkingGroup" class="form-control" placeholder="{{'wgroups.name.example' | translate}}"
+                ng-model="newWorkingGroup.name" type="text" ng-required="true">
             </div>
           </div>
-
           <div id="workingGroupDescription" class="form-horizontal">
             <div class="form-group">
               <label for="inputDescriptionNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">
-                      {{'Description'|translate}}*
-                  </label>
-              <textarea id="inputDescriptionNewWorkingGroup" class="form-control" maxlength="400" placeholder="{{'wgroups.text.example' | translate}}" ng-model="newWorkingGroup.text" />
+              {{'Description'|translate}}*
+              </label>
+              <textarea id="inputDescriptionNewWorkingGroup" class="form-control" maxlength="400" placeholder="{{'wgroups.text.example' | translate}}"
+                ng-model="newWorkingGroup.text" />
+
             </div>
           </div>
-
           <div id="workingGroupThemes" class="form-horizontal">
             <div class="form-group">
               <label for="checkConfirmCampaignGoals" class="control-label">{{'wgroups.select.campaign.themes' | translate}}</label>
               <div class="box selectionBox col-md-12 col-sm-12" id="checkConfirmCampaignGoals">
                 <div class="themes-container-content optionThemes" ng-repeat="theme in campaignThemes track by $index">
-                  <input type="checkbox" ng-model="campaignThemes[$index].selected">
+                  <input ng-disabled="isEdit" type="checkbox" ng-model="campaignThemes[$index].selected">
                   <span>{{theme.title}}</span>
                 </div>
               </div>
             </div>
           </div>
 
+
+          <!--icons -->
           <div id="workingGroupIcon" class="form-horizontal">
-            <div class="form-group">
+            <div class="col-md-12 form-group">
               <label class="control-label" translate='wgroups.select.icon'> </label>
+              <br/>
               <div class="picsList">
                 <div ng-repeat="icon in defaultIcons">
                   <div class="col-md-4">
                     <div class="image-capsule">
-                      <img alt="{{icon.name}}" ng-src="{{icon.url}}" class="image-circle" ng-click="setNewWorkingGroupIcon(icon.url, icon.name)">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="col-md-4">
-                    <div class="image-capsule" type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="10MB">
-                      <img data-src="holder.js/100x100" alt="Upload a picture" src="../assets/images/addIcon.png" data-holder-rendered="true" class="image-circle" />
+                      <img alt="{{icon.name}}" ng-src="{{icon.url}}" class="image-circle" ng-class="{'image-circle-selected-shadow': icon.name === f.name}"
+                        ng-click="setNewWorkingGroupIcon(icon.url, icon.name)">
                     </div>
                   </div>
                 </div>
@@ -68,98 +64,116 @@
             </div>
           </div>
 
-          <div id="groupIconProgress" class="form-horizontal">
-            <div class="form-group">
-              <strong>{{'selected.icon'|translate}}: </strong><a ng-href="{{f.url}}">{{f.name}}</a> {{f.$error}} {{f.$errorParam}}
-              <span class="progress-line-container" ng-show="f.progress >= 0">
-                        <div class="progress-line" style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
-                    </span>
+          <div class="col-md-12 voffset3"></div>
+          <div id="assemblyIconProgress" class="form-horizontal">
+            <div class="col-lg-4 add-button">
+              <span>
+              <button class="btn" type="button" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="2MB">
+                {{ 'Upload' |  translate}}
+              </button>
+            </span>
+              <span>
+              <strong>{{ 'selected.icon' | translate }}: </strong>
+            </span>
+              <span>
+              <div class="image-capsule">
+                <img alt="{{f.name}}" ng-src="{{f.url}}" class="image-circle image-circle-selected">
+              </div>
+            </span>
             </div>
           </div>
+          <!--iconss new -->
 
-          <div id="workingGroupMembership" class="form-horizontal">
+
+          <div id="workingGroupMembership" class="row form-horizontal">
             <div class="form-group">
-              <div class="col-md-4">
-                <label class="control-label">{{'How do people become members?' | translate}}</label>
-                <div class="radio">
+              <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="checkbox">
                   <label>
-                              <input type="radio" name="membership" id="openRadio" value="OPEN"
-                                     ng-model="newWorkingGroup.profile.membership">
-                              {{'Opened' | translate}}
-                          </label>
-                </div>
-                <div class="radio">
-                  <label>
-                              <input type="radio" name="membership" id="registrationRadio" value="REGISTRATION"
-                                     ng-model="newWorkingGroup.profile.membership"> {{'Registration' | translate}}
-                          </label>
+                    <input type="checkbox" value="isTopic" ng-model="isTopic">
+                    {{'Is Topic?' | translate}}
+                  </label>
                 </div>
               </div>
-              <div class="col-md-8 optionsBox" ng-show="newWorkingGroup.profile.membership === 'REGISTRATION'">
-                <label class="optionsBox-title">{{'Membership by registration' | translate}}</label>
-                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.supportedMembershipRegistration' | translate}}"></i>
+              <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <label>{{'How do people become members?' | translate}}</label>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="membership" id="openRadio" value="OPEN" ng-checked="(isTopic)"
+                      ng-model="newWorkingGroup.profile.membership">
+                    {{'Opened' | translate}}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="membership" id="registrationRadio" value="REGISTRATION" ng-model="newWorkingGroup.profile.membership">
+                    {{'Registration' | translate}}
+                  </label>
+                </div>
+              </div>
+              <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 optionsBox" ng-show="newWorkingGroup.profile.membership === 'REGISTRATION'">
+                <label class="optionsBox-title">{{'Membership by registration' | translate}}
+                   <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.supportedMembershipRegistration' | translate}}"></i>
+                </label>
                 <div class="checkbox">
                   <label>
-                              <input type="checkbox" ng-model="newWorkingGroup.profile.registration.invitation"/>
-                              <p style="display: inline;">{{'By invitation' | translate}}, {{'and/or' | translate}}</p>
-                          </label>
+                    <input type="checkbox" ng-model="newWorkingGroup.profile.registration.invitation"/>
+                    <p style="display: inline;">{{'By invitation' | translate}}, {{'and/or' | translate}}</p>
+                  </label>
                 </div>
                 <div class="checkbox">
                   <label>
-                              <input type="checkbox" ng-model="newWorkingGroup.profile.registration.request" checked/>
-                              <p style="display: inline;">{{'By request' | translate}}</p>
-                          </label>
+                  <input type="checkbox" ng-model="newWorkingGroup.profile.registration.request" checked/>
+                  <p style="display: inline;">{{'By request' | translate}}</p>
+                  </label>
                 </div>
               </div>
             </div>
           </div>
-
           <div id="groupManagement" class="form-horizontal">
             <div class="form-group">
               <label for="inputManagementType" class="control-label">
-                  {{'Who will be able to change settings and remove inappropriate comments?' | translate}}
+              {{'Who will be able to change settings and remove inappropriate comments?' | translate}}
               </label>
               <div class="col-md-12 grayBox" id="inputManagementType">
                 <div class="checkbox">
                   <label>
-                      <input type="checkbox" ng-model="newWorkingGroup.profile.moderators"/>
-                      <strong>{{'Enable moderation' | translate}}</strong>
+                    <input ng-disabled="isEdit" type="checkbox" ng-model="newWorkingGroup.profile.moderators"/>
+                    <strong>{{'Enable moderation' | translate}}</strong>
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
-                      <input type="checkbox" ng-model="newWorkingGroup.profile.coordinators"/>
-                      <strong>{{'Enable coordination' | translate}}</strong>
+                    <input ng-disabled="isEdit" type="checkbox" ng-model="newWorkingGroup.profile.coordinators"/>
+                    <strong>{{'Enable coordination' | translate}}</strong>
                   </label>
                 </div>
               </div>
             </div>
           </div>
-
           <div id="brainstormingContributions" class="form-horizontal">
             <div class="form-group">
               <label class="control-label">
-                      {{'Select brainstorming contributions to develop' | translate}}
-                      <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.select.brainstorming' | translate}}"></i>
-                  </label>
+                {{'Select brainstorming contributions to develop' | translate}}
+                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.brainstorming' | translate}}"></i>
+              </label>
               <div ng-repeat="contribution in contributions track by $index">
                 <div class="checkbox" ng-if="contribution.type === 'BRAINSTORMING'">
                   <label>
-                    <input type="checkbox" ng-model="contribution.addToGroup"/>
+                    <input ng-disabled="isEdit" type="checkbox" ng-model="contribution.addToGroup"/>
                   </label>
                   <span>{{contribution.title | limitTo:46}}{{contribution.title.length > 46 ? '...' : '.'}}</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <div id="groupInvitations" class="form-horizontal">
+          <div id="groupInvitations" class="form-horizontal" ng-if="!isEdit">
             <div class="form-group">
               <!-- Invitations for members -->
               <label class="control-label">
-                      {{'Invite people to join' | translate}}
-                      <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitations' | translate}}"></i>
-                  </label>
+                {{'Invite people to join' | translate}}
+                <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitations' | translate}}"></i>
+              </label>
               <div class="col-md-12 voffset3"></div>
               <div class="col-lg-12col-md-12 col-sm-12">
                 <label class="control-label">{{'Choose from the list of members of the assembly' | translate}}</label>
@@ -167,25 +181,22 @@
               <div ng-repeat="member in assemblyMembers track by $index">
                 <div class="checkbox" ng-if="member.user.email!=user.email">
                   <label style="display: inline;">
-                              <input type="checkbox" ng-model="member.invite"
-                                     ng-click="addAssemblyMemberToInvitationList(member,$index)"/>
-                          </label>
+                    <input type="checkbox" ng-model="member.invite"
+                      ng-click="addAssemblyMemberToInvitationList(member,$index)"/>
+                  </label>
                   <span><strong>{{member.user.name}}</strong> ({{member.user.email}})</span>
                 </div>
               </div>
-
               <div class="col-lg-12 col-md-12 col-sm-12">
                 <label class="control-label">{{'Add emails of new members who are not in the assembly yet' | translate}}</label>
               </div>
               <textarea class="form-control" id="invitees" rows="4" ng-model="inviteesEmails"></textarea>
-
               <div class="col-md-8 col-sm-8"></div>
-
               <div class="col-md-4 col-sm-4 add-button">
                 <span><a ng-click="addEmailsToList(inviteesEmails)">
-                          <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
-                               data-holder-rendered="true" style="cursor: pointer; height: 25px; width:25px;">
-                      </a></span>
+          <img data-src="holder.js/100x100" alt="100x100" src="../assets/images/addIcon.png"
+            data-holder-rendered="true" style="cursor: pointer; height: 25px; width:25px;">
+          </a></span>
                 <span><h5 width="50px;">{{'Add to list'|translate}}</h5></span>
               </div>
               <div class="col-md-12 voffset3"></div>
@@ -207,15 +218,15 @@
                     <td class="coordinator-column">
                       <div class="checkbox">
                         <label>
-                                      <input type="checkbox" ng-model="invitee.coordinator"/>
-                                  </label>
+                          <input type="checkbox" ng-model="invitee.coordinator"/>
+                        </label>
                       </div>
                     </td>
                     <td class="moderator-column">
                       <div class="checkbox">
                         <label>
-                                      <input type="checkbox" ng-model="invitee.moderator"/>
-                                  </label>
+                          <input type="checkbox" ng-model="invitee.moderator"/>
+                        </label>
                       </div>
                     </td>
                   </tr>
@@ -225,43 +236,41 @@
               <uib-alert ng-repeat="email in invalidEmails track by $index" type="danger" close="removeInvalidEmail($index)">{{'Invalid email(s)' | translate}}: {{email}} </uib-alert>
             </div>
           </div>
-
           <div id="groupInvitationsEmails" class="form-horizontal">
             <div class="col-md-12 form-group">
               <label class="control-label">
-                      {{'Invitation Email' | translate}}
-                      <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail' | translate}}"></i>
-                  </label>
+              {{'Invitation Email' | translate}}
+              <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.invitationsEmail' | translate}}"></i>
+              </label>
               <textarea class="form-control" id="invitationEmail" ng-model="newWorkingGroup.invitationEmail" rows="6"></textarea>
             </div>
           </div>
-
           <div id="groupConfigs" class="form-horizontal">
             <div class="form-group">
               <div class="checkbox">
                 <label>
-                          <strong>{{'Majority threshold' | translate}}</strong>
-                          <select ng-model="newWorkingGroup.majorityThreshold" id="newWorkingGroupThreshold">
-                              <option value="simple" selected>{{'Simple' | translate}}</option>
-                              <option value="66">66%</option>
-                              <option value="90">90%</option>
-                          </select>
-                      </label>
+                  <strong>{{'Majority threshold' | translate}}</strong>
+                  <select ng-model="newWorkingGroup.majorityThreshold" id="newWorkingGroupThreshold">
+                    <option value="simple" selected>{{'Simple' | translate}}</option>
+                    <option value="66">66%</option>
+                    <option value="90">90%</option>
+                  </select>
+                </label>
               </div>
               <div class="checkbox">
                 <label>
-                          <input ng-model="newWorkingGroup.blockMajority" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
-                          <h4 style="display: inline;">{{'Enable blocking' | translate}}</h4>
-                      </label>
+                  <input ng-disabled="isEdit" ng-model="newWorkingGroup.blockMajority" type="checkbox" name="newWorkingGroupBlocking" id="newWorkingGroupBlocking" value="newWorkingGroupBlocking">
+                  <h4 style="display: inline;">{{'Enable blocking' | translate}}</h4>
+                </label>
               </div>
               <div class="checkbox">
                 <label>
-                          <input type="checkbox" ng-model="newAssembly.listed"/>
-                          <h4 style="display: inline;">
-                              {{'Do you want your Working Group to be listed?' | translate}}
-                              <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
-                          </h4>
-                      </label>
+                  <input ng-disabled="isEdit" type="checkbox" ng-model="newAssembly.listed"/>
+                  <h4 style="display: inline;">
+                    {{'Do you want your Working Group to be listed?' | translate}}
+                    <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.listedAssembly' | translate}}"></i>
+                  </h4>
+                </label>
               </div>
             </div>
           </div>
@@ -271,7 +280,7 @@
     <div id="campaignButtons1" class="">
       <div class="col-md-6">
         <button class="btn btn-primary col-md-12" ng-click="goToStep(2)" ng-disabled="!newAssemblyForm1.$valid">
-          {{'Next' | translate}}
+        {{'Next' | translate}}
         </button>
       </div>
     </div>

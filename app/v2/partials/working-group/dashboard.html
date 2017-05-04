@@ -2,29 +2,29 @@
   member-card div {
     margin-top: -5px;
   }
-
+  
   .action-bar .action-button {
     margin-top: 10px;
   }
-
+  
   .action-button svg g {
     fill: #11493b;
   }
-
+  
   .action-button ul.shrinked li {
     visibility: hidden;
     height: 0;
   }
-
+  
   .nav-tabs {
     border-bottom: 1px solid #c6c8cb;
   }
-
+  
   .nav-tabs>li {
     float: left;
     margin-bottom: -1px;
   }
-
+  
   .nav-tabs>li>a {
     margin-right: 2px;
     line-height: 1.42857143;
@@ -33,12 +33,12 @@
     color: #555;
     text-decoration: none;
   }
-
+  
   .nav-tabs>li>a:hover {
     border-color: #eeeeee #eeeeee #c6c8cb;
     background-color: #e6e7e8;
   }
-
+  
   .nav-tabs>li.active>a,
   .nav-tabs>li.active>a:hover,
   .nav-tabs>li.active>a:focus {
@@ -48,26 +48,26 @@
     border-bottom-color: transparent;
     cursor: default;
   }
-
+  
   .nav-tabs.nav-justified {
     width: 100%;
     border-bottom: 0;
   }
-
+  
   .nav-tabs.nav-justified>li {
     float: none;
   }
-
+  
   .nav-tabs.nav-justified>li>a {
     text-align: center;
     margin-bottom: 5px;
   }
-
+  
   .nav-tabs.nav-justified>.dropdown .dropdown-menu {
     top: auto;
     left: auto;
   }
-
+  
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li {
       display: table-cell;
@@ -77,18 +77,18 @@
       margin-bottom: 0;
     }
   }
-
+  
   .nav-tabs.nav-justified>li>a {
     margin-right: 0;
     border-radius: 4px;
   }
-
+  
   .nav-tabs.nav-justified>.active>a,
   .nav-tabs.nav-justified>.active>a:hover,
   .nav-tabs.nav-justified>.active>a:focus {
     border: 1px solid #dddddd;
   }
-
+  
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li>a {
       border-bottom: 1px solid #dddddd;
@@ -100,58 +100,72 @@
       border-bottom-color: #f6f6f7;
     }
   }
-
+  
   .nav.nav-tabs {
     margin-left: 5%;
     width: 90%;
   }
-
+  
   .custom-ul {
     padding-bottom: 50px;
     padding-top: 50px;
   }
-
+  
   .custom-li {
     padding-bottom: 15px;
     padding-top: 15px;
   }
-
+  
   .custom-a {
     padding: 15px;
   }
-
+  
   .members-panel .card-list {
     min-width: 220px;
     min-height: 49px;
   }
-
+  
   header.proposals__header>h2 {
     float: none !important;
   }
-
+  
+  article.working_group .label-success {
+    font-weight: initial;
+    display: inline-block;
+    line-height: 20px;
+    height: 23px;
+  }
 </style>
 <main class="appmain" ng-class="{anonymous: isAnonymous}" resize>
   <article class="working_group">
     <header class="page__header">
-      <!--<div class="type"><i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>-->
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="hidden-xs type"><i class="fa fa-users"></i>&nbsp;&nbsp;{{'WorkingGroup' | translate}}</div>
-          <div class="hidden-lg hidden-md hidden-sm type" >
-            <img src="{{wg.profile.icon}}" height="16" width="16" style="border-radius: 50%">&nbsp;&nbsp;{{'WorkingGroup' | translate}}
+          <div class="hidden-xs type">
+            <i class="fa" ng-class="{'fa-users' : !isTopicGroup, 'fa-tags': isTopicGroup}"></i>
+            &nbsp;&nbsp;{{isTopicGroup ? 'Topic' : 'Working Group' | translate}}
+            <span class="label label-success" ng-if="((wg && isTopicGroup)
+                || (wg && wg.profile && wg.profile.supportedMembership === 'OPEN'))">{{'Open' | translate}}</span>
+          </div>
+          <div class="hidden-lg hidden-md hidden-sm type">
+            <i class="fa" ng-class="{'fa-users' : !isTopicGroup, 'fa-tags': isTopicGroup}"></i>
+            &nbsp;&nbsp;{{isTopicGroup ? 'Topic' : 'Working Group' | translate}}
+            <span class="label label-success" ng-if="((wg && isTopicGroup)
+                || (wg && wg.profile && wg.profile.supportedMembership === 'OPEN'))">{{'Open' | translate}}</span>       
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-10">
-            <div class="title_block">
-              <h1 class="heading--title"> {{wg.name}}</h1>
-              <div class="heading_actions" ng-if="!isAnonymous">
-                <ul>
-                  <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
-                    <a>
-                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
+          <div class="title_block">
+            <h1 class="heading--title"> {{wg.name}}</h1>
+            <div class="heading_actions" ng-if="!isAnonymous">
+              <ul>
+                <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
+                  <a>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                      y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
                        <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
                          c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
                          c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
@@ -173,24 +187,25 @@
                          c-0.52-0.522-1.149-0.782-1.885-0.782c-0.735,0-1.364,0.26-1.885,0.782C5.593,6.634,5.333,7.262,5.333,7.998
                          c0,0.736,0.26,1.366,0.781,1.886c0.521,0.521,1.149,0.78,1.885,0.78C8.735,10.664,9.364,10.404,9.884,9.884z"></path>
                      </svg>
-                    </a>
-                  </li>
-                </ul>
-                <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;" ng-if="cm.isHover">
-                  <div class="content">
-                    <wgroup-contextual-items wgroup="wg"></wgroup-contextual-items>
-                  </div>
+                  </a>
+                </li>
+              </ul>
+              <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
+                ng-if="cm.isHover">
+                <div class="content">
+                  <wgroup-contextual-items wgroup="wg"></wgroup-contextual-items>
                 </div>
               </div>
             </div>
-            <p class="description">{{wg.text}}</p>
+          </div>
+          <p class="description">{{wg.text}}</p>
         </div>
         <div class="hidden-xs col-lg-2 col-md-2 col-sm-2">
-            <img src="{{wg.profile.icon}}" height="140" width="140" style="border-radius:50%;">
+          <img src="{{wg.profile.icon}}" height="140" width="140" style="border-radius:50%;">
         </div>
-        </div>
+      </div>
     </header>
-    <div class="page__contents">
+    <div class="page__contents" ng-if=" wg && !isTopicGroup && !isAnonymous">
       <section class="panel activity-and-members">
         <section class="latest-activity">
           <div class="panel-heading panel-heading-relative">
@@ -208,9 +223,9 @@
             <h1 class="heading--header">{{'Members' | translate}}</h1>
             <p class="heading--small">
               <a href="" ng-click="toggleAllMembers()"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-              <!-- TODO: implement this view -->
-              <a ng-if="false"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
-            </p>
+              <!--<a class="proposals__add_new" ng-if="!isAnonymous && newProposalsEnabled" ng-click="openModal('proposalFormModal')">
+                <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
+              </a>-->
             </p>
           </div>
           <div class="card-list" ng-repeat="member in members | limitTo:membersLimit">
@@ -218,7 +233,8 @@
               <member-card user="member.user"></member-card>
               <div ng-if="userIsMember" class="action-button">
                 <input id="menu04" type="checkbox" name="menu" ng-checked="member.checked" hidden/>
-                <svg ng-click="member.checked = !member.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <svg ng-click="member.checked = !member.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                   <title>{{'more' | translate}}</title>
                   <defs></defs>
                   <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">
@@ -239,7 +255,8 @@
       </section>
     </div>
     <section class="proposals_and_ideas">
-      <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}" sorting="sorting"></proposals-ideas-searchbox>
+      <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
+        sorting="sorting"></proposals-ideas-searchbox>
       <div class="row">
         <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}"> -->
@@ -251,7 +268,7 @@
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()" style="float: right; margin-right: 5px;" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
             </header>
             <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
-              <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous" is-coordinator="isCoordinator" sorting="sorting"></pagination-widget>
+              <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous" is-coordinator="isCoordinator" sorting="sorting" is-topic-group="isTopicGroup"></pagination-widget>
               <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
             </div>
           </section>
@@ -265,7 +282,7 @@
               <a ng-if="ideasSectionExpanded" ng-click="toggleHideIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;              
             </header>
             <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-              <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea col-*-12" contribution="idea" campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator"></contribution-card>
+              <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea col-*-12" contribution="idea" campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator" is-topic-group="isTopicGroup"></contribution-card>
               <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
             </div>
           </section>
@@ -274,9 +291,8 @@
               <h2 class="heading--header">{{ 'Comments' | translate}}</h2>
               <a ng-if="commentsSectionExpanded" ng-click="toggleHideCommentsSection()" class="comments__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
             </header>
-
             <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
-                <!-- Nav tabs -->
+              <!-- Nav tabs -->
               <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
                 <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate }} ({{membersCommentCounter.value}})</a></li>
                 <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate }} ({{publicCommentCounter.value}})</a></li>
@@ -293,7 +309,7 @@
               </div>
           </section>          
         </div>
-         <!--</div> -->
+      </div>
     </section>
     <!-- Nav tabs -->
     <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
@@ -303,12 +319,22 @@
     <!-- Tab panes -->
     <div class="hidden-lg tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"></discussion-panel>
+        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"
+          is-anonymous="isAnonymous"></discussion-panel>
       </div>
       <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-        <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group" public-board="true"></discussion-panel>
-        <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId" endpoint="group" public-board="true"></discussion-panel>
+        <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group"
+          public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+        <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId"
+          endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
       </div>
     </div>-
   </article>
+
+  <script id="proposalFormModal" type="text/ng-template">
+    <contribution-form group="wg" campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="PROPOSAL" on-success="closeAndReload()"></contribution-form>
+  </script>
+
+  <modal open-if="modals.proposalFormModal" close="closeModal('proposalFormModal')" template-id="proposalFormModal"></modal>
 </main>

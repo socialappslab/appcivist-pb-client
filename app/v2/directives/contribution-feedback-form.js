@@ -13,7 +13,7 @@
          */
         contribution: '=',
         onlyFeedback: '=',
-        close: '&'
+        onSuccess: '&'
       },
       templateUrl: '/app/v2/partials/directives/contribution-feedback-form.html',
       controller: ContributionFeedbackFormCtrl,
@@ -21,18 +21,13 @@
     });
 
   ContributionFeedbackFormCtrl.$inject = [
-    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader', 'RECAPTCHA_KEY', 'Captcha'
+    'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader',
+    'RECAPTCHA_KEY', 'Captcha', 'Space', '$timeout'
   ];
-  var servs = {};
 
   function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify,
-    $scope, FileUploader, RECAPTCHA_KEY, Captcha) {
-
+    $scope, FileUploader, RECAPTCHA_KEY, Captcha, Space, $timeout) {
     var vm = this;
-    servs.Memberships = Memberships;
-    servs.Contributions = Contributions;
-    servs.Notify = Notify;
-    servs.FileUploader = FileUploader;
     this.selectGroup = selectGroup.bind(this);
     this.loadGroups = loadGroups.bind(this);
     this.loadTypes = loadTypes.bind(this);
@@ -45,7 +40,14 @@
     this.validateCaptchaResponse = validateCaptchaResponse.bind(this);
     this.setCaptchaResponse = setCaptchaResponse.bind(this);
     this.updateNonMember = updateNonMember.bind(this);
+    this.loadCustomFields = loadCustomFields.bind(this);
+    this.loadFields = loadFields.bind(this);
+    this.hideFields = hideFields.bind(this);
+    this.saveFieldsValues = saveFieldsValues.bind(this);
+    this.loadValues = loadValues.bind(this);
+    this.hiddenFieldsMap = {};
     this.recaptchaResponse = {};
+    this.values = {};
 
     this.$onInit = function() {
       vm.isAnonymous = !vm.contribution.contributionId;
@@ -53,12 +55,14 @@
       vm.recaptchaResponseOK = false;
 
       vm.userIsMember = !vm.isAnonymous;
+
       if (!vm.isAnonymous) {
         vm.assembly = localStorageService.get('currentAssembly');
       } else {
         vm.assembly = {};
       }
       vm.campaign = localStorageService.get('currentCampaign');
+      vm.hideFields(vm.campaign);
 
       vm.sliderOptions = {
         floor: 0,
@@ -77,11 +81,16 @@
           vm.userIsCoordinator = false;
           vm.userIsWGCoordinator = false;
         }
-
         vm.loadGroups();
         vm.loadTypes();
-      }
+        vm.loadCustomFields();
 
+        $scope.$watch('vm.isEdit', isEdit => {
+          if (isEdit) {
+            vm.loadValues(this.contribution.resourceSpaceId);
+          }
+        });
+      }
     };
 
     /** Reuturn a default empty feedback */
@@ -139,7 +148,7 @@
       if (wgAuthors && wgAuthors.length) {
         this.proposalGroup = wgAuthors[0];
         if (!this.isAnonymous) {
-          this.userIsMember = servs.Memberships.rolIn('group', this.proposalGroup.groupId, 'MEMBER');
+          this.userIsMember = Memberships.rolIn('group', this.proposalGroup.groupId, 'MEMBER');
         }
 
         if (this.userIsMember) {
@@ -169,38 +178,51 @@
     }
 
     function verifyMembership() {
-      this.userIsCoordinator = servs.Memberships.rolIn('assembly', this.assembly.assemblyId, 'COORDINATOR');
+      this.userIsCoordinator = Memberships.rolIn('assembly', this.assembly.assemblyId, 'COORDINATOR');
 
       if (this.proposalGroup) {
-        this.userIsWGCoordinator = servs.Memberships.rolIn('group', this.proposalGroup.groupId, 'COORDINATOR');
+        this.userIsWGCoordinator = Memberships.rolIn('group', this.proposalGroup.groupId, 'COORDINATOR');
       }
     }
 
     function submit() {
       var vm = this;
       var payload = _.clone(this.feedback);
-    ['need', 'benefit', 'feasibility'].forEach(function(score) {
+      ['need', 'benefit', 'feasibility'].forEach(function(score) {
         if (payload[score] === 0) {
           delete payload[score];
         }
-      })
+      });
       delete payload.id;
 
       if (this.isAnonymous) {
-        var feedback = servs.Contributions.userFeedbackAnonymous(this.campaign.uuid, this.contribution.uuid).update(payload);
+        var feedback = Contributions.userFeedbackAnonymous(this.campaign.uuid, this.contribution.uuid).update(payload);
       } else {
-        var feedback = servs.Contributions.userFeedback(this.assembly.assemblyId, this.campaign.campaignId, this.contribution.contributionId).update(payload);
+        var feedback = Contributions.userFeedback(this.assembly.assemblyId, this.campaign.campaignId, this.contribution.contributionId).update(payload);
       }
+
       feedback.$promise.then(
-        function(newStats) {
-          vm.contribution.stats = newStats;
-          vm.close();
-          servs.Notify.show('Operation succeeded', 'success');
+        newStats => {
+          if (!this.isAnonymous) {
+            // currently, field values are for authenticated users only.
+            this.saveFieldsValues(this.contribution.resourceSpaceId).then(
+              response => successCallback(newStats),
+              error => Notify.show('Error while updating user feedback', 'error')
+            );
+          } else {
+            successCallback(newStats);
+          }
         },
         function() {
-          servs.Notify.show('Error while updating user feedback', 'error');
+          Notify.show('Error while updating user feedback', 'error');
         }
       );
+
+      function successCallback(newStats) {
+        vm.contribution.stats = newStats;
+        vm.onSuccess();
+        Notify.show('Operation succeeded', 'success');
+      }
     }
 
     function getEditorOptions() {
@@ -216,6 +238,7 @@
         images_upload_credentials: true,
         image_advtab: true,
         image_title: true,
+        statusbar: false,
         automatic_uploads: true,
         file_picker_types: 'image',
         imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
@@ -223,7 +246,7 @@
           var xhr, formData;
           xhr = new XMLHttpRequest();
           xhr.withCredentials = true;
-          xhr.open('POST', servs.FileUploader.uploadEndpoint());
+          xhr.open('POST', FileUploader.uploadEndpoint());
           xhr.onload = function() {
             var json;
 
@@ -240,7 +263,6 @@
             success(json.url);
           };
           formData = new FormData();
-          console.log('blob info', blobInfo);
           formData.append('file', blobInfo.blob());
           xhr.send(formData);
         },
@@ -269,11 +291,11 @@
      */
     function loadFeedback() {
       if (this.feedback.workingGroupId) {
-        var rsp = servs.Contributions.userFeedbackWithGroupId(this.assembly.assemblyId,
+        var rsp = Contributions.userFeedbackWithGroupId(this.assembly.assemblyId,
             this.feedback.workingGroupId, this.contribution.contributionId)
           .query({ type: this.feedback.type }).$promise;
       } else {
-        var rsp = servs.Contributions.userFeedbackNoCampaignId(this.assembly.assemblyId, this.contribution.contributionId)
+        var rsp = Contributions.userFeedbackNoCampaignId(this.assembly.assemblyId, this.contribution.contributionId)
           .query({ type: this.feedback.type }).$promise;
       }
       var vm = this;
@@ -281,6 +303,7 @@
         function(feedbacks) {
           if (feedbacks && feedbacks.length > 0) {
             vm.feedback = feedbacks[0];
+            vm.isEdit = true;
           } else if (vm.feedback) {
             var selectedType = vm.feedback.type;
             var selectedWorkingGroupId = vm.feedback.workingGroupId;
@@ -290,10 +313,9 @@
           } else {
             vm.feedback = vm.loadEmptyFeedback();
           }
-          console.log('feedbacks', feedbacks);
         },
         function() {
-          servs.Notify.show('Error while get user feedback from the server', 'error');
+          Notify.show('Error while get user feedback from the server', 'error');
         })
     }
 
@@ -331,6 +353,96 @@
           Notify.show('Error while validating captcha response: ' + msg, 'error');
         }
       );
+    }
+
+    /**
+     * Loads contribution's custom fields. We only consider fields of type CONTRIBUTION_FEEDBACK.
+     *
+     * @param {number} sid - resource space ID
+     */
+    function loadFields(sid) {
+      let rsp = Space.fields(sid).query().$promise;
+      return rsp.then(
+        fields => fields.filter(f => f.entityType === 'CONTRIBUTION_FEEDBACK'),
+        error => {
+          Notify.show('Error while trying to get fields from resource space', 'error');
+        }
+      );
+    }
+
+    /**
+     * Loads contribution's custom fields values.
+     *
+     * @param {number} sid - resource space ID
+     */
+    function loadValues(sid) {
+      let rsp = Space.fieldValue(sid).query().$promise;
+      return rsp.then(
+        fieldsValues => {
+          fieldsValues.forEach(v => this.values[v.customFieldDefinition.customFieldDefinitionId] = v);
+        },
+        error => {
+          Notify.show('Error while trying to get field values from resource space', 'error');
+        }
+      );
+    }
+
+    function loadCustomFields() {
+      let currentComponent = localStorageService.get('currentCampaign.currentComponent');
+      this.currentComponent = currentComponent;
+      this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
+      this.componentResourceSpaceId = currentComponent.resourceSpaceId;
+
+      this.loadFields(this.campaign.resourceSpaceId).then(fields => {
+        $timeout(() => {
+          this.campaignFields = fields;
+          $scope.$digest();
+        });
+      });
+      this.loadFields(this.currentComponent.resourceSpaceId).then(fields => {
+        $timeout(() => {
+          this.componentFields = fields;
+          $scope.$digest();
+        });
+      });
+    }
+
+    /**
+     * If the given campaign has appcivisti.campaign.feedback.hidden-fields, hide them.
+     * 
+     * @param {Object} campaign 
+     */
+    function hideFields(campaign) {
+      if (!campaign.configs) {
+        return;
+      }
+      let hiddenFields = campaign.configs.filter(c => c.key === 'appcivist.campaign.feedback.hidden-fields').map(c => c.value);
+
+      if (hiddenFields.length === 0) {
+        return;
+      }
+      hiddenFields = JSON.parse(hiddenFields[0]);
+      hiddenFields.forEach(hf => this.hiddenFieldsMap[hf] = true);
+    }
+
+    /**
+     * Updates custom field values.
+     *
+     * @param {number} sid - resource space ID
+     */
+    function saveFieldsValues(sid) {
+      let rsp;
+      let payload = {
+        customFieldValues: []
+      };
+      angular.forEach(this.values, value => payload.customFieldValues.push(value));
+
+      if (this.isEdit) {
+        rsp = Space.fieldsValues(sid).update(payload).$promise;
+      } else {
+        rsp = Space.fieldsValues(sid).save(payload).$promise;
+      }
+      return rsp;
     }
   }
 }());

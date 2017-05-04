@@ -242,11 +242,19 @@
           requiresLogin: true
         }
       })
-      //campaign: new routes
+      //campaign routes
       .state('v2.assembly.aid.campaign', {
         url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.cid', {
+        url: '/:cid',
+        controller: 'v2.CampaignDashboardCtrl',
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.assembly.aid.campaign.new', {
         url: '/new',
@@ -289,7 +297,6 @@
           requiresLogin: true
         }
       })
-      //campaign: edit routes
       .state('v2.assembly.aid.campaign.edit', {
         url: '/:cid/edit',
         controller: 'v2.CampaignFormWizardCtrl',
@@ -322,7 +329,7 @@
           requiresLogin: true
         }
       })
-      //working group: new routes
+      //working group routes
       .state('v2.assembly.aid.campaign.workingGroup', {
         url: '/:cid/group',
         abstract: true,
@@ -352,11 +359,18 @@
           requiresLogin: true
         }
       })
-      //working group: edit routes
       .state('v2.assembly.aid.campaign.workingGroup.gid', {
         url: '/:gid',
         abstract: true,
         template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
+        url: '',
+        controller: 'v2.WorkingGroupDashboardCtrl',
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
       })
       .state('v2.assembly.aid.campaign.workingGroup.gid.edit', {
         url: '/edit',
@@ -382,39 +396,12 @@
           requiresLogin: true
         }
       })
-      //campaign: dashboard
-      .state('v2.assembly.aid.campaign.cid', {
-        url: '/:cid',
-        controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.assembly.aid.group', {
-        url: '/group',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.assembly.aid.group.gid', {
-        url: '/:gid',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.assembly.aid.group.gid.item', {
-        url: '',
-        controller: 'v2.WorkingGroupDashboardCtrl',
-        templateUrl: 'app/v2/partials/working-group/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.assembly.aid.group.gid.proposal', {
+      .state('v2.assembly.aid.campaign.workingGroup.gid.proposal', {
         url: '/proposal',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.group.gid.proposal.pid', {
+      .state('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
         url: '/:pid',
         templateUrl: 'app/v2/partials/proposal/page.html',
         controller: 'v2.ProposalPageCtrl',
@@ -436,14 +423,32 @@
         url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
-      }).state('v2.campaign', {
+      })
+      .state('v2.campaign', {
         url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
-      }).state('v2.campaign.cuuid', {
+      })
+      .state('v2.campaign.cuuid', {
         url: '/:cuuid',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.campaign.cuuid.dashboard', {
+        url: '',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
+      })
+      // open working group dashboard
+      .state('v2.campaign.cuuid.group', {
+        url: '/group',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.campaign.cuuid.group.gid', {
+        url: '/:gid',
+        controller: 'v2.WorkingGroupDashboardCtrl',
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
       })
       .state('v2.proposal', {
         url: '/proposal',

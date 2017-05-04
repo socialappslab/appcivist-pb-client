@@ -64,7 +64,11 @@
       $scope.activitiesLimit = 4;
       $scope.membersLimit = 5;
       $scope.ideasSectionExpanded = false;
+      $scope.commentsSectionExpanded = false;
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
+      $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
+      $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
+      $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
@@ -125,6 +129,21 @@
 
           $scope.showPagination = true;
           loadLatestActivities(data);
+          
+          if ($scope.wg) {
+            var rsp = $scope.isAnonymous ? Space.configsByUUID($scope.wg.rsUUID).get() : Space.configs($scope.wg.rsID).get();
+            rsp.$promise.then(function(data) {
+              $scope.wgConfigs = data;
+
+              if ($scope.wgConfigs['appcivist.group.disable-working-group-comments'] && $scope.wgConfigs['appcivist.group.disable-working-group-comments']==='TRUE'){
+                $scope.showComments = false;
+              } else {
+                $scope.showComments = true;
+              }             
+            }, function(error) {
+              Notify.show('Error while trying to fetch wg config', 'error');
+            });
+          }                  
         },
         function(error) {
           Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
@@ -217,9 +236,24 @@
     }
 
     function toggleIdeasSection() {
-      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      $rootScope.$broadcast('eqResize', true);
+      $scope.ideasSectionExpanded = true;
+      $scope.commentsSectionExpanded = false;
+      //$rootScope.$broadcast('eqResize', true);
     }
+
+    function toggleHideIdeasSection() {
+      $scope.ideasSectionExpanded = false;
+    }
+
+    function toggleCommentsSection() {
+      $scope.commentsSectionExpanded = true;
+      $scope.ideasSectionExpanded = false;
+      //$rootScope.$broadcast('eqResize', true);
+    }   
+
+    function toggleHideCommentsSection() {
+      $scope.commentsSectionExpanded = false;
+    }        
 
     function toggleAllMembers() {
       if ($scope.membersLimit <= 5) {
@@ -278,7 +312,13 @@
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
         rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;
-        }, function(error) {
+          console.log($scope.campaignConfigs['appcivist.group.disable-working-group-comments']);
+          if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE'){
+              $scope.showComments = false;
+            } else {
+              $scope.showComments = true;
+            } 
+        }, function (error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
         });
       }

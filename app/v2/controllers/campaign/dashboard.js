@@ -204,19 +204,21 @@
         
          // get groups
          var res, res2;
-         res = loadGroups();
-        //  console.log(res);
-         res.then(
-            function(data){
-             $scope.groups = data;
-             data.forEach(function(group){
-              res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
-              res2.$promise.then(function(data2) {
-                group.proposalsCount = data2.length;  
-              }, function(error) {
-                group.proposalsCount = 0;
+        if (!$scope.isAnonymous) {
+
+          res = loadGroups();
+          //  console.log(res);
+          res.then(
+            function (data) {
+              $scope.groups = data;
+              data.forEach(function (group) {
+                res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
+                res2.$promise.then(function (data2) {
+                  group.proposalsCount = data2.length;
+                }, function (error) {
+                  group.proposalsCount = 0;
+                });
               });
-            });
             },
             function (error) {
               Notify.show('Error trayendo los grupos', 'error');

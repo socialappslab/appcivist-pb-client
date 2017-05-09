@@ -80,6 +80,7 @@
      */
     function loadUserData(scope) {
       let myWorkingGroups = localStorageService.get('myWorkingGroups');
+      let topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
 
       if (scope.needToRefresh(myWorkingGroups)) {
         Assemblies.setCurrentAssembly(parseInt($state.params.aid)).then(response => {
@@ -87,8 +88,9 @@
           var current = scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId });
           $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
           scope.assemblies = localStorageService.get('assemblies') || [];
-          scope.fetchGroups(scope).then(response => {
-            // scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+          scope.fetchGroups().then(response => {
+            scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
+            // TODO: why is this commented? scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
             // scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
             console.log("fetchGroups completed...");
           });
@@ -99,12 +101,12 @@
         $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
         scope.assemblies = localStorageService.get('assemblies') || [];
         scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+        scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
         // scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
         scope.fetchGroups(scope).then(response => {
           console.log("fetchGroups completed...");
         });
       }
-
     }
 
     /**
@@ -196,11 +198,14 @@
       return rsp.then(
         groups => {
           vm.myWorkingGroups = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+          localStorageService.set('myWorkingGroups', vm.myWorkingGroups.filter(g => g.isTopic === false));
           vm.otherWorkingGroups = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-          localStorageService.set('myWorkingGroups', vm.myWorkingGroups);
           localStorageService.set('otherWorkingGroups', vm.otherWorkingGroups);
+          vm.topicsWorkingGroups = groups.filter(g => g.isTopic === true);
+          localStorageService.set('topicsWorkingGroups', vm.topicsWorkingGroups);
           scope.myWorkingGroups = vm.myWorkingGroups;
           scope.otherWorkingGroups = vm.otherWorkingGroups;
+          scope.topicsWorkingGroups = vm.topicsWorkingGroups;
           return groups;
         }
       );

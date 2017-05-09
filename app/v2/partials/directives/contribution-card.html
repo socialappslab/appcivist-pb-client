@@ -71,8 +71,10 @@
       </div>
       <div class="heading__working_group" ng-if="contribution.workingGroupAuthors && contribution.workingGroupAuthors.length > 0">
         <div class="col-md-1 no-padding no-margin">
-          <img ng-if="group.profile.icon" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width:100%; vertical-align: middle;">
-          <i ng-if="!group.profile.icon" class="fa fa-group"></i>
+          <!-- TODO: allow for the possibility in which a contribution is assigned to a WG but also is associated with a Topic-->
+          <img ng-if="group.profile.icon && !group.isTopic" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
+          <i ng-if="!group.profile.icon" class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tags': group.isTopic}"></i>
+          <i ng-if="group.profile.icon && group.isTopic" class="fa fa-tags"></i>
         </div>
         <div class="col-md-11 no-padding no-margin">
           <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">

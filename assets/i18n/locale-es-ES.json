@@ -674,6 +674,8 @@
   "To accept the invitation, follow this link": "Para aceptar la invitación, siga este enlace",
   "Toggle navigation": "Activar/Desactivar Navegación",
   "Token error": "Error de Token",
+  "Topic": "Tópico",
+  "Topics": "Tópicos",
   "Total Budget": "Presupuesto Total",
   "Turn into Proposal": "Convertir en Propuesta",
   "Unknown user or password.": "Usuario o contraseña desconocido.",
@@ -807,6 +809,8 @@
   "Technical feedback": "Feedback técnico",
   "Show Ideas": "Ver Ideas",
   "Hide Ideas": "Ocultar Ideas",
+  "Show Comments": "Ver Comentarios",
+  "Hide Comments": "Ocultar Comentarios",  
   "File": "Archivo",
   "Configure your assembly": "Configure su Asamblea",
   "Stages and milestones": "Etapas y Logros",
@@ -1047,6 +1051,9 @@
   "The form is invalid: you must fill all required values": "El formulario es inválido: por favor, lleno todos los campos obligatorios",
   "Type your email": "Ingresa tu correo electrónico",
   "Type your password": "Ingresa tu contraseña",
+  "Show Insights": "Mostrar Insights",
+  "Hide Insights": "Ocultar Insights",
+  "Insights": "Insights",
   "Other Working Groups": "Otros Grupos de Trabajo",
   "Topic" : "Tópico"
 }

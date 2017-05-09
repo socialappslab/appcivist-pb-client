@@ -65,10 +65,10 @@
         <!-- Working Group -->
         <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && vm.isCreate && configs.indexOf('working-group') == -1">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
-          <select id="workingGroup" name="workingGroup" ng-model="vm.selectedGroup" ng-required="vm.isProposal"
-            ng-disabled="vm.disabled || vm.disableGroupSelection" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
-            <option value="">{{'Select a working group' | translate}}</option>
-          </select>
+            <select id="workingGroup" name="workingGroup" ng-model="vm.selectedGroup" ng-required="vm.isProposal"
+              ng-disabled="vm.disabled || vm.disableGroupSelection" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
+              <option value="">{{'Select a working group' | translate}}</option>
+            </select>
           <div ng-messages="contributionForm.workingGroup.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>

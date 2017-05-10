@@ -71,6 +71,9 @@
           $translate.use($scope.user.language);
         }
       }
+
+      $scope.newIdeaEnabled = $scope.newIdeaEnabled && $scope.user != null;
+
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection.bind($scope);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);

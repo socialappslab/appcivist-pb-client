@@ -152,7 +152,7 @@
         this.tinymceOptions = this.getEditorOptions();
         this.verifyMembership();
         this.hiddenFieldsMap = {};
-        let hiddenFields = this.configs || [];
+        let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];
         hiddenFields.forEach(hf => this.hiddenFieldsMap[hf] = true);
 
 

@@ -12,7 +12,7 @@
       </fieldset>-->
       <fieldset>
         <!-- Title -->
-        <div class="field__container" ng-if="configs.indexOf('title') == -1">
+        <div class="field__container" ng-if="!vm.hiddenFieldsMap['title']">
           <label for="add_proposal__title">{{'Title' | translate}} <abbr title="Required">*</abbr></label>
           <input ng-model="vm.contribution.title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
             type="text" placeholder="{{ 'Title' | translate }}" name="title" ng-maxlength="50">
@@ -23,7 +23,7 @@
         </div>
 
         <!-- Description -->
-        <div class="field__container" ng-i="configs.indexOf('description') == -1">
+        <div class="field__container" ng-if="!vm.hiddenFieldsMap['description']">
           <label for="add_proposal__description">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
           <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.contribution.text" ng-required="true" ng-disabled="disabled"
             id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Location -->
-        <div class="field__container assign_proposal_to_users" ng-if="configs.indexOf('location') == -1">
+        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['location']">
           <fieldset class="add_proposal__availble_themes">
             <label for="location">{{'Location' | translate}}</label>
             <input id="location" name="location" ng-model="vm.contribution.location.placeName" placeholder="{{'Location' | translate}}"
@@ -48,7 +48,7 @@
         </div>
 
         <!-- Status -->
-        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && configs.indexOf('status') == -1">
+        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && !vm.hiddenFieldsMap['status']">
           <label for="status">{{'Status' | translate}}</label>
           <select id="status" name="status" ng-model="vm.contribution.status" ng-disabled="disabled" style="height: 42px; width: 100%;">
             <option value="NEW">{{'New' | translate}}</option>
@@ -57,16 +57,16 @@
         </div>
 
         <!-- Pinned? -->
-        <div class="field__container" ng-if="vm.isProposal && vm.userIsAssemblyCoordinator && configs.indexOf('pin') == -1">
+        <div class="field__container" ng-if="vm.isProposal && vm.userIsAssemblyCoordinator && !vm.hiddenFieldsMap['pin']">
           <label for="pinned">{{'Pin contribution to make it always avaialable' | translate}}</label>
           <input id="pinned" type="checkbox" ng-model="vm.contribution.pinned" />
         </div>
 
         <!-- Working Group -->
-        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && vm.isCreate && configs.indexOf('working-group') == -1">
+        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && vm.isCreate && !vm.hiddenFieldsMap['working-group']">
           <label for="workingGroup">{{'Working Group' | translate}}</label>
-            <select id="workingGroup" name="workingGroup" ng-model="vm.selectedGroup" ng-required="vm.isProposal"
-              ng-disabled="vm.disabled || vm.disableGroupSelection" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
+          <select id="workingGroup" name="workingGroup" ng-model="vm.selectedGroup" ng-required="vm.isProposal"
+            ng-disabled="vm.disabled || vm.disableGroupSelection" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
               <option value="">{{'Select a working group' | translate}}</option>
             </select>
           <div ng-messages="contributionForm.workingGroup.$error" style="color:maroon" role="alert">
@@ -75,7 +75,7 @@
         </div>
 
         <!-- Authors -->
-        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && configs.indexOf('authors') == -1">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['authors']">
           <fieldset class="user__assignment">
             <label for="authors">{{'Authors' | translate}}</label>
             <tags-field id="authors" load-items="vm.loadAuthors(query)" options="vm.authorsOptions" selected="vm.contribution.authors"
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Non Member Author -->
-        <div class="field__container assign_proposal_to_users" ng-if="vm.isIdea && vm.isCreate && configs.indexOf('non-member-authors') == -1">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isIdea && vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">
           <fieldset class="user__assignment">
             <label for="non-member-authors">{{'Non Member Author' | translate}}</label>
             <nonmember-author-form id="non-member-authors" on-change="vm.updateNonMember(author)" ng-disabled="vm.disabled"></nonmember-author-form>
@@ -92,7 +92,7 @@
         </div>
 
         <!-- Assign to Proposal -->
-        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && configs.indexOf('existing-themes') == -1">
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['existing-themes']">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro">{{'Categories' | translate}}</p>
             <label class="add_proposal__categories_label">{{'Select categories to assign' | translate}}</label>
@@ -102,7 +102,7 @@
         </div>
 
         <!-- Attachments -->
-        <div class="field__container" ng-if="vm.isCreate && configs.indexOf('attachments') == -1">
+        <div class="field__container" ng-if="vm.isCreate && !vm.hiddenFieldsMap['attachments']">
           <fieldset>
             <p class="intro">{{'Attachments' | translate}}</p>
           </fieldset>
@@ -147,7 +147,7 @@
           </fieldset>
         </div>
 
-        <div class="field__container" ng-if="(vm.campaignFields || vm.componentFields)">
+        <div class="field__container" ng-if="(vm.campaignFields && vm.campaignFields.length) || (vm.componentFields && vm.componentFields.length)">
           <fieldset>
             <p class="intro">{{'Custom information' | translate}}</p>
             <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>

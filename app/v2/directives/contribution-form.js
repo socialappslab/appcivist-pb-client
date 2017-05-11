@@ -254,13 +254,19 @@
           this.groups = [this.group];
           this.selectGroup();
         } else {
-          let wgs = localStorageService.get('myWorkingGroups');
+          let wgs = localStorageService.get('myWorkingGroups') || [];
           let currentCampaign = localStorageService.get('currentCampaign');
           let campaignID = currentCampaign.campaignId;
-          this.groups = wgs ? wgs.filter(
+          let groups = wgs ? wgs.filter(
             function(wg) {
               return wg && wg.campaigns && wg.campaigns[0] === campaignID || !wg.campaigns;
             }) : wgs;
+          let topicWgs = localStorageService.get('topicsWorkingGroups');
+
+          if (topicWgs) {
+            groups = groups.concat(topicWgs);
+          }
+          this.groups = groups;
         }
       }
 

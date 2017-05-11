@@ -13,6 +13,9 @@
   function ContributionForm(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
     $filter, $state) {
+
+    FormCtrl.$inject = ['$scope'];
+
     return {
       restrict: 'E',
       scope: {
@@ -32,7 +35,7 @@
         // edit | create, default value is create
         mode: '@',
 
-        // campaign or current component configs
+        // campaign or current component configs. Array of fields to hide.
         configs: '=?'
       },
       templateUrl: '/app/v2/partials/directives/contribution-form.html',
@@ -40,7 +43,6 @@
       controller: FormCtrl
     };
 
-    FormCtrl.$inject = ['$scope'];
 
     function FormCtrl($scope) {
       this.init = init.bind(this);
@@ -77,6 +79,7 @@
       this.contribution = $scope.contribution;
       this.campaign = $scope.campaign;
       this.group = $scope.group;
+      this.configs = $scope.configs;
 
       if (this.mode === 'create') {
         this.initCreate()
@@ -148,6 +151,10 @@
         this.values = {};
         this.tinymceOptions = this.getEditorOptions();
         this.verifyMembership();
+        this.hiddenFieldsMap = {};
+        let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];
+        hiddenFields.forEach(hf => this.hiddenFieldsMap[hf] = true);
+
 
         if (this.isCreate) {
           this.loadWorkingGroups();
@@ -247,13 +254,19 @@
           this.groups = [this.group];
           this.selectGroup();
         } else {
-          let wgs = localStorageService.get('myWorkingGroups');
+          let wgs = localStorageService.get('myWorkingGroups') || [];
           let currentCampaign = localStorageService.get('currentCampaign');
           let campaignID = currentCampaign.campaignId;
-          this.groups = wgs ? wgs.filter(
+          let groups = wgs ? wgs.filter(
             function(wg) {
               return wg && wg.campaigns && wg.campaigns[0] === campaignID || !wg.campaigns;
             }) : wgs;
+          let topicWgs = localStorageService.get('topicsWorkingGroups');
+
+          if (topicWgs) {
+            groups = groups.concat(topicWgs);
+          }
+          this.groups = groups;
         }
       }
 

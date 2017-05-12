@@ -165,40 +165,49 @@
     }
 
     function updateFacebookToken(){
-      var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId + 'account/social_ideation_facebook';
+      var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId + '/fbtoken';
       var fd = new FormData();
-      fd.append('providerKey', $scope.profile.facebookUserId);
+      fd.append('userId', $scope.profile.facebookUserId);
       fd.append('accessToken', $scope.profile.userAccessToken);
       fd.append('expiration', $scope.profile.tokenExpiresIn);
-      
-      if (userInfoChanged()) {
-        $http.put(url, fd, {
+      $http.get(url, fd, {
           headers: {
             'Content-Type': undefined
           },
           transformRequest: angular.identity,
           params: {}
-        })
-      //   .then(function(response) {
-      //     var rsp = loginService.getUser().get({ id: $scope.user.userId });
-      //     rsp.$promise.then(
-      //       function(data) {
-      //         localStorageService.set('user', data);
-      //         if (passwordChanged()) {
-      //           updatePassword();
-      //         } else {
-      //           Notify.show('Data saved correctly');
-      //           window.location.reload();
-      //         }
-      //       },
-      //       function(error) {
-      //         Notify.show('Error fetching user information from the server', 'error');
-      //       }
-      //     );
-      //   });
-      // } else if (passwordChanged()) {
-      //   updatePassword();
-      }
+        }).then(
+          function(response) {
+            Notify.show('Update token');
+            $http.put(url, fd, {
+              headers: {
+                'Content-Type': undefined
+              },
+              transformRequest: angular.identity,
+              params: {}
+            });
+          },
+          function(error) {
+            console.log(error);
+            Notify.show('Create token', 'error');
+            $http.post(url, fd, {
+              headers: {
+                'Content-Type': undefined
+              },
+              transformRequest: angular.identity,
+              params: {}
+            });
+          }
+        );
+      // if (userInfoChanged()) {
+      //   $http.put(url, fd, {
+      //     headers: {
+      //       'Content-Type': undefined
+      //     },
+      //     transformRequest: angular.identity,
+      //     params: {}
+      //   })
+      // }
     }
 
     $scope.login = function () {

@@ -262,10 +262,15 @@
               return wg && wg.campaigns && wg.campaigns[0] === campaignID || !wg.campaigns;
             }) : wgs;
           let topicWgs = localStorageService.get('topicsWorkingGroups');
-
           if (topicWgs) {
             groups = groups.concat(topicWgs);
           }
+
+          let otherWgs = localStorageService.get('otherWorkingGroups');
+          if (otherWgs) {
+            groups = groups.concat(otherWgs);
+          }
+
           this.groups = groups;
         }
       }

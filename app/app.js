@@ -248,18 +248,18 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.cid', {
-        url: '/:cid',
-        controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
-      })
       .state('v2.assembly.aid.campaign.new', {
         url: '/new',
         controller: 'v2.CampaignFormWizardCtrl',
         templateUrl: 'app/v2/partials/campaign/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.cid', {
+        url: '/:cid',
+        controller: 'v2.CampaignDashboardCtrl',
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
         access: {
           requiresLogin: true
         }

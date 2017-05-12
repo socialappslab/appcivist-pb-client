@@ -35,7 +35,7 @@
     "angular-i18n": "=1.5.9",
     "ngclipboard": "^1.1.1",
     "angular-ui-router": "^0.2.18",
-    "appcivist-patterns": "git@github.com:socialappslab/appcivist-patterns.git#master",
+    "appcivist-patterns": "https://github.com/socialappslab/appcivist-pb-client.git#master",
     "lodash": "~4.16.4",
     "angular-inview": "^2.1.0",
     "ng-notify": "^0.8.0",

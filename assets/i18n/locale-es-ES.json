@@ -810,7 +810,7 @@
   "Show Ideas": "Ver Ideas",
   "Hide Ideas": "Ocultar Ideas",
   "Show Comments": "Ver Comentarios",
-  "Hide Comments": "Ocultar Comentarios",  
+  "Hide Comments": "Ocultar Comentarios",
   "File": "Archivo",
   "Configure your assembly": "Configure su Asamblea",
   "Stages and milestones": "Etapas y Logros",
@@ -1055,5 +1055,6 @@
   "Hide Insights": "Ocultar Insights",
   "Insights": "Insights",
   "Other Working Groups": "Otros Grupos de Trabajo",
-  "Topic" : "Tópico"
+  "Topic" : "Tópico",
+  "Custom Information": "Encuesta sobre autores"
 }

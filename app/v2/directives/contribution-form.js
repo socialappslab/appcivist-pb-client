@@ -35,8 +35,11 @@
         // edit | create, default value is create
         mode: '@',
 
-        // campaign or current component configs. Array of fields to hide.
-        configs: '=?'
+        // campaign or current component configs
+        configs: '=?',
+
+        // logged in user, null if is anonymous
+        user: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-form.html',
       controllerAs: 'vm',
@@ -150,11 +153,10 @@
         this.assembly = localStorageService.get('currentAssembly');
         this.values = {};
         this.tinymceOptions = this.getEditorOptions();
-        this.verifyMembership();
+        if (this.user) this.verifyMembership();
         this.hiddenFieldsMap = {};
         let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];
         hiddenFields.forEach(hf => this.hiddenFieldsMap[hf] = true);
-
 
         if (this.isCreate) {
           this.loadWorkingGroups();

@@ -72,8 +72,6 @@
         }
       }
 
-      $scope.newIdeaEnabled = $scope.newIdeaEnabled && $scope.user != null;
-
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection.bind($scope);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
@@ -178,7 +176,7 @@
             function(data) {
               if ($scope.isAnonymous) {
               loadAssemblyPublicProfile();
-            }
+              }
               var currentComponent = Campaigns.getCurrentComponent(data);
               setIdeasSectionVisibility(currentComponent);
               $scope.components = data;
@@ -255,6 +253,16 @@
                   $scope.showComments = false;
                 } else {
                   $scope.showComments = true;
+                }
+
+                if ($scope.campaignConfigs['appcivist.campaign.open-idea-section-default']
+                  && $scope.campaignConfigs['appcivist.campaign.open-idea-section-default'] === "TRUE"){
+                  $scope.ideasSectionExpanded = true;
+                }
+
+                if (!$scope.campaignConfigs['appcivist.campaign.allow-anonymous-ideas']
+                  || $scope.campaignConfigs['appcivist.campaign.allow-anonymous-ideas'] === "FALSE"){
+                  $scope.newIdeasEnabled = $scope.newIdeasEnabled && $scope.user != null;
                 }
               },
               function(error) {

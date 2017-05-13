@@ -32,5 +32,10 @@
 </script>
 
 <script id="contributionEditModal" type="text/ng-template">
-  <contribution-form contribution="contribution" on-success="onEditContributionSuccess()" mode="edit"></contribution-form>
+  <contribution-form
+    contribution="contribution"
+    on-success="onEditContributionSuccess()"
+    mode="edit"
+    user="user">
+  </contribution-form>
 </script>

@@ -359,8 +359,14 @@
   </article>
 
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-form group="wg" campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
-      type="PROPOSAL" on-success="closeAndReload()"></contribution-form>
+    <!-- TODO: Change the following so that it receives th full list of configs not just one -->
+    <contribution-form group="wg"
+                       campaign="campaign"
+                       configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+                       type="PROPOSAL"
+                       on-success="closeAndReload()"
+                       user="user">
+    </contribution-form>
   </script>
 
   <modal open-if="modals.proposalFormModal" close="closeModal('proposalFormModal')" template-id="proposalFormModal"></modal>

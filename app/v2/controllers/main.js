@@ -19,11 +19,9 @@
     $scope.fetchGroups = fetchGroups.bind($scope);
     $scope.fetchAnonymousGroups = fetchAnonymousGroups.bind($scope);
     $scope.needToRefresh = needToRefresh.bind($scope);
-    $scope.showGroup = showGroup.bind($scope);
     activate();
 
     function activate() {
-      console.log("mainController");
       $scope.user = localStorageService.get('user');
 
       if ($scope.user && $scope.user.language) {
@@ -44,16 +42,12 @@
           $scope.currentCampaignId = parseInt($state.params.cid);
         }
         loadUserData($scope);
-      } else {
-        if ($state.params && $state.params.cuuid /*&& pattern.test($state.params.cuuid)*/ ) {
-          $scope.isAnonymous = true;
-          $scope.isLoginPage = false;
-          $scope.currentCampaignUuid = $state.params.cuuid;
-          // load all the puboic working group of the campaign
-          fetchAnonymousGroups($scope);
-        } else {
-
-        }
+      } else if ($state.params && $state.params.cuuid) {
+        $scope.isAnonymous = true;
+        $scope.isLoginPage = false;
+        $scope.currentCampaignUuid = $state.params.cuuid;
+        // load all the puboic working group of the campaign
+        fetchAnonymousGroups($scope);
       }
       $scope.updateSmallMenu = updateSmallMenu;
       $scope.toggleNavigation = toggleNavigation;
@@ -90,9 +84,6 @@
           scope.assemblies = localStorageService.get('assemblies') || [];
           scope.fetchGroups().then(response => {
             scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
-            // TODO: why is this commented? scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
-            // scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
-            console.log("fetchGroups completed...");
           });
         });
       } else {
@@ -102,10 +93,7 @@
         scope.assemblies = localStorageService.get('assemblies') || [];
         scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
         scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
-        // scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
-        scope.fetchGroups(scope).then(response => {
-          console.log("fetchGroups completed...");
-        });
+        scope.fetchGroups(scope);
       }
     }
 
@@ -180,9 +168,10 @@
      */
     function isGroupActive(group) {
       let assembly = localStorageService.get('currentAssembly');
-      return $state.is('v2.assembly.aid.group.gid.item', {
+      return $state.is('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
         aid: assembly.assemblyId,
-        gid: group.groupId
+        gid: group.groupId,
+        cid: this.campaignId
       });
     }
 
@@ -211,21 +200,6 @@
       );
     }
 
-
-
-    /**
-     * Decides if a WG membership should appear or not in the sidebar.
-     */
-    function showGroup(wg) {
-      let vm = this;
-      let showGroup = !wg.campaigns || wg.campaigns[0] === this.currentCampaignId;
-
-      if (!vm.groupsAreShown && showGroup) {
-        vm.groupsAreShown = showGroup;
-      }
-      return showGroup;
-    }
-
     /**
      * Based on the given working groups, checks if user data should be refreshed. This
      * refreshing only happens when we move from one campaign to another.
@@ -233,9 +207,6 @@
      * @param {Object[]} workingGroups 
      */
     function needToRefresh(workingGroups) {
-      // if (!workingGroups || workingGroups.length === 0) {
-      //   return true;
-      // }
 
       if ($state.is('v2.assembly.aid.campaign.cid')) {
         if (workingGroups) {

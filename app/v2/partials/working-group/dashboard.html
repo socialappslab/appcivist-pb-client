@@ -263,7 +263,12 @@
           <section class="list--proposals">
             <header class="proposals__header col-*-12" style="padding-top: 0px;">
               <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-              <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+              <a class="proposals__add_new"
+                 ng-if="user != null && newProposalsEnabled"
+                 ng-click="openModal('proposalFormModal')">
+                <i class="fa fa-plus-square"></i>
+                &nbsp;{{'Add New' | translate}}
+              </a>
               <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()" style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;&nbsp;
               <a ng-if="!insightsSectionExpanded" ng-click="toggleInsightsSection()"  class="proposals__show_ideas" href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;

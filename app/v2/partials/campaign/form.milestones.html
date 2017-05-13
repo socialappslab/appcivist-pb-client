@@ -1,7 +1,7 @@
 <section class="comments__section">
   <div class="row" id="prePhase2">
     <div>
-      <div id="campaignMilestoneDefinition" class="row box descriptionBox row col-md-12 col-sm-12 col-xs-12">
+      <div id="campaignMilestoneDefinition" class="box descriptionBox">
         <p>
           <span>
             {{'Select a phase in the timeline to Edit, or add a new phase to the Campaign timeline. The timeline on the top of the page shows how your campaign timeline will be displayed.' |  translate}}
@@ -11,8 +11,11 @@
 
       <form name="newCampaignForm2">
         <section>
-          <campaign-timeline title="{{'Campaign Timeline' | translate}}" components="newCampaign.proposalComponents"
+          <campaign-timeline ng-if="!isEdit" title="{{'Campaign Timeline' | translate}}" components="newCampaign.proposalComponents"
             on-component-click="onComponentClick(component)"></campaign-timeline>
+
+          <campaign-timeline ng-if="isEdit" title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID"
+            campaign-id="newCampaign.campaignId" on-component-click="onComponentClick(component)" on-components-loaded="componentsLoaded(components)"></campaign-timeline>
         </section>
 
         <div class="panel panel-default" style="margin-top: 20px;">
@@ -36,7 +39,7 @@
             <fieldset class="col-lg-6">
               <label for="group">{{'Type' | translate}}</label>
               <div class="field-container">
-                <select name="type" class="col-lg-12" ng-model="selectedComponent.type" ng-options="type as type for type in componentTypes"></select>
+                <select ng-disabled="isEdit" name="type" class="col-lg-12" ng-model="selectedComponent.type" ng-options="type as type for type in componentTypes"></select>
               </div>
             </fieldset>
 
@@ -71,30 +74,30 @@
             <uib-accordion close-others="true">
               <div uib-accordion-group class="panel-default" ng-repeat="milestone in selectedComponent.milestones">
                 <uib-accordion-heading>
-                  {{milestone.title}} - {{formatDate(milestone.date)}} <i class="pull-right fa fa-trash"
-                    ng-click="$event.stopPropagation();$event.preventDefault();deleteMilestone(milestone)"></i>
+                  {{milestone.title}} - {{formatDate(milestone.date)}}
+                  <i ng-if="milestone.isEditable" class="pull-right fa fa-trash" ng-click="$event.stopPropagation();$event.preventDefault();deleteMilestone(milestone)"></i>
                 </uib-accordion-heading>
 
 
                 <fieldset class="col-lg-6">
                   <label for="group">{{'Title' | translate}}</label>
                   <div class="field-container">
-                    <input ng-model="milestone.title" type="text" class="col-lg-12">
+                    <input ng-disabled="!milestone.isEditable" ng-model="milestone.title" type="text" class="col-lg-12">
                   </div>
                 </fieldset>
 
                 <fieldset class="col-lg-3">
                   <label for="group">{{'Type' | translate}}</label>
                   <div class="field-container">
-                    <select name="type" class="col-lg-12" ng-model="milestone.type" ng-options="type as type for type in milestoneTypes"></select>
+                    <select ng-disabled="!milestone.isEditable" name="type" class="col-lg-12" ng-model="milestone.type" ng-options="type as type for type in milestoneTypes"></select>
                   </div>
                 </fieldset>
 
                 <fieldset class="col-lg-3">
                   <label for="group">{{'Date' | translate}}</label>
                   <p class="input-group">
-                    <input type="text" class="form-control" uib-datepicker-popup ng-model="milestone.date" is-open="datepicker.opened"
-                      datepicker-options="dateOptions" ng-required="true" close-text="{{'Close' | translate}}"
+                    <input ng-disabled="!milestone.isEditable" type="text" class="form-control" uib-datepicker-popup ng-model="milestone.date"
+                      is-open="datepicker.opened" datepicker-options="dateOptions" ng-required="true" close-text="{{'Close' | translate}}"
                     />
                     <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="datepicker.opened = true"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -106,7 +109,7 @@
                 <fieldset class="col-lg-12">
                   <label for="group">{{'Description' | translate}}</label>
                   <div class="field-container">
-                    <textarea rows="8" ng-model="milestone.description"></textarea>
+                    <textarea ng-disabled="!milestone.isEditable" rows="8" ng-model="milestone.description"></textarea>
                   </div>
                 </fieldset>
               </div>
@@ -124,13 +127,12 @@
           </div>
           <div class="col-md-4">
             <button class="btn btn-primary col-md-12" uib-tooltip="{{info.campaignFastrackTooltip}}" ng-disabled="!newCampaignForm2.$valid"
-              ng-click="createOrUpdateCampaign('v2.assembly.aid.campaign.new.description', {aid: assemblyID, fastrack:false})">
+              ng-click="goPrev()">
                {{'Back' | translate}}
             </button>
           </div>
           <div class="col-md-4">
-            <button class="btn btn-primary col-md-12" ng-click="createOrUpdateCampaign('v2.assembly.aid.campaign.new.stages', {aid: assemblyID, fastrack:false})"
-              ng-disabled="!newCampaignForm2.$valid">
+            <button class="btn btn-primary col-md-12" ng-click="goNext()" ng-disabled="!newCampaignForm2.$valid">
               {{'Next' | translate}}
             </button>
           </div>

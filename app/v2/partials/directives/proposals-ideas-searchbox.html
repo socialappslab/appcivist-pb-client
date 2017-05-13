@@ -4,58 +4,58 @@
     color: #fff;
     background-color: #11493b;
   }
-
+  
   .campaign__filters .filters .tags li:hover::after {
     content: "";
   }
-
+  
   .campaign__filters .button__add_filter {
     color: #11493b;
     margin-left: 0;
   }
-
+  
   .hide {
     margin-left: -10000px;
   }
-
+  
   div.filters ul.tags li a {
     position: relative;
   }
-
+  
   div.filters ul.tags li a i {
     position: absolute;
     right: 5px;
     top: 5px;
   }
-
+  
   ul.sort_modes li.active i {
     color: #fff;
   }
-
+  
   ul.sort_modes li i {
     color: #11493b;
     padding-right: 5px;
     margin-top: 6px;
   }
-
+  
   .filters .tags__group .tags {
     float: none;
   }
-
+  
   .filters .tags__group {
     margin-bottom: 5px;
   }
-
-  .label {
+  
+  proposal-ideas-searchbox .label {
     color: #11493b;
     padding: 0;
   }
-
+  
   .tags p {
     margin-bottom: 0.2em;
     color: #11493b;
   }
-
+  
   .vex.vex-theme-plain .vex-content .modal-body {
     padding: 2em;
   }
@@ -127,25 +127,29 @@
         <i ng-if="sortingIs('popularity_asc')" class="fa fa-sort-up"></i>
         <!--<i ng-if="!sortingIs('popularity_asc') && !sortingIs('popularity_desc')" class="fa fa-sort-up"></i>-->
       </li>
-      <li ng-if="isAnonymous" class="sarch_mode__most_commented_public" ng-click="setSorting('most_commented_public')" ng-class="{active: sortingIs('most_commented_public')}">
+      <li ng-if="isAnonymous" class="sarch_mode__most_commented_public" ng-click="setSorting('most_commented_public')"
+        ng-class="{active: sortingIs('most_commented_public')}">
         <a href="">{{'Most commented' | translate}}</a>
         <i ng-if="sortingIs('most_commented_public_desc')" class="fa fa-sort-down"></i>
         <i ng-if="sortingIs('most_commented_public_asc')" class="fa fa-sort-up"></i>
         <!--<i ng-if="!sortingIs('most_commented_public_asc') && !sortingIs('most_commented_public_desc')" class="fa fa-sort-up"></i>-->
       </li>
-      <li ng-if="!isAnonymous && campaignConfig['appcivist.campaign.disable-public-site']==='FALSE'" class="sarch_mode__most_commented" ng-click="setSorting('most_commented')" ng-class="{active: sortingIs('most_commented')}">
+      <li ng-if="!isAnonymous && campaignConfig['appcivist.campaign.disable-public-site']==='FALSE'" class="sarch_mode__most_commented"
+        ng-click="setSorting('most_commented')" ng-class="{active: sortingIs('most_commented')}">
         <a href="">{{'Most commented' | translate}}</a>
         <i ng-if="sortingIs('most_commented_desc')" class="fa fa-sort-down"></i>
         <i ng-if="sortingIs('most_commented_asc')" class="fa fa-sort-up"></i>
         <!--<i ng-if="!sortingIs('most_commented_asc') && !sortingIs('most_commented_desc')" class="fa fa-sort-up"></i>-->
       </li>
-      <li ng-if="!isAnonymous && campaignConfig['appcivist.campaign.disable-public-site']==='TRUE'" class="sarch_mode__most_commented_members" ng-click="setSorting('most_commented_members')" ng-class="{active: sortingIs('most_commented_members')}">
+      <li ng-if="!isAnonymous && campaignConfig['appcivist.campaign.disable-public-site']==='TRUE'" class="sarch_mode__most_commented_members"
+        ng-click="setSorting('most_commented_members')" ng-class="{active: sortingIs('most_commented_members')}">
         <a href="">{{'Most commented' | translate}}</a>
         <i ng-if="sortingIs('most_commented_members_desc')" class="fa fa-sort-down"></i>
         <i ng-if="sortingIs('most_commented_members_asc')" class="fa fa-sort-up"></i>
         <!--<i ng-if="!sortingIs('most_commented_members_asc') && !sortingIs('most_commented_members_desc')" class="fa fa-sort-up"></i>-->
       </li>
-      <li ng-if="!isAnonymous && !campaignConfig['appcivist.campaign.disable-public-site']" class="sarch_mode__most_commented_members" ng-click="setSorting('most_commented_members')" ng-class="{active: sortingIs('most_commented_members')}">
+      <li ng-if="!isAnonymous && !campaignConfig['appcivist.campaign.disable-public-site']" class="sarch_mode__most_commented_members"
+        ng-click="setSorting('most_commented_members')" ng-class="{active: sortingIs('most_commented_members')}">
         <a href="">{{'Most commented' | translate}}</a>
         <i ng-if="sortingIs('most_commented_members_desc')" class="fa fa-sort-down"></i>
         <i ng-if="sortingIs('most_commented_members_asc')" class="fa fa-sort-up"></i>
@@ -168,7 +172,8 @@
       <label class="label">{{'Themes' | translate}}</label>
       <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="vm.selectedThemes"></tags-field>
       <label class="label" ng-if="vm.canFilterByGroup">{{'Working Groups' | translate}}</label>
-      <tags-field ng-if="vm.canFilterByGroup" load-items="loadGroups({query: query})" options="groupsOptions" selected="vm.selectedGroups"></tags-field>
+      <tags-field ng-if="vm.canFilterByGroup" load-items="loadGroups({query: query})" options="groupsOptions"
+        selected="vm.selectedGroups"></tags-field>
       <br />
       <fieldset class="actions">
         <a href="" class="button__modal_submit" ng-click="addSelected()">{{'Apply Filters' | translate}}</a>

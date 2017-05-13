@@ -539,6 +539,7 @@
   "Profile": "Profile",
   "Promote to proposal": "Promote to proposal",
   "Proposal": "Proposal",
+  "proposal": "proposal",
   "Proposal Development Timeline": "Proposal Development Timeline",
   "Proposal discussions closing date": "Proposal discussions closing date",
   "Proposal History": "Proposal History",
@@ -673,6 +674,8 @@
   "To accept the invitation, follow this link": "To accept the invitation, follow this link",
   "Toggle navigation": "Toggle navigation",
   "Token error": "Token error",
+  "Topic": "Tópico",
+  "Topics": "Tópicos",
   "Total Budget": "Total Budget",
   "Turn into Proposal": "Turn into Proposal",
   "Unknown user or password.": "Unknown user or password.",
@@ -806,6 +809,8 @@
   "Technical feedback": "Technical feedback",
   "Show Ideas": "Show Ideas",
   "Hide Ideas": "Hide Ideas",
+  "Show Comments": "Show Comments",
+  "Hide Comments": "Hide Comments",
   "File": "File",
   "Configure your assembly": "Configure your assembly",
   "Stages and milestones": "Stages and milestones",
@@ -1050,5 +1055,11 @@
   "Type your email": "Type your email",
   "Type your password": "Type your password",
   "Connect with Facebook": "Connect with Facebook",
-  "help.tooltip.connectWithFacebook": "Social Ideation is an application that connects idea management platforms (such as AppCivist) with general purpose social networks (such as Facebook). Once you authorize this app, every time you create an idea within a Campaign of AppCivist, this will be replicated into a connected space within the target social network (e.g., a Facebook group)!" 
+  "help.tooltip.connectWithFacebook": "Social Ideation is an application that connects idea management platforms (such as AppCivist) with general purpose social networks (such as Facebook). Once you authorize this app, every time you create an idea within a Campaign of AppCivist, this will be replicated into a connected space within the target social network (e.g., a Facebook group)!",
+  "Show Insights": "Show Insights",
+  "Hide Insights": "Hide Insights",
+  "Insights": "Insights",
+  "Other Working Groups": "Other Working Groups",   
+  "Topic" : "Topic",
+  "Custom Information" : "Custom Information" 
 }

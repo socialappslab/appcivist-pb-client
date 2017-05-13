@@ -5,11 +5,16 @@
     .module('appCivistApp')
     .controller('v2.WorkingGroupFormCtrl', WorkingGroupFormCtrl);
 
-  WorkingGroupFormCtrl.$inject = ['$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService',
-  'Assemblies', 'WorkingGroups', 'Campaigns', 'usSpinnerService', '$state', 'logService', '$stateParams', 'configService', '$location'];
+  WorkingGroupFormCtrl.$inject = [
+    '$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService', 'Assemblies',
+    'WorkingGroups', 'Campaigns', 'usSpinnerService', '$state', 'logService', '$stateParams',
+    'configService', '$location', 'Notify', 'Space'
+  ];
 
   function WorkingGroupFormCtrl($scope, localStorageService, $translate, $routeParams, LocaleService,
-    Assemblies, WorkingGroups, Campaigns, usSpinnerService, $state, logService, $stateParams, configService, $location) {
+    Assemblies, WorkingGroups, Campaigns, usSpinnerService, $state, logService, $stateParams,
+    configService, $location, Notify, Space) {
+
     init();
 
     function init() {
@@ -20,8 +25,10 @@
     }
 
     function initScopeFunctions() {
+      $scope.onSuccess = onSuccess.bind($scope);
+      $scope.saveConfigurations = saveConfigurations.bind($scope);
 
-      $scope.goToStep = function (step) {
+      $scope.goToStep = function(step) {
         if (step === 1) {
           if ($stateParams.gid) {
             $location.path('/v2/assembly/' + $stateParams.aid + '/campaign/' + $stateParams.cid + '/group/' + $stateParams.gid + '/edit/description');
@@ -45,20 +52,33 @@
         $scope.f = file;
       }
 
+      /**
+       * Uploads the selected file to the server
+       * 
+       * @param {Object} file - The file to upload
+       * @param {Object[]} errFiles
+       */
       $scope.uploadFiles = function(file, errFiles) {
         $scope.f = file;
-        $scope.errFile = errFiles && errFiles[0];
-        $scope.iconResource = {};
-        FileUploader.uploadFileAndAddToResource(file, $scope.iconResource);
-      };
+        var fd = new FormData();
+        fd.append('file', file);
+        $http.post(FileUploader.uploadEndpoint(), fd, {
+          headers: {
+            'Content-Type': undefined
+          },
+          transformRequest: angular.identity,
+        }).then(
+          response => $scope.setNewWorkingGroupIcon(response.data.url, response.data.name),
+          error => Notify.show('Error while uploading file to the server', 'error'));
+      }
 
       $scope.addEmailsToList = function(emailsText) {
         $scope.invalidEmails = [];
         var emails = emailsText.split(',');
         emails.forEach(function(email) {
-          console.log("Adding email: " + email);
           var invitee = {};
           invitee.email = email.trim();
+
           if ($scope.isValidEmail(invitee.email)) {
             invitee.moderator = false;
             invitee.coordinator = false;
@@ -67,7 +87,7 @@
             $scope.invalidEmails.push(invitee.email);
           }
         });
-        $scope.inviteesEmails = "";
+        $scope.inviteesEmails = '';
       }
 
       $scope.isValidEmail = function(email) {
@@ -100,95 +120,117 @@
         }
       };
 
-      $scope.getExistingConfigs = function() {
-        var configs = configService.getWGroupConfigs("WGROUP");
-        var finalConfig = [];
-        _.forEach($scope.newWorkingGroup.configs, function(config) {
-          _.forEach(configs, function (configAux) {
-            if (config.key == configAux.key) {
-              config.definition = configAux.definition;
-            }
-          });
-          finalConfig.push(config);
+      /**
+       * Get the final list of working groups configurations. It merges the given
+       * configuration list with the default configurations.
+       * 
+       * @param {Object[]} configs - configuration already loaded.
+       */
+      $scope.getConfigurations = function(configs) {
+        let defaults = configService.getWGroupConfigs();
+
+        if (!configs) {
+          return defaults;
+        }
+        let configurations = [];
+        defaults.forEach(defaultConfig => {
+          let config = _.find(configs, { key: defaultConfig.key });
+
+          if (config) {
+            config.definition = defaultConfig.definition;
+            configurations.push(config);
+          } else {
+            configurations.push(defaultConfig);
+          }
         });
-        return finalConfig;
+        return configurations;
       }
 
       $scope.getAttributesFromExistingWGroup = function() {
-        //TODO to set default assembly
-        $scope.campaignId = $scope.newWorkingGroup.campaigns[0];
         $scope.campaignThemes = $scope.newWorkingGroup.existingThemes; //?
 
         if ($scope.newWorkingGroup.profile.supportedMembership === 'OPEN') {
           $scope.newWorkingGroup.profile.membership = 'OPEN';
-        } else if ($scope.newWorkingGroup.profile.supportedMembership === "INVITATION" || $scope.newWorkingGroup.profile.supportedMembership === "REQUEST"
-            || $scope.newWorkingGroup.profile.supportedMembership === "INVITATION_AND_REQUEST") {
-              $scope.newWorkingGroup.profile.registration = {};
-            if ($scope.newWorkingGroup.profile.supportedMembership === "INVITATION")
-              $scope.newWorkingGroup.profile.registration.invitation = true;
-            if ($scope.newWorkingGroup.profile.supportedMembership === "REQUEST")
-              $scope.newWorkingGroup.profile.registration.request = true;
-            if ($scope.newWorkingGroup.profile.supportedMembership === "INVITATION_AND_REQUEST") {
-              $scope.newWorkingGroup.profile.registration.invitation = true;
-              $scope.newWorkingGroup.profile.registration.request = true;
-            }
-            $scope.newWorkingGroup.profile.membership = 'REGISTRATION';
+        } else if ($scope.newWorkingGroup.profile.supportedMembership === 'INVITATION' || $scope.newWorkingGroup.profile.supportedMembership === 'REQUEST' ||
+          $scope.newWorkingGroup.profile.supportedMembership === 'INVITATION_AND_REQUEST') {
+          $scope.newWorkingGroup.profile.registration = {};
+          if ($scope.newWorkingGroup.profile.supportedMembership === 'INVITATION') {
+            $scope.newWorkingGroup.profile.registration.invitation = true;
+          }
+
+          if ($scope.newWorkingGroup.profile.supportedMembership === 'REQUEST') {
+            $scope.newWorkingGroup.profile.registration.request = true;
+          }
+
+          if ($scope.newWorkingGroup.profile.supportedMembership === 'INVITATION_AND_REQUEST') {
+            $scope.newWorkingGroup.profile.registration.invitation = true;
+            $scope.newWorkingGroup.profile.registration.request = true;
+          }
+          $scope.newWorkingGroup.profile.membership = 'REGISTRATION';
         }
 
         // see how this can be established
-        if ($scope.newWorkingGroup.profile.managementType === "OPEN") {
+        if ($scope.newWorkingGroup.profile.managementType === 'OPEN') {
           $scope.newWorkingGroup.profile.moderators = false;
           $scope.newWorkingGroup.profile.coordinators = false;
-        } else if ($scope.newWorkingGroup.profile.managementType === "COORDINATED_AND_MODERATED") {
+        } else if ($scope.newWorkingGroup.profile.managementType === 'COORDINATED_AND_MODERATED') {
           $scope.newWorkingGroup.profile.moderators = true; //can be all
           $scope.newWorkingGroup.profile.coordinators = true; //can be all
-        } else if ($scope.newWorkingGroup.profile.managementType === "MODERATED") {
+        } else if ($scope.newWorkingGroup.profile.managementType === 'MODERATED') {
           $scope.newWorkingGroup.profile.moderators = true; //can be all
           $scope.newWorkingGroup.profile.coordinators = false;
-        } else if ($scope.newWorkingGroup.profile.managementType === "COORDINATED") {
+        } else if ($scope.newWorkingGroup.profile.managementType === 'COORDINATED') {
           $scope.newWorkingGroup.profile.moderators = false;
           $scope.newWorkingGroup.profile.coordinators = true; //can be all
         }
-
-        //?
         $scope.contributions = $scope.newWorkingGroup.existingContributions;
-        // add configs
-        $scope.newWorkingGroup.configs = $scope.getExistingConfigs();
+
+        if ($scope.isEdit) {
+          // load configurations
+          let rsp = Space.configs($scope.newWorkingGroup.resourcesResourceSpaceId).get().$promise;
+          rsp.then(
+            configs => $scope.newWorkingGroup.configs = $scope.getConfigurations(configs),
+            error => Notify.show('Error while trying to load working group configurations', 'error')
+          );
+        } else {
+          $scope.newWorkingGroup.configs = $scope.getConfigurations($scope.newWorkingGroup.configs);
+        }
       }
 
-      $scope.setModerationAndMembership = function () {
+      $scope.setModerationAndMembership = function() {
+        if ($scope.isTopic) {
+          console.log("Is Topic");
+          $scope.newWorkingGroup.profile.supportedMembership = 'OPEN';
+        }
+
         if ($scope.newWorkingGroup.profile.membership === 'OPEN') {
-          $scope.newWorkingGroup.profile.supportedMembership = "OPEN";
+          $scope.newWorkingGroup.profile.supportedMembership = 'OPEN';
         } else if ($scope.newWorkingGroup.profile.membership === 'REGISTRATION') {
           if ($scope.newWorkingGroup.profile.registration.invitation &&
             !$scope.newWorkingGroup.profile.registration.request) {
-            $scope.newWorkingGroup.profile.supportedMembership = "INVITATION";
+            $scope.newWorkingGroup.profile.supportedMembership = 'INVITATION';
           } else if (!$scope.newWorkingGroup.profile.registration.invitation &&
             $scope.newWorkingGroup.profile.registration.request) {
-            $scope.newWorkingGroup.profile.supportedMembership = "REQUEST";
+            $scope.newWorkingGroup.profile.supportedMembership = 'REQUEST';
           } else if ($scope.newWorkingGroup.profile.registration.invitation &&
             $scope.newWorkingGroup.profile.registration.request) {
-            $scope.newWorkingGroup.profile.supportedMembership = "INVITATION_AND_REQUEST";
+            $scope.newWorkingGroup.profile.supportedMembership = 'INVITATION_AND_REQUEST';
           }
         }
 
-        console.log("Creating assembly with membership = " + $scope.newWorkingGroup.profile.supportedMembership);
         if ($scope.newWorkingGroup.profile.moderators == false && $scope.newWorkingGroup.profile.coordinators == false) {
-          console.log("entro a OPEN");
-          $scope.newWorkingGroup.profile.managementType = "OPEN";
+          $scope.newWorkingGroup.profile.managementType = 'OPEN';
         } else if ($scope.newWorkingGroup.profile.moderators == true && $scope.newWorkingGroup.profile.coordinators == true) {
-          console.log("entro a COOR AND MOD");
-          $scope.newWorkingGroup.profile.managementType = "COORDINATED_AND_MODERATED";
+          $scope.newWorkingGroup.profile.managementType = 'COORDINATED_AND_MODERATED';
         } else if ($scope.newWorkingGroup.profile.moderators == false && $scope.newWorkingGroup.profile.coordinators == true) {
-          console.log("entro a COOR");
-          $scope.newWorkingGroup.profile.managementType = "COORDINATED";
+          $scope.newWorkingGroup.profile.managementType = 'COORDINATED';
         } else if ($scope.newWorkingGroup.profile.moderators == true && $scope.newWorkingGroup.profile.coordinators == false) {
-          console.log("entro a MOD");
-          $scope.newWorkingGroup.profile.managementType = "MODERATED";
+          $scope.newWorkingGroup.profile.managementType = 'MODERATED';
         }
       }
 
       $scope.createOrUpdateWorkingGroup = function() {
+        const resourceSpaceId = $scope.newWorkingGroup.resourcesResourceSpaceId;
         // temporal fix
         delete $scope.newWorkingGroup.resourcesResourceSpaceId;
         delete $scope.newWorkingGroup.forumResourceSpaceId;
@@ -197,12 +239,12 @@
         // 1. process themes
         if ($scope.campaignThemes) {
           for (var i = 0; i < $scope.campaignThemes.length; i++) {
+
             if ($scope.campaignThemes[i].selected) {
               $scope.newWorkingGroup.existingThemes.push($scope.campaignThemes[i]);
             }
           }
         }
-
         $scope.setModerationAndMembership();
 
         // 4. process brainstorming contributions
@@ -214,30 +256,39 @@
             }
           }
         }
-        var newGroup;
+        let rsp;
+        let configs;
+        let payload;
+
         if (!$scope.isEdit) {
-          newGroup = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).save($scope.newWorkingGroup);
+          rsp = WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).save($scope.newWorkingGroup).$promise;
         } else {
-          newGroup = WorkingGroups.workingGroup($scope.assemblyID, $scope.newWorkingGroup.groupId).update($scope.newWorkingGroup);
+          payload = _.cloneDeep($scope.newWorkingGroup);
+          // configs will be save separately
+          configs = payload.configs;
+          delete payload.ballots;
+          delete payload.campaign;
+          delete payload.configs;
+          delete payload.existingThemes;
+          rsp = WorkingGroups.workingGroup($scope.assemblyID, $scope.newWorkingGroup.groupId).update(payload).$promise;
         }
 
-        newGroup.$promise.then(
-          function(response) {
-            $scope.newWorkingGroup = response;
-            $scope.workingGroups = localStorageService.get("workingGroups");
-            if ($scope.workingGroups === undefined || $scope.workingGroups === null) {
-              $scope.workingGroups = [];
+        rsp.then(
+          response => {
+            if ($scope.isEdit) {
+              // we need to save configurations
+              $scope.saveConfigurations(resourceSpaceId, configs)
+                .then(
+                  res => $scope.onSuccess(response),
+                  error => Notify.show('Error while trying to save working group\'s configurations', 'error')
+                );
+            } else {
+              $scope.onSuccess(response);
             }
-            $scope.workingGroups.push($scope.newWorkingGroup);
-            localStorageService.set("workingGroups", $scope.workingGroups);
-            localStorageService.remove("temporaryNewWGroup");
-            //$location.url("/v1/assembly/" + $scope.assemblyID + "/group/" + $scope.newWorkingGroup.groupId);
-            // TODO send to group page
-            $state.go("v2.assembly.aid.campaign.cid", {aid: $scope.assemblyID, cid: $scope.campaignID});
           },
-          function(error) {
+          error => {
             $scope.errors.push(error.data);
-            //$rootScope.showError(error.data, "WORKING_GROUP", null);
+            Notify.show('Error while trying to safe working group', 'error');
           }
         );
       }
@@ -271,11 +322,7 @@
 
     function initScopeContent() {
       $scope.isEdit = false;
-      $scope.user = localStorageService.get("user");
-      if ($scope.user && $scope.user.language)
-        $translate.use($scope.user.language);
       $scope.errors = [];
-      //$scope.assemblyID = $routeParams.aid;
       var currentAssembly = localStorageService.get('currentAssembly');
       $scope.assemblyID = currentAssembly != null ? currentAssembly.assemblyId : 1;
       $scope.campaignID = $stateParams.cid;
@@ -284,50 +331,45 @@
         $scope.selectCampaign = true;
       }
       $scope.workingGroupID = $routeParams.wid || $stateParams.gid;
-      //$scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
-
       $scope.defaultIcons = [{
-        "name": "Justice Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png"
+        'name': 'Justice Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/justicia-140.png'
       }, {
-        "name": "Plan Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png"
+        'name': 'Plan Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/tabacalera-140.png'
       }, {
-        "name": "Article 49 Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png"
+        'name': 'Article 49 Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/article19-140.png'
       }, {
-        "name": "Passe Livre Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png"
+        'name': 'Passe Livre Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image74.png'
       }, {
-        "name": "Skyline Icon",
-        "url": "https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg"
+        'name': 'Skyline Icon',
+        'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg'
       }];
-      //$scope.newWorkingGroup.profile.icon = $scope.defaultIcons[0].url;
       $scope.f = {
-        "name": $scope.defaultIcons[0].name,
-        "url": $scope.defaultIcons[0].url
+        'name': $scope.defaultIcons[0].name,
+        'url': $scope.defaultIcons[0].url
       }
-
       $scope.contribsCurrentPg = 0;
       $scope.contribsPageSize = 5;
       $scope.contributions = [];
-
       $scope.membersCurrentPg = 0;
       $scope.membersPageSize = 5;
       $scope.assemblyMembers = [];
 
       // temporaryWGroup manage
-      var temporaryWGroup = localStorageService.get("temporaryNewWGroup");
-      if ($stateParams.gid && ($state.is('v2.assembly.aid.campaign.workingGroup.gid.edit')
-        || $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.description')
-        || $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.configuration'))) {
+      let temporaryWGroup = localStorageService.get('temporaryNewWGroup');
+      if ($stateParams.gid && ($state.is('v2.assembly.aid.campaign.workingGroup.gid.edit') ||
+          $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.description') ||
+          $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.configuration'))) {
         $scope.isEdit = true;
+
         if ((temporaryWGroup != null && temporaryWGroup.groupId != $stateParams.gid) || temporaryWGroup == null) {
-          var rsp = WorkingGroups.workingGroup($stateParams.aid, $stateParams.gid).get();
+          let rsp = WorkingGroups.workingGroup($stateParams.aid, $stateParams.gid).get();
           rsp.$promise.then(function(data) {
-            console.log("Get WGroup with wgroupId " + $stateParams.gid);
             $scope.newWorkingGroup = data;
-            localStorageService.set("temporaryNewWGroup", $scope.newWorkingGroup);
+            localStorageService.set('temporaryNewWGroup', $scope.newWorkingGroup);
             $scope.getAttributesFromExistingWGroup();
           });
         } else {
@@ -336,14 +378,18 @@
         initializeGroup();
         initializeCampaign();
       } else {
+
         if (temporaryWGroup != null && temporaryWGroup.workiginGroupId != null) {
-          localStorageService.set("temporaryNewWGroup", null);
+          localStorageService.set('temporaryNewWGroup', null);
         }
         initializeGroup();
         initializeCampaign();
       }
 
-      $scope.$watch("newWorkingGroup.name", function(newVal, oldval) {
+      $scope.$watch('newWorkingGroup.name', function(newVal, oldval) {
+        if (!$scope.newWorkingGroup) {
+          return;
+        }
         $translate('wgroup.invitation.email.text', {
           group: $scope.newWorkingGroup.name
         }).then(function(text) {
@@ -351,27 +397,22 @@
         });
       }, true);
 
-      $scope.$watch("newWorkingGroup", function(newVal, oldval) {
-        localStorageService.set("temporaryNewWGroup", newVal);
+      $scope.$watch('newWorkingGroup', function(newVal, oldval) {
+        localStorageService.set('temporaryNewWGroup', newVal);
       }, true);
     }
 
     function initializeGroup() {
-      if ($scope.newWorkingGroup === null || $scope.newWorkingGroup === undefined || $scope.newWorkingGroup === "") {
-        $scope.newWorkingGroup = localStorageService.get("temporaryNewWGroup");
-        if ($scope.newWorkingGroup === null || $scope.newWorkingGroup === undefined || $scope.newWorkingGroup === "") {
-          $scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
-          $scope.newWorkingGroup.profile = {};
-          $scope.newWorkingGroup.profile.icon = $scope.defaultIcons[0].url;
-          // add configs and principal configs (this controller doesnt have a initializeGroup method)
-          var configs = configService.getWGroupConfigs("WGROUP");
-          $scope.newWorkingGroup.configs = configs;
-          localStorageService.set("temporaryNewWGroup", $scope.newWorkingGroup);
-        }
-      } else {
-        console.log("Temporary New WGroup exists in the scope")
-      }
+      let wg = localStorageService.get('temporaryNewWGroup');
 
+      if (!wg) {
+        $scope.newWorkingGroup = WorkingGroups.defaultNewWorkingGroup();
+        $scope.newWorkingGroup.profile = {};
+        $scope.newWorkingGroup.profile.icon = $scope.defaultIcons[0].url;
+        var configs = configService.getWGroupConfigs();
+        $scope.newWorkingGroup.configs = configs;
+        localStorageService.set('temporaryNewWGroup', $scope.newWorkingGroup);
+      }
     }
 
     function initializeAssembly() {
@@ -413,6 +454,33 @@
           $scope.errors.push(error);
         }
       );
+    }
+
+    /**
+     * Working group on-success callback.
+     * 
+     * @param {Object} response
+     */
+    function onSuccess(response) {
+      Notify.show('Working group saved');
+      localStorageService.remove('temporaryNewWGroup');
+      $state.go('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
+        aid: $scope.assemblyID,
+        cid: $scope.campaignID,
+        gid: response.newResourceId
+      });
+    }
+
+    /**
+     * Save the given working group configurations.
+     * 
+     * @param {number} sid - resource space ID
+     * @param {Object[]} configs
+     */
+    function saveConfigurations(sid, configs) {
+      let payload = {};
+      configs.forEach(config => payload[config.key] = config.value);
+      return Space.configs(sid).update(payload).$promise;
     }
   }
 }());

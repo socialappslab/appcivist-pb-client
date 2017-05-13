@@ -251,18 +251,18 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.cid', {
-        url: '/:cid',
-        controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
-      })
       .state('v2.assembly.aid.campaign.new', {
         url: '/new',
         controller: 'v2.CampaignFormWizardCtrl',
         templateUrl: 'app/v2/partials/campaign/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.cid', {
+        url: '/:cid',
+        controller: 'v2.CampaignDashboardCtrl',
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
         access: {
           requiresLogin: true
         }
@@ -426,14 +426,32 @@
         url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
-      }).state('v2.campaign', {
+      })
+      .state('v2.campaign', {
         url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
-      }).state('v2.campaign.cuuid', {
+      })
+      .state('v2.campaign.cuuid', {
         url: '/:cuuid',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.campaign.cuuid.dashboard', {
+        url: '',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
+      })
+      // open working group dashboard
+      .state('v2.campaign.cuuid.group', {
+        url: '/group',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.campaign.cuuid.group.gid', {
+        url: '/:gid',
+        controller: 'v2.WorkingGroupDashboardCtrl',
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
       })
       .state('v2.proposal', {
         url: '/proposal',

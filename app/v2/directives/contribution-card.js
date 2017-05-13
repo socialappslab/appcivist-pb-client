@@ -32,6 +32,22 @@
       this.showContextualMenu = !this.showContextualMenu;
     }
 
+    function verifyCampaignComponent(scope) {
+      if (scope.campaign && scope.components) {
+        // Verify the status of the campaign and show or not show the voting buttons
+        var currentComponent = Campaigns.getCurrentComponent(scope.components);
+        currentComponent = currentComponent ? currentComponent : {};
+        if (currentComponent.type === 'VOTING') {
+          scope.showVotingButtons = true;
+        } else if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
+          scope.isProposalIdeaStage = true;
+        } else {
+          scope.isProposalIdeaStage = false;
+        }
+      }
+    }
+
+
     return {
       restrict: 'E',
       scope: {
@@ -41,7 +57,8 @@
         components: '=',
         isAnonymous: '=',
         showIdeaBody: '@',
-        isCoordinator: '='
+        isCoordinator: '=',
+        isTopicGroup: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
@@ -77,18 +94,8 @@
           }
         }
 
-        if (scope.campaign && scope.components) {
-          // Verify the status of the campaign and show or not show the voting buttons
-          var currentComponent = Campaigns.getCurrentComponent(scope.components);
-          currentComponent = currentComponent ? currentComponent : {};
-          if (currentComponent.type === 'VOTING') {
-            scope.showVotingButtons = true;
-          } else if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
-            scope.isProposalIdeaStage = true;
-          } else {
-            scope.isProposalIdeaStage = false;
-          }
-        }
+        verifyCampaignComponent(scope);
+
         scope.showActionMenu = false;
         scope.myObject = {};
         scope.myObject.refreshMenu = function() {

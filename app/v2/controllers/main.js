@@ -17,8 +17,8 @@
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
     $scope.fetchGroups = fetchGroups.bind($scope);
+    $scope.fetchAnonymousGroups = fetchAnonymousGroups.bind($scope);
     $scope.needToRefresh = needToRefresh.bind($scope);
-    $scope.showGroup = showGroup.bind($scope);
     activate();
 
     function activate() {
@@ -38,16 +38,16 @@
 
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
-        loadUserData($scope);
-
         if ($state.params && $state.params.cid) {
           $scope.currentCampaignId = parseInt($state.params.cid);
         }
-      } else {
-        if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
-          $scope.isAnonymous = true;
-          $scope.isLoginPage = false;
-        }
+        loadUserData($scope);
+      } else if ($state.params && $state.params.cuuid) {
+        $scope.isAnonymous = true;
+        $scope.isLoginPage = false;
+        $scope.currentCampaignUuid = $state.params.cuuid;
+        // load all the puboic working group of the campaign
+        fetchAnonymousGroups($scope);
       }
       $scope.updateSmallMenu = updateSmallMenu;
       $scope.toggleNavigation = toggleNavigation;
@@ -74,20 +74,43 @@
      */
     function loadUserData(scope) {
       let myWorkingGroups = localStorageService.get('myWorkingGroups');
+      let topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
 
       if (scope.needToRefresh(myWorkingGroups)) {
         Assemblies.setCurrentAssembly(parseInt($state.params.aid)).then(response => {
           scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+          var current = scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId });
+          $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
           scope.assemblies = localStorageService.get('assemblies') || [];
           scope.fetchGroups().then(response => {
-            scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+            scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
           });
         });
       } else {
         scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
+        var current = scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId });
+        $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
         scope.assemblies = localStorageService.get('assemblies') || [];
         scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
+        scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
+        scope.fetchGroups(scope);
       }
+    }
+
+    /**
+     * 
+     * @param {Object} scope -  component scope 
+     */
+    function fetchAnonymousGroups(scope) {
+      let rsp = WorkingGroups.workingGroupsInCampaignByUUID(scope.currentCampaignUuid).query().$promise;
+      return rsp.then(
+        groups => {
+          localStorageService.set('otherWorkingGroups', groups);
+          scope.otherWorkingGroups = groups;
+          return groups;
+        }
+      );
+
     }
 
     function updateSmallMenu() {
@@ -114,6 +137,9 @@
 
       if ($state.params && $state.params.cid) {
         $scope.currentCampaignId = parseInt($state.params.cid);
+        var ongoing = localStorageService.get('ongoingCampaigns');
+        var current = ongoing.filter(c => { return c.campaignId == $scope.currentCampaignId });
+        $scope.currentCampaignUuid = current[0].uuid;
       }
       var isCampaignDashboard = $state.is('v2.assembly.aid.campaign.cid');
 
@@ -142,9 +168,10 @@
      */
     function isGroupActive(group) {
       let assembly = localStorageService.get('currentAssembly');
-      return $state.is('v2.assembly.aid.group.gid.item', {
+      return $state.is('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
         aid: assembly.assemblyId,
-        gid: group.groupId
+        gid: group.groupId,
+        cid: this.campaignId
       });
     }
 
@@ -152,7 +179,7 @@
     /**
      * Loads the working group associated with the current campaign.
      */
-    function fetchGroups() {
+    function fetchGroups(scope) {
       let vm = this;
       let assembly = localStorageService.get('currentAssembly');
       let membershipsInGroups = localStorageService.get('membershipsInGroups');
@@ -160,25 +187,17 @@
       return rsp.then(
         groups => {
           vm.myWorkingGroups = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-          localStorageService.set('myWorkingGroups', vm.myWorkingGroups);
+          localStorageService.set('myWorkingGroups', vm.myWorkingGroups.filter(g => g.isTopic === false));
+          vm.otherWorkingGroups = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+          localStorageService.set('otherWorkingGroups', vm.otherWorkingGroups);
+          vm.topicsWorkingGroups = groups.filter(g => g.isTopic === true);
+          localStorageService.set('topicsWorkingGroups', vm.topicsWorkingGroups);
+          scope.myWorkingGroups = vm.myWorkingGroups;
+          scope.otherWorkingGroups = vm.otherWorkingGroups;
+          scope.topicsWorkingGroups = vm.topicsWorkingGroups;
           return groups;
         }
       );
-    }
-
-
-
-    /**
-     * Decides if a WG membership should appear or not in the sidebar.
-     */
-    function showGroup(wg) {
-      let vm = this;
-      let showGroup = !wg.campaigns || wg.campaigns[0] === this.currentCampaignId;
-
-      if (!vm.groupsAreShown && showGroup) {
-        vm.groupsAreShown = showGroup;
-      }
-      return showGroup;
     }
 
     /**
@@ -188,9 +207,6 @@
      * @param {Object[]} workingGroups 
      */
     function needToRefresh(workingGroups) {
-      if (!workingGroups || workingGroups.length === 0) {
-        return true;
-      }
 
       if ($state.is('v2.assembly.aid.campaign.cid')) {
         if (workingGroups) {

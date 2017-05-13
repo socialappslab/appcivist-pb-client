@@ -106,6 +106,85 @@
   header.proposals__header>h2 {
     float: none !important;
   }
+  .show-comments.campaign_cards .list--proposals {
+    width: 60%;
+  }
+
+@media (min-width: 768px) {
+  .show-comments.campaign_cards .list--proposals .card__proposal {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 1) {
+      margin-left: 0;
+      margin-right: -100%;
+      clear: both; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 2) {
+      margin-left: 50%;
+      margin-right: -100%;
+      clear: none; } }
+
+@media (min-width: 1024px) {
+  .show-comments.campaign_cards .list--proposals .card__proposal {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 1) {
+      margin-left: 0;
+      margin-right: -100%;
+      clear: both; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 2) {
+      margin-left: 50%;
+      margin-right: -100%;
+      clear: none; } }
+
+@media (min-width: 1500px) {
+  .show-comments.campaign_cards .list--proposals .card__proposal {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 1) {
+      margin-left: 0;
+      margin-right: -100%;
+      clear: both; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 2) {
+      margin-left: 50%;
+      margin-right: -100%;
+      clear: none; } }
+
+@media (min-width: 1800px) {
+  .show-comments.campaign_cards .list--proposals .card__proposal {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 33.3333333333%;
+    float: left;
+    padding-left: 15px;
+    padding-right: 15px; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(3n + 1) {
+      margin-left: 0;
+      margin-right: -100%;
+      clear: both; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(3n + 2) {
+      margin-left: 33.3333333333%;
+      margin-right: -100%;
+      clear: none; }
+    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(3n + 3) {
+      margin-left: 66.6666666667%;
+      margin-right: -100%;
+      clear: none; } }
 </style>
 <main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
   <article class="campaign">
@@ -195,63 +274,137 @@
       ng-click="openModal('ideaFormModal')"> &nbsp;{{'Add Idea' | translate}} </button>
     <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
     <section class="proposals_and_ideas">
-      <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" load-groups="loadGroups(query)"
+      <proposals-ideas-searchbox class="col-*-12" search-handler="doSearch(filters)" load-themes="loadThemes(query)" load-groups="loadGroups(query)"
         is-anonymous="isAnonymous" campaign-config="campaignConfigs" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
         sorting="sorting"></proposals-ideas-searchbox>
-      <div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}">
-        <section class="list--proposals">
-          <header class="proposals__header">
-            <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-            <a class="proposals__add_new" ng-if="!isAnonymous && user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
-            <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
-              class="proposals__show_ideas" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Ideas' | translate }}</a>&nbsp;&nbsp;
-          </header>
-          <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
-            is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
-        </section>
-        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
-          <header class="ideas__header">
-            <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
-            <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-            <a class="ideas__add_new" ng-if="!isAnonymous && user != null && newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
-            <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Ideas'|translate}}</a>&nbsp;&nbsp;
-          </header>
+      <div class="row" style="padding-left:20px">
+        <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
+          <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded, 'show-comments': commentsSectionExpanded}">-->
+            <section class="list--proposals">
+              <header class="proposals__header col-*-12" style="padding-top: 0px;">
+                <h2 class="heading--header">{{'Proposals' | translate}}</h2>
+                <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
+                <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()" class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
+                <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()" style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
+                <a ng-if="!insightsSectionExpanded" ng-click="toggleInsightsSection()"  class="proposals__show_ideas" href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;
+                <a ng-if="insightsSectionExpanded" ng-click="toggleHideInsightsSection()" class="proposals__show_ideas" href=""><i class="fa fa-bar-chart"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
+                <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a>
+                <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
+                <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
+              </header>
+              <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
+                <pagination-widget
+                  page-size="pageSize"
+                  space="spaceID"
+                  resource="contribution"
+                  type="type"
+                  is-anonymous="isAnonymous"
+                  is-coordinator="isCoordinator"
+                  sorting="sorting"
+                  ng-if="showPagination"
+                  campaign="campaign"
+                  components="components">
+                </pagination-widget>
+              </div>
+            </section>
+          <!--</div>-->
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <!-- Ideas section -->
+          <section ng-if="ideasSectionExpanded" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
+            <header class="ideas__header" style="padding-left: 30px;">
+              <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
+              <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
+              <a class="ideas__add_new" ng-if="newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
+              <a ng-if="ideasSectionExpanded" ng-click="toggleHideIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Hide Ideas' | translate }}</a>&nbsp;&nbsp;
+            </header>
+            <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
+              <contribution-card
+                class="card__idea col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                ng-repeat="idea in ideas track by $index"
+                contribution="idea"
+                campaign="campaign"
+                components="components"
+                is-anonymous="isAnonymous"
+                show-voting-buttons="true"
+                is-coordinator="isCoordinator">
+              </contribution-card>
+              <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
+            </div>
+          </section>
+          <!-- Comments section -->
+          <section ng-if="commentsSectionExpanded" ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">
+            <header class="comments__header" style="padding-left: 30px;">
+              <h2 class="heading--header">{{ 'Comments' | translate}}</h2>
+                <a ng-if="commentsSectionExpanded" ng-click="toggleHideCommentsSection()" class="comments__show_ideas" href=""><i class="fa fa-comments-o"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
+            </header>
 
-          <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-            <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea" contribution="idea" campaign="campaign"
-              components="components" is-anonymous="isAnonymous" show-voting-buttons="true" is-coordinator="isCoordinator"></contribution-card>
-            <p ng-if="!ideas || ideas.length === 0" class="card">{{'no.idea.message' | translate}}</p>
-          </div>
-        </section>
+            <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
+                <!-- Nav tabs -->
+              <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
+                <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate}} ({{membersCommentCounter.value}})</a></li>
+                <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate}} ({{publicCommentCounter.value}})</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
+                  <discussion-panel style="padding-left: 0px !important;" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID"
+                    endpoint="campaign"></discussion-panel>
+                </div>
+                <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
+                  <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" space-id="campaign.forumSpaceID" endpoint-id="$parent.campaignID"
+                    endpoint="campaign" public-board="true"></discussion-panel>
+                  <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" space-id="campaign.frsUUID" endpoint-id="campaign.uuid"
+                    endpoint="campaign" public-board="true"></discussion-panel>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Insights section -->
+          <!-- TODO: fix issue with display of this section below <section class="list&#45;&#45;ideas" ng-class="{hide: !insightsSectionExpanded}">-->
+            <!--<header class="ideas__header">-->
+              <!--<h2>{{ 'Insights' | translate}}<br></h2>-->
+              <!--<a ng-if="insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;-->
+            <!--</header>-->
+
+            <!--<a><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a><br>-->
+            <!--<a><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a><br>-->
+            <!--<a><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a><br>-->
+            <!--<a ng-repeat="group in groups" ng-if="!group.isTopic && group.proposalsCount>0"><i class="fa fa-users"></i> &nbsp;{{'Group' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a>-->
+            <!--<a ng-repeat="group in groups" ng-if="group.isTopic && group.proposalsCount>0"><i class="fa fa-hashtag"></i> &nbsp;{{'Topic' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a><br>-->
+          <!--</section>-->
+        </div>
       </div>
     </section>
   </article>
 
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs custom-ul">
+    <!-- Nav tabs -->
+  <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
     <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})</a></li>
     <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate}} ({{publicCommentCounter.value}})</a></li>
   </ul>
 
   <!-- Tab panes -->
-  <div class="tab-content">
+  <div class="hidden-lg tab-content">
     <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-      <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID"
+      <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID"
         endpoint="campaign"></discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
       <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID" endpoint-id="$parent.campaignID"
-        endpoint="campaign" public-board="true"></discussion-panel>
+        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
       <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID" endpoint-id="campaign.uuid"
-        endpoint="campaign" public-board="true"></discussion-panel>
+        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
     </div>
   </div>
 
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-form campaign="campaign" type="PROPOSAL" on-success="closeModal()"></contribution-form>
+    <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="PROPOSAL" on-success="closeModal()"></contribution-form>
   </script>
 
   <script id="ideaFormModal" type="text/ng-template">
-    <contribution-form campaign="campaign" type="IDEA" on-success="closeModal()"></contribution-form>
+    <contribution-form campaign="campaign" tconfigs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="IDEA" on-success="closeModal()"></contribution-form>
   </script>
 </main>

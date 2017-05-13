@@ -399,12 +399,22 @@
   </div>
 
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
-      type="PROPOSAL" on-success="closeModal()"></contribution-form>
+    <contribution-form
+      campaign="campaign"
+      configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      user="user"
+      type="PROPOSAL"
+      on-success="closeModal()">
+    </contribution-form>
   </script>
 
   <script id="ideaFormModal" type="text/ng-template">
-    <contribution-form campaign="campaign" tconfigs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
-      type="IDEA" on-success="closeModal()"></contribution-form>
+    <contribution-form
+      campaign="campaign"
+      tconfigs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="IDEA"
+      on-success="closeModal()"
+      user="user">
+    </contribution-form>
   </script>
 </main>

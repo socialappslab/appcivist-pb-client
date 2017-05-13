@@ -230,7 +230,7 @@
       }
 
       $scope.createOrUpdateWorkingGroup = function() {
-        const resourceSpaceId = $scope.newWorkingGroup.resourcesResourceSpaceId;
+        // const resourceSpaceId = $scope.newWorkingGroup.resourcesResourceSpaceId;
         // temporal fix
         delete $scope.newWorkingGroup.resourcesResourceSpaceId;
         delete $scope.newWorkingGroup.forumResourceSpaceId;
@@ -412,6 +412,8 @@
         var configs = configService.getWGroupConfigs();
         $scope.newWorkingGroup.configs = configs;
         localStorageService.set('temporaryNewWGroup', $scope.newWorkingGroup);
+      } else {
+        $scope.newWorkingGroup = wg;
       }
     }
 

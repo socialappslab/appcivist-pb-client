@@ -33,7 +33,10 @@
         mode: '@',
 
         // campaign or current component configs
-        configs: '=?'
+        configs: '=?',
+
+        // logged in user, null if is anonymous
+        user: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-form.html',
       controllerAs: 'vm',
@@ -147,7 +150,7 @@
         this.assembly = localStorageService.get('currentAssembly');
         this.values = {};
         this.tinymceOptions = this.getEditorOptions();
-        this.verifyMembership();
+        if (this.user) this.verifyMembership();
 
         if (this.isCreate) {
           this.loadWorkingGroups();

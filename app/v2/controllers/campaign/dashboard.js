@@ -7,11 +7,12 @@
 
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService',
-    'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile'
+    'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile', '$state'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
-    localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile) {
+    localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
+    $state) {
 
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function(tab) {
@@ -83,6 +84,7 @@
       $scope.loadGroups = loadGroups.bind($scope);
       $scope.openModal = openModal.bind($scope);
       $scope.closeModal = closeModal.bind($scope);
+      $scope.redirectToProposal = redirectToProposal.bind($scope);
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
 
       loadCampaigns();
@@ -118,7 +120,7 @@
       if (assemblyShortname) {
         var rsp = Assemblies.assemblyByShortName(assemblyShortname).get();
         rsp.$promise.then(function(assembly) {
-          $scopoe.assembly = assembly;
+          $scope.assembly = assembly;
         }, function(error) {
           Notify.show('Error while loading public profile of assembly with shortname', 'error');
         });
@@ -448,6 +450,20 @@
     function closeModal() {
       this.$broadcast('pagination:reloadCurrentPage');
       this.vexInstance.close();
+    }
+
+    function redirectToProposal(contribution) {
+      this.closeModal();
+      let group = contribution.workingGroupAuthors && contribution.workingGroupAuthors[0];
+
+      if (group) {
+        $state.go('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
+          pid: contribution.contributionId,
+          aid: this.assemblyID,
+          cid: this.campaignID,
+          gid: group.groupId
+        });
+      }
     }
   }
 })();

@@ -8,11 +8,11 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state'
   ];
 
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
+    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, $state) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function(tab) {
       if (tab == 1) {
@@ -25,7 +25,6 @@
     activate();
 
     function activate() {
-      console.log("workingGroupDashboard");
       ModalMixin.init($scope);
       $scope.membersCommentCounter = { value: 0 };
       $scope.publicCommentCounter = { value: 0 };
@@ -81,7 +80,7 @@
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
-      $scope.closeAndReload = closeAndReload.bind($scope);
+      $scope.redirectToProposal = redirectToProposal.bind($scope);
 
       $scope.contributionTypeIsSupported = function(type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
@@ -351,9 +350,15 @@
       }
     }
 
-    function closeAndReload() {
-      this.$broadcast('pagination:reloadCurrentPage');
+    function redirectToProposal(contribution) {
       this.closeModal('proposalFormModal');
+
+      $state.go('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
+        pid: contribution.contributionId,
+        aid: this.assemblyID,
+        cid: this.campaignID,
+        gid: this.groupID
+      });
     }
   }
 }());

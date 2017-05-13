@@ -408,11 +408,11 @@
 
   <script id="proposalFormModal" type="text/ng-template">
     <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
-      type="PROPOSAL" on-success="closeModal()"></contribution-form>
+      type="PROPOSAL" on-success="redirectToProposal(contribution)"></contribution-form>
   </script>
 
   <script id="ideaFormModal" type="text/ng-template">
-    <contribution-form campaign="campaign" tconfigs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+    <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
       type="IDEA" on-success="closeModal()"></contribution-form>
   </script>
 </main>

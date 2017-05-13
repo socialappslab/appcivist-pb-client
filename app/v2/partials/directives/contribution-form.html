@@ -155,9 +155,14 @@
           </fieldset>
         </div>
 
-        <fieldset>
-          <a class="button__modal_submit" ng-click="vm.submit()">{{'Save' | translate}}</a>
-        </fieldset>
+        <div class="row">
+          <div class="col-md-6">
+            <a class="button__modal_submit" ng-click="vm.submit()">{{'Save' | translate}}</a>
+          </div>
+          <div class="col-md-6">
+            <a class="button__modal_submit" ng-click="vm.onSuccess()">{{'Cancel' | translate}}</a>
+          </div>
+        </div>
       </fieldset>
     </form>
   </div>

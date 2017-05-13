@@ -26,8 +26,14 @@
         </div>
       </fieldset>
     </form>
-    <fieldset>
-      <button class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
-    </fieldset>
+    <div class="row">
+      <div class="col-md-6">
+        <button class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+      </div>
+      <div class="col-md-6">
+        <button class="button__modal_submit" ng-click="vm.close()">{{'Cancel' | translate}}</button>
+      </div>
+    </div>
+
   </div>
 </div>

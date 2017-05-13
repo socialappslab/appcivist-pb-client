@@ -68,6 +68,11 @@
           scope.vm.edit = function() {
             $state.go('v2.assembly.aid.campaign.workingGroup.gid.edit', { aid: scope.assemblyId, cid: $state.params.cid, gid: scope.wgroup.groupId });
           }
+
+          scope.vm.onEditVotingSuccess = function() {
+            this.closeModal('configureBallotForm');
+            $window.location.reload();
+          }
         }
       }
     };

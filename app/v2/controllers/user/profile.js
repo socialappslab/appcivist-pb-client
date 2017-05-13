@@ -6,11 +6,11 @@
 
   ProfileCtrl.$inject = [
     '$scope', '$resource', '$location', 'localStorageService', '$http',
-    'loginService', 'Notify', '$translate'
+    'loginService', 'Notify', '$translate', 'Facebook'
   ];
 
   function ProfileCtrl($scope, $resource, $location, localStorageService, $http,
-    loginService, Notify, $translate) {
+    loginService, Notify, $translate, Facebook) {
 
     activate();
 
@@ -24,13 +24,19 @@
         firstname: $scope.user.name.split(' ')[0],
         lastname: $scope.user.name.split(' ')[1],
         email: $scope.user.email,
-        username: $scope.user.username
+        username: $scope.user.username,
+        facebookUserId: $scope.user.facebookUserId,
+        userAccessToken: $scope.user.userAccessToken,
+        tokenExpiresIn: $scope.user.tokenExpiresIn
       };
       $scope.userFromServer = {
         firstname: $scope.profile.firstname,
         lastname: $scope.profile.lastname,
         email: $scope.profile.email,
-        username: $scope.profile.username
+        username: $scope.profile.username,
+        facebookUserId: $scope.profile.facebookUserId,
+        userAccessToken: $scope.profile.userAccessToken,
+        tokenExpiresIn: $scope.profile.tokenExpiresIn
       };
       $scope.blurReset = blurReset;
       $scope.updateProfile = updateProfile;
@@ -62,7 +68,10 @@
       fd.append('name', $scope.profile.firstname + ' ' + $scope.profile.lastname);
       fd.append('email', $scope.profile.email);
       fd.append('username', $scope.profile.username);
-
+      fd.append('facebookUserId', $scope.profile.facebookUserId);
+      // fd.append('userAccessToken', $scope.profile.userAccessToken);
+      // fd.append('tokenExpiresIn', $scope.profile.tokenExpiresIn);
+      
       if (userInfoChanged()) {
         $http.put(url, fd, {
           headers: {
@@ -127,7 +136,8 @@
     }
 
     function userInfoChanged() {
-      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic'];
+      // var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId', 'userAccessToken', 'tokenExpiresIn'];
+      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId'];
 
       for (var i = 0; i < props.length; i++) {
         var prop = props[i];
@@ -153,5 +163,74 @@
       };
       reader.readAsDataURL(file);
     }
+
+    function updateFacebookToken(){
+      var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId + '/fbtoken';
+      var fd = new FormData();
+      fd.append('userId', $scope.profile.facebookUserId);
+      fd.append('accessToken', $scope.profile.userAccessToken);
+      fd.append('expiration', $scope.profile.tokenExpiresIn);
+      $http.get(url, fd, {
+          headers: {
+            'Content-Type': undefined
+          },
+          transformRequest: angular.identity,
+          params: {}
+        }).then(
+          function(response) {
+            Notify.show('Update token');
+            $http.put(url, fd, {
+              headers: {
+                'Content-Type': undefined
+              },
+              transformRequest: angular.identity,
+              params: {}
+            });
+          },
+          function(error) {
+            console.log(error);
+            Notify.show('Create token', 'error');
+            $http.post(url, fd, {
+              headers: {
+                'Content-Type': undefined
+              },
+              transformRequest: angular.identity,
+              params: {}
+            });
+          }
+        );
+      // if (userInfoChanged()) {
+      //   $http.put(url, fd, {
+      //     headers: {
+      //       'Content-Type': undefined
+      //     },
+      //     transformRequest: angular.identity,
+      //     params: {}
+      //   })
+      // }
+    }
+
+    $scope.login = function () {
+      // From now on you can use the Facebook service just as Facebook api says
+      Facebook.login(function(response) {
+        // Do something with response.
+        console.log('me loguee');
+        console.log('user id: ' + response.authResponse.userID);
+        $scope.profile.facebookUserId = response.authResponse.userID;
+        console.log('access token: ' + response.authResponse.accessToken);
+        $scope.profile.userAccessToken = response.authResponse.accessToken;
+        console.log('expires in: ' + response.authResponse.expiresIn);
+        $scope.profile.tokenExpiresIn = response.authResponse.expiresIn;
+        updateFacebookToken();
+      });
+    };
+
+    $scope.$watch(function() {
+    // This is for convenience, to notify if Facebook is loaded and ready to go.
+      return Facebook.isReady();
+    }, function(newVal) {
+      // You might want to use this to disable/show/hide buttons and else
+      $scope.facebookReady = true;
+    });
   }
 }());

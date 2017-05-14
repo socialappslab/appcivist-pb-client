@@ -18,7 +18,13 @@
         isAnonymous: '=',
         campaignConfig: '=',
         campaignContributionTypes: '@',
-        sorting: '='
+
+        // generated filters will be set in this property
+        generatedFilters: '=',
+
+        // false | true. If true, the widget will call the searchHandler. Otherwise, generated filters 
+        // and sorting will be updated without calling the backend
+        dryRun: '@'
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function(scope, element, attrs) {
@@ -61,7 +67,7 @@
     /**
      * Set the current searchmode of the search textbox.
      *
-     * @param {string} mode - PROPOSAL | IDEA
+     * @param {string} mode - proposal | idea | myProposals
      */
     function searchMode(mode, event) {
       event.preventDefault();
@@ -71,7 +77,7 @@
       }
       this.filters.mode = mode;
 
-      if (this.filters.searchText.trim().length > 0) {
+      if (this.filters.searchText.trim().length > 0 || this.dryRun === 'true') {
         this.doSearch();
       }
     }
@@ -170,7 +176,6 @@
       } else {
         this.filters.sorting = sort;
       }
-      this.sorting = this.filters.sorting;
       this.doSearch();
     }
 
@@ -195,10 +200,22 @@
     }
 
     /**
-     * call search handler with current filters spec.
+     * call search handler with current filters spec. If dryRun is true, just update generatedFilters.
      */
     function doSearch() {
-      this.searchHandler({ filters: this.filters });
+      let filters = _.cloneDeep(this.filters);
+
+      if (filters.mode === 'myProposals') {
+        filters.mode = 'proposal';
+        let user = localStorageService.get('user');
+        filters.by_author = user.userId;
+      }
+
+      if (this.dryRun === 'true') {
+        this.generatedFilters = filters;
+      } else {
+        this.searchHandler({ filters });
+      }
     }
   }
 }());

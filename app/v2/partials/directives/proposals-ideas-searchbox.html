@@ -87,6 +87,9 @@
       <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA')">
         <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate}}</a>
       </li>
+      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'myProposals'}">
+        <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate}}</a>
+      </li>
     </ul>
   </div>
   <div class="filters">

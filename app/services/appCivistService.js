@@ -1108,15 +1108,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         } else {
           rsp = Contributions.contributionInResourceSpace(target.rsID).get(query);
         }
-        rsp.$promise.then(
-          function(data) {
-            return data;
-          },
-          function(error) {
-            Notify.show('Error loading contributions from server', 'error');
-          }
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error loading contributions from server', 'error')
         );
-        return rsp.$promise;
       },
 
       getCommentCount: function(sid) {
@@ -1165,16 +1160,17 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           by_text: filters.searchText
         };
 
-        if (target) {
-          params.sorting = filters.sorting;
-          params.themes = _.flatMap(filters.themes, function(e) {
-            return e.themeId;
-          });
-          params.groups = _.flatMap(filters.groups, function(e) {
-            return e.groupId;
-          });
-          return this.getContributions(target, type, isAnonymous, params);
+        if (filters.by_author) {
+          params.by_author = filters.by_author;
         }
+        params.sorting = filters.sorting;
+        params.themes = _.flatMap(filters.themes, function(e) {
+          return e.themeId;
+        });
+        params.groups = _.flatMap(filters.groups, function(e) {
+          return e.groupId;
+        });
+        return this.getContributions(target, type, isAnonymous, params);
       },
 
       /**

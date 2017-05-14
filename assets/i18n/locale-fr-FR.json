@@ -675,7 +675,7 @@
   "Toggle navigation": "Afficher le menu",
   "Token error": "Erreur du code secret",
   "Topic": "Tópico",
-  "Topics": "Tópicos",  
+  "Topics": "Tópicos",
   "Total Budget": "Budget total",
   "Turn into Proposal": "Transformer en Proposition",
   "Unknown user or password.": "Utilisateur ou mot de passe inconnu.",
@@ -810,7 +810,7 @@
   "Show Ideas": "Montrer les Idées",
   "Hide Ideas": "Cacher les Idées",
   "Show Comments": "Show Comments",
-  "Hide Comments": "Hide Comments",  
+  "Hide Comments": "Hide Comments",
   "File": "Fichier",
   "Configure your assembly": "Configurer votre Assemblée",
   "Stages and milestones": "Phases et étapes",
@@ -1057,5 +1057,6 @@
   "Hide Insights": "Hide Insights",
   "Insights": "Insights",
   "Other Working Groups": "Autres Groupes de Travail",
-  "Topic" : "Topique"
+  "My proposals": "My proposals",
+  "Join a Working Group to create proposals": "Join a Working Group to create proposals"
 }

@@ -27,7 +27,9 @@
         //supported values:  PROPOSAL | IDEA
         type: '@',
 
-        // handler called when contribution creation has succeeded
+        // handler called when contribution creation has succeeded. 
+        // The function gets as a parameter the created contribution. An example of onSuccess callback is
+        // function onSuccessCallback(contribution) { ... }
         onSuccess: '&',
 
         contribution: '<',
@@ -430,7 +432,7 @@
 
         if (this.mode === 'create') {
           rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(this.contribution).$promise.then(
-            contribution => this.saveFieldsValues(contribution.resourceSpaceId),
+            contribution => this.saveFieldsValues(contribution.resourceSpaceId).then(response => contribution),
             error => Notify.show('Error while trying to save the contribution', 'error')
           );
         } else if (this.mode === 'edit') {
@@ -448,7 +450,7 @@
             Notify.show('Contribution saved', 'success');
 
             if (angular.isFunction(vm.onSuccess)) {
-              vm.onSuccess();
+              vm.onSuccess({ contribution: data });
             }
           },
           error => Notify.show('Error while trying to save the contribution', 'error')

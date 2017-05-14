@@ -86,6 +86,7 @@
       $scope.closeModal = closeModal.bind($scope);
       $scope.redirectToProposal = redirectToProposal.bind($scope);
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
+      $scope.checkJoinWGButtonVisibility = checkJoinWGButtonVisibility.bind($scope);
 
       loadCampaigns();
 
@@ -103,6 +104,7 @@
         proposalNew: false
       };
       $scope.filters = {};
+      $scope.displayJoinWorkingGroup = false;
       $scope.isModalOpened = isModalOpened.bind($scope);
       $scope.toggleModal = toggleModal.bind($scope);
       $scope.contributionTypeIsSupported = function(type) {
@@ -219,7 +221,6 @@
           if (!$scope.isAnonymous) {
 
             res = loadGroups();
-            //  console.log(res);
             res.then(
               function(data) {
                 $scope.groups = data;
@@ -248,13 +249,19 @@
             rsp.$promise.then(
               function(data) {
                 $scope.campaignConfigs = data;
-                if (($scope.campaignConfigs['appcivist.campaign.disable-campaign-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-campaign-comments'] === 'TRUE') ||
-                  ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') ||
-                  ($scope.campaignConfigs['appcivist.group.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.group.disable-working-group-comments'] === 'TRUE')) {
+                let configs = data;
+                const DISABLE_CAMPAIGN_COMMENTS = 'appcivist.campaign.disable-campaign-comments';
+                const DISABLE_CAMPAIGN_GROUP_COMMENTS = 'appcivist.campaign.disable-working-group-comment';
+                const DISABLE_GROUPS_COMMENTS = 'appcivist.group.disable-working-group-comments';
+
+                if ((configs[DISABLE_CAMPAIGN_COMMENTS] && configs[DISABLE_CAMPAIGN_COMMENTS] === 'TRUE') ||
+                  (configs[DISABLE_CAMPAIGN_GROUP_COMMENTS] && configs[DISABLE_CAMPAIGN_GROUP_COMMENTS] === 'TRUE') ||
+                  (configs[DISABLE_GROUPS_COMMENTS] && configs[DISABLE_GROUPS_COMMENTS] === 'TRUE')) {
                   $scope.showComments = false;
                 } else {
                   $scope.showComments = true;
                 }
+                $scope.checkJoinWGButtonVisibility(configs);
               },
               function(error) {
                 Notify.show('Error while trying to fetch campaign config', 'error');
@@ -452,6 +459,12 @@
       this.vexInstance.close();
     }
 
+    /**
+     * Called when a new contribution is created. Redirects the current user to the
+     * proposal page.
+     * 
+     * @param {Object} contribution
+     */
     function redirectToProposal(contribution) {
       this.closeModal();
       let group = contribution.workingGroupAuthors && contribution.workingGroupAuthors[0];
@@ -463,6 +476,20 @@
           cid: this.campaignID,
           gid: group.groupId
         });
+      }
+    }
+
+    /**
+     * Checks if "Join a Working Group to create proposals" label should be displayed.
+     * 
+     * @param {Object[]} configs
+     */
+    function checkJoinWGButtonVisibility(configs) {
+      const ENABLE_INDIVIDUAL_PROPOSALS = configs['appcivist.campaign.enable-individual-proposals'];
+
+      if (ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE' || !ENABLE_INDIVIDUAL_PROPOSALS) {
+        let myGroups = localStorageService.get('myWorkingGroups');
+        this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
       }
     }
   }

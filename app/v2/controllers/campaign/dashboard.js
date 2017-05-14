@@ -71,6 +71,7 @@
           $translate.use($scope.user.language);
         }
       }
+
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection.bind($scope);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
@@ -260,6 +261,14 @@
                   $scope.showComments = false;
                 } else {
                   $scope.showComments = true;
+                }
+
+                if (configs['appcivist.campaign.open-idea-section-default'] && configs['appcivist.campaign.open-idea-section-default'] === 'TRUE') {
+                  $scope.ideasSectionExpanded = true;
+                }
+
+                if (!configs['appcivist.campaign.allow-anonymous-ideas'] || configs['appcivist.campaign.allow-anonymous-ideas'] === 'FALSE') {
+                  $scope.newIdeasEnabled = $scope.newIdeasEnabled && $scope.user != null;
                 }
                 $scope.checkJoinWGButtonVisibility(configs);
               },

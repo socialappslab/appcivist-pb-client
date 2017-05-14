@@ -1051,6 +1051,8 @@
   "The form is invalid: you must fill all required values": "The form is invalid: you must fill all required values",
   "Type your email": "Type your email",
   "Type your password": "Type your password",
+  "Connect with Facebook": "Connect with Facebook",
+  "help.tooltip.connectWithFacebook": "Social Ideation is an application that connects idea management platforms (such as AppCivist) with general purpose social networks (such as Facebook). Once you authorize this app, every time you create an idea within a Campaign of AppCivist, this will be replicated into a connected space within the target social network (e.g., a Facebook group)!",
   "Show Insights": "Show Insights",
   "Hide Insights": "Hide Insights",
   "Insights": "Insights",

@@ -263,31 +263,18 @@
           <section class="list--proposals">
             <header class="proposals__header col-*-12" style="padding-top: 0px;">
               <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-              <<<<<<< HEAD <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
-                <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
-                  class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;&nbsp;
-                <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
-                  style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;&nbsp;
-                <a ng-if="!insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas"
-                  href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;
-                <a ng-if="insightsSectionExpanded" ng-click="toggleHideInsightsSection()" class="proposals__show_ideas"
-                  href=""><i class="fa fa-bar-chart"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
-                =======
-                <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')">
-                  <i class="fa fa-plus-square"></i> &nbsp;{{'Add New' | translate}}
-                </a>
-                <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
-                  class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;&nbsp;
-                <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
-                  style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;&nbsp;
-                <a ng-if="!insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas"
-                  href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;
-                <a ng-if="insightsSectionExpanded" ng-click="toggleHideInsightsSection()" class="proposals__show_ideas"
-                  href=""><i class="fa fa-bar-chart"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
-                >>>>>>> develop
-                <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a>
-                <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
-                <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
+              <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+              <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
+                class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;&nbsp;
+              <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
+                style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;&nbsp;
+              <a ng-if="!insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas"
+                href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;
+              <a ng-if="insightsSectionExpanded" ng-click="toggleHideInsightsSection()" class="proposals__show_ideas"
+                href=""><i class="fa fa-bar-chart"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
+              <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a>
+              <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
+              <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
             </header>
             <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"

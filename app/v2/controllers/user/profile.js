@@ -6,16 +6,17 @@
 
   ProfileCtrl.$inject = [
     '$rootScope', '$scope', '$resource', '$location', 'localStorageService', '$http',
-    'loginService', 'Notify', '$translate', 'Facebook'
+    'loginService', 'Notify', '$translate', 'Facebook', 'Memberships'
   ];
 
   function ProfileCtrl($rootScope, $scope, $resource, $location, localStorageService, $http,
-    loginService, Notify, $translate, Facebook) {
+    loginService, Notify, $translate, Facebook, Memberships) {
 
     activate();
 
     function activate() {
       $scope.user = localStorageService.get('user');
+      $scope.showFbSocialIdeationButton = false;
       $scope.FbButtonMessage = "Connect to Facebook through Social Ideation";
       $scope.alreadyLoggedInFb = false;
       if ($scope.user && $scope.user.language) {
@@ -44,6 +45,8 @@
       $scope.toggleChangePassword = toggleChangePassword;
       $scope.getImageFromFile = getImageFromFile.bind($scope);
       $scope.$watch('profile.profile_pic', $scope.getImageFromFile);
+
+      verifyMembershipConfigs();
     }
 
     function blurReset() {
@@ -150,7 +153,6 @@
       return !!$scope.profile.password;
     }
 
-
     function getImageFromFile(file) {
       if (!file) {
         return;
@@ -198,13 +200,26 @@
         );
     }
 
-    function getUserAssemblies(){
+    function verifyMembershipConfigs(uid){
+      var rsp = Memberships.membershipConfigs($scope.user.userId).get();
+      rsp.$promise.then(
+        function(data) {
+          console.log("configurations received "+JSON.stringify(data));
+          // appcivist.assembly.enable-social-ideation === TRUE => showFbSocialIdeationButton = true;
+          if (data['appcivist.assembly.enable-social-ideation'] && data['appcivist.assembly.enable-social-ideation'].indexOf("TRUE")>=0) {
+            $scope.showFbSocialIdeationButton = true;
+          }
+        },
+        function (error){
+          console.log("configurations received "+JSON.stringify(error));
+        }
+      );
 
     }
 
     $scope.login = function () {
       // From now on you can use the Facebook service just as Facebook api says
-      Facebook.login(function(response) {       
+      Facebook.login(function(response) {
         $scope.profile.facebookUserId = response.authResponse.userID;
         $scope.profile.userAccessToken = response.authResponse.accessToken;
         $scope.profile.tokenExpiresIn = response.authResponse.expiresIn;

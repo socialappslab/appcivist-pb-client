@@ -443,6 +443,9 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
     memberships: function(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid', { uid: userId });
     },
+    membershipConfigs: function(userId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid/config', { uid: userId });
+    },
     assemblies: function(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid', { uid: userId, type: 'assembly' });
     },

@@ -427,6 +427,7 @@
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
       })
+      // TODO: Move the following under assembly
       .state('v2.campaign', {
         url: '/campaign',
         abstract: true,
@@ -466,6 +467,9 @@
           requiresLogin: true
         }
       })
+
+      // TODO: for the general login, let's add a step after signing in to ask which assembly to connect if the user
+      // is member of several assemblies
       .state('v2.login', {
         url: '/login',
         controller: 'v2.LoginCtrl',
@@ -509,6 +513,9 @@
       });
 
     /**
+     * DEPRECATED
+     * Routes below correspond to the original v1 prototype, soon to be disconnected.
+     *
      * Main routes available in the APP. Each route has its onw controller, which allows the user to
      * simply write down the route and if that's available, it will load everything needed.
      */

@@ -72,7 +72,8 @@
       <h3 class="section_header">{{'Other Working Groups' | translate}}</h3>
       <ul class="list__my_working_groups">
         <li ng-repeat="wg in otherWorkingGroups">
-          <a ng-href="/#/v2/campaign/{{currentCampaignUuid}}/group/{{wg.uuid}}">
+          <a ng-href="/#/v2/campaign/{{currentCampaignUuid}}/group/{{wg.uuid}}"
+             ng-class="{active: isGroupActive(wg)}">
             {{wg.name}}
           </a>
         </li>
@@ -84,7 +85,8 @@
       <h3 class="section_header">{{'Topics' | translate}}</h3>
       <ul class="list__my_working_groups">
         <li ng-repeat="wg in topicsWorkingGroups">
-          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}">
+          <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}"
+             ng-class="{active: isGroupActive(wg)}">
             {{wg.name}}
           </a>
         </li>

@@ -148,7 +148,8 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
       function fetchOngoingCampaigns(assembly) {
         var Campaigns = $injector.get('Campaigns');
         var user = localStorageService.get('user');
-        var rsp = Campaigns.campaigns(user.uuid, 'ongoing').query().$promise;
+        var assembly = localStorageService.get('currentAssembly');
+        var rsp = Campaigns.campaigns(user.uuid, 'ongoing', assembly.assemblyId).query().$promise;
 
         return rsp.then(
           function(ongoingCampaigns) {
@@ -211,17 +212,19 @@ appCivistApp.factory('Assemblies', function($resource, localStorageService, $inj
 appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService, Notify) {
   var serverBaseUrl = getServerBaseUrl(localStorageService);
   return {
-    campaigns: function(userUUID, state) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', { uuid: userUUID, filter: state });
+    campaigns: function(userUUID, state, aid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:uuid/campaign', { uuid: userUUID, filter: state , assembly: aid});
     },
     campaign: function(assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid', { aid: assemblyId, cid: campaignId }, { 'update': { method: 'PUT' } });
     },
-    campaignsInAssembly: function(assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign', { aid: assemblyId });
+    campaignsInAssembly: function(assemblyId, f) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign?filter=:filter',
+        { aid: assemblyId , filter: f ? f : 'all'});
     },
-    campaignsInAssemblyByUUID: function(uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid/campaign', { uuid });
+    campaignsInAssemblyByUUID: function(u, f) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:uuid/campaign?filter=:filter',
+        { uuid: u, filter: f ? f : 'all' });
     },
     campaignByUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/' + campaignUUID);
@@ -442,6 +445,10 @@ appCivistApp.factory('Memberships', function($resource, localStorageService) {
     },
     memberships: function(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid', { uid: userId });
+    },
+    membershipsUnderAssembly: function(userId, assemblyId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid?by_assembly=:aid',
+        { uid: userId, aid: assemblyId});
     },
     membershipConfigs: function(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/user/:uid/config', { uid: userId });

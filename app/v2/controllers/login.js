@@ -47,6 +47,7 @@
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
       }
+      user.assembly = $scope.assembly ? $scope.assembly : null;
       loginService.loadAuthenticatedUserMemberships(user).then(function () {
         var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
         var assembly = localStorageService.get('currentAssembly');
@@ -55,18 +56,17 @@
         rsp.$promise.then(function(data){
           $scope.assemblyConfig = data;
 
-          if ($scope.assemblyConfig 
-              && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] 
+          if ($scope.assemblyConfig
+              && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage']
               && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] === 'TRUE') {
             $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
           } else {
             $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId }, { reload: true });
           }
-          
+
         }, function(error) {
             Notify.show('Error while trying to fetch assembly config', 'error');
         });
-        
       });
     }
 

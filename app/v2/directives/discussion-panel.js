@@ -36,7 +36,6 @@
         function activate() {
           scope.vm = {};
           scope.user = localStorageService.get('user');
-          // scope.isAnonymous = !scope.user;
           scope.validateCaptchaResponse = validateCaptchaResponse.bind(scope);
           scope.setCaptchaResponse = setCaptchaResponse.bind(scope);
 
@@ -55,6 +54,7 @@
               scope.isCoordinator = groupRols != undefined ? hasRol(groupRols, 'COORDINATOR') : false;
             }
           } else {
+            scope.isAnonymous = true;
             scope.$watch('vm.recaptchaResponse', function(response) {
               if (response) {
                 validateCaptchaResponse(scope.vm);

@@ -218,7 +218,7 @@
           <activity-card ng-repeat="activity in activities | limitTo:activitiesLimit track by $index " activity="activity"></activity-card>
           <p ng-if="!activities || activities.length === 0" class="card">{{'no.latest.activity' | translate}}</p>
         </section>
-        <section class="members-panel">
+        <section class="members-panel" ng-if="wg.supportedMembership!='OPEN'">
           <div class="panel-heading panel-heading-relative">
             <h1 class="heading--header">{{'Members' | translate}}</h1>
             <p class="heading--small">

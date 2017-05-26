@@ -155,10 +155,12 @@
      */
     function isCampaignActive(campaign) {
       let assembly = localStorageService.get('currentAssembly');
-      return $state.is('v2.assembly.aid.campaign.cid', {
+      let state = $state.is('v2.assembly.aid.campaign.cid', {
         aid: assembly.assemblyId,
         cid: campaign.campaignId
       });
+      let campaignOnPath = $state.params ? $state.params.cid === campaign.campaignId +"" : false;
+      return  state || campaignOnPath;
     }
 
     /**

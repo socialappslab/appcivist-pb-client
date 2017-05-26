@@ -162,21 +162,23 @@
       var gid = group.groupId;
       var res;
 
-      if ($scope.isAnonymous) {
-        $scope.members = group.members
-          .filter(function(m) {
-            return m.status === 'ACCEPTED';
-          });
-      } else {
-        res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
-        res.$promise.then(
-          function(data) {
-            $scope.members = data;
-          },
-          function(error) {
-            Notify.show('Error occured while trying to load working group members', 'error');
-          }
-        );
+      if (group.supportedMembership &&  group.supportedMembership!="OPEN") {
+        if ($scope.isAnonymous) {
+          $scope.members = group.members
+            .filter(function (m) {
+              return m.status === 'ACCEPTED';
+            });
+        } else {
+          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
+          res.$promise.then(
+            function (data) {
+              $scope.members = data;
+            },
+            function (error) {
+              Notify.show('Error occured while trying to load working group members', 'error');
+            }
+          );
+        }
       }
     }
 
@@ -278,7 +280,6 @@
     function toggleHideInsightsSection() {
       $scope.insightsSectionExpanded = false;
     }
-
 
     function toggleAllMembers() {
       if ($scope.membersLimit <= 5) {

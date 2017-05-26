@@ -30,23 +30,90 @@
 			<member-card action-bar="true"></member-card>
     </div>
 
-		<ul class="submenu submenu-working-groups" ng-if="myWorkingGroups && myWorkingGroups.length > 0" ng-show="groupsAreShown">
-			<h1 class="heading--header">{{'My Working Groups' | translate}}</h1>
-			<li ng-repeat="wg in myWorkingGroups">
-				<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}" ng-class="{active: isGroupActive(wg)}" ng-if="showGroup(wg)">
-					{{wg.name}}
-				</a>
-			</li>
-      <p ng-if="!myWorkingGroups || myWorkingGroups.length === 0 || !groupsAreShown" class="card empty">{{'No Working Groups in this space yet' | translate}}</p>
-    </ul>
-		<ul class="submenu submenu-campaigns">
-		  <h1 class="heading--header">{{'Ongoing campaigns' | translate}}</h1>
+		<!--<ul class="submenu submenu-working-groups" ng-if="myWorkingGroups && myWorkingGroups.length > 0" ng-show="groupsAreShown">-->
+			<!--<h1 class="heading&#45;&#45;header">{{'My Working Groups' | translate}}</h1>-->
+			<!--<li ng-repeat="wg in myWorkingGroups">-->
+				<!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/group/{{wg.groupId}}" ng-class="{active: isGroupActive(wg)}" ng-if="showGroup(wg)">-->
+					<!--{{wg.name}}-->
+				<!--</a>-->
+			<!--</li>-->
+      <!--<p ng-if="!myWorkingGroups || myWorkingGroups.length === 0 || !groupsAreShown" class="card empty">{{'No Working Groups in this space yet' | translate}}</p>-->
+    <!--</ul>-->
+		<!--<ul class="submenu submenu-campaigns">-->
+		  <!--<h1 class="heading&#45;&#45;header">{{'Ongoing campaigns' | translate}}</h1>-->
+      <!--<li ng-repeat="c in ongoingCampaigns">-->
+        <!--<a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">-->
+          <!--{{c.title}}-->
+        <!--</a>-->
+      <!--</li>-->
+		<!--</ul>-->
+
+  <!--Ongoing campaigns -->
+  <section class="my_campaigns">
+    <h2>{{ hola }}</h2>
+    <h3 class="section_header">{{'Ongoing Campaigns' | translate}}</h3>
+    <ul class="list__my_campaigns">
       <li ng-repeat="c in ongoingCampaigns">
-        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}">
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{c.campaignId}}" ng-class="{active: isCampaignActive(c)}">
           {{c.title}}
         </a>
       </li>
-		</ul>
+      <p ng-if="!ongoingCampaigns || ongoingCampaigns.length === 0" class="card empty">{{'No ongoing Campaigns in this space yet' | translate}}</p>
+    </ul>
+  </section>
+  <!--My Working Groups in this Campaign-->
+  <section class="my_working_groups" ng-if="myWorkingGroups && myWorkingGroups.length > 0">
+    <h3 class="section_header">{{'My Working Groups' | translate}}</h3>
+    <ul class="list__my_working_groups">
+      <li ng-repeat="wg in myWorkingGroups">
+        <a ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"
+           ng-class="{active: isGroupActive(wg)}">
+          {{wg.name}}
+        </a>
+      </li>
+      <p ng-if="!myWorkingGroups || myWorkingGroups.length === 0" class="card empty" style="white-space: initial;">{{'No Working Groups in this space yet' | translate}}</p>
+    </ul>
+  </section>
+  <!--Other WGs in this Campaign-->
+  <section class="my_working_groups" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
+    <h3 class="section_header">{{'Other Working Groups' | translate}}</h3>
+    <ul class="list__my_working_groups">
+      <li ng-repeat="wg in otherWorkingGroups">
+        <a ng-if="userIsAuthenticated"
+           ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{currentCampaignId}}/group/{{wg.groupId}}"
+           ng-class="{active: isGroupActive(wg)}">
+          {{wg.name}}
+        </a>
+
+        <a ng-if="!userIsAuthenticated"
+           ng-href="/#/v2/campaign/{{currentCampaignUuid}}/group/{{wg.uuid}}"
+           ng-class="{active: isGroupActive(wg)}">
+          {{wg.name}}
+        </a>
+      </li>
+      <p ng-if="!otherWorkingGroups || otherWorkingGroups.length === 0" class="card empty" style="white-space: initial;">{{'No Working Groups in this space yet' | translate}}</p>
+    </ul>
+  </section>
+  <!--Topics of discussion in this campaign -->
+  <section class="my_working_groups" ng-if="topicsWorkingGroups && topicsWorkingGroups.length > 0">
+    <h3 class="section_header">{{'Topics' | translate}}</h3>
+    <ul class="list__my_working_groups">
+      <li ng-repeat="wg in topicsWorkingGroups">
+        <a ng-if="userIsAuthenticated"
+           ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{currentCampaignId}}/group/{{wg.groupId}}"
+           ng-class="{active: isGroupActive(wg)}">
+          {{wg.name}}
+        </a>
+
+        <a ng-if="!userIsAuthenticated"
+           ng-href="/#/v2/campaign/{{currentCampaignUuid}}/group/{{wg.uuid}}"
+           ng-class="{active: isGroupActive(wg)}">
+          {{wg.name}}
+        </a>
+
+      </li>
+    </ul>
+  </section>
 
   <!--TODO: move to the new Coordinator's Dashboard -->
     <!--<ul class="submenu submenu-campaigns">-->

@@ -210,21 +210,20 @@
 </style>
 <main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
   <article class="campaign">
-    <header class="page__header">
+    <header class="page__header" ng-style="coverStyle">
+      <!--HEADER -> space.type-->
       <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="hidden-xs type"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</div>
-          <div class="hidden-lg hidden-md hidden-sm type" ng-if="showAssemblyLogo() && assembly.profile.icon">
-            <img ng-src="{{assembly.profile.icon}}" height="16" width="16" style="border-radius: 50%">&nbsp;&nbsp;{{'Campaign'
-            | translate}}
-          </div>
         </div>
       </div>
 
+      <!--HEADER -> campaign.title + logo + actions menu-->
       <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+        <div class="row no-margin" style="padding-top: 1em;">
           <div class="title_block">
             <h1 class="heading--title">{{campaign.title}}</h1>
+            <!-- HEADER -> actions menu -->
             <div class="heading_actions" ng-if="!isAnonymous">
               <ul>
                 <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
@@ -263,10 +262,27 @@
               </div>
             </div>
           </div>
-          <p class="description">{{campaign.goal}}</p>
-          <div class='attribution'>
-            <div class="logo__wrapper__light">
-              <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+
+          <!--TODO: add logo to description paragraph -->
+          <div ng-if="logo" style="padding-top: 1em;">
+            <div class="hidden-xs col-lg-2 col-md-2 col-sm-2">
+              <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%;">
+            </div>
+            <p class="no-padding col-xs-12 col-lg-10 col-md-10 col-sm-10 description"
+               style="padding-right: 10px; margin-top: 0px">
+              {{campaign.goal}}
+            </p>
+          </div>
+
+          <div ng-if="!logo" style="padding-top: 1em;">
+            <p class="description">{{campaign.goal}}</p>
+          </div>
+
+        </div>
+        <!-- HEADER -> AppCivist Logo Attribution -->
+        <div class='row  no-margin attribution' style="padding-top: 1em;">
+          <div class="logo__wrapper__light">
+            <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
                 <path class="svg__shape" d="M26.357,14.928l-1.809-1.999c-0.5-0.548-1.334-0.595-1.882-0.096l-1.643,1.5
                   c-0.644,0.571-1.286,1.31-2.142,0.381l-0.93-1.023c-0.358-0.382-0.952-0.404-1.333-0.071l-1.382,1.262
@@ -281,12 +297,8 @@
                   S24.263,31,16.001,31z M16.001,4.786C9.81,4.786,4.786,9.833,4.786,16c0,6.166,5.048,11.19,11.215,11.19
                   c6.166,0,11.215-5.001,11.215-11.19C27.216,9.81,22.191,4.786,16.001,4.786z" />
               </svg>
-            </div>
-            <div class="powered_by">{{ 'Powered by AppCivist' | translate }} </div>
           </div>
-        </div>
-        <div class="hidden-xs col-lg-2 col-md-2 col-sm-2" ng-if="showAssemblyLogo() && assembly.profile.icon">
-          <img ng-src="{{assembly.profile.icon}}" height="140" width="140" style="border-radius:50%;">
+          <div class="powered_by">{{ 'Powered by AppCivist' | translate }} </div>
         </div>
       </div>
     </header>
@@ -395,30 +407,46 @@
     </section>
   </article>
 
-  <!-- Nav tabs -->
+  <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
   <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})</a></li>
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate}} ({{publicCommentCounter.value}})</a></li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember">
+      <a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">
+        {{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})
+      </a>
+    </li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}">
+      <a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">
+        {{'Public Conversations' | translate}} ({{publicCommentCounter.value}})
+      </a>
+    </li>
   </ul>
 
-  <!-- Tab panes -->
+  <!-- Discussions: list of comments under the Conversation Tabs -->
   <div class="hidden-lg tab-content">
     <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-      <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID" endpoint="campaign"></discussion-panel>
+      <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
+                        endpoint-id="campaignID" endpoint="campaign">
+      </discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID" endpoint-id="$parent.campaignID"
-        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
-      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID" endpoint-id="campaign.uuid"
-        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID"
+                        endpoint-id="$parent.campaignID" endpoint="campaign"
+                        public-board="true" is-anonymous="isAnonymous">
+      </discussion-panel>
+      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID"
+                        endpoint-id="campaign.uuid" endpoint="campaign"
+                        public-board="true" is-anonymous="isAnonymous">
+      </discussion-panel>
     </div>
   </div>
 
+  <!-- New Proposal Form Modal -->
   <script id="proposalFormModal" type="text/ng-template">
     <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
       type="PROPOSAL" on-success="redirectToProposal(contribution)"></contribution-form>
   </script>
 
+  <!-- New Idea Form Modal -->
   <script id="ideaFormModal" type="text/ng-template">
     <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
       type="IDEA" on-success="closeModal()"></contribution-form>

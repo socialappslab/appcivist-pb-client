@@ -166,7 +166,9 @@
                               $scope.campaign.logo.url : showAssemblyLogo() ?
                                                           $scope.assembly.profile.icon : null;
           $scope.cover= $scope.campaign.cover ?$scope.campaign.cover.url : null;
-          $scope.coverStyle = $scope.cover ? {'background-image':'url('+$scope.cover+')'} : "";
+          $scope.coverStyle = $scope.cover ?
+                            {'background-image':'url('+$scope.cover+')', 'background-position':'center center'}
+                                : {'background-image':'url("../images/vallejo_header.jpg")', 'background-position':'center center'};
 
           localStorageService.set("currentCampaign", $scope.campaign);
           loadPublicCommentCount($scope.forumSpaceID);
@@ -477,7 +479,7 @@
     /**
      * Called when a new contribution is created. Redirects the current user to the
      * proposal page.
-     * 
+     *
      * @param {Object} contribution
      */
     function redirectToProposal(contribution) {
@@ -496,7 +498,7 @@
 
     /**
      * Checks if "Join a Working Group to create proposals" label should be displayed.
-     * 
+     *
      * @param {Object[]} configs
      */
     function checkJoinWGButtonVisibility(configs) {

@@ -221,6 +221,7 @@
 </style>
 <main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
   <article class="campaign">
+    <!-- HEADER -->
     <header class="page__header" ng-style="coverStyle">
       <!--HEADER -> space.type-->
       <div class="row">
@@ -279,7 +280,7 @@
           <!--TODO: add logo to description paragraph -->
           <div ng-if="logo" style="padding-top: 1em;">
             <div class="hidden-xs" style="float:left; margin-right:10px;">
-              <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%;">
+              <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">
             </div>
             <p class="overlay description"
                style="padding-right: 10px; margin-top: 0px; display: flex;">
@@ -317,26 +318,69 @@
         </div>
       </div>
     </header>
-    <button class="proposals__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newProposalsEnabled && currentComponent.type === 'PROPOSALS'"
-      ng-click="openModal('proposalFormModal')"> &nbsp;{{'Add Proposal' | translate}} </button>
-    <button class="ideas__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newIdeasEnabled && currentComponent.type === 'IDEAS'"
-      ng-click="openModal('ideaFormModal')"> &nbsp;{{'Add Idea' | translate}} </button>
+
+    <!--<button class="proposals__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newProposalsEnabled && currentComponent.type === 'PROPOSALS'"-->
+      <!--ng-click="openModal('proposalFormModal')"> &nbsp;{{'Add Proposal' | translate}} </button>-->
+    <!--<button class="ideas__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newIdeasEnabled && currentComponent.type === 'IDEAS'"-->
+      <!--ng-click="openModal('ideaFormModal')"> &nbsp;{{'Add Idea' | translate}} </button>-->
+
+    <!--TIMELINE -->
     <campaign-timeline title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
+
+    <!--CONTENT -->
     <section class="proposals_and_ideas">
+      <!--CONTENT -> Search and filters-->
+      <div class="campaign__filters" style="padding-top: 0px;padding-botton: 0px;">
+        <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8"
+            style="margin-right: 0px">
+          {{currentComponent.type === 'IDEAS' ? 'Ideas' : 'Proposals' | translate}}
+        </h2>
+        <a class="proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
+           style="
+            background: #11493b;
+            border-radius: 4px;
+            border-color: #11493b;
+            padding: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 20px;
+            color:white;"
+           ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"
+           ng-click="openModal('proposalFormModal')">
+          <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
+        </a>
+        <a class="join__working_group"
+           ng-if="user != null && displayJoinWorkingGroup"
+           style="
+            background: #11493b;
+            border-radius: 4px;
+            border-color: #11493b;
+            padding: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 20px;
+            color:white;">
+          <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
+        </a>
+      </div>
       <proposals-ideas-searchbox class="col-*-12" search-handler="doSearch(filters)" load-themes="loadThemes(query)"
         load-groups="loadGroups(query)" is-anonymous="isAnonymous" campaign-config="campaignConfigs" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
         generated-filters="filters" dry-run="true"></proposals-ideas-searchbox>
+
+      <!--CONTENT -> Contributions -->
       <div class="row" style="padding-left:20px">
         <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded, 'show-comments': commentsSectionExpanded}">-->
           <section class="list--proposals">
-            <header class="proposals__header col-*-12" style="padding-top: 0px;">
-              <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-              <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"
-                ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
-              <a class="join__working_group" ng-if="user != null && displayJoinWorkingGroup">
-                <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
-              </a>
+            <header class="proposals__header col-*-12" style="padding-top: 25px; padding-bottom:0px;">
+              <!--<h2 class="heading&#45;&#45;header">{{'Proposals' | translate}}</h2>-->
+              <!--<a class="proposals__add_new" ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"-->
+                <!--ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>-->
+              <!--<a class="join__working_group" ng-if="user != null && displayJoinWorkingGroup">-->
+                <!--<i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}-->
+              <!--</a>-->
               <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
                 class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"

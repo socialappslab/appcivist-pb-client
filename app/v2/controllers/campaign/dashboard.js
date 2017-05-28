@@ -89,13 +89,13 @@
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
       $scope.checkJoinWGButtonVisibility = checkJoinWGButtonVisibility.bind($scope);
 
-      loadCampaigns();
-
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
         loadAssembly();
         loadCampaignResources();
       }
+
+      loadCampaigns();
 
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function() {
@@ -162,6 +162,12 @@
           $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
           $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
           $scope.showPagination = true;
+          $scope.logo = $scope.campaign.logo ?
+                              $scope.campaign.logo.url : showAssemblyLogo() ?
+                                                          $scope.assembly.profile.icon : null;
+          $scope.cover= $scope.campaign.cover ?$scope.campaign.cover.url : null;
+          $scope.coverStyle = $scope.cover ? {'background-image':'url('+$scope.cover+')'} : "";
+
           localStorageService.set("currentCampaign", $scope.campaign);
           loadPublicCommentCount($scope.forumSpaceID);
           // We are reading the components twice,

@@ -11,18 +11,18 @@
    * 
    * Display the campaign timeline
    *
-   * @example 
-   * 
-   * <campaign-timeline 
-   *      title="{{'Campaign Status' | translate}}" 
-   *      assembly-id="assemblyID" 
+   * @example
+   *
+   * <campaign-timeline
+   *      title="{{'Campaign Timeline' | translate}}"
+   *      assembly-id="assemblyID"
    *      campaign-id="campaignID" on-components-loaded="componentsLoaded(components)"></campaign-timeline>
-   * 
+   *
    * @example
    * Instead of passing the assembly and campaign IDs, you can specify the array of timeline componentes as an attribute.
-   * 
-   * <campaign-timeline title="{{'Campaign Status' | translate}}" 
-   *                    components="vm.defaultComponents" 
+   *
+   * <campaign-timeline title="{{'Campaign Timeline' | translate}}"
+   *                    components="vm.defaultComponents"
    *                    on-component-click="vm.onClick(component)"></campaign-timeline>
    */
 

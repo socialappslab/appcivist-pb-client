@@ -125,19 +125,24 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
    *   - updates groupMembershipsHash
    *   - updates ongoingCampaigns
    *   - updates currentAssembly
-   * 
+   *
    * If a domain is specified, then pick that for currentAssembly. Otherwise the first
    * element of available assemblies will be picked it up.
-   * 
+   *
    * @deprecated
    */
-  this.loadAuthenticatedUserMemberships = function() {
-    return loadAuthenticatedUserMemberships();
+  this.loadAuthenticatedUserMemberships = function(user) {
+    return loadAuthenticatedUserMemberships(user);
   };
 
-  function loadAuthenticatedUserMemberships() {
-    var user = localStorageService.get('user');
-    var rsp = Memberships.memberships(user.userId).query();
+  function loadAuthenticatedUserMemberships(user) {
+    var user = user ? user : localStorageService.get('user');
+    if (user.assembly) {
+      var rsp = Memberships.membershipsUnderAssembly(user.userId, user.assembly.assemblyId).query();
+    } else {
+      var rsp = Memberships.memberships(user.userId).query();
+    }
+
     return rsp.$promise.then(memberSuccess, memberError);
   }
 
@@ -203,7 +208,7 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
   function singleAssemblySuccess(assembly) {
     var user = localStorageService.get('user');
     localStorageService.set('currentAssembly', assembly);
-    var rsp = Campaigns.campaigns(user.uuid, 'ongoing').query().$promise;
+    var rsp = Campaigns.campaignsInAssembly(assembly.assemblyId, 'ongoing').query().$promise;
 
     rsp.then(
       function(data) {

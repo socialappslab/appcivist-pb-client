@@ -5,18 +5,20 @@
     .controller('v2.ProfileCtrl', ProfileCtrl);
 
   ProfileCtrl.$inject = [
-    '$scope', '$resource', '$location', 'localStorageService', '$http',
-    'loginService', 'Notify', '$translate', 'Facebook'
+    '$rootScope', '$scope', '$resource', '$location', 'localStorageService', '$http',
+    'loginService', 'Notify', '$translate', 'Facebook', 'Memberships'
   ];
 
-  function ProfileCtrl($scope, $resource, $location, localStorageService, $http,
-    loginService, Notify, $translate, Facebook) {
+  function ProfileCtrl($rootScope, $scope, $resource, $location, localStorageService, $http,
+    loginService, Notify, $translate, Facebook, Memberships) {
 
     activate();
 
     function activate() {
       $scope.user = localStorageService.get('user');
-
+      $scope.showFbSocialIdeationButton = false;
+      $scope.FbButtonMessage = "Connect to Facebook through Social Ideation";
+      $scope.alreadyLoggedInFb = false;
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
       }
@@ -43,6 +45,8 @@
       $scope.toggleChangePassword = toggleChangePassword;
       $scope.getImageFromFile = getImageFromFile.bind($scope);
       $scope.$watch('profile.profile_pic', $scope.getImageFromFile);
+
+      verifyMembershipConfigs();
     }
 
     function blurReset() {
@@ -69,8 +73,6 @@
       fd.append('email', $scope.profile.email);
       fd.append('username', $scope.profile.username);
       fd.append('facebookUserId', $scope.profile.facebookUserId);
-      // fd.append('userAccessToken', $scope.profile.userAccessToken);
-      // fd.append('tokenExpiresIn', $scope.profile.tokenExpiresIn);
       
       if (userInfoChanged()) {
         $http.put(url, fd, {
@@ -136,7 +138,6 @@
     }
 
     function userInfoChanged() {
-      // var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId', 'userAccessToken', 'tokenExpiresIn'];
       var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId'];
 
       for (var i = 0; i < props.length; i++) {
@@ -152,7 +153,6 @@
       return !!$scope.profile.password;
     }
 
-
     function getImageFromFile(file) {
       if (!file) {
         return;
@@ -165,6 +165,7 @@
     }
 
     function updateFacebookToken(){
+      $scope.FbButtonMessage = "Connected to Facebook through Social Ideation"
       var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId + '/fbtoken';
       var fd = new FormData();
       fd.append('userId', $scope.profile.facebookUserId);
@@ -178,7 +179,6 @@
           params: {}
         }).then(
           function(response) {
-            Notify.show('Update token');
             $http.put(url, fd, {
               headers: {
                 'Content-Type': undefined
@@ -189,7 +189,6 @@
           },
           function(error) {
             console.log(error);
-            Notify.show('Create token', 'error');
             $http.post(url, fd, {
               headers: {
                 'Content-Type': undefined
@@ -199,29 +198,47 @@
             });
           }
         );
-      // if (userInfoChanged()) {
-      //   $http.put(url, fd, {
-      //     headers: {
-      //       'Content-Type': undefined
-      //     },
-      //     transformRequest: angular.identity,
-      //     params: {}
-      //   })
-      // }
+    }
+
+    function verifyMembershipConfigs(uid){
+      var rsp = Memberships.membershipConfigs($scope.user.userId).get();
+      rsp.$promise.then(
+        function(data) {
+          console.log("configurations received "+JSON.stringify(data));
+          // appcivist.assembly.enable-social-ideation === TRUE => showFbSocialIdeationButton = true;
+          if (data['appcivist.assembly.enable-social-ideation'] && data['appcivist.assembly.enable-social-ideation'].indexOf("TRUE")>=0) {
+            $scope.showFbSocialIdeationButton = true;
+          }
+        },
+        function (error){
+          console.log("configurations received "+JSON.stringify(error));
+        }
+      );
+
     }
 
     $scope.login = function () {
       // From now on you can use the Facebook service just as Facebook api says
       Facebook.login(function(response) {
-        // Do something with response.
-        console.log('me loguee');
-        console.log('user id: ' + response.authResponse.userID);
         $scope.profile.facebookUserId = response.authResponse.userID;
-        console.log('access token: ' + response.authResponse.accessToken);
         $scope.profile.userAccessToken = response.authResponse.accessToken;
-        console.log('expires in: ' + response.authResponse.expiresIn);
         $scope.profile.tokenExpiresIn = response.authResponse.expiresIn;
         updateFacebookToken();
+      });
+    };
+
+     $scope.getLoginStatus = function() {
+      Facebook.getLoginStatus(function(response) {
+        if(response.status === 'connected') {
+          $rootScope.showAlert("Permissions already granted", "You have already logged in with Social Ideation Facebook app", "", false);
+          $scope.alreadyLoggedInFb = true;
+          $scope.profile.facebookUserId = response.authResponse.userID;
+          $scope.profile.userAccessToken = response.authResponse.accessToken;
+          $scope.profile.tokenExpiresIn = response.authResponse.expiresIn;
+          updateFacebookToken();
+        } else {
+          $scope.login();
+        }
       });
     };
 

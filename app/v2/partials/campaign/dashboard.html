@@ -2,12 +2,12 @@
   .nav-tabs {
     border-bottom: 1px solid #c6c8cb;
   }
-  
+
   .nav-tabs>li {
     float: left;
     margin-bottom: -1px;
   }
-  
+
   .nav-tabs>li>a {
     margin-right: 2px;
     line-height: 1.42857143;
@@ -16,12 +16,12 @@
     color: #555;
     text-decoration: none;
   }
-  
+
   .nav-tabs>li>a:hover {
     border-color: #eeeeee #eeeeee #c6c8cb;
     background-color: #e6e7e8;
   }
-  
+
   .nav-tabs>li.active>a,
   .nav-tabs>li.active>a:hover,
   .nav-tabs>li.active>a:focus {
@@ -31,26 +31,26 @@
     border-bottom-color: transparent;
     cursor: default;
   }
-  
+
   .nav-tabs.nav-justified {
     width: 100%;
     border-bottom: 0;
   }
-  
+
   .nav-tabs.nav-justified>li {
     float: none;
   }
-  
+
   .nav-tabs.nav-justified>li>a {
     text-align: center;
     margin-bottom: 5px;
   }
-  
+
   .nav-tabs.nav-justified>.dropdown .dropdown-menu {
     top: auto;
     left: auto;
   }
-  
+
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li {
       display: table-cell;
@@ -60,18 +60,18 @@
       margin-bottom: 0;
     }
   }
-  
+
   .nav-tabs.nav-justified>li>a {
     margin-right: 0;
     border-radius: 4px;
   }
-  
+
   .nav-tabs.nav-justified>.active>a,
   .nav-tabs.nav-justified>.active>a:hover,
   .nav-tabs.nav-justified>.active>a:focus {
     border: 1px solid #dddddd;
   }
-  
+
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li>a {
       border-bottom: 1px solid #dddddd;
@@ -83,34 +83,34 @@
       border-bottom-color: #f6f6f7;
     }
   }
-  
+
   .nav.nav-tabs {
     margin-left: 5%;
     width: 90%;
   }
-  
+
   .custom-ul {
     padding-bottom: 50px;
     padding-top: 50px;
   }
-  
+
   .custom-li {
     padding-bottom: 15px;
     padding-top: 15px;
   }
-  
+
   .custom-a {
     padding: 15px;
   }
-  
+
   header.proposals__header>h2 {
     float: none !important;
   }
-  
+
   .show-comments.campaign_cards .list--proposals {
     width: 60%;
   }
-  
+
   @media (min-width: 768px) {
     .show-comments.campaign_cards .list--proposals .card__proposal {
       -webkit-box-sizing: border-box;
@@ -132,7 +132,7 @@
       clear: none;
     }
   }
-  
+
   @media (min-width: 1024px) {
     .show-comments.campaign_cards .list--proposals .card__proposal {
       -webkit-box-sizing: border-box;
@@ -154,7 +154,7 @@
       clear: none;
     }
   }
-  
+
   @media (min-width: 1500px) {
     .show-comments.campaign_cards .list--proposals .card__proposal {
       -webkit-box-sizing: border-box;
@@ -176,7 +176,7 @@
       clear: none;
     }
   }
-  
+
   @media (min-width: 1800px) {
     .show-comments.campaign_cards .list--proposals .card__proposal {
       -webkit-box-sizing: border-box;
@@ -203,70 +203,101 @@
       clear: none;
     }
   }
-  
+
   a.join__working_group {
     text-decoration: none;
   }
+
+  .overlay {
+    background: rgba(66,66,66,0.64);
+    border-radius: 3px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 15px;
+    width: auto;
+    z-index: 1;
+  }
+
 </style>
 <main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
   <article class="campaign">
-    <header class="page__header">
+    <!-- HEADER -->
+    <header class="page__header" ng-style="coverStyle">
+      <!--HEADER -> space.type-->
       <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="hidden-xs type"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</div>
-          <div class="hidden-lg hidden-md hidden-sm type" ng-if="showAssemblyLogo() && assembly.profile.icon">
-            <img ng-src="{{assembly.profile.icon}}" height="16" width="16" style="border-radius: 50%">&nbsp;&nbsp;{{'Campaign'
-            | translate}}
+        <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="hidden-xs type">
+            <span class="overlay"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
           </div>
         </div>
       </div>
 
+      <!--HEADER -> campaign.title + logo + actions menu-->
       <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+        <div class="row no-margin">
           <div class="title_block">
-            <h1 class="heading--title">{{campaign.title}}</h1>
-            <div class="heading_actions" ng-if="!isAnonymous">
-              <ul>
-                <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
-                  <a>
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-                      y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
-                      <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
-        c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
-        c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
-        c-0.084,0-0.174-0.03-0.271-0.094l-1.438-1.124c-0.306,0.159-0.621,0.291-0.947,0.396c-0.111,0.944-0.213,1.59-0.303,1.937
-        c-0.048,0.195-0.173,0.293-0.375,0.293H6.843c-0.097,0-0.182-0.029-0.255-0.089c-0.074-0.059-0.113-0.134-0.12-0.225l-0.292-1.916
-        c-0.34-0.111-0.653-0.24-0.938-0.386l-1.468,1.114c-0.07,0.063-0.156,0.094-0.261,0.094c-0.097,0-0.184-0.037-0.26-0.114
-        c-0.875-0.791-1.447-1.374-1.719-1.748c-0.048-0.07-0.073-0.15-0.073-0.239c0-0.084,0.028-0.165,0.084-0.24
-        c0.104-0.146,0.281-0.376,0.531-0.692c0.25-0.317,0.438-0.562,0.562-0.734c-0.188-0.348-0.33-0.691-0.427-1.032L0.302,9.51
-        C0.211,9.496,0.139,9.451,0.083,9.379C0.027,9.306,0,9.226,0,9.135V6.822c0-0.083,0.027-0.164,0.083-0.239
-        c0.056-0.077,0.122-0.122,0.199-0.137l1.937-0.291c0.097-0.32,0.232-0.638,0.406-0.958C2.347,4.802,1.976,4.323,1.51,3.759
-        C1.441,3.676,1.406,3.593,1.406,3.51c0-0.07,0.032-0.149,0.094-0.24c0.181-0.25,0.523-0.623,1.025-1.119
-        C3.029,1.654,3.357,1.405,3.51,1.405c0.09,0,0.18,0.036,0.271,0.104l1.438,1.116C5.524,2.464,5.84,2.332,6.167,2.228
-        c0.11-0.943,0.211-1.589,0.302-1.937C6.517,0.098,6.642,0,6.843,0h2.312C9.252,0,9.337,0.029,9.41,0.089
-        c0.073,0.058,0.113,0.134,0.12,0.223l0.291,1.916c0.341,0.111,0.653,0.24,0.938,0.387l1.479-1.116
-        c0.062-0.062,0.146-0.094,0.25-0.094c0.09,0,0.177,0.036,0.26,0.104c0.896,0.827,1.469,1.417,1.719,1.771
-        c0.048,0.057,0.073,0.132,0.073,0.229c0,0.083-0.028,0.163-0.084,0.239c-0.104,0.146-0.28,0.376-0.53,0.693
-        c-0.251,0.315-0.438,0.56-0.563,0.734c0.181,0.347,0.323,0.688,0.427,1.02l1.906,0.292c0.09,0.014,0.163,0.057,0.219,0.13
-        C15.971,6.69,15.998,6.773,15.998,6.863z M9.884,9.884c0.521-0.52,0.781-1.149,0.781-1.886c0-0.736-0.26-1.364-0.781-1.884
-        c-0.52-0.522-1.149-0.782-1.885-0.782c-0.735,0-1.364,0.26-1.885,0.782C5.593,6.634,5.333,7.262,5.333,7.998
-        c0,0.736,0.26,1.366,0.781,1.886c0.521,0.521,1.149,0.78,1.885,0.78C8.735,10.664,9.364,10.404,9.884,9.884z"></path>
-                    </svg>
-                  </a>
-                </li>
-              </ul>
-              <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
-                ng-if="cm.isHover">
-                <div class="content">
-                  <campaign-contextual-items campaign="campaign"></campaign-contextual-items>
+              <h1 class="heading--title overlay">{{campaign.title}}</h1>
+              <!-- HEADER -> actions menu -->
+              <div class="heading_actions" ng-if="!isAnonymous">
+                <ul>
+                  <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
+                    <a>
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                        y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
+                        <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
+          c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
+          c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
+          c-0.084,0-0.174-0.03-0.271-0.094l-1.438-1.124c-0.306,0.159-0.621,0.291-0.947,0.396c-0.111,0.944-0.213,1.59-0.303,1.937
+          c-0.048,0.195-0.173,0.293-0.375,0.293H6.843c-0.097,0-0.182-0.029-0.255-0.089c-0.074-0.059-0.113-0.134-0.12-0.225l-0.292-1.916
+          c-0.34-0.111-0.653-0.24-0.938-0.386l-1.468,1.114c-0.07,0.063-0.156,0.094-0.261,0.094c-0.097,0-0.184-0.037-0.26-0.114
+          c-0.875-0.791-1.447-1.374-1.719-1.748c-0.048-0.07-0.073-0.15-0.073-0.239c0-0.084,0.028-0.165,0.084-0.24
+          c0.104-0.146,0.281-0.376,0.531-0.692c0.25-0.317,0.438-0.562,0.562-0.734c-0.188-0.348-0.33-0.691-0.427-1.032L0.302,9.51
+          C0.211,9.496,0.139,9.451,0.083,9.379C0.027,9.306,0,9.226,0,9.135V6.822c0-0.083,0.027-0.164,0.083-0.239
+          c0.056-0.077,0.122-0.122,0.199-0.137l1.937-0.291c0.097-0.32,0.232-0.638,0.406-0.958C2.347,4.802,1.976,4.323,1.51,3.759
+          C1.441,3.676,1.406,3.593,1.406,3.51c0-0.07,0.032-0.149,0.094-0.24c0.181-0.25,0.523-0.623,1.025-1.119
+          C3.029,1.654,3.357,1.405,3.51,1.405c0.09,0,0.18,0.036,0.271,0.104l1.438,1.116C5.524,2.464,5.84,2.332,6.167,2.228
+          c0.11-0.943,0.211-1.589,0.302-1.937C6.517,0.098,6.642,0,6.843,0h2.312C9.252,0,9.337,0.029,9.41,0.089
+          c0.073,0.058,0.113,0.134,0.12,0.223l0.291,1.916c0.341,0.111,0.653,0.24,0.938,0.387l1.479-1.116
+          c0.062-0.062,0.146-0.094,0.25-0.094c0.09,0,0.177,0.036,0.26,0.104c0.896,0.827,1.469,1.417,1.719,1.771
+          c0.048,0.057,0.073,0.132,0.073,0.229c0,0.083-0.028,0.163-0.084,0.239c-0.104,0.146-0.28,0.376-0.53,0.693
+          c-0.251,0.315-0.438,0.56-0.563,0.734c0.181,0.347,0.323,0.688,0.427,1.02l1.906,0.292c0.09,0.014,0.163,0.057,0.219,0.13
+          C15.971,6.69,15.998,6.773,15.998,6.863z M9.884,9.884c0.521-0.52,0.781-1.149,0.781-1.886c0-0.736-0.26-1.364-0.781-1.884
+          c-0.52-0.522-1.149-0.782-1.885-0.782c-0.735,0-1.364,0.26-1.885,0.782C5.593,6.634,5.333,7.262,5.333,7.998
+          c0,0.736,0.26,1.366,0.781,1.886c0.521,0.521,1.149,0.78,1.885,0.78C8.735,10.664,9.364,10.404,9.884,9.884z"></path>
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+                <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
+                  ng-if="cm.isHover">
+                  <div class="content">
+                    <campaign-contextual-items campaign="campaign"></campaign-contextual-items>
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
-          <p class="description">{{campaign.goal}}</p>
-          <div class='attribution'>
+
+          <!--TODO: add logo to description paragraph -->
+          <div ng-if="logo" style="padding-top: 1em;">
+            <div class="hidden-xs" style="float:left; margin-right:10px;">
+              <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">
+            </div>
+            <p class="overlay description"
+               style="padding-right: 10px; margin-top: 0px; display: flex;">
+              {{campaign.goal | limitTo:400}}{{campaign.goal.length>400 ? '...' : ''}}
+            </p>
+          </div>
+
+          <div ng-if="!logo" style="padding-top: 1em;">
+            <p class="description overlay">{{campaign.goal}}</p>
+          </div>
+
+        </div>
+        <!-- HEADER -> AppCivist Logo Attribution -->
+        <div class='row no-margin attribution' style="padding-top: 1em;">
+          <div class="overlay" style="display: inline-flex">
             <div class="logo__wrapper__light">
-              <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
                 <path class="svg__shape" d="M26.357,14.928l-1.809-1.999c-0.5-0.548-1.334-0.595-1.882-0.096l-1.643,1.5
                   c-0.644,0.571-1.286,1.31-2.142,0.381l-0.93-1.023c-0.358-0.382-0.952-0.404-1.333-0.071l-1.382,1.262
@@ -281,35 +312,75 @@
                   S24.263,31,16.001,31z M16.001,4.786C9.81,4.786,4.786,9.833,4.786,16c0,6.166,5.048,11.19,11.215,11.19
                   c6.166,0,11.215-5.001,11.215-11.19C27.216,9.81,22.191,4.786,16.001,4.786z" />
               </svg>
-            </div>
+          </div>
             <div class="powered_by">{{ 'Powered by AppCivist' | translate }} </div>
           </div>
         </div>
-        <div class="hidden-xs col-lg-2 col-md-2 col-sm-2" ng-if="showAssemblyLogo() && assembly.profile.icon">
-          <img ng-src="{{assembly.profile.icon}}" height="140" width="140" style="border-radius:50%;">
-        </div>
       </div>
     </header>
-    <button class="proposals__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newProposalsEnabled && currentComponent.type === 'PROPOSALS'"
-      ng-click="openModal('proposalFormModal')"> &nbsp;{{'Add Proposal' | translate}} </button>
-    <button class="ideas__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newIdeasEnabled && currentComponent.type === 'IDEAS'"
-      ng-click="openModal('ideaFormModal')"> &nbsp;{{'Add Idea' | translate}} </button>
-    <campaign-timeline title="{{'Campaign Status' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
+
+    <!--<button class="proposals__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newProposalsEnabled && currentComponent.type === 'PROPOSALS'"-->
+      <!--ng-click="openModal('proposalFormModal')"> &nbsp;{{'Add Proposal' | translate}} </button>-->
+    <!--<button class="ideas__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newIdeasEnabled && currentComponent.type === 'IDEAS'"-->
+      <!--ng-click="openModal('ideaFormModal')"> &nbsp;{{'Add Idea' | translate}} </button>-->
+
+    <!--TIMELINE -->
+    <campaign-timeline title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
+
+    <!--CONTENT -->
     <section class="proposals_and_ideas">
+      <!--CONTENT -> Search and filters-->
+      <div class="campaign__filters" style="padding-top: 0px;padding-botton: 0px;">
+        <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8"
+            style="margin-right: 0px">
+          {{currentComponent.type === 'IDEAS' ? 'Ideas' : 'Proposals' | translate}}
+        </h2>
+        <a class="proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
+           style="
+            background: #11493b;
+            border-radius: 4px;
+            border-color: #11493b;
+            padding: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 20px;
+            color:white;"
+           ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"
+           ng-click="openModal('proposalFormModal')">
+          <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
+        </a>
+        <a class="join__working_group"
+           ng-if="user != null && displayJoinWorkingGroup"
+           style="
+            background: #11493b;
+            border-radius: 4px;
+            border-color: #11493b;
+            padding: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 20px;
+            color:white;">
+          <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
+        </a>
+      </div>
       <proposals-ideas-searchbox class="col-*-12" search-handler="doSearch(filters)" load-themes="loadThemes(query)"
         load-groups="loadGroups(query)" is-anonymous="isAnonymous" campaign-config="campaignConfigs" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
         generated-filters="filters" dry-run="true"></proposals-ideas-searchbox>
+
+      <!--CONTENT -> Contributions -->
       <div class="row" style="padding-left:20px">
         <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded, 'show-comments': commentsSectionExpanded}">-->
           <section class="list--proposals">
-            <header class="proposals__header col-*-12" style="padding-top: 0px;">
-              <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-              <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"
-                ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>
-              <a class="join__working_group" ng-if="user != null && displayJoinWorkingGroup">
-                <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
-              </a>
+            <header class="proposals__header col-*-12" style="padding-top: 25px; padding-bottom:0px;">
+              <!--<h2 class="heading&#45;&#45;header">{{'Proposals' | translate}}</h2>-->
+              <!--<a class="proposals__add_new" ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"-->
+                <!--ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>-->
+              <!--<a class="join__working_group" ng-if="user != null && displayJoinWorkingGroup">-->
+                <!--<i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}-->
+              <!--</a>-->
               <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
                 class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
@@ -395,30 +466,46 @@
     </section>
   </article>
 
-  <!-- Nav tabs -->
+  <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
   <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})</a></li>
-    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate}} ({{publicCommentCounter.value}})</a></li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember">
+      <a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">
+        {{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})
+      </a>
+    </li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}">
+      <a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">
+        {{'Public Conversations' | translate}} ({{publicCommentCounter.value}})
+      </a>
+    </li>
   </ul>
 
-  <!-- Tab panes -->
+  <!-- Discussions: list of comments under the Conversation Tabs -->
   <div class="hidden-lg tab-content">
     <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-      <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="campaignID" endpoint="campaign"></discussion-panel>
+      <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
+                        endpoint-id="campaignID" endpoint="campaign">
+      </discussion-panel>
     </div>
     <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID" endpoint-id="$parent.campaignID"
-        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
-      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID" endpoint-id="campaign.uuid"
-        endpoint="campaign" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID"
+                        endpoint-id="$parent.campaignID" endpoint="campaign"
+                        public-board="true" is-anonymous="isAnonymous">
+      </discussion-panel>
+      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID"
+                        endpoint-id="campaign.uuid" endpoint="campaign"
+                        public-board="true" is-anonymous="isAnonymous">
+      </discussion-panel>
     </div>
   </div>
 
+  <!-- New Proposal Form Modal -->
   <script id="proposalFormModal" type="text/ng-template">
     <contribution-proposal-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
       type="PROPOSAL" on-success="redirectToProposal(contribution)"></contribution-proposal-form>
   </script>
 
+  <!-- New Idea Form Modal -->
   <script id="ideaFormModal" type="text/ng-template">
     <contribution-form campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
       type="IDEA" on-success="closeModal()"></contribution-form>

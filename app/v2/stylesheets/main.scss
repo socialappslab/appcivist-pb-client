@@ -973,3 +973,43 @@ contribution-card {
     }
   }
 }
+
+contribution-form {
+  header {
+    padding-bottom: 0px !important;
+    padding-left: 2em !important;
+    padding-right: 2em !important;
+    input {
+      background-color: #009877 !important;
+      border: 1px solid #11493b;
+      color: white;
+    }
+     ::-webkit-input-placeholder {
+      /* Chrome */
+      color: white;
+    }
+     :-ms-input-placeholder {
+      /* IE 10+ */
+      color: white;
+    }
+     ::-moz-placeholder {
+      /* Firefox 19+ */
+      color: white;
+    }
+     :-moz-placeholder {
+      /* Firefox 4 - 18 */
+      color: white;
+    }
+  }
+  .nonmember_author {
+    background-color: rgba(134, 131, 131, 0.17);
+    padding: 1em;
+  }
+  div[uib-accordion-group] {
+    background-color: transparent;
+    border: 1px gray solid;
+    .panel-body {
+      border-top: 0px !important;
+    }
+  }
+}

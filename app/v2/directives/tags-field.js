@@ -39,7 +39,13 @@
         /**
          * attribute that indicates if tags-field is disabled.
          */
-        disabled: '='
+        disabled: '=',
+
+        /**
+         * true | false. Defines the posibility to add unlisted items to the list of items displayed. False by default.
+         * New items are given a temporary ID that begins with "tmp-N".
+         */
+        canAdd: '@'
       },
       templateUrl: '/app/v2/partials/directives/tags-field.html',
       link: function(scope, element, attrs) {
@@ -56,6 +62,12 @@
         scope.fetch = fetch.bind(scope);
         scope.onFocus = onFocus.bind(scope);
         scope.onMouseLeave = onMouseLeave.bind(scope);
+        scope.setupAddListener = setupAddListener.bind(scope);
+
+        if (scope.canAdd === 'true') {
+          scope.setupAddListener(element);
+        }
+        scope.tmpIdCount = 1;
       }
     };
 
@@ -72,6 +84,7 @@
       if (!self.isSuggestionListVisible) {
         return;
       }
+      this.currentText = text;
       this.fetch(text);
     }
 
@@ -161,5 +174,25 @@
       }
       return $sce.trustAsHtml(text)
     }
+  }
+
+  /**
+   * Adds support for adding new elements to the list of options.
+   */
+  function setupAddListener(element) {
+    let input = element.find('input');
+    input.keypress(e => {
+
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        let item = {};
+        item[this.options.textField] = this.currentText;
+        item[this.options.idField] = `tmp-${this.tmpIdCount}`;
+        this.tmpIdCount += 1;
+        this.select(item);
+        input.blur();
+        input.focus();
+      }
+    });
   }
 }());

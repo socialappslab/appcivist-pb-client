@@ -285,24 +285,38 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
      */
     getCurrentComponent: function(components) {
       var current;
-
-      angular.forEach(components, function(c) {
-        var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm').local();
-        startMoment.hour(0);
-        startMoment.minute(0);
-        var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm').local();
-        endMoment.hour(0);
-        endMoment.minute(0);
-
-        if (moment().local().isBetween(startMoment, endMoment)) {
-          current = c;
-        }
-
-      });
-
-      if (!current && components && components.length) {
-        current = components[components.length - 1];
+      var startComponent = components[0];
+      var campaignStartDate = moment(startComponent.startDate, 'YYYY-MM-DD HH:mm').local();
+      var campaignEndDate = moment(startComponent.endDate, 'YYYY-MM-DD HH:mm').local();
+      campaignStartDate.hour(0);
+      campaignStartDate.minute(0);
+      campaignEndDate.hour(0);
+      campaignEndDate.minute(0);
+      if (moment().local().isBefore(campaignStartDate) || moment().local().isBetween(campaignStartDate)) {
+        current = startComponent;
       }
+
+      // TODO: iterate starting in second
+      if (!current) {
+        angular.forEach(components, function(c) {
+          var startMoment = moment(c.startDate, 'YYYY-MM-DD HH:mm').local();
+          startMoment.hour(0);
+          startMoment.minute(0);
+          var endMoment = moment(c.endDate, 'YYYY-MM-DD HH:mm').local();
+          endMoment.hour(0);
+          endMoment.minute(0);
+
+          if (moment().local().isBetween(startMoment, endMoment)) {
+            current = c;
+          }
+        });
+
+        if (!current && components && components.length) {
+          var endComponent = components[components.length - 1];
+          current = endComponent;
+        }
+      }
+
       return current;
     },
 

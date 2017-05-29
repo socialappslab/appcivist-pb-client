@@ -72,7 +72,8 @@
       <div class="heading__working_group" ng-if="contribution.workingGroupAuthors && contribution.workingGroupAuthors.length > 0">
         <div class="col-md-1 no-padding no-margin">
           <!-- TODO: allow for the possibility in which a contribution is assigned to a WG but also is associated with a Topic-->
-          <img ng-if="group.profile.icon && !group.isTopic" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
+          <img ng-if="group.profile.icon && !group.isTopic" ng-src="{{group.profile.icon}}" height="16" width="16"
+            style="border-radius: 50%; max-width=100%; vertical-align: middle;">
           <i ng-if="!group.profile.icon" class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tags': group.isTopic}"></i>
           <i ng-if="group.profile.icon && group.isTopic" class="fa fa-tags"></i>
         </div>
@@ -102,8 +103,52 @@
 </div>
 
 
-<!-- IDEA CARD -->
+<!-- IDEA -->
 <div class="card__idea" ng-if="isIdea">
+  <div class="card__wrapper">
+    <header class="card__header">
+      <div class="col-lg-9">
+        <h3>
+          <a ng-click="myObject.seeDetail()">
+          {{contribution.title}}
+          </a>
+        </h3>
+        <div class="heading--category">
+          <span ng-repeat="author in contribution.nonMemberAuthors | limitTo:3 track by $index">
+          {{author.name}} <span ng-if="$index < (contribution.nonMemberAuthors.length - 1) || $index == 2 ">, </span>
+          </span>
+        </div>
+        <p>{{'Created on' | translate}} {{formatDate(contribution.creation)}}</p>
+      </div>
+      <div class="temperature_check">
+        <ul class="pull-right votes" ng-if="!isAnonymous" style="margin-right: 0.1em;">
+          <li class="upvote">
+            {{contribution.stats.ups}}<i class="fa fa-thumbs-up"></i>
+          </li>
+          <li class="downvote">
+            {{contribution.stats.downs}}<i class="fa fa-thumbs-down"></i>
+          </li>
+          <li class="downvote">
+            {{contribution.totalComments}}<i class="fa fa-comments-o"></i>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <div class="card__body">
+      <div class="excerpt" ng-style="ideaExcerptStyle" ng-bind-html-unsafe="html">
+        {{contribution.plainText|limitTo:152}}{{(contribution.plainText.length) > 152 ? '...' : '.' }}
+      </div>
+    </div>
+    <div class="card__footer">
+      {{contribution.workingGroupAuthors[0].name}}
+    </div>
+  </div>
+</div>
+<!-- IDEA -->
+
+
+<!-- IDEA CARD (old version, ignored) -->
+<div class="card__idea" ng-if="false">
   <div class="card__wrapper">
     <header class="card__header" ng-style="ideaHeaderStyle" ng-mouseenter="cm.isHover = false">
       <div class="heading--category">

@@ -43,6 +43,7 @@
           this.onChange({ author: author });
         });
       }
+      this.author.customFieldsValues = {};
     };
 
 

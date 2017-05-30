@@ -292,7 +292,7 @@ appCivistApp.factory('Campaigns', function($resource, $sce, localStorageService,
       campaignStartDate.minute(0);
       campaignEndDate.hour(0);
       campaignEndDate.minute(0);
-      if (moment().local().isBefore(campaignStartDate) || moment().local().isBetween(campaignStartDate)) {
+      if (moment().local().isBefore(campaignStartDate) || moment().local().isBetween(campaignStartDate,campaignEndDate)) {
         current = startComponent;
       }
 

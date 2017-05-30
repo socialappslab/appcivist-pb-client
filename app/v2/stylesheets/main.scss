@@ -1,3 +1,7 @@
+@import "dashboard";
+@import "campaign-timeline";
+@import "page_header";
+@import "proposals-ideas-searchbox";
 @import "../../../stylesheets/styles/_colors.scss";
 @import "../../../stylesheets/styles/_header.scss";
 @import "../../../stylesheets/styles/_fonts.scss";
@@ -974,7 +978,7 @@ contribution-card {
   }
 }
 
-contribution-form {
+.contribution-form {
   header {
     padding-bottom: 0px !important;
     padding-left: 2em !important;

@@ -3,7 +3,7 @@
     <header class="modal-header">
       <div class="field__container" ng-if="!vm.hiddenFieldsMap['title']">
         <!--<label for="add_proposal__title">{{'Title of Idea' | translate}} </label>-->
-        <input ng-model="vm.contribution.title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
+        <input ng-model="vm.contribution.title" class="title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
           type="text" placeholder="{{ 'Title of Idea' | translate }}..." name="title" ng-maxlength="50">
         <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
           <div ng-message="required">{{'This field is required' | translate}}</div>

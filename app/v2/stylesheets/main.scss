@@ -923,8 +923,8 @@ fieldset.tags .autocomplete .suggestion-item em {
   .bold {
     font-weight: bold;
   }
-  #add_proposal__title {
-    color: $color__text--secondary;
+  .title {
+    font-size: 32px;
   }
 }
 

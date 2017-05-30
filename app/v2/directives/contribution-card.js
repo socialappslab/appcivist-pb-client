@@ -70,6 +70,7 @@
         setContributionType(scope);
         var assembly = localStorageService.get('currentAssembly');
         scope.campaignId = $stateParams.cid ? parseInt($stateParams.cid) : 0;
+        scope.formatDate = formatDate.bind(scope);
 
         if (assembly) {
           scope.assemblyId = assembly.assemblyId;
@@ -146,6 +147,10 @@
           }
 
           return scope.trustedHtmlText;
+        }
+
+        function formatDate(date) {
+          return moment(date, 'yyyy-MM-DD').format('YYYY/MM/DD');
         }
       }
     };

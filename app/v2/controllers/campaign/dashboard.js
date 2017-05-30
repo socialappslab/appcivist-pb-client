@@ -191,6 +191,7 @@
               }
               var currentComponent = Campaigns.getCurrentComponent(data);
               setIdeasSectionVisibility(currentComponent);
+              $scope.type = $scope.currentComponentType === 'IDEAS' ? 'idea' : 'proposal';
               $scope.components = data;
               localStorageService.set('currentCampaign.components', data);
               localStorageService.set('currentCampaign.currentComponent', currentComponent);

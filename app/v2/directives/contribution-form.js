@@ -210,7 +210,7 @@
           var xhr, formData;
           xhr = new XMLHttpRequest();
           xhr.withCredentials = true;
-          xhr.open('POST', servs.FileUploader.uploadEndpoint());
+          xhr.open('POST', FileUploader.uploadEndpoint());
           xhr.onload = function() {
             var json;
 

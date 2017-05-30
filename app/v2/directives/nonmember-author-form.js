@@ -29,12 +29,13 @@
   });
 
 
-  Form.$inject = ['Space', '$scope'];
+  Form.$inject = ['Space', '$scope', 'localStorageService'];
 
-  function Form(Space, $scope) {
+  function Form(Space, $scope, localStorageService) {
     this.loadCustomFields = loadCustomFields.bind(this);
 
     this.$onInit = () => {
+      this.loadCustomFields();
 
       if (!this.author) {
         this.author = {};
@@ -49,7 +50,9 @@
       let campaign = localStorageService.get('currentCampaign');
       let rsp = Space.fields(campaign.resourceSpaceId).query().$promise;
       rsp.then(
-        fields => this.campaignFields = fields.filter(f => f.entityType === ' NON_MEMBER_AUTHOR'),
+        fields => {
+          this.campaignFields = fields.filter(f => f.entityType === 'NON_MEMBER_AUTHOR');
+        },
         error => {
           Notify.show('Error while trying to get fields from resource space', 'error');
         }

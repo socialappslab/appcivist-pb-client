@@ -47,6 +47,14 @@
           </fieldset>
         </div>
 
+        <div class="field__container" ng-if="(vm.campaignFields && vm.campaignFields.length) || (vm.componentFields && vm.componentFields.length)">
+          <fieldset>
+            <p class="intro">{{'Custom information' | translate}}</p>
+            <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
+            <custom-field ng-repeat="field in vm.componentFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
+          </fieldset>
+        </div>
+
         <!-- Non Member Author -->
         <p class="intro">{{'Idea Author(s) Information' | translate}}</p>
         <div class="field__container assign_proposal_to_users nonmember_author" ng-if="vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">
@@ -64,14 +72,6 @@
           </fieldset>
 
           <button class="btn btn-default" ng-click="vm.addNewAuthor()">{{'Add another author' | translate}}</button>
-        </div>
-
-        <div class="field__container" ng-if="(vm.campaignFields && vm.campaignFields.length) || (vm.componentFields && vm.componentFields.length)">
-          <fieldset>
-            <p class="intro">{{'Custom information' | translate}}</p>
-            <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
-            <custom-field ng-repeat="field in vm.componentFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
-          </fieldset>
         </div>
 
         <fieldset>

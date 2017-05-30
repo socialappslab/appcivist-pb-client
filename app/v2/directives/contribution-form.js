@@ -451,10 +451,7 @@
     function contributionSubmit() {
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
-      payload.themes = payload.officialThemes.concat(payload.emergentThemes);
-      delete payload.officialThemes;
-      delete payload.emergentThemes;
-      payload.themes.forEach(t => delete t.themeId);
+      payload.emergentThemes.forEach(t => delete t.themeId);
       payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
 
       if ($scope.contributionForm.$invalid) {

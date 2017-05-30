@@ -78,6 +78,7 @@
     this.loadEmergentThemes = loadEmergentThemes.bind(this);
     this.addNewAuthor = addNewAuthor.bind(this);
     this.deleteAuthor = deleteAuthor.bind(this);
+    this.filterCustomFields = filterCustomFields.bind(this);
 
     this.assembly = localStorageService.get('currentAssembly');
     this.mode = this.mode || 'create';
@@ -586,17 +587,16 @@
       this.currentComponent = currentComponent;
       this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
       this.componentResourceSpaceId = currentComponent.resourceSpaceId;
-      // TODO: sometimes the fields do not appear. Need to find out why.
 
       this.loadFields(this.campaign.resourceSpaceId).then(fields => {
         $timeout(() => {
-          this.campaignFields = fields;
+          this.campaignFields = this.filterCustomFields(fields);
           $scope.$digest();
         });
       });
       this.loadFields(this.currentComponent.resourceSpaceId).then(fields => {
         $timeout(() => {
-          this.componentFields = fields;
+          this.componentFields = this.filterCustomFields(fields);
           $scope.$digest();
         });
       });
@@ -638,6 +638,17 @@
      */
     function deleteAuthor(author) {
       _.remove(this.contribution.nonMemberAuthors, { tmpId: author.tmpId });
+    }
+
+    /**
+     * Filter the given custom fields array based on the contribution type.
+     * 
+     * @param {Object[]} fields 
+     */
+    function filterCustomFields(fields) {
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' &&
+        f.entityFilterAttributeName === 'type' &&
+        f.entityFilter === this.type);
     }
   }
 }());

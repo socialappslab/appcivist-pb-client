@@ -91,6 +91,13 @@
         this.isNumber = true;
       } else if (type === 'FILE') {
         this.isFile = true;
+      } else if (type == 'MULTIPLE_CHOICE') {
+
+        if (this.definition.limit === '1') {
+          this.isSingleChoice = true;
+        } else if (this.definition.limit === 'MULTIPLE') {
+          this.isMultipleChoice = true;
+        }
       }
     }
 

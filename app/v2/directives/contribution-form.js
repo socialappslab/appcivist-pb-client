@@ -1,15 +1,15 @@
 (function() {
   'use strict';
 
-  /** 
+  /**
    * @name contribution-form
    * @memberof directives
-   * 
+   *
    * @description
    *  Component that renders a contribution form.
-   * 
+   *
    * @example
-   * 
+   *
    *  <contribution-form></contribution-form>
    */
   appCivistApp
@@ -24,7 +24,7 @@
         //supported values:  PROPOSAL | IDEA
         type: '@',
 
-        // handler called when contribution creation has succeeded. 
+        // handler called when contribution creation has succeeded.
         // The function gets as a parameter the created contribution. An example of onSuccess callback is
         // function onSuccessCallback(contribution) { ... }
         onSuccess: '&',
@@ -243,7 +243,7 @@
             cb(blobInfo.blobUri(), { title: file.name });
           });
           input.click();
-          vm.on('$destroy', function() {
+          vm.$on('$destroy', function() {
             $(input).unbind('change');
           });
         }
@@ -308,9 +308,9 @@
 
     /**
      * Gets themes from the backend.
-     * 
+     *
      * @param {String} query - el texto ingresado por el usuario
-     * @param {String} type - el tipo de theme: OFFICIAL_PRE_DEFINED | EMERGENT 
+     * @param {String} type - el tipo de theme: OFFICIAL_PRE_DEFINED | EMERGENT
      */
     function loadThemes(query, type) {
       var campaignId;
@@ -605,7 +605,7 @@
 
     /**
      * Add a new author to the list of non-member authors.
-     * 
+     *
      * @param {boolean} prefill - true to prefill form data with current user information
      */
     function addNewAuthor(prefill) {
@@ -630,8 +630,8 @@
 
     /**
      * Deletes the given author from the array of contribution authors.
-     * 
-     * @param {Object} author 
+     *
+     * @param {Object} author
      */
     function deleteAuthor(author) {
       _.remove(this.contribution.nonMemberAuthors, { tmpId: author.tmpId });
@@ -639,8 +639,8 @@
 
     /**
      * Filter the given custom fields array based on the contribution type.
-     * 
-     * @param {Object[]} fields 
+     *
+     * @param {Object[]} fields
      */
     function filterCustomFields(fields) {
       return fields.filter(f => f.entityType === 'CONTRIBUTION' &&

@@ -22,9 +22,12 @@
         // generated filters will be set in this property
         generatedFilters: '=',
 
-        // false | true. If true, the widget will call the searchHandler. Otherwise, generated filters 
+        // false | true. If true, the widget will call the searchHandler. Otherwise, generated filters
         // and sorting will be updated without calling the backend
-        dryRun: '@'
+        dryRun: '@',
+
+        // the current component of the campaign
+        currentComponentType: '='
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function(scope, element, attrs) {
@@ -34,7 +37,7 @@
           groups: [],
           // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
           sorting: 'date_asc',
-          mode: 'proposal'
+          mode: scope.type
         };
         scope.vm = {
           selectedThemes: [],

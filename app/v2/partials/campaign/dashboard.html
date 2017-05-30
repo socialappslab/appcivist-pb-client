@@ -160,9 +160,16 @@
           <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
         </a>
       </div>
-      <proposals-ideas-searchbox class="col-*-12" search-handler="doSearch(filters)" load-themes="loadThemes(query)"
-        load-groups="loadGroups(query)" is-anonymous="isAnonymous" campaign-config="campaignConfigs" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
-        generated-filters="filters" dry-run="true"></proposals-ideas-searchbox>
+      <proposals-ideas-searchbox class="col-*-12"
+                                 search-handler="doSearch(filters)"
+                                 load-themes="loadThemes(query)"
+                                 load-groups="loadGroups(query)"
+                                 is-anonymous="isAnonymous"
+                                 campaign-config="campaignConfigs"
+                                 campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
+                                 generated-filters="filters"
+                                 dry-run="true"
+                                 current-component-type="type"></proposals-ideas-searchbox>
 
       <!--CONTENT -> Contributions -->
       <div class="row" style="padding-left:20px">
@@ -170,7 +177,7 @@
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded, 'show-comments': commentsSectionExpanded}">-->
           <section class="list--proposals">
             <header class="proposals__header col-*-12" style="padding-top: 25px; padding-bottom:0px;">
-              <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA') && currentComponentType != 'IDEAS''" ng-click="toggleIdeasSection()"
+              <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA') && currentComponentType != 'IDEAS'" ng-click="toggleIdeasSection()"
                 class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
                 style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
@@ -193,7 +200,7 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
           <!-- Ideas section -->
-          <section ng-if="ideasSectionExpanded" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
+          <section ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA') && ideasSectionExpanded && currentComponentType != 'IDEAS'">
             <header class="ideas__header" style="padding-left: 30px;">
               <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
               <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;

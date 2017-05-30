@@ -40,7 +40,7 @@
     <div ng-if="vm.isMultipleChoice">
       <div class="checkbox" ng-repeat="option in vm.definition.customFieldValueOptions">
         <label>
-          <input type="checkbox" ng-model="vm.model" value="{{option.customFieldValueOptionId}}">
+          <input type="checkbox" ng-model="vm.model[option.customFieldValueOptionId]" value="{{option.customFieldValueOptionId}}">
           {{option.value}}
         </label>
       </div>

@@ -30,6 +30,7 @@
       </li>
     </ul>
   </div>
+
   <div class="filters">
     <h4 class="widget__label">
       {{'Filter by' | translate}}</h4>
@@ -40,7 +41,7 @@
           <a href="">{{theme.title}}<i class="fa fa-close" ng-click="removeThemeFilter(theme, $event)"></i></a>
         </li>
       </ul>
-      <ul class="tags" ng-if="filters.groups.length > 0">
+      <ul class="tags" ng-if="filters.groups.length > 0 && currentComponent.type != 'IDEAS'">
         <p>{{'Working group' | translate}}</p>
         <li ng-repeat="group in filters.groups">
           <a href="">{{group.name}}<i class="fa fa-close" ng-click="removeGroupFilter(group, $event)"></i></a>

@@ -451,6 +451,7 @@
     function contributionSubmit() {
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
+      payload.existingThemes = payload.officialThemes;
       payload.emergentThemes.forEach(t => delete t.themeId);
       payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
 

@@ -2,7 +2,7 @@
   <div class="modal_content__add_proposal" ng-if="vm.isIdea">
     <header class="modal-header">
       <div class="field__container" ng-if="!vm.hiddenFieldsMap['title']">
-        <label for="add_proposal__title">{{'Title of Idea' | translate}} <abbr title="Required">*</abbr></label>
+        <!--<label for="add_proposal__title">{{'Title of Idea' | translate}} </label>-->
         <input ng-model="vm.contribution.title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
           type="text" placeholder="{{ 'Title of Idea' | translate }}..." name="title" ng-maxlength="50">
         <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
@@ -15,7 +15,8 @@
       <fieldset>
         <!-- Description -->
         <div class="field__container" ng-if="!vm.hiddenFieldsMap['description']">
-          <label for="add_proposal__description">{{'Description' | translate}} <abbr title="Required">*</abbr></label>
+          <p for="add_proposal__description" class="bold">{{'What is your Idea?' | translate}} <abbr title="Required">*</abbr></p>
+          <label>{{'Where will this occur? Who will benefit? Why is this needed?' | translate}}</label>
           <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.contribution.text" ng-required="true" ng-disabled="disabled"
             id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
           <div ng-messages="contributionForm.text.$error" style="color:maroon" role="alert">
@@ -30,8 +31,8 @@
         <!-- Themes -->
         <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['officialThemes']">
           <fieldset class="add_proposal__availble_themes">
-            <p class="intro">{{'Idea Themes' | translate}} *</p>
-            <label class="add_proposal__categories_label">{{'Themes of the Associated Campaign. Select at least one theme.' | translate}}</label>
+            <p class="intro bold">{{'Idea Themes' | translate}} *</p>
+            <label class="add_proposal__categories_label">{{'idea.form.themes.description' | translate : vm.campaign}}</label>
             <tags-field load-items="vm.loadOfficialThemes(query)" options="vm.themesOptions" selected="vm.contribution.officialThemes"
               prefetch="true" disabled="vm.disabled"></tags-field>
           </fieldset>
@@ -40,15 +41,24 @@
         <!-- Keywords -->
         <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['emergentThemes']">
           <fieldset class="add_proposal__availble_themes">
-            <p class="intro">{{'Idea Keywords' | translate}} *</p>
-            <label class="add_proposal__categories_label">{{'Add at least two keywords, one at a time, that best describe your idea.' | translate}}</label>
+            <p class="intro bold">
+              {{'Idea Keywords' | translate}}
+              <i class="fa fa-question-circle"
+                 tooltip-placement="right"
+                 uib-tooltip="{{'help.tooltip.idea.form.keywords' | translate}}"
+                 data-toggle="tooltip" data-placement="right" title=""></i>
+            </p>
+            <label class="add_proposal__categories_label">{{'idea.form.keywords' | translate}}</label>
             <tags-field load-items="vm.loadEmergentThemes(query)" options="vm.themesOptions" selected="vm.contribution.emergentThemes"
               prefetch="true" disabled="vm.disabled" can-add="true"></tags-field>
           </fieldset>
         </div>
 
         <!-- Non Member Author -->
-        <p class="intro">{{'Idea Author(s) Information' | translate}}</p>
+        <p class="intro bold">{{'Idea Author(s) Information' | translate}}</p>
+        <span>
+          {{'idea.form.author.disclaimer' | translate : vm.campaign}}
+        </span>
         <div class="field__container assign_proposal_to_users nonmember_author" ng-if="vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">
           <fieldset class="user__assignment">
             <uib-accordion close-others="true">
@@ -68,14 +78,14 @@
 
         <div class="field__container" ng-if="(vm.campaignFields && vm.campaignFields.length) || (vm.componentFields && vm.componentFields.length)">
           <fieldset>
-            <p class="intro">{{'Custom information' | translate}}</p>
+            <p class="intro bold">{{'Custom information' | translate}}</p>
             <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
             <custom-field ng-repeat="field in vm.componentFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
           </fieldset>
         </div>
 
         <fieldset>
-          <a class="button__modal_submit" ng-click="vm.submit()">{{'Save' | translate}}</a>
+          <a class="button__modal_submit" ng-click="vm.submit()">{{'Save and submit' | translate}}</a>
         </fieldset>
       </fieldset>
     </div>

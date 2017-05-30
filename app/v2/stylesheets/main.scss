@@ -910,6 +910,22 @@ fieldset.tags .autocomplete .suggestion-item em {
     width: 100%;
     height: 42px;
   }
+  .field__container {
+    font-size: 18px;
+    font-family: "Source Sans Pro";
+    .bold {
+      font-weight: bold;
+    }
+    label {
+      font-size: 18px;
+    }
+  }
+  .bold {
+    font-weight: bold;
+  }
+  #add_proposal__title {
+    color: $color__text--secondary;
+  }
 }
 
 
@@ -1009,6 +1025,7 @@ contribution-card {
     background-color: rgba(134, 131, 131, 0.17);
     padding: 1em;
   }
+
   div[uib-accordion-group] {
     background-color: transparent;
     border: 1px gray solid;

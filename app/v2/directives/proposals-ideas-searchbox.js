@@ -27,7 +27,7 @@
         dryRun: '@',
 
         // the current component of the campaign
-        currentComponentType: '='
+        currentComponent: '='
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function(scope, element, attrs) {
@@ -37,7 +37,7 @@
           groups: [],
           // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
           sorting: 'date_asc',
-          mode: scope.type
+          mode: scope.currentComponent ? scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal' : 'proposal'
         };
         scope.vm = {
           selectedThemes: [],
@@ -64,6 +64,11 @@
         scope.addSelected = addSelected.bind(scope);
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
+        scope.$watch('currentComponent.type', function() {
+          var mode = scope.currentComponent ? scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal' : 'proposal';
+          scope.searchMode(mode);
+        });
+
       }
     };
 
@@ -73,7 +78,9 @@
      * @param {string} mode - proposal | idea | myProposals
      */
     function searchMode(mode, event) {
-      event.preventDefault();
+      if (event) {
+        event.preventDefault();
+      }
 
       if (this.filters.mode === mode) {
         return;
@@ -210,6 +217,12 @@
 
       if (filters.mode === 'myProposals') {
         filters.mode = 'proposal';
+        let user = localStorageService.get('user');
+        filters.by_author = user.userId;
+      }
+
+      if (filters.mode === 'myIdeas') {
+        filters.mode = 'idea';
         let user = localStorageService.get('user');
         filters.by_author = user.userId;
       }

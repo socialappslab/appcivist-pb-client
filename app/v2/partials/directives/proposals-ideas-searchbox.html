@@ -19,14 +19,14 @@
       </a>
     </div>
     <ul class="search_modes">
-      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'proposal'}">
+      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'proposal'}" ng-if="currentComponent.type != 'IDEAS'">
         <a ng-click="searchMode('proposal', $event)">{{'Proposals' | translate}}</a>
       </li>
       <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA')">
         <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate}}</a>
       </li>
       <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'myProposals'}">
-        <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate}}</a>
+        <a ng-click="searchMode(currentComponent.type != 'IDEAS' ? 'myProposals' : 'myIdeas', $event)">{{currentComponent.type != 'IDEAS' ? 'My proposals' : 'My Ideas'| translate}}</a>
       </li>
     </ul>
   </div>

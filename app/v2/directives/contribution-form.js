@@ -46,12 +46,12 @@
   FormCtrl.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter', '$state', '$scope'
+    '$filter', '$state', '$scope', '$stateParams'
   ];
 
   function FormCtrl(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter, $state, $scope) {
+    $filter, $state, $scope, $stateParams) {
     this.init = init.bind(this);
     this.initEdit = initEdit.bind(this);
     this.initCreate = initCreate.bind(this);
@@ -80,7 +80,6 @@
     this.deleteAuthor = deleteAuthor.bind(this);
     this.filterCustomFields = filterCustomFields.bind(this);
 
-    this.assembly = localStorageService.get('currentAssembly');
     this.mode = this.mode || 'create';
     this.isEdit = this.mode === 'edit';
     this.isCreate = this.mode === 'create';
@@ -129,6 +128,8 @@
     }
 
     function init() {
+      // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
+      var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       this.file = {};
       this.contribution = this.contribution || {
         type: this.type,
@@ -161,7 +162,16 @@
       this.isProposal = this.contribution.type === 'PROPOSAL';
       this.isIdea = this.contribution.type === 'IDEA';
       this.isAuthorsDisabled = this.isProposal;
-      this.assembly = localStorageService.get('currentAssembly');
+
+      // TODO we should move the anonymous site to include the path of the assembly
+      this.isAnonymous = false;
+      if($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
+        this.isAnonymous = true;
+        this.campaignUUID = $stateParams.cuuid;
+      } else {
+        this.assembly = localStorageService.get('currentAssembly');
+        this.user = localStorageService.get('user');
+      }
       this.values = {};
       this.tinymceOptions = this.getEditorOptions();
 
@@ -320,7 +330,13 @@
       } else {
         campaignId = this.contribution.campaignIds[0];
       }
-      return Campaigns.themes(this.assembly.assemblyId, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+
+      if (this.isAnonymous) {
+        campaignId = this.campaign.uuid;
+        return Campaigns.themes(null, null, true, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+      } else {
+        return Campaigns.themes(this.assembly.assemblyId, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+      }
     }
 
     /**
@@ -464,10 +480,17 @@
       let rsp;
 
       if (this.mode === 'create') {
-        rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
-          contribution => this.saveFieldsValues(contribution).then(response => contribution),
-          error => Notify.show('Error while trying to save the contribution', 'error')
-        );
+        if (this.isAnonymous) {
+          rsp = Contributions.contributionInResourceSpaceByUUID(this.campaign.resourceSpaceUUID).save(payload).$promise.then(
+            contribution => this.saveFieldsValues(contribution).then(response => contribution),
+            error => Notify.show('Error while trying to save the contribution', 'error')
+          );
+        } else {
+          rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
+            contribution => this.saveFieldsValues(contribution).then(response => contribution),
+            error => Notify.show('Error while trying to save the contribution', 'error')
+          );
+        }
       } else if (this.mode === 'edit') {
         rsp = $q.all([
           Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(payload).$promise,
@@ -518,7 +541,13 @@
      * @param {number} sid - resource space ID
      */
     function loadFields(sid) {
-      let rsp = Space.fields(sid).query().$promise;
+      let rsp = {};
+      if (this.isAnonymous) {
+        rsp = Space.fieldsPublic(sid).query().$promise;
+      } else {
+        rsp = Space.fields(sid).query().$promise;
+      }
+
       return rsp.then(
         fields => fields,
         error => {
@@ -533,7 +562,12 @@
      * @param {number} sid - resource space ID
      */
     function loadValues(sid) {
-      let rsp = Space.fieldValue(sid).query().$promise;
+      let rsp = {};
+      if (this.isAnonymous) {
+        rsp = Space.fieldValue(sid).query().$promise;
+      } else {
+        rsp = Space.fieldValuePublice(sid).query().$promise;
+      }
       return rsp.then(
         fieldsValues => {
           fieldsValues.forEach(v => this.values[v.customFieldDefinition.customFieldDefinitionId] = v);
@@ -596,16 +630,21 @@
     function loadCustomFields() {
       let currentComponent = localStorageService.get('currentCampaign.currentComponent');
       this.currentComponent = currentComponent;
-      this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
-      this.componentResourceSpaceId = currentComponent.resourceSpaceId;
+      if (this.isAnonymous) {
+        this.campaignResourceSpaceId = this.campaign.resourceSpaceUUID;
+        this.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+      } else {
+        this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
+        this.componentResourceSpaceId = currentComponent.resourceSpaceId;
+      }
 
-      this.loadFields(this.campaign.resourceSpaceId).then(fields => {
+      this.loadFields(this.campaignResourceSpaceId).then(fields => {
         $timeout(() => {
           this.campaignFields = this.filterCustomFields(fields);
           $scope.$digest();
         });
       });
-      this.loadFields(this.currentComponent.resourceSpaceId).then(fields => {
+      this.loadFields(this.componentResourceSpaceId).then(fields => {
         $timeout(() => {
           this.componentFields = this.filterCustomFields(fields);
           $scope.$digest();
@@ -629,10 +668,10 @@
       };
 
       if (prefill) {
-        const isCoordinator = Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
-        const isModerator = Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
+        const isCoordinator = !this.isAnonymous || Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
+        const isModerator = !this.isAnonymous || Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
 
-        if (!isCoordinator && !isModerator) {
+        if (!isCoordinator && !isModerator && !this.isAnonymous ) {
           let user = localStorageService.get('user');
           author.name = user.name;
           author.email = user.email;

@@ -1,15 +1,15 @@
 (function() {
   'use strict';
 
-  /** 
+  /**
    * @name nonmember-author-form
    * @memberof directives
-   * 
+   *
    * @description
    *  Component that renders a contribution form.
-   * 
+   *
    * @example
-   * 
+   *
    *  <nonmember-author-form on-change="change(author)" disabled="false"></nonmember-author-form>
    */
 
@@ -29,11 +29,12 @@
   });
 
 
-  Form.$inject = ['Space', '$scope', 'localStorageService'];
+  Form.$inject = ['Space', '$scope', 'localStorageService', '$stateParams'];
 
-  function Form(Space, $scope, localStorageService) {
+  function Form(Space, $scope, localStorageService, $stateParams) {
     this.loadCustomFields = loadCustomFields.bind(this);
-
+    var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    this.isAnonymous = $stateParams.cuuid && pattern.test($stateParams.cuuid);
     this.$onInit = () => {
       this.loadCustomFields();
 
@@ -49,7 +50,10 @@
 
     function loadCustomFields() {
       let campaign = localStorageService.get('currentCampaign');
-      let rsp = Space.fields(campaign.resourceSpaceId).query().$promise;
+      let rsp = this.isAnonymous ?
+                    Space.fieldsPublic(campaign.resourceSpaceUUID).query().$promise
+                      : Space.fields(campaign.resourceSpaceId).query().$promise;
+
       rsp.then(
         fields => {
           this.campaignFields = fields.filter(f => f.entityType === 'NON_MEMBER_AUTHOR');

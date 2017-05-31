@@ -112,8 +112,8 @@
         function(data) {
           $scope.wg = data;
           $scope.wg.rsID = data.resourcesResourceSpaceId;
-          $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
-          $scope.wg.frsUUID = data.forumResourceSpaceUUId;
+          $scope.wg.rsUUID = data.resourcesResourceSpaceUUID;
+          $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
 
           if ($scope.isTopicGroup) {
@@ -125,7 +125,7 @@
           loadIdeas(data);
 
           if ($scope.isAnonymous) {
-            $scope.spaceID = data.resourcesResourceSpaceUUId;
+            $scope.spaceID = data.resourcesResourceSpaceUUID;
           } else {
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;

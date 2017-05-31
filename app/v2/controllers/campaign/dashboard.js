@@ -156,10 +156,10 @@
         function(data) {
           $scope.campaign = data;
           $scope.campaign.rsID = data.resourceSpaceId; //must be always id
-          $scope.campaign.rsUUID = data.resourceSpaceUUId;
-          $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
+          $scope.campaign.rsUUID = data.resourceSpaceUUID;
+          $scope.campaign.frsUUID = data.forumResourceSpaceUUID;
           $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
-          $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
+          $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUID : data.resourceSpaceId;
           $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
           $scope.showPagination = true;
           $scope.logo = $scope.campaign.logo ?

@@ -3,7 +3,7 @@
     margin-left: -15px;
     margin-right: -15px;
   }
-
+  
   fieldset.nonmember .field__container {
     margin-bottom: 20px;
   }
@@ -58,6 +58,6 @@
     <p class="intro bold">{{'Optional Survey Information' | translate}}</p>
     <label>{{ 'optional.survey.info' | translate }}</label>
 
-    <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.author.customFieldsValues[field.customFieldDefinitionId]"></custom-field>
+    <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.author.customFieldValues[field.customFieldDefinitionId]"></custom-field>
   </div>
 </fieldset>

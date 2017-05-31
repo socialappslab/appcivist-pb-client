@@ -454,6 +454,8 @@
       payload.existingThemes = payload.officialThemes;
       payload.emergentThemes.forEach(t => delete t.themeId);
       payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
+      // we save a reference to the authors list with their custom fields values.
+      this.nonMemberAuthorsRef = payload.nonMemberAuthors;
 
       if ($scope.contributionForm.$invalid) {
         Notify.show('The form is invalid: you must fill all required values', 'error');
@@ -463,13 +465,13 @@
 
       if (this.mode === 'create') {
         rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
-          contribution => this.saveFieldsValues(contribution.resourceSpaceId).then(response => contribution),
+          contribution => this.saveFieldsValues(contribution).then(response => contribution),
           error => Notify.show('Error while trying to save the contribution', 'error')
         );
       } else if (this.mode === 'edit') {
         rsp = $q.all([
           Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(payload).$promise,
-          this.saveFieldsValues(this.contribution.resourceSpaceId),
+          this.saveFieldsValues(this.contribution),
         ]);
       } else {
         console.warn('Only create or edit are accepted mode in contribution form');
@@ -545,15 +547,26 @@
     /**
      * Updates custom field values.
      *
-     * @param {number} sid - resource space ID
+     * @param {Object} contribution - the created contribution.
      */
-    function saveFieldsValues(sid) {
+    function saveFieldsValues(contribution) {
+      const sid = contribution.resourceSpaceId
       let rsp;
       let payload = {
         customFieldValues: []
       };
-
       angular.forEach(this.values, value => payload.customFieldValues.push(value));
+      // we need to save authors custom fields too.
+      contribution.nonMemberAuthors.forEach(nma => {
+        let ref = _.find(this.nonMemberAuthorsRef, { email: nma.email, name: nma.name });
+        _.forIn(ref.customFieldValues, cfv => {
+          cfv.entityTargetUuid = nma.uuid;
+          // TODO: ask cdparra about this.
+          cfv.value = JSON.stringify(cfv.value);
+          payload.customFieldValues.push(cfv);
+        });
+      });
+
       if (this.mode === 'create') {
         rsp = Space.fieldsValues(sid).save(payload).$promise;
       } else {

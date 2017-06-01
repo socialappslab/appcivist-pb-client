@@ -1086,5 +1086,12 @@
   "Save and submit": "Save and submit",
   "help.tooltip.idea.form.keywords": "Example: If your idea is for new bike lanes, the theme might be \"Transportation\" and one keyword  would be \"cycling\".",
   "Created on": "Created on",
-  "My Ideas": "Le mie idee"
+  "My Ideas": "Le mie idee",
+  "Select filters to add": "Select filters to add",
+  "Apply Filters": "Apply Filters",
+  "pagination.widget.empty.ideas": "Ups! This place is empty of ideas...",
+  "pagination.widget.empty.proposals": "Ups! This place is empty of proposals...",
+  "pagination.widget.empty.search.ideas": "Ups! No idea matched your search...",
+  "pagination.widget.empty.search.proposals": "Ups! No proposal matched your seearch...",
+  "Edit Cover Photo": "Edit Cover Photo"
 }

@@ -1087,5 +1087,12 @@
   "Save and submit": "Guardar y enviar",
   "help.tooltip.idea.form.keywords": "Ejemplo: Si su idea es se trata de construir nuevos carriles de bicicleta, el tema podría ser \"Transporte\" mientras que la etiqueta sería \"ciclismo\".",
   "Created on": "Creado el",
-  "My Ideas": "Mis Ideas"
+  "My Ideas": "Mis Ideas",
+  "Select filters to add": "Select filters to add",
+  "Apply Filters": "Apply Filters",
+  "pagination.widget.empty.ideas": "Ups! This place is empty of ideas...",
+  "pagination.widget.empty.proposals": "Ups! This place is empty of proposals...",
+  "pagination.widget.empty.search.ideas": "Ups! No idea matched your search...",
+  "pagination.widget.empty.search.proposals": "Ups! No proposal matched your seearch...",
+  "Edit Cover Photo": "Editar foto de portada"
 }

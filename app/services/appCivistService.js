@@ -9,7 +9,7 @@ function getServerBaseUrl(localStorageService) {
   var serverBaseUrl = localStorageService.get('serverBaseUrl');
   if (serverBaseUrl === undefined || serverBaseUrl === null) {
     serverBaseUrl = appCivistCoreBaseURL;
-    localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
+    if (serverBaseUrl) localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     console.log("Setting API Server in appCivistService to: " + appCivistCoreBaseURL);
   }
   return serverBaseUrl;
@@ -1279,7 +1279,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id
        */
       fieldsPublic(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:sid/field', { sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:sid/field', { uuid: sid });
       },
 
       /**

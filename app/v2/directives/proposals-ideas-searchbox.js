@@ -37,7 +37,7 @@
           groups: [],
           // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
           sorting: 'date_asc',
-          mode: scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'idea'
+          mode: scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'none'
         };
         scope.vm = {
           selectedThemes: [],
@@ -65,7 +65,7 @@
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
         scope.$watch('currentComponent.type', function() {
-          var mode = scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'idea';
+          var mode = scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'none';
           scope.vm.canFilterByGroup = scope.loadGroups && mode != 'idea';
           scope.searchMode(mode);
         });
@@ -86,6 +86,11 @@
       if (this.filters.mode === mode) {
         return;
       }
+
+      if (mode === 'none') {
+        return;
+      }
+
       this.filters.mode = mode;
 
       if (this.filters.searchText.trim().length > 0 || this.dryRun === 'true') {

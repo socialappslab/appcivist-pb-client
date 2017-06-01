@@ -4,18 +4,18 @@
   /**
    * @name paginationWidget
    * @memberof directives
-   * 
+   *
    * @description
-   * 
+   *
    * Implements a pagination widget for contributions. The widget also setup a listener for the event
    * <i>pagination:reloadCurrentPage</i> in order to reload the current page.
-   * 
    *
-   * @example 
-   * 
+   *
+   * @example
+   *
    * <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
    *                    is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
-   * 
+   *
    */
   angular
     .module('appCivistApp')
@@ -72,14 +72,16 @@
           } else {
             target.rsID = scope.space;
           }
-          Space.doSearch(target, scope.isAnonymous, scope.filters).then(
-            data => {
-              let contributions = data.list || [];
-              scope.contributions = contributions;
-              scope.totalContributions = data.total;
-              scope.pagination.current = pageNumber;
-            }
-          );
+          if (scope.filters && scope.filters.mode != 'none') {
+            Space.doSearch(target, scope.isAnonymous, scope.filters).then(
+              data => {
+                let contributions = data.list || [];
+                scope.contributions = contributions;
+                scope.totalContributions = data.total;
+                scope.pagination.current = pageNumber;
+              }
+            );
+          }
         }
 
         function paginationVisible(pag, visible) {

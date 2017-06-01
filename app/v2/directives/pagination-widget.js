@@ -4,26 +4,26 @@
   /**
    * @name paginationWidget
    * @memberof directives
-   * 
+   *
    * @description
-   * 
+   *
    * Implements a pagination widget for contributions. The widget also setup a listener for the event
    * <i>pagination:reloadCurrentPage</i> in order to reload the current page.
-   * 
    *
-   * @example 
-   * 
+   *
+   * @example
+   *
    * <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
    *                    is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
-   * 
+   *
    */
   angular
     .module('appCivistApp')
     .directive('paginationWidget', paginationWidget);
 
-  paginationWidget.$inject = ['$state', 'Contributions', 'Notify'];
+  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space'];
 
-  function paginationWidget($state, Contributions, Notify) {
+  function paginationWidget($state, Contributions, Notify, Space) {
     var directive = {
       restrict: 'E',
       scope: {
@@ -33,73 +33,65 @@
         type: '=',
         isAnonymous: '=',
         isCoordinator: '=',
-        sorting: '=',
         isTopicGroup: '=',
         campaign: '=',
-        components: '='
+        components: '=',
+        filters: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
-      link: function postLink(scope) {
-        var vm = this;
-
-        scope.$watch('sorting', function(newValue, oldValue) {
-          if (!newValue || angular.equals(newValue, oldValue)) {
-            return;
-          }
-          getResultsPage(1);
-        });
-
-        scope.$on('pagination:reloadCurrentPage', () => {
-          getResultsPage(scope.pagination.current);
-        });
-
-        getResultsPage(1);
+      link: function(scope) {
         scope.pagination = {
           current: 1
         };
-
-        scope.pageChanged = function(newPage) {
-          getResultsPage(newPage);
-        };
-
-        function getResultsPage(pageNumber) {
-          var rsp;
-          var query = { type: scope.type.toUpperCase(), 'sorting': scope.sorting };
-
-          if (scope.isAnonymous) {
-            rsp = Contributions.contributionInResourceSpaceByUUID(scope.space, pageNumber, scope.pageSize).get(query);
-          } else {
-            rsp = Contributions.contributionInResourceSpace(scope.space, pageNumber, scope.pageSize).get(query);
-          }
-          rsp.$promise.then(
-            function(data) {
-              var contributions = data.list;
-
-              if (!contributions) {
-                contributions = [];
-              }
-              scope.contributions = contributions;
-              scope.totalContributions = data.total; //get from response
-              scope.pagination.current = pageNumber;
-            },
-            function(error) {
-              Notify.show('Error loading proposals from server', 'error');
-            }
-          );
-        }
-
         scope.paginationTop = {};
         scope.paginationBottom = {};
+        scope.getResultsPage = getResultsPage.bind(scope);
+        scope.pageChanged = pageChanged.bind(scope);
+        scope.paginationVisible = paginationVisible.bind(scope);
 
-        scope.paginationVisible = function(pag, visible) {
-          if (scope.paginationTop.visible) {
-            scope.paginationBottom.style = { display: 'none' };
+        scope.getResultsPage(1);
+
+        scope.$on('pagination:reloadCurrentPage', () => {
+          scope.getResultsPage(scope.pagination.current);
+        });
+
+        scope.$watchCollection('filters', value => {
+          scope.getResultsPage(scope.pagination.current);
+        });
+
+
+        function pageChanged(newPage) {
+          this.getResultsPage(newPage);
+        }
+
+        function getResultsPage(pageNumber) {
+          let target = {};
+
+          if (scope.isAnonymous) {
+            target.rsUUID = scope.space;
+          } else {
+            target.rsID = scope.space;
+          }
+          if (scope.filters && scope.filters.mode != 'none') {
+            Space.doSearch(target, scope.isAnonymous, scope.filters).then(
+              data => {
+                let contributions = data.list || [];
+                scope.contributions = contributions;
+                scope.totalContributions = data.total;
+                scope.pagination.current = pageNumber;
+              }
+            );
+          }
+        }
+
+        function paginationVisible(pag, visible) {
+          if (this.paginationTop.visible) {
+            this.paginationBottom.style = { display: 'none' };
             return;
           }
           pag.visible = visible;
           pag.style = visible ? {} : { display: 'none' };
-        };
-
+        }
       }
     };
     return directive;

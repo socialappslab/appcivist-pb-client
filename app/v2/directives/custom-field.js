@@ -56,7 +56,7 @@
       this.checkType();
 
       // watcher for updating internal model.
-      $scope.$watch('vm.value', value => {
+      $scope.$watchCollection('vm.value', value => {
         if (!value) {
           return;
         }
@@ -66,7 +66,7 @@
       });
 
       // watcher for updating custom-field value.
-      $scope.$watch('vm.model', value => {
+      $scope.$watchCollection('vm.model', value => {
         if (this.isUpdatingModel || !value) {
           return;
         }
@@ -91,6 +91,14 @@
         this.isNumber = true;
       } else if (type === 'FILE') {
         this.isFile = true;
+      } else if (type == 'MULTIPLE_CHOICE') {
+
+        if (this.definition.limit === '1') {
+          this.isSingleChoice = true;
+        } else if (this.definition.limit === 'MULTIPLE') {
+          this.isMultipleChoice = true;
+          this.model = {};
+        }
       }
     }
 
@@ -168,6 +176,10 @@
 
       if (this.isFile) {
         this.value.value = value.url;
+      } else if (this.isSingleChoice) {
+        this.value.value = _.find(this.definition.customFieldValueOptions, { customFieldValueOptionId: parseInt(value) });
+      } else if (this.isMultipleChoice) {
+        this.value.value = _.filter(this.definition.customFieldValueOptions, option => this.model[option.customFieldValueOptionId]);
       } else {
         this.value.value = value;
       }

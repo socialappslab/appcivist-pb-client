@@ -11,7 +11,7 @@
   var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
-    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies'
+    'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies', 'facebook'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
@@ -86,6 +86,9 @@
     .constant('RECAPTCHA_KEY', '6Le_ow8UAAAAALdzF8F_LaqQI6t6MDw4USLMedMy');
 
   appCivistApp.config(config);
+  appCivistApp.config(function(FacebookProvider) {
+     FacebookProvider.init('1639456526287470');
+  });
   appCivistApp.run(run);
 
   /**
@@ -94,7 +97,7 @@
    */
   config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
     'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider', '$stateProvider',
-    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider'
+    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider', 'FacebookProvider'
   ];
 
   /**
@@ -248,18 +251,18 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.cid', {
-        url: '/:cid',
-        controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        access: {
-          requiresLogin: true
-        }
-      })
       .state('v2.assembly.aid.campaign.new', {
         url: '/new',
         controller: 'v2.CampaignFormWizardCtrl',
         templateUrl: 'app/v2/partials/campaign/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.cid', {
+        url: '/:cid',
+        controller: 'v2.CampaignDashboardCtrl',
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
         access: {
           requiresLogin: true
         }
@@ -424,6 +427,7 @@
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
       })
+      // TODO: Move the following under assembly
       .state('v2.campaign', {
         url: '/campaign',
         abstract: true,
@@ -463,6 +467,9 @@
           requiresLogin: true
         }
       })
+
+      // TODO: for the general login, let's add a step after signing in to ask which assembly to connect if the user
+      // is member of several assemblies
       .state('v2.login', {
         url: '/login',
         controller: 'v2.LoginCtrl',
@@ -506,6 +513,9 @@
       });
 
     /**
+     * DEPRECATED
+     * Routes below correspond to the original v1 prototype, soon to be disconnected.
+     *
      * Main routes available in the APP. Each route has its onw controller, which allows the user to
      * simply write down the route and if that's available, it will load everything needed.
      */

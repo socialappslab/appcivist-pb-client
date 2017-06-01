@@ -18,7 +18,16 @@
         isAnonymous: '=',
         campaignConfig: '=',
         campaignContributionTypes: '@',
-        sorting: '='
+
+        // generated filters will be set in this property
+        generatedFilters: '=',
+
+        // false | true. If true, the widget will call the searchHandler. Otherwise, generated filters
+        // and sorting will be updated without calling the backend
+        dryRun: '@',
+
+        // the current component of the campaign
+        currentComponent: '='
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function(scope, element, attrs) {
@@ -28,12 +37,12 @@
           groups: [],
           // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
           sorting: 'date_asc',
-          mode: 'proposal'
+          mode: scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'none'
         };
         scope.vm = {
           selectedThemes: [],
           selectedGroups: [],
-          canFilterByGroup: !!scope.loadGroups
+          canFilterByGroup: !!scope.loadGroups && scope.filters.mode !='idea'
         };
         scope.themesOptions = {
           textField: 'title',
@@ -55,23 +64,36 @@
         scope.addSelected = addSelected.bind(scope);
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
+        scope.$watch('currentComponent.type', function() {
+          var mode = scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'none';
+          scope.vm.canFilterByGroup = scope.loadGroups && mode != 'idea';
+          scope.searchMode(mode);
+        });
+
       }
     };
 
     /**
      * Set the current searchmode of the search textbox.
      *
-     * @param {string} mode - PROPOSAL | IDEA
+     * @param {string} mode - proposal | idea | myProposals
      */
     function searchMode(mode, event) {
-      event.preventDefault();
+      if (event) {
+        event.preventDefault();
+      }
 
       if (this.filters.mode === mode) {
         return;
       }
+
+      if (mode === 'none') {
+        return;
+      }
+
       this.filters.mode = mode;
 
-      if (this.filters.searchText.trim().length > 0) {
+      if (this.filters.searchText.trim().length > 0 || this.dryRun === 'true') {
         this.doSearch();
       }
     }
@@ -170,7 +192,6 @@
       } else {
         this.filters.sorting = sort;
       }
-      this.sorting = this.filters.sorting;
       this.doSearch();
     }
 
@@ -195,10 +216,30 @@
     }
 
     /**
-     * call search handler with current filters spec.
+     * call search handler with current filters spec. If dryRun is true, just update generatedFilters.
      */
     function doSearch() {
-      this.searchHandler({ filters: this.filters });
+      let filters = _.cloneDeep(this.filters);
+
+      if (filters.mode === 'myProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups ;
+        let user = localStorageService.get('user');
+        filters.by_author = user.userId;
+      }
+
+      if (filters.mode === 'myIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups && filters.mode !='idea';
+        let user = localStorageService.get('user');
+        filters.by_author = user.userId;
+      }
+
+      if (this.dryRun === 'true') {
+        this.generatedFilters = filters;
+      } else {
+        this.searchHandler({ filters });
+      }
     }
   }
 }());

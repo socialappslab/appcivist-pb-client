@@ -7,11 +7,12 @@
 
   CampaignDashboardCtrl.$inject = [
     '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService',
-    'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile'
+    'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile', '$state'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
-    localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile) {
+    localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
+    $state) {
 
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function(tab) {
@@ -22,7 +23,6 @@
     activate();
 
     function activate() {
-      console.log("campaignDashboard");
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       $scope.isAnonymous = false;
@@ -33,8 +33,8 @@
       $scope.commentsSectionExpanded = false;
 
       // TODO: read the following from configurations in the campaign/component
-      $scope.newProposalsEnabled = true;
-      $scope.newIdeasEnabled = true;
+      $scope.newProposalsEnabled = false;
+      $scope.newIdeasEnabled = false;
 
       $scope.pageSize = 16;
       $scope.type = 'proposal';
@@ -72,8 +72,6 @@
         }
       }
 
-      $scope.newIdeaEnabled = $scope.newIdeaEnabled && $scope.user != null;
-
       $scope.showResourcesSection = false;
       $scope.toggleResourcesSection = toggleResourcesSection.bind($scope);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
@@ -87,15 +85,20 @@
       $scope.loadGroups = loadGroups.bind($scope);
       $scope.openModal = openModal.bind($scope);
       $scope.closeModal = closeModal.bind($scope);
+      $scope.redirectToProposal = redirectToProposal.bind($scope);
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
-
-      loadCampaigns();
+      $scope.checkJoinWGButtonVisibility = checkJoinWGButtonVisibility.bind($scope);
+      $scope.checkConfigOpenIdeasDefault = checkConfigOpenIdeasDefault.bind($scope);
+      $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
+      $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
         loadAssembly();
         loadCampaignResources();
       }
+
+      loadCampaigns();
 
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function() {
@@ -104,6 +107,8 @@
       $scope.modals = {
         proposalNew: false
       };
+      $scope.filters = {};
+      $scope.displayJoinWorkingGroup = false;
       $scope.isModalOpened = isModalOpened.bind($scope);
       $scope.toggleModal = toggleModal.bind($scope);
       $scope.contributionTypeIsSupported = function(type) {
@@ -121,7 +126,7 @@
       if (assemblyShortname) {
         var rsp = Assemblies.assemblyByShortName(assemblyShortname).get();
         rsp.$promise.then(function(assembly) {
-          $scopoe.assembly = assembly;
+          $scope.assembly = assembly;
         }, function(error) {
           Notify.show('Error while loading public profile of assembly with shortname', 'error');
         });
@@ -154,12 +159,20 @@
         function(data) {
           $scope.campaign = data;
           $scope.campaign.rsID = data.resourceSpaceId; //must be always id
-          $scope.campaign.rsUUID = data.resourceSpaceUUId;
-          $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
+          $scope.campaign.rsUUID = data.resourceSpaceUUID;
+          $scope.campaign.frsUUID = data.forumResourceSpaceUUID;
           $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
-          $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
+          $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUID : data.resourceSpaceId;
           $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
           $scope.showPagination = true;
+          $scope.logo = $scope.campaign.logo ?
+                              $scope.campaign.logo.url : showAssemblyLogo() ?
+                                                          $scope.assembly.profile.icon : null;
+          $scope.cover= $scope.campaign.cover ?$scope.campaign.cover.url : null;
+          $scope.coverStyle = $scope.cover ?
+                            {'background-image':'url('+$scope.cover+')', 'background-position':'center center'}
+                                : {'background-image':'url("../images/vallejo_header.jpg")', 'background-position':'center center'};
+
           localStorageService.set("currentCampaign", $scope.campaign);
           loadPublicCommentCount($scope.forumSpaceID);
           // We are reading the components twice,
@@ -177,10 +190,12 @@
           res.then(
             function(data) {
               if ($scope.isAnonymous) {
-              loadAssemblyPublicProfile();
-            }
+                loadAssemblyPublicProfile();
+              }
               var currentComponent = Campaigns.getCurrentComponent(data);
               setIdeasSectionVisibility(currentComponent);
+              $scope.currentComponent = currentComponent;
+              $scope.type = $scope.currentComponentType === 'IDEAS' ? 'idea' : 'proposal';
               $scope.components = data;
               localStorageService.set('currentCampaign.components', data);
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
@@ -193,7 +208,7 @@
             $scope.proposals = response.list;
             $scope.insights.proposalsCount = response.list.length;
             response.list.forEach(
-              function(proposal){
+              function(proposal) {
                 $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
               }
             );
@@ -208,7 +223,7 @@
                 $scope.ideas = response.list;
                 $scope.insights.ideasCount = response.list.length;
                 if (!$scope.ideas) {
-                 $scope.ideas = [];
+                  $scope.ideas = [];
                 }
               },
               defaultErrorCallback
@@ -220,25 +235,24 @@
           if (!$scope.isAnonymous) {
 
             res = loadGroups();
-            //  console.log(res);
             res.then(
-              function (data) {
+              function(data) {
                 $scope.groups = data;
                 data.forEach(
-                  function (group) {
+                  function(group) {
                     res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
                     res2.$promise.then(
-                      function (data2) {
+                      function(data2) {
                         group.proposalsCount = data2.length;
                       },
-                      function (error) {
+                      function(error) {
                         group.proposalsCount = 0;
                       }
                     );
                   }
                 );
               },
-              function (error) {
+              function(error) {
                 Notify.show('Error trayendo los grupos', 'error');
               }
             );
@@ -249,13 +263,11 @@
             rsp.$promise.then(
               function(data) {
                 $scope.campaignConfigs = data;
-                if (($scope.campaignConfigs['appcivist.campaign.disable-campaign-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-campaign-comments']==='TRUE') ||
-                    ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE') ||
-                    ($scope.campaignConfigs['appcivist.group.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.group.disable-working-group-comments']==='TRUE')){
-                  $scope.showComments = false;
-                } else {
-                  $scope.showComments = true;
-                }
+                let configs = data;
+                $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
+                $scope.showComments = $scope.checkConfigDisableComments(configs);
+                $scope.newIdeasEnabled = $scope.checkConfigAllowAnonIdeas(configs);
+                $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility(configs);
               },
               function(error) {
                 Notify.show('Error while trying to fetch campaign config', 'error');
@@ -298,7 +310,7 @@
       );
     }
 
-    function loadDiscussions(campaign, isAnonymous){
+    function loadDiscussions(campaign, isAnonymous) {
       var res = Space.getContributions(campaign, 'DISCUSSION', isAnonymous);
 
       res.then(
@@ -309,7 +321,8 @@
           if (!$scope.comments) {
             $scope.comments = [];
           }
-        }, function (error) {
+        },
+        function(error) {
           Notify.show('Error occurred while trying to load discussions', 'error');
         });
 
@@ -320,8 +333,9 @@
       // TODO PROPOSAL MAKING doesnt exist in components table anymore, change for PROPOSAL ?
       $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
       $scope.newProposalsEnabled = key === 'PROPOSALS' || key === 'IDEAS';
-      $scope.newIdeasEnabled = key === 'PROPOSALS' || key === 'IDEAS';
-      $scope.currentComponent = component.type.toUpperCase();
+      $scope.newIdeasEnabled = key === 'IDEAS' && checkConfigAllowAnonIdeas($scope.campaignConfigs)
+        || (key === 'PROPOSALS' && checkConfigAllowIdeasDuringProposals($scope.campaignConfigs));
+      $scope.currentComponentType = key;
     }
 
     function loadCampaignResources() {
@@ -349,7 +363,7 @@
       //$rootScope.$broadcast('eqResize', true);
     }
 
-    function toggleInsightsSection(){
+    function toggleInsightsSection() {
       $scope.ideasSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
       $scope.insightsSectionExpanded = !$scope.insightsSectionExpanded;
@@ -391,11 +405,12 @@
     /**
      * Space.doSearch wrapper.
      * @param {object} filters
+     * @deprecated since integration between proposal-ideas-searchbox and pagination-widget.
      */
     function doSearch(filters) {
       this.currentFilters = filters;
       this.ideasSectionExpanded = filters.mode === 'idea';
-      var self = this;
+      var vm = this;
       var rsp = Space.doSearch(this.campaign, this.isAnonymous, filters);
 
       if (!rsp) {
@@ -403,9 +418,9 @@
       }
       rsp.then(function(data) {
         if (filters.mode === 'proposal') {
-          self.proposals = data ? data.list : [];
+          vm.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
-          self.ideas = data ? data.list : [];
+          vm.ideas = data ? data.list : [];
         }
       });
     }
@@ -450,5 +465,77 @@
       this.$broadcast('pagination:reloadCurrentPage');
       this.vexInstance.close();
     }
+
+    /**
+     * Called when a new contribution is created. Redirects the current user to the
+     * proposal page.
+     *
+     * @param {Object} contribution
+     */
+    function redirectToProposal(contribution) {
+      this.closeModal();
+      let group = contribution.workingGroupAuthors && contribution.workingGroupAuthors[0];
+
+      if (group) {
+        $state.go('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
+          pid: contribution.contributionId,
+          aid: this.assemblyID,
+          cid: this.campaignID,
+          gid: group.groupId
+        });
+      }
+    }
+
+    /**
+     * Checks if "Join a Working Group to create proposals" label should be displayed.
+     *
+     * @param {Object[]} configs
+     */
+    function checkJoinWGButtonVisibility(configs) {
+      const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
+
+      if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
+        let myGroups = localStorageService.get('myWorkingGroups');
+        this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
+      }
+      return this.displayJoinWorkingGroup;
+    }
+
+    function checkConfigOpenIdeasDefault(configs) {
+      const OPEN_IDEA_SECTION = 'appcivist.campaign.open-idea-section-default';
+      let ideasSectionExpanded = false;
+      if (configs && configs[OPEN_IDEA_SECTION] && configs[OPEN_IDEA_SECTION] === 'TRUE') {
+        ideasSectionExpanded = true;
+      }
+      return ideasSectionExpanded;
+    }
+
+    function checkConfigDisableComments(configs) {
+      const DISABLE_CAMPAIGN_COMMENTS = 'appcivist.campaign.disable-campaign-comments';
+      let showComments = true;
+      if (configs && configs[DISABLE_CAMPAIGN_COMMENTS] && configs[DISABLE_CAMPAIGN_COMMENTS] === 'TRUE') {
+        showComments = false;
+      }
+      return showComments;
+    }
+
+    function checkConfigAllowAnonIdeas(configs) {
+      const ALLOW_ANON_IDEA = 'appcivist.campaign.allow-anonymous-ideas';
+      let newIdeasEnabled = $scope.user != null;
+      if (configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
+        newIdeasEnabled = true;
+      }
+      return newIdeasEnabled;
+    }
+
+    function checkConfigAllowIdeasDuringProposals(configs) {
+      const ALLOW_NEW_IDEAS_PROPOSALS = 'appcivist.campaign.enable-ideas-during-proposals';
+      let newIdeasEnabled = false;
+      if (configs && configs[ALLOW_NEW_IDEAS_PROPOSALS] && configs[ALLOW_NEW_IDEAS_PROPOSALS] === 'TRUE') {
+        newIdeasEnabled = true;
+      }
+      return newIdeasEnabled;
+    }
+
   }
 })();

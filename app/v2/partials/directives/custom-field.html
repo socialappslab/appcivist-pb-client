@@ -26,18 +26,39 @@
       </div>
       <em>{{'File max size is:' | translate}} {{vm.definition.limit}} MB.</em>
     </div>
-  </div>
 
-  <div class="field__container" ng-if="vm.isReadonly">
-    <label for="{{vm.getFieldName(vm.definition)}}">
-      {{vm.definition.name}}
-    </label>
-    <p ng-if="!vm.isFile">{{vm.model}}</p>
-    <div ng-if="vm.isFile" class="file-filed">
-      <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
-        <img ng-if="vm.fileIsImage" alt="{{vm.model.name}}" ng-src="{{vm.model.url}}" class="image-circle image-circle-selected">
-        <a ng-if="!vm.fileIsImage" ng-href="{{vm.model.url}}">{{vm.model.name}}</a>
+
+    <div ng-if="vm.isSingleChoice">
+      <div class="radio" ng-repeat="option in vm.definition.customFieldValueOptions">
+        <label>
+          <input type="radio" ng-model="vm.model" value="{{option.customFieldValueOptionId}}">
+          {{option.value}}
+        </label>
       </div>
     </div>
-  </div>
+
+    <div ng-if="vm.isMultipleChoice">
+      <div class="checkbox" ng-repeat="option in vm.definition.customFieldValueOptions">
+        <label>
+          <input type="checkbox" ng-model="vm.model[option.customFieldValueOptionId]" value="{{option.customFieldValueOptionId}}">
+          {{option.value}}
+        </label>
+      </div>
+    </div>
+
+    <div class="field__container" ng-if="vm.isReadonly">
+      <label for="{{vm.getFieldName(vm.definition)}}">
+      {{vm.definition.name}}
+    </label>
+      <p ng-if="!vm.isFile">{{vm.model}}</p>
+
+      <!-- TODO: multiple choice readonly version -->
+
+      <div ng-if="vm.isFile" class="file-filed">
+        <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
+          <img ng-if="vm.fileIsImage" alt="{{vm.model.name}}" ng-src="{{vm.model.url}}" class="image-circle image-circle-selected">
+          <a ng-if="!vm.fileIsImage" ng-href="{{vm.model.url}}">{{vm.model.name}}</a>
+        </div>
+      </div>
+    </div>
 </fieldset>

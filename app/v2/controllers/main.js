@@ -69,8 +69,8 @@
     }
 
     /**
-     * 
-     * @param {Object} scope -  component scope 
+     *
+     * @param {Object} scope -  component scope
      */
     function loadUserData(scope) {
       let myWorkingGroups = localStorageService.get('myWorkingGroups');
@@ -98,8 +98,8 @@
     }
 
     /**
-     * 
-     * @param {Object} scope -  component scope 
+     *
+     * @param {Object} scope -  component scope
      */
     function fetchAnonymousGroups(scope) {
       let rsp = WorkingGroups.workingGroupsInCampaignByUUID(scope.currentCampaignUuid).query().$promise;
@@ -123,7 +123,13 @@
 
     function goToLogin() {
       $scope.isLoginPage = true;
-      $state.go('v2.login');
+      let currentCampaign = localStorageService.get('currentCampaign');
+      let domain = currentCampaign.assemblyShortname ? currentCampaign.assemblyShortname[0] : null;
+      if(!domain) {
+        $state.go('v2.login')
+      } else {
+        $state.go('v2.login2', { domain:domain }, { reload:true });
+      }
     }
 
     function stateChangeHandler(event) {
@@ -150,20 +156,22 @@
 
     /**
      * Checks if the given campaign dashboard is opened.
-     * 
+     *
      * @param {Object} campaign
      */
     function isCampaignActive(campaign) {
       let assembly = localStorageService.get('currentAssembly');
-      return $state.is('v2.assembly.aid.campaign.cid', {
+      let state = $state.is('v2.assembly.aid.campaign.cid', {
         aid: assembly.assemblyId,
         cid: campaign.campaignId
       });
+      let campaignOnPath = $state.params ? $state.params.cid === campaign.campaignId +"" : false;
+      return  state || campaignOnPath;
     }
 
     /**
      * Checks if the given group dashboard is opened.
-     * 
+     *
      * @param {Object} group
      */
     function isGroupActive(group) {
@@ -203,8 +211,8 @@
     /**
      * Based on the given working groups, checks if user data should be refreshed. This
      * refreshing only happens when we move from one campaign to another.
-     * 
-     * @param {Object[]} workingGroups 
+     *
+     * @param {Object[]} workingGroups
      */
     function needToRefresh(workingGroups) {
 

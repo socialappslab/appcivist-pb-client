@@ -1,5 +1,5 @@
 {
-  "name": "appCivistApp",
+  "name": "appcivistapp",
   "description": "AppCivist MVP",
   "version": "0.1.0",
   "homepage": "https://github.com/socialappslab/appcivist-pb-client",
@@ -35,7 +35,7 @@
     "angular-i18n": "=1.5.9",
     "ngclipboard": "^1.1.1",
     "angular-ui-router": "^0.2.18",
-    "appcivist-patterns": "git@github.com:socialappslab/appcivist-patterns.git#master",
+    "appcivist-patterns": "https://github.com/socialappslab/appcivist-patterns.git#master",
     "lodash": "~4.16.4",
     "angular-inview": "^2.1.0",
     "ng-notify": "^0.8.0",
@@ -44,7 +44,8 @@
     "github-fork-ribbon-css": "^0.2.0",
     "angularjs-slider": "^6.0.0",
     "angular-ui-tinymce": "^0.0.18",
-    "angular-sanitize": "^1.6.1"
+    "angular-sanitize": "^1.6.1",
+    "angular-facebook": "=0.2.3"
   },
   "resolutions": {
     "angular": "1.5.9",

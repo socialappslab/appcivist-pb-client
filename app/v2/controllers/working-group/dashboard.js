@@ -8,11 +8,11 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state'
   ];
 
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope) {
+    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, $state) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function(tab) {
       if (tab == 1) {
@@ -25,7 +25,6 @@
     activate();
 
     function activate() {
-      console.log("workingGroupDashboard");
       ModalMixin.init($scope);
       $scope.membersCommentCounter = { value: 0 };
       $scope.publicCommentCounter = { value: 0 };
@@ -71,6 +70,7 @@
       $scope.ideasSectionExpanded = false;
       $scope.insightsSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
+      $scope.filters = {};
       $scope.toggleInsightsSection = toggleInsightsSection.bind($scope);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
@@ -80,9 +80,7 @@
       $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
-      $scope.closeAndReload = closeAndReload.bind($scope);
-
-
+      $scope.redirectToProposal = redirectToProposal.bind($scope);
 
       $scope.contributionTypeIsSupported = function(type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
@@ -114,8 +112,8 @@
         function(data) {
           $scope.wg = data;
           $scope.wg.rsID = data.resourcesResourceSpaceId;
-          $scope.wg.rsUUID = data.resourcesResourceSpaceUUId;
-          $scope.wg.frsUUID = data.forumResourceSpaceUUId;
+          $scope.wg.rsUUID = data.resourcesResourceSpaceUUID;
+          $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
 
           if ($scope.isTopicGroup) {
@@ -127,7 +125,7 @@
           loadIdeas(data);
 
           if ($scope.isAnonymous) {
-            $scope.spaceID = data.resourcesResourceSpaceUUId;
+            $scope.spaceID = data.resourcesResourceSpaceUUID;
           } else {
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;
@@ -137,21 +135,21 @@
 
           $scope.showPagination = true;
           loadLatestActivities(data);
-          
+
           if ($scope.wg) {
             var rsp = $scope.isAnonymous ? Space.configsByUUID($scope.wg.rsUUID).get() : Space.configs($scope.wg.rsID).get();
             rsp.$promise.then(function(data) {
               $scope.wgConfigs = data;
 
-              if ($scope.wgConfigs['appcivist.group.disable-working-group-comments'] && $scope.wgConfigs['appcivist.group.disable-working-group-comments']==='TRUE'){
+              if ($scope.wgConfigs['appcivist.group.disable-working-group-comments'] && $scope.wgConfigs['appcivist.group.disable-working-group-comments'] === 'TRUE') {
                 $scope.showComments = false;
               } else {
                 $scope.showComments = true;
-              }             
+              }
             }, function(error) {
               Notify.show('Error while trying to fetch wg config', 'error');
             });
-          }                  
+          }
         },
         function(error) {
           Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
@@ -164,21 +162,23 @@
       var gid = group.groupId;
       var res;
 
-      if ($scope.isAnonymous) {
-        $scope.members = group.members
-          .filter(function(m) {
-            return m.status === 'ACCEPTED';
-          });
-      } else {
-        res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
-        res.$promise.then(
-          function(data) {
-            $scope.members = data;
-          },
-          function(error) {
-            Notify.show('Error occured while trying to load working group members', 'error');
-          }
-        );
+      if (group.supportedMembership &&  group.supportedMembership!="OPEN") {
+        if ($scope.isAnonymous) {
+          $scope.members = group.members
+            .filter(function (m) {
+              return m.status === 'ACCEPTED';
+            });
+        } else {
+          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
+          res.$promise.then(
+            function (data) {
+              $scope.members = data;
+            },
+            function (error) {
+              Notify.show('Error occured while trying to load working group members', 'error');
+            }
+          );
+        }
       }
     }
 
@@ -188,7 +188,7 @@
           $scope.proposals = data.list;
           $scope.insights.proposalsCount = data.list.length;
           console.log(data.list);
-           data.list.forEach(function(proposal){
+          data.list.forEach(function(proposal) {
             $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
           });
         },
@@ -256,7 +256,7 @@
       //$rootScope.$broadcast('eqResize', true);
     }
 
-    function toggleInsightsSection(){
+    function toggleInsightsSection() {
       $scope.ideasSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
       $scope.insightsSectionExpanded = !$scope.insightsSectionExpanded;
@@ -267,20 +267,19 @@
       $scope.ideasSectionExpanded = false;
       $scope.insightsSectionExpanded = false;
       //$rootScope.$broadcast('eqResize', true);
-    }   
-    
+    }
+
     function toggleHideIdeasSection() {
       $scope.ideasSectionExpanded = false;
     }
-    
+
     function toggleHideCommentsSection() {
       $scope.commentsSectionExpanded = false;
-    } 
-    
+    }
+
     function toggleHideInsightsSection() {
       $scope.insightsSectionExpanded = false;
-    }  
-
+    }
 
     function toggleAllMembers() {
       if ($scope.membersLimit <= 5) {
@@ -293,6 +292,7 @@
     /**
      * Space.doSearch wrapper.
      * @param {object} filters
+     * @deprecated since integration between proposal-ideas-searchbox and pagination-widget.
      */
     function doSearch(filters) {
       this.ideasSectionExpanded = filters.mode === 'idea';
@@ -340,20 +340,26 @@
         rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;
           console.log($scope.campaignConfigs['appcivist.group.disable-working-group-comments']);
-          if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments']==='TRUE'){
-              $scope.showComments = false;
-            } else {
-              $scope.showComments = true;
-            } 
-        }, function (error) {
+          if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
+            $scope.showComments = false;
+          } else {
+            $scope.showComments = true;
+          }
+        }, function(error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
         });
       }
     }
 
-    function closeAndReload() {
-      this.$broadcast('pagination:reloadCurrentPage');
+    function redirectToProposal(contribution) {
       this.closeModal('proposalFormModal');
+
+      $state.go('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
+        pid: contribution.contributionId,
+        aid: this.assemblyID,
+        cid: this.campaignID,
+        gid: this.groupID
+      });
     }
   }
 }());

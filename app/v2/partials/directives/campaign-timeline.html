@@ -1,26 +1,3 @@
-<style>
-  .campaign__status .page__header {
-    position: absolute;
-    background: none;
-    padding: 0;
-  }
-  
-  .campaign__status .page__header ul li p {
-    padding: 5px;
-  }
-  
-  .campaign__status .page__header .contextual_menu {
-    z-index: 1050 !important;
-  }
-  
-  .campaign__status .page__header .contextual_menu .content {
-    background-color: #e5ebe6 !important;
-  }
-  
-  .campaign__status .page__header .contextual_menu .content::after {
-    border-bottom: 12px solid #e5ebe6 !important;
-  }
-</style>
 <section class="campaign__status" ng-mouseleave="clearMilestonesMenu(components)">
   <h2 class="heading--header">{{title}}</h2>
   <div ng-if="!onlyLabel" class="timeline">

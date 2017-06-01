@@ -165,7 +165,7 @@
 
       // TODO we should move the anonymous site to include the path of the assembly
       this.isAnonymous = false;
-      if($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
+      if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         this.isAnonymous = true;
         this.campaignUUID = $stateParams.cuuid;
       } else {
@@ -590,14 +590,22 @@
         customFieldValues: []
       };
       angular.forEach(this.values, value => payload.customFieldValues.push(value));
+
       // we need to save authors custom fields too.
       contribution.nonMemberAuthors.forEach(nma => {
         let ref = _.find(this.nonMemberAuthorsRef, { email: nma.email, name: nma.name });
         _.forIn(ref.customFieldValues, cfv => {
-          cfv.entityTargetUuid = nma.uuid;
-          // TODO: ask cdparra about this.
-          cfv.value = JSON.stringify(cfv.value);
-          payload.customFieldValues.push(cfv);
+          let value = cfv.value;
+          // if it corresponds to a multiple choice field, store each selected option as a custom value.
+          if (!angular.isArray(value)) {
+            value = [value];
+          }
+          value.forEach(v => payload.customFieldValues.push({
+            customFieldDefinition: cfv.customFieldDefinition,
+            value: v.value,
+            entityTargetType: 'NON_MEMBER_AUTHOR',
+            entityTargetUuid: nma.uuid,
+          }));
         });
       });
 
@@ -671,7 +679,7 @@
         const isCoordinator = !this.isAnonymous || Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
         const isModerator = !this.isAnonymous || Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
 
-        if (!isCoordinator && !isModerator && !this.isAnonymous ) {
+        if (!isCoordinator && !isModerator && !this.isAnonymous) {
           let user = localStorageService.get('user');
           author.name = user.name;
           author.email = user.email;

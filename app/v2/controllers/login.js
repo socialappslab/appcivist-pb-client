@@ -61,7 +61,8 @@
               && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] === 'TRUE') {
             $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
           } else {
-            $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: ongoingCampaigns[0].campaignId }, { reload: true });
+            let campaign = ongoingCampaigns ? ongoingCampaigns[ongoingCampaigns.length-1] : null
+            $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
           }
 
         }, function(error) {

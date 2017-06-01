@@ -55,9 +55,9 @@
   </div>
 
   <div class="field__container col-lg-12" ng-if="vm.campaignFields && vm.campaignFields.length > 0">
-    <p class="intro">{{'Optional Survey Information' | translate}}</p>
+    <p class="intro bold">{{'Optional Survey Information' | translate}}</p>
     <label>{{ 'optional.survey.info' | translate }}</label>
 
-    <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
+    <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.author.customFieldValues[field.customFieldDefinitionId]"></custom-field>
   </div>
 </fieldset>

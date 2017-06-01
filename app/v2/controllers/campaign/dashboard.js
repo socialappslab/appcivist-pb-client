@@ -33,8 +33,8 @@
       $scope.commentsSectionExpanded = false;
 
       // TODO: read the following from configurations in the campaign/component
-      $scope.newProposalsEnabled = true;
-      $scope.newIdeasEnabled = true;
+      $scope.newProposalsEnabled = false;
+      $scope.newIdeasEnabled = false;
 
       $scope.pageSize = 16;
       $scope.type = 'proposal';
@@ -88,6 +88,9 @@
       $scope.redirectToProposal = redirectToProposal.bind($scope);
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
       $scope.checkJoinWGButtonVisibility = checkJoinWGButtonVisibility.bind($scope);
+      $scope.checkConfigOpenIdeasDefault = checkConfigOpenIdeasDefault.bind($scope);
+      $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
+      $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -156,10 +159,10 @@
         function(data) {
           $scope.campaign = data;
           $scope.campaign.rsID = data.resourceSpaceId; //must be always id
-          $scope.campaign.rsUUID = data.resourceSpaceUUId;
-          $scope.campaign.frsUUID = data.forumResourceSpaceUUId;
+          $scope.campaign.rsUUID = data.resourceSpaceUUID;
+          $scope.campaign.frsUUID = data.forumResourceSpaceUUID;
           $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
-          $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUId : data.resourceSpaceId;
+          $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUID : data.resourceSpaceId;
           $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
           $scope.showPagination = true;
           $scope.logo = $scope.campaign.logo ?
@@ -191,6 +194,8 @@
               }
               var currentComponent = Campaigns.getCurrentComponent(data);
               setIdeasSectionVisibility(currentComponent);
+              $scope.currentComponent = currentComponent;
+              $scope.type = $scope.currentComponentType === 'IDEAS' ? 'idea' : 'proposal';
               $scope.components = data;
               localStorageService.set('currentCampaign.components', data);
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
@@ -259,26 +264,10 @@
               function(data) {
                 $scope.campaignConfigs = data;
                 let configs = data;
-                const DISABLE_CAMPAIGN_COMMENTS = 'appcivist.campaign.disable-campaign-comments';
-                const DISABLE_CAMPAIGN_GROUP_COMMENTS = 'appcivist.campaign.disable-working-group-comment';
-                const DISABLE_GROUPS_COMMENTS = 'appcivist.group.disable-working-group-comments';
-
-                if ((configs[DISABLE_CAMPAIGN_COMMENTS] && configs[DISABLE_CAMPAIGN_COMMENTS] === 'TRUE') ||
-                  (configs[DISABLE_CAMPAIGN_GROUP_COMMENTS] && configs[DISABLE_CAMPAIGN_GROUP_COMMENTS] === 'TRUE') ||
-                  (configs[DISABLE_GROUPS_COMMENTS] && configs[DISABLE_GROUPS_COMMENTS] === 'TRUE')) {
-                  $scope.showComments = false;
-                } else {
-                  $scope.showComments = true;
-                }
-
-                if (configs['appcivist.campaign.open-idea-section-default'] && configs['appcivist.campaign.open-idea-section-default'] === 'TRUE') {
-                  $scope.ideasSectionExpanded = true;
-                }
-
-                if (!configs['appcivist.campaign.allow-anonymous-ideas'] || configs['appcivist.campaign.allow-anonymous-ideas'] === 'FALSE') {
-                  $scope.newIdeasEnabled = $scope.newIdeasEnabled && $scope.user != null;
-                }
-                $scope.checkJoinWGButtonVisibility(configs);
+                $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
+                $scope.showComments = $scope.checkConfigDisableComments(configs);
+                $scope.newIdeasEnabled = $scope.checkConfigAllowAnonIdeas(configs);
+                $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility(configs);
               },
               function(error) {
                 Notify.show('Error while trying to fetch campaign config', 'error');
@@ -344,8 +333,9 @@
       // TODO PROPOSAL MAKING doesnt exist in components table anymore, change for PROPOSAL ?
       $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
       $scope.newProposalsEnabled = key === 'PROPOSALS' || key === 'IDEAS';
-      $scope.newIdeasEnabled = key === 'PROPOSALS' || key === 'IDEAS';
-      $scope.currentComponent = component.type.toUpperCase();
+      $scope.newIdeasEnabled = key === 'IDEAS' && checkConfigAllowAnonIdeas($scope.campaignConfigs)
+        || (key === 'PROPOSALS' && checkConfigAllowIdeasDuringProposals($scope.campaignConfigs));
+      $scope.currentComponentType = key;
     }
 
     function loadCampaignResources() {
@@ -502,12 +492,50 @@
      * @param {Object[]} configs
      */
     function checkJoinWGButtonVisibility(configs) {
-      const ENABLE_INDIVIDUAL_PROPOSALS = configs['appcivist.campaign.enable-individual-proposals'];
+      const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
 
-      if (ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE' || !ENABLE_INDIVIDUAL_PROPOSALS) {
+      if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
         let myGroups = localStorageService.get('myWorkingGroups');
         this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
       }
+      return this.displayJoinWorkingGroup;
     }
+
+    function checkConfigOpenIdeasDefault(configs) {
+      const OPEN_IDEA_SECTION = 'appcivist.campaign.open-idea-section-default';
+      let ideasSectionExpanded = false;
+      if (configs && configs[OPEN_IDEA_SECTION] && configs[OPEN_IDEA_SECTION] === 'TRUE') {
+        ideasSectionExpanded = true;
+      }
+      return ideasSectionExpanded;
+    }
+
+    function checkConfigDisableComments(configs) {
+      const DISABLE_CAMPAIGN_COMMENTS = 'appcivist.campaign.disable-campaign-comments';
+      let showComments = true;
+      if (configs && configs[DISABLE_CAMPAIGN_COMMENTS] && configs[DISABLE_CAMPAIGN_COMMENTS] === 'TRUE') {
+        showComments = false;
+      }
+      return showComments;
+    }
+
+    function checkConfigAllowAnonIdeas(configs) {
+      const ALLOW_ANON_IDEA = 'appcivist.campaign.allow-anonymous-ideas';
+      let newIdeasEnabled = $scope.user != null;
+      if (configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
+        newIdeasEnabled = true;
+      }
+      return newIdeasEnabled;
+    }
+
+    function checkConfigAllowIdeasDuringProposals(configs) {
+      const ALLOW_NEW_IDEAS_PROPOSALS = 'appcivist.campaign.enable-ideas-during-proposals';
+      let newIdeasEnabled = false;
+      if (configs && configs[ALLOW_NEW_IDEAS_PROPOSALS] && configs[ALLOW_NEW_IDEAS_PROPOSALS] === 'TRUE') {
+        newIdeasEnabled = true;
+      }
+      return newIdeasEnabled;
+    }
+
   }
 })();

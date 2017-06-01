@@ -5,10 +5,10 @@
     .directive('contributionDetailModal', contributionDetailModal);
 
   contributionDetailModal.$inject = [
-    'localStorageService', 'AppCivistAuth', '$state', 'Contributions', 'Space', '$translate'
+    'localStorageService', 'AppCivistAuth', '$state', 'Contributions', 'Space', '$translate', '$sce'
   ];
 
-  function contributionDetailModal(localStorageService, AppCivistAuth, $state, Contributions, Space, $translate) {
+  function contributionDetailModal(localStorageService, AppCivistAuth, $state, Contributions, Space, $translate, $sce) {
 
     function redirect() {
       localStorageService.clearAll();
@@ -51,13 +51,30 @@
           }
 
           scope.contributionID = scope.contribution.contributionId;
+          // TODO revise this logic. the idea is to avoid showing duplicates
+          scope.filteredNonMemberAuthors = scope.contribution.nonMemberAuthors ?
+            scope.contribution.nonMemberAuthors.filter(nma => {
+              let membersSameEmail = false;
+              if(scope.contribution.authors) {
+                membersSameEmail = scope.contribution.authors.filter(a => {
+                  return a.email = nma.email;
+                })
+              }
+              return !nma.publishContact && nma.email != "" && nma.email !=null && (!membersSameEmail || membersSameEmail.length == 0);
+            }) : null;
 
+          scope.mergedAuthors = scope.contribution.authors ?
+            scope.contribution.authors.concat(scope.filteredNonMemberAuthors)
+              : scope.filteredNonMemberAuthors;
           scope.$watch('vexInstance', function(newValue, oldValue) {
             if (newValue) {
               scope.enableDiscussions = true;
             }
           });
 
+          scope.trustedHtml = function(html) {
+            return $sce.trustAsHtml(html);
+          };
         }
       }
     };

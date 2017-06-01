@@ -1,3 +1,9 @@
+@import "dashboard";
+@import "campaign-timeline";
+@import "page_header";
+@import "proposals-ideas-searchbox";
+@import "pagination-widget";
+@import "discussion-panel";
 @import "../../../stylesheets/styles/_colors.scss";
 @import "../../../stylesheets/styles/_header.scss";
 @import "../../../stylesheets/styles/_fonts.scss";
@@ -5,10 +11,16 @@
 
 /* V2 main stylesheet */
 
-.card {
-  border: 1px solid #009877;
-  padding: 5px;
-  padding-bottom: 0;
+//.card {
+//  border: 1px solid #009877;
+//  padding: 5px;
+//  padding-bottom: 0;
+//}
+.card__message {
+  font-size: 2em;
+  text-align: center;
+  padding: 45px;
+  margin: 20px;
 }
 
 .comments__section {
@@ -906,6 +918,22 @@ fieldset.tags .autocomplete .suggestion-item em {
     width: 100%;
     height: 42px;
   }
+  .field__container {
+    font-size: 18px;
+    font-family: "Source Sans Pro";
+    .bold {
+      font-weight: bold;
+    }
+    label {
+      font-size: 18px;
+    }
+  }
+  .bold {
+    font-weight: bold;
+  }
+  .title {
+    font-size: 32px;
+  }
 }
 
 
@@ -968,9 +996,60 @@ tags-field {
 
 contribution-card {
   header {
-    .heading__working_group {
-      padding-top: 5px;
+    border-bottom: 1px solid #D5D5D5;
+    padding-bottom: 0;
+    min-height: 165px;
+    h3 {
+      margin-bottom: 2px;
+      margin-top: 5px;
     }
+    .heading--category span,
+    p {
+      font-size: 0.8em;
+    }
+    p {
+      margin-top: 10px;
+    }
+    .votes {
+      margin: 0;
+      font-size: .9em;
+      i {
+        margin-left: 5px;
+      }
+    }
+    .temperature_check {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: #F0F0F0;
+      padding: 5px;
+      border-top-left-radius: 5px;
+    }
+    .overlay {
+      &,
+      a {
+        color: white !important;
+      }
+    }
+    .title_block {
+      margin-top: 20px;
+    }
+  }
+  .card__body {
+    min-height: 170px;
+    .excerpt {
+      font-size: 0.9em;
+      text-align: justify;
+    }
+  }
+  .card__footer {
+    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    text-align: right;
+    background: #11493b;
+    color: white;
+    font-size: .9em;
   }
 }
 
@@ -1000,6 +1079,12 @@ contribution-form {
       /* Firefox 4 - 18 */
       color: white;
     }
+    .add-button button {
+      background-color: #11493b;
+      &:hover {
+        color: #009877;
+      }
+    }
   }
   .nonmember_author {
     background-color: rgba(134, 131, 131, 0.17);
@@ -1012,4 +1097,24 @@ contribution-form {
       border-top: 0px !important;
     }
   }
+}
+
+.primary__button {
+  background: #11493b;
+  border-radius: 4px;
+  border-color: #11493b;
+  padding: 4px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
 }

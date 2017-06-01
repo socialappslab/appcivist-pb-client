@@ -1,229 +1,8 @@
-<style type="text/css">
-  .nav-tabs {
-    border-bottom: 1px solid #c6c8cb;
-  }
-
-  .nav-tabs>li {
-    float: left;
-    margin-bottom: -1px;
-  }
-
-  .nav-tabs>li>a {
-    margin-right: 2px;
-    line-height: 1.42857143;
-    border: 1px solid transparent;
-    border-radius: 4px 4px 0 0;
-    color: #555;
-    text-decoration: none;
-  }
-
-  .nav-tabs>li>a:hover {
-    border-color: #eeeeee #eeeeee #c6c8cb;
-    background-color: #e6e7e8;
-  }
-
-  .nav-tabs>li.active>a,
-  .nav-tabs>li.active>a:hover,
-  .nav-tabs>li.active>a:focus {
-    color: #555555;
-    background-color: #e6e7e8;
-    border: 1px solid #c6c8cb;
-    border-bottom-color: transparent;
-    cursor: default;
-  }
-
-  .nav-tabs.nav-justified {
-    width: 100%;
-    border-bottom: 0;
-  }
-
-  .nav-tabs.nav-justified>li {
-    float: none;
-  }
-
-  .nav-tabs.nav-justified>li>a {
-    text-align: center;
-    margin-bottom: 5px;
-  }
-
-  .nav-tabs.nav-justified>.dropdown .dropdown-menu {
-    top: auto;
-    left: auto;
-  }
-
-  @media (min-width: 768px) {
-    .nav-tabs.nav-justified>li {
-      display: table-cell;
-      width: 1%;
-    }
-    .nav-tabs.nav-justified>li>a {
-      margin-bottom: 0;
-    }
-  }
-
-  .nav-tabs.nav-justified>li>a {
-    margin-right: 0;
-    border-radius: 4px;
-  }
-
-  .nav-tabs.nav-justified>.active>a,
-  .nav-tabs.nav-justified>.active>a:hover,
-  .nav-tabs.nav-justified>.active>a:focus {
-    border: 1px solid #dddddd;
-  }
-
-  @media (min-width: 768px) {
-    .nav-tabs.nav-justified>li>a {
-      border-bottom: 1px solid #dddddd;
-      border-radius: 4px 4px 0 0;
-    }
-    .nav-tabs.nav-justified>.active>a,
-    .nav-tabs.nav-justified>.active>a:hover,
-    .nav-tabs.nav-justified>.active>a:focus {
-      border-bottom-color: #f6f6f7;
-    }
-  }
-
-  .nav.nav-tabs {
-    margin-left: 5%;
-    width: 90%;
-  }
-
-  .custom-ul {
-    padding-bottom: 50px;
-    padding-top: 50px;
-  }
-
-  .custom-li {
-    padding-bottom: 15px;
-    padding-top: 15px;
-  }
-
-  .custom-a {
-    padding: 15px;
-  }
-
-  header.proposals__header>h2 {
-    float: none !important;
-  }
-
-  .show-comments.campaign_cards .list--proposals {
-    width: 60%;
-  }
-
-  @media (min-width: 768px) {
-    .show-comments.campaign_cards .list--proposals .card__proposal {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      width: 50%;
-      float: left;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 1) {
-      margin-left: 0;
-      margin-right: -100%;
-      clear: both;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 2) {
-      margin-left: 50%;
-      margin-right: -100%;
-      clear: none;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .show-comments.campaign_cards .list--proposals .card__proposal {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      width: 50%;
-      float: left;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 1) {
-      margin-left: 0;
-      margin-right: -100%;
-      clear: both;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 2) {
-      margin-left: 50%;
-      margin-right: -100%;
-      clear: none;
-    }
-  }
-
-  @media (min-width: 1500px) {
-    .show-comments.campaign_cards .list--proposals .card__proposal {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      width: 50%;
-      float: left;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 1) {
-      margin-left: 0;
-      margin-right: -100%;
-      clear: both;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(2n + 2) {
-      margin-left: 50%;
-      margin-right: -100%;
-      clear: none;
-    }
-  }
-
-  @media (min-width: 1800px) {
-    .show-comments.campaign_cards .list--proposals .card__proposal {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      width: 33.3333333333%;
-      float: left;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(3n + 1) {
-      margin-left: 0;
-      margin-right: -100%;
-      clear: both;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(3n + 2) {
-      margin-left: 33.3333333333%;
-      margin-right: -100%;
-      clear: none;
-    }
-    .show-comments.campaign_cards .list--proposals .card__proposal:nth-child(3n + 3) {
-      margin-left: 66.6666666667%;
-      margin-right: -100%;
-      clear: none;
-    }
-  }
-
-  a.join__working_group {
-    text-decoration: none;
-  }
-
-  .overlay {
-    background: rgba(66,66,66,0.64);
-    border-radius: 3px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin-top: 15px;
-    width: auto;
-    z-index: 1;
-  }
-
-</style>
 <main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
   <article class="campaign">
-    <!-- HEADER -->
+    <!-- Campaign Header -->
     <header class="page__header" ng-style="coverStyle">
-      <!--HEADER -> space.type-->
+      <!--Campaign Header -> space.type-->
       <div class="row">
         <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="hidden-xs type">
@@ -232,7 +11,7 @@
         </div>
       </div>
 
-      <!--HEADER -> campaign.title + logo + actions menu-->
+      <!--Campaign Header -> campaign.title + logo + actions menu-->
       <div class="row">
         <div class="row no-margin">
           <div class="title_block">
@@ -319,55 +98,41 @@
       </div>
     </header>
 
-    <!--<button class="proposals__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newProposalsEnabled && currentComponent.type === 'PROPOSALS'"-->
-      <!--ng-click="openModal('proposalFormModal')"> &nbsp;{{'Add Proposal' | translate}} </button>-->
-    <!--<button class="ideas__add_new" style="margin-top: 15px; margin-right: 15px; float: right" ng-if="!isAnonymous && user != null && newIdeasEnabled && currentComponent.type === 'IDEAS'"-->
-      <!--ng-click="openModal('ideaFormModal')"> &nbsp;{{'Add Idea' | translate}} </button>-->
-
-    <!--TIMELINE -->
+    <!--Campaign Timeline -->
     <campaign-timeline title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
 
-    <!--CONTENT -->
+    <!--Campaign Search, Filters and Contributions -->
     <section class="proposals_and_ideas">
-      <!--CONTENT -> Search and filters-->
-      <div class="campaign__filters" style="padding-top: 0px;padding-botton: 0px;">
-        <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8"
-            style="margin-right: 0px">
-          {{currentComponent.type === 'IDEAS' ? 'Ideas' : 'Proposals' | translate}}
+      <!--Campaign Search and filters-->
+      <div class="campaign__filters campaign__filters__no__padding">
+        <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">
+          {{currentComponentType === 'IDEAS' ? 'Ideas' : 'Proposals' | translate}}
         </h2>
-        <a class="proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
-           style="
-            background: #11493b;
-            border-radius: 4px;
-            border-color: #11493b;
-            padding: 4px;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 20px;
-            color:white;"
-           ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"
-           ng-click="openModal('proposalFormModal')">
-          <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
+        <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
+           ng-if="newIdeasEnabled"
+           ng-click="openModal('ideaFormModal')">
+          <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Idea' | translate}}
         </a>
-        <a class="join__working_group"
-           ng-if="user != null && displayJoinWorkingGroup"
-           style="
-            background: #11493b;
-            border-radius: 4px;
-            border-color: #11493b;
-            padding: 4px;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 20px;
-            color:white;">
+        <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
+           ng-if="currentComponentType != 'IDEAS' && user != null && newProposalsEnabled && !displayJoinWorkingGroup"
+           ng-click="openModal('proposalFormModal')">
+          <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
+        </a>
+        <a class="primary__button right join__working_group"
+           ng-if="currentComponentType != 'IDEAS' && user != null && displayJoinWorkingGroup">
           <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
         </a>
       </div>
-      <proposals-ideas-searchbox class="col-*-12" search-handler="doSearch(filters)" load-themes="loadThemes(query)"
-        load-groups="loadGroups(query)" is-anonymous="isAnonymous" campaign-config="campaignConfigs" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
-        generated-filters="filters" dry-run="true"></proposals-ideas-searchbox>
+      <proposals-ideas-searchbox class="col-*-12"
+                                 search-handler="doSearch(filters)"
+                                 load-themes="loadThemes(query)"
+                                 load-groups="loadGroups(query)"
+                                 is-anonymous="isAnonymous"
+                                 campaign-config="campaignConfigs"
+                                 campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
+                                 generated-filters="filters"
+                                 dry-run="true"
+                                 current-component="currentComponent"></proposals-ideas-searchbox>
 
       <!--CONTENT -> Contributions -->
       <div class="row" style="padding-left:20px">
@@ -375,13 +140,7 @@
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded, 'show-comments': commentsSectionExpanded}">-->
           <section class="list--proposals">
             <header class="proposals__header col-*-12" style="padding-top: 25px; padding-bottom:0px;">
-              <!--<h2 class="heading&#45;&#45;header">{{'Proposals' | translate}}</h2>-->
-              <!--<a class="proposals__add_new" ng-if="user != null && newProposalsEnabled && !displayJoinWorkingGroup"-->
-                <!--ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}</a>-->
-              <!--<a class="join__working_group" ng-if="user != null && displayJoinWorkingGroup">-->
-                <!--<i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}-->
-              <!--</a>-->
-              <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
+              <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA') && currentComponentType != 'IDEAS'" ng-click="toggleIdeasSection()"
                 class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
                 style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
@@ -389,7 +148,7 @@
                 href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;
               <a ng-if="insightsSectionExpanded" ng-click="toggleHideInsightsSection()" class="proposals__show_ideas"
                 href=""><i class="fa fa-bar-chart"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
-              <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a>
+              <a ng-if="insightsSectionExpanded && currentComponentType!='IDEAS'" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a>
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
             </header>
@@ -404,7 +163,7 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
           <!-- Ideas section -->
-          <section ng-if="ideasSectionExpanded" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
+          <section ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA') && ideasSectionExpanded && currentComponentType != 'IDEAS'">
             <header class="ideas__header" style="padding-left: 30px;">
               <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
               <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;

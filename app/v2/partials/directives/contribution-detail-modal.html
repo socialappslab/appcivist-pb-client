@@ -27,23 +27,16 @@
       </h2>
     </div>
     <contribution-feedback contribution="contribution"></contribution-feedback>
+    <div class="attribution">
+      <!--<member-card ng-repeat="author in mergedAuthors" user="author"></member-card>-->
+      <span ng-repeat="author in mergedAuthors track by $index" >{{author.name}}{{!$last ? ', ' : ''}}</span>
+    </div>
   </header>
 
   <div class="modal-body">
     <div class="contribution content">
-      <br/>
-      <div class="attribution">
-        <p ng-if="contribution.authors" class="heading--subheader">{{ 'Member Authors' | translate }}</p>
-        <hr ng-if="contribution.authors" />
-        <member-card ng-repeat="author in contribution.authors" user="author"></member-card>
-        <p ng-if="contribution.nonMemberAuthors" class="heading--subheader">{{ 'Non Member Authors' | translate }}</p>
-        <hr ng-if="contribution.nonMemberAuthors" />
-        <member-card ng-repeat="author in contribution.nonMemberAuthors" user="author"></member-card>
-      </div>
-      <br/>
-      <p class="heading--subheader">{{ 'Description' | translate }}</p>
-      <hr />
-      <div class="contribution_description">{{ contribution.text }}</div>
+      <br>
+      <p class="contribution_description" ng-bind-html="trustedHtml(contribution.text)"></p>
       <!-- Nav tabs -->
       <ul class="nav nav-tabs custom-ul">
         <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }}</a></li>

@@ -1,15 +1,15 @@
 (function() {
   'use strict';
 
-  /** 
+  /**
    * @name contribution-form
    * @memberof directives
-   * 
+   *
    * @description
    *  Component that renders a contribution form.
-   * 
+   *
    * @example
-   * 
+   *
    *  <contribution-form></contribution-form>
    */
   appCivistApp
@@ -24,7 +24,7 @@
         //supported values:  PROPOSAL | IDEA
         type: '@',
 
-        // handler called when contribution creation has succeeded. 
+        // handler called when contribution creation has succeeded.
         // The function gets as a parameter the created contribution. An example of onSuccess callback is
         // function onSuccessCallback(contribution) { ... }
         onSuccess: '&',
@@ -46,12 +46,12 @@
   FormCtrl.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter', '$state', '$scope'
+    '$filter', '$state', '$scope', '$stateParams'
   ];
 
   function FormCtrl(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter, $state, $scope) {
+    $filter, $state, $scope, $stateParams) {
     this.init = init.bind(this);
     this.initEdit = initEdit.bind(this);
     this.initCreate = initCreate.bind(this);
@@ -67,7 +67,7 @@
     this.flattenContribution = flattenContribution.bind(this);
     this.getEditorOptions = getEditorOptions.bind(this);
     this.createAttachmentResource = createAttachmentResource.bind(this);
-    this.submitAttachment = submitAttachment.bind(this);
+    this.uploadFile = uploadFile.bind(this);
     this.deleteAttachment = deleteAttachment.bind(this);
     this.loadFields = loadFields.bind(this);
     this.loadValues = loadValues.bind(this);
@@ -78,8 +78,8 @@
     this.loadEmergentThemes = loadEmergentThemes.bind(this);
     this.addNewAuthor = addNewAuthor.bind(this);
     this.deleteAuthor = deleteAuthor.bind(this);
+    this.filterCustomFields = filterCustomFields.bind(this);
 
-    this.assembly = localStorageService.get('currentAssembly');
     this.mode = this.mode || 'create';
     this.isEdit = this.mode === 'edit';
     this.isCreate = this.mode === 'create';
@@ -128,7 +128,11 @@
     }
 
     function init() {
+      // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
+      var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       this.file = {};
+      this.coverPhotoStyle = {};
+      this.coverPhotoSize = 2; // 2 MB
       this.contribution = this.contribution || {
         type: this.type,
         title: '',
@@ -141,7 +145,8 @@
         sourceCode: '',
         attachments: [],
         location: {},
-        status: this.isIdea ? 'PUBLISHED' : 'NEW'
+        status: this.isIdea ? 'PUBLISHED' : 'NEW',
+        cover: {}
       };
 
       this.addNewAuthor(true);
@@ -160,7 +165,16 @@
       this.isProposal = this.contribution.type === 'PROPOSAL';
       this.isIdea = this.contribution.type === 'IDEA';
       this.isAuthorsDisabled = this.isProposal;
-      this.assembly = localStorageService.get('currentAssembly');
+
+      // TODO we should move the anonymous site to include the path of the assembly
+      this.isAnonymous = false;
+      if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
+        this.isAnonymous = true;
+        this.campaignUUID = $stateParams.cuuid;
+      } else {
+        this.assembly = localStorageService.get('currentAssembly');
+        this.user = localStorageService.get('user');
+      }
       this.values = {};
       this.tinymceOptions = this.getEditorOptions();
 
@@ -209,7 +223,7 @@
           var xhr, formData;
           xhr = new XMLHttpRequest();
           xhr.withCredentials = true;
-          xhr.open('POST', servs.FileUploader.uploadEndpoint());
+          xhr.open('POST', FileUploader.uploadEndpoint());
           xhr.onload = function() {
             var json;
 
@@ -242,7 +256,7 @@
             cb(blobInfo.blobUri(), { title: file.name });
           });
           input.click();
-          vm.on('$destroy', function() {
+          vm.$on('$destroy', function() {
             $(input).unbind('change');
           });
         }
@@ -307,9 +321,9 @@
 
     /**
      * Gets themes from the backend.
-     * 
+     *
      * @param {String} query - el texto ingresado por el usuario
-     * @param {String} type - el tipo de theme: OFFICIAL_PRE_DEFINED | EMERGENT 
+     * @param {String} type - el tipo de theme: OFFICIAL_PRE_DEFINED | EMERGENT
      */
     function loadThemes(query, type) {
       var campaignId;
@@ -319,7 +333,13 @@
       } else {
         campaignId = this.contribution.campaignIds[0];
       }
-      return Campaigns.themes(this.assembly.assemblyId, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+
+      if (this.isAnonymous) {
+        campaignId = this.campaign.uuid;
+        return Campaigns.themes(null, null, true, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+      } else {
+        return Campaigns.themes(this.assembly.assemblyId, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+      }
     }
 
     /**
@@ -410,19 +430,35 @@
     /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.
+     * 
+     * @param {Object} file - The file to upload.
+     * @param {string} type - cover | attachment.
      */
-    function submitAttachment() {
-      var vm = this;
-      var fd = new FormData();
-      fd.append('file', this.newAttachment.file);
+    function uploadFile(file, type) {
+      Pace.stop();
+      Pace.start();
+      let fd = new FormData();
+      //fd.append('file', this.newAttachment.file);
+      fd.append('file', file);
+
       $http.post(FileUploader.uploadEndpoint(), fd, {
         headers: {
           'Content-Type': undefined
         },
         transformRequest: angular.identity,
-      }).then(function(response) {
-        vm.createAttachmentResource(response.data.url);
+      }).then(response => {
+        Pace.stop();
+        if (type === 'attachment') {
+          this.createAttachmentResource(response.data.url);
+        } else if (type === 'cover') {
+          this.contribution.cover = {
+            url: response.data.url,
+            name: response.data.name
+          };
+          this.coverPhotoStyle = { 'background-image': `url(${this.contribution.cover.url})` };
+        }
       }, function(error) {
+        Pace.stop();
         Notify.show('Error while uploading file to the server', 'error');
       });
     }
@@ -448,13 +484,15 @@
      * Creates a new contribution.
      */
     function contributionSubmit() {
+      Pace.stop();
+      Pace.start();
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
-      payload.themes = payload.officialThemes.concat(payload.emergentThemes);
-      delete payload.officialThemes;
-      delete payload.emergentThemes;
-      payload.themes.forEach(t => delete t.themeId);
+      payload.existingThemes = payload.officialThemes;
+      payload.emergentThemes.forEach(t => delete t.themeId);
       payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
+      // we save a reference to the authors list with their custom fields values.
+      this.nonMemberAuthorsRef = payload.nonMemberAuthors;
 
       if ($scope.contributionForm.$invalid) {
         Notify.show('The form is invalid: you must fill all required values', 'error');
@@ -463,14 +501,21 @@
       let rsp;
 
       if (this.mode === 'create') {
-        rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
-          contribution => this.saveFieldsValues(contribution.resourceSpaceId).then(response => contribution),
-          error => Notify.show('Error while trying to save the contribution', 'error')
-        );
+        if (this.isAnonymous) {
+          rsp = Contributions.contributionInResourceSpaceByUUID(this.campaign.resourceSpaceUUID).save(payload).$promise.then(
+            contribution => this.saveFieldsValues(contribution).then(response => contribution),
+            error => Notify.show('Error while trying to save the contribution', 'error')
+          );
+        } else {
+          rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
+            contribution => this.saveFieldsValues(contribution).then(response => contribution),
+            error => Notify.show('Error while trying to save the contribution', 'error')
+          );
+        }
       } else if (this.mode === 'edit') {
         rsp = $q.all([
           Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(payload).$promise,
-          this.saveFieldsValues(this.contribution.resourceSpaceId),
+          this.saveFieldsValues(this.contribution),
         ]);
       } else {
         console.warn('Only create or edit are accepted mode in contribution form');
@@ -479,13 +524,17 @@
 
       rsp.then(
         data => {
+          Pace.stop();
           Notify.show('Contribution saved', 'success');
 
           if (angular.isFunction(vm.onSuccess)) {
             vm.onSuccess({ contribution: data });
           }
         },
-        error => Notify.show('Error while trying to save the contribution', 'error')
+        error => {
+          Pace.stop();
+          Notify.show('Error while trying to save the contribution', 'error');
+        }
       );
     }
 
@@ -517,7 +566,13 @@
      * @param {number} sid - resource space ID
      */
     function loadFields(sid) {
-      let rsp = Space.fields(sid).query().$promise;
+      let rsp = {};
+      if (this.isAnonymous) {
+        rsp = Space.fieldsPublic(sid).query().$promise;
+      } else {
+        rsp = Space.fields(sid).query().$promise;
+      }
+
       return rsp.then(
         fields => fields,
         error => {
@@ -532,7 +587,12 @@
      * @param {number} sid - resource space ID
      */
     function loadValues(sid) {
-      let rsp = Space.fieldValue(sid).query().$promise;
+      let rsp = {};
+      if (this.isAnonymous) {
+        rsp = Space.fieldValue(sid).query().$promise;
+      } else {
+        rsp = Space.fieldValuePublice(sid).query().$promise;
+      }
       return rsp.then(
         fieldsValues => {
           fieldsValues.forEach(v => this.values[v.customFieldDefinition.customFieldDefinitionId] = v);
@@ -546,15 +606,34 @@
     /**
      * Updates custom field values.
      *
-     * @param {number} sid - resource space ID
+     * @param {Object} contribution - the created contribution.
      */
-    function saveFieldsValues(sid) {
+    function saveFieldsValues(contribution) {
+      const sid = contribution.resourceSpaceId
       let rsp;
       let payload = {
         customFieldValues: []
       };
-
       angular.forEach(this.values, value => payload.customFieldValues.push(value));
+
+      // we need to save authors custom fields too.
+      contribution.nonMemberAuthors.forEach(nma => {
+        let ref = _.find(this.nonMemberAuthorsRef, { email: nma.email, name: nma.name });
+        _.forIn(ref.customFieldValues, cfv => {
+          let value = cfv.value;
+          // if it corresponds to a multiple choice field, store each selected option as a custom value.
+          if (!angular.isArray(value)) {
+            value = [value];
+          }
+          value.forEach(v => payload.customFieldValues.push({
+            customFieldDefinition: cfv.customFieldDefinition,
+            value: v.value,
+            entityTargetType: 'NON_MEMBER_AUTHOR',
+            entityTargetUuid: nma.uuid,
+          }));
+        });
+      });
+
       if (this.mode === 'create') {
         rsp = Space.fieldsValues(sid).save(payload).$promise;
       } else {
@@ -584,19 +663,23 @@
     function loadCustomFields() {
       let currentComponent = localStorageService.get('currentCampaign.currentComponent');
       this.currentComponent = currentComponent;
-      this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
-      this.componentResourceSpaceId = currentComponent.resourceSpaceId;
-      // TODO: sometimes the fields do not appear. Need to find out why.
+      if (this.isAnonymous) {
+        this.campaignResourceSpaceId = this.campaign.resourceSpaceUUID;
+        this.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+      } else {
+        this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
+        this.componentResourceSpaceId = currentComponent.resourceSpaceId;
+      }
 
-      this.loadFields(this.campaign.resourceSpaceId).then(fields => {
+      this.loadFields(this.campaignResourceSpaceId).then(fields => {
         $timeout(() => {
-          this.campaignFields = fields;
+          this.campaignFields = this.filterCustomFields(fields);
           $scope.$digest();
         });
       });
-      this.loadFields(this.currentComponent.resourceSpaceId).then(fields => {
+      this.loadFields(this.componentResourceSpaceId).then(fields => {
         $timeout(() => {
-          this.componentFields = fields;
+          this.componentFields = this.filterCustomFields(fields);
           $scope.$digest();
         });
       });
@@ -608,7 +691,7 @@
 
     /**
      * Add a new author to the list of non-member authors.
-     * 
+     *
      * @param {boolean} prefill - true to prefill form data with current user information
      */
     function addNewAuthor(prefill) {
@@ -618,10 +701,10 @@
       };
 
       if (prefill) {
-        const isCoordinator = Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
-        const isModerator = Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
+        const isCoordinator = !this.isAnonymous || Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
+        const isModerator = !this.isAnonymous || Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
 
-        if (!isCoordinator && !isModerator) {
+        if (!isCoordinator && !isModerator && !this.isAnonymous) {
           let user = localStorageService.get('user');
           author.name = user.name;
           author.email = user.email;
@@ -633,11 +716,22 @@
 
     /**
      * Deletes the given author from the array of contribution authors.
-     * 
-     * @param {Object} author 
+     *
+     * @param {Object} author
      */
     function deleteAuthor(author) {
       _.remove(this.contribution.nonMemberAuthors, { tmpId: author.tmpId });
+    }
+
+    /**
+     * Filter the given custom fields array based on the contribution type.
+     *
+     * @param {Object[]} fields
+     */
+    function filterCustomFields(fields) {
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' &&
+        f.entityFilterAttributeName === 'type' &&
+        f.entityFilter === this.type);
     }
   }
 }());

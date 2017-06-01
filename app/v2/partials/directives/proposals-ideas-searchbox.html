@@ -1,4 +1,5 @@
 <div class="campaign__filters">
+  <!--Search -->
   <div class="search">
     <div clas="search__field_wrapper">
       <input ng-model="filters.searchText" class="search__field" type="text" placeholder="{{ 'Search...' | translate }}">
@@ -22,40 +23,25 @@
       <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'proposal'}" ng-if="currentComponent.type != 'IDEAS'">
         <a ng-click="searchMode('proposal', $event)">{{'Proposals' | translate}}</a>
       </li>
-      <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA')">
+      <li class="sarch_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA') && currentComponent.type != 'IDEAS'">
         <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate}}</a>
       </li>
-      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'myProposals'}">
+      <li class="sarch_mode__full_text" ng-class="{active: filters.mode === 'myProposals'}" ng-if="!isAnonymous">
         <a ng-click="searchMode(currentComponent.type != 'IDEAS' ? 'myProposals' : 'myIdeas', $event)">{{currentComponent.type != 'IDEAS' ? 'My proposals' : 'My Ideas'| translate}}</a>
       </li>
     </ul>
   </div>
 
+  <!--Filters -->
   <div class="filters">
-    <h4 class="widget__label">
-      {{'Filter by' | translate}}</h4>
-    <div class="tags__group">
-      <ul class="tags" ng-if="filters.themes.length > 0">
-        <p>{{'Themes' | translate}}</p>
-        <li ng-repeat="theme in filters.themes">
-          <a href="">{{theme.title}}<i class="fa fa-close" ng-click="removeThemeFilter(theme, $event)"></i></a>
-        </li>
-      </ul>
-      <ul class="tags" ng-if="filters.groups.length > 0 && currentComponent.type != 'IDEAS'">
-        <p>{{'Working group' | translate}}</p>
-        <li ng-repeat="group in filters.groups">
-          <a href="">{{group.name}}<i class="fa fa-close" ng-click="removeGroupFilter(group, $event)"></i></a>
-        </li>
-      </ul>
-    </div>
+    <h4 class="widget__label">{{'Filter by' | translate}}</h4>
     <a class="button__add_filter" href="" ng-click="toggleModal('categoriesModal')">
       <span class="icon">+</span>
       <span class="offscreen">{{'Add Filter' | translate}}</span>
     </a>
   </div>
   <div class="sort">
-    <h4 class="widget__label">
-      {{'Sort by' | translate}}</h4>
+    <h4 class="widget__label">{{'Sort by' | translate}}</h4>
     <ul class="sort_modes">
       <li class="sarch_mode__date" ng-click="setSorting('date')" ng-class="{active: sortingIs('date')}">
         <a href="">{{'Date' | translate}}</a>
@@ -112,10 +98,11 @@
     </header>
     <div class="modal-body">
       <label class="label">{{'Themes' | translate}}</label>
-      <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="vm.selectedThemes"></tags-field>
+      <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="vm.selectedThemes"
+                  prefetch="true"></tags-field>
       <label class="label" ng-if="vm.canFilterByGroup">{{'Working Groups' | translate}}</label>
       <tags-field ng-if="vm.canFilterByGroup" load-items="loadGroups({query: query})" options="groupsOptions"
-        selected="vm.selectedGroups"></tags-field>
+        selected="vm.selectedGroups" prefetch="true"></tags-field>
       <br />
       <fieldset class="actions">
         <a href="" class="button__modal_submit" ng-click="addSelected()">{{'Apply Filters' | translate}}</a>

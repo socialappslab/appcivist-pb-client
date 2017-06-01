@@ -66,6 +66,7 @@
 
         function getResultsPage(pageNumber) {
           let target = {};
+          scope.filters.page = pageNumber-1;
 
           if (scope.isAnonymous) {
             target.rsUUID = scope.space;

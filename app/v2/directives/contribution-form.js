@@ -67,7 +67,7 @@
     this.flattenContribution = flattenContribution.bind(this);
     this.getEditorOptions = getEditorOptions.bind(this);
     this.createAttachmentResource = createAttachmentResource.bind(this);
-    this.submitAttachment = submitAttachment.bind(this);
+    this.uploadFile = uploadFile.bind(this);
     this.deleteAttachment = deleteAttachment.bind(this);
     this.loadFields = loadFields.bind(this);
     this.loadValues = loadValues.bind(this);
@@ -131,6 +131,8 @@
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       this.file = {};
+      this.coverPhotoStyle = {};
+      this.coverPhotoSize = 2; // 2 MB
       this.contribution = this.contribution || {
         type: this.type,
         title: '',
@@ -143,7 +145,8 @@
         sourceCode: '',
         attachments: [],
         location: {},
-        status: this.isIdea ? 'PUBLISHED' : 'NEW'
+        status: this.isIdea ? 'PUBLISHED' : 'NEW',
+        cover: {}
       };
 
       this.addNewAuthor(true);
@@ -427,19 +430,35 @@
     /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.
+     * 
+     * @param {Object} file - The file to upload.
+     * @param {string} type - cover | attachment.
      */
-    function submitAttachment() {
-      var vm = this;
-      var fd = new FormData();
-      fd.append('file', this.newAttachment.file);
+    function uploadFile(file, type) {
+      Pace.stop();
+      Pace.start();
+      let fd = new FormData();
+      //fd.append('file', this.newAttachment.file);
+      fd.append('file', file);
+
       $http.post(FileUploader.uploadEndpoint(), fd, {
         headers: {
           'Content-Type': undefined
         },
         transformRequest: angular.identity,
-      }).then(function(response) {
-        vm.createAttachmentResource(response.data.url);
+      }).then(response => {
+        Pace.stop();
+        if (type === 'attachment') {
+          this.createAttachmentResource(response.data.url);
+        } else if (type === 'cover') {
+          this.contribution.cover = {
+            url: response.data.url,
+            name: response.data.name
+          };
+          this.coverPhotoStyle = { 'background-image': `url(${this.contribution.cover.url})` };
+        }
       }, function(error) {
+        Pace.stop();
         Notify.show('Error while uploading file to the server', 'error');
       });
     }

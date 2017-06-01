@@ -65,7 +65,7 @@
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
         scope.$watch('currentComponent.type', function() {
-          var mode = scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposa' : 'idea' : 'idea';
+          var mode = scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'idea';
           scope.vm.canFilterByGroup = scope.loadGroups && mode != 'idea';
           scope.searchMode(mode);
         });

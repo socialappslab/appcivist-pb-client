@@ -33,7 +33,7 @@
       $scope.commentsSectionExpanded = false;
 
       // TODO: read the following from configurations in the campaign/component
-      $scope.newProposalsEnabled = true;
+      $scope.newProposalsEnabled = false;
       $scope.newIdeasEnabled = false;
 
       $scope.pageSize = 16;
@@ -333,7 +333,8 @@
       // TODO PROPOSAL MAKING doesnt exist in components table anymore, change for PROPOSAL ?
       $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
       $scope.newProposalsEnabled = key === 'PROPOSALS' || key === 'IDEAS';
-      $scope.newIdeasEnabled = (key === 'PROPOSALS' || key === 'IDEAS') && checkConfigAllowAnonIdeas($scope.campaignConfigs);
+      $scope.newIdeasEnabled = key === 'IDEAS' && checkConfigAllowAnonIdeas($scope.campaignConfigs)
+        || (key === 'PROPOSALS' && checkConfigAllowIdeasDuringProposals($scope.campaignConfigs));
       $scope.currentComponentType = key;
     }
 
@@ -522,6 +523,15 @@
       const ALLOW_ANON_IDEA = 'appcivist.campaign.allow-anonymous-ideas';
       let newIdeasEnabled = $scope.user != null;
       if (configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
+        newIdeasEnabled = true;
+      }
+      return newIdeasEnabled;
+    }
+
+    function checkConfigAllowIdeasDuringProposals(configs) {
+      const ALLOW_NEW_IDEAS_PROPOSALS = 'appcivist.campaign.enable-ideas-during-proposals';
+      let newIdeasEnabled = false;
+      if (configs && configs[ALLOW_NEW_IDEAS_PROPOSALS] && configs[ALLOW_NEW_IDEAS_PROPOSALS] === 'TRUE') {
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;

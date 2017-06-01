@@ -122,19 +122,7 @@
         </div>
         <p ng-class="{overlay: showOverlay}">{{'Created on' | translate}} {{formatDate(contribution.creation)}}</p>
       </div>
-      <div class="temperature_check">
-        <ul class="pull-right votes" ng-if="!isAnonymous" style="margin-right: 0.1em;">
-          <li class="upvote">
-            {{contribution.stats.ups}}<i class="fa fa-thumbs-up"></i>
-          </li>
-          <li class="downvote">
-            {{contribution.stats.downs}}<i class="fa fa-thumbs-down"></i>
-          </li>
-          <li class="downvote">
-            {{contribution.totalComments}}<i class="fa fa-comments-o"></i>
-          </li>
-        </ul>
-      </div>
+      <contribution-feedback contribution="contribution" view="card"></contribution-feedback>
     </header>
     <div class="card__body">
       <div class="excerpt" ng-style="ideaExcerptStyle" ng-bind-html-unsafe="html">

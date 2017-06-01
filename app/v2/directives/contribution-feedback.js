@@ -19,7 +19,9 @@
         // true | false, indicates that we should display delete button.
         withDelete: '@',
         // true | false, indicates that we should display flag button.
-        withFlag: '@'
+        withFlag: '@',
+        // the target view. Current options: card.
+        view: '@'
       },
       templateUrl: '/app/v2/partials/directives/contribution-feedback.html',
       link: function(scope, element, attrs) {
@@ -27,6 +29,8 @@
         // Read user contribution feedback
         scope.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false };
         scope.isAnonymous = true;
+        scope.isCardView = scope.view === 'card';
+
         if (user) {
           scope.assembly = localStorageService.get('currentAssembly');
           scope.campaign = localStorageService.get('currentCampaign');
@@ -73,8 +77,8 @@
             }
           }
 
-          scope.userFeedback.type='MEMBER';
-          scope.userFeedback.status='PUBLIC';
+          scope.userFeedback.type = 'MEMBER';
+          scope.userFeedback.status = 'PUBLIC';
 
           var feedback = Contributions.userFeedback(scope.assembly.assemblyId, scope.campaign.campaignId, scope.contribution.contributionId).update(scope.userFeedback);
           feedback.$promise.then(
@@ -98,7 +102,7 @@
     function showModerationForm(context) {
       this.moderationContext = context;
       this.vexInstance = vex.open({
-        className:"vex-theme-plain",
+        className: "vex-theme-plain",
         unsafeContent: $compile(document.getElementById('moderationForm').innerHTML)(this)[0]
       });
     }

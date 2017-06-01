@@ -72,6 +72,11 @@
         scope.campaignId = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         scope.formatDate = formatDate.bind(scope);
 
+        if (scope.contribution.cover) {
+          scope.coverPhotoStyle = { 'background-image': `url(${scope.contribution.cover.url})`, 'background-position': 'center center' };
+          scope.showOverlay = true;
+        }
+
         if (assembly) {
           scope.assemblyId = assembly.assemblyId;
         }

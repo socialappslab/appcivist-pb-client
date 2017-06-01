@@ -1031,6 +1031,9 @@ contribution-card {
         color: white !important;
       }
     }
+    .title_block {
+      margin-top: 20px;
+    }
   }
   .card__body {
     min-height: 170px;
@@ -1107,9 +1110,11 @@ contribution-form {
   font-size: 20px;
   color: white;
 }
+
 .left {
   float: left;
 }
+
 .right {
   float: right;
 }

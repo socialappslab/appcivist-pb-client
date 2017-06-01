@@ -1180,9 +1180,14 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           return;
         }
         var type = filters.mode;
+        var pageNumber = filters.page ? filters.page : null;
         var params = {
           by_text: filters.searchText
         };
+
+        if(pageNumber) {
+          params.page = pageNumber;
+        }
 
         if (filters.by_author) {
           params.by_author = filters.by_author;

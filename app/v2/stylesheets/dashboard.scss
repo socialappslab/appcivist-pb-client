@@ -216,3 +216,11 @@ a.join__working_group {
   width: auto;
   z-index: 1;
 }
+
+.campaign__filters__no__padding {
+  padding-top: 0px;
+  padding-botton: 0px;
+  .heading--header {
+    margin-right: 0px;
+  }
+}

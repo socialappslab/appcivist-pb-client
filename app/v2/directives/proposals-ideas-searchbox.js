@@ -37,12 +37,12 @@
           groups: [],
           // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
           sorting: 'date_asc',
-          mode: scope.currentComponent ? scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal' : 'proposal'
+          mode: scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'idea'
         };
         scope.vm = {
           selectedThemes: [],
           selectedGroups: [],
-          canFilterByGroup: !!scope.loadGroups
+          canFilterByGroup: !!scope.loadGroups && scope.filters.mode !='idea'
         };
         scope.themesOptions = {
           textField: 'title',
@@ -65,7 +65,8 @@
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
         scope.$watch('currentComponent.type', function() {
-          var mode = scope.currentComponent ? scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal' : 'proposal';
+          var mode = scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposa' : 'idea' : 'idea';
+          scope.vm.canFilterByGroup = scope.loadGroups && mode != 'idea';
           scope.searchMode(mode);
         });
 
@@ -217,12 +218,14 @@
 
       if (filters.mode === 'myProposals') {
         filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups ;
         let user = localStorageService.get('user');
         filters.by_author = user.userId;
       }
 
       if (filters.mode === 'myIdeas') {
         filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups && filters.mode !='idea';
         let user = localStorageService.get('user');
         filters.by_author = user.userId;
       }

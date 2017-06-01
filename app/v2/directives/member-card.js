@@ -8,13 +8,22 @@ MemberCard.$inject = [
   'localStorageService', 'AppCivistAuth', '$state'
 ];
 
-function MemberCard(localStorageService, AppCivistAuth, $state) {
+function MemberCard(localStorageService, AppCivistAuth, $state, $stateParams) {
 
   function redirect() {
+    let currentAssembly = localStorageService.get('currentAssembly');
+    let domain = currentAssembly.shortname ? currentAssembly.shortname : null;
     localStorageService.clearAll();
-    $state.go('v2.login', null, {reload: true}).then(function() {
-      location.reload();
-    });
+    if(!domain) {
+      $state.go('v2.login').then(function() {
+        location.reload();
+      });
+    } else {
+      $state.go('v2.login2', { domain:domain }, { reload:true }).then(function() {
+        location.reload();
+      });;
+    }
+
   }
 
   return {

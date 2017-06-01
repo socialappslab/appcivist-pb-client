@@ -484,6 +484,8 @@
      * Creates a new contribution.
      */
     function contributionSubmit() {
+      Pace.stop();
+      Pace.start();
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
       payload.existingThemes = payload.officialThemes;
@@ -522,13 +524,17 @@
 
       rsp.then(
         data => {
+          Pace.stop();
           Notify.show('Contribution saved', 'success');
 
           if (angular.isFunction(vm.onSuccess)) {
             vm.onSuccess({ contribution: data });
           }
         },
-        error => Notify.show('Error while trying to save the contribution', 'error')
+        error => {
+          Pace.stop();
+          Notify.show('Error while trying to save the contribution', 'error');
+        }
       );
     }
 

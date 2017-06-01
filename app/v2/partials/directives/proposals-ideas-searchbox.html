@@ -35,6 +35,21 @@
   <!--Filters -->
   <div class="filters">
     <h4 class="widget__label">{{'Filter by' | translate}}</h4>
+    <div class="tags__group">
+      <ul class="tags" ng-if="filters.themes.length > 0">
+        <p>{{'Themes' | translate}}</p>
+        <li ng-repeat="theme in filters.themes">
+          <a href="">{{theme.title}}<i class="fa fa-close" ng-click="removeThemeFilter(theme, $event)"></i></a>
+        </li>
+      </ul>
+      <ul class="tags" ng-if="filters.groups.length > 0 && currentComponent.type != 'IDEAS'">
+        <p>{{'Working group' | translate}}</p>
+        <li ng-repeat="group in filters.groups">
+          <a href="">{{group.name}}<i class="fa fa-close" ng-click="removeGroupFilter(group, $event)"></i></a>
+        </li>
+      </ul>
+    </div>
+
     <a class="button__add_filter" href="" ng-click="toggleModal('categoriesModal')">
       <span class="icon">+</span>
       <span class="offscreen">{{'Add Filter' | translate}}</span>

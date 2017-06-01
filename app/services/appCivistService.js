@@ -1284,7 +1284,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id
        */
       fieldsPublic(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:sid/field', { uuid: sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/field', { uuid: sid });
       },
 
       /**

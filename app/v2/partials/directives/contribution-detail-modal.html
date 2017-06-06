@@ -1,6 +1,6 @@
 <style type="text/css">
   .custom-li {
-    padding-bottom: 10px !important;
+    /*padding-bottom: 10px !important;*/
     padding-top: 12px !important;
   }
 
@@ -45,11 +45,25 @@
       <!-- Tab panes -->
       <div class="tab-content">
         <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-          <discussion-panel class="col-md-12" ng-if="userIsMember && enableDiscussions" space-id="contributionID" endpoint-id="contributionID" endpoint="contribution"></discussion-panel>
+          <discussion-panel class="col-md-12" ng-if="userIsMember && enableDiscussions"
+                            space-id="contributionID"
+                            endpoint-id="contributionID"
+                            endpoint="contribution"
+                            is-anonymous="isAnonymous"></discussion-panel>
         </div>
         <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-          <discussion-panel ng-if="!currentUser && enableDiscussions" class="col-md-12" space-id="contribution.forumResourceSpaceUUID" endpoint-id="contribution.uuid" endpoint="contribution" public-board="true"></discussion-panel>
-          <discussion-panel ng-if="currentUser && enableDiscussions" class="col-md-12" space-id="contribution.forumResourceSpaceId" endpoint-id="contributionID" endpoint="contribution" public-board="true"></discussion-panel>
+          <discussion-panel ng-if="!currentUser && enableDiscussions" class="col-md-12"
+                            space-id="contribution.forumResourceSpaceUUID"
+                            endpoint-id="contribution.uuid"
+                            endpoint="contribution"
+                            public-board="true"
+                            is-anonymous="isAnonymous"></discussion-panel>
+          <discussion-panel ng-if="currentUser && enableDiscussions" class="col-md-12"
+                            space-id="contribution.forumResourceSpaceId"
+                            endpoint-id="contributionID"
+                            endpoint="contribution"
+                            public-board="true"
+                            is-anonymous="isAnonymous"></discussion-panel>
         </div>
       </div>
     </div>

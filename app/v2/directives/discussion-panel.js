@@ -108,7 +108,7 @@
     }
 
     function loadDiscussions(scope, sid) {
-      var query = { type: 'DISCUSSION' };
+      var query = { type: 'DISCUSSION' , sorting: "date_desc"};
       var rsp;
       if (scope.isAnonymous) {
         rsp = Contributions.contributionInResourceSpaceByUUID(sid).get(query);

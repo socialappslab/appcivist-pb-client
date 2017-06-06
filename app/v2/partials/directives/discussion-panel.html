@@ -8,7 +8,7 @@
     <!--<h2 class="heading&#45;&#45;header">{{'Start a Conversation' | translate}}</h2>-->
     <div class="comments__listing">
       <div ng-if="isAnonymous" class="row recaptcha" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
-      <form ng-submit="createNewDiscussion()" class="row">
+      <form ng-submit="createNewDiscussion()" class="row comments__section__form">
         <fieldset class="col-*-12">
           <div ng-if="isAnonymous">
             <div class="field-container col-*-6" style="margin-bottom: 10px;">
@@ -97,7 +97,7 @@
           <div class="comments__listing">
             <div ng-if="isAnonymous" class="col-*-12" vc-recaptcha ng-model="discussion.recaptchaResponse" on-success="setCaptchaResponse(discussion, response)"
               style="margin-bottom: 10px;"></div>
-            <form ng-submit="createNewComment(discussion)" class="row">
+            <form ng-submit="createNewComment(discussion)" class="row comments__section__form">
               <fieldset>
                 <div ng-if="isAnonymous">
                   <div class="field-container col-*-6" style="margin-bottom: 10px;">

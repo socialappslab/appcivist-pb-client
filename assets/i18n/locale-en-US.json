@@ -474,7 +474,7 @@
   "No, exit my current session and log in as a new user": "No, exit my current session and log in as a new user",
   "No, log out and create a new user with this account": "No, log out and create a new user with this account",
   "No, use a predefined template": "No, use a predefined template",
-  "no.discussion.message": "No Discussions in this space yet. Be the first to create one. Click on \"Start a new conversation\"!",
+  "no.discussion.message": "No Discussions in this space yet. Be the first to start one!",
   "no.idea.message": "No Ideas in this space yet. Be the first to create one. Click on \"Add new\"!",
   "no.latest.activity": "There are no LATEST ACTIVITIES in the working group",
   "no.members.message": "No members found",

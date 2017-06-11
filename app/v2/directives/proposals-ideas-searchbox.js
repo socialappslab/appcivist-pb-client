@@ -37,12 +37,11 @@
           groups: [],
           // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
           sorting: 'date_asc',
-          mode: scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'none'
         };
+
         scope.vm = {
           selectedThemes: [],
-          selectedGroups: [],
-          canFilterByGroup: !!scope.loadGroups && scope.filters.mode !='idea'
+          selectedGroups: []
         };
         scope.themesOptions = {
           textField: 'title',
@@ -64,12 +63,15 @@
         scope.addSelected = addSelected.bind(scope);
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
-        scope.$watch('currentComponent.type', function() {
-          var mode = scope.currentComponent ? scope.currentComponent.type != 'IDEAS' ? 'proposal' : 'idea' : 'none';
-          scope.vm.canFilterByGroup = scope.loadGroups && mode != 'idea';
-          scope.searchMode(mode);
-        });
+        scope.setMode = setMode.bind(scope);
 
+        if (scope.currentComponent) {
+          scope.setMode();
+        } else {
+          scope.$watch('currentComponent.type', function() {
+            scope.setMode();
+          });
+        }
       }
     };
 
@@ -223,14 +225,14 @@
 
       if (filters.mode === 'myProposals') {
         filters.mode = 'proposal';
-        this.vm.canFilterByGroup = this.loadGroups ;
+        this.vm.canFilterByGroup = this.loadGroups;
         let user = localStorageService.get('user');
         filters.by_author = user.userId;
       }
 
       if (filters.mode === 'myIdeas') {
         filters.mode = 'idea';
-        this.vm.canFilterByGroup = this.loadGroups && filters.mode !='idea';
+        this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
         let user = localStorageService.get('user');
         filters.by_author = user.userId;
       }
@@ -240,6 +242,21 @@
       } else {
         this.searchHandler({ filters });
       }
+    }
+
+    /**
+     * Sets filter mode based on currentComponent.
+     * 
+     * @private
+     */
+    function setMode() {
+      let mode = 'proposal';
+
+      if (this.currentComponent) {
+        mode = this.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal';
+      }
+      this.vm.canFilterByGroup = this.loadGroups && mode !== 'idea';
+      this.searchMode(mode);
     }
   }
 }());

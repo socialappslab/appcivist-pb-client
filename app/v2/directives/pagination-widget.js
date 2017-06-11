@@ -49,7 +49,16 @@
         scope.pageChanged = pageChanged.bind(scope);
         scope.paginationVisible = paginationVisible.bind(scope);
 
-        scope.getResultsPage(1);
+        if (!scope.space) {
+          scope.$watch('space', value => {
+            if (!value) {
+              return;
+            }
+            scope.getResultsPage(1);
+          });
+        } else {
+          scope.getResultsPage(1);
+        }
 
         scope.$on('pagination:reloadCurrentPage', () => {
           scope.getResultsPage(scope.pagination.current);
@@ -65,15 +74,19 @@
         }
 
         function getResultsPage(pageNumber) {
+          if (!scope.space) {
+            return;
+          }
           let target = {};
-          scope.filters.page = pageNumber-1;
+          scope.filters.page = pageNumber - 1;
 
           if (scope.isAnonymous) {
             target.rsUUID = scope.space;
           } else {
             target.rsID = scope.space;
           }
-          if (scope.filters && scope.filters.mode != 'none') {
+
+          if (scope.filters) {
             Space.doSearch(target, scope.isAnonymous, scope.filters).then(
               data => {
                 let contributions = data.list || [];

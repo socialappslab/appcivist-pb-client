@@ -1,143 +1,6 @@
-<style>
-  member-card div {
-    margin-top: -5px;
-  }
-  
-  .action-bar .action-button {
-    margin-top: 10px;
-  }
-  
-  .action-button svg g {
-    fill: #11493b;
-  }
-  
-  .action-button ul.shrinked li {
-    visibility: hidden;
-    height: 0;
-  }
-  
-  .nav-tabs {
-    border-bottom: 1px solid #c6c8cb;
-  }
-  
-  .nav-tabs>li {
-    float: left;
-    margin-bottom: -1px;
-  }
-  
-  .nav-tabs>li>a {
-    margin-right: 2px;
-    line-height: 1.42857143;
-    border: 1px solid transparent;
-    border-radius: 4px 4px 0 0;
-    color: #555;
-    text-decoration: none;
-  }
-  
-  .nav-tabs>li>a:hover {
-    border-color: #eeeeee #eeeeee #c6c8cb;
-    background-color: #e6e7e8;
-  }
-  
-  .nav-tabs>li.active>a,
-  .nav-tabs>li.active>a:hover,
-  .nav-tabs>li.active>a:focus {
-    color: #555555;
-    background-color: #e6e7e8;
-    border: 1px solid #c6c8cb;
-    border-bottom-color: transparent;
-    cursor: default;
-  }
-  
-  .nav-tabs.nav-justified {
-    width: 100%;
-    border-bottom: 0;
-  }
-  
-  .nav-tabs.nav-justified>li {
-    float: none;
-  }
-  
-  .nav-tabs.nav-justified>li>a {
-    text-align: center;
-    margin-bottom: 5px;
-  }
-  
-  .nav-tabs.nav-justified>.dropdown .dropdown-menu {
-    top: auto;
-    left: auto;
-  }
-  
-  @media (min-width: 768px) {
-    .nav-tabs.nav-justified>li {
-      display: table-cell;
-      width: 1%;
-    }
-    .nav-tabs.nav-justified>li>a {
-      margin-bottom: 0;
-    }
-  }
-  
-  .nav-tabs.nav-justified>li>a {
-    margin-right: 0;
-    border-radius: 4px;
-  }
-  
-  .nav-tabs.nav-justified>.active>a,
-  .nav-tabs.nav-justified>.active>a:hover,
-  .nav-tabs.nav-justified>.active>a:focus {
-    border: 1px solid #dddddd;
-  }
-  
-  @media (min-width: 768px) {
-    .nav-tabs.nav-justified>li>a {
-      border-bottom: 1px solid #dddddd;
-      border-radius: 4px 4px 0 0;
-    }
-    .nav-tabs.nav-justified>.active>a,
-    .nav-tabs.nav-justified>.active>a:hover,
-    .nav-tabs.nav-justified>.active>a:focus {
-      border-bottom-color: #f6f6f7;
-    }
-  }
-  
-  .nav.nav-tabs {
-    margin-left: 5%;
-    width: 90%;
-  }
-  
-  .custom-ul {
-    /*padding-bottom: 50px;*/
-    padding-top: 50px;
-  }
-  
-  .custom-li {
-    /*padding-bottom: 15px;*/
-    padding-top: 15px;
-  }
-  
-  .custom-a {
-    padding: 15px;
-  }
-  
-  .members-panel .card-list {
-    min-width: 220px;
-    min-height: 49px;
-  }
-  
-  header.proposals__header>h2 {
-    float: none !important;
-  }
-  
-  article.working_group .label-success {
-    font-weight: initial;
-    display: inline-block;
-    line-height: 20px;
-    height: 23px;
-  }
-</style>
 <main class="appmain" ng-class="{anonymous: isAnonymous}" resize>
   <article class="working_group">
+    <!-- Working Group Header -->
     <header class="page__header">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -205,6 +68,8 @@
         </div>
       </div>
     </header>
+
+    <!-- Working Group Activity and Resources -->
     <div class="page__contents" ng-if=" wg && !isTopicGroup && !isAnonymous">
       <section class="panel activity-and-members">
         <section class="latest-activity">
@@ -254,16 +119,38 @@
         </section>
       </section>
     </div>
+
+    <!-- Working Group Ideas and Proposals -->
     <section class="proposals_and_ideas">
+      <!--Working Group Ideas and Proposals Buttons-->
+      <!--TODO: ADD button to joing working group if the user who is visiting is not a member-->
+      <div class="campaign__filters campaign__filters__no__padding">
+        <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">{{'Proposals' | translate}}</h2>
+        <a class="primary__button right proposals__add_new"
+           ng-if="user != null && newProposalsEnabled"
+           ng-click="openModal('proposalFormModal')">
+          <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
+        </a>
+
+        <!--<a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"-->
+           <!--ng-if="newProposalsEnabled && !displayJoinWorkingGroup"-->
+           <!--ng-click="openModal('proposalFormModal')">-->
+          <!--<i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}-->
+        <!--</a>-->
+        <!--<a class="primary__button right join__working_group"-->
+           <!--ng-if="newProposalsEnabled && displayJoinWorkingGroup && !newIdeasEnabled">-->
+          <!--<i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}-->
+        <!--</a>-->
+      </div>
       <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
         generated-filters="filters" dry-run="true"></proposals-ideas-searchbox>
-      <div class="row">
+      <div class="row" style="padding-left:20px">
         <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}"> -->
           <section class="list--proposals">
             <header class="proposals__header col-*-12" style="padding-top: 0px;">
-              <h2 class="heading--header">{{'Proposals' | translate}}</h2>
-              <a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>
+              <!--<h2 class="heading&#45;&#45;header">{{'Proposals' | translate}}</h2>-->
+              <!--<a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>-->
               <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
                 class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
@@ -344,11 +231,13 @@
         </div>
       </div>
     </section>
+
     <!-- Nav tabs -->
     <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }} ({{membersCommentCounter.value}})</a></li>
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }} ({{publicCommentCounter.value}})</a></li>
     </ul>
+
     <!-- Tab panes -->
     <div class="hidden-lg tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
@@ -365,8 +254,13 @@
   </article>
 
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-form group="wg" campaign="campaign" configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
-      type="PROPOSAL" on-success="redirectToProposal(contribution)" user="user"></contribution-form>
+    <contribution-proposal-form
+      group="wg"
+      campaign="campaign"
+      configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="PROPOSAL"
+      on-success="redirectToProposal(contribution)"
+      user="user"></contribution-proposal-form>
   </script>
 
   <modal open-if="modals.proposalFormModal" close="closeModal('proposalFormModal')" template-id="proposalFormModal"></modal>

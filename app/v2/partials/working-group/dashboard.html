@@ -2,29 +2,29 @@
   member-card div {
     margin-top: -5px;
   }
-
+  
   .action-bar .action-button {
     margin-top: 10px;
   }
-
+  
   .action-button svg g {
     fill: #11493b;
   }
-
+  
   .action-button ul.shrinked li {
     visibility: hidden;
     height: 0;
   }
-
+  
   .nav-tabs {
     border-bottom: 1px solid #c6c8cb;
   }
-
+  
   .nav-tabs>li {
     float: left;
     margin-bottom: -1px;
   }
-
+  
   .nav-tabs>li>a {
     margin-right: 2px;
     line-height: 1.42857143;
@@ -33,12 +33,12 @@
     color: #555;
     text-decoration: none;
   }
-
+  
   .nav-tabs>li>a:hover {
     border-color: #eeeeee #eeeeee #c6c8cb;
     background-color: #e6e7e8;
   }
-
+  
   .nav-tabs>li.active>a,
   .nav-tabs>li.active>a:hover,
   .nav-tabs>li.active>a:focus {
@@ -48,26 +48,26 @@
     border-bottom-color: transparent;
     cursor: default;
   }
-
+  
   .nav-tabs.nav-justified {
     width: 100%;
     border-bottom: 0;
   }
-
+  
   .nav-tabs.nav-justified>li {
     float: none;
   }
-
+  
   .nav-tabs.nav-justified>li>a {
     text-align: center;
     margin-bottom: 5px;
   }
-
+  
   .nav-tabs.nav-justified>.dropdown .dropdown-menu {
     top: auto;
     left: auto;
   }
-
+  
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li {
       display: table-cell;
@@ -77,18 +77,18 @@
       margin-bottom: 0;
     }
   }
-
+  
   .nav-tabs.nav-justified>li>a {
     margin-right: 0;
     border-radius: 4px;
   }
-
+  
   .nav-tabs.nav-justified>.active>a,
   .nav-tabs.nav-justified>.active>a:hover,
   .nav-tabs.nav-justified>.active>a:focus {
     border: 1px solid #dddddd;
   }
-
+  
   @media (min-width: 768px) {
     .nav-tabs.nav-justified>li>a {
       border-bottom: 1px solid #dddddd;
@@ -100,35 +100,35 @@
       border-bottom-color: #f6f6f7;
     }
   }
-
+  
   .nav.nav-tabs {
     margin-left: 5%;
     width: 90%;
   }
-
+  
   .custom-ul {
     /*padding-bottom: 50px;*/
     padding-top: 50px;
   }
-
+  
   .custom-li {
     /*padding-bottom: 15px;*/
     padding-top: 15px;
   }
-
+  
   .custom-a {
     padding: 15px;
   }
-
+  
   .members-panel .card-list {
     min-width: 220px;
     min-height: 49px;
   }
-
+  
   header.proposals__header>h2 {
     float: none !important;
   }
-
+  
   article.working_group .label-success {
     font-weight: initial;
     display: inline-block;
@@ -276,7 +276,7 @@
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
             </header>
-            <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
+            <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
                 is-coordinator="isCoordinator" filters="filters" is-topic-group="isTopicGroup"></pagination-widget>
               <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
@@ -316,25 +316,14 @@
               <!-- Tab panes -->
               <div class="tab-content">
                 <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-                  <discussion-panel style="padding-left: 0px !important;" class="col-md-12" ng-if="userIsMember"
-                                    space-id="spaceID"
-                                    endpoint-id="spaceID"
-                                    endpoint="group"
-                                    is-anonymous="isAnonymous"></discussion-panel>
+                  <discussion-panel style="padding-left: 0px !important;" class="col-md-12" ng-if="userIsMember" space-id="spaceID"
+                    endpoint-id="spaceID" endpoint="group" is-anonymous="isAnonymous"></discussion-panel>
                 </div>
                 <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" class="col-md-12"
-                                    space-id="wg.frsUUID"
-                                    endpoint-id="wg.uuid"
-                                    endpoint="group"
-                                    public-board="true"
-                                    is-anonymous="isAnonymous"></discussion-panel>
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" class="col-md-12"
-                                    space-id="wg.forumResourceSpaceId"
-                                    endpoint-id="wg.groupId"
-                                    endpoint="group"
-                                    public-board="true"
-                                    is-anonymous="isAnonymous"></discussion-panel>
+                  <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID"
+                    endpoint-id="wg.uuid" endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+                  <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId"
+                    endpoint-id="wg.groupId" endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
                 </div>
               </div>
             </div>
@@ -363,23 +352,14 @@
     <!-- Tab panes -->
     <div class="hidden-lg tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-        <discussion-panel class="col-md-12" ng-if="userIsMember"
-                          space-id="spaceID"
-                          endpoint-id="spaceID"
-                          endpoint="group"
-                          is-anonymous="isAnonymous"></discussion-panel>
+        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"
+          is-anonymous="isAnonymous"></discussion-panel>
       </div>
       <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-        <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID"
-                          endpoint-id="wg.uuid" endpoint="group"
-                          public-board="true"
-                          is-anonymous="isAnonymous"></discussion-panel>
-        <discussion-panel ng-if="!isAnonymous" class="col-md-12"
-                          space-id="wg.forumResourceSpaceId"
-                          endpoint-id="wg.groupId"
-                          endpoint="group"
-                          public-board="true"
-                          is-anonymous="isAnonymous"></discussion-panel>
+        <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group"
+          public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+        <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId"
+          endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
       </div>
     </div>-
   </article>

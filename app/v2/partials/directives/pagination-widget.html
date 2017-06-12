@@ -1,41 +1,35 @@
-<section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
-  <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
-</section>
+<div>
+  <section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+  </section>
 
-<section ng-if="type==='proposal'">
-  <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
-    <contribution-card
-      class="card__proposal"
-      dir-paginate="proposal in contributions | itemsPerPage: pageSize"
-      total-items="totalContributions"
-      current-page="pagination.current"
-      contribution="proposal"
-      show-voting-buttons="false"
-      on-finish-render="eqResize"
-      is-coordinator="isCoordinator"
-      is-anonymous="isAnonymous"
-      is-topic-group="isTopicGroup"
-      campaign="campaign"
-      components="components">
-    </contribution-card>
-    <!-- TODO: it is always problematic to break strings in translation, let's replace this by a single translation string -->
-    <p ng-if="contributions.length === 0" class="card card__message">
-      {{ 'pagination.widget.no' | translate }} {{ type | translate }}s {{ 'pagination.widget.description' | translate}}
-    </p>
-  </div>
-</section>
+  <section ng-if="type==='proposal'">
+    <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
+      <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
+        total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="false"
+        on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"
+        campaign="campaign" components="components">
+      </contribution-card>
+      <!-- TODO: it is always problematic to break strings in translation, let's replace this by a single translation string -->
+      <p ng-if="contributions.length === 0" class="card card__message">
+        {{ 'pagination.widget.no' | translate }} {{ type | translate }}s {{ 'pagination.widget.description' |
+        translate}}
+      </p>
+    </div>
+  </section>
 
-<section class="list--ideas" ng-if="type==='idea'">
-  <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-    <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"
-      total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="false"
-      on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"></contribution-card>
-    <p ng-if="contributions.length === 0" class="card card__message">
-      {{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}
-    </p>
-  </div>
-</section>
+  <section class="list--ideas" ng-if="type==='idea'">
+    <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
+      <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"
+        total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="false"
+        on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"></contribution-card>
+      <p ng-if="contributions.length === 0" class="card card__message">
+        {{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}
+      </p>
+    </div>
+  </section>
 
-<section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
-  <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
-</section>
+  <section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+  </section>
+</div>

@@ -121,7 +121,6 @@
             $scope.userIsMember = true;
           }
           loadMembers(data);
-          loadProposals(data);
           loadIdeas(data);
 
           if ($scope.isAnonymous) {
@@ -162,19 +161,19 @@
       var gid = group.groupId;
       var res;
 
-      if (group.supportedMembership &&  group.supportedMembership!="OPEN") {
+      if (group.supportedMembership && group.supportedMembership != "OPEN") {
         if ($scope.isAnonymous) {
           $scope.members = group.members
-            .filter(function (m) {
+            .filter(function(m) {
               return m.status === 'ACCEPTED';
             });
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
           res.$promise.then(
-            function (data) {
+            function(data) {
               $scope.members = data;
             },
-            function (error) {
+            function(error) {
               Notify.show('Error occured while trying to load working group members', 'error');
             }
           );
@@ -187,7 +186,6 @@
         function(data) {
           $scope.proposals = data.list;
           $scope.insights.proposalsCount = data.list.length;
-          console.log(data.list);
           data.list.forEach(function(proposal) {
             $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
           });
@@ -331,7 +329,7 @@
     }
 
     function loadCampaign() {
-      $scope.campaign = localStorageService.get("currentCampaign");
+      $scope.campaign = localStorageService.get('currentCampaign');
       $scope.campaignID = $scope.campaign.campaignId;
       $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
 
@@ -339,7 +337,7 @@
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
         rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;
-          console.log($scope.campaignConfigs['appcivist.group.disable-working-group-comments']);
+
           if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
             $scope.showComments = false;
           } else {

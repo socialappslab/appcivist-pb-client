@@ -424,7 +424,7 @@
        */
       function contributionSubmit() {
         var vm = this;
-        if ($scope.ContributionProposalForm.$invalid) {
+        if ($scope.contributionForm.$invalid) {
           Notify.show('The form is invalid: you must fill all required values', 'error');
           return;
         }

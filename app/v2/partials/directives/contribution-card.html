@@ -78,11 +78,11 @@
           <i ng-if="group.profile.icon && group.isTopic" class="fa fa-tags"></i>
         </div>
         <div class="col-md-11 no-padding no-margin">
-          <a ng-if="isAnonymous" ng-href="#/v2/group/{{group.uuid}}">
+          <a ng-if="isAnonymous" ng-href="#/v2/campaign/{{campaign.uuid}}/group/{{group.uuid}}">
           {{contribution.workingGroupAuthors[0].name}}
           </a>
         </div>
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="clearfix" href="#/v2/assembly/{{assemblyId}}/group/{{groupId}}"
+        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="clearfix" href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}"
           style="display: block;">
           <div class="col-md-11 no-padding no-margin">
             {{contribution.workingGroupAuthors[0].name}}

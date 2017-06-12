@@ -192,8 +192,22 @@
               if ($scope.isAnonymous) {
                 loadAssemblyPublicProfile();
               }
-              var currentComponent = Campaigns.getCurrentComponent(data);
-              setIdeasSectionVisibility(currentComponent);
+              let currentComponent = Campaigns.getCurrentComponent(data);
+
+              // load configurations
+              let rsp = $scope.isAnonymous
+                ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
+                  : Campaigns.getConfiguration($scope.campaign.rsID).get();
+              rsp.$promise.then(
+                function(data) {
+                  $scope.campaignConfigs = data;
+                  setSectionsButtonsVisibility(currentComponent);
+                },
+                function(error) {
+                  setSectionsButtonsVisibility(currentComponent);
+                  Notify.show('Error while trying to fetch campaign config', 'error');
+                }
+              );
               $scope.currentComponent = currentComponent;
               $scope.type = $scope.currentComponentType === 'IDEAS' ? 'idea' : 'proposal';
               $scope.components = data;
@@ -257,23 +271,6 @@
               }
             );
           }
-
-          if ($scope.campaign) {
-            var rsp = $scope.isAnonymous ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get() : Campaigns.getConfiguration($scope.campaign.rsID).get();
-            rsp.$promise.then(
-              function(data) {
-                $scope.campaignConfigs = data;
-                let configs = data;
-                $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
-                $scope.showComments = $scope.checkConfigDisableComments(configs);
-                $scope.newIdeasEnabled = $scope.checkConfigAllowAnonIdeas(configs);
-                $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility(configs);
-              },
-              function(error) {
-                Notify.show('Error while trying to fetch campaign config', 'error');
-              }
-            );
-          }
         }
       );
     }
@@ -328,14 +325,32 @@
 
     }
 
-    function setIdeasSectionVisibility(component) {
-      var key = component ? component.type ? component.type.toUpperCase() : "" : ""; // In old implementation, it was key, changed to type
-      // TODO PROPOSAL MAKING doesnt exist in components table anymore, change for PROPOSAL ?
-      $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
-      $scope.newProposalsEnabled = key === 'PROPOSALS' || key === 'IDEAS';
-      $scope.newIdeasEnabled = key === 'IDEAS' && checkConfigAllowAnonIdeas($scope.campaignConfigs)
-        || (key === 'PROPOSALS' && checkConfigAllowIdeasDuringProposals($scope.campaignConfigs));
+    function setSectionsButtonsVisibility(component) {
+      let key = component ? component.type ? component.type.toUpperCase() : "" : ""; // In old implementation, it was key, changed to type
       $scope.currentComponentType = key;
+      $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
+      $scope.newProposalsEnabled = key === 'PROPOSALS' && !$scope.isAnonymous;
+      if ($scope.campaignConfigs) {
+        let configs = $scope.campaignConfigs
+        $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
+        $scope.showComments = $scope.checkConfigDisableComments(configs);
+        $scope.displayJoinWorkingGroup = $scope.newProposalsEnabled && $scope.checkJoinWGButtonVisibility(configs);
+        // New Ideas are allowed if:
+        // 1. current stage is of type IDEAS
+        // 2. user is not logged in but campaign is configred to accept new ideas from anonymous users
+        // 3. current stage is of type PROPOSALS but campaign is configured to accept ideas during proposals stage
+        let allowAnonIdeas = !$scope.isAnonymous || checkConfigAllowAnonIdeas($scope.campaignConfigs);
+        let allowIdeaProposals = checkConfigAllowIdeasDuringProposals($scope.campaignConfigs);
+        $scope.newIdeasEnabled =
+          key === 'IDEAS' && allowAnonIdeas
+          || (key === 'PROPOSALS' && allowIdeaProposals && allowAnonIdeas);
+
+      } else {
+        $scope.ideasSectionExpanded = false; // by default, ideas section is closed
+        $scope.showComments = true; // by default, comments are enabled
+        $scope.newIdeasEnabled = false; // by default, ideas are not enabled
+        $scope.displayJoinWorkingGroup = $scope.newProposalsEnabled; // by default, users must join a working group to add new proposals
+      }
     }
 
     function loadCampaignResources() {
@@ -493,7 +508,6 @@
      */
     function checkJoinWGButtonVisibility(configs) {
       const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
-
       if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
         let myGroups = localStorageService.get('myWorkingGroups');
         this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
@@ -521,8 +535,8 @@
 
     function checkConfigAllowAnonIdeas(configs) {
       const ALLOW_ANON_IDEA = 'appcivist.campaign.allow-anonymous-ideas';
-      let newIdeasEnabled = $scope.user != null;
-      if (configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
+      let newIdeasEnabled = false;
+      if ($scope.isAnonymous && configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;

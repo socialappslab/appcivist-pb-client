@@ -202,9 +202,11 @@
                 function(data) {
                   $scope.campaignConfigs = data;
                   setSectionsButtonsVisibility(currentComponent);
+                  loadGroupsAfterConfigs();
                 },
                 function(error) {
                   setSectionsButtonsVisibility(currentComponent);
+                  loadGroupsAfterConfigs();
                   Notify.show('Error while trying to fetch campaign config', 'error');
                 }
               );
@@ -243,36 +245,39 @@
               defaultErrorCallback
             );
           });
-
-          // get groups
-          var res, res2;
-          if (!$scope.isAnonymous) {
-
-            res = loadGroups();
-            res.then(
-              function(data) {
-                $scope.groups = data;
-                data.forEach(
-                  function(group) {
-                    res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
-                    res2.$promise.then(
-                      function(data2) {
-                        group.proposalsCount = data2.length;
-                      },
-                      function(error) {
-                        group.proposalsCount = 0;
-                      }
-                    );
-                  }
-                );
-              },
-              function(error) {
-                Notify.show('Error trayendo los grupos', 'error');
-              }
-            );
-          }
         }
       );
+    }
+
+    function loadGroupsAfterConfigs() {
+      // get groups
+      let res, res2;
+      if (!$scope.isAnonymous) {
+        res = loadGroups();
+        res.then(
+          function(data) {
+            $scope.groups = data;
+            data.forEach(
+              function(group) {
+                res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
+                res2.$promise.then(
+                  function(data2) {
+                    group.proposalsCount = data2.length;
+                  },
+                  function(error) {
+                    group.proposalsCount = 0;
+                  }
+                );
+              }
+            );
+            $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility($scope.campaignConfigs);
+          },
+          function(error) {
+            $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility($scope.campaignConfigs);
+            Notify.show('Error trayendo los grupos', 'error');
+          }
+        );
+      }
     }
 
     function loadPublicCommentCount(sid) {
@@ -334,7 +339,6 @@
         let configs = $scope.campaignConfigs
         $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
         $scope.showComments = $scope.checkConfigDisableComments(configs);
-        $scope.displayJoinWorkingGroup = $scope.newProposalsEnabled && $scope.checkJoinWGButtonVisibility(configs);
         // New Ideas are allowed if:
         // 1. current stage is of type IDEAS
         // 2. user is not logged in but campaign is configred to accept new ideas from anonymous users
@@ -349,7 +353,6 @@
         $scope.ideasSectionExpanded = false; // by default, ideas section is closed
         $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
-        $scope.displayJoinWorkingGroup = $scope.newProposalsEnabled; // by default, users must join a working group to add new proposals
       }
     }
 

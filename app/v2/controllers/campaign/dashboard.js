@@ -521,9 +521,8 @@
 
     function checkConfigAllowAnonIdeas(configs) {
       const ALLOW_ANON_IDEA = 'appcivist.campaign.allow-anonymous-ideas';
-      let newIdeasEnabled = $scope.user != null;
-      if (configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
-        newIdeasEnabled = true;
+      if ($scope.isAnonymous && configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
+        $scope.newIdeasEnabled = true;
       }
       return newIdeasEnabled;
     }

@@ -62,13 +62,13 @@
               <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">
             </div>
             <p class="overlay description"
-               style="padding-right: 10px; margin-top: 0px; display: flex;">
-              {{campaign.goal | limitTo:400}}{{campaign.goal.length>400 ? '...' : ''}}
+               style="padding-right: 10px; margin-top: 0px; display: inline-block;"
+               ng-bind-html="campaign.goal | limitTo:400 | linky">
             </p>
           </div>
 
           <div ng-if="!logo" style="padding-top: 1em;">
-            <p class="description overlay">{{campaign.goal}}</p>
+            <p class="description overlay" ng-bind-html="campaign.goal | limitTo:400 | linky"></p>
           </div>
 
         </div>

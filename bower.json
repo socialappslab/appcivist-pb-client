@@ -44,7 +44,7 @@
     "github-fork-ribbon-css": "^0.2.0",
     "angularjs-slider": "^6.0.0",
     "angular-ui-tinymce": "^0.0.18",
-    "angular-sanitize": "^1.6.1",
+    "angular-sanitize": "=1.5.9",
     "angular-facebook": "=0.2.3"
   },
   "resolutions": {

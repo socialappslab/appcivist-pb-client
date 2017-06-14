@@ -106,6 +106,13 @@ header.proposals__header>h2 {
   float: none !important;
 }
 
+.proposals__header_less_padded {
+  padding-top: 1em;
+  padding-bottom:1em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
 .show-comments.campaign_cards .list--proposals {
   width: 60%;
 }
@@ -217,10 +224,28 @@ a.join__working_group {
   z-index: 1;
 }
 
+.campaign__filters {
+  padding-top: 1em;
+  padding-botton: 1em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  .heading--header {
+    margin: 0px;
+  }
+}
+
 .campaign__filters__no__padding {
   padding-top: 0px;
   padding-botton: 0px;
   .heading--header {
-    margin-right: 0px;
+    margin: 0px;
   }
+}
+
+.campaign_contributions_negative_margin {
+  margin-top: -3.2em;
+}
+
+.pagination__widget__controls__padding {
+  padding-left: 15px;
 }

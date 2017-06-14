@@ -1,9 +1,24 @@
-.campaign__filters {
-  padding-top: 0px;
-}
-
 .campaign__filters .search {
   padding-left: 0px;
+}
+
+.campaign__filters .sort {
+  padding-right: 0px;
+  margin-top: 2em;
+}
+
+.campaign__filters .sort span {
+  padding-right: 0.5em;
+}
+
+.campaign__filters .filters {
+  padding-right: 0px;
+  margin-top: 2em;
+}
+
+.campaign__filters .filters span {
+  text-align: right;
+  padding-right: 1em;
 }
 
 .campaign__filters .filters {
@@ -13,6 +28,8 @@
 .campaign__filters .button__add_filter .icon {
   color: #fff;
   background-color: #11493b;
+  text-align: center;
+  padding: 0;
 }
 
 .campaign__filters .filters .tags li:hover::after {
@@ -22,6 +39,16 @@
 .campaign__filters .button__add_filter {
   color: #11493b;
   margin-left: 0;
+  line-height: 1.5;
+  padding:0.5em;
+}
+
+.campaign__filters__no__padding {
+  padding-top: 0px;
+  padding-botton: 0px;
+  .heading--header {
+    margin: 0px;
+  }
 }
 
 .hide {

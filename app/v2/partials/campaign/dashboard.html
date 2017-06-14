@@ -62,13 +62,13 @@
               <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">
             </div>
             <p class="overlay description"
-               style="padding-right: 10px; margin-top: 0px; display: flex;">
-              {{campaign.goal | limitTo:400}}{{campaign.goal.length>400 ? '...' : ''}}
+               style="padding-right: 10px; margin-top: 0px; display: inline-block;"
+               ng-bind-html="campaign.goal | limitTo:400 | linky">
             </p>
           </div>
 
           <div ng-if="!logo" style="padding-top: 1em;">
-            <p class="description overlay">{{campaign.goal}}</p>
+            <p class="description overlay" ng-bind-html="campaign.goal | limitTo:400 | linky"></p>
           </div>
 
         </div>
@@ -104,7 +104,7 @@
     <!--Campaign Search, Filters and Contributions -->
     <section class="proposals_and_ideas">
       <!--Campaign Search and filters-->
-      <div class="campaign__filters campaign__filters__no__padding">
+      <div class="campaign__filters">
         <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">
           {{currentComponentType === 'IDEAS' ? 'Ideas' : 'Proposals' | translate}}
         </h2>
@@ -139,7 +139,7 @@
         <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded, 'show-comments': commentsSectionExpanded}">-->
           <section class="list--proposals">
-            <header class="proposals__header col-*-12" style="padding-top: 25px; padding-bottom:0px;">
+            <header class="proposals__header col-*-12" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
               <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA') && currentComponentType != 'IDEAS'" ng-click="toggleIdeasSection()"
                 class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
@@ -152,7 +152,7 @@
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
             </header>
-            <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
+            <div class="container__proposals campaign_contributions_negative_margin" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
                 is-coordinator="isCoordinator" ng-if="showPagination" campaign="campaign" components="components"
                 filters="filters">

@@ -128,9 +128,42 @@ header.proposals__header>h2 {
   float: none !important;
 }
 
+.proposals__header {
+  padding-top: 1em;
+  padding-bottom:1em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
 article.working_group .label-success {
   font-weight: initial;
   display: inline-block;
   line-height: 20px;
   height: 23px;
+}
+
+.campaign__filters {
+  padding-top: 1em;
+  padding-botton: 1em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  .heading--header {
+    margin: 0px;
+  }
+}
+
+.campaign__filters__no__padding {
+  padding-top: 0px;
+  padding-botton: 0px;
+  .heading--header {
+    margin: 0px;
+  }
+}
+
+.campaign_contributions_negative_margin {
+  margin-top: -45px;
+}
+
+.pagination__widget__controls__padding {
+  padding-left: 15px;
 }

@@ -1,12 +1,17 @@
 .campaign__status {
+  padding: 1.5em;
   padding-top: 1em;
   padding-bottom: 1em;
+  .heading--header {
+    margin: 0px;
+  }
 }
 .campaign__status .page__header {
   position: absolute;
   background: none;
-  padding: 0;
+  padding: 0
 }
+
 
 .campaign__status .page__header ul li p {
   padding: 5px;

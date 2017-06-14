@@ -124,7 +124,7 @@
     <section class="proposals_and_ideas">
       <!--Working Group Ideas and Proposals Buttons-->
       <!--TODO: ADD button to joing working group if the user who is visiting is not a member-->
-      <div class="campaign__filters campaign__filters__no__padding">
+      <div class="campaign__filters">
         <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">{{'Proposals' | translate}}</h2>
         <a class="primary__button right proposals__add_new"
            ng-if="user != null && newProposalsEnabled"
@@ -148,7 +148,7 @@
         <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded}"> -->
           <section class="list--proposals">
-            <header class="proposals__header col-*-12" style="padding-top: 0px;">
+            <header class="proposals__header col-*-12" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
               <!--<h2 class="heading&#45;&#45;header">{{'Proposals' | translate}}</h2>-->
               <!--<a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>-->
               <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
@@ -163,7 +163,7 @@
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
             </header>
-            <div class="container__proposals" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">
+            <div class="container__proposals campaign_contributions_negative_margin" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
                 is-coordinator="isCoordinator" filters="filters" is-topic-group="isTopicGroup"></pagination-widget>
               <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>

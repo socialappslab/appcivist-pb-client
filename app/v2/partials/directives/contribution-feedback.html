@@ -22,7 +22,7 @@
   </ul>
 </div>
 <div class="temperature_check" ng-if="!isCardView">
-  <ul class="votes" ng-if="!isAnonymous" style="margin-right: 0.1em;">
+  <ul class="votes" style="margin-right: 0.1em;">
     <li class="upvote" ng-mouseenter="contribution.overUp = true" ng-mouseleave="contribution.overUp = false">
       <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">{{ 'Upvote' | translate }}</span></a>
       <div class="popover" style="top: -56px;" ng-class="{active: contribution.overUp}">

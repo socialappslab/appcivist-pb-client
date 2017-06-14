@@ -139,7 +139,7 @@
         <div ng-class="{'col-lg-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-md-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-sm-8': (ideasSectionExpanded || commentsSectionExpanded), 'col-xs-8': (ideasSectionExpanded || commentsSectionExpanded)}">
           <!--<div class="campaign_cards" ng-class="{'show-ideas': ideasSectionExpanded, 'show-comments': commentsSectionExpanded}">-->
           <section class="list--proposals">
-            <header class="proposals__header col-*-12" style="padding-top: 25px; padding-bottom:0px;">
+            <header class="proposals__header col-*-12" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
               <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA') && currentComponentType != 'IDEAS'" ng-click="toggleIdeasSection()"
                 class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
               <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"

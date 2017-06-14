@@ -106,7 +106,7 @@ header.proposals__header>h2 {
   float: none !important;
 }
 
-.proposals__header {
+.proposals__header_less_padded {
   padding-top: 1em;
   padding-bottom:1em;
   padding-left: 1.5em;
@@ -243,7 +243,7 @@ a.join__working_group {
 }
 
 .campaign_contributions_negative_margin {
-  margin-top: -45px;
+  margin-top: -3.2em;
 }
 
 .pagination__widget__controls__padding {

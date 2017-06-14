@@ -1,4 +1,4 @@
-<div class="campaign__filters">
+<div class="campaign__filters campaign__filters__no__padding">
   <!--Search -->
   <div class="search">
     <div clas="search__field_wrapper">
@@ -34,7 +34,12 @@
 
   <!--Filters -->
   <div class="filters">
-    <h4 class="widget__label">{{'Filter by' | translate}}</h4>
+    <span class="widget__label h4">
+      {{'Filter by' | translate}} {{'Themes'|translate}} {{vm.canFilterByGroup ? ',' : ''}} {{vm.canFilterByGroup ? 'Groups' : '' | translate}}...
+      <a class="button__add_filter" href="" ng-click="toggleModal('categoriesModal')">
+        <span class="icon">+</span>
+      </a>
+    </span>
     <div class="tags__group">
       <ul class="tags" ng-if="filters.themes.length > 0">
         <p>{{'Themes' | translate}}</p>
@@ -49,15 +54,10 @@
         </li>
       </ul>
     </div>
-
-    <a class="button__add_filter" href="" ng-click="toggleModal('categoriesModal')">
-      <span class="icon">+</span>
-      <span class="offscreen">{{'Add Filter' | translate}}</span>
-    </a>
   </div>
   <div class="sort">
-    <h4 class="widget__label">{{'Sort by' | translate}}</h4>
-    <ul class="sort_modes">
+    <span class="widget__label h4">{{'Sort by' | translate}}</span>
+    <ul class="sort_modes right">
       <li class="sarch_mode__date" ng-click="setSorting('date')" ng-class="{active: sortingIs('date')}">
         <a href="">{{'Date' | translate}}</a>
         <i ng-if="sortingIs('date_desc')" class="fa fa-sort-down"></i>

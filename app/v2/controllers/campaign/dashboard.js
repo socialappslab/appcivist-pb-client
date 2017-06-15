@@ -373,8 +373,6 @@
         $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
-      // DELETE THIS
-      $scope.newIdeasEnabled = true;
     }
 
     function loadCampaignResources() {

@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   /**
@@ -46,12 +46,12 @@
   FormCtrl.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter', '$state', '$scope', '$stateParams'
+    '$filter', '$state', '$scope', '$stateParams', 'Captcha'
   ];
 
   function FormCtrl(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter, $state, $scope, $stateParams) {
+    $filter, $state, $scope, $stateParams, Captcha) {
     this.init = init.bind(this);
     this.initEdit = initEdit.bind(this);
     this.initCreate = initCreate.bind(this);
@@ -79,6 +79,7 @@
     this.addNewAuthor = addNewAuthor.bind(this);
     this.deleteAuthor = deleteAuthor.bind(this);
     this.filterCustomFields = filterCustomFields.bind(this);
+    this.setCaptchaResponse = setCaptchaResponse.bind(this);
 
     this.mode = this.mode || 'create';
     this.isEdit = this.mode === 'edit';
@@ -101,7 +102,7 @@
       var vm = this;
 
       if (!this.contribution) {
-        $scope.$watch('vm.contribution', function(newVal) {
+        $scope.$watch('vm.contribution', function (newVal) {
           if (newVal) {
             vm.contribution = newVal;
             vm.init();
@@ -116,7 +117,7 @@
       var vm = this;
 
       if (!this.campaign) {
-        $scope.$watch('vm.campaign', function(newVal) {
+        $scope.$watch('vm.campaign', function (newVal) {
           if (newVal) {
             vm.campaign = newVal;
             vm.init();
@@ -193,7 +194,7 @@
       }
       var self = this;
       // setup listener for upload field
-      $scope.$watchCollection('vm.file', function(file) {
+      $scope.$watchCollection('vm.file', function (file) {
         if (file.csv) {
           self.disableAll();
         }
@@ -219,12 +220,12 @@
         automatic_uploads: true,
         file_picker_types: 'image',
         imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
-        images_upload_handler: function(blobInfo, success, failure) {
+        images_upload_handler: function (blobInfo, success, failure) {
           var xhr, formData;
           xhr = new XMLHttpRequest();
           xhr.withCredentials = true;
           xhr.open('POST', FileUploader.uploadEndpoint());
-          xhr.onload = function() {
+          xhr.onload = function () {
             var json;
 
             if (xhr.status != 200) {
@@ -243,11 +244,11 @@
           formData.append('file', blobInfo.blob());
           xhr.send(formData);
         },
-        file_picker_callback: function(cb, value, meta) {
+        file_picker_callback: function (cb, value, meta) {
           var input = document.createElement('input');
           input.setAttribute('type', 'file');
           input.setAttribute('accept', 'image/*');
-          $(input).bind('change', function() {
+          $(input).bind('change', function () {
             var file = this.files[0];
             var id = 'blobid' + (new Date()).getTime();
             var blobCache = tinymce.activeEditor.editorUpload.blobCache;
@@ -256,7 +257,7 @@
             cb(blobInfo.blobUri(), { title: file.name });
           });
           input.click();
-          vm.$on('$destroy', function() {
+          vm.$on('$destroy', function () {
             $(input).unbind('change');
           });
         }
@@ -287,7 +288,7 @@
         let currentCampaign = localStorageService.get('currentCampaign');
         let campaignID = currentCampaign.campaignId;
         let groups = wgs ? wgs.filter(
-          function(wg) {
+          function (wg) {
             return wg && wg.campaigns && wg.campaigns[0] === campaignID || !wg.campaigns;
           }) : wgs;
         let topicWgs = localStorageService.get('topicsWorkingGroups');
@@ -365,15 +366,15 @@
       if (!self.assemblyMembers) {
         rsp = Assemblies.assemblyMembers(self.assembly.assemblyId).query().$promise;
         return rsp.then(
-          function(data) {
-            self.assemblyMembers = _.filter(data, function(d) {
+          function (data) {
+            self.assemblyMembers = _.filter(data, function (d) {
               return d.status === 'ACCEPTED';
-            }).map(function(d) {
+            }).map(function (d) {
               return d.user;
             });
             return $filter('filter')(self.assemblyMembers, { name: query });
           },
-          function(error) {
+          function (error) {
             Notify.show('Error while trying to fetch assembly members from the server', 'error');
           }
         );
@@ -414,17 +415,17 @@
         },
         transformRequest: angular.identity
       }).then(
-        function(response) {
+        function (response) {
           Notify.show('Contribution created', 'success');
 
           if (angular.isFunction(self.onSuccess)) {
             self.onSuccess();
           }
         },
-        function(error) {
+        function (error) {
           Notify.show('Error while trying to save the contribution', 'error');
         }
-      );
+        );
     }
 
     /**
@@ -457,7 +458,7 @@
           };
           this.coverPhotoStyle = { 'background-image': `url(${this.contribution.cover.url})` };
         }
-      }, function(error) {
+      }, function (error) {
         Pace.stop();
         Notify.show('Error while uploading file to the server', 'error');
       });
@@ -484,8 +485,6 @@
      * Creates a new contribution.
      */
     function contributionSubmit() {
-      Pace.stop();
-      Pace.start();
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
       payload.existingThemes = payload.officialThemes;
@@ -498,6 +497,8 @@
         Notify.show('The form is invalid: you must fill all required values', 'error');
         return;
       }
+      Pace.stop();
+      Pace.start();
       let rsp;
 
       if (this.mode === 'create') {
@@ -732,6 +733,22 @@
       return fields.filter(f => f.entityType === 'CONTRIBUTION' &&
         f.entityFilterAttributeName === 'type' &&
         f.entityFilter === this.type);
+    }
+
+
+    /**
+     * Recaptcha on-success handler.
+     *
+     * @param {string} recaptchaResponse - the hashed recaptcha response.
+     */
+    function setCaptchaResponse(recaptchaResponse) {
+      Captcha.verify(recaptchaResponse).then(response => this.recaptchaResponseOK = response && response.success,
+        response => {
+          this.recaptchaResponseOK = false;
+          const msg = response.data ? response.data.statusMessage : response.statusText;
+          Notify.show('Error while validating captcha response: ' + msg, 'error');
+        }
+      );
     }
   }
 }());

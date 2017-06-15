@@ -1103,6 +1103,11 @@ contribution-form {
       border-top: 0px !important;
     }
   }
+
+  .button__modal_submit[disabled] {
+    pointer-events: none;
+    opacity: 0.6;
+  }
 }
 
 .primary__button {

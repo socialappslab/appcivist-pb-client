@@ -1094,5 +1094,6 @@
   "pagination.widget.empty.proposals": "Ups! This place is empty of proposals...",
   "pagination.widget.empty.search.ideas": "Ups! No idea matched your search...",
   "pagination.widget.empty.search.proposals": "Ups! No proposal matched your seearch...",
-  "Edit Cover Photo": "Editar foto de portada"
+  "Edit Cover Photo": "Editar foto de portada",
+  "Not a valid email": "Not a valid email"
 }

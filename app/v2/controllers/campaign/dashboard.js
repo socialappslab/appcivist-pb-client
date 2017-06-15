@@ -1,21 +1,33 @@
 'use strict';
 
-(function() {
+(function () {
   'use strict';
 
   angular.module('appCivistApp').controller('v2.CampaignDashboardCtrl', CampaignDashboardCtrl);
 
   CampaignDashboardCtrl.$inject = [
-    '$scope', 'Campaigns', '$stateParams', 'Assemblies', 'Contributions', '$filter', 'localStorageService',
-    'Notify', 'Memberships', 'Space', '$translate', '$rootScope', 'WorkingGroups', '$compile', '$state'
+    '$scope',
+    'Campaigns',
+    '$stateParams',
+    'Assemblies',
+    'Contributions',
+    '$filter',
+    'localStorageService',
+    'Notify',
+    'Memberships',
+    'Space',
+    '$translate',
+    '$rootScope',
+    'WorkingGroups',
+    '$compile',
+    '$state',
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
     $state) {
-
     $scope.activeTab = "Public";
-    $scope.changeActiveTab = function(tab) {
+    $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
       else $scope.activeTab = "Public";
     };
@@ -47,14 +59,14 @@
       $scope.insights = {
         proposalsCount: 0,
         ideasCount: 0,
-        proposalCommentsCount: 0
+        proposalCommentsCount: 0,
       };
 
       // TODO: add pagination to Ideas
-      //$scope.pageSizeIdea = 16;
-      //$scope.typeIdea ='idea';
-      //$scope.showPaginationIdea = false;
-      //$scope.sortingIdea = "date_desc";
+      // $scope.pageSizeIdea = 16;
+      // $scope.typeIdea ='idea';
+      // $scope.showPaginationIdea = false;
+      // $scope.sortingIdea = "date_desc";
 
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;
@@ -101,17 +113,17 @@
       loadCampaigns();
 
       $scope.myObject = {};
-      $scope.myObject.refreshMenu = function() {
+      $scope.myObject.refreshMenu = function () {
         $scope.myObject.showActionMenu = !$scope.myObject.showActionMenu;
       };
       $scope.modals = {
-        proposalNew: false
+        proposalNew: false,
       };
       $scope.filters = {};
       $scope.displayJoinWorkingGroup = false;
       $scope.isModalOpened = isModalOpened.bind($scope);
       $scope.toggleModal = toggleModal.bind($scope);
-      $scope.contributionTypeIsSupported = function(type) {
+      $scope.contributionTypeIsSupported = function (type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       };
     }
@@ -123,20 +135,22 @@
 
     function loadAssemblyPublicProfile() {
       var assemblyShortname = $stateParams.shortname; // for the future move of paths in which everything will be preceded by the assembly shortname
+
       if (assemblyShortname) {
         var rsp = Assemblies.assemblyByShortName(assemblyShortname).get();
-        rsp.$promise.then(function(assembly) {
+        rsp.$promise.then(function (assembly) {
           $scope.assembly = assembly;
-        }, function(error) {
+        }, function (error) {
           Notify.show('Error while loading public profile of assembly with shortname', 'error');
         });
       } else {
         var assemblyUUID = $scope.campaign ? $scope.campaign.assemblies ? $scope.campaign.assemblies[0] : null : null;
+
         if (assemblyUUID) {
           var rsp = Assemblies.assemblyByUUID(assemblyUUID).get();
-          rsp.$promise.then(function(assembly) {
+          rsp.$promise.then(function (assembly) {
             $scope.assembly = assembly;
-          }, function(error) {
+          }, function (error) {
             Notify.show('Error while loading public profile of assembly by its Universal ID', 'error');
           });
         }
@@ -156,9 +170,9 @@
       }
 
       res.$promise.then(
-        function(data) {
+        function (data) {
           $scope.campaign = data;
-          $scope.campaign.rsID = data.resourceSpaceId; //must be always id
+          $scope.campaign.rsID = data.resourceSpaceId; // must be always id
           $scope.campaign.rsUUID = data.resourceSpaceUUID;
           $scope.campaign.frsUUID = data.forumResourceSpaceUUID;
           $scope.campaign.forumSpaceID = data.forumResourceSpaceId;
@@ -166,12 +180,18 @@
           $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
           $scope.showPagination = true;
           $scope.logo = $scope.campaign.logo ?
-                              $scope.campaign.logo.url : showAssemblyLogo() ?
-                                                          $scope.assembly.profile.icon : null;
-          $scope.cover= $scope.campaign.cover ?$scope.campaign.cover.url : null;
+            $scope.campaign.logo.url : showAssemblyLogo() ?
+              $scope.assembly.profile.icon : null;
+          $scope.cover = $scope.campaign.cover ? $scope.campaign.cover.url : null;
           $scope.coverStyle = $scope.cover ?
-                            {'background-image':'url('+$scope.cover+')', 'background-position':'center center'}
-                                : {'background-image':'url("../images/vallejo_header.jpg")', 'background-position':'center center'};
+            {
+              'background-image': 'url(' + $scope.cover + ')',
+              'background-position': 'center center',
+            }
+            : {
+              'background-image': 'url("../images/vallejo_header.jpg")',
+              'background-position': 'center center',
+            };
 
           localStorageService.set("currentCampaign", $scope.campaign);
           loadPublicCommentCount($scope.forumSpaceID);
@@ -188,7 +208,7 @@
             res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
           }
           res.then(
-            function(data) {
+            function (data) {
               if ($scope.isAnonymous) {
                 loadAssemblyPublicProfile();
               }
@@ -197,14 +217,14 @@
               // load configurations
               let rsp = $scope.isAnonymous
                 ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
-                  : Campaigns.getConfiguration($scope.campaign.rsID).get();
+                : Campaigns.getConfiguration($scope.campaign.rsID).get();
               rsp.$promise.then(
-                function(data) {
+                function (data) {
                   $scope.campaignConfigs = data;
                   setSectionsButtonsVisibility(currentComponent);
                   loadGroupsAfterConfigs();
                 },
-                function(error) {
+                function (error) {
                   setSectionsButtonsVisibility(currentComponent);
                   loadGroupsAfterConfigs();
                   Notify.show('Error while trying to fetch campaign config', 'error');
@@ -220,11 +240,11 @@
           );
 
           // get proposals
-          Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function(response) {
+          Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
             $scope.proposals = response.list;
             $scope.insights.proposalsCount = response.list.length;
             response.list.forEach(
-              function(proposal) {
+              function (proposal) {
                 $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
               }
             );
@@ -235,7 +255,7 @@
 
             // get ideas
             Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(
-              function(response) {
+              function (response) {
                 $scope.ideas = response.list;
                 $scope.insights.ideasCount = response.list.length;
                 if (!$scope.ideas) {
@@ -251,20 +271,21 @@
 
     function loadGroupsAfterConfigs() {
       // get groups
-      let res, res2;
+      let res,
+        res2;
       if (!$scope.isAnonymous) {
         res = loadGroups();
         res.then(
-          function(data) {
+          function (data) {
             $scope.groups = data;
             data.forEach(
-              function(group) {
+              function (group) {
                 res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
                 res2.$promise.then(
-                  function(data2) {
+                  function (data2) {
                     group.proposalsCount = data2.length;
                   },
-                  function(error) {
+                  function (error) {
                     group.proposalsCount = 0;
                   }
                 );
@@ -272,7 +293,7 @@
             );
             $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility($scope.campaignConfigs);
           },
-          function(error) {
+          function (error) {
             $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility($scope.campaignConfigs);
             Notify.show('Error trayendo los grupos', 'error');
           }
@@ -290,10 +311,10 @@
       }
 
       res.$promise.then(
-        function(data) {
+        function (data) {
           $scope.publicCommentCounter.value = data.counter;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
@@ -303,10 +324,10 @@
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data) {
+        function (data) {
           $scope.membersCommentCounter.value = data.counter;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
@@ -316,7 +337,7 @@
       var res = Space.getContributions(campaign, 'DISCUSSION', isAnonymous);
 
       res.then(
-        function(response) {
+        function (response) {
           console.log(response.list[0]);
           $scope.comments = response.list;
 
@@ -324,10 +345,9 @@
             $scope.comments = [];
           }
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occurred while trying to load discussions', 'error');
         });
-
     }
 
     function setSectionsButtonsVisibility(component) {
@@ -348,19 +368,20 @@
         $scope.newIdeasEnabled =
           key === 'IDEAS' && allowAnonIdeas
           || (key === 'PROPOSALS' && allowIdeaProposals && allowAnonIdeas);
-
       } else {
         $scope.ideasSectionExpanded = false; // by default, ideas section is closed
         $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
+      // DELETE THIS
+      $scope.newIdeasEnabled = true;
     }
 
     function loadCampaignResources() {
       var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
-      rsp.$promise.then(function(resources) {
+      rsp.$promise.then(function (resources) {
         $scope.campaignResources = resources;
-      }, function(error) {
+      }, function (error) {
         Notify.show('Error loading campaign resources from server', 'error');
       });
     }
@@ -378,7 +399,7 @@
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
       $scope.commentsSectionExpanded = false;
       $scope.insightsSectionExpanded = false;
-      //$rootScope.$broadcast('eqResize', true);
+      // $rootScope.$broadcast('eqResize', true);
     }
 
     function toggleInsightsSection() {
@@ -391,7 +412,7 @@
       $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
       $scope.ideasSectionExpanded = false;
       $scope.insightsSectionExpanded = false;
-      //$rootScope.$broadcast('eqResize', true);
+      // $rootScope.$broadcast('eqResize', true);
     }
 
     function toggleHideIdeasSection() {
@@ -434,7 +455,7 @@
       if (!rsp) {
         return;
       }
-      rsp.then(function(data) {
+      rsp.then(function (data) {
         if (filters.mode === 'proposal') {
           vm.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
@@ -472,7 +493,7 @@
       var self = this;
       this.vexInstance = vex.open({
         className: "vex-theme-plain",
-        unsafeContent: $compile(document.getElementById(id).innerHTML)(self)[0]
+        unsafeContent: $compile(document.getElementById(id).innerHTML)(self)[0],
       });
     }
 
@@ -499,7 +520,7 @@
           pid: contribution.contributionId,
           aid: this.assemblyID,
           cid: this.campaignID,
-          gid: group.groupId
+          gid: group.groupId,
         });
       }
     }
@@ -553,6 +574,5 @@
       }
       return newIdeasEnabled;
     }
-
   }
 })();

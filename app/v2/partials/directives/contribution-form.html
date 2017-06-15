@@ -3,8 +3,7 @@
     <header class="modal-header" ng-style="vm.coverPhotoStyle">
       <div class="file-field">
         <div class="add-button">
-          <button class="btn add-button-item" type="button" ngf-select="vm.uploadFile($file, 'cover')" accept="*/*"
-            ngf-max-size="{{vm.coverPhotoSize}}MB">
+          <button class="btn add-button-item" type="button" ngf-select="vm.uploadFile($file, 'cover')" accept="*/*" ngf-max-size="{{vm.coverPhotoSize}}MB">
             {{ 'Edit Cover Photo' |  translate}}
           </button>
           <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
@@ -29,8 +28,8 @@
         <div class="field__container" ng-if="!vm.hiddenFieldsMap['description']">
           <p for="add_proposal__description" class="bold">{{'What is your Idea?' | translate}} <abbr title="Required">*</abbr></p>
           <label>{{'Where will this occur? Who will benefit? Why is this needed?' | translate}}</label>
-          <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.contribution.text" ng-required="true" ng-disabled="disabled"
-            id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
+          <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.contribution.text" ng-required="true" ng-disabled="disabled" id="add_proposal__description"
+            name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
           <div ng-messages="contributionForm.text.$error" style="color:maroon" role="alert">
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
@@ -86,7 +85,7 @@
                   <h5 ng-if="!author.name">{{'Author Information' | translate}}</h5>
                   <h5 ng-if="author.name">{{author.name}}</h5>
                 </uib-accordion-heading>
-                <nonmember-author-form id="non-member-authors" author="author" ng-disabled="vm.disabled"></nonmember-author-form>
+                <nonmember-author-form id="non-member-authors" author="author" ng-disabled="vm.disabled" form="contributionForm"></nonmember-author-form>
               </div>
             </uib-accordion>
           </fieldset>
@@ -94,8 +93,11 @@
           <button class="btn btn-default" ng-click="vm.addNewAuthor()">{{'Add another author' | translate}}</button>
         </div>
 
+        <div ng-if="vm.isAnonymous" class="col-*-12" vc-recaptcha ng-model="vm.recaptchaResponse" 
+             on-success="vm.setCaptchaResponse(response)" style="margin-bottom: 10px;"></div>
+
         <fieldset>
-          <a class="button__modal_submit" ng-click="vm.submit()">{{'Save and submit' | translate}}</a>
+          <a class="button__modal_submit" ng-click="vm.submit()" ng-disabled="!vm.recaptchaResponseOK">{{'Save and submit' | translate}}</a>
         </fieldset>
       </fieldset>
     </div>

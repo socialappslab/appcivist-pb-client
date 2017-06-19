@@ -334,6 +334,32 @@
       $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
 
       if ($scope.campaign && $scope.campaign.rsID) {
+        $scope.components = localStorageService.get('currentCampaign.components');
+        $scope.currentComponet = localStorageService.get('currentCampaign.currentComponent');
+
+        if (!$scope.components) {
+          var res;
+          if (!$scope.isAnonymous) {
+            res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
+            loadMembersCommentCount($scope.spaceID);
+          } else {
+            res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
+          }
+          res.then(
+            function (data) {
+              let currentComponent = Campaigns.getCurrentComponent(data);
+              $scope.currentComponent = currentComponent;
+              $scope.type = $scope.currentComponentType === 'IDEAS' ? 'idea' : 'proposal';
+              $scope.components = data;
+              localStorageService.set('currentCampaign.components', data);
+              localStorageService.set('currentCampaign.currentComponent', currentComponent);
+            },
+            function (error) {
+              Notify.show('Error loading data from server', 'error');
+            }
+          );
+        }
+
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
         rsp.$promise.then(function(data) {
           $scope.campaignConfigs = data;

@@ -164,8 +164,17 @@
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
             </header>
             <div class="container__proposals campaign_contributions_negative_margin" data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">
-              <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
-                is-coordinator="isCoordinator" filters="filters" is-topic-group="isTopicGroup"></pagination-widget>
+              <pagination-widget
+                page-size="pageSize"
+                space="spaceID"
+                resource="contribution"
+                type="type"
+                is-anonymous="isAnonymous"
+                is-coordinator="isCoordinator"
+                filters="filters"
+                is-topic-group="isTopicGroup"
+                campaign="campaign"
+                components="components"></pagination-widget>
               <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
             </div>
           </section>
@@ -180,9 +189,14 @@
               <a ng-if="ideasSectionExpanded" ng-click="toggleHideIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;
             </header>
             <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
-              <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea col-*-12" contribution="idea"
-                campaign="campaign" is-anonymous="isAnonymous" show-voting-buttons="false" is-coordinator="isCoordinator"
-                is-topic-group="isTopicGroup"></contribution-card>
+              <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea col-*-12"
+                                 contribution="idea"
+                                 campaign="campaign"
+                                 is-anonymous="isAnonymous"
+                                 show-voting-buttons="false"
+                                 is-coordinator="isCoordinator"
+                                 is-topic-group="isTopicGroup"
+                                 components="components"></contribution-card>
               <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
             </div>
           </section>

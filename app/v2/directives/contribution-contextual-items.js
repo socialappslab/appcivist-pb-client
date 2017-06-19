@@ -149,8 +149,15 @@
 
           //change redirection
           scope.myObject.softRemoval = function() {
-            Contributions.contributionSoftRemoval(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
-            $window.location.reload();
+            let res = Contributions.contributionSoftRemoval(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
+            res.$promise.then(
+              function(data) {
+                $window.location.reload();
+              },
+              function(error) {
+                Notify.show('Error while publishing proposal', 'error');
+              }
+            );
           }
 
           scope.myObject.publish = function() {

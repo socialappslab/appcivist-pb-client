@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   appCivistApp
@@ -15,7 +15,7 @@
     function hasRole(roles, roleName) {
       var result = false;
 
-      angular.forEach(roles, function(role) {
+      angular.forEach(roles, function (role) {
         if (role.name === roleName) {
           result = true;
         }
@@ -71,6 +71,7 @@
         var assembly = localStorageService.get('currentAssembly');
         scope.campaignId = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         scope.formatDate = formatDate.bind(scope);
+        scope.mergedThemes = mergeThemes(scope.contribution);
 
         if (scope.contribution.cover) {
           scope.coverPhotoStyle = { 'background-image': `url(${scope.contribution.cover.url})`, 'background-position': 'center center' };
@@ -104,44 +105,44 @@
 
         scope.showActionMenu = false;
         scope.myObject = {};
-        scope.myObject.refreshMenu = function() {
+        scope.myObject.refreshMenu = function () {
           scope.showActionMenu = !scope.showActionMenu;
         };
 
         //change redirection
-        scope.myObject.softRemoval = function() {
+        scope.myObject.softRemoval = function () {
           Contributions.contributionSoftRemoval(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
           $window.location.reload();
         }
 
-        scope.myObject.publish = function() {
+        scope.myObject.publish = function () {
           Contributions.publishContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
           $window.location.reload();
         }
 
-        scope.myObject.exclude = function() {
+        scope.myObject.exclude = function () {
           Contributions.excludeContribution(scope.assemblyId, scope.contribution.contributionId).update(scope.contribution);
           $window.location.reload();
         }
 
         //find endpoint
-        scope.myObject.assignToWG = function() {
+        scope.myObject.assignToWG = function () {
           //Contributions.assignContributionToWG(scope.assemblyId, scope.contribution.contributionId, scope.wg).update(scope.contribution);
           $window.location.reload();
         }
 
-        scope.myObject.seeDetail = function() {
+        scope.myObject.seeDetail = function () {
           scope.vexInstance = vex.open({
             className: "vex-theme-plain",
             unsafeContent: $compile(document.querySelector('.contribution-detail-modal').innerHTML)(scope)[0]
           });
         }
 
-        scope.myObject.textAsHtml = function() {
+        scope.myObject.textAsHtml = function () {
           return $sce.trustAsHtml(scope.contribution ? scope.contribution.text : "");
         }
 
-        scope.myObject.textAsHtmlLimited = function(limit) {
+        scope.myObject.textAsHtmlLimited = function (limit) {
           if (scope.contribution && scope.contribution.text) {
             var limitedText = limitToFilter(scope.contribution.text, limit)
             if (scope.contribution.text.length > limit) {
@@ -156,6 +157,19 @@
 
         function formatDate(date) {
           return moment(date, 'yyyy-MM-DD').format('YYYY/MM/DD');
+        }
+
+        function mergeThemes(contribution) {
+          var themes = [];
+
+          if (contribution.officialThemes) {
+            themes = themes.concat(contribution.officialThemes);
+          }
+
+          if (contribution.emergentThemes) {
+            themes = themes.concat(contribution.emergentThemes);
+          }
+          return themes;
         }
       }
     };

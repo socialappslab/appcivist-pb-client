@@ -1,0 +1,7 @@
+<div class="card__themes">
+  <ul ng-class="{'is-flattening': vm.isFlattening}">
+    <li ng-repeat="theme in vm.themes track by $index">{{theme.title}}</li>
+    <!-- li.dots is shown when there is more than one row of themes or if there is no themes, so that each card has the same height -->
+    <li class="dots" ng-show="vm.showDotsButton" ng-click="vm.showHiddenElements()">...</li>
+  </ul>
+</div>

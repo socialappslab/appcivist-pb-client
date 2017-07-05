@@ -78,7 +78,7 @@
     /**
      * Set the current searchmode of the search textbox.
      *
-     * @param {string} mode - proposal | idea | myProposals
+     * @param {string} mode - proposal | idea | myProposals | myIdeas
      */
     function searchMode(mode, event) {
       if (event) {
@@ -86,6 +86,8 @@
       }
 
       if (this.filters.mode === mode) {
+        // when clicked on the same mode, just go back to default filter mode.
+        this.setMode();
         return;
       }
 

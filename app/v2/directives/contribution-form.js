@@ -175,6 +175,7 @@
       } else {
         this.assembly = localStorageService.get('currentAssembly');
         this.user = localStorageService.get('user');
+        this.recaptchaResponseOK = true;
       }
       this.values = {};
       this.tinymceOptions = this.getEditorOptions();
@@ -488,7 +489,16 @@
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
       payload.existingThemes = payload.officialThemes;
-      payload.emergentThemes.forEach(t => delete t.themeId);
+      payload.emergentThemes.forEach(t => {
+
+        if (angular.isNumber(t.themeId)) {
+          payload.existingThemes.push(t);
+        } else {
+          // is a temporary ID, delete it.
+          delete t.themeId;
+        }
+      });
+      payload.emergentThemes = payload.emergentThemes.filter(t => t.themeId === undefined);
       payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
       // we save a reference to the authors list with their custom fields values.
       this.nonMemberAuthorsRef = payload.nonMemberAuthors;

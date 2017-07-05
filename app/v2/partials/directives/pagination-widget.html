@@ -1,4 +1,4 @@
-<div>
+<div class="list__cards container__proposals">
   <section class="panel text-left pagination__widget__controls__padding" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
     <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
   </section>
@@ -18,7 +18,7 @@
     </div>
   </section>
 
-  <section class="list--ideas" ng-if="type==='idea'">
+  <section ng-if="type==='idea'">
     <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
       <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"
         total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="false"

@@ -1,7 +1,7 @@
 <!-- PROPOSAL CARD -->
 <div ng-if="isProposal">
   <div class="card__wrapper">
-    <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false" ng-class="{new: contribution.status==='NEW', archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
+    <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false" ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
       <div class="card__heading_bookmark" ng-if="contribution.pinned">
         <i class="fa fa-bookmark"></i>
       </div>

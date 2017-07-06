@@ -128,11 +128,22 @@ header.proposals__header>h2 {
   float: none !important;
 }
 
-.proposals__header {
-  padding-top: 1em;
-  padding-bottom:1em;
-  padding-left: 1.5em;
-  padding-right: 1.5em;
+
+.list--proposals {
+  .proposals__header {
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    margin-bottom: -3em;
+  }
+
+  .proposals__header_less_padded {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+  }
 }
 
 article.working_group .label-success {

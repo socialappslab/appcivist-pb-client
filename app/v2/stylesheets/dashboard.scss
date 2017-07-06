@@ -106,7 +106,8 @@ header.proposals__header>h2 {
   float: none !important;
 }
 
-.list--proposals {
+.list--proposals .list__cards, .list--ideas .list__cards {
+  padding: 0px;
   .proposals__header {
     padding-top: 1em;
     padding-bottom: 0.5em;
@@ -121,10 +122,6 @@ header.proposals__header>h2 {
     padding-left: 1.5em;
     padding-right: 1.5em;
   }
-}
-
-.list--proposals .list__cards, .list--ideas .list__cards {
-  padding: 0px;
 }
 
 .show-comments.campaign_cards .list--proposals {

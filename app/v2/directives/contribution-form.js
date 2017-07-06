@@ -146,7 +146,7 @@
         sourceCode: '',
         attachments: [],
         location: {},
-        status: this.isIdea ? 'PUBLISHED' : 'NEW',
+        status: this.isIdea ? 'PUBLISHED' : 'DRAFT',
         cover: {}
       };
 

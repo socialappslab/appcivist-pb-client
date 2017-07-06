@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   appCivistApp
@@ -30,7 +30,7 @@
         currentComponent: '='
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
-      link: function(scope, element, attrs) {
+      link: function (scope, element, attrs) {
         scope.filters = {
           searchText: '',
           themes: [],
@@ -64,11 +64,12 @@
         scope.removeThemeFilter = removeThemeFilter.bind(scope);
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
         scope.setMode = setMode.bind(scope);
+        scope.getDefaultMode = getDefaultMode.bind(scope);
 
         if (scope.currentComponent) {
           scope.setMode();
         } else {
-          scope.$watch('currentComponent.type', function() {
+          scope.$watch('currentComponent.type', function () {
             scope.setMode();
           });
         }
@@ -86,8 +87,9 @@
       }
 
       if (this.filters.mode === mode) {
-        // when clicked on the same mode, just go back to default filter mode.
-        this.setMode();
+        if (mode !== this.getDefaultMode()) {
+          this.setMode();
+        }
         return;
       }
 
@@ -138,10 +140,10 @@
     function addSelected() {
       var themes = this.filters.themes.concat(this.vm.selectedThemes);
       var groups = this.filters.groups.concat(this.vm.selectedGroups);
-      this.filters.themes = _.uniqBy(themes, function(e) {
+      this.filters.themes = _.uniqBy(themes, function (e) {
         return e.themeId;
       });
-      this.filters.groups = _.uniqBy(groups, function(e) {
+      this.filters.groups = _.uniqBy(groups, function (e) {
         return e.groupId;
       });
       this.toggleModal('categoriesModal');
@@ -252,13 +254,24 @@
      * @private
      */
     function setMode() {
+      let mode = this.getDefaultMode();
+      this.vm.canFilterByGroup = this.loadGroups && mode !== 'idea';
+      this.searchMode(mode);
+    }
+
+    /**
+     * Get the current search mode based on the current component.
+     * 
+     * @private
+     * @returns {string} current filter mode
+     */
+    function getDefaultMode() {
       let mode = 'proposal';
 
       if (this.currentComponent) {
         mode = this.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal';
       }
-      this.vm.canFilterByGroup = this.loadGroups && mode !== 'idea';
-      this.searchMode(mode);
+      return mode;
     }
   }
 }());

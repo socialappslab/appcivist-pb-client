@@ -100,26 +100,24 @@
             <form ng-submit="createNewComment(discussion)" class="row comments__section__form">
               <fieldset>
                 <div ng-if="isAnonymous">
-                  <div class="field-container col-*-6" style="margin-bottom: 10px;">
+                  <div class="field-container col-*-6">
                     <input type="text" ng-model="newComment.nonMemberAuthor.name" placeholder="{{'Your name' | translate}}"
                       ng-disabled="!discussion.recaptchaResponseOK">
                   </div>
-                  <div class="field-container col-*-6" style="margin-bottom: 10px;">
+                  <div class="field-container col-*-6">
                     <input type="email" ng-model="newComment.nonMemberAuthor.email" placeholder="{{'Your email' | translate}}"
                       ng-disabled="!discussion.recaptchaResponseOK">
                   </div>
                 </div>
-                <div>
-                  <div class="field-container col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <textarea id="comment-field-{{discussion.uuid}}" style="height: auto;" ng-model="newComment.text" rows="5"
-                      placeholder="{{'Write you comment here' | translate}}" ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
-                  </div>
+                <div class="field-container col-*-6">
+                  <textarea id="comment-field-{{discussion.uuid}}" style="height: auto;" ng-model="newComment.text" rows="5"
+                    placeholder="{{'Write you comment here' | translate}}" ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
                 </div>
                 <br />
                 <div class="comment-form">
                   <div class="comment-meta">
                     <member-card action-bar="true" comments-section="true"></member-card>
-                    <input class="button" type="submit" value="Publish" style="margin-top: 50px;" />
+                    <input class="button" type="submit" value="Publish" style="margin-top: 50px; margin-bottom: 10px;" />
                   </div>
                 </div>
               </fieldset>

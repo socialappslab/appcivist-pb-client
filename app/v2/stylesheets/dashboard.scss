@@ -123,6 +123,10 @@ header.proposals__header>h2 {
   }
 }
 
+.list--proposals .list__cards, .list--ideas .list__cards {
+  padding: 0px;
+}
+
 .show-comments.campaign_cards .list--proposals {
   width: 60%;
 }
@@ -258,4 +262,9 @@ a.join__working_group {
 
 .pagination__widget__controls__padding {
   padding-left: 15px;
+}
+
+.container__comments {
+  display: table;
+  width: 100%;
 }

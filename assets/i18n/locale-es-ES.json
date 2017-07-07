@@ -1097,5 +1097,11 @@
   "Edit Cover Photo": "Editar foto de portada",
   "Not a valid email": "Not a valid email",
   "Draft": "Borrador",
-  "DRAFT": "BORRADOR"
+  "DRAFT": "BORRADOR",
+  "Flag this contribution": "Flag this contribution",
+  "Upvote this contribution": "Upvote this contribution",
+  "Downvote this contribution": "Downvote this contribution",
+  "Total comments": "Total comments",
+  "Informal score": "Informal score",
+  "Delete this contribution": "Delete this contribution"
 }

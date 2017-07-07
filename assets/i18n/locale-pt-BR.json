@@ -1096,5 +1096,11 @@
   "Edit Cover Photo": "Edit Cover Photo",
   "Not a valid email": "Not a valid email",
   "Draft": "Esboço",
-  "DRAFT": "ESBOÇO"
+  "DRAFT": "ESBOÇO",
+  "Flag this contribution": "Flag this contribution",
+  "Upvote this contribution": "Upvote this contribution",
+  "Downvote this contribution": "Downvote this contribution",
+  "Total comments": "Total comments",
+  "Informal score": "Informal score",
+  "Delete this contribution": "Delete this contribution"
 }

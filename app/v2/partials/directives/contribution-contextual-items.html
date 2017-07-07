@@ -1,41 +1,42 @@
-<ul ng-if="isProposal && isHover">
+<ul ng-if="vm.isProposal && vm.isHover">
   <!-- disabled by issue #398 -->
-  <li class="li-action-menu" ng-if="$parent.userCanEdit && isProposalIdeaStage"><a ng-click="$parent.openModal('contributionEditModal')">{{'Edit information' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="$parent.userIsAuthor || (($parent.userIsAuthor || userIsAssemblyCoordinator || userIsWorkingGroupCoordinator) && contributionStatus == 'EXCLUDED')"><a ng-click="myObject.publish()" href="">{{'Publish' | translate}}</a></li>
-  <li class="li-action-menu"><a href="" ng-click="$parent.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="$parent.userIsWorkingGroupCoordinator && isProposalIdeaStage"><a href="" ng-click="myObject.exclude()">{{'Exclude' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage"><a ng-click="vm.openModal('contributionEditModal')">{{'Edit information' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="vm.userIsAuthor || ((vm.userIsAuthor || vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator) && vm.contributionStatus === 'EXCLUDED')"><a ng-click="vm.publish()">{{'Publish' | translate}}</a></li>
+  <li class="li-action-menu"><a ng-click="vm.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="vm.userIsWorkingGroupCoordinator && vm.isProposalIdeaStage"><a ng-click="vm.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
-  <li class="li-action-menu"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="$parent.userIsAssemblyCoordinator && $parent.notAssigned"><a href="" ng-click="myObject.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="($parent.userIsAssemblyCoordinator || $parent.userIsWorkingGroupCoordinator) && isProposalIdeaStage"><a href="" ng-click="myObject.softRemoval()">{{'Delete' | translate}}</a></li>
-  <li class="li-action-menu"><a href="" ng-click="myObject.subscribe()">{{'Subscribe' | translate}}</a></li>
+  <li class="li-action-menu"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator && vm.notAssigned"><a href="" ng-click="vm.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="(vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator) && vm.isProposalIdeaStage"><a ng-click="vm.softRemoval()">{{'Delete' | translate}}</a></li>
+  <li class="li-action-menu"><a ng-click="vm.subscribe()">{{'Subscribe' | translate}}</a></li>
 </ul>
 
-<ul ng-if="isIdea && isHover">
+<ul ng-if="vm.isIdea && vm.isHover">
   <!-- TODO: replace the default FALSE by a scope variable that is false only if the current campaign component is not of type PROPOSALS or IDEAS -->
-  <li class="action__edit" ng-if="userIsAuthor && isProposalIdeaStage"><a>{{'Edit information' | translate}}</a></li>
-  <li class="action__assign" ng-if="userIsAssemblyCoordinator"><a>{{'Assign' | translate}}</a></li>
-  <li class="action__promote" ng-if="userIsWorkingGroupCoordinator"><a>{{'Promote to contribution' | translate}}</a></li>
-  <li class="action__history"><a href="" ng-click="myObject.seeHistory()">{{'See history' | translate}}</a></li>
+  <li class="action__edit" ng-if="vm.userIsAuthor && vm.isProposalIdeaStage"><a>{{'Edit information' | translate}}</a></li>
+  <li class="action__assign" ng-if="vm.userIsAssemblyCoordinator"><a>{{'Assign' | translate}}</a></li>
+  <li class="action__promote" ng-if="vm.userIsWorkingGroupCoordinator"><a>{{'Promote to contribution' | translate}}</a></li>
+  <li class="action__history"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
+  <li class="action__history"><a ng-click="vm.showModerationForm('flag')">{{'Flag this contribution' | translate}}</a></li>
+  <li class="action__history" ng-if="vm.userIsAssemblyCoordinator" ng-click="vm.showModerationForm('delete')"><a>{{'Delete this contribution' | translate}}</a></li>
 </ul>
 
 <div class="history-modal" style="display: none;">
-  <history-modal vex-instance="vexInstance" contribution="contribution"></history-modal>
+  <history-modal vex-instance="vm.vexInstance" contribution="vm.contribution"></history-modal>
 </div>
 
-<modal open-if="modals.feedbackModal" close="closeModal('feedbackModal')" title="Feedback Form" template-id="feedbackModal"></modal>
-<modal open-if="modals.contributionEditModal" close="closeModal('contributionEditModal')" title="Edit Form"
-  template-id="contributionEditModal"></modal>
+<modal open-if="vm.modals.feedbackModal" close="vm.closeModal('feedbackModal')" title="Feedback Form" template-id="feedbackModal"></modal>
+<modal open-if="vm.modals.contributionEditModal" close="vm.closeModal('contributionEditModal')" title="Edit Form" template-id="contributionEditModal"></modal>
 
 <script id="feedbackModal" type="text/ng-template">
-  <contribution-feedback-form contribution="contribution" on-success="closeModal('feedbackModal')"></contribution-feedback-form>
+  <contribution-feedback-form contribution="vm.contribution" on-success="vm.closeModal('feedbackModal')"></contribution-feedback-form>
 </script>
 
 <script id="contributionEditModal" type="text/ng-template">
-  <contribution-form
-    contribution="contribution"
-    on-success="onEditContributionSuccess()"
-    mode="edit"
-    user="user">
+  <contribution-form contribution="vm.contribution" on-success="vm.onEditContributionSuccess()" mode="edit" user="user">
   </contribution-form>
+</script>
+
+<script id="contributionModerationForm" type="text/ng-template">
+  <contribution-moderation-form contribution="vm.contribution" context="vm.moderationContext" on-success="vm.moderationSuccess()"></contribution-moderation-form>
 </script>

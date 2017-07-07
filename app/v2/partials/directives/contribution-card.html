@@ -103,6 +103,7 @@
 <!-- IDEA -->
 <div class="card__idea" ng-if="isIdea">
   <div class="card__wrapper">
+    <a ng-if="contribution.stats.flags && isCoordinator" class="github-fork-ribbon rigth-top" style="z-index: 1;" title="{{'Moderation pending' | translate}}"></a>
     <header class="card__header" ng-style="coverPhotoStyle" ng-mouseenter="cm.isHover = false">
       <div class="col-lg-9">
         <div ng-class="{overlay: showOverlay}">

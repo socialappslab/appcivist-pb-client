@@ -705,13 +705,13 @@
      *
      * @param {boolean} prefill - true to prefill form data with current user information
      */
-    function addNewAuthor(prefill) {
+    function addNewAuthor(prefill, event) {
       let author = {
         tmpId: `tmp-${this.tmpAuthorIDCount++}`,
         isOpen: true
       };
 
-      if (prefill) {
+      if (prefill && typeof prefill === 'boolean') {
         const isCoordinator = !this.isAnonymous || Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
         const isModerator = !this.isAnonymous || Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
 
@@ -723,6 +723,18 @@
       }
       this.contribution.nonMemberAuthors.forEach(nma => nma.isOpen = false);
       this.contribution.nonMemberAuthors.push(author);
+
+      if (this.contribution.nonMemberAuthors.length <= 1) {
+        return;
+      }
+
+      $timeout(() => {
+        // scroll up
+        const fieldsetEl = $('fieldset.user__assignment').last()[0];
+        const newEl = $('input[name=nonmemberName]').last()[0];
+        fieldsetEl.scrollIntoView();
+        $(newEl).focus();
+      })
     }
 
     /**

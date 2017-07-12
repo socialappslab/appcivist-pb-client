@@ -84,7 +84,7 @@
     function checkType() {
       const type = this.definition.fieldType;
 
-      if (type === 'TEXT') {
+      if (type === 'TEXT' || type === 'STRING_OPEN') {
         this.isText = true;
         this.isTextArea = parseInt(this.definition.limit) >= 200 || this.definition.limitType === 'WORDS';
       } else if (type === 'NUMBER') {

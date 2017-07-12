@@ -734,7 +734,7 @@
         const newEl = $('input[name=nonmemberName]').last()[0];
         fieldsetEl.scrollIntoView();
         $(newEl).focus();
-      })
+      });
     }
 
     /**

@@ -67,7 +67,7 @@
     </li>
     <li class="delete" ng-if="withFlag && isMemberOfAssembly" ng-mouseenter="contribution.overFlag = true" ng-mouseleave="contribution.overFlag = false">
       <a ng-click="$parent.showModerationForm('flag')">
-        <i class="fa fa-ban"></i>
+        <i class="fa fa-flag"></i>
         <span class="screen-reader-only">{{ 'Flag' | translate }}</span>
       </a>
       <div class="popover" style="top: -56px;" ng-class="{active: contribution.overFlag}">

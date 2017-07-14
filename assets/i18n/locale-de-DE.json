@@ -1101,5 +1101,9 @@
   "Downvote this contribution": "Downvote this contribution",
   "Total comments": "Total comments",
   "Informal score": "Informal score",
-  "Delete this contribution": "Delete this contribution"
+  "Delete this contribution": "Delete this contribution",
+  "Spam": "Spam",
+  "Violates commenting rules": "Violates commenting rules",
+  "It is disrespectful": "It is disrespectful",
+  "It is aggressive": "It is aggressive"
 }

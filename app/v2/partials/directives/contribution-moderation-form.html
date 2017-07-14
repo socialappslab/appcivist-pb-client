@@ -5,7 +5,7 @@
       <fieldset>
         <label for="reasons">{{'Select reason' | translate}}</label>
         <div class="field-container col-lg-12" style="margin-bottom: 10px; height: 39.5px;">
-          <select name="reasons" class="col-lg-12" style="height: 39.5px;" ng-model="vm.contribution.moderationComment" ng-options="reason for reason in vm.moderationReasons"></select>
+          <select name="reasons" class="col-lg-12" style="height: 39.5px;" ng-model="vm.contribution.moderationComment" ng-options="reason for reason in vm.moderationReasons | translate"></select>
         </div>
       </fieldset>
       <fieldset ng-if="vm.contribution.moderationComment === 'Other'">

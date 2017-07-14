@@ -40,10 +40,10 @@
 
     this.$onInit = () => {
       this.moderationReasons = [
-        'It\'s spam',
-        'Violates the assembly commenting policy',
-        'It is disrespectful towards other people',
-        'Attacks others personally',
+        'Spam',
+        'Violates commenting rules',
+        'It is disrespectful',
+        'It is aggressive',
         'Other'
       ];
       this.assembly = localStorageService.get('currentAssembly');
@@ -72,7 +72,7 @@
 
     /**
      * Removes the contribution.
-     * 
+     *
      * @private
      */
     function submitDelete() {
@@ -96,7 +96,7 @@
 
     /**
      * Flags the contribution.
-     * 
+     *
      * @private
      */
     function submitFlag() {

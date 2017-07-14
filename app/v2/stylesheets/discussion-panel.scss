@@ -1,3 +1,4 @@
+
 .comment-meta {
   width: 100% !important;
 }
@@ -42,8 +43,10 @@ li.panel.comment-container {
   position: relative;
 }
 
-.github-fork-ribbon:before {
-  background-color: #f80;
+discussion-panel {
+  .github-fork-ribbon:before {
+    background-color: #f80;
+  }
 }
 
 .recaptcha>div {

@@ -1,0 +1,21 @@
+<div class="modal_content__add_proposal">
+  <header class="modal-header" style="padding: 2em;">{{'Moderation Form' | translate}}</header>
+  <div class="modal-body">
+    <form>
+      <fieldset>
+        <label for="reasons">{{'Select reason' | translate}}</label>
+        <div class="field-container col-lg-12" style="margin-bottom: 10px; height: 39.5px;">
+          <select name="reasons" class="col-lg-12" style="height: 39.5px;" ng-model="vm.contribution.moderationComment" ng-options="reason for reason in vm.moderationReasons | translate"></select>
+        </div>
+      </fieldset>
+      <fieldset ng-if="vm.contribution.moderationComment === 'Other'">
+        <div class="field-container col-lg-12" style="margin-bottom: 10px;">
+          <input type="text" ng-model="vm.contribution.moderationCommentOther" placeholder="{{'Enter reason' | translate}}">
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <fieldset>
+    <a ng-click="vm.submitModerationForm()" class="button__modal_submit ng-binding" style="padding: 0.6em;">{{'Submit' | translate}}</a>
+  </fieldset>
+</div>

@@ -14,11 +14,11 @@
       <div class="title_block">
         <h1 class="heading--headline">
           <a ng-if="isAnonymous" ng-href="#/v2/proposal/{{contribution.uuid}}" style="display: block; width: 280px;word-wrap: break-word;">
-            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
+            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
           </a>
           <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}/proposal/{{contribution.contributionId}}"
             style="display: block; width: 280px; word-wrap: break-word;">
-            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 50 ? '...' : '.' }}
+            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
           </a>
         </h1>
         <div class="card__heading_actions">

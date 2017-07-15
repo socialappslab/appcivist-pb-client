@@ -90,7 +90,7 @@
             </uib-accordion>
           </fieldset>
 
-          <button class="btn btn-default" ng-click="vm.addNewAuthor()">{{'Add another author' | translate}}</button>
+          <button type="button" class="btn btn-default" ng-click="vm.addNewAuthor(false, $event)">{{'Add another author' | translate}}</button>
         </div>
 
         <div ng-if="vm.isAnonymous" class="col-*-12" vc-recaptcha ng-model="vm.recaptchaResponse" 

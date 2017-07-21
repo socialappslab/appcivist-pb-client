@@ -809,8 +809,8 @@
   "Technical feedback": "Retour critique technique",
   "Show Ideas": "Montrer les Idées",
   "Hide Ideas": "Cacher les Idées",
-  "Show Comments": "Show Comments",
-  "Hide Comments": "Hide Comments",
+  "Show Comments": "Afficher les Commentaires",
+  "Hide Comments": "Cacher les Commentaires",
   "File": "Fichier",
   "Configure your assembly": "Configurer votre Assemblée",
   "Stages and milestones": "Phases et étapes",
@@ -1053,9 +1053,9 @@
   "Type your password": "Type your password",
   "Connect with Facebook": "Connect with Facebook",
   "help.tooltip.connectWithFacebook": "Social Ideation is an application that connects idea management platforms (such as AppCivist) with general purpose social networks (such as Facebook). Once you authorize this app, every time you create an idea within a Campaign of AppCivist, this will be replicated into a connected space within the target social network (e.g., a Facebook group)!",
-  "Show Insights": "Show Analytics",
-  "Hide Insights": "Hide Analytics",
-  "Insights": "Analytics",
+  "Show Insights": "Afficher les statistiques",
+  "Hide Insights": "Cacher les statistiques",
+  "Insights": "Statistiques",
   "Other Working Groups": "Autres Groupes de Travail",
   "My proposals": "Mes propositions",
   "Join a Working Group to create proposals": "Join Working Group to add proposals",
@@ -1106,5 +1106,6 @@
   "Spam": "Spam",
   "Violates commenting rules": "Violé les règles",
   "It is disrespectful": "Irrespectueux",
-  "It is aggressive": "Agressif"
+  "It is aggressive": "Agressif",
+  "worked on": "a travaillé sur"
 }

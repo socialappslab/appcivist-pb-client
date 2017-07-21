@@ -1097,5 +1097,15 @@
   "Not a valid email": "Not a valid email",
   "Draft": "Brouillon",
   "DRAFT": "BROUILLON",
+  "Flag this contribution": "Dénoncer",
+  "Upvote this contribution": "Upvote this contribution",
+  "Downvote this contribution": "Downvote this contribution",
+  "Total comments": "Total comments",
+  "Informal score": "Informal score",
+  "Delete this contribution": "Delete this contribution",
+  "Spam": "Spam",
+  "Violates commenting rules": "Violé les règles",
+  "It is disrespectful": "Irrespectueux",
+  "It is aggressive": "Agressif",
   "worked on": "a travaillé sur"
 }

@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   /** 
@@ -50,6 +50,7 @@
     this.isImage = isImage.bind(this);
     this.sync = sync.bind(this);
     this.initValueObject = initValueObject.bind(this);
+    this.selectMultipleChoiceOption = selectMultipleChoiceOption.bind(this);
 
     this.$onInit = () => {
       this.imageExtensions = ['png', 'jpeg', 'jpg', 'gif', 'tiff'];
@@ -84,7 +85,7 @@
     function checkType() {
       const type = this.definition.fieldType;
 
-      if (type === 'TEXT' || type === 'STRING_OPEN') {
+      if (type === 'TEXT') {
         this.isText = true;
         this.isTextArea = parseInt(this.definition.limit) >= 200 || this.definition.limitType === 'WORDS';
       } else if (type === 'NUMBER') {
@@ -99,6 +100,8 @@
           this.isMultipleChoice = true;
           this.model = {};
         }
+        // check for STRING_OPEN options
+        angular.forEach(this.definition.customFieldValueOptions, option => option.isStringOpen = option.valueType === 'STRING_OPEN');
       }
     }
 
@@ -191,6 +194,17 @@
         customFieldDefinition: definition,
         value: ''
       };
+    }
+
+    /**
+     * This callback gets called when the user clicks on a multiple choice option.
+     * 
+     * @param {Object[]} options
+     * @param {Object} selectedOption 
+     */
+    function selectMultipleChoiceOption(options, selectedOption) {
+      options.forEach(option => option.showInputText = false);
+      selectedOption.showInputText = selectedOption.valueType === 'STRING_OPEN';
     }
   }
 }())

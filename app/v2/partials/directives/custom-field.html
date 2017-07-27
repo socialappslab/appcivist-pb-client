@@ -10,8 +10,8 @@
     <input ng-if="vm.isText && !vm.isTextArea" type="text" name="{{vm.getFieldName(vm.definition)}}" placeholder="{{vm.definition.description}}"
       ng-maxlength="{{vm.definition.limit}}" ng-model="vm.model">
 
-    <textarea ng-if="vm.isTextArea" name="{{vm.getFieldName(vm.definition)}}" placeholder="{{vm.definition.description}}"
-      rows="5" ng-maxlength="{{vm.definition.limit}}" ng-model="vm.model"></textarea>
+    <textarea ng-if="vm.isTextArea" name="{{vm.getFieldName(vm.definition)}}" placeholder="{{vm.definition.description}}" rows="5"
+      ng-maxlength="{{vm.definition.limit}}" ng-model="vm.model"></textarea>
 
     <div ng-if="vm.isFile" class="file-field">
       <div class="add-button">
@@ -31,8 +31,16 @@
     <div ng-if="vm.isSingleChoice">
       <div class="radio" ng-repeat="option in vm.definition.customFieldValueOptions">
         <label>
-          <input type="radio" ng-model="vm.model" value="{{option.customFieldValueOptionId}}">
+          <input type="radio" ng-model="vm.model" 
+                 value="{{option.customFieldValueOptionId}}" 
+                 ng-click="vm.selectMultipleChoiceOption(vm.definition.customFieldValueOptions, option)">
           {{option.value}}
+        </label>
+        <!-- if valueOption is STRING_OPEN we show an input text -->
+        <label ng-if="option.isStringOpen && option.showInputText">
+          <input type="text" 
+                 ng-model="vm.modelOptionValue" 
+                 placeholder="{{'Enter value' | translate}}...">
         </label>
       </div>
     </div>
@@ -40,8 +48,17 @@
     <div ng-if="vm.isMultipleChoice">
       <div class="checkbox" ng-repeat="option in vm.definition.customFieldValueOptions">
         <label>
-          <input type="checkbox" ng-model="vm.model[option.customFieldValueOptionId]" value="{{option.customFieldValueOptionId}}">
+          <input type="checkbox" 
+                 ng-model="vm.model[option.customFieldValueOptionId]" 
+                 value="{{option.customFieldValueOptionId}}"
+                 ng-click="vm.selectMultipleChoiceOption(vm.definition.customFieldValueOptions, option)">
           {{option.value}}
+        </label>
+         <!-- if valueOption is STRING_OPEN we show an input text -->
+        <label ng-if="option.isStringOpen && option.showInputText">
+          <input type="text" 
+                 ng-model="vm.modelOptionValue" 
+                 placeholder="{{'Enter value' | translate}}...">
         </label>
       </div>
     </div>

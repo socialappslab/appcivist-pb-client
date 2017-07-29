@@ -13,7 +13,6 @@
       </div>
 
       <div class="field__container" ng-if="!vm.hiddenFieldsMap['title']">
-        <!--<label for="add_proposal__title">{{'Title of Idea' | translate}} </label>-->
         <input ng-model="vm.contribution.title" class="title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
           type="text" placeholder="{{ 'Title of Idea' | translate }}..." name="title" ng-maxlength="50">
         <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
@@ -23,6 +22,12 @@
       </div>
     </header>
     <div class="modal-body">
+      <fieldset class="divider" ng-if="vm.userIsAssemblyCoordinator && vm.isCreate">
+        <label for="upload">{{'Upload csv file' | translate}}</label>
+        <input type="file" name="upload" fileread="vm.file.csv">
+        <a class="button__modal_submit" ng-click="vm.submit()">{{'Upload' | translate}}</a>
+      </fieldset>
+
       <fieldset>
         <!-- Description -->
         <div class="field__container" ng-if="!vm.hiddenFieldsMap['description']">

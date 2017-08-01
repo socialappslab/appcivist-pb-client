@@ -172,6 +172,10 @@
       res.$promise.then(
         function (data) {
           $scope.campaign = data;
+
+          if($scope.isAnonymous) {
+             $translate.use($scope.campaign.lang);
+          }
           $scope.campaign.rsID = data.resourceSpaceId; // must be always id
           $scope.campaign.rsUUID = data.resourceSpaceUUID;
           $scope.campaign.frsUUID = data.forumResourceSpaceUUID;

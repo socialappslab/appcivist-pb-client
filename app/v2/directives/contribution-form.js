@@ -636,9 +636,10 @@
           if (!angular.isArray(value)) {
             value = [value];
           }
+
           value.forEach(v => payload.customFieldValues.push({
             customFieldDefinition: cfv.customFieldDefinition,
-            value: v.value,
+            value: v.value || v,
             entityTargetType: 'NON_MEMBER_AUTHOR',
             entityTargetUuid: nma.uuid,
           }));

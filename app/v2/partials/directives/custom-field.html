@@ -29,7 +29,7 @@
 
 
     <div ng-if="vm.isSingleChoice">
-      <div class="radio" ng-repeat="option in vm.definition.customFieldValueOptions">
+      <div class="radio" ng-repeat="option in vm.definition.customFieldValueOptions track by $index">
         <label>
           <input type="radio" ng-model="vm.model" 
                  value="{{option.customFieldValueOptionId}}" 
@@ -39,14 +39,14 @@
         <!-- if valueOption is STRING_OPEN we show an input text -->
         <label ng-if="option.isStringOpen && option.showInputText">
           <input type="text" 
-                 ng-model="vm.modelOptionValue" 
+                 ng-model="vm.stringOpenSingleValue" 
                  placeholder="{{'Enter value' | translate}}...">
         </label>
       </div>
     </div>
 
     <div ng-if="vm.isMultipleChoice">
-      <div class="checkbox" ng-repeat="option in vm.definition.customFieldValueOptions">
+      <div class="checkbox" ng-repeat="option in vm.definition.customFieldValueOptions track by $index">
         <label>
           <input type="checkbox" 
                  ng-model="vm.model[option.customFieldValueOptionId]" 
@@ -57,7 +57,7 @@
          <!-- if valueOption is STRING_OPEN we show an input text -->
         <label ng-if="option.isStringOpen && option.showInputText">
           <input type="text" 
-                 ng-model="vm.modelOptionValue" 
+                 ng-model="vm.stringOpenMultipleValue[option.customFieldValueOptionId]" 
                  placeholder="{{'Enter value' | translate}}...">
         </label>
       </div>

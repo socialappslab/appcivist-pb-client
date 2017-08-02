@@ -30,7 +30,7 @@
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
       $scope.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');
       $scope.isHomePage = $state.is('v2.homepage');
-      $scope.isAssemblyHome = $state.is('v2.assembly.aid.home');
+      $scope.isAssemblyHome = $state.is('v2.assembly.aid.home') || $state.is('v2.assembly.aid.fallbackHome');
       $scope.showSmallMenu = false;
       $scope.nav = { isActive: false };
       $scope.groupsAreShown = false;
@@ -136,7 +136,7 @@
       this.nav.isActive = false;
       this.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');
       this.isHomePage = $state.is('v2.homepage');
-      this.isAssemblyHome = $state.is('v2.assembly.aid.home');
+      this.isAssemblyHome = $state.is('v2.assembly.aid.home') || $state.is('v2.assembly.aid.fallbackHome');
 
       this.userIsAuthenticated = loginService.userIsAuthenticated();
       this.userIsAuthenticated = this.userIsAuthenticated === null ? false : this.userIsAuthenticated;

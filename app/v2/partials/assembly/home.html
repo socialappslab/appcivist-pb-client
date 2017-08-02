@@ -54,7 +54,8 @@
                 </p>
               </a>
 
-              <a ng-if="isAnonymous || readAssemblyByShortname" ng-href="/#/v2/campaign/{{campaign.uuid}}" class="list-group-item">
+              <a ng-if="isAnonymous || readAssemblyByShortname" 
+                 ng-href="/#/v2/p/assembly/{{assemblyId}}/campaign/{{campaign.uuid}}" class="list-group-item">
                 <div>
                   {{campaign.title}}
                 </div>
@@ -91,7 +92,10 @@
               </a>
 
               <!-- If public view, show links to public campaigns -->
-              <a ng-if="isAnonymous || !readAssemblyByShortname" ng-href="/#/v2/campaign/{{campaign.uuid}}" class="list-group-item">
+              <a ng-if="isAnonymous || !readAssemblyByShortname" 
+                 ng-href="/#/v2/p/assembly/{{assemblyId}}/campaign/{{campaign.uuid}}" 
+                 class="list-group-item">
+                
                 <div>
                   {{campaign.title}}
                 </div>

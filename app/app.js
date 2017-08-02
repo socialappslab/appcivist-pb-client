@@ -155,6 +155,16 @@
         controller: 'v2.HomeCtrl',
         templateUrl: 'app/v2/partials/home.html'
       })
+      .state('v2.public', {
+        url: '/p',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.public.assembly', {
+        url: '/assembly',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,
@@ -185,9 +195,14 @@
           requiresLogin: true
         }
       })
-      //assembly: no princial assembly routes
+      //assembly: no principal assembly routes
       .state('v2.assembly.aid', {
         url: '/:aid',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.public.assembly.auuid', {
+        url: '/:auuid',
         abstract: true,
         template: '<div ui-view></div>'
       })
@@ -199,6 +214,11 @@
       })
       // the new URL for assembly home is /assembly/:id /assembly/:uuid. We left /assembly/:id/home for compatibility.
       .state('v2.assembly.aid.home', {
+        url: '',
+        templateUrl: 'app/v2/partials/assembly/home.html',
+        controller: 'v2.AssemblyHomeCtrl'
+      })
+      .state('v2.public.assembly.auuid.home', {
         url: '',
         templateUrl: 'app/v2/partials/assembly/home.html',
         controller: 'v2.AssemblyHomeCtrl'
@@ -258,19 +278,11 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
-
-      // PUBLIC campaign URLs
-      .state('v2.assembly.aid.campaign.cuuid', {
-        url: '/:cuuid',
+      .state('v2.public.assembly.auuid.campaign', {
+        url: '/campaign',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.cuuid.dashboard', {
-        url: '',
-        controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-      })
-
       .state('v2.assembly.aid.campaign.new', {
         url: '/new',
         controller: 'v2.CampaignFormWizardCtrl',
@@ -287,6 +299,19 @@
           requiresLogin: true
         }
       })
+
+      // // PUBLIC campaign URLs
+      .state('v2.public.assembly.auuid.campaign.cuuid', {
+        url: '/:cuuid',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.public.assembly.auuid.campaign.cuuid.dashboard', {
+        url: '',
+        controller: 'v2.CampaignDashboardCtrl',
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
+      })
+
       .state('v2.assembly.aid.campaign.start', {
         url: '/start',
         controller: 'v2.StartCampaignCtrl',
@@ -358,6 +383,11 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
+      .state('v2.public.assembly.auuid.campaign.workingGroup', {
+        url: '/:cuuid/group',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
       .state('v2.assembly.aid.campaign.workingGroup.new', {
         url: '/new',
         controller: 'v2.WgroupFormWizardCtrl',
@@ -387,7 +417,20 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
+      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid', {
+        url: '/:guuid',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
       .state('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
+        url: '',
+        controller: 'v2.WorkingGroupDashboardCtrl',
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.dashboard', {
         url: '',
         controller: 'v2.WorkingGroupDashboardCtrl',
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
@@ -419,7 +462,14 @@
           requiresLogin: true
         }
       })
+      // deprecated. Now is /contribution. Soon to be removed.
       .state('v2.assembly.aid.campaign.workingGroup.gid.proposal', {
+        url: '/proposal',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      // deprecated. Now is /contribution. Soon to be removed.
+      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.proposal', {
         url: '/proposal',
         abstract: true,
         template: '<div ui-view></div>'
@@ -432,13 +482,34 @@
           requiresLogin: true
         }
       })
+      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.proposal.puuid', {
+        url: '/:puuid',
+        templateUrl: 'app/v2/partials/proposal/page.html',
+        controller: 'v2.ProposalPageCtrl',
+        access: {
+          requiresLogin: true
+        }
+      })
       .state('v2.assembly.aid.campaign.workingGroup.gid.contribution', {
+        url: '/contribution',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution', {
         url: '/contribution',
         abstract: true,
         template: '<div ui-view></div>'
       })
       .state('v2.assembly.aid.campaign.workingGroup.gid.contribution.pid', {
         url: '/:pid',
+        templateUrl: 'app/v2/partials/proposal/page.html',
+        controller: 'v2.ProposalPageCtrl',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {
+        url: '/:puuid',
         templateUrl: 'app/v2/partials/proposal/page.html',
         controller: 'v2.ProposalPageCtrl',
         access: {
@@ -459,30 +530,6 @@
         url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
         controller: 'v2.ProposalsCtrl'
-      })
-      // open working group dashboard
-      .state('v2.campaign.cuuid.group', {
-        url: '/group',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.campaign.cuuid.group.gid', {
-        url: '/:gid',
-        controller: 'v2.WorkingGroupDashboardCtrl',
-        templateUrl: 'app/v2/partials/working-group/dashboard.html',
-      })
-      .state('v2.proposal', {
-        url: '/proposal',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.proposal.pid', {
-        url: '/:pid',
-        controller: 'v2.ProposalPageCtrl',
-        templateUrl: 'app/v2/partials/proposal/page.html',
-        access: {
-          requiresLogin: true
-        }
       })
 
       // TODO: for the general login, let's add a step after signing in to ask which assembly to connect if the user

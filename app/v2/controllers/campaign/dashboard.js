@@ -492,10 +492,14 @@
      * Open a modal using vex library
      */
     function openModal(id) {
-      var self = this;
+      const modalScope = this.$new();
       this.vexInstance = vex.open({
         className: "vex-theme-plain",
-        unsafeContent: $compile(document.getElementById(id).innerHTML)(self)[0],
+        unsafeContent: $compile(document.getElementById(id).innerHTML)(modalScope)[0],
+        afterClose: function () {
+          // we destroy the scope, so that watchers gets destroyed.
+          modalScope.$apply(() => modalScope.$destroy());
+        }
       });
     }
 

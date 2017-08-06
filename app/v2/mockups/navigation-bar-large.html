@@ -15,28 +15,53 @@
     <div class="collapse navbar-collapse" id="navbar-options">
         <!-- Menu when the user is logged in-->
         <ul class="nav navbar-nav navbar-right menu-elements">
-            <li class="dropdown" id="newsletterMenu">
+            <li class="dropdown nav-menu-notification" id="newsletterMenu">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="number">2</span> <!-- Add a ng-if to this span, this will be the newsletter counter -->
                     <i class="fa fa-lg fa-newspaper-o icon"></i>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
-                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
-                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
+                <ul class="dropdown-menu" aria-labelledby="newsletterDropdown">
+                    <h3>Newsletters <span><a>View all</a></span></h3>
+                    <li><a>
+                      <div class="title unseen">&lt;CAMPAIGN NAME&gt;.</div>
+                      <div class="preview unseen">15 MAY - 16 MAY</div>
+                    </a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
+                    <li><a>
+                      <div class="title">&lt;CAMPAIGN NAME&gt;.</div>
+                      <div class="preview">15 MAY - 16 MAY</div>
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>
+                      <div class="title">&lt;CAMPAIGN NAME&gt;.</div>
+                      <div class="preview">15 MAY - 16 MAY</div>
+                    </a></li>
                 </ul>
             </li>
-            <li class="dropdown" id="notificationMenu">
+            <li class="dropdown nav-menu-notification" id="notificationMenu">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="number">4</span> <!-- Add a ng-if to this span, this will be the notification counter -->
                     <i class="fa fa-lg fa-bell-o icon"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
-                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
-                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
+                    <h3>Notifications <span><a>View all</a></span></h3>
+                    <li><a>
+                      <div class="title unseen">Fugiat occaecat irure commodo.</div>
+                      <div class="preview unseen">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+                      <div class="date">07/08/2017</div>
+                    </a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
+                    <li><a>
+                      <div class="title">Fugiat occaecat irure commodo.</div>
+                      <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+                      <div class="date">07/08/2017</div>
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>
+                      <div class="title">Fugiat occaecat irure commodo.</div>
+                      <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+                      <div class="date">07/08/2017</div>
+                    </a></li>
                 </ul>
             </li>
             <li>

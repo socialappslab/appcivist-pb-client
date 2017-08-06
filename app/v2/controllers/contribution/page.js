@@ -164,6 +164,7 @@
             const campaignIds = data.campaignUuids;
             const campaignIdsLength = campaignIds ? campaignIds.length : 0;
             $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
+            $translate.use($scope.proposal.lang);
           }
 
           if (data.extendedTextPad) {

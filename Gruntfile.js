@@ -63,7 +63,7 @@ module.exports = function(grunt) {
         files: ["index.html"]
       },
       js: {
-        files: ["app/*.js", "app/**/*.js"],
+        files: ["app/*.js", "app/**/*.js", "app/v2/**/*.js"],
         tasks: ['babel']
       },
       sass: {

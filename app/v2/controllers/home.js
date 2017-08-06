@@ -18,12 +18,12 @@
     function activate() {
       $scope.user = {};
       $scope.login = login;
-      console.log("activate homeCtrl");
       $scope.isHomePage = true;
+
       if ($state.params.domain) {
         $scope.domain = $state.params.domain;
         var rsp = Assemblies.assemblyByShortName($scope.domain).get();
-        rsp.$promise.then(function(data) {
+        rsp.$promise.then(function (data) {
           $scope.assembly = data;
           localStorageService.set('domain', data);
         });
@@ -55,7 +55,6 @@
     }
 
     function loginError(error) {
-      console.log(error);
       var msg = 'Error while trying to authenticate to the server';
 
       if (error && error.data && error.data.statusMessage) {
@@ -64,4 +63,4 @@
       Notify.show(msg, 'error');
     }
   }
-} ());
+}());

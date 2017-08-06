@@ -45,8 +45,8 @@
       $scope.newProposalsEnabled = true;
       $scope.newIdeasEnabled = false;
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      if (pattern.test($stateParams.gid)) {
-        $scope.groupID = $stateParams.gid;
+      if (pattern.test($stateParams.guuid)) {
+        $scope.groupID = $stateParams.guuid;
         $scope.isAnonymous = true;
         $scope.fromURL = 'v2/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isWorkingGroupCoordinator($scope.groupID);
@@ -125,6 +125,7 @@
 
           if ($scope.isAnonymous) {
             $scope.spaceID = data.resourcesResourceSpaceUUID;
+            $translate.use($scope.wg.lang);
           } else {
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;

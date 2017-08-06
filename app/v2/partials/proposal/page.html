@@ -211,8 +211,8 @@
       </div>
       <p class="parent_working_group" ng-if="group">
         <i class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tag': group.isTopic}"></i>
+        <a ng-if="isAnonymous" ng-href="/#/v2/p/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
         <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
-        <a ng-if="isAnonymous" ng-href="/#/v2/group/{{group.uuid}}">{{group.name}}</a>
       </p>
 
 

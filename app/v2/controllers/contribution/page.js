@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -47,11 +47,11 @@
         suggestionsVisible: false,
         context: 'AUTHORS'
       };
-      $scope.toggleFeedbackBar = function(x) {
+      $scope.toggleFeedbackBar = function (x) {
         $scope.feedbackBar = !$scope.feedbackBar;
       };
       $scope.newAttachment = {};
-      $scope.changeActiveTab = function(tab) {
+      $scope.changeActiveTab = function (tab) {
         if (tab == 1) {
           $scope.activeTab = 'Members';
         } else if (tab == 2) {
@@ -66,8 +66,12 @@
       $scope.commentsSectionExpanded = true;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      if (pattern.test($stateParams.pid) === true) {
-        $scope.proposalID = $stateParams.pid;
+      
+      if (pattern.test($stateParams.puuid) === true) {
+        $scope.proposalID = $stateParams.puuid;
+        $scope.campaignID = $stateParams.cuuid;
+        $scope.assemblyID = $stateParams.auuid;
+        $scope.groupID = $stateParams.guuid;
         $scope.isAnonymous = true;
         $scope.loadFeedback($scope.proposalID);
       } else {
@@ -91,7 +95,7 @@
       $scope.loadProposal($scope);
       $scope.showActionMenu = true;
       $scope.myObject = {};
-      $scope.myObject.refreshMenu = function() {
+      $scope.myObject.refreshMenu = function () {
         scope.showActionMenu = !scope.showActionMenu;
       };
       // Read user contribution feedback
@@ -101,10 +105,10 @@
       $scope.cm = {
         isHover: false
       };
-      $scope.trustedHtml = function(html) {
+      $scope.trustedHtml = function (html) {
         return $sce.trustAsHtml(html);
       };
-      $scope.contributionTypeIsSupported = function(type) {
+      $scope.contributionTypeIsSupported = function (type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       }
     }
@@ -126,11 +130,11 @@
 
       var feedback = Contributions.userFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
-        function(newStats) {
+        function (newStats) {
           $scope.proposal.stats = newStats;
           $scope.proposal.informalScore = Contributions.getInformalScore($scope.proposal);
         },
-        function(error) {
+        function (error) {
           Notify.show('Error when updating user feedbac', 'error');
         }
       );
@@ -146,7 +150,7 @@
         rsp = Contributions.contribution(scope.assemblyID, scope.proposalID).get();
       }
       rsp.$promise.then(
-        function(data) {
+        function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
@@ -164,6 +168,7 @@
             const campaignIds = data.campaignUuids;
             const campaignIdsLength = campaignIds ? campaignIds.length : 0;
             $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
+            $translate.use($scope.proposal.lang);
           }
 
           if (data.extendedTextPad) {
@@ -174,7 +179,7 @@
 
           if (!scope.isAnonymous) {
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
-            rsp.then(function(components) {
+            rsp.then(function (components) {
               var currentComponent = Campaigns.getCurrentComponent(components);
               currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
@@ -189,7 +194,7 @@
               } else {
                 scope.isProposalIdeaStage = false;
               }
-            }, function(error) {
+            }, function (error) {
               Notify.show('Error while trying to fetch campaign components', 'error');
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
@@ -200,7 +205,7 @@
           loadRelatedStats();
           loadCampaign();
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
         }
       );
@@ -220,7 +225,7 @@
       // 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
       if (!$scope.userIsAuthor && $scope.group && $scope.group.groupId) {
         var authorship = Contributions.verifyGroupAuthorship($scope.user, proposal, $scope.group).get();
-        authorship.$promise.then(function(response) {
+        authorship.$promise.then(function (response) {
           $scope.userIsAuthor = response.responseStatus === 'OK';
           if ($scope.userIsAuthor && checkEtherpad) {
             loadEtherpadWriteUrl(proposal);
@@ -234,13 +239,13 @@
     function loadEtherpadWriteUrl(proposal) {
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
-        etherpadRes.$promise.then(function(pad) {
+        etherpadRes.$promise.then(function (pad) {
           $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + '&userName=' + $scope.userName + '&lang=' + $scope.etherpadLocale;
         });
       }
     }
 
-    $scope.createArray = function(num) {
+    $scope.createArray = function (num) {
       var total = 4;
       var arr = [];
       for (var i = 0; i < num; i++) {
@@ -257,9 +262,9 @@
       $scope.proposal.rsID = $scope.proposal.resourceSpaceId;
       var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous);
       rsp.then(
-        function(data) {
+        function (data) {
           var related = [];
-          angular.forEach(data.list, function(r) {
+          angular.forEach(data.list, function (r) {
             if (r.contributionId === $scope.proposalID) {
               return;
             }
@@ -267,7 +272,7 @@
           });
           $scope.relatedContributions = related;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error loading contributions from server', 'error');
         }
       );
@@ -299,7 +304,7 @@
     function toggleCommentsSection() {
       $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-    }  
+    }
     /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.
@@ -313,9 +318,9 @@
           'Content-Type': undefined
         },
         transformRequest: angular.identity,
-      }).then(function(response) {
+      }).then(function (response) {
         vm.createAttachmentResource(response.data.url);
-      }, function(error) {
+      }, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
       });
     }
@@ -329,7 +334,7 @@
       var vm = this;
       var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
       var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
-      rsp.then(function(response) {
+      rsp.then(function (response) {
 
         if (!vm.proposal.attachments) {
           vm.proposal.attachments = [];
@@ -337,7 +342,7 @@
         vm.proposal.attachments.push(response);
         vm.closeModal('addAttachmentForm');
         Notify.show('Attachment saved!', 'success');
-      }, function(error) {
+      }, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
       });
     }
@@ -375,13 +380,13 @@
           res = Campaigns.campaign($scope.assemblyID, $scope.campaignID).get();
         }
 
-        res.$promise.then(function(data) {
+        res.$promise.then(function (data) {
           $scope.campaign = data;
           $scope.campaign.rsID = data.resourceSpaceId;
           // update current campaign reference
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
-        }, function(error) {
+        }, function (error) {
           Notify.show('Error while trying to fetch campaign', 'error');
         });
       }
@@ -390,9 +395,9 @@
     function loadCampaignConfig() {
       if ($scope.campaign && $scope.campaign.rsID) {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function(data) {
+        rsp.$promise.then(function (data) {
           $scope.campaignConfigs = data;
-        }, function(error) {
+        }, function (error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
         });
       }
@@ -529,7 +534,7 @@
           items = $filter('filter')(items, { $: query });
           this.currentAdd.items = items;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error while trying to fetch assembly members from the server', 'error');
         }
       );

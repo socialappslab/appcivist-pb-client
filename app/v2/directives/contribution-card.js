@@ -96,6 +96,9 @@
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
             scope.contributionId = scope.contribution.contributionId;
           } else {
+            scope.auuid = $stateParams.auuid;
+            scope.cuuid = $stateParams.cuuid;
+            scope.guuid = $stateParams.guuid;
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].uuid : "";
             scope.contributionId = scope.contribution.uuid;
           }

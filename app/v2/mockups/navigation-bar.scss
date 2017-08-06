@@ -17,7 +17,7 @@
     padding-top: 1.2rem;
     font-size: 1.3rem;
   }
-  .navbar-right {
+  .navbar-right, .navbar-form {
     margin-right: 1.5rem;
     padding-top: 0.6rem;
     a { font-size: 1rem; }
@@ -29,14 +29,22 @@
   }
 }
 
-.navbar-toggle { margin-top: 1.2rem; }
-.navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus, #navbar-options ul li:hover, .navbar .navbar-nav > .open > a, .navbar .navbar-nav > .open > a:hover, .navbar .navbar-nav > .open > a:focus {
+.navbar-toggle { margin-top: 1.2rem; margin-right: 2.2rem; }
+.navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus, #navbar-options ul li:hover, .navbar .navbar-nav > .open > a, .navbar .navbar-nav > .open > a:hover, .navbar .navbar-nav > .open > a:focus, .navbar .navbar-form a:hover {
   color: white;
   background: none;
 }
 
 @media screen and (max-width: 40em) {
+  ul.navbar-nav > li {
+    display: inline-block;
+    vertical-align: top;
+  }
   .dropdown-menu > li > a {
     color: white;
+  }
+  .navBarImage {
+    margin-left: 1rem;
+    margin-top: 0.2rem;
   }
 }

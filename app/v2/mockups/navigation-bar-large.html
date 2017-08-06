@@ -15,14 +15,6 @@
     <div class="collapse navbar-collapse" id="navbar-options">
         <!-- Menu when the user is logged in-->
         <ul class="nav navbar-nav navbar-right menu-elements">
-            <li class="dropdown">
-                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
-                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
-                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
-                </ul>
-            </li>
             <li>
                 <img class="navBarImage" src="../assets/images/unknown.jpg" ng-src="{{user.profilePic.urlLargeString}}" alt=""/>
             </li>
@@ -39,21 +31,5 @@
                 </ul>
             </li>
         </ul>
-
-
-        <!-- Menu when the user is NOT logged in-->
-        <!--<ul class="nav navbar-nav navbar-left" ng-if='!userIsAuthenticated()'>
-            <li><a href="#section2" du-smooth-scroll><strong>{{'landing.Learn more' | translate}}</strong></a></li>
-            <li><a href="#section3" du-smooth-scroll><strong>{{'landing.section2.button' | translate}}</strong></a></li>
-        </ul>
-
-        <form class="navbar-form navbar-right" role="login" ng-submit="login()" ng-if='!userIsAuthenticated() && !hideLogin'>
-            <div class="form-group">
-                <input type="text" placeholder="{{'Email' | translate}}" class="form-control" ng-model="user.email" autocorrect="off" autocapitalize="off">
-                <input type="password" placeholder="{{'Password' | translate}}" class="form-control" ng-model="user.password" autocorrect="off" autocapitalize="off"/>
-            </div>
-            <button type="submit" class="btn btn-success">{{'header.sign_in' | translate}}</button>
-          <a href="/user/recoveryform">{{'header.Forgot password' | translate}}</a></li>
-        </form>-->
     </div>
 </nav>

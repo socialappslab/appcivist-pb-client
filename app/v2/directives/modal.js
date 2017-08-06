@@ -44,6 +44,7 @@
             return;
           }
           var html = document.getElementById(scope.templateId).innerHTML;
+          // TODO: here we need to destroy the scope when closing the modal, otherwise watchers don't disappear
           vexInstance = vex.open({
             className: "vex-theme-plain",
             unsafeContent: $compile(html)(scope.$parent)[0],

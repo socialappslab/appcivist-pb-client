@@ -172,6 +172,10 @@
       res.$promise.then(
         function (data) {
           $scope.campaign = data;
+
+          if($scope.isAnonymous) {
+             $translate.use($scope.campaign.lang);
+          }
           $scope.campaign.rsID = data.resourceSpaceId; // must be always id
           $scope.campaign.rsUUID = data.resourceSpaceUUID;
           $scope.campaign.frsUUID = data.forumResourceSpaceUUID;
@@ -488,10 +492,14 @@
      * Open a modal using vex library
      */
     function openModal(id) {
-      var self = this;
+      const modalScope = this.$new();
       this.vexInstance = vex.open({
         className: "vex-theme-plain",
-        unsafeContent: $compile(document.getElementById(id).innerHTML)(self)[0],
+        unsafeContent: $compile(document.getElementById(id).innerHTML)(modalScope)[0],
+        afterClose: function () {
+          // we destroy the scope, so that watchers gets destroyed.
+          modalScope.$apply(() => modalScope.$destroy());
+        }
       });
     }
 

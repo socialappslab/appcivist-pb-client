@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   /** 
@@ -50,8 +50,12 @@
     this.isImage = isImage.bind(this);
     this.sync = sync.bind(this);
     this.initValueObject = initValueObject.bind(this);
+    this.selectMultipleChoiceOption = selectMultipleChoiceOption.bind(this);
+    this.modelUpdateHandler = modelUpdateHandler.bind(this);
 
     this.$onInit = () => {
+      this.stringOpenMultipleValue = {};
+      this.stringOpenSingleValue = '';
       this.imageExtensions = ['png', 'jpeg', 'jpg', 'gif', 'tiff'];
       this.checkType();
 
@@ -66,12 +70,11 @@
       });
 
       // watcher for updating custom-field value.
-      $scope.$watchCollection('vm.model', value => {
-        if (this.isUpdatingModel || !value) {
-          return;
-        }
-        this.sync(value);
-      });
+      $scope.$watchCollection('vm.model', this.modelUpdateHandler);
+
+      // watcher for updating custom-field value (for STRING_OPEN options).
+      $scope.$watch('vm.stringOpenSingleValue', this.modelUpdateHandler);
+      $scope.$watchCollection('vm.stringOpenMultipleValue', this.modelUpdateHandler);
 
       if (this.renderer) {
         this.isReadonly = this.renderer === 'readonly';
@@ -81,10 +84,22 @@
       }
     };
 
+    /**
+     * This methods is responsible for updating the internal value when users update their selection.
+     * 
+     * @param {Object|String} value 
+     */
+    function modelUpdateHandler(value) {
+      if (this.isUpdatingModel || !value || _.isEmpty(value)) {
+        return;
+      }
+      this.sync(value);
+    }
+
     function checkType() {
       const type = this.definition.fieldType;
 
-      if (type === 'TEXT' || type === 'STRING_OPEN') {
+      if (type === 'TEXT') {
         this.isText = true;
         this.isTextArea = parseInt(this.definition.limit) >= 200 || this.definition.limitType === 'WORDS';
       } else if (type === 'NUMBER') {
@@ -99,6 +114,8 @@
           this.isMultipleChoice = true;
           this.model = {};
         }
+        // check for STRING_OPEN options
+        angular.forEach(this.definition.customFieldValueOptions, option => option.isStringOpen = option.valueType === 'STRING_OPEN');
       }
     }
 
@@ -177,20 +194,35 @@
       if (this.isFile) {
         this.value.value = value.url;
       } else if (this.isSingleChoice) {
-        this.value.value = _.find(this.definition.customFieldValueOptions, { customFieldValueOptionId: parseInt(value) });
+        let selectedOption = _.find(this.definition.customFieldValueOptions, { customFieldValueOptionId: parseInt(this.model) });
+        // if is STRING_OPEN we store the value that the user typed in, else the customFieldValueOption.
+        this.value.value = selectedOption.isStringOpen ? this.stringOpenSingleValue : selectedOption;
       } else if (this.isMultipleChoice) {
-        this.value.value = _.filter(this.definition.customFieldValueOptions, option => this.model[option.customFieldValueOptionId]);
+        // if is STRING_OPEN we store the value that the user typed in, else the customFieldValueOption.
+        this.value.value = _.filter(this.definition.customFieldValueOptions, option => {
+          return option.isStringOpen ? this.stringOpenMultipleValue[option.customFieldValueOptionId] : this.model[option.customFieldValueOptionId];
+        });
       } else {
         this.value.value = value;
       }
     }
-
 
     function initValueObject(definition) {
       return {
         customFieldDefinition: definition,
         value: ''
       };
+    }
+
+    /**
+     * This callback gets called when the user clicks on a multiple choice option.
+     * 
+     * @param {Object[]} options
+     * @param {Object} selectedOption 
+     */
+    function selectMultipleChoiceOption(options, selectedOption) {
+      options.forEach(option => option.showInputText = false);
+      selectedOption.showInputText = selectedOption.valueType === 'STRING_OPEN';
     }
   }
 }())

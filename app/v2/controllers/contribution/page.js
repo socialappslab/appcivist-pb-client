@@ -164,6 +164,13 @@
             }
           }
 
+          if (scope.isAnonymous) {
+            const campaignIds = data.campaignUuids;
+            const campaignIdsLength = campaignIds ? campaignIds.length : 0;
+            $scope.campaignID = campaignIdsLength ? campaignIds[0] : 0;
+            $translate.use($scope.proposal.lang);
+          }
+
           if (data.extendedTextPad) {
             $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
           } else {

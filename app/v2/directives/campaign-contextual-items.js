@@ -1,65 +1,80 @@
-(function() {
+(function () {
   'use strict';
 
-  appCivistApp
-    .directive('campaignContextualItems', campaignContextualItems);
 
-  campaignContextualItems.$inject = [
-    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify', '$state'
+  /**
+   * @name campaign-contextual-items
+   * @memberof directives
+   *
+   * @description
+   *  Component that renders campaign' contextual menu items.
+   *
+   * @example
+   *
+   *  <campaign-contextual-items campaign="campaign"></campaign-contextual-items>
+   */
+  appCivistApp
+    .component('campaignContextualItems', {
+      selector: 'campaignContextualItems',
+      bindings: {
+        // {object}
+        campaign: '=',
+
+        // {string} proposal | idea
+        currentComponentType: '='
+      },
+      controller: FormCtrl,
+      controllerAs: 'vm',
+      templateUrl: '/app/v2/partials/directives/campaign-contextual-items.html'
+    });
+
+  FormCtrl.$inject = [
+    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify', '$state', '$scope'
   ];
 
-  function campaignContextualItems(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state) {
+  function FormCtrl(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state, $scope) {
+    this.init = init.bind(this);
+    this.refreshMenu = refreshMenu.bind(this);
+    this.subscribe = subscribe.bind(this);
+    ModalMixin.init(this);
 
-    function toggleContextualMenu() {
-      this.showContextualMenu = !this.showContextualMenu;
+    $scope.$watch('vm.campaign', (campaign) => {
+      if (campaign) {
+        this.init();
+      }
+    });
+
+    function init() {
+      this.user = localStorageService.get('user');
+      this.isAnonymous = !this.user;
+      this.modals = {};
+
+      if (!this.isAnonymous) {
+        this.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+        this.userIsAssemblyCoordinator = Memberships.rolIn('assembly', this.assemblyId, 'COORDINATOR');
+        this.showIdeasImport = this.currentComponentType === 'idea';
+        this.showProposalImport = this.currentComponentType === 'proposal';
+      }
     }
 
-    return {
-      restrict: 'E',
-      scope: {
-        campaign: '='
-      },
-      templateUrl: '/app/v2/partials/directives/campaign-contextual-items.html',
-      link: function(scope, element, attrs) {
-
-        scope.$watch('campaign', function(newVal) {
-          if (newVal) {
-            init();
-          }
-        });
-
-        function init() {
-          scope.cm = { isHover: false };
-          scope.user = localStorageService.get('user');
-          scope.isAnonymous = !scope.user;
-
-          if (!scope.isAnonymous) {
-            scope.assemblyId = localStorageService.get('currentAssembly').assemblyId;
-            scope.userIsAssemblyCoordinator = Memberships.rolIn('assembly', scope.assemblyId, 'COORDINATOR');
-          }
-
-          scope.myObject = {};
-          scope.myObject.refreshMenu = function() {
-            scope.showActionMenu = !scope.showActionMenu;
-          };
-
-          scope.myObject.subscribe = function() {
-            var query = { 'origin': scope.campaign.uuid, 'eventName': 'NEW_CAMPAIGN', 'endPointType': 'email' };
-            var subscription = Notifications.subscribe().save(query).$promise.then(
-              function() {
-                Notify.show('Subscribed successfully', 'success');
-              },
-              function() {
-                Notify.show('Error while trying to communicate with the server', 'error');
-              }
-            );
-          }
-
-          scope.myObject.edit = function() {
-            $state.go('v2.assembly.aid.campaign.edit', { aid: scope.assemblyId, cid: scope.campaign.campaignId });
-          }
-        }
-      }
+    function refreshMenu() {
+      this.showActionMenu = !this.showActionMenu;
     };
+
+    function subscribe() {
+      var query = { 'origin': this.campaign.uuid, 'eventName': 'NEW_CAMPAIGN', 'endPointType': 'email' };
+      var subscription = Notifications.subscribe().save(query).$promise.then(
+        function () {
+          Notify.show('Subscribed successfully', 'success');
+        },
+        function () {
+          Notify.show('Error while trying to communicate with the server', 'error');
+        }
+      );
+    }
+
+    function edit() {
+      $state.go('v2.assembly.aid.campaign.edit', { aid: this.assemblyId, cid: this.campaign.campaignId });
+    }
   }
 }());

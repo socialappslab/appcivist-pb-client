@@ -15,6 +15,30 @@
     <div class="collapse navbar-collapse" id="navbar-options">
         <!-- Menu when the user is logged in-->
         <ul class="nav navbar-nav navbar-right menu-elements">
+            <li class="dropdown" id="newsletterMenu">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="number">2</span> <!-- Add a ng-if to this span, this will be the newsletter counter -->
+                    <i class="fa fa-lg fa-newspaper-o icon"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
+                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" id="notificationMenu">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="number">4</span> <!-- Add a ng-if to this span, this will be the notification counter -->
+                    <i class="fa fa-lg fa-bell-o icon"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
+                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
+                </ul>
+            </li>
             <li>
                 <img class="navBarImage" src="../assets/images/unknown.jpg" ng-src="{{user.profilePic.urlLargeString}}" alt=""/>
             </li>

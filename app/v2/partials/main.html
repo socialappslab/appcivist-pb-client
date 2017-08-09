@@ -54,15 +54,18 @@
   }
 </style>
 
-<div class="appcivist" ng-class="{'nav--active': nav.isActive}"><!-- 
+<div class="appcivist" ng-class="{'nav--active': nav.isActive}">
+
   <div ng-if="userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/partials/navigation-bar-large.html'"></div>
-  <div ng-if="!userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/partials/navigation-bar-large-anonymous.html'"></div> -->
-  <!-- WARNING: THIS IS JUST TO TEST THE BUTTONS AND SHOULD BE REMOVED -->
-  <!-- <div ng-if="true" ng-include="'/app/v2/mockups/buttons.html'"></div> -->
+  <div ng-if="!userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/partials/navigation-bar-large-anonymous.html'"></div>
+  
+  <!-- WARNING: THIS IS JUST TO TEST THE BUTTONS AND NEW TOPBAR -->
+  <!-- <div ng-if="true" ng-include="'/app/v2/mockups/buttons.html'"></div> -->  
+  <!-- <div ng-if="userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/mockups/navigation-bar-large.html'"></div> -->
+  <!-- <div ng-if="!userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/mockups/navigation-bar-large-anonymous.html'"></div> -->
   <!-- END WARNING -->
-  <div ng-if="!userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/partials/navigation-bar-large-anonymous.html'"></div>-->
-  <div ng-if="userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/mockups/navigation-bar-large.html'"></div>
-  <div ng-if="!userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/mockups/navigation-bar-large-anonymous.html'"></div>
+
+  
   <ui-view></ui-view>
 
   <footer class="appmain" ng-if="!isAssemblyHome">

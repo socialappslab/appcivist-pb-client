@@ -74,8 +74,9 @@
         scope.mergedThemes = mergeThemes(scope.contribution);
 
         if (scope.contribution.cover) {
-          scope.coverPhotoStyle = { 'background-image': `url(${scope.contribution.cover.url})`, 'background-position': 'center center', 'background-size': 'cover' };
-          scope.showOverlay = true;
+          let bkg_url = 'url(\"'+scope.contribution.cover.url+'\")';
+          scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+          scope.showOverlay = true;   
         }
 
         if (assembly) {

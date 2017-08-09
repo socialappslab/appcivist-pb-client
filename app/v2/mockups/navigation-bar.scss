@@ -101,3 +101,28 @@
     font-weight: bold;
   }
 }
+
+.nav-modals {
+  h3 { font-weight: bold; }
+  .modal-header { border-bottom: none; }
+  .modal-body { overflow: auto; }
+  .modal-footer { border-top: none; }
+  .item {
+    margin-top: 1.3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid lightgray;
+    .title {
+      display: block;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      span {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: normal;
+        color: gray;
+        margin-top: 0.3rem;
+      }
+    }
+  }
+}

@@ -21,7 +21,7 @@
                     <i class="fa fa-lg fa-newspaper-o icon"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="newsletterDropdown">
-                    <h3>Newsletters <span><a>View all</a></span></h3>
+                    <h3>Newsletters <span><a data-toggle="modal" data-target="#newslettersModal">View all</a></span></h3>
                     <li><a>
                       <div class="title unseen">&lt;CAMPAIGN NAME&gt;.</div>
                       <div class="preview unseen">15 MAY - 16 MAY</div>
@@ -44,7 +44,7 @@
                     <i class="fa fa-lg fa-bell-o icon"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
-                    <h3>Notifications <span><a>View all</a></span></h3>
+                    <h3>Notifications <span><a data-toggle="modal" data-target="#notificationsModal">View all</a></span></h3>
                     <li><a>
                       <div class="title unseen">Fugiat occaecat irure commodo.</div>
                       <div class="preview unseen">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
@@ -82,3 +82,85 @@
         </ul>
     </div>
 </nav>
+
+<div class="modal fade nav-modals" id="newslettersModal" tabindex="-1" role="dialog" aria-labelledby="newslettersModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="newslettersModalLabel">Newsletters</h3>
+      </div>
+      <div class="modal-body">
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">&nbsp;</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade nav-modals" id="notificationsModal" tabindex="-1" role="dialog" aria-labelledby="notificationsModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="notificationsModalLabel">Notifications</h3>
+      </div>
+      <div class="modal-body">
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">&nbsp;</div>
+    </div>
+  </div>
+</div>

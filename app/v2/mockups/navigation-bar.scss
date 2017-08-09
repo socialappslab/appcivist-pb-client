@@ -49,7 +49,43 @@
   }
 }
 
-#newsletterMenu > a, #notificationMenu > a {
+.dropdown-menu > li > a { white-space: normal; }
+#navbar-options ul li:hover { color: black; }
+.nav-menu-notification {
+  .title {
+    display: block;
+    &.unseen { font-weight: bold; }
+  }
+  .preview.unseen {
+    font-weight: bold;
+  }
+  .date {
+    font-size: 0.7rem;
+    color: gray;
+    text-align: right;
+  }
+  .dropdown-menu {
+    width: 25rem;
+    a {
+      font-size: 0.9rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 0 0.8rem 1rem;
+      span {
+        float: right;
+        a {
+          color: gray;
+          font-size: 0.9rem;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}
+
+.nav-menu-notification > a {
   position: relative;
   .number {
     position: absolute;

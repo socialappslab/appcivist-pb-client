@@ -29,13 +29,18 @@
     });
 
   FormCtrl.$inject = [
-    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify', '$state', '$scope'
+    'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notifications', 'Notify', '$state',
+    '$scope', 'Space'
   ];
 
-  function FormCtrl(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state, $scope) {
+  function FormCtrl(Campaigns, localStorageService, Memberships, $window, Notifications, Notify, $state,
+    $scope, Space) {
+
     this.init = init.bind(this);
     this.refreshMenu = refreshMenu.bind(this);
     this.subscribe = subscribe.bind(this);
+    this.downloadAuthorInfo = downloadAuthorInfo.bind(this);
+
     ModalMixin.init(this);
 
     $scope.$watch('vm.campaign', (campaign) => {
@@ -75,6 +80,31 @@
 
     function edit() {
       $state.go('v2.assembly.aid.campaign.edit', { aid: this.assemblyId, cid: this.campaign.campaignId });
+    }
+
+    /**
+     * This functions is called when Coordinators clicks on "Download Author Information". It calls
+     * the backend to get a CSV with the list of nonmember authors.
+     */
+    function downloadAuthorInfo() {
+      let rsp = Space.getNonMemberAuthors(this.campaign.resourceSpaceId);
+
+      rsp.then(
+        response => {
+          let anchor = angular.element('<a/>');
+          let now = new Date();
+          anchor.css({ display: 'none' });
+          angular.element(document.body).append(anchor);
+
+          anchor.attr({
+            href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.data),
+            target: '_blank',
+            download: 'nonmember-authors-' + now.getTime() + '.csv'
+          })[0].click();
+          anchor.remove();
+        },
+        error => Notify.show('Error while trying to retrieve non-member authors from the server', 'error')
+      );
     }
   }
 }());

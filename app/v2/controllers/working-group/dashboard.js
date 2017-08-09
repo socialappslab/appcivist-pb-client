@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   angular
@@ -14,7 +14,7 @@
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, $state) {
     $scope.activeTab = "Public";
-    $scope.changeActiveTab = function(tab) {
+    $scope.changeActiveTab = function (tab) {
       if (tab == 1) {
         $scope.activeTab = "Members";
       } else {
@@ -45,8 +45,8 @@
       $scope.newProposalsEnabled = true;
       $scope.newIdeasEnabled = false;
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      if (pattern.test($stateParams.gid)) {
-        $scope.groupID = $stateParams.gid;
+      if (pattern.test($stateParams.guuid)) {
+        $scope.groupID = $stateParams.guuid;
         $scope.isAnonymous = true;
         $scope.fromURL = 'v2/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isWorkingGroupCoordinator($scope.groupID);
@@ -82,14 +82,14 @@
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
       $scope.redirectToProposal = redirectToProposal.bind($scope);
 
-      $scope.contributionTypeIsSupported = function(type) {
+      $scope.contributionTypeIsSupported = function (type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       }
     }
 
     function loadAssembly() {
       var rsp = Assemblies.assembly($scope.assemblyID).get();
-      rsp.$promise.then(function(data) {
+      rsp.$promise.then(function (data) {
         $scope.assembly = data;
         verifyMembership();
       });
@@ -109,7 +109,7 @@
         res = WorkingGroups.workingGroup($scope.assemblyID, $scope.groupID).get();
       }
       res.$promise.then(
-        function(data) {
+        function (data) {
           $scope.wg = data;
           $scope.wg.rsID = data.resourcesResourceSpaceId;
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUID;
@@ -125,6 +125,7 @@
 
           if ($scope.isAnonymous) {
             $scope.spaceID = data.resourcesResourceSpaceUUID;
+            $translate.use($scope.wg.lang);
           } else {
             $scope.forumSpaceID = data.forumResourceSpaceId;
             $scope.spaceID = data.resourcesResourceSpaceId;
@@ -137,7 +138,7 @@
 
           if ($scope.wg) {
             var rsp = $scope.isAnonymous ? Space.configsByUUID($scope.wg.rsUUID).get() : Space.configs($scope.wg.rsID).get();
-            rsp.$promise.then(function(data) {
+            rsp.$promise.then(function (data) {
               $scope.wgConfigs = data;
 
               if ($scope.wgConfigs['appcivist.group.disable-working-group-comments'] && $scope.wgConfigs['appcivist.group.disable-working-group-comments'] === 'TRUE') {
@@ -145,12 +146,12 @@
               } else {
                 $scope.showComments = true;
               }
-            }, function(error) {
+            }, function (error) {
               Notify.show('Error while trying to fetch wg config', 'error');
             });
           }
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
         }
       );
@@ -164,16 +165,16 @@
       if (group.supportedMembership && group.supportedMembership != "OPEN") {
         if ($scope.isAnonymous) {
           $scope.members = group.members
-            .filter(function(m) {
+            .filter(function (m) {
               return m.status === 'ACCEPTED';
             });
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
           res.$promise.then(
-            function(data) {
+            function (data) {
               $scope.members = data;
             },
-            function(error) {
+            function (error) {
               Notify.show('Error occured while trying to load working group members', 'error');
             }
           );
@@ -183,14 +184,14 @@
 
     function loadProposals(group) {
       Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
-        function(data) {
+        function (data) {
           $scope.proposals = data.list;
           $scope.insights.proposalsCount = data.list.length;
-          data.list.forEach(function(proposal) {
+          data.list.forEach(function (proposal) {
             $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
           });
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
@@ -198,11 +199,11 @@
 
     function loadIdeas(group) {
       Space.getContributions(group, 'IDEA', $scope.isAnonymous).then(
-        function(data) {
+        function (data) {
           $scope.ideas = data.list;
           $scope.insights.ideasCount = data.list.length;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occured while trying to load working group ideas', 'error');
         }
       );
@@ -212,10 +213,10 @@
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data) {
+        function (data) {
           $scope.publicCommentCounter.value = data.counter;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
@@ -225,10 +226,10 @@
       var res;
       res = Space.getCommentCount(sid).get();
       res.$promise.then(
-        function(data) {
+        function (data) {
           $scope.membersCommentCounter.value = data.counter;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error occurred while trying to load working group proposals', 'error');
         }
       );
@@ -238,10 +239,10 @@
     function loadLatestActivities(group) {
       var rsp = Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous);
       rsp.then(
-        function(data) {
+        function (data) {
           $scope.activities = data.list;
         },
-        function(error) {
+        function (error) {
           Notify.show('Error loading working group activities from server', 'error');
         }
       );
@@ -300,7 +301,7 @@
       if (!rsp) {
         return;
       }
-      rsp.then(function(data) {
+      rsp.then(function (data) {
         if (filters.mode === 'proposal') {
           self.proposals = data ? data.list : [];
         } else if (filters.mode === 'idea') {
@@ -361,7 +362,7 @@
         }
 
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function(data) {
+        rsp.$promise.then(function (data) {
           $scope.campaignConfigs = data;
 
           if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
@@ -369,7 +370,7 @@
           } else {
             $scope.showComments = true;
           }
-        }, function(error) {
+        }, function (error) {
           Notify.show('Error while trying to fetch campaign config', 'error');
         });
       }

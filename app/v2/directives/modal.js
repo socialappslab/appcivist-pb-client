@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   /**
@@ -28,14 +28,17 @@
         title: '@',
         close: '&',
         openIf: '=',
-        templateId: '@'
+        templateId: '@',
+        // if specified, the modal directive generates a reference to the generated modal instance. 
+        // for example, importFormModal generates the reference $importFormModal in the parent scope.
+        modalInstanceReference: '@'
       },
       templateUrl: '/app/v2/partials/directives/modal.html',
-      link: function(scope, element, attrs) {
+      link: function (scope, element, attrs) {
         var vexInstance;
         vex.defaultOptions.className = 'vex-theme-plain';
 
-        scope.$watch('openIf', function(open) {
+        scope.$watch('openIf', function (open) {
           if (vexInstance) {
             vexInstance.close();
           }
@@ -48,15 +51,18 @@
           vexInstance = vex.open({
             className: "vex-theme-plain",
             unsafeContent: $compile(html)(scope.$parent)[0],
-            afterClose: function() {
+            afterClose: function () {
               if (angular.isFunction(scope.close)) {
-                scope.$apply(function() {
+                scope.$apply(function () {
                   scope.close();
                 });
               }
             }
           });
 
+          if (scope.modalInstanceReference) {
+            scope.$parent['$' + scope.modalInstanceReference] = vexInstance;
+          }
         });
       }
     };

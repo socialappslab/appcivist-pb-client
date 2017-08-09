@@ -1,0 +1,67 @@
+.appcivist .appmain {
+  margin-left: 0;
+  margin-top: 4.4rem;
+}
+
+@media screen and (max-width: 1023px) {
+  .appcivist .appmain { padding-top: 0; }
+}
+
+.navbar, .navbar-brand, .navbar-collapse {
+  background-color: #323232 !important;
+}
+
+.navbar {
+  .logotype { height: 2rem; }
+  .navbar-brand {
+    padding-top: 1.2rem;
+    font-size: 1.3rem;
+  }
+  .navbar-right, .navbar-form {
+    margin-right: 1.5rem;
+    padding-top: 0.6rem;
+    a { font-size: 1rem; }
+    .navBarImage {
+      height: 2rem;
+      border-radius: 50%;
+      margin: 0.5rem 0 0 1rem;
+    }
+  }
+}
+
+.navbar-toggle { margin-top: 1.2rem; margin-right: 2.2rem; }
+.navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus, #navbar-options ul li:hover, .navbar .navbar-nav > .open > a, .navbar .navbar-nav > .open > a:hover, .navbar .navbar-nav > .open > a:focus, .navbar .navbar-form a:hover {
+  color: white;
+  background: none;
+}
+
+@media screen and (max-width: 40em) {
+  ul.navbar-nav > li {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .dropdown-menu > li > a {
+    color: white;
+  }
+  .navBarImage {
+    margin-left: 1rem;
+    margin-top: 0.2rem !important;
+  }
+}
+
+#newsletterMenu > a, #notificationMenu > a {
+  position: relative;
+  .number {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background-color: #DD0000;
+    color: white;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    text-align: center;
+    font-weight: bold;
+  }
+}

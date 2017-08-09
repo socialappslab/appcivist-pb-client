@@ -235,7 +235,7 @@
                 }
               );
               $scope.currentComponent = currentComponent;
-              $scope.type = $scope.currentComponentType === 'IDEAS' ? 'idea' : 'proposal';
+              $scope.type = $scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal';
               $scope.components = data;
               localStorageService.set('currentCampaign.components', data);
               localStorageService.set('currentCampaign.currentComponent', currentComponent);

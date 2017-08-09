@@ -1,0 +1,59 @@
+<!-- Fixed navbar -->
+<nav class="navbar navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-options">
+            <span class="sr-only">{{'Toggle navigation' | translate}}</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">
+            <a href="#/"><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
+            <strong style="vertical-align: super;">AppCivist</strong>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-options">
+        <!-- Menu when the user is logged in-->
+        <ul class="nav navbar-nav navbar-right menu-elements">
+            <li class="dropdown" id="newsletterMenu">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="number">2</span> <!-- Add a ng-if to this span, this will be the newsletter counter -->
+                    <i class="fa fa-lg fa-newspaper-o icon"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
+                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" id="notificationMenu">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="number">4</span> <!-- Add a ng-if to this span, this will be the notification counter -->
+                    <i class="fa fa-lg fa-bell-o icon"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
+                    <li><a><strong>{{'header.menu.Notification' | translate}} 1</strong></a></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 2</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>{{'header.menu.Notification' | translate}} 3</a></li>
+                </ul>
+            </li>
+            <li>
+                <img class="navBarImage" src="../assets/images/unknown.jpg" ng-src="{{user.profilePic.urlLargeString}}" alt=""/>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {{user.name}}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
+                    <li><a>{{'header.menu.Send message' | translate}}</a></li>
+                    <li><a>{{'header.menu.Profile' | translate}}</a></li>
+                    <li><a>{{'header.menu.Settings' | translate}}</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-click="signout()">{{'header.sign_out' | translate}}</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

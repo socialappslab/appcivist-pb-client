@@ -1158,10 +1158,6 @@ contribution-form {
   float: right;
 }
 
-<<<<<<< HEAD
-@import "../mockups/navigation-bar";
-=======
-
 custom-field {
   .radio, .checkbox {
     label {
@@ -1169,4 +1165,6 @@ custom-field {
     }
   }
 }
->>>>>>> develop
+
+@import "../mockups/buttons.scss";
+@import "../mockups/navigation-bar";

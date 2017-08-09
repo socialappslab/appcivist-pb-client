@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   appCivistApp
@@ -31,6 +31,11 @@
         // The function gets as a parameter the created contribution. An example of onSuccess callback is
         // function onSuccessCallback(contribution) { ... }
         onSuccess: '&',
+
+        // handler called when import has succeeded. 
+        // An example of onSuccess callback is
+        // function onSuccessCallback() { ... }
+        onImportSuccess: '&',
 
         contribution: '<',
 
@@ -81,6 +86,7 @@
       this.addFile = false;
       this.type = $scope.type;
       this.onSuccess = $scope.onSuccess;
+      this.onImportSuccess = $scope.onImportSuccess;
       this.contribution = $scope.contribution;
       this.campaign = $scope.campaign;
       this.group = $scope.group;
@@ -96,7 +102,7 @@
         var vm = this;
 
         if (!$scope.contribution) {
-          $scope.$watch('contribution', function(newVal) {
+          $scope.$watch('contribution', function (newVal) {
             if (newVal) {
               vm.contribution = newVal;
               vm.init();
@@ -111,7 +117,7 @@
         var vm = this;
 
         if (!$scope.campaign) {
-          $scope.$watch('campaign', function(newVal) {
+          $scope.$watch('campaign', function (newVal) {
             if (newVal) {
               vm.campaign = newVal;
               vm.init();
@@ -155,7 +161,15 @@
         this.assembly = localStorageService.get('currentAssembly');
         this.values = {};
         this.tinymceOptions = this.getEditorOptions();
-        if (this.user) this.verifyMembership();
+
+        if(!this.user) {
+          $scope.$watch('vm.user', user => {
+            this.verifyMembership();
+          });
+        }else{
+          this.verifyMembership();
+        }
+
         this.hiddenFieldsMap = {};
         let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];
         hiddenFields.forEach(hf => this.hiddenFieldsMap[hf] = true);
@@ -168,7 +182,7 @@
         }
         var self = this;
         // setup listener for upload field
-        $scope.$watchCollection('vm.file', function(file) {
+        $scope.$watchCollection('vm.file', function (file) {
           if (file.csv) {
             self.disableAll();
           }
@@ -182,10 +196,10 @@
           height: 400,
           max_chars: 200,
           plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table contextmenu paste imagetools'
-        ],
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste imagetools'
+          ],
           toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
           images_upload_credentials: true,
           image_advtab: true,
@@ -194,12 +208,12 @@
           automatic_uploads: true,
           file_picker_types: 'image',
           imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
-          images_upload_handler: function(blobInfo, success, failure) {
+          images_upload_handler: function (blobInfo, success, failure) {
             var xhr, formData;
             xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
             xhr.open('POST', servs.FileUploader.uploadEndpoint());
-            xhr.onload = function() {
+            xhr.onload = function () {
               var json;
 
               if (xhr.status != 200) {
@@ -218,11 +232,11 @@
             formData.append('file', blobInfo.blob());
             xhr.send(formData);
           },
-          file_picker_callback: function(cb, value, meta) {
+          file_picker_callback: function (cb, value, meta) {
             var input = document.createElement('input');
             input.setAttribute('type', 'file');
             input.setAttribute('accept', 'image/*');
-            $(input).bind('change', function() {
+            $(input).bind('change', function () {
               var file = this.files[0];
               var id = 'blobid' + (new Date()).getTime();
               var blobCache = tinymce.activeEditor.editorUpload.blobCache;
@@ -231,7 +245,7 @@
               cb(blobInfo.blobUri(), { title: file.name });
             });
             input.click();
-            vm.on('$destroy', function() {
+            vm.on('$destroy', function () {
               $(input).unbind('change');
             });
           }
@@ -262,7 +276,7 @@
           let currentCampaign = localStorageService.get('currentCampaign');
           let campaignID = currentCampaign.campaignId;
           let groups = wgs ? wgs.filter(
-            function(wg) {
+            function (wg) {
               return wg && wg.campaigns && wg.campaigns[0] === campaignID || !wg.campaigns;
             }) : wgs;
           let topicWgs = localStorageService.get('topicsWorkingGroups');
@@ -320,15 +334,15 @@
         if (!self.assemblyMembers) {
           rsp = Assemblies.assemblyMembers(self.assembly.assemblyId).query().$promise;
           return rsp.then(
-            function(data) {
-              self.assemblyMembers = _.filter(data, function(d) {
+            function (data) {
+              self.assemblyMembers = _.filter(data, function (d) {
                 return d.status === 'ACCEPTED';
-              }).map(function(d) {
+              }).map(function (d) {
                 return d.user;
               });
               return $filter('filter')(self.assemblyMembers, { name: query });
             },
-            function(error) {
+            function (error) {
               Notify.show('Error while trying to fetch assembly members from the server', 'error');
             }
           );
@@ -369,17 +383,17 @@
           },
           transformRequest: angular.identity
         }).then(
-          function(response) {
+          function (response) {
             Notify.show('Contribution created', 'success');
 
-            if (angular.isFunction(self.onSuccess)) {
-              self.onSuccess();
+            if (angular.isFunction(self.onImportSuccess)) {
+              self.onImportSuccess();
             }
           },
-          function(error) {
+          function (error) {
             Notify.show('Error while trying to save the contribution', 'error');
           }
-        );
+          );
       }
 
       /**
@@ -395,9 +409,9 @@
             'Content-Type': undefined
           },
           transformRequest: angular.identity,
-        }).then(function(response) {
+        }).then(function (response) {
           vm.createAttachmentResource(response.data.url);
-        }, function(error) {
+        }, function (error) {
           Notify.show('Error while uploading file to the server', 'error');
         });
       }
@@ -437,9 +451,9 @@
           );
         } else if (this.mode === 'edit') {
           rsp = $q.all([
-          Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(this.contribution).$promise,
-          this.saveFieldsValues(this.contribution.resourceSpaceId),
-        ]);
+            Contributions.contribution(this.assembly.assemblyId, this.contribution.contributionId).update(this.contribution).$promise,
+            this.saveFieldsValues(this.contribution.resourceSpaceId),
+          ]);
         } else {
           console.warn('Only create or edit are accepted mode in contribution form');
           return;

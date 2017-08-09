@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
   /**
    * Simple mixin to use in combination with <modal> directive.
@@ -24,7 +24,7 @@
      * 
      * @param {object} target - The target scope
      */
-    init: function(target) {
+    init: function (target) {
       target.modals = {};
       target.openModal = openModal.bind(target);
       target.closeModal = closeModal.bind(target);

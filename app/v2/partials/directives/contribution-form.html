@@ -1,5 +1,6 @@
 <form name="contributionForm">
-  <div class="modal_content__add_proposal" ng-if="vm.isIdea">
+  <!-- IDEAS FORM  -->
+  <div class="modal_content__add_proposal" ng-if="vm.isIdea && !vm.importOnlyForm">
     <header class="modal-header" ng-style="vm.coverPhotoStyle">
       <div class="file-field">
         <div class="add-button">
@@ -13,7 +14,6 @@
       </div>
 
       <div class="field__container" ng-if="!vm.hiddenFieldsMap['title']">
-        <!--<label for="add_proposal__title">{{'Title of Idea' | translate}} </label>-->
         <input ng-model="vm.contribution.title" class="title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
           type="text" placeholder="{{ 'Title of Idea' | translate }}..." name="title" ng-maxlength="50">
         <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
@@ -93,12 +93,28 @@
           <button type="button" class="btn btn-default" ng-click="vm.addNewAuthor(false, $event)">{{'Add another author' | translate}}</button>
         </div>
 
-        <div ng-if="vm.isAnonymous" class="col-*-12" vc-recaptcha ng-model="vm.recaptchaResponse" 
-             on-success="vm.setCaptchaResponse(response)" style="margin-bottom: 10px;"></div>
+        <div ng-if="vm.isAnonymous" class="col-*-12" vc-recaptcha ng-model="vm.recaptchaResponse" on-success="vm.setCaptchaResponse(response)"
+          style="margin-bottom: 10px;"></div>
 
         <fieldset>
           <a class="button__modal_submit" ng-click="vm.submit()" ng-disabled="!vm.recaptchaResponseOK">{{'Save and submit' | translate}}</a>
         </fieldset>
+      </fieldset>
+    </div>
+  </div>
+
+
+  <!-- PROPOSALS/IDEAS IMPORT ONLY FORM -->
+  <div class="modal_content__add_proposal" ng-if="vm.importOnlyForm">
+    <header class="modal-header">
+      <h2 class="modal__title" ng-if="vm.isIdea">{{'Import ideas' | translate}}</h2>
+      <h2 class="modal__title" ng-if="vm.isProposal">{{'Import proposals' | translate}}</h2>
+    </header>
+    <div class="modal-body">
+      <fieldset ng-if="vm.userIsAssemblyCoordinator && vm.isCreate">
+        <label for="upload">{{'Upload csv file' | translate}}</label>
+        <input type="file" name="upload" fileread on-file-read="vm.setFile($file)">
+        <a class="button__modal_submit" ng-click="vm.submit()">{{'Upload' | translate}}</a>
       </fieldset>
     </div>
   </div>

@@ -1,0 +1,128 @@
+.appcivist .appmain {
+  margin-left: 0;
+  margin-top: 50px;
+}
+
+@media screen and (max-width: 1023px) {
+  .appcivist .appmain { padding-top: 0; }
+}
+
+.navbar, .navbar-brand, .navbar-collapse {
+  background-color: #323232 !important;
+}
+
+.navbar {
+  .logotype { height: 2rem; }
+  .navbar-brand {
+    padding-top: 1.2rem;
+    font-size: 1.3rem;
+  }
+  .navbar-right, .navbar-form {
+    margin-right: 1.5rem;
+    padding-top: 0.6rem;
+    a { font-size: 1rem; }
+    .navBarImage {
+      height: 2rem;
+      border-radius: 50%;
+      margin: 0.5rem 0 0 1rem;
+    }
+  }
+}
+
+.navbar-toggle { margin-top: 1.2rem; margin-right: 2.2rem; }
+.navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus, #navbar-options ul li:hover, .navbar .navbar-nav > .open > a, .navbar .navbar-nav > .open > a:hover, .navbar .navbar-nav > .open > a:focus, .navbar .navbar-form a:hover {
+  color: white;
+  background: none;
+}
+
+@media screen and (max-width: 40em) {
+  ul.navbar-nav > li {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .dropdown-menu > li > a {
+    color: white;
+  }
+  .navBarImage {
+    margin-left: 1rem;
+    margin-top: 0.2rem !important;
+  }
+}
+
+.dropdown-menu > li > a { white-space: normal; }
+#navbar-options ul li:hover { color: black; }
+.nav-menu-notification {
+  .title {
+    display: block;
+    &.unseen { font-weight: bold; }
+  }
+  .preview.unseen {
+    font-weight: bold;
+  }
+  .date {
+    font-size: 0.7rem;
+    color: gray;
+    text-align: right;
+  }
+  .dropdown-menu {
+    width: 25rem;
+    a {
+      font-size: 0.9rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 0 0.8rem 1rem;
+      span {
+        float: right;
+        a {
+          color: gray;
+          font-size: 0.9rem;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}
+
+.nav-menu-notification > a {
+  position: relative;
+  .number {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background-color: #DD0000;
+    color: white;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+.nav-modals {
+  h3 { font-weight: bold; }
+  .modal-header { border-bottom: none; }
+  .modal-body { overflow: auto; }
+  .modal-footer { border-top: none; }
+  .item {
+    margin-top: 1.3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid lightgray;
+    .title {
+      display: block;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      span {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: normal;
+        color: gray;
+        margin-top: 0.3rem;
+      }
+    }
+  }
+}

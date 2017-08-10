@@ -33,7 +33,7 @@
 
       if (!$scope.userIsAuthenticated || Utils.isUUID($stateParams.aid)) {
         $scope.isAnonymous = true;
-        $scope.assemblyId = $stateParams.aid;
+        $scope.assemblyId = $stateParams.auuid;
       } else {
         if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);

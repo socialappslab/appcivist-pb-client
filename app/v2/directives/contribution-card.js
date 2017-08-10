@@ -74,8 +74,9 @@
         scope.mergedThemes = mergeThemes(scope.contribution);
 
         if (scope.contribution.cover) {
-          scope.coverPhotoStyle = { 'background-image': `url(${scope.contribution.cover.url})`, 'background-position': 'center center', 'background-size': 'cover' };
-          scope.showOverlay = true;
+          let bkg_url = 'url(\"'+scope.contribution.cover.url+'\")';
+          scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+          scope.showOverlay = true;   
         }
 
         if (assembly) {
@@ -96,6 +97,9 @@
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
             scope.contributionId = scope.contribution.contributionId;
           } else {
+            scope.auuid = $stateParams.auuid;
+            scope.cuuid = $stateParams.cuuid;
+            scope.guuid = $stateParams.guuid;
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].uuid : "";
             scope.contributionId = scope.contribution.uuid;
           }

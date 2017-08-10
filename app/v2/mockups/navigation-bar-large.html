@@ -1,0 +1,166 @@
+<!-- Fixed navbar -->
+<nav class="navbar navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-options">
+            <span class="sr-only">{{'Toggle navigation' | translate}}</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">
+            <a href="#/"><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
+            <strong style="vertical-align: super;">AppCivist</strong>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-options">
+        <!-- Menu when the user is logged in-->
+        <ul class="nav navbar-nav navbar-right menu-elements">
+            <li class="dropdown nav-menu-notification" id="newsletterMenu">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="number">2</span> <!-- Add a ng-if to this span, this will be the newsletter counter -->
+                    <i class="fa fa-lg fa-newspaper-o icon"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="newsletterDropdown">
+                    <h3>Newsletters <span><a data-toggle="modal" data-target="#newslettersModal">View all</a></span></h3>
+                    <li><a>
+                      <div class="title unseen">&lt;CAMPAIGN NAME&gt;.</div>
+                      <div class="preview unseen">15 MAY - 16 MAY</div>
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>
+                      <div class="title">&lt;CAMPAIGN NAME&gt;.</div>
+                      <div class="preview">15 MAY - 16 MAY</div>
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>
+                      <div class="title">&lt;CAMPAIGN NAME&gt;.</div>
+                      <div class="preview">15 MAY - 16 MAY</div>
+                    </a></li>
+                </ul>
+            </li>
+            <li class="dropdown nav-menu-notification" id="notificationMenu">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="number">4</span> <!-- Add a ng-if to this span, this will be the notification counter -->
+                    <i class="fa fa-lg fa-bell-o icon"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
+                    <h3>Notifications <span><a data-toggle="modal" data-target="#notificationsModal">View all</a></span></h3>
+                    <li><a>
+                      <div class="title unseen">Fugiat occaecat irure commodo.</div>
+                      <div class="preview unseen">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+                      <div class="date">07/08/2017</div>
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>
+                      <div class="title">Fugiat occaecat irure commodo.</div>
+                      <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+                      <div class="date">07/08/2017</div>
+                    </a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>
+                      <div class="title">Fugiat occaecat irure commodo.</div>
+                      <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+                      <div class="date">07/08/2017</div>
+                    </a></li>
+                </ul>
+            </li>
+            <li>
+                <img class="navBarImage" src="../assets/images/unknown.jpg" ng-src="{{user.profilePic.urlLargeString}}" alt=""/>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {{user.name}}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
+                    <li><a>{{'header.menu.Send message' | translate}}</a></li>
+                    <li><a>{{'header.menu.Profile' | translate}}</a></li>
+                    <li><a>{{'header.menu.Settings' | translate}}</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-click="signout()">{{'header.sign_out' | translate}}</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="modal fade nav-modals" id="newslettersModal" tabindex="-1" role="dialog" aria-labelledby="newslettersModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="newslettersModalLabel">Newsletters</h3>
+      </div>
+      <div class="modal-body">
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">&nbsp;</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade nav-modals" id="notificationsModal" tabindex="-1" role="dialog" aria-labelledby="notificationsModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="notificationsModalLabel">Notifications</h3>
+      </div>
+      <div class="modal-body">
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+        <div class="item">
+          <div class="title">
+            Campaign name
+            <span>16 May at 14:29</span>
+          </div>
+          <div class="content">
+            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">&nbsp;</div>
+    </div>
+  </div>
+</div>

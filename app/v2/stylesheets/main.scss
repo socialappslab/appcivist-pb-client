@@ -800,14 +800,17 @@ uib-accordion {
       h2 {
         margin-right: 20px;
       }
+      
       a {
         padding-top: 27px;
         display: block;
       }
     }
+    
     .customfields__values {
       margin-top: 20px;
     }
+
     custom-field {
       label {
         font-size: 1em;
@@ -1154,3 +1157,15 @@ contribution-form {
 .right {
   float: right;
 }
+
+custom-field {
+  .radio, .checkbox {
+    label {
+      display: inline-block;
+    }
+  }
+}
+
+// In order to test new topbar mockup uncomment the following
+//@import "../mockups/buttons.scss";
+//import "../mockups/navigation-bar";

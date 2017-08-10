@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   /**
@@ -10,18 +10,24 @@
   function fileread() {
     return {
       scope: {
-        fileread: '='
+        // TODO: update each usage of this directive. We should not have fileread as a scope property.
+        fileread: '=',
+        onFileRead: '&?'
       },
-      link: function(scope, element, attributes) {
-        element.bind('change', function(changeEvent) {
-          scope.$apply(function() {
+      link: function (scope, element, attributes) {
+        element.bind('change', function (changeEvent) {
+          scope.$apply(function () {
             scope.fileread = changeEvent.target.files[0];
+
+            if (angular.isFunction(scope.onFileRead)) {
+              scope.onFileRead({ $file: scope.fileread });
+            }
           });
         });
 
-        scope.$on('$destroy', function() {
-          element.unbind('change');
-        });
+        // scope.$on('$destroy', function () {
+        //   element.unbind('change');
+        // });
       }
     }
   }

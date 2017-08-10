@@ -29,6 +29,11 @@
         // function onSuccessCallback(contribution) { ... }
         onSuccess: '&',
 
+        // handler called when import has succeeded. 
+        // An example of onSuccess callback is
+        // function onSuccessCallback() { ... }
+        onImportSuccess: '&',
+
         // in edit mode, the contribution to edit.
         contribution: '<',
 
@@ -46,12 +51,12 @@
   FormCtrl.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter', '$state', '$scope', '$stateParams', 'Captcha'
+    '$filter', '$state', '$scope', '$stateParams', 'Captcha', '$attrs'
   ];
 
   function FormCtrl(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter, $state, $scope, $stateParams, Captcha) {
+    $filter, $state, $scope, $stateParams, Captcha, $attrs) {
     this.init = init.bind(this);
     this.initEdit = initEdit.bind(this);
     this.initCreate = initCreate.bind(this);
@@ -80,6 +85,7 @@
     this.deleteAuthor = deleteAuthor.bind(this);
     this.filterCustomFields = filterCustomFields.bind(this);
     this.setCaptchaResponse = setCaptchaResponse.bind(this);
+    this.setFile = setFile.bind(this);
 
     this.mode = this.mode || 'create';
     this.isEdit = this.mode === 'edit';
@@ -88,6 +94,10 @@
     this.isIdea = this.type === 'IDEA';
     this.isProposal = this.type === 'PROPOSAL';
     this.tmpAuthorIDCount = 0;
+
+    function setFile(file) {
+      this.file.csv = file;
+    }
 
 
     this.$onInit = () => {
@@ -129,6 +139,7 @@
     }
 
     function init() {
+      this.importOnlyForm = $attrs.importOnly !== undefined;
       // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       this.file = {};
@@ -419,8 +430,8 @@
         function (response) {
           Notify.show('Contribution created', 'success');
 
-          if (angular.isFunction(self.onSuccess)) {
-            self.onSuccess();
+          if (angular.isFunction(self.onImportSuccess)) {
+            self.onImportSuccess();
           }
         },
         function (error) {
@@ -636,9 +647,10 @@
           if (!angular.isArray(value)) {
             value = [value];
           }
+
           value.forEach(v => payload.customFieldValues.push({
             customFieldDefinition: cfv.customFieldDefinition,
-            value: v.value,
+            value: v.value || v,
             entityTargetType: 'NON_MEMBER_AUTHOR',
             entityTargetUuid: nma.uuid,
           }));

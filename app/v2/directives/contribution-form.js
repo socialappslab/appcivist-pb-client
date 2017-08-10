@@ -415,12 +415,12 @@
     function importContribution() {
       var self = this;
       var url = localStorageService.get('serverBaseUrl');
-      url += '/assembly/{aid}/campaign/{cid}/contribution/import';
+      url += '/assembly/{aid}/campaign/{cid}/contribution/import?type={type}';
       url = url.replace('{aid}', this.assembly.assemblyId);
       url = url.replace('{cid}', this.campaign.campaignId);
+      url = url.replace('{type}', this.type);
       var fd = new FormData();
       fd.append('file', this.file.csv);
-      fd.append('type', this.type);
       $http.post(url, fd, {
         headers: {
           'Content-Type': undefined

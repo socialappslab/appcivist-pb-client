@@ -1,0 +1,292 @@
+<main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
+  <article class="campaign">
+    <!-- Campaign Header -->
+    <header class="page__header" ng-style="coverStyle">
+      <!--Campaign Header -> space.type-->
+      <div class="row">
+        <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="hidden-xs type">
+            <span class="overlay"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!--Campaign Header -> campaign.title + logo + actions menu-->
+      <div class="row">
+        <div class="row no-margin">
+          <div class="title_block">
+              <h1 class="heading--title overlay">{{campaign.title}}</h1>
+              <!-- HEADER -> actions menu -->
+              <div class="heading_actions" ng-if="!isAnonymous">
+                <ul>
+                  <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
+                    <a>
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                        y="0px" width="15.998px" height="16px" viewBox="0 0 16 16" xml:space="preserve">
+                        <path class="icon" d="M15.998,6.863v2.312c0,0.084-0.027,0.162-0.083,0.239s-0.125,0.122-0.209,0.136L13.78,9.843
+          c-0.132,0.375-0.267,0.69-0.406,0.948c0.243,0.346,0.615,0.825,1.114,1.437c0.069,0.083,0.104,0.171,0.104,0.262
+          c0,0.089-0.031,0.169-0.094,0.239c-0.188,0.256-0.531,0.631-1.031,1.123c-0.5,0.493-0.826,0.739-0.979,0.739
+          c-0.084,0-0.174-0.03-0.271-0.094l-1.438-1.124c-0.306,0.159-0.621,0.291-0.947,0.396c-0.111,0.944-0.213,1.59-0.303,1.937
+          c-0.048,0.195-0.173,0.293-0.375,0.293H6.843c-0.097,0-0.182-0.029-0.255-0.089c-0.074-0.059-0.113-0.134-0.12-0.225l-0.292-1.916
+          c-0.34-0.111-0.653-0.24-0.938-0.386l-1.468,1.114c-0.07,0.063-0.156,0.094-0.261,0.094c-0.097,0-0.184-0.037-0.26-0.114
+          c-0.875-0.791-1.447-1.374-1.719-1.748c-0.048-0.07-0.073-0.15-0.073-0.239c0-0.084,0.028-0.165,0.084-0.24
+          c0.104-0.146,0.281-0.376,0.531-0.692c0.25-0.317,0.438-0.562,0.562-0.734c-0.188-0.348-0.33-0.691-0.427-1.032L0.302,9.51
+          C0.211,9.496,0.139,9.451,0.083,9.379C0.027,9.306,0,9.226,0,9.135V6.822c0-0.083,0.027-0.164,0.083-0.239
+          c0.056-0.077,0.122-0.122,0.199-0.137l1.937-0.291c0.097-0.32,0.232-0.638,0.406-0.958C2.347,4.802,1.976,4.323,1.51,3.759
+          C1.441,3.676,1.406,3.593,1.406,3.51c0-0.07,0.032-0.149,0.094-0.24c0.181-0.25,0.523-0.623,1.025-1.119
+          C3.029,1.654,3.357,1.405,3.51,1.405c0.09,0,0.18,0.036,0.271,0.104l1.438,1.116C5.524,2.464,5.84,2.332,6.167,2.228
+          c0.11-0.943,0.211-1.589,0.302-1.937C6.517,0.098,6.642,0,6.843,0h2.312C9.252,0,9.337,0.029,9.41,0.089
+          c0.073,0.058,0.113,0.134,0.12,0.223l0.291,1.916c0.341,0.111,0.653,0.24,0.938,0.387l1.479-1.116
+          c0.062-0.062,0.146-0.094,0.25-0.094c0.09,0,0.177,0.036,0.26,0.104c0.896,0.827,1.469,1.417,1.719,1.771
+          c0.048,0.057,0.073,0.132,0.073,0.229c0,0.083-0.028,0.163-0.084,0.239c-0.104,0.146-0.28,0.376-0.53,0.693
+          c-0.251,0.315-0.438,0.56-0.563,0.734c0.181,0.347,0.323,0.688,0.427,1.02l1.906,0.292c0.09,0.014,0.163,0.057,0.219,0.13
+          C15.971,6.69,15.998,6.773,15.998,6.863z M9.884,9.884c0.521-0.52,0.781-1.149,0.781-1.886c0-0.736-0.26-1.364-0.781-1.884
+          c-0.52-0.522-1.149-0.782-1.885-0.782c-0.735,0-1.364,0.26-1.885,0.782C5.593,6.634,5.333,7.262,5.333,7.998
+          c0,0.736,0.26,1.366,0.781,1.886c0.521,0.521,1.149,0.78,1.885,0.78C8.735,10.664,9.364,10.404,9.884,9.884z"></path>
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+                <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
+                  ng-if="cm.isHover">
+                  <div class="content">
+                    <campaign-contextual-items campaign="campaign" current-component-type="type"></campaign-contextual-items>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <div ng-if="logo" style="padding-top: 1em;">
+            <div class="hidden-xs" style="float:left; margin-right:10px;">
+              <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">
+            </div>
+            <p class="overlay description"
+               style="padding-right: 10px; margin-top: 0px; display: inline-block;"
+               ng-bind-html="((campaign.goal | limitTo:400)+((campaign.goal.length) > 400 ? '...' : '' )) | linky">
+            </p>
+          </div>
+
+          <div ng-if="!logo" style="padding-top: 1em;">
+            <p class="description overlay" ng-bind-html="((campaign.goal | limitTo:400)+((campaign.goal.length) > 400 ? '...' : '' )) | linky"></p>
+          </div>
+
+        </div>
+        <!-- HEADER -> AppCivist Logo Attribution -->
+        <div class='row no-margin attribution' style="padding-top: 1em;">
+          <div class="overlay new_overlay" style="display: inline-flex">
+            <ul class="overlay_buttons">
+              <li class="overlay_button"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></li>
+              <li class="overlay_button"><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></li>
+              <li class="overlay_button"><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></li>
+              <li class="overlay_button"><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></li>
+            </ul>
+            <div class="powered_logo">
+                <div class="logo__wrapper__light">
+                  <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                      x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
+                      <path class="svg__shape" d="M26.357,14.928l-1.809-1.999c-0.5-0.548-1.334-0.595-1.882-0.096l-1.643,1.5
+                        c-0.644,0.571-1.286,1.31-2.142,0.381l-0.93-1.023c-0.358-0.382-0.952-0.404-1.333-0.071l-1.382,1.262
+                        c-0.381,0.357-0.404,0.952-0.071,1.333l0.977,1.095c0.523,0.573,0.595,1.024-0.119,1.668l-0.643,0.595
+                        c-0.786,0.713-1.452,0.452-2.144-0.31l-1-1.119c-1-1.096-0.643-1.667,0.167-2.381l2.31-2.071c0.476-0.429,0.523-1.214,0.096-1.69
+                        l-2.548-2.833c-0.429-0.477-1.215-0.524-1.691-0.096l-2.762,2.5C7.334,12,7.286,12.786,7.715,13.262l2.048,2.263
+                        c0.809,0.904,0.904,1.498-0.144,2.452l-1.428,1.285c-0.5,0.451-0.548,1.262-0.096,1.762l1.69,1.881
+                        c0.452,0.5,1.262,0.548,1.762,0.096l1.31-1.191c0.881-0.785,1.548-0.976,2.357-0.071l0.857,0.952
+                        c0.356,0.381,0.929,0.43,1.332,0.072l1.43-1.285c0.381-0.358,0.429-0.93,0.071-1.334l-0.929-1.024
+                        c-0.714-0.785-0.453-1.332,0.216-1.928l0.522-0.477c0.904-0.81,1.452-0.548,2.119,0.19l1.5,1.643c0.5,0.548,1.333,0.595,1.882,0.096
+                        l1.999-1.81C26.81,16.31,26.835,15.477,26.357,14.928z M16.001,31C7.739,31,1,24.262,1,16S7.739,1,16.001,1S31,7.738,31,16
+                        S24.263,31,16.001,31z M16.001,4.786C9.81,4.786,4.786,9.833,4.786,16c0,6.166,5.048,11.19,11.215,11.19
+                        c6.166,0,11.215-5.001,11.215-11.19C27.216,9.81,22.191,4.786,16.001,4.786z" />
+                    </svg>
+                </div>
+                  <div class="powered_by">{{ 'Powered by AppCivist' | translate }} </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </header>
+
+    <!--Campaign Timeline -->
+    <campaign-timeline title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
+
+    <!--Campaign Search, Filters and Contributions -->
+    <section class="proposals_and_ideas">
+      <!--Campaign Search and filters-->
+      <div class="campaign__filters">
+        <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">
+          {{currentComponentType === 'IDEAS' ? 'Ideas' : 'Proposals' | translate}}
+        </h2>
+        <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
+           ng-if="newIdeasEnabled && !newProposalsEnabled"
+           ng-click="openModal('ideaFormModal')">
+          <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Idea' | translate}}
+        </a>
+        <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
+           ng-if="newProposalsEnabled && !displayJoinWorkingGroup && !newIdeasEnabled"
+           ng-click="openModal('proposalFormModal')">
+          <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
+        </a>
+        <a class="primary__button right join__working_group"
+           ng-if="newProposalsEnabled && displayJoinWorkingGroup && !newIdeasEnabled">
+          <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
+        </a>
+      </div>
+      <proposals-ideas-searchbox class="col-*-12"
+                                 search-handler="doSearch(filters)"
+                                 load-themes="loadThemes(query)"
+                                 load-groups="loadGroups(query)"
+                                 is-anonymous="isAnonymous"
+                                 campaign-config="campaignConfigs"
+                                 campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
+                                 generated-filters="filters"
+                                 dry-run="true"
+                                 current-component="currentComponent"></proposals-ideas-searchbox>
+
+      <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
+        <section class="list--proposals">
+          <header class="proposals__header">
+            <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA') && currentComponentType != 'IDEAS'" ng-click="toggleIdeasSection()"
+              class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;
+            <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
+              style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
+            <a ng-if="!insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas"
+              href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;
+            <a ng-if="insightsSectionExpanded" ng-click="toggleHideInsightsSection()" class="proposals__show_ideas"
+              href=""><i class="fa fa-bar-chart"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
+            <a ng-if="insightsSectionExpanded && currentComponentType!='IDEAS'" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a>
+            <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
+            <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
+          </header>
+          <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
+            <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
+              is-coordinator="isCoordinator" ng-if="showPagination" campaign="campaign" components="components"
+              filters="filters">
+            </pagination-widget>
+          </div>
+        </section>
+
+        <!-- Ideas section -->
+        <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA') && ideasSectionExpanded && currentComponentType != 'IDEAS'">
+          <header class="ideas__header" style="padding-left: 30px;">
+            <h2 class="heading--header">{{ 'Ideas' | translate}}</h2>
+            <a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>
+            <a class="ideas__add_new" ng-if="newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>
+            <a ng-if="ideasSectionExpanded" ng-click="toggleHideIdeasSection()"><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Hide Ideas' | translate }}</a>
+          </header>
+          <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
+            <contribution-card class="card__idea col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="idea in ideas track by $index"
+              contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous"
+              show-voting-buttons="true" is-coordinator="isCoordinator">
+            </contribution-card>
+            <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
+          </div>
+        </section>
+
+        <!-- Comments section -->
+        <section class="list--ideas" ng-if="commentsSectionExpanded" ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">
+          <header class="comments__header" style="padding-left: 30px;">
+            <h2 class="heading--header">{{ 'Comments' | translate}}</h2>
+            <a ng-if="commentsSectionExpanded" ng-click="toggleHideCommentsSection()" class="comments__show_ideas"
+              href=""><i class="fa fa-comments-o"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
+          </header>
+
+          <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
+              <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate}} ({{membersCommentCounter.value}})</a></li>
+              <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate}} ({{publicCommentCounter.value}})</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
+                <discussion-panel style="padding-left: 0px !important;" ng-if="userIsMember" space-id="spaceID"
+                                  endpoint-id="campaignID"
+                                  endpoint="campaign"
+                                  is-anonymous="isAnonymous"></discussion-panel>
+              </div>
+              <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
+                <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" space-id="campaign.forumSpaceID"
+                  endpoint-id="$parent.campaignID" endpoint="campaign" public-board="true"
+                                  is-anonymous="isAnonymous"></discussion-panel>
+                <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" space-id="campaign.frsUUID"
+                  endpoint-id="campaign.uuid" endpoint="campaign" public-board="true"
+                                  is-anonymous="isAnonymous"></discussion-panel>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!--CONTENT -> Contributions -->
+      <div class="row" style="padding-left:20px">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <!-- Insights section -->
+          <!-- TODO: fix issue with display of this section below <section class="list&#45;&#45;ideas" ng-class="{hide: !insightsSectionExpanded}">-->
+          <!--<header class="ideas__header">-->
+          <!--<h2>{{ 'Insights' | translate}}<br></h2>-->
+          <!--<a ng-if="insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;-->
+          <!--</header>-->
+
+          <!--<a><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a><br>-->
+          <!--<a><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a><br>-->
+          <!--<a><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a><br>-->
+          <!--<a ng-repeat="group in groups" ng-if="!group.isTopic && group.proposalsCount>0"><i class="fa fa-users"></i> &nbsp;{{'Group' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a>-->
+          <!--<a ng-repeat="group in groups" ng-if="group.isTopic && group.proposalsCount>0"><i class="fa fa-hashtag"></i> &nbsp;{{'Topic' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a><br>-->
+          <!--</section>-->
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
+  <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember">
+      <a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">
+        {{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})
+      </a>
+    </li>
+    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}">
+      <a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">
+        {{'Public Conversations' | translate}} ({{publicCommentCounter.value}})
+      </a>
+    </li>
+  </ul>
+
+  <!-- Discussions: list of comments under the Conversation Tabs -->
+  <div class="hidden-lg tab-content">
+    <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
+      <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
+                        endpoint-id="campaignID" endpoint="campaign">
+      </discussion-panel>
+    </div>
+    <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
+      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID"
+                        endpoint-id="$parent.campaignID" endpoint="campaign"
+                        public-board="true" is-anonymous="isAnonymous">
+      </discussion-panel>
+      <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID"
+                        endpoint-id="campaign.uuid" endpoint="campaign"
+                        public-board="true" is-anonymous="isAnonymous">
+      </discussion-panel>
+    </div>
+  </div>
+
+  <!-- New Proposal Form Modal -->
+  <script id="proposalFormModal" type="text/ng-template">
+    <contribution-proposal-form
+      campaign="campaign"
+      configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="PROPOSAL"
+      user="user"
+      on-success="redirectToProposal(contribution)"
+      on-import-success="closeModal()"></contribution-proposal-form>
+  </script>
+
+  <!-- New Idea Form Modal -->
+  <script id="ideaFormModal" type="text/ng-template">
+    <contribution-form 
+      campaign="campaign" 
+      configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
+      type="IDEA" 
+      on-success="closeModal()"
+      on-import-success="closeModal()"></contribution-form>
+  </script>
+</main>

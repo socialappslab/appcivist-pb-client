@@ -8,7 +8,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(52, 52, 70, 0.60);
+  background: rgba(38, 85, 123, 0.5);
 }
 
 .powered_logo {
@@ -35,6 +35,51 @@
       margin-right: 0.5rem;
     }
     span.number { margin-left: 0.3rem; }
+  }
+}
+
+.dashboardModal {
+  .modal-header {
+    background-color: rgb(38, 85, 123);
+    color: white;
+    h3 { font-weight: bold; }
+    .close {
+      color: white;
+      opacity: 1;
+      text-shadow: initial;
+      font-weight: normal;
+      font-size: 0.8rem;
+      &:hover { background: none; }
+    }
+  }
+  .modal-content { border-radius: 0; }
+  .modal-footer {
+    text-align: left;
+    border-top: 0;
+    font-size: 0.9rem;
+    i { margin-right: 0.5rem; }
+    a:hover { text-decoration: none; }
+  }
+  ul.workingGroupList {
+    li {
+      position: relative;
+      padding: 1rem 0.8rem;
+      background-color: #efefef;
+      box-shadow: 0 1px 2px #CCC;
+      margin-bottom: 0.7rem;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #666;
+      span:not(.number) {
+        display: inline-block;
+        width: 90%;
+      }
+      span.number {
+        position: absolute;
+        right: 1rem;
+        i { margin-right: 0.3rem; }
+      }
+    }
   }
 }
 

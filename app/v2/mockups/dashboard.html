@@ -75,10 +75,10 @@
         <div class='row no-margin attribution' style="padding-top: 1em;">
           <div class="overlay new_overlay" style="display: inline-flex">
             <ul class="overlay_buttons">
-              <li class="overlay_button"><a href="#"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
-              <li class="overlay_button"><a href="#"><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
-              <li class="overlay_button"><a href="#"><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
-              <li class="overlay_button"><a href="#"><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
+              <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
+              <li class="overlay_button"><a><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
+              <li class="overlay_button"><a><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
+              <li class="overlay_button"><a><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
             </ul>
             <div class="powered_logo">
                 <div class="logo__wrapper__light">
@@ -290,3 +290,28 @@
       on-import-success="closeModal()"></contribution-form>
   </script>
 </main>
+
+<div class="modal fade dashboardModal" id="workingGroups" tabindex="-1" role="dialog" aria-labelledby="workingGroupsLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <h3 class="modal-title" id="workingGroupsLabel">{{campaign.title}}</h3>
+        <p>Working groups</p>
+      </div>
+      <div class="modal-body">
+        <ul class="workingGroupList">
+          <li><span>Non deserunt consequat aliqua labore nisi mollit.</span><span class="number"><i class="fa fa-users"></i>32</span></li>
+          <li><span>Aute pariatur et et id tempor cillum esse reprehenderit est esse dolor ex excepteur.</span><span class="number"><i class="fa fa-users"></i>12</span></li>
+          <li><span>Voluptate cillum exercitation eiusmod excepteur quis amet non pariatur elit elit qui cupidatat.</span><span class="number"><i class="fa fa-users"></i>43</span></li>
+          <li><span>Lorem qui elit excepteur dolore aliquip id consectetur officia adipisicing proident Lorem sint incididunt.</span><span class="number"><i class="fa fa-users"></i>11</span></li>
+          <li><span>Commodo sunt excepteur deserunt ea irure ex magna amet.</span><span class="number"><i class="fa fa-users"></i>61</span></li>
+          <li><span>Occaecat minim ex officia sit occaecat labore in ut ut est.</span><span class="number"><i class="fa fa-users"></i>23</span></li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
+      </div>
+    </div>
+  </div>
+</div>

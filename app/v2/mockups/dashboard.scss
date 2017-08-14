@@ -38,6 +38,13 @@
   }
 }
 
+.dashboardBreadcrumb {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  span.current { font-weight: normal; }
+}
+
 .dashboardModal {
   .modal-header {
     background-color: rgb(38, 85, 123);

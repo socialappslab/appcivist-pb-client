@@ -74,6 +74,7 @@
           </div>
 
         </div>
+        <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription">Subscribe to Newsletter</button>
         <!-- HEADER -> AppCivist Logo Attribution -->
         <div class='row no-margin attribution' style="padding-top: 1em;">
           <div class="overlay new_overlay" style="display: inline-flex">
@@ -312,9 +313,27 @@
           <li><span>Occaecat minim ex officia sit occaecat labore in ut ut est.</span><span class="number"><i class="fa fa-users"></i>23</span></li>
         </ul>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer text-left">
         <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>Campaign Newsletter</p>
+        </div>
+        <div class="modal-body">
+          <p>Would you like to subscribe to a weekly newsletter with the updates on the events in this campaign?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
+          <button class="confirm-modal accept" data-dismiss="modal">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </div>

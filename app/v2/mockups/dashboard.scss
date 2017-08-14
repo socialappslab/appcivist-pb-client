@@ -1,3 +1,7 @@
+.campaign {
+  .title_block h1 { margin-top: 0 }
+}
+
 .page__header {
   position: relative;
   padding-bottom: 5rem;
@@ -9,6 +13,7 @@
   right: 0;
   bottom: 0;
   background: rgba(38, 85, 123, 0.5);
+  z-index: 0;
 }
 
 .powered_logo {
@@ -38,10 +43,13 @@
   }
 }
 
-.dashboardBreadcrumb {
+#dashboardBreadcrumb {
   font-size: 0.8rem;
   font-weight: bold;
   color: white;
+  margin-bottom: 1rem;
+  a { text-decoration: none; color: white; }
+  a:hover { text-decoration: underline; color: white; }
   span.current { font-weight: normal; }
 }
 

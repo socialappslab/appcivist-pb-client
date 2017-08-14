@@ -125,3 +125,20 @@
     position: relative;
   }
 }
+
+.alert.subconfirm {
+  width: 40em;
+  background-color: #FFFAD9;
+  border: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-left: -20em;
+  border-radius: 0;
+  padding: 25px;
+  z-index: 10;
+  .close { right: -15px; top: -17px; }
+  button:hover { background: none; }
+  .message { font-weight: bold; }
+  .submessage { font-size: 0.8rem; }
+}

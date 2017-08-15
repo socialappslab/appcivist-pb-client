@@ -163,6 +163,11 @@
         controller: 'v2.HomeCtrl',
         templateUrl: 'app/v2/mockups/newsletter-backend-template-no-activity.html'
       })
+      .state('v2.newsletter-template-with-activity', {
+        url: '/newsletter-template-with-activity',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/mockups/newsletter-backend-template-with-activity.html'
+      })
       */
       .state('v2.public', {
         url: '/p',

@@ -155,6 +155,15 @@
         controller: 'v2.HomeCtrl',
         templateUrl: 'app/v2/partials/home.html'
       })
+      // Uncomment the following to test the newsletter templates
+      // Adds a /newsletter-template URL to test
+      /*
+      .state('v2.newsletter-template', {
+        url: '/newsletter-template',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/mockups/newsletter-backend-template-no-activity.html'
+      })
+      */
       .state('v2.public', {
         url: '/p',
         abstract: true,

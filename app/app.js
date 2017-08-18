@@ -173,6 +173,11 @@
         controller: 'v2.HomeCtrl',
         templateUrl: 'app/v2/mockups/newsletter-backend-template-proposal-stage.html'
       })
+      .state('v2.newsletter-template-text-only', {
+        url: '/newsletter-template-text-only',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/mockups/newsletter-backend-template-text-only.html'
+      })
       */
       .state('v2.public', {
         url: '/p',

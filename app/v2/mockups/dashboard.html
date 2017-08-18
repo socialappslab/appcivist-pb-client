@@ -74,7 +74,10 @@
           </div>
 
         </div>
-        <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription">Subscribe to Newsletter</button>
+        <!-- Subscribe when logged in
+        <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription">Subscribe to Newsletter</button>-->
+        <!-- Subscribe when not logged in -->
+        <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn">Subscribe to Newsletter</button>
         <!-- HEADER -> AppCivist Logo Attribution -->
         <div class='row no-margin attribution' style="padding-top: 1em;">
           <div class="overlay new_overlay" style="display: inline-flex">
@@ -320,20 +323,40 @@
   </div>
 </div>
 
+<!-- Subscribe when logged in
 <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <p>Campaign Newsletter</p>
-        </div>
-        <div class="modal-body">
-          <p>Would you like to subscribe to a weekly newsletter with the updates on the events in this campaign?</p>
-        </div>
-        <div class="modal-footer">
-          <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
-          <button class="confirm-modal accept" data-dismiss="modal">Subscribe</button>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p>Campaign Newsletter</p>
+      </div>
+      <div class="modal-body">
+        <p>Would you like to subscribe to a weekly newsletter with the updates on the events in this campaign?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
+        <button class="confirm-modal accept" data-dismiss="modal">Subscribe</button>
       </div>
     </div>
   </div>
+</div>-->
+
+<!-- Subscribe when not logged in -->
+<div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p>Campaign Newsletter</p>
+      </div>
+      <div class="modal-body">
+        <p>Would you like to sign up and receive updates about the events in this campaign?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
+        <button class="confirm-modal accept" data-dismiss="modal">Sign up</button>
+      </div>
+    </div>
+  </div>
+</div>

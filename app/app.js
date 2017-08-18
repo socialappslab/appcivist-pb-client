@@ -304,6 +304,9 @@
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
+       /* WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR
+        templateUrl: 'app/v2/mockups/dashboard.html',
+        END WARNING */
         access: {
           requiresLogin: true
         }
@@ -319,6 +322,9 @@
         url: '',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        //WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR
+        //templateUrl: 'app/v2/mockups/dashboard.html',
+        //END WARNING
       })
 
       .state('v2.assembly.aid.campaign.start', {

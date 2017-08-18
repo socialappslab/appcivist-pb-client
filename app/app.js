@@ -595,6 +595,8 @@
         url: '/profile',
         controller: 'v2.ProfileCtrl',
         templateUrl: 'app/v2/partials/user/profile.html',
+        // Uncomment to test the new profile updates
+        //templateUrl: 'app/v2/mockups/profile.html',
         access: {
           requiresLogin: true
         }

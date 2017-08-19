@@ -81,6 +81,19 @@
       }
     }
   }
+  .document {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    h4 {
+      font-weight: bold;
+      margin-bottom: 5px;
+      a, a:hover, a:active, a:visited {
+        color: rgb(38, 85, 123);
+        text-decoration: underline;
+      }
+    }
+    p { font-size: 0.7rem; }
+  }
 }
 
 @media screen and (max-width: 40em) {

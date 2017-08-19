@@ -75,8 +75,8 @@
         <div class='row no-margin attribution' style="padding-top: 1em;">
           <div class="overlay new_overlay" style="display: inline-flex">
             <ul class="overlay_buttons">
-              <li class="overlay_button"><a data-toggle="modal" data-target="#campaignMilestones"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
-              <li class="overlay_button"><a><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
+              <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
+              <li class="overlay_button"><a data-toggle="modal" data-target="#documents"><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
               <li class="overlay_button"><a><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
               <li class="overlay_button"><a><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
             </ul>
@@ -387,3 +387,32 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade dashboardModal" id="documents" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+          <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
+          <p>Documents</p>
+        </div>
+        <div class="modal-body">
+          <div class="document">
+            <h4><a href="#">Ullamco irure sunt quis in non</a></h4>
+            <p>Added on 19 July 2017</p>
+          </div>
+          <div class="document">
+            <h4><a href="#">Irure amet aliquip pariatur nisi aliquip sit</a></h4>
+            <p>Added on 19 July 2017</p>
+          </div>
+          <div class="document">
+            <h4><a href="#">Incididunt ullamco sunt ipsum aute sunt officia</a></h4>
+            <p>Added on 19 July 2017</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>

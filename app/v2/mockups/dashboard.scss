@@ -92,3 +92,12 @@
 @media screen and (max-width: 767px) {
   .powered_logo { display: none; }
 }
+
+.carousel-buttons.milestones { margin-bottom: 1.5rem; }
+.carousel-button.milestones i {
+  vertical-align: middle;
+}
+#milestones-carousel {
+  strong { font-weight: bold; }
+  .row { margin-bottom: 1.5rem; }
+}

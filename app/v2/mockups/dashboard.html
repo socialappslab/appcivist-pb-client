@@ -75,7 +75,7 @@
         <div class='row no-margin attribution' style="padding-top: 1em;">
           <div class="overlay new_overlay" style="display: inline-flex">
             <ul class="overlay_buttons">
-              <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
+              <li class="overlay_button"><a data-toggle="modal" data-target="#campaignMilestones"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
               <li class="overlay_button"><a><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
               <li class="overlay_button"><a><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
               <li class="overlay_button"><a><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
@@ -308,6 +308,78 @@
           <li><span>Commodo sunt excepteur deserunt ea irure ex magna amet.</span><span class="number"><i class="fa fa-users"></i>61</span></li>
           <li><span>Occaecat minim ex officia sit occaecat labore in ut ut est.</span><span class="number"><i class="fa fa-users"></i>23</span></li>
         </ul>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade dashboardModal" id="campaignMilestones" tabindex="-1" role="dialog" aria-labelledby="campaignMilestonesLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <h3 class="modal-title" id="campaignMilestonesLabel">{{campaign.title}}</h3>
+        <p>Milestones</p>
+      </div>
+      <div class="modal-body">
+        <div class="carousel-buttons milestones text-center">
+            <a href="#milestones-carousel" class="carousel-button milestones" role="button" data-slide="prev"><i class="fa fa-2x fa-angle-left" aria-hidden="true"></i></a>
+            <span id="milestones-current">July 2017</span>
+            <a href="#milestones-carousel" class="carousel-button milestones" role="button" data-slide="next"><i class="fa fa-2x fa-angle-right" aria-hidden="true"></i></a>
+        </div>
+        <div id="milestones-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Proident sint laboris adipisicing voluptate adipisicing reprehenderit reprehenderit. Qui incididunt dolor nulla anim reprehenderit adipisicing cupidatat voluptate. Sint do consequat ad proident ut nisi reprehenderit adipisicing ad est eu Lorem. Sunt amet commodo labore ipsum esse nisi aute ad anim et do aliquip. Cupidatat ipsum consectetur in cupidatat quis consectetur et tempor sint. Est laboris aliqua eiusmod voluptate minim cillum do non duis. Sit ut elit dolor reprehenderit exercitation ipsum elit excepteur culpa.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Nisi officia ullamco nisi consectetur laboris eu dolor pariatur. Consectetur voluptate consectetur et enim aute duis aute nulla esse consequat tempor aute. Dolor anim occaecat consectetur eu ut et ea quis. Pariatur amet enim ea voluptate consectetur aliqua incididunt anim id laboris in voluptate cupidatat. Nulla Lorem sunt qui commodo esse non voluptate nostrud laboris id sunt qui nisi. Ipsum consectetur minim irure et nisi officia deserunt esse nisi dolor proident.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Duis do nulla commodo sint duis labore fugiat occaecat amet. Officia incididunt laborum ipsum laboris minim. Eiusmod exercitation ullamco nisi enim anim exercitation ea exercitation nostrud dolore ut dolore duis. Enim excepteur cupidatat do excepteur officia culpa. Amet enim est in ex dolor laboris cillum Lorem occaecat ullamco.</p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Proident sint laboris adipisicing voluptate adipisicing reprehenderit reprehenderit. Qui incididunt dolor nulla anim reprehenderit adipisicing cupidatat voluptate. Sint do consequat ad proident ut nisi reprehenderit adipisicing ad est eu Lorem. Sunt amet commodo labore ipsum esse nisi aute ad anim et do aliquip. Cupidatat ipsum consectetur in cupidatat quis consectetur et tempor sint. Est laboris aliqua eiusmod voluptate minim cillum do non duis. Sit ut elit dolor reprehenderit exercitation ipsum elit excepteur culpa.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Nisi officia ullamco nisi consectetur laboris eu dolor pariatur. Consectetur voluptate consectetur et enim aute duis aute nulla esse consequat tempor aute. Dolor anim occaecat consectetur eu ut et ea quis. Pariatur amet enim ea voluptate consectetur aliqua incididunt anim id laboris in voluptate cupidatat. Nulla Lorem sunt qui commodo esse non voluptate nostrud laboris id sunt qui nisi. Ipsum consectetur minim irure et nisi officia deserunt esse nisi dolor proident.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Duis do nulla commodo sint duis labore fugiat occaecat amet. Officia incididunt laborum ipsum laboris minim. Eiusmod exercitation ullamco nisi enim anim exercitation ea exercitation nostrud dolore ut dolore duis. Enim excepteur cupidatat do excepteur officia culpa. Amet enim est in ex dolor laboris cillum Lorem occaecat ullamco.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>

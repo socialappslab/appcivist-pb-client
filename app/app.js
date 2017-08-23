@@ -318,10 +318,7 @@
       .state('v2.assembly.aid.campaign.cid', {
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-       /* WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR
-        templateUrl: 'app/v2/mockups/dashboard.html',
-        END WARNING */
+        templateUrl: 'app/v2/partials/campaign/new-dashboard.html',
         access: {
           requiresLogin: true
         }
@@ -336,10 +333,7 @@
       .state('v2.public.assembly.auuid.campaign.cuuid.dashboard', {
         url: '',
         controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        //WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR
-        //templateUrl: 'app/v2/mockups/dashboard.html',
-        //END WARNING
+        templateUrl: 'app/v2/partials/campaign/new-dashboard.html',
       })
 
       .state('v2.assembly.aid.campaign.start', {

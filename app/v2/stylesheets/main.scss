@@ -1167,10 +1167,10 @@ custom-field {
 }
 
 // In order to test new topbar mockup uncomment the following
-//@import "../mockups/buttons.scss";
+@import "buttons";
 //import "../mockups/navigation-bar";
 // Uncomment this to test the newsletter templates
 //@import "../mockups/newsletter-backend-template.scss";
-//@import "../mockups/navigation-bar";
+@import "navigation-bar";
 // In order to test the lower toolbar uncomment the folowing
-//@import "../mockups/dashboard";
+@import "new-dashboard";

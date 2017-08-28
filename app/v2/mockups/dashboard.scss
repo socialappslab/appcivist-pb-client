@@ -121,6 +121,9 @@
 
 @media screen and (max-width: 767px) {
   .powered_logo { display: none; }
+  .page__header .subscribe-newsletter {
+    position: relative;
+  }
 }
 
 .carousel-buttons.milestones { margin-bottom: 1.5rem; }
@@ -130,9 +133,6 @@
 #milestones-carousel {
   strong { font-weight: bold; }
   .row { margin-bottom: 1.5rem; }
-  .page__header .subscribe-newsletter {
-    position: relative;
-  }
 }
 
 .alert.subconfirm {

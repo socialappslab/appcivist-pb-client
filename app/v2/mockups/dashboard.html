@@ -4,16 +4,19 @@
     <header class="page__header" ng-style="coverStyle">
       <!--Campaign Header -> space.type-->
       <div class="row">
-        <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="hidden-xs type">
-            <span class="overlay"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
+        <div id="dashboardBreadcrumb" class="no-padding col-xs-12">
+            <a>Eiusmod irure magna adipisicing laboris</a> > <span class="current">Eu minim sint elit ullamco enim amet</span>
           </div>
-        </div>
       </div>
 
       <!--Campaign Header -> campaign.title + logo + actions menu-->
       <div class="row">
         <div class="row no-margin">
+          <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="hidden-xs type">
+                <span class="overlay"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
+              </div>
+            </div>
           <div class="title_block">
               <h1 class="heading--title overlay">{{campaign.title}}</h1>
               <!-- HEADER -> actions menu -->
@@ -71,6 +74,10 @@
           </div>
 
         </div>
+        <!-- Subscribe when logged in
+        <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription">Subscribe to Newsletter</button>-->
+        <!-- Subscribe when not logged in -->
+        <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn">Subscribe to Newsletter</button>
         <!-- HEADER -> AppCivist Logo Attribution -->
         <div class='row no-margin attribution' style="padding-top: 1em;">
           <div class="overlay new_overlay" style="display: inline-flex">
@@ -309,7 +316,7 @@
           <li><span>Occaecat minim ex officia sit occaecat labore in ut ut est.</span><span class="number"><i class="fa fa-users"></i>23</span></li>
         </ul>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer text-left">
         <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
       </div>
     </div>
@@ -386,4 +393,47 @@
       </div>
     </div>
   </div>
+<!-- Subscribe when logged in
+<div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p>Campaign Newsletter</p>
+      </div>
+      <div class="modal-body">
+        <p>Would you like to subscribe to a weekly newsletter with the updates on the events in this campaign?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
+        <button class="confirm-modal accept" data-dismiss="modal">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<!-- Subscribe when not logged in -->
+<div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <p>Campaign Newsletter</p>
+      </div>
+      <div class="modal-body">
+        <p>Would you like to sign up and receive updates about the events in this campaign?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
+        <button class="confirm-modal accept" data-dismiss="modal">Sign up</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comment this div to hide it -->
+<div class="alert alert-dismissible subconfirm" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <p class="message">Congratulations! You have successfully subscribed to the newsletter of {{campaign.title}}.</p>
+  <p class="submessage">If you would like to receive the newsletter by email, click here: <a href="#">Notification settings</a></p>
 </div>

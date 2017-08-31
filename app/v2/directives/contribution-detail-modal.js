@@ -23,7 +23,9 @@
         contribution: '=',
         vexInstance: '='
       },
-      templateUrl: '/app/v2/partials/directives/contribution-detail-modal.html',
+      // Uncomment this to test the discussion panel
+      templateUrl: '/app/v2/mockups/contribution-detail-modal.html',
+      //templateUrl: '/app/v2/partials/directives/contribution-detail-modal.html',
       link: function postLink(scope, element, attrs) {
         scope.currentUser = localStorageService.get('user');
         scope.signout = function() {

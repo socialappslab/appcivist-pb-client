@@ -21,7 +21,9 @@
         publicBoard: '@',
         isAnonymous: '='
       },
-      templateUrl: '/app/v2/partials/directives/discussion-panel.html',
+      // Uncomment this to test the discussion panel
+      templateUrl: '/app/v2/mockups/discussion-panel.html',
+      //templateUrl: '/app/v2/partials/directives/discussion-panel.html',
       link: function(scope, element, attrs) {
         if (!scope.spaceId) {
           scope.$watch('spaceId', function(val) {

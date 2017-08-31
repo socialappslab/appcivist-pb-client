@@ -413,6 +413,7 @@
      * Upload csv file.
      */
     function importContribution() {
+      Pace.start();
       var self = this;
       var url = localStorageService.get('serverBaseUrl');
       url += '/assembly/{aid}/campaign/{cid}/contribution/import?type={type}';
@@ -427,14 +428,16 @@
         },
         transformRequest: angular.identity
       }).then(
-        function (response) {
+        response => {
+          Pace.stop();
           Notify.show('Contribution created', 'success');
 
           if (angular.isFunction(self.onImportSuccess)) {
             self.onImportSuccess();
           }
         },
-        function (error) {
+        error => {
+          Pace.stop();
           Notify.show('Error while trying to save the contribution', 'error');
         }
         );

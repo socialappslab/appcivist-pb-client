@@ -155,6 +155,30 @@
         controller: 'v2.HomeCtrl',
         templateUrl: 'app/v2/partials/home.html'
       })
+      // Uncomment the following to test the newsletter templates
+      // Adds a /newsletter-template URL to test
+      /*
+      .state('v2.newsletter-template', {
+        url: '/newsletter-template',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/mockups/newsletter-backend-template-no-activity.html'
+      })
+      .state('v2.newsletter-template-with-activity', {
+        url: '/newsletter-template-with-activity',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/mockups/newsletter-backend-template-with-activity.html'
+      })
+      .state('v2.newsletter-template-proposal-stage', {
+        url: '/newsletter-template-proposal-stage',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/mockups/newsletter-backend-template-proposal-stage.html'
+      })
+      .state('v2.newsletter-template-text-only', {
+        url: '/newsletter-template-text-only',
+        controller: 'v2.HomeCtrl',
+        templateUrl: 'app/v2/mockups/newsletter-backend-template-text-only.html'
+      })
+      */
       .state('v2.public', {
         url: '/p',
         abstract: true,
@@ -295,6 +319,9 @@
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        // WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR AND THE NEWSLETTERS MODAL
+        //templateUrl: 'app/v2/mockups/dashboard.html',
+        // END WARNING
         access: {
           requiresLogin: true
         }
@@ -310,6 +337,9 @@
         url: '',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        //WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR
+        //templateUrl: 'app/v2/mockups/dashboard.html',
+        //END WARNING
       })
 
       .state('v2.assembly.aid.campaign.start', {

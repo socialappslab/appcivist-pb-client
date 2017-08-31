@@ -76,7 +76,7 @@
         if (scope.contribution.cover) {
           let bkg_url = 'url(\"'+scope.contribution.cover.url+'\")';
           scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
-          scope.showOverlay = true;   
+          scope.showOverlay = true;
         }
 
         if (assembly) {
@@ -99,8 +99,9 @@
           } else {
             scope.auuid = $stateParams.auuid;
             scope.cuuid = $stateParams.cuuid;
-            scope.guuid = $stateParams.guuid;
-            scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].uuid : "";
+            scope.groupId = scope.guuid = $stateParams.guuid ?
+              $stateParams.guuid : workingGroupAuthorsLength ?
+                scope.contribution.workingGroupAuthors[0].uuid : "";
             scope.contributionId = scope.contribution.uuid;
           }
         }

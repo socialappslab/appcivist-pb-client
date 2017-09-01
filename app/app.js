@@ -12,7 +12,7 @@
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
     'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies', 'facebook',
-    'ngSanitize'
+    'ngSanitize', 'ncy-angular-breadcrumb'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
@@ -30,7 +30,7 @@
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
-        local: "http://localhost:9000/api",
+        local: "https://testplatform.appcivist.org/backend/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api",
 
       }
@@ -98,7 +98,7 @@
    */
   config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
     'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider', '$stateProvider',
-    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider', 'FacebookProvider'
+    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider', 'FacebookProvider', '$breadcrumbProvider'
   ];
 
   /**
@@ -321,6 +321,9 @@
         templateUrl: 'app/v2/partials/campaign/new-dashboard.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          label: 'Campaign'
         }
       })
 
@@ -333,7 +336,7 @@
       .state('v2.public.assembly.auuid.campaign.cuuid.dashboard', {
         url: '',
         controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/new-dashboard.html',
+        templateUrl: 'app/v2/partials/campaign/new-dashboard.html'
       })
 
       .state('v2.assembly.aid.campaign.start', {
@@ -963,6 +966,11 @@
       return apis.development;
     }
   }
+
+  appCivistApp.config(function($breadcrumbProvider) {
+    $breadcrumbProvider.setOptions({
+    });
+  });
 
   // expose global variables
   window.appCivistApp = appCivistApp;

@@ -20,7 +20,7 @@
     '$rootScope',
     'WorkingGroups',
     '$compile',
-    '$state',
+    '$state'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
@@ -198,6 +198,7 @@
             };
 
           localStorageService.set("currentCampaign", $scope.campaign);
+          $scope.breadcrumbTitle = $scope.campaign.title;
           loadPublicCommentCount($scope.forumSpaceID);
           // We are reading the components twice,
           // - in the campaign-timeline directive

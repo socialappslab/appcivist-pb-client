@@ -302,11 +302,11 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
           <h3 class="modal-title" id="workingGroupsLabel">{{campaign.title}}</h3>
-          <p>Working groups</p>
+          <p>{{ 'Working groups' | translate }}</p>
         </div>
         <div class="modal-body">
           <div class="noWorkingGroups" ng-if="myWorkingGroups.length == 0 && otherWorkingGroups == 0 && topicsWorkingGroups == 0">
-            <h4>There are no working groups yet.</h4>
+            <h4>{{ 'There are no working groups yet' | translate }}</h4>
           </div>
           <ul class="workingGroupList" ng-if="myWorkingGroups && myWorkingGroups.length > 0">
             <li ng-repeat="wg in myWorkingGroups">
@@ -325,7 +325,7 @@
           </ul>
         </div>
         <div class="modal-footer text-left">
-          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>
         </div>
       </div>
     </div>

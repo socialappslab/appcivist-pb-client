@@ -80,7 +80,7 @@
           <div class='row no-margin attribution' style="padding-top: 1em;">
             <div class="overlay new_overlay" style="display: inline-flex">
               <ul class="overlay_buttons">
-                <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number" ng-if="otherWorkingGroups.length > 0">({{otherWorkingGroups.length}})</span></a></li>
+                <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number" ng-if="myWorkingGroups.length > 0">({{myWorkingGroups.length}})</span></a></li>
                 <li class="overlay_button"><a><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
                 <li class="overlay_button"><a><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
                 <li class="overlay_button"><a><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
@@ -310,16 +310,6 @@
           </div>
           <ul class="workingGroupList" ng-if="myWorkingGroups && myWorkingGroups.length > 0">
             <li ng-repeat="wg in myWorkingGroups">
-              <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><span class="number"><!--<i class="fa fa-users"></i>32</span>--></a>
-            </li>
-          </ul>
-          <ul class="workingGroupList" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
-            <li ng-repeat="wg in otherWorkingGroups">
-              <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><span class="number"><!--<i class="fa fa-users"></i>32</span>--></a>
-            </li>
-          </ul>
-          <ul class="workingGroupList" ng-if="topicsWorkingGroups && topicsWorkingGroups.length > 0">
-            <li ng-repeat="wg in topicsWorkingGroups">
               <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><span class="number"><!--<i class="fa fa-users"></i>32</span>--></a>
             </li>
           </ul>

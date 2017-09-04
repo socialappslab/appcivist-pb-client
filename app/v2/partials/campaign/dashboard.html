@@ -370,9 +370,9 @@
   <script>
     $(document).ready(function() {
       $(".workingGroupLink").on("click", function() {
-        $('#workingGroups').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
+        $('#workingGroups').modal('hide');
       });
     });
   </script>

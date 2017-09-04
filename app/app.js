@@ -411,12 +411,18 @@
       .state('v2.assembly.aid.campaign.workingGroup', {
         url: '/:cid/group',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: 'Group'
+        }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup', {
         url: '/:cuuid/group',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: 'Group'
+        }
       })
       .state('v2.assembly.aid.campaign.workingGroup.new', {
         url: '/new',

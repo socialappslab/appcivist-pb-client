@@ -30,7 +30,7 @@
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
-        local: "https://testplatform.appcivist.org/backend/api",
+        local: "http://localhost:9000/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api",
 
       }
@@ -464,6 +464,9 @@
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          label: "Working Group"
         }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.dashboard', {
@@ -472,6 +475,9 @@
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          label: "Working Group"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.gid.edit', {

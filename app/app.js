@@ -969,6 +969,7 @@
 
   appCivistApp.config(function($breadcrumbProvider) {
     $breadcrumbProvider.setOptions({
+      templateUrl: "app/v2/components/breadcrumb/template.html"
     });
   });
 

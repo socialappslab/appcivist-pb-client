@@ -318,7 +318,7 @@
       .state('v2.assembly.aid.campaign.cid', {
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/new-dashboard.html',
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
         access: {
           requiresLogin: true
         },
@@ -336,7 +336,10 @@
       .state('v2.public.assembly.auuid.campaign.cuuid.dashboard', {
         url: '',
         controller: 'v2.CampaignDashboardCtrl',
-        templateUrl: 'app/v2/partials/campaign/new-dashboard.html'
+        templateUrl: 'app/v2/partials/campaign/dashboard.html',
+        ncyBreadcrumb: {
+          label: 'Campaign'
+        }
       })
 
       .state('v2.assembly.aid.campaign.start', {

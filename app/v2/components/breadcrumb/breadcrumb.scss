@@ -6,5 +6,5 @@
   max-width: 75%;
   a { text-decoration: none; color: white; }
   a:hover { text-decoration: underline; color: white; }
-  span#breadcrumbLastLabel { font-weight: normal; }
+  span#breadcrumbLastLabel { font-weight: normal !important; }
 }

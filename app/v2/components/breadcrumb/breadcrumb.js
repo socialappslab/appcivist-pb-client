@@ -16,6 +16,7 @@
     .component('breadcrumb', {
       selector: 'breadcrumb',
       bindings: {
+        label: '<'
       },
       controller: BreadcrumbCtrl,
       controllerAs: 'vm',
@@ -23,8 +24,17 @@
     });
 
   BreadcrumbCtrl.$inject = [
+    '$state', '$scope'
   ];
 
-  function BreadcrumbCtrl() {
-    }
+  function BreadcrumbCtrl($state, $scope) {
+    $scope.$watch('vm.label', newLabel => {
+      if (!newLabel) {
+        return;
+      }
+      $state.current.ncyBreadcrumb.label = newLabel;
+      var element = angular.element($('#breadcrumbLastLabel'));
+      element.html($state.current.ncyBreadcrumb.label);
+    });
+  }
 }());

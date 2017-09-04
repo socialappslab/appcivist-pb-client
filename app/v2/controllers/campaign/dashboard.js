@@ -198,7 +198,7 @@
             };
 
           localStorageService.set("currentCampaign", $scope.campaign);
-          $scope.breadcrumbTitle = $scope.campaign.title;
+          
           loadPublicCommentCount($scope.forumSpaceID);
           // We are reading the components twice,
           // - in the campaign-timeline directive

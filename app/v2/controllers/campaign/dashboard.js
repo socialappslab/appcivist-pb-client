@@ -32,6 +32,12 @@
       else $scope.activeTab = "Public";
     };
 
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+      $('#workingGroups').modal('hide');
+    });
+
     activate();
 
     function activate() {

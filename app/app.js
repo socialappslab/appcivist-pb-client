@@ -30,7 +30,7 @@
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
-        local: "http://localhost:9000/api",
+        local: "https://testplatform.appcivist.org/backend/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api",
 
       }
@@ -153,7 +153,10 @@
       .state('v2.homepage', {
         url: '/home',
         controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/partials/home.html'
+        templateUrl: 'app/v2/partials/home.html',
+        ncyBreadcrumb: {
+          label: "AppCivist"
+        }
       })
       // Uncomment the following to test the newsletter templates
       // Adds a /newsletter-template URL to test
@@ -187,12 +190,18 @@
       .state('v2.public.assembly', {
         url: '/assembly',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assemblies"
+        }
       })
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assemblies"
+        }
       })
       //assembly: new routes
       .state('v2.assembly.new', {
@@ -223,29 +232,44 @@
       .state('v2.assembly.aid', {
         url: '/:aid',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       .state('v2.public.assembly.auuid', {
         url: '/:auuid',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       //assembly: no princial assembly routes
       .state('v2.assembly.aid.fallbackHome', {
         url: '/home',
         templateUrl: 'app/v2/partials/assembly/home.html',
-        controller: 'v2.AssemblyHomeCtrl'
+        controller: 'v2.AssemblyHomeCtrl',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       // the new URL for assembly home is /assembly/:id /assembly/:uuid. We left /assembly/:id/home for compatibility.
       .state('v2.assembly.aid.home', {
         url: '',
         templateUrl: 'app/v2/partials/assembly/home.html',
-        controller: 'v2.AssemblyHomeCtrl'
+        controller: 'v2.AssemblyHomeCtrl',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       .state('v2.public.assembly.auuid.home', {
         url: '',
         templateUrl: 'app/v2/partials/assembly/home.html',
-        controller: 'v2.AssemblyHomeCtrl'
+        controller: 'v2.AssemblyHomeCtrl',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       .state('v2.assembly.aid.assembly', {
         url: '/assembly/new',
@@ -323,6 +347,7 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
+          parent: 'v2.assembly.aid.home',
           label: 'Campaign'
         }
       })
@@ -338,6 +363,7 @@
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
         ncyBreadcrumb: {
+          parent: 'v2.public.assembly.auuid.home',
           label: 'Campaign'
         }
       })
@@ -411,18 +437,12 @@
       .state('v2.assembly.aid.campaign.workingGroup', {
         url: '/:cid/group',
         abstract: true,
-        template: '<div ui-view></div>',
-        ncyBreadcrumb: {
-          label: 'Group'
-        }
+        template: '<div ui-view></div>'
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup', {
         url: '/:cuuid/group',
         abstract: true,
-        template: '<div ui-view></div>',
-        ncyBreadcrumb: {
-          label: 'Group'
-        }
+        template: '<div ui-view></div>'
       })
       .state('v2.assembly.aid.campaign.workingGroup.new', {
         url: '/new',
@@ -466,6 +486,7 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid",
           label: "Working Group"
         }
       })
@@ -477,6 +498,7 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.cid",
           label: "Working Group"
         }
       })
@@ -984,6 +1006,7 @@
 
   appCivistApp.config(function($breadcrumbProvider) {
     $breadcrumbProvider.setOptions({
+      prefixStateName: "v2.homepage",
       templateUrl: "app/v2/components/breadcrumb/template.html"
     });
   });

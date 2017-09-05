@@ -83,9 +83,13 @@
           <div class="overlay new_overlay" style="display: inline-flex">
             <ul class="overlay_buttons">
               <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number" ng-if="otherWorkingGroups.length > 0">({{otherWorkingGroups.length}})</span></a></li>
+              <!--
+              <li class="overlay_button"><a data-toggle="modal" data-target="#documents"><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
+              <li class="overlay_button"><a data-toggle="modal" data-target="#campaignMilestones"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
+              -->
               <li class="overlay_button"><a><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
               <li class="overlay_button"><a><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
-              <li class="overlay_button"><a><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
+              <li class="overlay_button"><a data-toggle="modal" data-target="#media"><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
             </ul>
             <div class="powered_logo">
                 <div class="logo__wrapper__light">
@@ -320,6 +324,159 @@
   </div>
 </div>
 
+<div class="modal fade dashboardModal" id="campaignMilestones" tabindex="-1" role="dialog" aria-labelledby="campaignMilestonesLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <h3 class="modal-title" id="campaignMilestonesLabel">{{campaign.title}}</h3>
+        <p>Milestones</p>
+      </div>
+      <div class="modal-body">
+        <div class="carousel-buttons milestones text-center">
+            <a href="#milestones-carousel" class="carousel-button milestones" role="button" data-slide="prev"><i class="fa fa-2x fa-angle-left" aria-hidden="true"></i></a>
+            <span id="milestones-current">July 2017</span>
+            <a href="#milestones-carousel" class="carousel-button milestones" role="button" data-slide="next"><i class="fa fa-2x fa-angle-right" aria-hidden="true"></i></a>
+        </div>
+        <div id="milestones-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Proident sint laboris adipisicing voluptate adipisicing reprehenderit reprehenderit. Qui incididunt dolor nulla anim reprehenderit adipisicing cupidatat voluptate. Sint do consequat ad proident ut nisi reprehenderit adipisicing ad est eu Lorem. Sunt amet commodo labore ipsum esse nisi aute ad anim et do aliquip. Cupidatat ipsum consectetur in cupidatat quis consectetur et tempor sint. Est laboris aliqua eiusmod voluptate minim cillum do non duis. Sit ut elit dolor reprehenderit exercitation ipsum elit excepteur culpa.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Nisi officia ullamco nisi consectetur laboris eu dolor pariatur. Consectetur voluptate consectetur et enim aute duis aute nulla esse consequat tempor aute. Dolor anim occaecat consectetur eu ut et ea quis. Pariatur amet enim ea voluptate consectetur aliqua incididunt anim id laboris in voluptate cupidatat. Nulla Lorem sunt qui commodo esse non voluptate nostrud laboris id sunt qui nisi. Ipsum consectetur minim irure et nisi officia deserunt esse nisi dolor proident.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Duis do nulla commodo sint duis labore fugiat occaecat amet. Officia incididunt laborum ipsum laboris minim. Eiusmod exercitation ullamco nisi enim anim exercitation ea exercitation nostrud dolore ut dolore duis. Enim excepteur cupidatat do excepteur officia culpa. Amet enim est in ex dolor laboris cillum Lorem occaecat ullamco.</p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Proident sint laboris adipisicing voluptate adipisicing reprehenderit reprehenderit. Qui incididunt dolor nulla anim reprehenderit adipisicing cupidatat voluptate. Sint do consequat ad proident ut nisi reprehenderit adipisicing ad est eu Lorem. Sunt amet commodo labore ipsum esse nisi aute ad anim et do aliquip. Cupidatat ipsum consectetur in cupidatat quis consectetur et tempor sint. Est laboris aliqua eiusmod voluptate minim cillum do non duis. Sit ut elit dolor reprehenderit exercitation ipsum elit excepteur culpa.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Nisi officia ullamco nisi consectetur laboris eu dolor pariatur. Consectetur voluptate consectetur et enim aute duis aute nulla esse consequat tempor aute. Dolor anim occaecat consectetur eu ut et ea quis. Pariatur amet enim ea voluptate consectetur aliqua incididunt anim id laboris in voluptate cupidatat. Nulla Lorem sunt qui commodo esse non voluptate nostrud laboris id sunt qui nisi. Ipsum consectetur minim irure et nisi officia deserunt esse nisi dolor proident.</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 text-right">19th July</div>
+                <div class="col-md-10">
+                  <p><strong>Receive feedback on proposal from city staff</strong></p>
+                  <p>Duis do nulla commodo sint duis labore fugiat occaecat amet. Officia incididunt laborum ipsum laboris minim. Eiusmod exercitation ullamco nisi enim anim exercitation ea exercitation nostrud dolore ut dolore duis. Enim excepteur cupidatat do excepteur officia culpa. Amet enim est in ex dolor laboris cillum Lorem occaecat ullamco.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade dashboardModal" id="documents" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
+        <p>Documents</p>
+      </div>
+      <div class="modal-body">
+        <div class="document">
+          <h4><a href="#">Ullamco irure sunt quis in non</a></h4>
+          <p>Added on 19 July 2017</p>
+        </div>
+        <div class="document">
+          <h4><a href="#">Irure amet aliquip pariatur nisi aliquip sit</a></h4>
+          <p>Added on 19 July 2017</p>
+        </div>
+        <div class="document">
+          <h4><a href="#">Incididunt ullamco sunt ipsum aute sunt officia</a></h4>
+          <p>Added on 19 July 2017</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade dashboardModal" id="media" tabindex="-1" role="dialog" aria-labelledby="mediaLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <h3 class="modal-title" id="mediaLabel">{{campaign.title}}</h3>
+        <p>Media</p>
+      </div>
+      <div class="modal-body">
+        <h4>Workshop held in Paris on 25th May</h4>
+        <p>Officia reprehenderit aute consectetur nostrud ut velit. Excepteur officia officia sint mollit amet sint nisi qui ex anim in deserunt aliqua laborum. Sunt ea id veniam ut est culpa incididunt dolore exercitation sit esse reprehenderit do cillum. Pariatur enim aute tempor aliqua.</p>
+        <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <img src="http://via.placeholder.com/480x320" alt="Sample 1">
+            </div>
+            <div class="item">
+              <img src="http://via.placeholder.com/480x320" alt="Sample 2">
+            </div>
+            <div class="item">
+              <img src="http://via.placeholder.com/480x320" alt="Sample 3">
+            </div>
+            <div class="item">
+              <img src="http://via.placeholder.com/480x320" alt="Sample 4">
+            </div>
+            <div class="item">
+              <img src="http://via.placeholder.com/480x320" alt="Sample 5">
+            </div>
+          </div>
+        
+          <!-- Controls -->
+          <a class="left carousel-control" href="#media-carousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#media-carousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+          <ol class="carousel-indicators">
+            <li data-target="#media-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#media-carousel" data-slide-to="1"></li>
+            <li data-target="#media-carousel" data-slide-to="2"></li>
+            <li data-target="#media-carousel" data-slide-to="3"></li>
+            <li data-target="#media-carousel" data-slide-to="4"></li>
+          </ol>
+        </div>
+        <h4>Lessons from Participatory Budgeting Last Year</h4>
+        <p class="text-center"><iframe width="560" height="315" src="https://www.youtube.com/embed/dLrPJghHIzg" frameborder="0" allowfullscreen></iframe></p>
+      </div>
+      <div class="modal-footer">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>Return to {{campaign.title}}</a>
 <!-- Subscribe when logged in
 <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionLabel">
   <div class="modal-dialog" role="document">

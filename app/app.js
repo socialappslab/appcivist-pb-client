@@ -319,9 +319,9 @@
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
-       /* WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR
-        templateUrl: 'app/v2/mockups/dashboard.html',
-        END WARNING */
+        // WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR AND THE NEWSLETTERS MODAL
+        //templateUrl: 'app/v2/mockups/dashboard.html',
+        // END WARNING
         access: {
           requiresLogin: true
         }
@@ -601,6 +601,8 @@
         url: '/profile',
         controller: 'v2.ProfileCtrl',
         templateUrl: 'app/v2/partials/user/profile.html',
+        // Uncomment to test the new profile updates
+        //templateUrl: 'app/v2/mockups/profile.html',
         access: {
           requiresLogin: true
         }

@@ -20,7 +20,7 @@
     '$rootScope',
     'WorkingGroups',
     '$compile',
-    '$state',
+    '$state'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
@@ -31,6 +31,12 @@
       if (tab == 1) $scope.activeTab = "Members";
       else $scope.activeTab = "Public";
     };
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+      $('#workingGroups').modal('hide');
+    });
 
     activate();
 
@@ -198,6 +204,7 @@
             };
 
           localStorageService.set("currentCampaign", $scope.campaign);
+          
           loadPublicCommentCount($scope.forumSpaceID);
           // We are reading the components twice,
           // - in the campaign-timeline directive

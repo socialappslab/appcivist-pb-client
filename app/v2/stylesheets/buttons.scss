@@ -1,0 +1,19 @@
+.btn {
+  &.unsubscribe-newsletter, &.unfollow-proposal {
+    background-color: #07473B;
+  }
+  &.subscribe-newsletter, &.follow-proposal {
+    background-color: #424242;
+  }
+  &.unsubscribe-newsletter, &.unfollow-proposal, &.subscribe-newsletter, &.follow-proposal {
+    border: none;
+    color: white;
+    font-size: 0.8rem;
+    text-shadow: none;
+    padding: 0.6rem 1rem;
+    &:active {
+      background-color: #1f1f1f;
+      color: #efefef;
+    }
+  }
+}

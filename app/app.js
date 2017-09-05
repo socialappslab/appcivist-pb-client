@@ -12,7 +12,7 @@
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
     'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies', 'facebook',
-    'ngSanitize'
+    'ngSanitize', 'ncy-angular-breadcrumb'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
@@ -30,7 +30,7 @@
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
-        local: "http://localhost:9000/api",
+        local: "https://testplatform.appcivist.org/backend/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api",
 
       }
@@ -98,7 +98,7 @@
    */
   config.$inject = ['$routeProvider', '$locationProvider', '$resourceProvider', '$httpProvider', '$sceDelegateProvider',
     'localStorageServiceProvider', '$translateProvider', 'tmhDynamicLocaleProvider', '$stateProvider',
-    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider', 'FacebookProvider'
+    'RECAPTCHA_KEY', 'vcRecaptchaServiceProvider', 'FacebookProvider', '$breadcrumbProvider'
   ];
 
   /**
@@ -153,7 +153,10 @@
       .state('v2.homepage', {
         url: '/home',
         controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/partials/home.html'
+        templateUrl: 'app/v2/partials/home.html',
+        ncyBreadcrumb: {
+          label: "AppCivist"
+        }
       })
       // Uncomment the following to test the newsletter templates
       // Adds a /newsletter-template URL to test
@@ -187,12 +190,18 @@
       .state('v2.public.assembly', {
         url: '/assembly',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assemblies"
+        }
       })
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assemblies"
+        }
       })
       //assembly: new routes
       .state('v2.assembly.new', {
@@ -223,29 +232,44 @@
       .state('v2.assembly.aid', {
         url: '/:aid',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       .state('v2.public.assembly.auuid', {
         url: '/:auuid',
         abstract: true,
-        template: '<div ui-view></div>'
+        template: '<div ui-view></div>',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       //assembly: no princial assembly routes
       .state('v2.assembly.aid.fallbackHome', {
         url: '/home',
         templateUrl: 'app/v2/partials/assembly/home.html',
-        controller: 'v2.AssemblyHomeCtrl'
+        controller: 'v2.AssemblyHomeCtrl',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       // the new URL for assembly home is /assembly/:id /assembly/:uuid. We left /assembly/:id/home for compatibility.
       .state('v2.assembly.aid.home', {
         url: '',
         templateUrl: 'app/v2/partials/assembly/home.html',
-        controller: 'v2.AssemblyHomeCtrl'
+        controller: 'v2.AssemblyHomeCtrl',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       .state('v2.public.assembly.auuid.home', {
         url: '',
         templateUrl: 'app/v2/partials/assembly/home.html',
-        controller: 'v2.AssemblyHomeCtrl'
+        controller: 'v2.AssemblyHomeCtrl',
+        ncyBreadcrumb: {
+          label: "Assembly"
+        }
       })
       .state('v2.assembly.aid.assembly', {
         url: '/assembly/new',
@@ -324,6 +348,10 @@
         // END WARNING
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: 'v2.assembly.aid.home',
+          label: 'Campaign'
         }
       })
 
@@ -337,9 +365,10 @@
         url: '',
         controller: 'v2.CampaignDashboardCtrl',
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
-        //WARNING: THIS IS JUST TO TEST THE LOWER TOOLBAR
-        //templateUrl: 'app/v2/mockups/dashboard.html',
-        //END WARNING
+        ncyBreadcrumb: {
+          parent: 'v2.public.assembly.auuid.home',
+          label: 'Campaign'
+        }
       })
 
       .state('v2.assembly.aid.campaign.start', {
@@ -458,6 +487,10 @@
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid",
+          label: "Working Group"
         }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.dashboard', {
@@ -466,6 +499,10 @@
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.cid",
+          label: "Working Group"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.gid.edit', {
@@ -971,6 +1008,13 @@
       return apis.development;
     }
   }
+
+  appCivistApp.config(function($breadcrumbProvider) {
+    $breadcrumbProvider.setOptions({
+      prefixStateName: "v2.homepage",
+      templateUrl: "app/v2/components/breadcrumb/template.html"
+    });
+  });
 
   // expose global variables
   window.appCivistApp = appCivistApp;

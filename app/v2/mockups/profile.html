@@ -1,0 +1,167 @@
+<main class="appmain">
+  <article class="campaign profile_page">
+    <header class="page__header">
+      <h1 class="heading--title">My Settings</h1>
+    </header>
+    <br />
+    <section class="comments__section">
+      <form>
+        <div class="row">
+          <div class="col-sm-12">
+            <h3>Profile</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-sm-8">
+            <div class="row">
+              <div class="col-lg-12">
+                <label for="profileEmail">{{'Email address' | translate}}</label>
+                <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()"
+                  ng-model="profile.email">
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-xs-6">
+                <label for="profileFirstName">{{'First Name'|translate}}</label>
+                <input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | translate}}"
+                  ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.firstname">
+              </div>
+              <div class="col-xs-6">
+                <label for="profileLastName">{{'Last Name'|translate}}</label>
+                <input type="text" class="form-control" id="profileLastName" placeholder="{{'Last Name' | translate}}"
+                  ng-blur="blurReset()" ng-model="profile.lastname">
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-xs-12">
+                <label for="profileUsername">{{'Username'|translate}}</label>
+                <input type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}"
+                  ng-blur="blurReset()" ng-model="profile.username">
+              </div>
+            </div>
+            <br />
+
+            <!-- Social Ideation connect to Facebook Button -->
+            <div class="row" ng-if="showFbSocialIdeationButton">
+              <div class="col-xs-12">
+                <button type="button" class="btn btn-primary btn-large"
+                        data-ng-disabled=alreadyLoggedInFb
+                        data-ng-click="getLoginStatus()">{{FbButtonMessage | translate}}</button>
+                <i class="fa fa-question-circle"
+                   tooltip-placement="right"
+                   uib-tooltip="{{'help.tooltip.connectWithFacebook' | translate}}"
+                   data-toggle="tooltip" data-placement="right" title=""></i>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8">
+                <input type="checkbox" ng-click="toggleChangePassword()">
+                <span>{{ 'Update password' | translate }}</span>
+              </div>
+            </div>
+            <br />
+            <div ng-if="showChangePassword">
+              <div class="row">
+                <div class="col-lg-8">
+                  <label>{{'Old Password' | translate}}</label>
+                  <input type="password" class="form-control" placeholder="{{'Old Password' | translate}}" ng-model="profile.oldPassword" ng-blur="blurReset()">
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-lg-8">
+                  <label>{{'Password' | translate}}</label>
+                  <input type="password" class="form-control" placeholder="{{'Password' | translate}}" ng-model="profile.password" ng-blur="blurReset()">
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-lg-8">
+                  <label>{{'Repeat password' | translate}}</label>
+                  <input type="password" class="form-control" placeholder="{{'Repeat password' | translate}}" ng-model="profile.repeatPassword"
+                    ng-blur="blurReset()">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 text-center">
+            <!--Profile Picture -->
+            <div class="form-group">
+              <!--<label for="profilePicUpload">{{'Change Profile Picture'|translate}}</label>
+              <br>-->
+              <img ng-if="!profile.profile_pic" class="profilePic" ng-src="{{user.profilePic.urlAsString}}" />
+              <div ng-if="profile.profile_pic" style="position: relative;">
+                <a class="github-fork-ribbon" title="{{'Preview' | translate}}"></a>
+                <img class="profilePic" ng-src="{{profile.selectedPic}}" />
+              </div>
+              <label class="btn btn-default">
+                  Upload photo <input type="file" id="profilePicUpload" fileread="profile.profile_pic" hidden>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-8 col-sm-8">
+            <div class="row">
+                <div class="col-sm-12">
+                  <h3>Notification settings</h3>
+                </div>
+                <div class="col-lg-12">
+                  <p><strong>In adition to receiving the notifications on AppCivist would you like to receive notifications by</strong></p>
+                  <ul class="checkbox-group">
+                    <li><input type="checkbox"> Email</li>
+                    <li><input type="checkbox"> Facebook Messenger <input type="text" class="form-control" placeholder="Facebook Username"></li>
+                    <li><input type="checkbox"> Twitter Direct Messages <input type="text" class="form-control" placeholder="Twitter Username"></li>
+                  </ul>
+                </div>
+                <div class="col-lg-12">
+                  <p><strong>Would you like to automatically subscribe to a campaign's newsletter when you participate in it?</strong></p>
+                  <ul>
+                    <li><input name="radio1" type="radio"> Yes</li>
+                    <li><input name="radio1" type="radio"> No</li>
+                  </ul>
+                </div>
+                <div class="col-lg-12">
+                  <p><strong>If subscribed to the campaign newsletter, how often would you like to receive it?</strong></p>
+                  <ul>
+                    <li><input name="radio2" type="radio"> Weekly</li>
+                    <li><input name="radio2" type="radio"> No</li>
+                  </ul>
+                </div>
+                <div class="col-lg-12">
+                  <p><strong>Would you like to receive the capiaign newsletters by email?</strong></p>
+                  <ul>
+                    <li><input name="radio3" type="radio"> Yes</li>
+                    <li><input name="radio3" type="radio"> No</li>
+                  </ul>
+                </div>
+                <div class="col-lg-12">
+                  <p><strong>Would you like to automatically receive notifications for any updates made to an idea or proposal that you have contributed to?</strong></p>
+                  <ul>
+                    <li><input name="radio4" type="radio"> Yes</li>
+                    <li><input name="radio4" type="radio"> No thank you, I would like to receive notifications only for those that I manually follow</li>
+                  </ul>
+                </div>
+                <div class="col-lg-12">
+                  <p><strong>Would you like to automatically receive notifications for any working group that you are member of?</strong></p>
+                  <ul>
+                    <li><input name="radio5" type="radio"> Yes</li>
+                    <li><input name="radio5" type="radio"> No thank you, I would like to receive notifications only for those that I manually follow</li>
+                  </ul>
+                </div>
+                <div class="col-lg-12">
+                  <p><strong>Would you like to automatically receive notifications for any updates made to a working group that you have contributed to?</strong></p>
+                  <ul>
+                    <li><input name="radio6" type="radio"> Yes</li>
+                    <li><input name="radio6" type="radio"> No thank you, I would like to receive notifications only for those that I manually follow</li>
+                  </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-default" ng-click="updateProfile()">{{'Update Profile' | translate}}</button>
+      </form>
+    </section>
+  </article>
+</main>

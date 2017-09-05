@@ -111,6 +111,19 @@
       }
     }
   }
+  .document {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    h4 {
+      font-weight: bold;
+      margin-bottom: 5px;
+      a, a:hover, a:active, a:visited {
+        color: rgb(38, 85, 123);
+        text-decoration: underline;
+      }
+    }
+    p { font-size: 0.7rem; }
+  }
 }
 
 @media screen and (max-width: 40em) {
@@ -133,6 +146,42 @@
 #milestones-carousel {
   strong { font-weight: bold; }
   .row { margin-bottom: 1.5rem; }
+}
+
+.dashboardModal#media {
+  h4 { font-weight: bold; }
+}
+#media-carousel {
+  margin: 1.5rem 0 3.5rem;
+  .carousel-inner img { margin: 0 auto; }
+  .carousel-inner {
+    .item {
+      transition-property: opacity;
+    }
+    .item,
+    .active.left,
+    .active.right {
+      left: calc(50% - 240px);
+      opacity: 0;
+    }
+    .active,
+    .next.left,
+    .prev.right {
+      left: 0;
+      opacity: 1;
+    }
+    .next,
+    .prev,
+    .active.left,
+    .active.right {
+      left: calc(50% - 240px);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  .carousel-control {
+    background: none;
+    color: black;
+  }
 }
 
 .alert.subconfirm {

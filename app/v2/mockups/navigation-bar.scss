@@ -1,6 +1,6 @@
 .appcivist .appmain {
   margin-left: 0;
-  margin-top: 50px;
+  margin-top: 70px;
 }
 
 @media screen and (max-width: 1023px) {
@@ -107,7 +107,7 @@
   .modal-header { border-bottom: none; }
   .modal-body { overflow: auto; }
   .modal-footer { border-top: none; }
-  .item {
+  .item-inner {
     margin-top: 1.3rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid lightgray;
@@ -125,4 +125,136 @@
       }
     }
   }
+  .carousel-buttons {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  a.carousel-button {
+    text-decoration: none;
+    color: #323232;
+    margin: auto 1rem;
+    i {
+      vertical-align: middle;
+      margin-top: -0.2rem;
+    }
+    &:hover, &:active, &:visited {
+      text-decoration: none;
+      color: #323232;
+    }
+  }
+  .newsletter-template {  
+    .header {
+      text-align: center;
+      padding: 3.5rem 0;
+      height: initial;
+      h2, h4 {
+        display: block;
+        margin-bottom: 1rem;
+      }
+    }
+    .progress-steps {
+      position: relative;
+      height: 100px;
+      margin-top: 3rem;
+      .steps {
+        position: absolute;
+        text-align: center;
+        font-size: 0.9rem;
+        left: 50%;
+        margin-left: -50px;
+        width: 100px;
+        z-index: 2;
+        &.completed:before { background-color: #465A63; }
+        &:before {
+          display: block;
+          content: " ";
+          width: 40px;
+          height: 40px;
+          background-color: #999;
+          border-radius: 50%;
+          margin: 0 auto 0.5rem;
+        }
+        &.step1 {
+          margin-left: -300px;
+        }
+        &.step3 {
+          margin-left: 200px;
+        }
+      }
+      .road {
+        position: absolute;
+        height: 5px;
+        background-color: #999;
+        left: 50%;
+        top: 18px;
+        &.completed { background-color: #465A63; }
+        &.road1 {
+          right: 50%;
+          margin-left: -250px;
+        }
+        &.road2 {
+          right: 50%;
+          margin-right: -250px;
+        }
+      }
+    }
+    .body {
+      padding: 2rem 4rem;
+      strong { font-weight: bold; }
+      h4 {
+        margin-top: 2.5rem;
+        font-weight: bold;
+        color: #465A63;
+      }
+      ul {
+        margin-top: 1rem;
+        li {
+          background-color: #efefef;
+          padding: 1rem 2rem;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+    .footer {
+      background-color: transparent;
+      margin-bottom: 3rem;
+      a, a:hover {
+        color: #465A63;
+        text-decoration: underline;
+      }
+    }
+  
+  }
+  .text-only {
+    padding: 1rem 2rem;
+    h2, h4 {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .newsletter-content {
+      margin-top: 2rem;
+      h4 {
+        color: #465A63;
+        margin-top: 2.5rem;
+      }
+      ul { margin-top: 1rem; }
+    }
+    .unsubscribe {
+      margin: 3rem 0;
+      a, a:hover {
+        color: #465A63;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 40em) {
+  .nav-modals .newsletter-template .body { padding: 1rem 2rem; }
+  .nav-modals .newsletter-template .header h2 { font-size: 2rem; }
+  .nav-modals .newsletter-template .header h4 { font-size: 1.2rem; }
+  .nav-modals .newsletter-template .progress-steps .steps.step1 { margin-left: -150px };
+  .nav-modals .newsletter-template .progress-steps .steps.step3 { margin-left: 50px };
+  .nav-modals .newsletter-template .progress-steps .road.road1 { margin-left: -100px; }
+  .nav-modals .newsletter-template .progress-steps .road.road2 { margin-right: -90px; }
 }

@@ -1167,5 +1167,15 @@ custom-field {
 }
 
 // In order to test new topbar mockup uncomment the following
-//@import "../mockups/buttons.scss";
+@import "buttons";
 //import "../mockups/navigation-bar";
+// Uncomment this to test the newsletter templates
+//@import "../mockups/newsletter-backend-template.scss";
+@import "navigation-bar";
+// In order to test the lower toolbar uncomment the folowing
+@import "new-dashboard";
+@import "../components/breadcrumb/breadcrumb";
+// Uncomment this to test the discussion panel
+//@import "../mockups/discussion-panel.scss";
+// Uncomment this to test the profile updates
+//@import "../mockups/profile.scss";

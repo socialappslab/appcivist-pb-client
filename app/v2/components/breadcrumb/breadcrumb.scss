@@ -1,0 +1,10 @@
+#breadcrumb {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+  max-width: 75%;
+  a { text-decoration: none; color: white; }
+  a:hover { text-decoration: underline; color: white; }
+  span#breadcrumbLastLabel { font-weight: normal !important; }
+}

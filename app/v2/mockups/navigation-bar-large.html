@@ -89,33 +89,104 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h3 class="modal-title" id="newslettersModalLabel">Newsletters</h3>
+        <p>Do you want to receive these newsletters by email? <a href="#">Notification settings</a></p>
       </div>
       <div class="modal-body">
-        <div class="item">
-          <div class="title">
-            Campaign name
-            <span>16 May at 14:29</span>
-          </div>
-          <div class="content">
-            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
-          </div>
+        
+        <div class="carousel-buttons text-center">
+          <a href="#newsletter-carousel" class="carousel-button" role="button" data-slide="prev"><i class="fa fa-2x fa-angle-left" aria-hidden="true"></i> Prev</a>
+          <span id="newsletter-current">1</span> / <span id="newsletter-number">2</span>
+          <a href="#newsletter-carousel" class="carousel-button" role="button" data-slide="next">Next <i class="fa fa-2x fa-angle-right" aria-hidden="true"></i></a>
         </div>
-        <div class="item">
-          <div class="title">
-            Campaign name
-            <span>16 May at 14:29</span>
-          </div>
-          <div class="content">
-            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
-          </div>
-        </div>
-        <div class="item">
-          <div class="title">
-            Campaign name
-            <span>16 May at 14:29</span>
-          </div>
-          <div class="content">
-            Quis amet proident sint in officia mollit culpa. Consequat nulla laborum deserunt laborum. Nisi duis mollit exercitation proident. Minim aute laboris sit pariatur exercitation ad magna exercitation enim eu veniam ad est consectetur.
+
+        <div id="newsletter-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+
+              <div class="newsletter-template">
+                  <div class="header">
+                    <h2>&lt;Campaign name&gt;</h2>
+                    <h4>Weekly Newsletter 15 May - 19 May</h4>
+                  </div>
+                
+                  <div class="progress-steps">
+                    <div class="steps step1 completed">Idea collection</div>
+                    <div class="road road1"></div>
+                    <div class="steps step2">Deliberation</div>
+                    <div class="road road2"></div>
+                    <div class="steps step3">Implementation</div>
+                  </div>
+                
+                  <div class="body">
+                
+                    <p>The campaign is currently in the <strong>idea collection</strong> stage. You have 15 days to submit your idea to the campaign. <a href="#">Submit your idea now</a>.</p>
+                    
+                    <p>Here are the updates from the ideas you follow:</p>
+                  
+                    <h4>2 new ideas have been submitted last week</h4>
+                    <ul class="ideas-submitted">
+                      <li>&lt;Idea title&gt; submitted by &lt;User name&gt;</li>
+                      <li>&lt;Idea title&gt; submitted by &lt;User name&gt;</li>
+                    </ul>
+                  
+                    <h4>Here are the updates from the ideas you follow</h4>
+                    <ul class="ideas-updates">
+                      <li>Idea &lt;Idea title&gt; has received 3 new comments.</li>
+                      <li>Idea &lt;Idea title&gt; was updated.</li>
+                    </ul>
+                
+                  </div>
+                  
+                  <div class="footer">
+                    <a href="#">Unsubscribe to the newsletter of this campaign</a>
+                  </div>
+              </div>
+
+            </div>
+            <div class="item">
+              
+              <div class="newsletter-template">
+                  <div class="header">
+                    <h2>&lt;Campaign name&gt;</h2>
+                    <h4>Weekly Newsletter 15 May - 19 May</h4>
+                  </div>
+                
+                  <div class="progress-steps">
+                    <div class="steps step1 completed">Idea collection</div>
+                    <div class="road road1"></div>
+                    <div class="steps step2">Deliberation</div>
+                    <div class="road road2"></div>
+                    <div class="steps step3">Implementation</div>
+                  </div>
+                
+                  <div class="body">
+                      
+                    <p>The campaign is currently in the <strong>idea collection</strong> stage. You have 15 days to submit your idea to the campaign. <a href="#">Submit your idea now</a>.</p>
+                    
+                    <p>Here are the updates from the ideas you follow:</p>
+                  
+                    <h4>2 new ideas have been submitted last week</h4>
+                    <ul class="ideas-submitted">
+                      <li>&lt;Idea title&gt; submitted by &lt;User name&gt;</li>
+                      <li>&lt;Idea title&gt; submitted by &lt;User name&gt;</li>
+                    </ul>
+                  
+                    <h4>Here are the updates from the ideas you follow</h4>
+                    <ul class="ideas-updates">
+                      <li>Idea &lt;Idea title&gt; has received 3 new comments.</li>
+                      <li>Idea &lt;Idea title&gt; was updated.</li>
+                    </ul>
+                
+                  </div>
+                  
+                  <div class="footer">
+                    <a href="#">Unsubscribe to the newsletter of this campaign</a>
+                  </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
@@ -164,3 +235,11 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+    $(".carousel-button").on("click", function(e) {
+      e.preventDefault();
+    });
+  });
+</script>

@@ -8,17 +8,18 @@
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
     '$rootScope', 'loginService', '$translate', '$state', '$stateParams',
-    'WorkingGroups', 'Assemblies'
+    'WorkingGroups', 'Assemblies', 'AppCivistAuth'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
-    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies) {
+    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies, AppCivistAuth) {
 
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
     $scope.fetchGroups = fetchGroups.bind($scope);
     $scope.fetchAnonymousGroups = fetchAnonymousGroups.bind($scope);
     $scope.needToRefresh = needToRefresh.bind($scope);
+    $scope.signout = signout.bind($scope);
     activate();
 
     function activate() {
@@ -66,6 +67,26 @@
       }
       // TODO: read the following from the instance main assembly settings in the server
       $scope.creationPatternsEnabled = false;
+    }
+    
+    function redirect() {
+      let currentAssembly = localStorageService.get('currentAssembly');
+      let domain = currentAssembly.shortname ? currentAssembly.shortname : null;
+      localStorageService.clearAll();
+      if(!domain) {
+        $state.go('v2.login').then(function() {
+          location.reload();
+        });
+      } else {
+        $state.go('v2.login2', { domain:domain }, { reload:true }).then(function() {
+          location.reload();
+        });
+      }
+    }
+
+    function signout () {
+      var rsp = AppCivistAuth.signOut().save();
+      rsp.$promise.then(redirect, redirect);
     }
 
     /**

@@ -84,6 +84,8 @@
             <ul class="overlay_buttons">
               <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
               <li class="overlay_button"><a data-toggle="modal" data-target="#documents"><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
+              <li class="overlay_button"><a data-toggle="modal" data-target="#campaignMilestones"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number">(11)</span></a></li>
+              <li class="overlay_button"><a><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
               <li class="overlay_button"><a><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
               <li class="overlay_button"><a data-toggle="modal" data-target="#media"><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
             </ul>
@@ -527,3 +529,11 @@
   <p class="message">Congratulations! You have successfully subscribed to the newsletter of {{campaign.title}}.</p>
   <p class="submessage">If you would like to receive the newsletter by email, click here: <a href="#">Notification settings</a></p>
 </div>
+
+<script>
+  $(document).ready(function() {
+    $(".carousel-control").on("click", function(e) {
+      e.preventDefault();
+    });
+  });
+</script>

@@ -516,6 +516,13 @@
   </div>
 </div>
 
+<script>
+  $(document).ready(function() {
+    $(".carousel-control").on("click", function(e) {
+      e.preventDefault();
+    });
+  });
+</script>
 <!-- Comment this div to hide it -->
 <div class="alert alert-dismissible subconfirm" role="alert">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

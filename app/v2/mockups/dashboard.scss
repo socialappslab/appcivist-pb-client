@@ -126,6 +126,15 @@
   }
 }
 
+.carousel-buttons.milestones { margin-bottom: 1.5rem; }
+.carousel-button.milestones i {
+  vertical-align: middle;
+}
+#milestones-carousel {
+  strong { font-weight: bold; }
+  .row { margin-bottom: 1.5rem; }
+}
+
 .alert.subconfirm {
   width: 40em;
   background-color: #FFFAD9;

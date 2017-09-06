@@ -1348,9 +1348,9 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       },
 
       /**
-       * Returns a promise to interact with <em>DELETE /space/:sid/resource/:rsid</em> endpoint 
+       * Returns a promise to interact with <em>DELETE /space/:sid/resource/:rsid</em> endpoint
        * to delete a resource from a resource space.
-       * 
+       *
        * @method services.Space#deleteResource
        * @param {number} sid - The resource space ID.
        * @param {number} rsid - The resource ID.
@@ -1362,7 +1362,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
       /**
        * Returns a promise to interact with <em>GET /space/:sid/authors?format=CSV</em> endpoint to
        * retrieve non-member authors information associated with the given campaign resource space.
-       * 
+       *
        * @method services.Space#getNonMemberAuthors
        * @param {number} sid - The campaign resource space ID.
        */
@@ -2425,7 +2425,7 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
      *  @param {string} email -  user email
      */
     forgot(email) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ email }).$promise;
+      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ "email" : email, "configUrl" : localStorageService.get('forgotFormUrl') }).$promise;
     },
 
     /**

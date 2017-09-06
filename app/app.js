@@ -35,6 +35,14 @@
 
       }
     },
+    ui: {
+      forgotForms: {
+        production: "https://pb.appcivist.org/#/v2/user/password/reset/",
+        testing: "https://testapp.appcivist.org/#/v2/user/password/reset/",
+        local: "http://localhost:8000/#/v2/user/password/reset/",
+        development: "https://testapp.appcivist.org/#/v2/user/password/reset/"
+      }
+    },
     handleError: function (error) {
       console.log(error);
       if (error.status == 500)
@@ -58,9 +66,10 @@
   };
 
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
-  var appCivistCoreBaseURL = selectBackendServer(window.location.hostname, appcivist.api.core);
-  var votingApiUrl = selectBackendServer(window.location.hostname, appcivist.api.voting);
-  var etherpadServerURL = selectBackendServer(window.location.hostname, etherpad);
+  var appCivistCoreBaseURL = selectProperURL(window.location.hostname, appcivist.api.core);
+  var votingApiUrl = selectProperURL(window.location.hostname, appcivist.api.voting);
+  var etherpadServerURL = selectProperURL(window.location.hostname, etherpad);
+  var appCivistForgotFormURL= selectProperURL(window.location.hostname, appcivist.ui.forgotForms);
 
   var hideLogin = (window.location.hostname === "appcivist.org" ||
     window.location.hostname === "www.appcivist.org");
@@ -831,6 +840,7 @@
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
     localStorageService.set("hideLogin", hideLogin);
+    localStorageService.set("forgotFormUrl", appCivistForgotFormURL);
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       // redirect to login page if not logged in and trying to access a restricted page
 
@@ -991,21 +1001,21 @@
    * - If this is *.org, then use the remote testing server
    * - TODO: when production version are ready, add a rule for selecting the production server
    */
-  function selectBackendServer(hostname, apis) {
+  function selectProperURL(hostname, urls) {
     var possibleHosts = [
       "localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org",
       "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org",
       "www.appcivist.org", "testapp.appcivist.org", "mimove-apps.paris.inria.fr"];
     if (hostname === possibleHosts[0]) {
-      return apis.local;
+      return urls.local;
     } else if (hostname === possibleHosts[1] || hostname === possibleHosts[4] || hostname === possibleHosts[6] || hostname === possibleHosts[7]) {
-      return apis.production;
+      return urls.production;
     } else if (hostname === possibleHosts[2] || hostname === possibleHosts[5] || hostname === possibleHosts[8]) {
-      return apis.testing;
+      return urls.testing;
     } else if (hostname === possibleHosts[9]) {
-      return apis.mimove;
+      return urls.mimove;
     } else {
-      return apis.development;
+      return urls.development;
     }
   }
 

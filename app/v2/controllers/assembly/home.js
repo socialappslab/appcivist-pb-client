@@ -83,6 +83,14 @@
               this.readAssemblyByShortname = this.assembly.assemblyId ? false : true;
             }
             this.shortname = this.assembly.shortname
+            this.logo = this.assembly.profile.icon;
+            this.cover = this.assembly.profile.cover;
+            this.coverStyle = this.cover ?
+            {
+              'background-image': 'url(' + this.cover + ')',
+              'background-position': 'center center',
+            } : '';
+
             this.fetchCampaigns();
             this.fetchOrganizations(assembly);
             this.fetchResources(assembly);

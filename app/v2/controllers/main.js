@@ -47,8 +47,10 @@
         $scope.isAnonymous = true;
         $scope.isLoginPage = false;
         $scope.currentCampaignUuid = $state.params.cuuid;
+        $scope.currentAssemblyUuid = $state.params.auuid;
         // load all the puboic working group of the campaign
         fetchAnonymousGroups($scope);
+        fetchAnonymousAssembly($scope);
       }
       $scope.updateSmallMenu = updateSmallMenu;
       $scope.toggleNavigation = toggleNavigation;
@@ -68,7 +70,7 @@
       // TODO: read the following from the instance main assembly settings in the server
       $scope.creationPatternsEnabled = false;
     }
-    
+
     function redirect() {
       let currentAssembly = localStorageService.get('currentAssembly');
       let domain = currentAssembly.shortname ? currentAssembly.shortname : null;
@@ -131,7 +133,17 @@
           return groups;
         }
       );
+    }
 
+
+    function fetchAnonymousAssembly(scope) {
+      let rsp = Assemblies.assemblyByUUID(scope.currentAssemblyUuid).get().$promise;
+      return rsp.then(
+        assembly => {
+          scope.anonymousAssembly = assembly;
+          return assembly;
+        }
+      );
     }
 
     function updateSmallMenu() {

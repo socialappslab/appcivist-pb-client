@@ -24,8 +24,8 @@
   </nav>
 
   <div ng-if="!unauthorizedAccess || assembly.listed">
-    <section class="well row">
-      <div class="col-lg-offset-2 col-lg-8">
+    <section class="well row" ng-style="coverStyle">
+      <div class="overlay col-lg-offset-2 col-lg-8">
         <h1>{{assembly.name}}</h1>
 
         <p>
@@ -54,7 +54,7 @@
                 </p>
               </a>
 
-              <a ng-if="isAnonymous || readAssemblyByShortname" 
+              <a ng-if="isAnonymous || readAssemblyByShortname"
                  ng-href="/#/v2/p/assembly/{{assemblyId}}/campaign/{{campaign.uuid}}" class="list-group-item">
                 <div>
                   {{campaign.title}}
@@ -92,10 +92,10 @@
               </a>
 
               <!-- If public view, show links to public campaigns -->
-              <a ng-if="isAnonymous || !readAssemblyByShortname" 
-                 ng-href="/#/v2/p/assembly/{{assemblyId}}/campaign/{{campaign.uuid}}" 
+              <a ng-if="isAnonymous || !readAssemblyByShortname"
+                 ng-href="/#/v2/p/assembly/{{assemblyId}}/campaign/{{campaign.uuid}}"
                  class="list-group-item">
-                
+
                 <div>
                   {{campaign.title}}
                 </div>

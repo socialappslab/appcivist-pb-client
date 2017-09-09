@@ -28,6 +28,9 @@
 
   function TopbarLangpickerCtrl($scope, $translate, localStorageService, LocaleService, $compile) {
     let user = localStorageService.get('user');
+    $scope.init = function() {
+      $scope.loadLangPicker();
+    }
     $scope.changeLanguage = function(key) {
       $translate.use(key);
       if (user) {
@@ -54,7 +57,4 @@
     }
   }
 
-  function redoPicker() {
-    
-  }
 }());

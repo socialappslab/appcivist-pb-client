@@ -1,6 +1,23 @@
-<li class="dropdown" id="langpicker" ng-init="loadLangPicker">
+<!-- ÉSTE FUNCIONA AHORA MISMO PERO ESTÁ DURÍSIMO -->
+<li class="dropdown" id="langpicker">
+    <a class="dropdown-toggle" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id="currentlang"><img class="i18flag" src="../assets/i18n/flags/en.png" alt="en-US"></span><b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu" id="availablelangs" aria-labelledby="userMenuDropdown" style="min-width:0">
+        <li><a class="langitem" ng-click="changeLanguage('es-ES')"><img class="i18flag" src="../assets/i18n/flags/es.png" alt="es-ES"></a></li>
+        <li><a class="langitem" ng-click="changeLanguage('fr-FR')"><img class="i18flag" src="../assets/i18n/flags/fr.png" alt="fr-FR"></a></li>
+        <li><a class="langitem" ng-click="changeLanguage('de-DE')"><img class="i18flag" src="../assets/i18n/flags/de.png" alt="de-DE"></a></li>
+        <li><a class="langitem" ng-click="changeLanguage('pt-BR')"><img class="i18flag" src="../assets/i18n/flags/pt.png" alt="pt-BR"></a></li>
+    </ul>
+</li>
+
+<!-- ÉSTE ES EL ESQUELETO QUE LA FUNCIÓN loadLangPicker DEL CONTROLLER DEL COMPONENTE NECESITA -->
+<!-- LO IDEAL SERÍA QUE EL TEMPLATE SÓLO TENGA ESTO Y AL CARGAR POR PRIMERA VEZ SE EJECUTE loadLangPicker -->
+<!--
+<li class="dropdown" id="langpicker">
     <a class="dropdown-toggle" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <span id="currentlang"></span><b class="caret"></b>
     </a>
     <ul class="dropdown-menu" id="availablelangs" aria-labelledby="userMenuDropdown" style="min-width:0"></ul>
 </li>
+-->

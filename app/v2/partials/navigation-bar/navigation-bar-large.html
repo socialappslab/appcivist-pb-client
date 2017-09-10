@@ -38,42 +38,17 @@
                     </a></li>-->
                 </ul>
             </li>
-            <li class="dropdown nav-menu-notification" id="notificationMenu">
-                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
-                    <span ng-if="false" class="number">4</span> <!-- Add a ng-if to this span, this will be the notification counter -->
-                    <i class="fa fa-lg fa-bell-o icon"></i>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="notificationsDropdown">
-                    <h3>{{'header.menu.Notifications'|translate}} <span><a data-toggle="modal" data-target="#notificationsModal" ng-if="false">{{'View all'|translate}}</a></span></h3>
-                    <!--<li><a>
-                      <div class="title unseen">Fugiat occaecat irure commodo.</div>
-                      <div class="preview unseen">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
-                      <div class="date">07/08/2017</div>
-                    </a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a>
-                      <div class="title">Fugiat occaecat irure commodo.</div>
-                      <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
-                      <div class="date">07/08/2017</div>
-                    </a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a>
-                      <div class="title">Fugiat occaecat irure commodo.</div>
-                      <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
-                      <div class="date">07/08/2017</div>
-                    </a></li>-->
-                </ul>
-            </li>
+            <topbar-notifications user="user"></topbar-notifications>
             <li>
-                <img class="navBarImage" ng-if="!currentUser || !currentUser.profilePic" src="../assets/images/avatar.png" alt="Avatar" />
-                <img class="navBarImage" ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlAsString}}" alt="Avatar" />
+                <img class="navBarImage" ng-if="!user || !user.profilePic" src="../assets/images/avatar.png" alt="Avatar" />
+                <img class="navBarImage" ng-if="user && user.profilePic" ng-src="{{user.profilePic.urlAsString}}" alt="Avatar" />
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     {{user.name}}<b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
-                    <li><a href="/#/v2/user/{{currentUser.userId}}/profile">{{'My Settings' | translate}}</a></li>
+                    <li><a href="/#/v2/user/{{user.userId}}/profile">{{'My Settings' | translate}}</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a ng-click="signout()">{{'header.sign_out' | translate}}</a></li>
                 </ul>

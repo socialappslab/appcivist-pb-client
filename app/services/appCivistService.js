@@ -561,13 +561,70 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
   };
 });
 
+/**
+ * Notifications factory.
+ *
+ * @class Notifications
+ * @memberof services
+ */
 appCivistApp.factory('Notifications', function ($resource, localStorageService) {
   return {
-    userNotificationsByUUID: function (userUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID })
+    userNotificationsByUUID(userUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID });
     },
-    subscribe: function () {
+
+    subscribe() {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
+    },
+
+    /**
+     * Returns the total number of notifications for the given user.
+     * 
+     * @method services.Notifications#userStats
+     * @param {Number} userId - User's ID
+     * @returns {$resource} 
+     */
+    userStats(userId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/stats', { userId });
+    },
+
+    /**
+     * Returns the notifications for the given user.
+     * 
+     * @method services.Notifications#userNotifications
+     * @param {Number} userId 
+     * @param {Number} page 
+     * @returns {$resource}
+     */
+    userNotifications(userId, page) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page });
+    },
+
+    /**
+     * Marks the given notification as read.
+     * 
+     * @method services.Notifications#read
+     * @param {Number} userId 
+     * @param {Number} notificationId 
+     */
+    read(userId, notificationId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/:notificationId/read', { userId, notificationId },
+        {
+          update: { method: 'PUT' }
+        });
+    },
+
+    /**
+    * Marks all notifications as read.
+    * 
+    * @method services.Notifications#readAll
+    * @param {Number} userId 
+    */
+    readAll(userId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/read', { userId },
+        {
+          update: { method: 'PUT', isArray: true }
+        });
     }
   };
 
@@ -2425,7 +2482,7 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
      *  @param {string} email -  user email
      */
     forgot(email) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ "email" : email, "configUrl" : localStorageService.get('forgotFormUrl') }).$promise;
+      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ "email": email, "configUrl": localStorageService.get('forgotFormUrl') }).$promise;
     },
 
     /**

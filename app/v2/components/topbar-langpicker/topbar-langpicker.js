@@ -28,9 +28,6 @@
 
   function TopbarLangpickerCtrl($scope, $translate, localStorageService, LocaleService, $compile) {
     let user = localStorageService.get('user');
-    $scope.init = function() {
-      $scope.loadLangPicker();
-    }
     $scope.changeLanguage = function(key) {
       $translate.use(key);
       if (user) {
@@ -55,6 +52,9 @@
       });
       angular.element($("#availablelangs")).html($compile(availableLanguagesContent)($scope));
     }
+    angular.element(document).ready(function() {
+      $scope.loadLangPicker();
+    });
   }
 
 }());

@@ -1,0 +1,116 @@
+<div class="modal fade dashboardModal" id="votingResults" tabindex="-1" role="dialog" aria-labelledby="votingResultsLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <h3 class="modal-title" id="votingResultsLabel">Final Voting Results</h3>
+      </div>
+      <div class="modal-body" id="voting-results">
+        <!-- TEST DATA -->
+        <p>This is a summary of votes cast by <strong>256 participants</strong> to date.</p>
+        <div class="proposal">
+          Pedestrian Safety & Traffic Calming Measures<br>
+          <div class="col-xs-10">
+            <!-- Bar width formula for loop: 'calc(100%/{proposal points max value}*{current proposal points})' -->
+            <!-- Also, you can set the color of the bar by 'background-color: {color value}' -->
+            <div class="bar" style="width:calc(100%/565*565)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">565 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Water Break Repair Equipment<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*541)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">541 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Great Outdoors! Trails, Bike & Fitness<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*400)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">400 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Afterschool For Youth: Websites, Apps & Robots!<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*382)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">382 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Nurturing Parents Program<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*382)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">382 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Afterschool: Do You Want To Be A First Responder?<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*350)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">350 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Walking/Hiking Trails<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*283)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+              <div class="points">283 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Drought Tolerant Landscape Demonstration<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*167)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">167 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Street & Plothole Repair<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*55)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">55 points</div>
+          </div>
+        </div>
+        <div class="proposal">
+          Debt Free Vallejo<br>
+          <div class="col-xs-10">
+            <div class="bar" style="width:calc(100%/565*0)">&nbsp;</div>
+          </div>
+          <div class="col-xs-2 text-right">
+            <div class="points">0 points</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer text-right">
+        &nbsp;
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Adding this to see the mockup on load -->
+<script>
+  $(document).ready(function() {
+    $('#votingResults').modal('show');
+  });
+</script>

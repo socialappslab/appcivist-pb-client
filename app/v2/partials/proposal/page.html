@@ -164,6 +164,10 @@
 <main class="appmain" ng-class="{anonymous: isAnonymous}">
   <article class="proposal__single">
     <header class="page__header">
+      <div class="row">
+        <breadcrumb label="proposal.title"></breadcrumb>
+      </div>
+      <div ng-include="'/app/v2/mockups/voting-summary-proposal-page.html'"></div>
       <div class="type">
         <i class="fa fa-file-text"></i>&nbsp;&nbsp;{{'Proposal' | translate}}
         <span class="status">— {{proposal.status | translate}}</span>

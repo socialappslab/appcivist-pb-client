@@ -1,7 +1,12 @@
 <ul ng-if="vm.isProposal && vm.isHover">
   <!-- disabled by issue #398 -->
   <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage"><a ng-click="vm.openModal('contributionEditModal')">{{'Edit information' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="vm.userIsAuthor || ((vm.userIsAuthor || vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator) && vm.contributionStatus === 'EXCLUDED')"><a ng-click="vm.publish()">{{'Publish' | translate}}</a></li>
+  <li class="li-action-menu"
+      ng-if="vm.userIsAuthor || 
+                ((vm.userIsAuthor || vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator)
+                  && (vm.contributionStatus === 'EXCLUDED' || vm.contributionStatus === 'NEW' || vm.contributionStatus === 'DRAFT'))">
+     <a ng-click="vm.publish()">{{'Publish' | translate}}</a>
+  </li>
   <li class="li-action-menu"><a ng-click="vm.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="vm.userIsWorkingGroupCoordinator && vm.isProposalIdeaStage"><a ng-click="vm.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
@@ -18,7 +23,7 @@
   <li class="action__promote" ng-if="vm.userIsWorkingGroupCoordinator"><a>{{'Promote to proposal' | translate}}</a></li>
   <li class="action__history"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
   <li class="action__history"><a ng-click="vm.showModerationForm('flag')">{{'Flag this contribution' | translate}}</a></li>
-  <li class="action__history" ng-if="vm.userIsAssemblyCoordinator" ng-click="vm.showModerationForm('delete')"><a>{{'Delete this contribution' | translate}}</a></li>  
+  <li class="action__history" ng-if="vm.userIsAssemblyCoordinator" ng-click="vm.showModerationForm('delete')"><a>{{'Delete this contribution' | translate}}</a></li>
 </ul>
 
 <div class="history-modal" style="display: none;">

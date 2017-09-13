@@ -1,0 +1,53 @@
+.card__proposal {
+  .card__body {
+    padding-bottom: 0;
+    .voting-control {
+      padding: 1rem;
+      margin: 1rem -2.1rem 0;
+      background-color: #F3F3F3;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #3c3c3c;
+      .distributed {
+        input[type="number"] {
+          display: inline-block;
+          width: 3.5rem;
+          margin: 0 0.5rem;
+          font-weight: 600;
+        }
+        span { font-size: 0.7rem; }
+      }
+      .plurality {
+        .btn {
+          border: 1px solid #3c3c3c;
+          margin: 0px 0.2rem;
+          border-radius: 3px;
+          width: 4.2rem;
+          text-align: center;
+          padding: 0.3rem 0;
+          &.active {
+            background-color: #222;
+            color: #EFEFEF;
+          }
+        }
+      }
+      .range {
+        input[type="number"] {
+          display: inline-block;
+          width: 3.5rem;
+          margin: 0 0.5rem;
+          font-weight: 600;
+        }
+        span { font-size: 0.7rem; }
+      }
+      .ranked {
+        select {
+          display: inline-block;
+          width: 4.5rem;
+          margin: 0 0.5rem;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

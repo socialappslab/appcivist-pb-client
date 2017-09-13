@@ -23,9 +23,7 @@
         // the target view. Current options: card.
         view: '@'
       },
-      //templateUrl: '/app/v2/partials/directives/contribution-feedback.html',
-      // Uncomment to test the new feedback controls
-      templateUrl: '/app/v2/mockups/contribution-feedback.html',
+      templateUrl: '/app/v2/partials/directives/contribution-feedback.html',
       link: function (scope, element, attrs) {
         var user = localStorageService.get('user');
         // Read user contribution feedback

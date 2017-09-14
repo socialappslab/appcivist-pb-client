@@ -72,7 +72,7 @@
       <div class="heading__working_group" ng-if="contribution.workingGroupAuthors && contribution.workingGroupAuthors.length > 0">
         <div class="col-md-1 no-padding no-margin">
           <!-- TODO: allow for the possibility in which a contribution is assigned to a WG but also is associated with a Topic-->
-          <img ng-if="group.profile.icon && !group.isTopic" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width=100%; vertical-align: middle;">
+          <img ng-if="group.profile.icon && !group.isTopic" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width:100%; vertical-align: middle;">
           <i ng-if="!group.profile.icon" class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tags': group.isTopic}"></i>
           <i ng-if="group.profile.icon && group.isTopic" class="fa fa-tags"></i>
         </div>
@@ -96,12 +96,13 @@
         {{contribution.plainText | limitTo:152 }}{{contribution.plainText.length > 152 ? "..." : ""}}
       </div>
       <div class="voting_mechanism">
-        <contribution-feedback contribution="contribution" ng-if="showVotingButtons"></contribution-feedback>
+        <contribution-feedback contribution="contribution" ng-if="!showVotingButtons"></contribution-feedback>
       </div>
+      <!-- Control types: distributed, plurality, range, ranked -->
+      <contribution-card-voting-control type="distributed" ng-if="showVotingButtons"></contribution-card-voting-control>
     </div>
   </div>
 </div>
-
 
 <!-- IDEA -->
 <div class="card__idea" ng-if="isIdea">
@@ -123,7 +124,7 @@
         </div>
         <p ng-class="{overlay: showOverlay}">{{'Created on' | translate}} {{formatDate(contribution.creation)}}</p>
       </div>
-      <contribution-feedback contribution="contribution" view="card"></contribution-feedback>
+      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons"></contribution-feedback>
 
       <!-- contextual -->
       <div class="title_block">
@@ -180,9 +181,11 @@
       </div>
     </div>
     <contribution-card-themes themes="mergedThemes"></contribution-card-themes>
+    <!-- Control types: distributed, plurality, range, ranked -->
     <div class="card__footer">
       {{contribution.workingGroupAuthors[0].name}}
     </div>
+    <contribution-card-voting-control type="distributed" ng-if="showVotingButtons"></contribution-card-voting-control>
   </div>
 </div>
 <!-- IDEA -->

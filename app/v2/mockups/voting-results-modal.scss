@@ -1,0 +1,19 @@
+#votingResults {
+  strong { font-weight: bold; }
+  p { margin-bottom: 2rem; }
+
+  .proposal {
+    margin-top: 0.5rem;
+    margin-bottom: 2.3rem;
+    padding-left: 1.5rem;
+    font-size: 0.8rem;
+    .bar {
+      margin-left: -15px;
+      height: 0.75rem;
+      background-color: #26557b;
+    }
+    .points {
+      font-weight: bold;
+    }
+  }
+}

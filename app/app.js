@@ -12,7 +12,7 @@
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
     'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies', 'facebook',
-    'ngSanitize', 'ncy-angular-breadcrumb'
+    'ngSanitize', 'ncy-angular-breadcrumb', 'infinite-scroll'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
@@ -582,6 +582,10 @@
         controller: 'v2.ProposalPageCtrl',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.workingGroup.gid",
+          label: "Proposal"
         }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {
@@ -800,17 +804,19 @@
     $translateProvider
       .preferredLanguage('en-US')
       .fallbackLanguage('en-US')
-      .registerAvailableLanguageKeys(["en-US", "es-ES", "it-IT", "de-DE", "fr-FR"], {
+      .registerAvailableLanguageKeys(["en-US", "es-ES", "fr-FR", "de-DE", "pt-BR"], {
         'en': 'en-US',
         'es': 'es-ES',
         'it': 'it-IT',
         'fr': 'fr-FR',
         'de': 'de-DE',
+        'pt': 'pt-BR',
         'en_US': 'en-US',
         'es_ES': 'es-ES',
         'it_IT': 'it-IT',
         'fr_FR': 'fr-FR',
-        'de_DE': 'de-DE'
+        'de_DE': 'de-DE',
+        'pt_BR': 'pt-BR'
       })
       .useSanitizeValueStrategy(null);
 

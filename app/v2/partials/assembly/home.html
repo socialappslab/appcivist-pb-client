@@ -25,12 +25,13 @@
 
   <div ng-if="!unauthorizedAccess || assembly.listed">
     <section class="well row" ng-style="coverStyle">
-      <div class="overlay col-lg-offset-2 col-lg-8">
+      <div class="col-lg-offset-2 col-lg-8">
+        <div class="assembly-logo" ng-style="logoStyle"></div>
         <h1>{{assembly.name}}</h1>
-
-        <p>
-          {{assembly.description}}
+        <p ng-if="assembly.location">
+          <i class="fa fa-lg fa-map-marker"></i> {{assembly.location.placeName}}
         </p>
+        <a class="btn btn-default participate">Participate</a>
       </div>
     </section>
 

@@ -84,11 +84,16 @@
             }
             this.shortname = this.assembly.shortname
             this.logo = this.assembly.profile.icon;
+            this.logoStyle = this.logo ?
+            {
+              'background-image': 'url(' + this.logo + ')'
+            } : '';
             this.cover = this.assembly.profile.cover;
             this.coverStyle = this.cover ?
             {
               'background-image': 'url(' + this.cover + ')',
               'background-position': 'center center',
+              'background-size': 'cover'
             } : '';
 
             this.fetchCampaigns();

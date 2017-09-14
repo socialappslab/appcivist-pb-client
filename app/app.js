@@ -804,17 +804,19 @@
     $translateProvider
       .preferredLanguage('en-US')
       .fallbackLanguage('en-US')
-      .registerAvailableLanguageKeys(["en-US", "es-ES", "it-IT", "de-DE", "fr-FR"], {
+      .registerAvailableLanguageKeys(["en-US", "es-ES", "fr-FR", "de-DE", "pt-BR"], {
         'en': 'en-US',
         'es': 'es-ES',
         'it': 'it-IT',
         'fr': 'fr-FR',
         'de': 'de-DE',
+        'pt': 'pt-BR',
         'en_US': 'en-US',
         'es_ES': 'es-ES',
         'it_IT': 'it-IT',
         'fr_FR': 'fr-FR',
-        'de_DE': 'de-DE'
+        'de_DE': 'de-DE',
+        'pt_BR': 'pt-BR'
       })
       .useSanitizeValueStrategy(null);
 

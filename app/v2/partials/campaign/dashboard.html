@@ -6,17 +6,17 @@
         <div class="row">
           <breadcrumb label="campaign.title"></breadcrumb>
         </div>
-  
+
         <!--Campaign Header -> campaign.title + logo + actions menu-->
         <div class="row">
           <div class="row no-margin">
             <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="hidden-xs type">
-                  <span class="overlay"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
+                  <span><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
                 </div>
               </div>
             <div class="title_block">
-                <h1 class="heading--title overlay">{{campaign.title}}</h1>
+                <h1 class="heading--title">{{campaign.title}}</h1>
                 <!-- HEADER -> actions menu -->
                 <div class="heading_actions" ng-if="!isAnonymous">
                   <ul>
@@ -56,21 +56,21 @@
                   </div>
                 </div>
             </div>
-  
-            <div ng-if="logo" style="padding-top: 1em;">
+
+            <div ng-if="logo" class="logo">
               <div class="hidden-xs" style="float:left; margin-right:10px;">
                 <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">
               </div>
-              <p class="overlay description"
+              <p class="description"
                  style="padding-right: 10px; margin-top: 0px; display: inline-block;"
                  ng-bind-html="((campaign.goal | limitTo:400)+((campaign.goal.length) > 400 ? '...' : '' )) | linky">
               </p>
             </div>
-  
+
             <div ng-if="!logo" style="padding-top: 1em;">
-              <p class="description overlay" ng-bind-html="((campaign.goal | limitTo:400)+((campaign.goal.length) > 400 ? '...' : '' )) | linky"></p>
+              <p class="description" ng-bind-html="((campaign.goal | limitTo:400)+((campaign.goal.length) > 400 ? '...' : '' )) | linky"></p>
             </div>
-  
+
           </div>
           <!-- Subscribe when logged in
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription">Subscribe to Newsletter</button>-->
@@ -109,10 +109,10 @@
           </div>
         </div>
       </header>
-  
+
       <!--Campaign Timeline -->
       <campaign-timeline title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"></campaign-timeline>
-  
+
       <!-- Voting stage test -->
       <div ng-include="'/app/v2/mockups/voting-stage-header.html'"></div>
 
@@ -148,7 +148,7 @@
                                    generated-filters="filters"
                                    dry-run="true"
                                    current-component="currentComponent"></proposals-ideas-searchbox>
-  
+
         <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
           <section class="list--proposals">
             <header class="proposals__header">
@@ -171,7 +171,7 @@
               </pagination-widget>
             </div>
           </section>
-  
+
           <!-- Ideas section -->
           <section class="list--ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA') && ideasSectionExpanded && currentComponentType != 'IDEAS'">
             <header class="ideas__header" style="padding-left: 30px;">
@@ -188,7 +188,7 @@
               <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
             </div>
           </section>
-  
+
           <!-- Comments section -->
           <section class="list--ideas" ng-if="commentsSectionExpanded" ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">
             <header class="comments__header" style="padding-left: 30px;">
@@ -196,7 +196,7 @@
               <a ng-if="commentsSectionExpanded" ng-click="toggleHideCommentsSection()" class="comments__show_ideas"
                 href=""><i class="fa fa-comments-o"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
             </header>
-  
+
             <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
               <!-- Nav tabs -->
               <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
@@ -222,7 +222,7 @@
             </div>
           </section>
         </div>
-  
+
         <!--CONTENT -> Contributions -->
         <div class="row" style="padding-left:20px">
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
@@ -232,7 +232,7 @@
             <!--<h2>{{ 'Insights' | translate}}<br></h2>-->
             <!--<a ng-if="insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;-->
             <!--</header>-->
-  
+
             <!--<a><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a><br>-->
             <!--<a><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a><br>-->
             <!--<a><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a><br>-->
@@ -243,7 +243,7 @@
         </div>
       </section>
     </article>
-  
+
     <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
     <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember">
@@ -257,7 +257,7 @@
         </a>
       </li>
     </ul>
-  
+
     <!-- Discussions: list of comments under the Conversation Tabs -->
     <div class="hidden-lg tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
@@ -276,7 +276,7 @@
         </discussion-panel>
       </div>
     </div>
-  
+
     <!-- New Proposal Form Modal -->
     <script id="proposalFormModal" type="text/ng-template">
       <contribution-proposal-form
@@ -287,18 +287,18 @@
         on-success="redirectToProposal(contribution)"
         on-import-success="closeModal()"></contribution-proposal-form>
     </script>
-  
+
     <!-- New Idea Form Modal -->
     <script id="ideaFormModal" type="text/ng-template">
-      <contribution-form 
-        campaign="campaign" 
+      <contribution-form
+        campaign="campaign"
         configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
-        type="IDEA" 
+        type="IDEA"
         on-success="closeModal()"
         on-import-success="closeModal()"></contribution-form>
     </script>
   </main>
-  
+
   <div class="modal fade dashboardModal" id="workingGroups" tabindex="-1" role="dialog" aria-labelledby="workingGroupsLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -323,7 +323,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Subscribe when logged in
   <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionLabel">
     <div class="modal-dialog" role="document">
@@ -342,7 +342,7 @@
       </div>
     </div>
   </div>-->
-  
+
   <!-- Subscribe when not logged in -->
   <div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel">
     <div class="modal-dialog" role="document">
@@ -361,7 +361,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Comment this div to hide it
   <div class="alert alert-dismissible subconfirm" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -369,7 +369,7 @@
     <p class="submessage">If you would like to receive the newsletter by email, click here: <a href="#">Notification settings</a></p>
   </div>
   -->
-  
+
   <!-- This is the voting modal test, it will appear on load if this div is uncommented -->
 
   <!-- <div ng-include="'/app/v2/mockups/voting-modal.html'"></div> -->

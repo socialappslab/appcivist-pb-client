@@ -800,13 +800,13 @@ uib-accordion {
       h2 {
         margin-right: 20px;
       }
-      
+
       a {
         padding-top: 27px;
         display: block;
       }
     }
-    
+
     .customfields__values {
       margin-top: 20px;
     }
@@ -1182,7 +1182,7 @@ custom-field {
 //@import "../mockups/profile.scss";
 @import "../mockups/voting-summary-proposal-page";
 @import "../components/topbar-langpicker/topbar-langpicker";
-@import "assembly"
+@import "assembly";
 // Uncomment this to test the voting modal
 // @import "../mockups/voting-modal";
 // Uncomment this to test the new voting controls

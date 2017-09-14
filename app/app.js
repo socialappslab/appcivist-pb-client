@@ -12,7 +12,7 @@
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
     'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies', 'facebook',
-    'ngSanitize', 'ncy-angular-breadcrumb'
+    'ngSanitize', 'ncy-angular-breadcrumb', 'infinite-scroll'
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 

@@ -12,42 +12,6 @@
   function ContributionCard(Contributions, Campaigns, localStorageService, Memberships, $window, $rootScope, Notify,
     $compile, $sce, limitToFilter, $stateParams) {
 
-    function hasRole(roles, roleName) {
-      var result = false;
-
-      angular.forEach(roles, function (role) {
-        if (role.name === roleName) {
-          result = true;
-        }
-      });
-      return result;
-    }
-
-    function setContributionType(scope) {
-      scope.isProposal = scope.contribution.type === 'PROPOSAL';
-      scope.isIdea = scope.contribution.type === 'IDEA';
-    }
-
-    function toggleContextualMenu() {
-      this.showContextualMenu = !this.showContextualMenu;
-    }
-
-    function verifyCampaignComponent(scope) {
-      if (scope.campaign && scope.components) {
-        // Verify the status of the campaign and show or not show the voting buttons
-        var currentComponent = Campaigns.getCurrentComponent(scope.components);
-        currentComponent = currentComponent ? currentComponent : {};
-        if (currentComponent.type === 'VOTING') {
-          scope.showVotingButtons = true;
-        } else if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
-          scope.isProposalIdeaStage = true;
-        } else {
-          scope.isProposalIdeaStage = false;
-        }
-      }
-    }
-
-
     return {
       restrict: 'E',
       scope: {
@@ -62,51 +26,58 @@
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
-        scope.showContextualMenu = false;
-        scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
-        scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
-        scope.ideaExcerptStyle = scope.showIdeaBody ? { height: '120px' } : { height: '110px' };
-        scope.ideaHeaderStyle = scope.showIdeaBody ? { height: '100px' } : { height: '150px' };
-        setContributionType(scope);
-        var assembly = localStorageService.get('currentAssembly');
-        scope.campaignId = $stateParams.cid ? parseInt($stateParams.cid) : 0;
-        scope.formatDate = formatDate.bind(scope);
-        scope.mergedThemes = mergeThemes(scope.contribution);
 
-        if (scope.contribution.cover) {
-          let bkg_url = 'url(\"'+scope.contribution.cover.url+'\")';
-          scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
-          scope.showOverlay = true;
-        }
+        activate();
 
-        if (assembly) {
-          scope.assemblyId = assembly.assemblyId;
-        }
+        function activate() {
+          scope.showContextualMenu = false;
+          scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
+          scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
+          scope.ideaExcerptStyle = scope.showIdeaBody ? { height: '120px' } : { height: '110px' };
+          scope.ideaHeaderStyle = scope.showIdeaBody ? { height: '100px' } : { height: '150px' };
+          setContributionType(scope);
+          var assembly = localStorageService.get('currentAssembly');
+          scope.campaignId = $stateParams.cid ? parseInt($stateParams.cid) : 0;
+          scope.formatDate = formatDate.bind(scope);
+          scope.mergedThemes = mergeThemes(scope.contribution);
+          scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
 
-        if (!scope.isIdea) {
-          var workingGroupAuthors = scope.contribution.workingGroupAuthors;
-          var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-          scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
-          scope.notAssigned = true;
-
-          if (scope.group) {
-            scope.notAssigned = false;
+          if (scope.contribution.cover) {
+            let bkg_url = 'url(\"'+scope.contribution.cover.url+'\")';
+            scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+            scope.showOverlay = true;
           }
 
-          if (!scope.isAnonymous) {
-            scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
-            scope.contributionId = scope.contribution.contributionId;
-          } else {
-            scope.auuid = $stateParams.auuid;
-            scope.cuuid = $stateParams.cuuid;
-            scope.groupId = scope.guuid = $stateParams.guuid ?
-              $stateParams.guuid : workingGroupAuthorsLength ?
+          if (assembly) {
+            scope.assemblyId = assembly.assemblyId;
+          }
+
+          if (!scope.isIdea) {
+            var workingGroupAuthors = scope.contribution.workingGroupAuthors;
+            var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+            scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
+            scope.notAssigned = true;
+
+            if (scope.group) {
+              scope.notAssigned = false;
+            }
+
+            if (!scope.isAnonymous) {
+              scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+              scope.contributionId = scope.contribution.contributionId;
+            } else {
+              scope.auuid = $stateParams.auuid;
+              scope.cuuid = $stateParams.cuuid;
+              scope.groupId = scope.guuid = $stateParams.guuid ?
+                $stateParams.guuid : workingGroupAuthorsLength ?
                 scope.contribution.workingGroupAuthors[0].uuid : "";
-            scope.contributionId = scope.contribution.uuid;
+              scope.contributionId = scope.contribution.uuid;
+            }
           }
         }
 
-        verifyCampaignComponent(scope);
+
+        scope.$watch('components',verifyCampaignComponent());
 
         scope.showActionMenu = false;
         scope.myObject = {};
@@ -175,6 +146,40 @@
             themes = themes.concat(contribution.emergentThemes);
           }
           return themes;
+        }
+
+        function verifyCampaignComponent() {
+            if (this.campaign && this.components) {
+              // Verify the status of the campaign and show or not show the voting buttons
+              var currentComponent = Campaigns.getCurrentComponent(this.components);
+              currentComponent = currentComponent ? currentComponent : {};
+              if (currentComponent.type === 'VOTING') {
+                this.showVotingButtons = true;
+              } else if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
+                this.isProposalIdeaStage = true;
+              } else {
+                this.isProposalIdeaStage = false;
+              }
+            }
+          }
+
+        function hasRole(roles, roleName) {
+          var result = false;
+          angular.forEach(roles, function (role) {
+            if (role.name === roleName) {
+              result = true;
+            }
+          });
+          return result;
+        }
+
+        function setContributionType(scope) {
+          scope.isProposal = scope.contribution.type === 'PROPOSAL';
+          scope.isIdea = scope.contribution.type === 'IDEA';
+        }
+
+        function toggleContextualMenu() {
+          this.showContextualMenu = !this.showContextualMenu;
         }
       }
     };

@@ -3,10 +3,11 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
-          <h3 class="modal-title" id="votingLabel">Voting instructions</h3>
+          <h3 class="modal-title" id="votingLabel">{{'Voting instructions' | translate}}</h3>
         </div>
         <div class="modal-body" id="voting-instructions">
           <!-- TEST INSTRUCTIONS - This section be replaced by the actual instructions of the voting obtained via API call -->
+          <!-- This will be in ballot.instructions, with HTML format-->
           <p><strong>Voting has begun!</strong></p>
           <p>You assembly has decided to use the method of <strong>Distrubuted Voting</strong>.</p>
           <p>You have 100 points that you can distribute across as many proposals as you want.</p>
@@ -16,19 +17,19 @@
           <!-- END TEST INSTRUCTIONS -->
         </div>
         <div class="modal-footer text-right" ng-if="userIsAuthenticated">
-          <button class="btn btn-default btn-voting">Start voting</button>
+          <button class="btn btn-default btn-voting">{{'Start voting'|translate}}</button>
         </div>
         <div class="modal-footer text-right" ng-if="!userIsAuthenticated">
-          <p class="smaller">To start the voting process, enter your email and the ballot secret code<br>here. Contact the <strong>campaign organizers</strong> to obtain the code.</p>
+          <p class="smaller">{{'voting.secret.contact'|translate}}</p>
           <form class="form-inline">
             <div class="form-group">
               <input type="email" class="form-control form-inline" placeholder="Email">
               <input type="password" class="form-control form-inline" placeholder="Code" style="width:9rem">
-              <button class="btn btn-default btn-voting">Start voting</button>
+              <button class="btn btn-default btn-voting">{{'Start voting'|translate}}</button>
             </div>
           </form>
-          <p class="smaller">If you don't have the secret code you can still view the proposals in the ballot.</p>
-          <button class="btn btn-default btn-voting">View proposals</button>
+          <p class="smaller">{{'voting.secret.view'|translate}}</p>
+          <button class="btn btn-default btn-voting">{{'View proposals'|translate}}</button>
         </div>
       </div>
     </div>

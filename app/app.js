@@ -582,6 +582,10 @@
         controller: 'v2.ProposalPageCtrl',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.workingGroup.gid",
+          label: "Proposal"
         }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {

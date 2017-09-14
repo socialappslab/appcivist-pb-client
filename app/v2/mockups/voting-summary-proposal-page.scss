@@ -1,0 +1,25 @@
+.voting-summary {
+  position: absolute;
+  right: 3rem;
+  top: 2rem;
+  width: 200px;
+  z-index: 99;
+  font-weight: bold;
+  text-align: right;
+  input {
+    text-align: center;
+    display: inline;
+    vertical-align: middle;
+    color: black;
+    font-weight: bold;
+    width: 5rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  span {
+    font-size: 0.6rem;
+    color: #ccc;
+    display: block;
+    margin-right: -12px;
+  }
+}

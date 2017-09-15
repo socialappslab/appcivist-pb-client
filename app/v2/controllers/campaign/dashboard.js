@@ -253,7 +253,7 @@
           // get proposals
           Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
             $scope.proposals = response.list;
-            $scope.insights.proposalsCount = response.list.length;
+            $scope.insights.proposalsCount = response.total;
             response.list.forEach(
               function (proposal) {
                 $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
@@ -268,7 +268,13 @@
             Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(
               function (response) {
                 $scope.ideas = response.list;
-                $scope.insights.ideasCount = response.list.length;
+                $scope.insights.ideasCount = response.total;
+                response.list.forEach(
+                  function (proposal) {
+                    $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
+                  }
+                );
+
                 if (!$scope.ideas) {
                   $scope.ideas = [];
                 }

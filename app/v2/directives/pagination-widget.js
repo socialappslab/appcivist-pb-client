@@ -36,7 +36,8 @@
         isTopicGroup: '=',
         campaign: '=',
         components: '=',
-        filters: '='
+        filters: '=',
+        showVotingButtons: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function(scope) {

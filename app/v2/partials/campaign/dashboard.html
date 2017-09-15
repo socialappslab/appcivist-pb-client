@@ -167,7 +167,7 @@
             <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
                 is-coordinator="isCoordinator" ng-if="showPagination" campaign="campaign" components="components"
-                filters="filters">
+                show-voting-buttons="showVotingButtons" filters="filters">
               </pagination-widget>
             </div>
           </section>
@@ -182,8 +182,7 @@
             </header>
             <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
               <contribution-card class="card__idea col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="idea in ideas track by $index"
-                contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous"
-                show-voting-buttons="true" is-coordinator="isCoordinator">
+                contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous" is-coordinator="isCoordinator">
               </contribution-card>
               <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
             </div>
@@ -221,25 +220,6 @@
               </div>
             </div>
           </section>
-        </div>
-
-        <!--CONTENT -> Contributions -->
-        <div class="row" style="padding-left:20px">
-          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <!-- Insights section -->
-            <!-- TODO: fix issue with display of this section below <section class="list&#45;&#45;ideas" ng-class="{hide: !insightsSectionExpanded}">-->
-            <!--<header class="ideas__header">-->
-            <!--<h2>{{ 'Insights' | translate}}<br></h2>-->
-            <!--<a ng-if="insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;-->
-            <!--</header>-->
-
-            <!--<a><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a><br>-->
-            <!--<a><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a><br>-->
-            <!--<a><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a><br>-->
-            <!--<a ng-repeat="group in groups" ng-if="!group.isTopic && group.proposalsCount>0"><i class="fa fa-users"></i> &nbsp;{{'Group' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a>-->
-            <!--<a ng-repeat="group in groups" ng-if="group.isTopic && group.proposalsCount>0"><i class="fa fa-hashtag"></i> &nbsp;{{'Topic' | translate}}: {{group.name}}, {{'Proposals' | translate}}: {{ group.proposalsCount}}<br></a><br>-->
-            <!--</section>-->
-          </div>
         </div>
       </section>
     </article>

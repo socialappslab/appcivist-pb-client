@@ -417,8 +417,7 @@
               </header>
 
               <div class="list__cards container__ideas">
-                <contribution-card ng-repeat="idea in relatedContributions track by $index" class="card__idea col-*-12" contribution="idea"
-                  show-voting-buttons="false"></contribution-card>
+                <contribution-card ng-repeat="idea in relatedContributions track by $index" class="card__idea col-*-12" contribution="idea"></contribution-card>
                 <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
               </div>
             </section>

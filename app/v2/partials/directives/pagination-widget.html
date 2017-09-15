@@ -6,7 +6,7 @@
   <section ng-if="type==='proposal'">
     <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
       <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
-        total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="false"
+        total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="showVotingButtons"
         on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"
         campaign="campaign" components="components">
       </contribution-card>
@@ -22,8 +22,9 @@
     <!--<div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">-->
     <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
       <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"
-        total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="false"
-        on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"></contribution-card>
+        total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="showVotingButtons"
+        on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"
+        campaign="campaign" components="components"></contribution-card>
       <p ng-if="contributions.length === 0" class="card card__message">
         {{ 'pagination.widget.no' | translate }} {{ type }}s {{ 'pagination.widget.description' | translate}}
       </p>

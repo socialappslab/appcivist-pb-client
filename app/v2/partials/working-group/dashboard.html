@@ -147,8 +147,8 @@
       </div>
       <proposals-ideas-searchbox search-handler="doSearch(filters)" load-themes="loadThemes(query)" campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
         generated-filters="filters" dry-run="true"></proposals-ideas-searchbox>
-      
-      
+
+
       <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
         <section class="list--proposals">
           <header class="proposals__header" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
@@ -177,7 +177,8 @@
               filters="filters"
               is-topic-group="isTopicGroup"
               campaign="campaign"
-              components="components"></pagination-widget>
+              components="components"
+              show-voting-buttons="showVotingButtons"></pagination-widget>
             <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
           </div>
         </section>
@@ -195,7 +196,6 @@
                                 contribution="idea"
                                 campaign="campaign"
                                 is-anonymous="isAnonymous"
-                                show-voting-buttons="false"
                                 is-coordinator="isCoordinator"
                                 is-topic-group="isTopicGroup"
                                 components="components"></contribution-card>

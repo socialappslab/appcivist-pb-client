@@ -49,6 +49,7 @@
       $scope.ideasSectionExpanded = false;
       $scope.insightsSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
+      $scope.showVotingButtons = false;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -243,6 +244,7 @@
               );
               $scope.currentComponent = currentComponent;
               $scope.type = $scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal';
+              $scope.showVotingButtons = $scope.currentComponent.type === 'VOTING' ? true : false;
               $scope.components = data;
               localStorageService.set('currentCampaign.components', data);
               localStorageService.set('currentCampaign.currentComponent', currentComponent);

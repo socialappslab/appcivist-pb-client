@@ -15,16 +15,16 @@
   .nav--active {
     z-index: 2000 !important;
   }
-  
+
   .nav__container {
     overflow-y: scroll;
   }
-  
+
   .navigation.nav--active .nav__footer,
   .nav--active.navigation-logged-in .nav__footer {
     position: relative;
   }
-  
+
   .account__actions .button {
     background-color: #bacabc;
     color: #11493b;
@@ -41,8 +41,8 @@
 
     <div class="login_signup">
       <div class="account__actions">
-        <a class="button" ng-click="goToLogin()" href="">{{'Sign in' | translate}}</a>
-        <a class="button" ng-href="#/v2/signup" ng-if="signupsEnabled">{{'Sign up' | translate}}</a>
+        <a ng-click="goToLogin()" href="">{{'Sign in' | translate}}</a>
+        <a ng-href="#/v2/signup" ng-if="signupsEnabled">{{'Sign up' | translate}}</a>
       </div>
     </div>
 

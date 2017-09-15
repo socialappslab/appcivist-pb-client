@@ -16,10 +16,10 @@
         <!-- Menu when the user is logged in-->
         <ul class="nav navbar-nav navbar-right menu-elements">
             <li>
-                <a class="button" ng-click="goToLogin()" href="">{{'Sign in' | translate}}</a>
+                <a ng-click="goToLogin()" href="">{{'Sign in' | translate}}</a>
             </li>
             <li>
-                <a class="button" ng-href="#/v2/signup" ng-if="signupsEnabled">{{'Sign up' | translate}}</a>
+                <a ng-href="#/v2/signup" ng-if="signupsEnabled">{{'Sign up' | translate}}</a>
             </li>
             <langpicker></langpicker>
         </ul>

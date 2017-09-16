@@ -228,10 +228,15 @@
             getCurrentBallotEntityType() : 'proposal';
       this.currentComponent = currentComponent;
 
-      if(!this.campaign || !this.campaign.rsID) {
+      if(!this.campaign || !this.campaign.rsID || !this.campaign.rsUUID) {
         this.$watch("campaign.rsID", function () {
-          if (this.campaign && this.campaign.rsID) this.loadCampaignConfigs();
+          if ($scope.campaign && $scope.campaign.rsID) $scope.loadCampaignConfigs();
         });
+        this.$watch("campaign.rsUUID", function () {
+          if ($scope.campaign && $scope.campaign.rsUUID) $scope.loadCampaignConfigs();
+        });
+      } else {
+        this.loadCampaignConfigs();
       }
       localStorageService.set('currentCampaign.components', this.components);
       localStorageService.set('currentCampaign.currentComponent', currentComponent);
@@ -243,14 +248,17 @@
         let rsp = this.isAnonymous
           ? Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
           : Campaigns.getConfiguration(this.campaign.rsID).get();
+
+        let currentComponent = this.currentComponent;
+        let configs = {}
         rsp.$promise.then(
           function (data) {
             $scope.campaignConfigs = data;
-            setSectionsButtonsVisibility(this.currentComponent);
+            setSectionsButtonsVisibility(currentComponent);
             loadGroupsAfterConfigs();
           },
           function (error) {
-            setSectionsButtonsVisibility(this.currentComponent);
+            setSectionsButtonsVisibility(currentComponent);
             loadGroupsAfterConfigs();
             Notify.show('Error while trying to fetch campaign config', 'error');
           }

@@ -56,7 +56,6 @@
       $scope.newIdeasEnabled = false;
 
       $scope.pageSize = 16;
-      $scope.type = 'proposal';
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
@@ -99,7 +98,6 @@
       $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
       $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
       $scope.toggleHideInsightsSection = toggleHideInsightsSection.bind($scope);
-      $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
       $scope.openModal = openModal.bind($scope);
@@ -205,7 +203,7 @@
             };
 
           localStorageService.set("currentCampaign", $scope.campaign);
-          
+
           loadPublicCommentCount($scope.forumSpaceID);
           // We are reading the components twice,
           // - in the campaign-timeline directive
@@ -243,8 +241,8 @@
                 }
               );
               $scope.currentComponent = currentComponent;
-              $scope.type = $scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal';
               $scope.showVotingButtons = $scope.currentComponent.type === 'VOTING' ? true : false;
+              $scope.filters.mode = $scope.type = $scope.currentComponent.type === 'IDEAS' ? 'idea' : $scope.currentComponent.type === 'VOTING' ? getCurrentBallotEntityType() : 'proposal';
               $scope.components = data;
               localStorageService.set('currentCampaign.components', data);
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
@@ -252,40 +250,55 @@
             defaultErrorCallback
           );
 
+          // TODO: get analytics
+          // update $scope.insights
+
+
+          // @Deprecated Since integration with pagination widget
           // get proposals
-          Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
-            $scope.proposals = response.list;
-            $scope.insights.proposalsCount = response.total;
-            response.list.forEach(
-              function (proposal) {
-                $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
-              }
-            );
-
-            if (!$scope.proposals) {
-              $scope.proposals = [];
-            }
-
-            // get ideas
-            Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(
-              function (response) {
-                $scope.ideas = response.list;
-                $scope.insights.ideasCount = response.total;
-                response.list.forEach(
-                  function (proposal) {
-                    $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
-                  }
-                );
-
-                if (!$scope.ideas) {
-                  $scope.ideas = [];
-                }
-              },
-              defaultErrorCallback
-            );
-          });
+          //Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
+          //  $scope.proposals = response.list;
+          //  $scope.insights.proposalsCount = response.total;
+          //  response.list.forEach(
+          //    function (proposal) {
+          //      $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
+          //    }
+          //  );
+          //
+          //  if (!$scope.proposals) {
+          //    $scope.proposals = [];
+          //  }
+          //
+          //  // get ideas
+          //  Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(
+          //    function (response) {
+          //      $scope.ideas = response.list;
+          //      $scope.insights.ideasCount = response.total;
+          //      response.list.forEach(
+          //        function (proposal) {
+          //          $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
+          //        }
+          //      );
+          //
+          //      if (!$scope.ideas) {
+          //        $scope.ideas = [];
+          //      }
+          //    },
+          //    defaultErrorCallback
+          //  );
+          //});
         }
       );
+    }
+
+    function getCurrentBallotEntityType() {
+      if ($scope.campaign && $scope.campaign.ballotIndex && $scope.campaign.currentBallot) {
+        let ballot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot]
+        let type = ballot.entityType ? ballot.entityType === 'IDEA' ? 'idea' : 'proposal' : 'proposal';
+        return type;
+      } else {
+        return 'proposals';
+      }
     }
 
     function loadGroupsAfterConfigs() {
@@ -456,29 +469,6 @@
         return;
       }
       return WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).query().$promise;
-    }
-
-    /**
-     * Space.doSearch wrapper.
-     * @param {object} filters
-     * @deprecated since integration between proposal-ideas-searchbox and pagination-widget.
-     */
-    function doSearch(filters) {
-      this.currentFilters = filters;
-      this.ideasSectionExpanded = filters.mode === 'idea';
-      var vm = this;
-      var rsp = Space.doSearch(this.campaign, this.isAnonymous, filters);
-
-      if (!rsp) {
-        return;
-      }
-      rsp.then(function (data) {
-        if (filters.mode === 'proposal') {
-          vm.proposals = data ? data.list : [];
-        } else if (filters.mode === 'idea') {
-          vm.ideas = data ? data.list : [];
-        }
-      });
     }
 
     /**

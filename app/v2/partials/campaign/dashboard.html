@@ -165,9 +165,10 @@
               <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
             </header>
             <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
-              <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
-                is-coordinator="isCoordinator" ng-if="showPagination" campaign="campaign" components="components"
-                show-voting-buttons="showVotingButtons" filters="filters">
+              <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type"
+                                 is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
+                                 components="components" show-voting-buttons="showVotingButtons" filters="filters"
+                                 ng-if="showPagination">
               </pagination-widget>
             </div>
           </section>

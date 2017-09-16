@@ -107,6 +107,7 @@
       $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
       $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
       $scope.afterComponentsLoaded = afterComponentsLoaded.bind($scope);
+      $scope.loadCampaignConfigs = loadCampaignConfigs.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -227,26 +228,36 @@
             getCurrentBallotEntityType() : 'proposal';
       this.currentComponent = currentComponent;
 
-      // load configurations
-      let rsp = this.isAnonymous
-        ? Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
-        : Campaigns.getConfiguration(this.campaign.rsID).get();
-      rsp.$promise.then(
-        function (data) {
-          $scope.campaignConfigs = data;
-          setSectionsButtonsVisibility(currentComponent);
-          loadGroupsAfterConfigs();
-        },
-        function (error) {
-          setSectionsButtonsVisibility(currentComponent);
-          loadGroupsAfterConfigs();
-          Notify.show('Error while trying to fetch campaign config', 'error');
-        }
-      );
+      if(!this.campaign || !this.campaign.rsID) {
+        this.$watch("campaign.rsID", function () {
+          if (this.campaign && this.campaign.rsID) this.loadCampaignConfigs();
+        });
+      }
       localStorageService.set('currentCampaign.components', this.components);
       localStorageService.set('currentCampaign.currentComponent', currentComponent);
     }
 
+    function loadCampaignConfigs () {
+      // load configurations
+      if(!this.campaignConfigs) {
+        let rsp = this.isAnonymous
+          ? Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
+          : Campaigns.getConfiguration(this.campaign.rsID).get();
+        rsp.$promise.then(
+          function (data) {
+            $scope.campaignConfigs = data;
+            setSectionsButtonsVisibility(this.currentComponent);
+            loadGroupsAfterConfigs();
+          },
+          function (error) {
+            setSectionsButtonsVisibility(this.currentComponent);
+            loadGroupsAfterConfigs();
+            Notify.show('Error while trying to fetch campaign config', 'error');
+          }
+        );
+      }
+
+    }
     function getCurrentBallotEntityType() {
       if ($scope.campaign && $scope.campaign.ballotIndex && $scope.campaign.currentBallot) {
         let ballot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot]

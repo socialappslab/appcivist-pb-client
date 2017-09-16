@@ -253,7 +253,7 @@
         let type = ballot.entityType ? ballot.entityType === 'IDEA' ? 'idea' : 'proposal' : 'proposal';
         return type;
       } else {
-        return 'proposals';
+        return 'proposal';
       }
     }
 

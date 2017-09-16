@@ -28,7 +28,7 @@
       ModalMixin.init($scope);
       $scope.membersCommentCounter = { value: 0 };
       $scope.publicCommentCounter = { value: 0 };
-      $scope.pageSize = 16;
+      $scope.pageSize = 12;
       $scope.type = 'proposal';
       $scope.showPagination = false;
       $scope.isTopicGroup = false;
@@ -44,6 +44,8 @@
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = true;
       $scope.newIdeasEnabled = false;
+      $scope.vmSearchFilters = {};
+
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       if (pattern.test($stateParams.guuid)) {
         $scope.groupID = $stateParams.guuid;
@@ -336,8 +338,7 @@
 
       if ($scope.campaign && $scope.campaign.rsID) {
         $scope.components = localStorageService.get('currentCampaign.components');
-        $scope.currentComponet = localStorageService.get('currentCampaign.currentComponent');
-
+        let currentComponent = localStorageService.get('currentCampaign.currentComponent');
         if (!$scope.components) {
           var res;
           if (!$scope.isAnonymous) {
@@ -348,10 +349,17 @@
           }
           res.then(
             function (data) {
-              let currentComponent = Campaigns.getCurrentComponent(data);
-              $scope.currentComponent = currentComponent;
-              $scope.type = $scope.currentComponentType === 'IDEAS' ? 'idea' : 'proposal';
               $scope.components = data;
+              let currentComponent = Campaigns.getCurrentComponent(data);
+              $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
+              $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
+              $scope.vmSearchFilters.currentComponent = currentComponent;
+              $scope.vmSearchFilters.pageSize = $scope.pageSize;
+              $scope.vmSearchFilters.mode =
+                $scope.currentComponentType === 'IDEAS' ? 'idea' :
+                  currentComponent.type === 'VOTING' ?
+                    getCurrentBallotEntityType() : 'proposal';
+              $scope.currentComponent = currentComponent;
               localStorageService.set('currentCampaign.components', data);
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
             },
@@ -359,6 +367,16 @@
               Notify.show('Error loading data from server', 'error');
             }
           );
+        } else {
+          $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
+          $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
+          $scope.vmSearchFilters.currentComponent = currentComponent;
+          $scope.vmSearchFilters.pageSize = $scope.pageSize;
+          $scope.vmSearchFilters.mode =
+            $scope.currentComponentType === 'IDEAS' ? 'idea' :
+              currentComponent.type === 'VOTING' ?
+                getCurrentBallotEntityType() : 'proposal';
+          $scope.currentComponent = currentComponent;
         }
 
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();

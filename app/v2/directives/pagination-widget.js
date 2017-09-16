@@ -13,7 +13,7 @@
    *
    * @example
    *
-   * <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" type="type" is-anonymous="isAnonymous"
+   * <pagination-widget page-size="pageSize" space="spaceID" resource="contribution" is-anonymous="isAnonymous"
    *                    is-coordinator="isCoordinator" sorting="sorting" ng-if="showPagination"></pagination-widget>
    *
    */
@@ -30,7 +30,6 @@
         pageSize: '=',
         space: '=',
         resource: '=',
-        type: '=',
         isAnonymous: '=',
         isCoordinator: '=',
         isTopicGroup: '=',
@@ -79,7 +78,9 @@
             return;
           }
           let target = {};
-          scope.filters.page = pageNumber - 1;
+          var filters = _.cloneDeep(scope.filters);
+
+          filters.page = pageNumber - 1;
 
           if (scope.isAnonymous) {
             target.rsUUID = scope.space;
@@ -87,8 +88,8 @@
             target.rsID = scope.space;
           }
 
-          if (scope.filters) {
-            Space.doSearch(target, scope.isAnonymous, scope.filters).then(
+          if (filters) {
+            Space.doSearch(target, scope.isAnonymous, filters).then(
               data => {
                 let contributions = data.list || [];
                 scope.contributions = contributions;

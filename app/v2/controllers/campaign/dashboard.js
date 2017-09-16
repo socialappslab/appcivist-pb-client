@@ -50,12 +50,15 @@
       $scope.insightsSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
       $scope.showVotingButtons = false;
+      $scope.vmTimeline = {};
+      $scope.vmSearchFilters = {};
+      $scope.vmPaginated = {};
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
       $scope.newIdeasEnabled = false;
 
-      $scope.pageSize = 16;
+      $scope.pageSize = 12;
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
@@ -66,13 +69,8 @@
         proposalsCount: 0,
         ideasCount: 0,
         proposalCommentsCount: 0,
+        ideasCommentsCount: 0
       };
-
-      // TODO: add pagination to Ideas
-      // $scope.pageSizeIdea = 16;
-      // $scope.typeIdea ='idea';
-      // $scope.showPaginationIdea = false;
-      // $scope.sortingIdea = "date_desc";
 
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;
@@ -108,6 +106,7 @@
       $scope.checkConfigOpenIdeasDefault = checkConfigOpenIdeasDefault.bind($scope);
       $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
       $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
+      $scope.afterComponentsLoaded = afterComponentsLoaded.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -210,45 +209,50 @@
           // - here
           // TODO: find a way of reading it just once
           // (can we defer the rendering of the campaign-timeline directive until this part of the code is run)
-          var res;
-          if (!$scope.isAnonymous) {
-            res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
-            loadMembersCommentCount($scope.spaceID);
-          } else {
-            res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
-          }
-          res.then(
-            function (data) {
-              if ($scope.isAnonymous) {
-                loadAssemblyPublicProfile();
-              }
-              let currentComponent = Campaigns.getCurrentComponent(data);
-
-              // load configurations
-              let rsp = $scope.isAnonymous
-                ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
-                : Campaigns.getConfiguration($scope.campaign.rsID).get();
-              rsp.$promise.then(
-                function (data) {
-                  $scope.campaignConfigs = data;
-                  setSectionsButtonsVisibility(currentComponent);
-                  loadGroupsAfterConfigs();
-                },
-                function (error) {
-                  setSectionsButtonsVisibility(currentComponent);
-                  loadGroupsAfterConfigs();
-                  Notify.show('Error while trying to fetch campaign config', 'error');
-                }
-              );
-              $scope.currentComponent = currentComponent;
-              $scope.showVotingButtons = $scope.currentComponent.type === 'VOTING' ? true : false;
-              $scope.filters.mode = $scope.type = $scope.currentComponent.type === 'IDEAS' ? 'idea' : $scope.currentComponent.type === 'VOTING' ? getCurrentBallotEntityType() : 'proposal';
-              $scope.components = data;
-              localStorageService.set('currentCampaign.components', data);
-              localStorageService.set('currentCampaign.currentComponent', currentComponent);
-            },
-            defaultErrorCallback
-          );
+          // deprecated by the onLoadedComponentsCallBack on campaign timeline
+          //var res;
+          //if (!$scope.isAnonymous) {
+          //  res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
+          //  loadMembersCommentCount($scope.spaceID);
+          //} else {
+          //  res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
+          //}
+          //res.then(
+          //  function (data) {
+          //    if ($scope.isAnonymous) {
+          //      loadAssemblyPublicProfile();
+          //    }
+          //    $scope.components = data;
+          //    let currentComponent = Campaigns.getCurrentComponent(data);
+          //    $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
+          //    $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
+          //    $scope.filters.mode =
+          //      $scope.currentComponentType === 'IDEAS' ? 'idea' :
+          //        currentComponent.type === 'VOTING' ?
+          //          getCurrentBallotEntityType() : 'proposal';
+          //    $scope.currentComponent = currentComponent;
+          //
+          //    // load configurations
+          //    let rsp = $scope.isAnonymous
+          //      ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
+          //      : Campaigns.getConfiguration($scope.campaign.rsID).get();
+          //    rsp.$promise.then(
+          //      function (data) {
+          //        $scope.campaignConfigs = data;
+          //        setSectionsButtonsVisibility(currentComponent);
+          //        loadGroupsAfterConfigs();
+          //      },
+          //      function (error) {
+          //        setSectionsButtonsVisibility(currentComponent);
+          //        loadGroupsAfterConfigs();
+          //        Notify.show('Error while trying to fetch campaign config', 'error');
+          //      }
+          //    );
+          //    localStorageService.set('currentCampaign.components', data);
+          //    localStorageService.set('currentCampaign.currentComponent', currentComponent);
+          //  },
+          //  defaultErrorCallback
+          //);
 
           // TODO: get analytics
           // update $scope.insights
@@ -289,6 +293,39 @@
           //});
         }
       );
+    }
+
+    function afterComponentsLoaded() {
+      this.components = this.vmTimeline.components;
+      let currentComponent = this.vmTimeline.currentComponent;
+      this.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
+      this.showVotingButtons = this.currentComponentType === 'VOTING' ? true : false;
+      this.vmSearchFilters.currentComponent = currentComponent;
+      this.vmSearchFilters.pageSize = this.pageSize;
+      this.vmSearchFilters.mode =
+        this.currentComponentType === 'IDEAS' ? 'idea' :
+          currentComponent.type === 'VOTING' ?
+            getCurrentBallotEntityType() : 'proposal';
+      this.currentComponent = currentComponent;
+
+      // load configurations
+      let rsp = this.isAnonymous
+        ? Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
+        : Campaigns.getConfiguration(this.campaign.rsID).get();
+      rsp.$promise.then(
+        function (data) {
+          $scope.campaignConfigs = data;
+          setSectionsButtonsVisibility(currentComponent);
+          loadGroupsAfterConfigs();
+        },
+        function (error) {
+          setSectionsButtonsVisibility(currentComponent);
+          loadGroupsAfterConfigs();
+          Notify.show('Error while trying to fetch campaign config', 'error');
+        }
+      );
+      localStorageService.set('currentCampaign.components', this.components);
+      localStorageService.set('currentCampaign.currentComponent', currentComponent);
     }
 
     function getCurrentBallotEntityType() {

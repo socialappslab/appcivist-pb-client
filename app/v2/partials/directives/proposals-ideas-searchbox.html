@@ -26,8 +26,11 @@
       <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA') && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals' || filters.mode === 'myIdeas')}" ng-if="!isAnonymous">
-        <a ng-click="searchMode(currentComponent.type != 'IDEAS' ? 'myProposals' : 'myIdeas', $event)">{{currentComponent.type != 'IDEAS' ? 'My proposals' : 'My Ideas'| translate}}</a>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate}}</a>
       </li>
     </ul>
   </div>
@@ -47,7 +50,7 @@
           <a href="">{{theme.title}}<i class="fa fa-close" ng-click="removeThemeFilter(theme, $event)"></i></a>
         </li>
       </ul>
-      <ul class="tags" ng-if="filters.groups.length > 0 && currentComponent.type != 'IDEAS'">
+      <ul class="tags" ng-if="filters.groups.length > 0 && filters.mode != 'idea'">
         <p>{{'Working group' | translate}}</p>
         <li ng-repeat="group in filters.groups">
           <a href="">{{group.name}}<i class="fa fa-close" ng-click="removeGroupFilter(group, $event)"></i></a>

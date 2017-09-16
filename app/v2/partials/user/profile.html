@@ -53,16 +53,18 @@
             <br />
 
             <!-- Social Ideation connect to Facebook Button -->
-            <div class="row" ng-if="showFbSocialIdeationButton">
+            <!--<div class="row" ng-if="showFbSocialIdeationButton">-->
+              <div class="row" ng-repeat="a in userAssemblies">
               <div class="col-xs-12">
                 <button type="button" class="btn btn-primary btn-large"
                         data-ng-disabled=alreadyLoggedInFb
-                        data-ng-click="getLoginStatus()">{{FbButtonMessage | translate}}</button>
+                        data-ng-click="getLoginStatus(a.uuidAsString)">{{FbButtonMessage | translate}} {{a.name}}</button>
                 <i class="fa fa-question-circle"
                    tooltip-placement="right"
                    uib-tooltip="{{'help.tooltip.connectWithFacebook' | translate}}"
                    data-toggle="tooltip" data-placement="right" title=""></i>
               </div>
+              <br>
             </div>
           </div>
           <div class="col-md-4 col-sm-4">

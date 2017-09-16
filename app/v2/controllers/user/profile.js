@@ -19,6 +19,8 @@
       $scope.showFbSocialIdeationButton = false;
       $scope.FbButtonMessage = "Connect to Facebook through Social Ideation";
       $scope.alreadyLoggedInFb = false;
+      // $scope.assemblyUuid = "";
+      $scope.userAssemblies = [];
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
       }
@@ -164,13 +166,14 @@
       reader.readAsDataURL(file);
     }
 
-    function updateFacebookToken(){
+    function updateFacebookToken(assemblyUuid){
       $scope.FbButtonMessage = "Connected to Facebook through Social Ideation"
       var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId + '/fbtoken';
       var fd = new FormData();
       fd.append('userId', $scope.profile.facebookUserId);
       fd.append('accessToken', $scope.profile.userAccessToken);
       fd.append('expiration', $scope.profile.tokenExpiresIn);
+      fd.append('auuid', assemblyUuid);
       $http.get(url, fd, {
           headers: {
             'Content-Type': undefined
@@ -201,33 +204,38 @@
     }
 
     function verifyMembershipConfigs(uid){
-      var rsp = Memberships.membershipConfigs($scope.user.userId).get();
+      var rsp = Memberships.assemblies($scope.user.userId).query();
       rsp.$promise.then(
         function(data) {
-          console.log("configurations received "+JSON.stringify(data));
-          // appcivist.assembly.enable-social-ideation === TRUE => showFbSocialIdeationButton = true;
-          if (data['appcivist.assembly.enable-social-ideation'] && data['appcivist.assembly.enable-social-ideation'].indexOf("TRUE")>=0) {
-            $scope.showFbSocialIdeationButton = true;
+          for(let assembly of data) {
+            if( assembly && assembly.assembly.configs){
+              for(let config of assembly.assembly.configs){
+                if (config.key === "appcivist.assembly.enable-social-ideation" && (config.value === "true" || config.value === "TRUE")){
+                  $scope.userAssemblies.push(assembly.assembly);
+                  break;
+                }
+              }
+            }
           }
         },
         function (error){
-          console.log("configurations received "+JSON.stringify(error));
+          console.log("Eror when trying to get user's assemblies and configs "+JSON.stringify(error));
         }
       );
 
     }
 
-    $scope.login = function () {
+    $scope.login = function (assemblyUuid) {
       // From now on you can use the Facebook service just as Facebook api says
       Facebook.login(function(response) {
         $scope.profile.facebookUserId = response.authResponse.userID;
         $scope.profile.userAccessToken = response.authResponse.accessToken;
         $scope.profile.tokenExpiresIn = response.authResponse.expiresIn;
-        updateFacebookToken();
-      });
+        updateFacebookToken(assemblyUuid);
+      }, {scope: 'public_profile,email,user_friends,publish_actions'});
     };
 
-     $scope.getLoginStatus = function() {
+     $scope.getLoginStatus = function(assemblyUuid) {
       Facebook.getLoginStatus(function(response) {
         if(response.status === 'connected') {
           $rootScope.showAlert("Permissions already granted", "You have already logged in with Social Ideation Facebook app", "", false);
@@ -235,9 +243,9 @@
           $scope.profile.facebookUserId = response.authResponse.userID;
           $scope.profile.userAccessToken = response.authResponse.accessToken;
           $scope.profile.tokenExpiresIn = response.authResponse.expiresIn;
-          updateFacebookToken();
+          updateFacebookToken(assemblyUuid);
         } else {
-          $scope.login();
+          $scope.login(assemblyUuid);
         }
       });
     };

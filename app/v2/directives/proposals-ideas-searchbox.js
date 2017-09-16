@@ -1,8 +1,9 @@
+'use strict';
+
 (function () {
   'use strict';
 
-  appCivistApp
-    .directive('proposalsIdeasSearchbox', ProposalsIdeasSearchbox);
+  appCivistApp.directive('proposalsIdeasSearchbox', ProposalsIdeasSearchbox);
 
   ProposalsIdeasSearchbox.$inject = ['Campaigns', 'localStorageService'];
 
@@ -27,7 +28,11 @@
         dryRun: '@',
 
         // the current component of the campaign
-        currentComponent: '='
+        currentComponent: '=',
+
+        // currentComponent.type was not working in the watcher, so I added this variable to make sure it works
+        vmSearchFilters: '='
+
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function (scope, element, attrs) {
@@ -36,7 +41,7 @@
           themes: [],
           groups: [],
           // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
-          sorting: 'date_asc',
+          sorting: 'date_asc'
         };
 
         scope.vm = {
@@ -66,11 +71,16 @@
         scope.setMode = setMode.bind(scope);
         scope.getDefaultMode = getDefaultMode.bind(scope);
 
-        if (scope.currentComponent) {
+        if (scope.vmSearchFilters && scope.vmSearchFilters.mode) {
           scope.setMode();
         } else {
-          scope.$watch('currentComponent.type', function () {
-            scope.setMode();
+          scope.$watch('vmSearchFilters.mode', function () {
+            if(scope.vmSearchFilters && scope.vmSearchFilters.mode) {
+              if (scope.vmSearchFilters && scope.vmSearchFilters.pageSize) {
+                scope.filters.pageSize = scope.vmSearchFilters.pageSize;
+              }
+              scope.setMode();
+            }
           });
         }
       }
@@ -116,7 +126,7 @@
         this.doSearch();
       }
 
-      if (text.length === 0) {
+      if (text.length === 0 && this.vmSearchFilters && this.vmSearchFilters.mode) {
         this.doSearch();
       }
     }
@@ -225,53 +235,55 @@
      * call search handler with current filters spec. If dryRun is true, just update generatedFilters.
      */
     function doSearch() {
-      let filters = _.cloneDeep(this.filters);
+      var filters = _.cloneDeep(this.filters);
 
       if (filters.mode === 'myProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        let user = localStorageService.get('user');
+        var user = localStorageService.get('user');
         filters.by_author = user.userId;
       }
 
       if (filters.mode === 'myIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
-        let user = localStorageService.get('user');
-        filters.by_author = user.userId;
+        var _user = localStorageService.get('user');
+        filters.by_author = _user.userId;
       }
 
       if (this.dryRun === 'true') {
         this.generatedFilters = filters;
       } else {
-        this.searchHandler({ filters });
+        this.searchHandler({ filters: filters });
       }
     }
 
     /**
      * Sets filter mode based on currentComponent.
-     * 
+     *
      * @private
      */
     function setMode() {
-      let mode = this.getDefaultMode();
+      var mode = this.getDefaultMode();
       this.vm.canFilterByGroup = this.loadGroups && mode !== 'idea';
       this.searchMode(mode);
     }
 
+
     /**
      * Get the current search mode based on the current component.
-     * 
+     *
      * @private
      * @returns {string} current filter mode
      */
     function getDefaultMode() {
-      let mode = 'proposal';
+      var mode = 'proposal';
 
-      if (this.currentComponent) {
-        mode = this.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal';
+      if (this.vmSearchFilters && this.vmSearchFilters.mode) {
+        mode = this.vmSearchFilters.mode;
       }
       return mode;
     }
   }
-}());
+})();
+//# sourceMappingURL=proposals-ideas-searchbox.js.map

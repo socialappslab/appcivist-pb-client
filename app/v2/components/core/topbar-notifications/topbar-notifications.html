@@ -1,0 +1,53 @@
+<ul class="nav navbar-nav menu-elements">
+  <li class="dropdown nav-menu-notification" id="notificationMenu">
+    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+      <span ng-if="vm.stats.unread > 0" class="number">{{vm.stats.unread}}</span>
+      <i class="fa fa-lg fa-bell-o icon"></i>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="notificationsDropdown" infinite-scroll="vm.getNotifications()">
+      <h3>
+        {{'header.menu.Notifications'|translate}} 
+        <span><a data-toggle="modal" data-target="#notificationsModal" ng-if="false">{{'View all'|translate}}</a></span>
+        <span><a ng-click="vm.readAll()">{{'Mark all as read' | translate}}</a></span>
+      </h3>
+      <li ng-repeat-start="n in vm.notifications track by $index">
+        <a ng-click="vm.readNotification(n, $event)">
+          <div class="title" ng-class="{unseen: !n.read}">{{n.signal.title}}</div>
+          <div class="preview" ng-class="{unseen: !n.read}">{{notification.text}}</div>
+          <div class="date">{{vm.formatDate(n.signal.creation)}}</div>
+        </a>
+      </li>
+      <li ng-repeat-end role="separator" class="divider"></li>
+      <li ng-if="vm.notifications && vm.notifications.length === 0" style="text-align: center;">
+        <a>{{'All caught up!' | translate}}</a>
+      </li>
+
+      <!--<li>
+        <a>
+          <div class="title unseen">Fugiat occaecat irure commodo.</div>
+          <div class="preview unseen">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse
+            magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+          <div class="date">07/08/2017</div>
+        </a>
+      </li>
+      <li role="separator" class="divider"></li>
+      <li>
+        <a>
+          <div class="title">Fugiat occaecat irure commodo.</div>
+          <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse
+            magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+          <div class="date">07/08/2017</div>
+        </a>
+      </li>
+      <li role="separator" class="divider"></li>
+      <li>
+        <a>
+          <div class="title">Fugiat occaecat irure commodo.</div>
+          <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse
+            magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
+          <div class="date">07/08/2017</div>
+        </a>
+      </li>-->
+    </ul>
+  </li>
+</ul>

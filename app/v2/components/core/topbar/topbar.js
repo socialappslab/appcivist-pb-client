@@ -19,12 +19,12 @@
       },
       controller: TopbarCtrl,
       controllerAs: 'vm',
-      templateUrl: '/app/v2/components/topbar/topbar.html'
+      templateUrl: '/app/v2/components/core/topbar/topbar.html'
     });
 
   TopbarCtrl.$inject = [
   ];
 
   function TopbarCtrl() {
-    }
+  }
 }());

@@ -1113,5 +1113,12 @@
   "Import proposals": "Import proposals",
   "Download Author Information": "Download Author Information",
   "was added to:" : "was added to:",
-  "About AppCivist": "Acerca de AppCivist"
+  "About AppCivist": "Acerca de AppCivist",
+  "All caught up!": "All caught up!",
+  "Mark all as read": "Mark all as read",
+  "Return to": "Return to",
+  "There are no working groups yet": "There are no working groups yet.",
+  "Newsletters":"Newsletters",
+  "Final Voting Results": "Final Voting Results",
+  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>"
 }

@@ -561,13 +561,70 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
   };
 });
 
+/**
+ * Notifications factory.
+ *
+ * @class Notifications
+ * @memberof services
+ */
 appCivistApp.factory('Notifications', function ($resource, localStorageService) {
   return {
-    userNotificationsByUUID: function (userUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID })
+    userNotificationsByUUID(userUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID });
     },
-    subscribe: function () {
+
+    subscribe() {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
+    },
+
+    /**
+     * Returns the total number of notifications for the given user.
+     * 
+     * @method services.Notifications#userStats
+     * @param {Number} userId - User's ID
+     * @returns {$resource} 
+     */
+    userStats(userId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/stats', { userId });
+    },
+
+    /**
+     * Returns the notifications for the given user.
+     * 
+     * @method services.Notifications#userNotifications
+     * @param {Number} userId 
+     * @param {Number} page 
+     * @returns {$resource}
+     */
+    userNotifications(userId, page) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page });
+    },
+
+    /**
+     * Marks the given notification as read.
+     * 
+     * @method services.Notifications#read
+     * @param {Number} userId 
+     * @param {Number} notificationId 
+     */
+    read(userId, notificationId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/:notificationId/read', { userId, notificationId },
+        {
+          update: { method: 'PUT' }
+        });
+    },
+
+    /**
+    * Marks all notifications as read.
+    * 
+    * @method services.Notifications#readAll
+    * @param {Number} userId 
+    */
+    readAll(userId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/read', { userId },
+        {
+          update: { method: 'PUT', isArray: true }
+        });
     }
   };
 
@@ -1121,7 +1178,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         var rsp;
         var query = filters || {};
         query.type = type;
-        query.pageSize = 16;
+        query.pageSize = query.pageSize ? query.pageSize : 16;
         if (isAnonymous) {
           // if the space is of type working group, then only published contributions are returned
           if (type === 'DISCUSSION') {
@@ -1181,12 +1238,17 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         }
         var type = filters.mode;
         var pageNumber = filters.page ? filters.page : null;
+        var pageSize = filters.pageSize ? filters.pageSize : null;
         var params = {
           by_text: filters.searchText
         };
 
         if (pageNumber) {
           params.page = pageNumber;
+        }
+
+        if (pageSize) {
+          params.pageSize = pageSize;
         }
 
         if (filters.by_author) {
@@ -1377,8 +1439,24 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
             'Content-Type': 'text/csv'
           }
         });
-      }
+      },
 
+      /**
+       * Returns a promise to interact with <em>GET /space/:uuid/analytis</em> endpoint to
+       * retrieve statistics about a Resource Space
+       *
+       * @method services.Space#getSpaceBasicAnalytics
+       * @param {String} uuid- The campaign resource space UUID.
+       */
+      getSpaceBasicAnalytics(uuid) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/analytics', { uuid: uuid }).get();
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error loading contributions from server', 'error')
+        )
+      }
     };
   }
 ]);
@@ -2425,7 +2503,7 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
      *  @param {string} email -  user email
      */
     forgot(email) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ "email" : email, "configUrl" : localStorageService.get('forgotFormUrl') }).$promise;
+      return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot').save({ "email": email, "configUrl": localStorageService.get('forgotFormUrl') }).$promise;
     },
 
     /**

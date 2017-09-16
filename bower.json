@@ -46,7 +46,8 @@
     "angular-ui-tinymce": "^0.0.18",
     "angular-sanitize": "=1.5.9",
     "angular-facebook": "=0.2.3",
-    "angular-breadcrumb": "^0.5.0"
+    "angular-breadcrumb": "^0.5.0",
+    "ngInfiniteScroll": "1.0.0"
   },
   "resolutions": {
     "angular": "1.5.9",

@@ -49,13 +49,16 @@
       $scope.ideasSectionExpanded = false;
       $scope.insightsSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
+      $scope.showVotingButtons = false;
+      $scope.vmTimeline = {};
+      $scope.vmSearchFilters = {};
+      $scope.vmPaginated = {};
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
       $scope.newIdeasEnabled = false;
 
-      $scope.pageSize = 16;
-      $scope.type = 'proposal';
+      $scope.pageSize = 12;
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
 
@@ -66,13 +69,8 @@
         proposalsCount: 0,
         ideasCount: 0,
         proposalCommentsCount: 0,
+        ideasCommentsCount: 0
       };
-
-      // TODO: add pagination to Ideas
-      // $scope.pageSizeIdea = 16;
-      // $scope.typeIdea ='idea';
-      // $scope.showPaginationIdea = false;
-      // $scope.sortingIdea = "date_desc";
 
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         $scope.campaignID = $stateParams.cuuid;
@@ -98,7 +96,6 @@
       $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
       $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
       $scope.toggleHideInsightsSection = toggleHideInsightsSection.bind($scope);
-      $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
       $scope.openModal = openModal.bind($scope);
@@ -109,6 +106,7 @@
       $scope.checkConfigOpenIdeasDefault = checkConfigOpenIdeasDefault.bind($scope);
       $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
       $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
+      $scope.afterComponentsLoaded = afterComponentsLoaded.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -204,80 +202,59 @@
             };
 
           localStorageService.set("currentCampaign", $scope.campaign);
-          
+
           loadPublicCommentCount($scope.forumSpaceID);
-          // We are reading the components twice,
-          // - in the campaign-timeline directive
-          // - here
-          // TODO: find a way of reading it just once
-          // (can we defer the rendering of the campaign-timeline directive until this part of the code is run)
-          var res;
-          if (!$scope.isAnonymous) {
-            res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
-            loadMembersCommentCount($scope.spaceID);
-          } else {
-            res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
-          }
-          res.then(
-            function (data) {
-              if ($scope.isAnonymous) {
-                loadAssemblyPublicProfile();
-              }
-              let currentComponent = Campaigns.getCurrentComponent(data);
 
-              // load configurations
-              let rsp = $scope.isAnonymous
-                ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
-                : Campaigns.getConfiguration($scope.campaign.rsID).get();
-              rsp.$promise.then(
-                function (data) {
-                  $scope.campaignConfigs = data;
-                  setSectionsButtonsVisibility(currentComponent);
-                  loadGroupsAfterConfigs();
-                },
-                function (error) {
-                  setSectionsButtonsVisibility(currentComponent);
-                  loadGroupsAfterConfigs();
-                  Notify.show('Error while trying to fetch campaign config', 'error');
-                }
-              );
-              $scope.currentComponent = currentComponent;
-              $scope.type = $scope.currentComponent.type === 'IDEAS' ? 'idea' : 'proposal';
-              $scope.components = data;
-              localStorageService.set('currentCampaign.components', data);
-              localStorageService.set('currentCampaign.currentComponent', currentComponent);
-            },
-            defaultErrorCallback
-          );
-
-          // get proposals
-          Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
-            $scope.proposals = response.list;
-            $scope.insights.proposalsCount = response.list.length;
-            response.list.forEach(
-              function (proposal) {
-                $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
-              }
-            );
-
-            if (!$scope.proposals) {
-              $scope.proposals = [];
+          Space.getSpaceBasicAnalytics($scope.campaign.rsUUID).then(
+            data => {
+              $scope.insights = data;
             }
-
-            // get ideas
-            Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(
-              function (response) {
-                $scope.ideas = response.list;
-                $scope.insights.ideasCount = response.list.length;
-                if (!$scope.ideas) {
-                  $scope.ideas = [];
-                }
-              },
-              defaultErrorCallback
-            );
-          });
+          );
         }
       );
+    }
+
+    function afterComponentsLoaded() {
+      this.components = this.vmTimeline.components;
+      let currentComponent = this.vmTimeline.currentComponent;
+      this.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
+      this.showVotingButtons = this.currentComponentType === 'VOTING' ? true : false;
+      this.vmSearchFilters.currentComponent = currentComponent;
+      this.vmSearchFilters.pageSize = this.pageSize;
+      this.vmSearchFilters.mode =
+        this.currentComponentType === 'IDEAS' ? 'idea' :
+          currentComponent.type === 'VOTING' ?
+            getCurrentBallotEntityType() : 'proposal';
+      this.currentComponent = currentComponent;
+
+      // load configurations
+      let rsp = this.isAnonymous
+        ? Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
+        : Campaigns.getConfiguration(this.campaign.rsID).get();
+      rsp.$promise.then(
+        function (data) {
+          $scope.campaignConfigs = data;
+          setSectionsButtonsVisibility(currentComponent);
+          loadGroupsAfterConfigs();
+        },
+        function (error) {
+          setSectionsButtonsVisibility(currentComponent);
+          loadGroupsAfterConfigs();
+          Notify.show('Error while trying to fetch campaign config', 'error');
+        }
+      );
+      localStorageService.set('currentCampaign.components', this.components);
+      localStorageService.set('currentCampaign.currentComponent', currentComponent);
+    }
+
+    function getCurrentBallotEntityType() {
+      if ($scope.campaign && $scope.campaign.ballotIndex && $scope.campaign.currentBallot) {
+        let ballot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot]
+        let type = ballot.entityType ? ballot.entityType === 'IDEA' ? 'idea' : 'proposal' : 'proposal';
+        return type;
+      } else {
+        return 'proposal';
+      }
     }
 
     function loadGroupsAfterConfigs() {
@@ -448,29 +425,6 @@
         return;
       }
       return WorkingGroups.workingGroupsInCampaign($scope.assemblyID, $scope.campaignID).query().$promise;
-    }
-
-    /**
-     * Space.doSearch wrapper.
-     * @param {object} filters
-     * @deprecated since integration between proposal-ideas-searchbox and pagination-widget.
-     */
-    function doSearch(filters) {
-      this.currentFilters = filters;
-      this.ideasSectionExpanded = filters.mode === 'idea';
-      var vm = this;
-      var rsp = Space.doSearch(this.campaign, this.isAnonymous, filters);
-
-      if (!rsp) {
-        return;
-      }
-      rsp.then(function (data) {
-        if (filters.mode === 'proposal') {
-          vm.proposals = data ? data.list : [];
-        } else if (filters.mode === 'idea') {
-          vm.ideas = data ? data.list : [];
-        }
-      });
     }
 
     /**

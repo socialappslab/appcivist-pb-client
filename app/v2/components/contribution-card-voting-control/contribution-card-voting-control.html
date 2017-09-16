@@ -1,0 +1,38 @@
+<div class="voting-control">
+  <div class="distributed" ng-if="vm.type == 'distributed'">
+    Points
+    <input type="number" min="0" value="0" class="form-control form-control-inline">
+    <span>You have <span class="points-left">64 points</span> left</span>
+  </div>
+  <div class="plurality text-center" ng-if="vm.type == 'plurality'" data-toggle="buttons">
+    <div class="btn-group">
+      <label class="btn">
+        <input type="radio" name="options" autocomplete="off"> Yes
+      </label>
+      <label class="btn">
+        <input type="radio" name="options" autocomplete="off"> No
+      </label>
+      <label class="btn">
+        <input type="radio" name="options" autocomplete="off"> Abstain
+      </label>
+      <label class="btn">
+        <input type="radio" name="options" autocomplete="off"> Block
+      </label>
+    </div>
+  </div>
+  <div class="range" ng-if="vm.type == 'range'">
+    Score
+    <input type="number" min="0" value="0" class="form-control form-control-inline">
+    <span>out of <span class="points-max">100</span></span>
+  </div>
+  <div class="ranked" ng-if="vm.type == 'ranked'">
+    Rank
+    <select class="form-control">
+      <option value="5">5</option>
+      <option value="4">4</option>
+      <option value="3">3</option>
+      <option value="2">2</option>
+      <option value="1">1</option>
+    </selec>
+  </div>
+</div>

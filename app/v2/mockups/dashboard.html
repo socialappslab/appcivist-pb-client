@@ -185,8 +185,7 @@
           </header>
           <div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <contribution-card class="card__idea col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="idea in ideas track by $index"
-              contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous"
-              show-voting-buttons="true" is-coordinator="isCoordinator">
+              contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous" is-coordinator="isCoordinator">
             </contribution-card>
             <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
           </div>
@@ -293,10 +292,10 @@
 
   <!-- New Idea Form Modal -->
   <script id="ideaFormModal" type="text/ng-template">
-    <contribution-form 
-      campaign="campaign" 
+    <contribution-form
+      campaign="campaign"
       configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
-      type="IDEA" 
+      type="IDEA"
       on-success="closeModal()"
       on-import-success="closeModal()"></contribution-form>
   </script>
@@ -454,7 +453,7 @@
               <img src="http://via.placeholder.com/480x320" alt="Sample 5">
             </div>
           </div>
-        
+
           <!-- Controls -->
           <a class="left carousel-control" href="#media-carousel" role="button" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>

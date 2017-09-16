@@ -800,13 +800,13 @@ uib-accordion {
       h2 {
         margin-right: 20px;
       }
-      
+
       a {
         padding-top: 27px;
         display: block;
       }
     }
-    
+
     .customfields__values {
       margin-top: 20px;
     }
@@ -1175,7 +1175,19 @@ custom-field {
 // In order to test the lower toolbar uncomment the folowing
 @import "new-dashboard";
 @import "../components/breadcrumb/breadcrumb";
+@import "../components/core/topbar-notifications/topbar-notifications";
 // Uncomment this to test the discussion panel
 //@import "../mockups/discussion-panel.scss";
 // Uncomment this to test the profile updates
 //@import "../mockups/profile.scss";
+@import "../mockups/voting-summary-proposal-page";
+@import "../components/topbar-langpicker/topbar-langpicker";
+@import "assembly";
+// Uncomment this to test the voting modal
+// @import "../mockups/voting-modal";
+// Uncomment this to test the new voting controls
+@import "../components/contribution-card-voting-control/contribution-card-voting-control";
+// Uncomment this to test the voting results modal
+//@import "../mockups/voting-results-modal";
+// Uncomment this to test the voting stage header
+// @import "../mockups/voting-stage-header";

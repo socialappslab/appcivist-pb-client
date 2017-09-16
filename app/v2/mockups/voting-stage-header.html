@@ -1,0 +1,68 @@
+<div class="voting-stage-header">
+
+  <div class="row">
+
+    <div class="col-xs-6">
+      <h2>Voting Phase</h2>
+      <p id="selected-proposal-text">30 proposals have been selected for this phase.</p>
+      <p>Ongoing</p>
+      <p><a data-toggle="modal" data-target="#voting">Voting instructions</a></p>
+    </div>
+    <div class="col-xs-6 text-right">
+      <div class="button-grid">
+        <div class="button-row">
+          <a data-toggle="modal" data-target="#votingSummary" class="btn btn-default btn-voting-stage-header">My Voting Summary</a>
+          <a data-toggle="modal" data-target="#voting" class="btn btn-default btn-voting-stage-header">View Voting Instructions</a>
+        </div>
+        <div class="button-row">
+          <a class="btn btn-default btn-voting-stage-header">Save Votes</a>
+          <a class="btn btn-default btn-voting-stage-header finish">Finalize Voting</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="modal fade dashboardModal" id="votingSummary" tabindex="-1" role="dialog" aria-labelledby="votingSummaryLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+          <h3 class="modal-title" id="votingSummaryLabel">My Voting Summary</h3>
+        </div>
+        <div class="modal-body" id="voting-summary">
+          <!-- <p>Congratulations you have distributed all your points.</p> -->
+          
+          <p>You still have <strong>35 points</strong> remaining.</p>
+          <p>Make sure you distribute all your points.</p>
+          
+          <div class="proposals">
+            <div class="proposal">
+              <div class="col-xs-9">Pedestrian Safety & Traffic Calming Measures</div>
+              <div class="col-xs-3 points">Points <input type="text"></div>
+            </div>
+            <div class="proposal">
+              <div class="col-xs-9">Nurturing Parents Program</div>
+              <div class="col-xs-3 points">Points <input type="text"></div>
+            </div>
+            <div class="proposal">
+              <div class="col-xs-9">Great Outdoors! Trails, Bike & Fitness</div>
+              <div class="col-xs-3 points">Points <input type="text"></div>
+            </div>
+            <div class="proposal">
+              <div class="col-xs-9">Water Break Repair Equipment</div>
+              <div class="col-xs-3 points">Points <input type="text"></div>
+            </div>
+            <div class="proposal">
+              <div class="col-xs-9">Afterschool S.T.E.A.M. Machines</div>
+              <div class="col-xs-3 points">Points <input type="text"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+

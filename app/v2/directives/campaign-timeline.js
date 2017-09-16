@@ -6,9 +6,9 @@
   /**
    * @name campaign-timeline
    * @memberof directives
-   * 
+   *
    * @description
-   * 
+   *
    * Display the campaign timeline
    *
    * @example
@@ -39,7 +39,8 @@
         campaignId: '=',
         title: '@',
         onlyLabel: '=',
-        components: '<',
+        components: '=',
+        vmTimeline: '=',
         onComponentClick: '&?',
         // called after successful loading of campaign components
         onComponentsLoaded: '&?'
@@ -107,6 +108,10 @@
             scope.components = data;
 
             if (angular.isFunction(scope.onComponentsLoaded)) {
+              // TODO: the argument pass to the onComponentsLoaded is not visible in the callback
+              // added vmTimeline as a quick fix, but we should find a better way
+              scope.vmTimeline.components = data;
+              scope.vmTimeline.currentComponent = currentComponent;
               scope.onComponentsLoaded({ components: data });
             }
           });

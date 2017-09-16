@@ -1116,5 +1116,14 @@
   "About AppCivist": "A propos de AppCivist",
   "Return to": "Retourner à",
   "There are no working groups yet": "Il n'y a pas encore de groupes de travail",
-  "Newsletters":"Bulletins"
+  "Newsletters":"Bulletins",
+  "All caught up!": "All caught up!",
+  "Mark all as read": "Mark all as read",
+  "Final Voting Results": "Final Voting Results",
+  "Voting instructions": "Voting instructions",
+  "Start voting": "Start voting",
+  "voting.secret.contact":"To start the voting process, enter your email and the ballot secret code<br>here. Contact the <strong>campaign organizers</strong> to obtain the code.",
+  "voting.secret.view": "If you don't have the secret code you can still view the proposals in the ballot.",
+  "View proposals": "View proposals",
+  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>"
 }

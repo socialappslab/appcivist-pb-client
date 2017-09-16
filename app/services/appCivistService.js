@@ -1439,8 +1439,24 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
             'Content-Type': 'text/csv'
           }
         });
-      }
+      },
 
+      /**
+       * Returns a promise to interact with <em>GET /space/:uuid/analytis</em> endpoint to
+       * retrieve statistics about a Resource Space
+       *
+       * @method services.Space#getSpaceBasicAnalytics
+       * @param {String} uuid- The campaign resource space UUID.
+       */
+      getSpaceBasicAnalytics(uuid) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/analytics', { uuid: uuid }).get();
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error loading contributions from server', 'error')
+        )
+      }
     };
   }
 ]);

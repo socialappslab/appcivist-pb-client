@@ -77,7 +77,7 @@
         }
 
 
-        scope.$watch(function() { return scope.components; },verifyCampaignComponent());
+        scope.$watch(function() { return scope.components; },scope.verifyCampaignComponent());
         scope.$watch(function() { return scope.showVotingButtons; },function(val){
           console.log("Updated voting "+ val);
         });

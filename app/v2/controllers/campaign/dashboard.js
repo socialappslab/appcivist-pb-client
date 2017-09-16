@@ -204,93 +204,12 @@
           localStorageService.set("currentCampaign", $scope.campaign);
 
           loadPublicCommentCount($scope.forumSpaceID);
-          // We are reading the components twice,
-          // - in the campaign-timeline directive
-          // - here
-          // TODO: find a way of reading it just once
-          // (can we defer the rendering of the campaign-timeline directive until this part of the code is run)
-          // deprecated by the onLoadedComponentsCallBack on campaign timeline
-          //var res;
-          //if (!$scope.isAnonymous) {
-          //  res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
-          //  loadMembersCommentCount($scope.spaceID);
-          //} else {
-          //  res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
-          //}
-          //res.then(
-          //  function (data) {
-          //    if ($scope.isAnonymous) {
-          //      loadAssemblyPublicProfile();
-          //    }
-          //    $scope.components = data;
-          //    let currentComponent = Campaigns.getCurrentComponent(data);
-          //    $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
-          //    $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
-          //    $scope.filters.mode =
-          //      $scope.currentComponentType === 'IDEAS' ? 'idea' :
-          //        currentComponent.type === 'VOTING' ?
-          //          getCurrentBallotEntityType() : 'proposal';
-          //    $scope.currentComponent = currentComponent;
-          //
-          //    // load configurations
-          //    let rsp = $scope.isAnonymous
-          //      ? Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get()
-          //      : Campaigns.getConfiguration($scope.campaign.rsID).get();
-          //    rsp.$promise.then(
-          //      function (data) {
-          //        $scope.campaignConfigs = data;
-          //        setSectionsButtonsVisibility(currentComponent);
-          //        loadGroupsAfterConfigs();
-          //      },
-          //      function (error) {
-          //        setSectionsButtonsVisibility(currentComponent);
-          //        loadGroupsAfterConfigs();
-          //        Notify.show('Error while trying to fetch campaign config', 'error');
-          //      }
-          //    );
-          //    localStorageService.set('currentCampaign.components', data);
-          //    localStorageService.set('currentCampaign.currentComponent', currentComponent);
-          //  },
-          //  defaultErrorCallback
-          //);
 
-          // TODO: get analytics
-          // update $scope.insights
-
-
-          // @Deprecated Since integration with pagination widget
-          // get proposals
-          //Space.getContributions($scope.campaign, 'PROPOSAL', $scope.isAnonymous).then(function (response) {
-          //  $scope.proposals = response.list;
-          //  $scope.insights.proposalsCount = response.total;
-          //  response.list.forEach(
-          //    function (proposal) {
-          //      $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
-          //    }
-          //  );
-          //
-          //  if (!$scope.proposals) {
-          //    $scope.proposals = [];
-          //  }
-          //
-          //  // get ideas
-          //  Space.getContributions($scope.campaign, 'IDEA', $scope.isAnonymous).then(
-          //    function (response) {
-          //      $scope.ideas = response.list;
-          //      $scope.insights.ideasCount = response.total;
-          //      response.list.forEach(
-          //        function (proposal) {
-          //          $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
-          //        }
-          //      );
-          //
-          //      if (!$scope.ideas) {
-          //        $scope.ideas = [];
-          //      }
-          //    },
-          //    defaultErrorCallback
-          //  );
-          //});
+          Space.getSpaceBasicAnalytics($scope.campaign.rsUUID).then(
+            data => {
+              $scope.insights = data;
+            }
+          );
         }
       );
     }

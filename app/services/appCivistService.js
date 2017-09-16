@@ -1178,7 +1178,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         var rsp;
         var query = filters || {};
         query.type = type;
-        query.pageSize = 16;
+        query.pageSize = query.pageSize ? query.pageSize : 16;
         if (isAnonymous) {
           // if the space is of type working group, then only published contributions are returned
           if (type === 'DISCUSSION') {
@@ -1238,12 +1238,17 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         }
         var type = filters.mode;
         var pageNumber = filters.page ? filters.page : null;
+        var pageSize = filters.pageSize ? filters.pageSize : null;
         var params = {
           by_text: filters.searchText
         };
 
         if (pageNumber) {
           params.page = pageNumber;
+        }
+
+        if (pageSize) {
+          params.pageSize = pageSize;
         }
 
         if (filters.by_author) {

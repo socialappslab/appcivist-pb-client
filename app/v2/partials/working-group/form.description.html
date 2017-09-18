@@ -82,7 +82,60 @@
             </span>
             </div>
           </div>
-          <!--iconss new -->
+
+          <!--covers -->
+          <div id="workingGroupCover" class="form-horizontal">
+            <div class="col-md-12 form-group">
+              <label class="control-label" translate='wgroups.select.cover'> </label>
+              <br/>
+              <div class="picsList">
+                <div ng-repeat="cover in defaultCovers">
+                  <div class="col-md-4">
+                    <div class="image-capsule">
+                      <img alt="{{cover.name}}" ng-src="{{cover.url}}" class="image-circle" ng-class="{'image-circle-selected-shadow': cover.name === g.name}"
+                        ng-click="setNewWorkingGroupCover(cover.url, cover.name)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 voffset3"></div>
+          <div id="assemblyCoverProgress" class="form-horizontal">
+            <div class="col-lg-4 add-button">
+              <span>
+              <button class="btn" type="button" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="2MB">
+                {{ 'Upload' |  translate}}
+              </button>
+            </span>
+              <span>
+              <strong>{{ 'selected.cover' | translate }}: </strong>
+            </span>
+              <span>
+              <div class="image-capsule">
+                <img alt="{{g.name}}" ng-src="{{g.url}}" class="image-circle image-circle-selected">
+              </div>
+            </span>
+            </div>
+          </div>
+
+          <!-- colors -->
+          <div id="workingGroupColors" class="form-horizontal">
+            <div class="col-md-12 form-group">
+              <label class="control-label" translate='wgroups.select.color'> </label>
+              <br/>
+                <span ng-repeat="color in defaultColors">
+                  <button ng-style="{'background-color':color.color}" ng-click="setNewWorkingGroupColor(color.color)">&nbsp;</button>
+                </span>
+                <span class="selected">
+                  <strong>{{ 'selected.color' | translate }}: </strong>
+                  <div class="color-capsule">
+                    <div ng-style="{'background-color':h}">
+                  </div>
+                </span>
+            </div>
+          </div>
 
 
           <div id="workingGroupMembership" class="row form-horizontal">

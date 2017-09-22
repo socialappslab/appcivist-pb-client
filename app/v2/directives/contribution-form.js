@@ -29,7 +29,7 @@
         // function onSuccessCallback(contribution) { ... }
         onSuccess: '&',
 
-        // handler called when import has succeeded. 
+        // handler called when import has succeeded.
         // An example of onSuccess callback is
         // function onSuccessCallback() { ... }
         onImportSuccess: '&',
@@ -446,7 +446,7 @@
     /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.
-     * 
+     *
      * @param {Object} file - The file to upload.
      * @param {string} type - cover | attachment.
      */
@@ -644,20 +644,22 @@
       // we need to save authors custom fields too.
       contribution.nonMemberAuthors.forEach(nma => {
         let ref = _.find(this.nonMemberAuthorsRef, { email: nma.email, name: nma.name });
-        _.forIn(ref.customFieldValues, cfv => {
-          let value = cfv.value;
-          // if it corresponds to a multiple choice field, store each selected option as a custom value.
-          if (!angular.isArray(value)) {
-            value = [value];
-          }
+        if(ref && ref.customFieldValues) {
+          _.forIn(ref.customFieldValues, cfv => {
+            let value = cfv.value;
+            // if it corresponds to a multiple choice field, store each selected option as a custom value.
+            if (!angular.isArray(value)) {
+              value = [value];
+            }
 
-          value.forEach(v => payload.customFieldValues.push({
-            customFieldDefinition: cfv.customFieldDefinition,
-            value: v.value || v,
-            entityTargetType: 'NON_MEMBER_AUTHOR',
-            entityTargetUuid: nma.uuid,
-          }));
-        });
+            value.forEach(v => payload.customFieldValues.push({
+              customFieldDefinition: cfv.customFieldDefinition,
+              value: v.value || v,
+              entityTargetType: 'NON_MEMBER_AUTHOR',
+              entityTargetUuid: nma.uuid,
+            }));
+          });
+        }
       });
 
       if (this.mode === 'create') {

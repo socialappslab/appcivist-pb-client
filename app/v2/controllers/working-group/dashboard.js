@@ -393,7 +393,15 @@
         });
       }
     }
-
+    function getCurrentBallotEntityType() {
+      if ($scope.campaign && $scope.campaign.ballotIndex && $scope.campaign.currentBallot) {
+        let ballot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot]
+        let type = ballot.entityType ? ballot.entityType === 'IDEA' ? 'idea' : 'proposal' : 'proposal';
+        return type;
+      } else {
+        return 'proposal';
+      }
+    }
     function redirectToProposal(contribution) {
       this.closeModal('proposalFormModal');
 

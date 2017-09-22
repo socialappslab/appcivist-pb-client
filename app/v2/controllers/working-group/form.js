@@ -52,9 +52,22 @@
         $scope.f = file;
       }
 
+      $scope.setNewWorkingGroupCover = function(url, name) {
+        $scope.newWorkingGroup.profile.cover = url;
+        var file = {};
+        file.name = name;
+        file.url = url;
+        $scope.g = file;
+      }
+
+      $scope.setNewWorkingGroupColor = function(color) {
+        $scope.newWorkingGroup.profile.color = color;
+        $scope.h = color;
+      }
+
       /**
        * Uploads the selected file to the server
-       * 
+       *
        * @param {Object} file - The file to upload
        * @param {Object[]} errFiles
        */
@@ -123,7 +136,7 @@
       /**
        * Get the final list of working groups configurations. It merges the given
        * configuration list with the default configurations.
-       * 
+       *
        * @param {Object[]} configs - configuration already loaded.
        */
       $scope.getConfigurations = function(configs) {
@@ -347,10 +360,35 @@
         'name': 'Skyline Icon',
         'url': 'https://s3-us-west-1.amazonaws.com/appcivist-files/icons/image75.jpg'
       }];
+      $scope.defaultCovers = [
+        {"name":"Geo 1", "url":"/assets/wgs/covers/1.svg"},
+        {"name":"Geo 2", "url":"/assets/wgs/covers/2.svg"},
+        {"name":"Geo 3", "url":"/assets/wgs/covers/3.svg"},
+        {"name":"Geo 4", "url":"/assets/wgs/covers/4.svg"},
+        {"name":"Geo 5", "url":"/assets/wgs/covers/5.svg"},
+        {"name":"Geo 6", "url":"/assets/wgs/covers/6.svg"},
+        {"name":"Geo 7", "url":"/assets/wgs/covers/7.svg"},
+        {"name":"Geo 8", "url":"/assets/wgs/covers/8.svg"},
+        {"name":"Geo 9", "url":"/assets/wgs/covers/9.svg"},
+        {"name":"Geo 10", "url":"/assets/wgs/covers/10.svg"},
+      ]
+      $scope.defaultColors = [
+        {"color":"#302C5D"},
+        {"color":"#009ADF"},
+        {"color":"#1E9D46"},
+        {"color":"#F36D1E"},
+        {"color":"#FFC109"},
+        {"color":"#D7382E"}
+      ]
       $scope.f = {
         'name': $scope.defaultIcons[0].name,
         'url': $scope.defaultIcons[0].url
       }
+      $scope.g = {
+        'name': $scope.defaultCovers[0].name,
+        'url': $scope.defaultCovers[0].url
+      }
+      $scope.h = $scope.defaultColors[2].color;
       $scope.contribsCurrentPg = 0;
       $scope.contribsPageSize = 5;
       $scope.contributions = [];
@@ -460,7 +498,7 @@
 
     /**
      * Working group on-success callback.
-     * 
+     *
      * @param {Object} response
      */
     function onSuccess(response) {
@@ -475,7 +513,7 @@
 
     /**
      * Save the given working group configurations.
-     * 
+     *
      * @param {number} sid - resource space ID
      * @param {Object[]} configs
      */

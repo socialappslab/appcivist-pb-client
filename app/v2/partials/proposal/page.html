@@ -168,11 +168,11 @@
         <breadcrumb label="proposal.title"></breadcrumb>
       </div>
       <div ng-include="'/app/v2/mockups/voting-summary-proposal-page.html'"></div>
-      <div class="type">
+      <div class="row type">
         <i class="fa fa-file-text"></i>&nbsp;&nbsp;{{'Proposal' | translate}}
         <span class="status">— {{proposal.status | translate}}</span>
       </div>
-      <div class="title_block">
+      <div class="row title_block">
         <h1 class="heading--title">{{proposal.title}}</h1>
 
         <div class="heading_actions">
@@ -213,14 +213,14 @@
           </div>
         </div>
       </div>
-      <p class="parent_working_group" ng-if="group">
+      <p class="row parent_working_group" ng-if="group">
         <i class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tag': group.isTopic}"></i>
         <a ng-if="isAnonymous" ng-href="/#/v2/p/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
         <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
       </p>
 
 
-      <ul class="tags">
+      <ul class="row tags">
         <li ng-repeat="theme in proposal.themes track by $index" ng-mouseenter="theme.isHover = true" ng-mouseleave="theme.isHover = false">
           <a href="">{{theme.title}}</a>
           <i ng-if="theme.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
@@ -229,7 +229,7 @@
       </ul>
 
 
-      <div class="attribution">
+      <div class="row attribution">
         <p class="heading--subheader">{{ 'Created by' | translate }}</p>
         <div ng-repeat="author in proposal.authors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
           style="display: inline-block; margin-left: 10px;">
@@ -239,7 +239,7 @@
 
         <member-card ng-if="!proposal.authors" user="group"></member-card>
       </div>
-      <div ng-if="userIsAuthor" class="attribution campaign__filters">
+      <div ng-if="userIsAuthor" class="row attribution campaign__filters">
         <ul class="search_modes">
           <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}">
             <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
@@ -261,7 +261,7 @@
         </fieldset>
       </div>
 
-      <div class="voting_mechanism">
+      <div class="row voting_mechanism">
         <div class="temperature_check">
           <ul class="votes">
             <li class="upvote">

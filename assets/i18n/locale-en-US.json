@@ -756,7 +756,7 @@
   "Working Group Pages Strings": "Working Group Pages Strings",
   "Working Group Update": "Working Group Update",
   "Working Groups": "Working Groups",
-  "Working groups": "Working Group",
+  "Working groups": "Working groups",
   "Working Groups formation end date": "Working Groups formation end date",
   "working.groups.can.be.formed.until": "Working groups can be formed until",
   "WorkingGroup": "Working Group",
@@ -1133,5 +1133,9 @@
   "wgroups.select.cover": "Pick a cover or upload an image to represent your Group (or upload a picture < 2Mb)*",
   "selected.cover": "Selected cover",
   "wgroups.select.color": "Pick a color to represent your Group",
-  "selected.color": "Selected color"
+  "selected.color": "Selected color",
+  "Documents": "Documents",
+  "Analytics": "Analytics",
+  "Media": "Media",
+  "There are no documents in this campaign":"There are no documents in this campaign"
 }

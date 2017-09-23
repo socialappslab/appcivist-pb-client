@@ -8,7 +8,7 @@
         </div>
 
         <!--Campaign Header -> campaign.title + logo + actions menu-->
-        <div class="row">
+        <div class="row" style="position: unset;">
           <div class="row no-margin">
             <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="hidden-xs type">
@@ -77,13 +77,31 @@
           <!-- Subscribe when not logged in
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn">Subscribe to Newsletter</button> -->
           <!-- HEADER -> AppCivist Logo Attribution -->
-          <div class='row no-margin attribution' style="padding-top: 1em;">
+          <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
             <div class="overlay new_overlay" style="display: inline-flex">
               <ul class="overlay_buttons">
-                <li class="overlay_button"><a data-toggle="modal" data-target="#workingGroups"><i class="fa fa-users fa-lg"></i><span>Working groups</span><span class="number" ng-if="myWorkingGroups.length > 0">({{myWorkingGroups.length}})</span></a></li>
-                <li class="overlay_button"><a><i class="fa fa-file-text-o fa-lg"></i><span>Documents</span><span class="number"></span></a></li>
-                <li class="overlay_button"><a><i class="fa fa-bar-chart fa-lg"></i><span>Analytics</span><span class="number"></span></a></li>
-                <li class="overlay_button"><a><i class="fa fa-film fa-lg"></i><span>Media</span><span class="number"></span></a></li>
+                <li class="overlay_button">
+                  <a data-toggle="modal" data-target="#workinsgGroups">
+                    <i class="fa fa-users fa-lg"></i><span>{{'Working groups'|translate}}</span>
+                    <span class="number" ng-if="myWorkingGroups.length > 0">({{myWorkingGroups.length}})</span>
+                  </a>
+                </li>
+                <li class="overlay_button">
+                  <a data-toggle="modal" data-target="#documents">
+                    <i class="fa fa-file-text-o fa-lg"></i><span>{{'Documents'|translate}}</span>
+                    <span class="number" ng-if="documents.length > 0">({{documents.length}})</span>
+                  </a>
+                </li>
+                <li class="overlay_button">
+                  <a>
+                    <i class="fa fa-bar-chart fa-lg"></i><span>{{'Analytics'|translate}}</span><span class="number"></span>
+                  </a>
+                </li>
+                <li class="overlay_button">
+                  <a>
+                    <i class="fa fa-film fa-lg"></i><span>{{'Media'|translate}}</span><span class="number"></span>
+                  </a>
+                </li>
               </ul>
               <div class="powered_logo">
                   <div class="logo__wrapper__light">
@@ -279,11 +297,12 @@
     </script>
   </main>
 
+  <!-- Working Groups Modal -->
   <div class="modal fade dashboardModal" id="workingGroups" tabindex="-1" role="dialog" aria-labelledby="workingGroupsLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="workingGroupsLabel">{{campaign.title}}</h3>
           <p>{{ 'Working groups' | translate }}</p>
         </div>
@@ -293,7 +312,33 @@
           </div>
           <ul class="workingGroupList" ng-if="myWorkingGroups && myWorkingGroups.length > 0">
             <li ng-repeat="wg in myWorkingGroups">
-              <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><span class="number"><!--<i class="fa fa-users"></i>32</span>--></a>
+              <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents Modal -->
+  <div class="modal fade dashboardModal" id="documents" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
+          <p>{{ 'Documents' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <div class="noDocuments" ng-if="documents.length == 0">
+            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+          </div>
+          <ul class="documentList" ng-if="documents && documents.length > 0">
+            <li ng-repeat="doc in documents">
+              <a class="documentLink" ng-href="doc.url"><span>{{doc.title}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
             </li>
           </ul>
         </div>

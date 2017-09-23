@@ -385,7 +385,13 @@
     function loadCampaignResources() {
       var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
       rsp.$promise.then(function (resources) {
-        $scope.campaignResources = resources;
+        if (resources) {
+          $scope.campaignResources = resources;
+        } else {
+          $scope.campaignResources = [];
+        }
+        $scope.documents = $scope.campaignResources.filter(resource => resource.type !== 'PICTURE' && resource.type !== 'VIDEO');
+        $scope.media = $scope.campaignResources.filter(resource => resource.type === 'PICTURE' || resource.type === 'VIDEO');
       }, function (error) {
         Notify.show('Error loading campaign resources from server', 'error');
       });

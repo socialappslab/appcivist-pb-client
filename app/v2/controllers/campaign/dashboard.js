@@ -178,6 +178,9 @@
         function (data) {
           $scope.campaign = data;
 
+          // analyze if voting modal should open
+          $scope.openVotingModal = $scope.campaign.externalBallot || !$scope.campaign.currentBallot;
+
           if($scope.isAnonymous) {
              $translate.use($scope.campaign.lang);
           }
@@ -226,6 +229,7 @@
         this.currentComponentType === 'IDEAS' ? 'idea' :
           currentComponent.type === 'VOTING' ?
             getCurrentBallotEntityType() : 'proposal';
+      console.log(getCurrentBallotEntityType());
       this.currentComponent = currentComponent;
 
       if(!this.campaign || !this.campaign.rsID || !this.campaign.rsUUID) {

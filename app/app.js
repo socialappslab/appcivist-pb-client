@@ -23,16 +23,15 @@
         production: "https://platform.appcivist.org/voting/api/v0",
         testing: "https://testplatform.appcivist.org/voting/api/v0",
         development: "https://devplatform.org/voting/api/v0",
-        local: "http://localhost:5000/api/v0",
+        local: "https://testplatform.appcivist.org/api/v0",
         mimove: "https://mimove-apps.paris.inria.fr/voting/api/v0"
       },
       core: {
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/backend/api",
-        local: "http://localhost:9000/api",
+        local: "https://testplatform.appcivist.org/backend/api",
         development: "https://devplatform.appcivist-dev.org/api",
-        mimove: "https://mimove-apps.paris.inria.fr/platform/api",
-
+        mimove: "https://mimove-apps.paris.inria.fr/platform/api"
       }
     },
     ui: {

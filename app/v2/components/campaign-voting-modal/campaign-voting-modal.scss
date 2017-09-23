@@ -1,0 +1,41 @@
+.campaignVotingModal {
+  strong { font-weight: bold; }
+  p {
+    margin-bottom: 1rem;
+    &.smaller {
+      margin-bottom: 0.5rem;
+      font-size: 0.7rem;
+      color: gray;
+    }
+    a {
+      color: #26557b;
+      text-decoration: underline;
+    }
+  }
+  .form-group {
+    .btn.btn-voting { margin-bottom: 0 !important; }
+    margin-bottom: 1rem;
+  }
+  input[type=email] {
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  }
+}
+
+.btn {
+  &.btn-voting {
+    background-color: #424242;
+    border: none;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-shadow: none;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    min-width: 8rem;
+    &:active {
+      background-color: #1f1f1f;
+      color: #efefef;
+    }
+  }
+}

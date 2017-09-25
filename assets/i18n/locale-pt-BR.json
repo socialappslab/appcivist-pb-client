@@ -756,7 +756,7 @@
   "Working Group Pages Strings": "Working Group Pages Strings",
   "Working Group Update": "Working Group Update",
   "Working Groups": "Working Groups",
-  "Working groups": "Working Group",
+  "Working groups": "Working Groups",
   "Working Groups formation end date": "Working Groups formation end date",
   "working.groups.can.be.formed.until": "Working groups can be formed until",
   "WorkingGroup": "Working Group",
@@ -1120,5 +1120,12 @@
   "There are no working groups yet": "There are no working groups yet.",
   "Newsletters":"Newsletters",
   "Final Voting Results": "Final Voting Results",
-  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>"
+  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>",
+  "Documents": "Documentos",
+  "Analytics": "Analytics",
+  "Media": "Multimedia",
+  "There are no documents in this campaign":"There are no documents in this campaign",
+  "There are no working groups in this list yet": "There are no working groups in this list.",
+  "There are no multimedia resources in this campaign": "There are no multimedia resources in this campaign",
+  "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following..."
 }

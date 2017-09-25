@@ -613,10 +613,10 @@
      */
     function loadValues(sid) {
       let rsp = {};
-      if (this.isAnonymous) {
+      if (!this.isAnonymous) {
         rsp = Space.fieldValue(sid).query().$promise;
       } else {
-        rsp = Space.fieldValuePublice(sid).query().$promise;
+        rsp = Space.fieldValuePublic(sid).query().$promise;
       }
       return rsp.then(
         fieldsValues => {
@@ -738,18 +738,19 @@
           author.email = user.email;
         }
       }
-      this.contribution.nonMemberAuthors.forEach(nma => nma.isOpen = false);
-      this.contribution.nonMemberAuthors.push(author);
-
-      if (this.contribution.nonMemberAuthors.length <= 1) {
-        return;
+      if (this.contribution && this.contribution.nonMemberAuthors) {
+        this.contribution.nonMemberAuthors.forEach(nma => nma.isOpen = false);
+        this.contribution.nonMemberAuthors.push(author);
+        if (this.contribution.nonMemberAuthors.length <= 1) {
+          return;
+        }
       }
 
       $timeout(() => {
         // scroll up
         const fieldsetEl = $('fieldset.user__assignment').last()[0];
         const newEl = $('input[name=nonmemberName]').last()[0];
-        fieldsetEl.scrollIntoView();
+        if (fieldsetEl) fieldsetEl.scrollIntoView();
         $(newEl).focus();
       });
     }

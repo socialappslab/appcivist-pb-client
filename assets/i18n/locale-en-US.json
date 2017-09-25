@@ -756,7 +756,7 @@
   "Working Group Pages Strings": "Working Group Pages Strings",
   "Working Group Update": "Working Group Update",
   "Working Groups": "Working Groups",
-  "Working groups": "Working Group",
+  "Working groups": "Working groups",
   "Working Groups formation end date": "Working Groups formation end date",
   "working.groups.can.be.formed.until": "Working groups can be formed until",
   "WorkingGroup": "Working Group",
@@ -1119,7 +1119,7 @@
   "was added to:": "was added to:",
   "About AppCivist": "About AppCivist",
   "Return to": "Return to",
-  "There are no working groups yet": "There are no working groups yet.",
+  "There are no working groups yet": "There are no working groups in this campaign.",
   "Newsletters": "Newsletters",
   "All caught up!": "All caught up!",
   "Mark all as read": "Mark all as read",
@@ -1133,5 +1133,12 @@
   "wgroups.select.cover": "Pick a cover or upload an image to represent your Group (or upload a picture < 2Mb)*",
   "selected.cover": "Selected cover",
   "wgroups.select.color": "Pick a color to represent your Group",
-  "selected.color": "Selected color"
+  "selected.color": "Selected color",
+  "Documents": "Documents",
+  "Analytics": "Analytics",
+  "Media": "Media",
+  "There are no documents in this campaign": "There are no documents in this campaign",
+  "There are no working groups in this list yet": "There are no working groups in this list.",
+  "There are no multimedia resources in this campaign": "There are no multimedia resources in this campaign",
+  "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following..."
 }

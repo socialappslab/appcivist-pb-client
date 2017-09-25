@@ -756,7 +756,7 @@
   "Working Group Pages Strings": "Pagina de cadena de Grupo de Trabajo",
   "Working Group Update": "Actualización del Grupo de Trabajo",
   "Working Groups": "Grupos de Trabajo",
-  "Working groups": "Grupo de Trabajo",
+  "Working groups": "Grupos de trabajo",
   "Working Groups formation end date": "Fecha límite de la formación de grupos",
   "working.groups.can.be.formed.until": "Los grupos de trabajo se pueden formar hasta",
   "WorkingGroup": "Grupo de trabajo",
@@ -1126,5 +1126,12 @@
   "voting.secret.contact":"To start the voting process, enter your email and the ballot secret code<br>here. Contact the <strong>campaign organizers</strong> to obtain the code.",
   "voting.secret.view": "If you don't have the secret code you can still view the proposals in the ballot.",
   "View proposals": "View proposals",
-  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>"
+  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>",
+  "Documents": "Documentos",
+  "Analytics": "Estadísticas",
+  "Media": "Multimedia",
+  "There are no documents in this campaign":"No hay documentos en esta iniciativa.",
+  "There are no working groups in this list yet": "There are no working groups in this list.",
+  "There are no multimedia resources in this campaign": "There are no multimedia resources in this campaign",
+  "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following..."
 }

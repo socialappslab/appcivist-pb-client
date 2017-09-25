@@ -335,7 +335,7 @@
         <div class="modal-body" ng-if="isAnonymous &&(otherWorkingGroups.length > 0 || topicsWorkingGroups.length >0)">
           <ul class="workingGroupList" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
             <li ng-repeat="wg in otherWorkingGroups">
-              <a class="workingGroupLink" ng-href="/#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{wg.uuid}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
+              <a class="workingGroupLink" ng-href="/#/v2/p/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{wg.uuid}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
             </li>
           </ul>
         </div>

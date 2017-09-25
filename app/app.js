@@ -22,8 +22,8 @@
       voting: {
         production: "https://platform.appcivist.org/voting/api/v0",
         testing: "https://testplatform.appcivist.org/voting/api/v0",
-        development: "https://devplatform.org/voting/api/v0",
-        local: "https://testplatform.appcivist.org/api/v0",
+        development: "https://testplatform.appcivist.org/voting/api/v0",
+        local: "https://testplatform.appcivist.org/voting/api/v0",
         mimove: "https://mimove-apps.paris.inria.fr/voting/api/v0"
       },
       core: {

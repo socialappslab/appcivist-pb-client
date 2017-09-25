@@ -114,8 +114,8 @@
       <campaign-timeline title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"
                          vm-timeline="vmTimeline" components="components" on-components-loaded="afterComponentsLoaded()"></campaign-timeline>
 
-      <!-- Voting stage test -->
-      <!--<div ng-include="'/app/v2/mockups/voting-stage-header.html'"></div>-->
+      <!-- Voting stage -->
+      <div ng-include="'/app/v2/partials/campaign/voting-stage.html'" ng-if="showVotingButtons"></div>
 
       <!--Campaign Search, Filters and Contributions -->
       <section class="proposals_and_ideas">
@@ -361,7 +361,7 @@
   <p>Current: {{ campaign.currentBallot }}</p>
 
   <!-- <voting-modal modal-id="externalBallot" open="campaign.externalBallot ? true : false" start-voting="false"> -->
-  <voting-modal modal-id="externalBallot" open="openVotingModal" start-voting="false">          
+  <voting-modal modal-id="externalBallot" open="campaign.externalBallot || !campaign.currentBallot" start-voting="false">          
     <div ng-if="campaign.externalBallot">
       <p>Voting for <strong>{{campaign.title}}</strong> takes place outside of AppCivist. Follow <a href="{{campaign.externalBallot}}">this link</a> to learn more and vote.</p>
       <p>You can still use AppCivist to view the proposals that were included on the ballot.</p>

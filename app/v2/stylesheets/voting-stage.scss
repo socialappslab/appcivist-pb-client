@@ -1,0 +1,56 @@
+.voting-stage-header {
+  padding: 0 1.5rem;
+  h2 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  p { margin-bottom: 0.8rem; }
+  .button-grid {
+    margin-top: 2.5rem;
+    .button-row {
+      margin-top: 0.5rem;
+    }
+  }
+  .btn {
+    &.btn-voting-stage-header {
+      background-color: #424242;
+      border: none;
+      color: white;
+      font-size: 0.8rem;
+      text-shadow: none;
+      padding: 0.6rem 1rem;
+      min-width: 180px;
+      &:active {
+        background-color: #1f1f1f;
+        color: #efefef;
+      }
+      &.finish {
+        background-color: #FF7777;
+      }
+    }
+  }
+}
+
+#votingSummary {
+  strong { font-weight: bold; }
+  .proposals {
+    margin-top: 1.5rem;
+    .proposal {
+      font-weight: bold;
+      padding: 1.5rem 0 2.9rem;
+      border-bottom: 1px solid #EFEFEF;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      .points {
+        font-size: 0.8rem;
+        margin-top: -0.5rem;
+        text-align: right;
+        input {
+          text-align: center;
+          font-size: 0.9rem;
+          width: 5rem;
+        }
+      }
+    }
+  }
+}

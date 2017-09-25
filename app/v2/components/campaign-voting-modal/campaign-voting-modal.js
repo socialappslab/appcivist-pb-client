@@ -33,10 +33,13 @@
 
   function CampaignVotingModalCtrl($scope,$timeout) {
     this.$postLink = () => {
-      if (this.open) {
-        $timeout(() => angular.element('#'+this.modalId).modal({show:true}))
-      }
-    };
+      $timeout(() => {
+        if (this.open) {
+            console.log(angular.element('#'+this.modalId));
+            angular.element('#'+this.modalId).modal({show:true});
+        }
+      }, 2000)
+    }
   }
 
 }());

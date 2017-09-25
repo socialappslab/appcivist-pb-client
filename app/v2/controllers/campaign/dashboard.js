@@ -20,12 +20,13 @@
     '$rootScope',
     'WorkingGroups',
     '$compile',
-    '$state'
+    '$state',
+    'votingService'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state) {
+    $state, votingService) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -177,9 +178,6 @@
       res.$promise.then(
         function (data) {
           $scope.campaign = data;
-
-          // analyze if voting modal should open
-          $scope.openVotingModal = $scope.campaign.externalBallot || !$scope.campaign.currentBallot;
 
           if($scope.isAnonymous) {
              $translate.use($scope.campaign.lang);
@@ -563,6 +561,10 @@
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;
+    }
+
+    function readBallotPaper() {
+      
     }
   }
 })();

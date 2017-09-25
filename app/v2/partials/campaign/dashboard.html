@@ -318,7 +318,7 @@
             <h4>{{ 'There are no working groups in this list yet' | translate }}</h4>
           </div>
           <ul class="workingGroupList" ng-if="myWorkingGroups && myWorkingGroups.length > 0">
-            <li ng-repeat="wg in myWorkingGroups">
+            <li ng-repeat="wg in myWorkingGroups" class="myWorkingGroup">
               <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
             </li>
           </ul>

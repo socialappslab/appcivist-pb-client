@@ -1,6 +1,7 @@
 @import "dashboard";
 @import "campaign-timeline";
 @import "page_header";
+@import "card_header";
 @import "proposals-ideas-searchbox";
 @import "pagination-widget";
 @import "discussion-panel";
@@ -1042,6 +1043,15 @@ contribution-card {
         color: white !important;
       }
     }
+    .white-text {
+      &,
+      a {
+        color: white !important;
+      }
+    }
+    .icon-white {
+      fill: white;
+    }
     .title_block {
       margin-top: 20px;
     }
@@ -1191,4 +1201,4 @@ custom-field {
 //@import "../mockups/voting-results-modal";
 // Uncomment this to test the voting stage header
 // @import "../mockups/voting-stage-header";
-@import "working-group"
+@import "working-group";

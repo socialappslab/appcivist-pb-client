@@ -1,0 +1,23 @@
+.card__header__with_background {
+  position: relative;
+  padding-bottom: 5rem;
+  color: white;
+  .subscribe-newsletter {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+  &:before {
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+  }
+  .description {
+    clear: both;
+    position: relative;
+  }
+}

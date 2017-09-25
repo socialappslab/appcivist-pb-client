@@ -118,9 +118,8 @@
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
         loadAssembly();
-        loadCampaignResources();
       }
-
+      loadCampaignResources();
       loadCampaigns();
 
       $scope.myObject = {};
@@ -272,6 +271,7 @@
       }
 
     }
+
     function getCurrentBallotEntityType() {
       if ($scope.campaign && $scope.campaign.ballotIndex && $scope.campaign.currentBallot) {
         let ballot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot]
@@ -392,7 +392,11 @@
     }
 
     function loadCampaignResources() {
-      var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
+      if ($scope.isAnonymous) {
+        var rsp = Campaigns.publicResources($scope.campaignID).query();
+      } else {
+        var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
+      }
       rsp.$promise.then(function (resources) {
         if (resources) {
           $scope.campaignResources = resources;

@@ -330,7 +330,9 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
     resources: function (assemblyId, campaignId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/resources', { aid: assemblyId, cid: campaignId });
     },
-
+    publicResources: function (campaignUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:cuuid/resources', { cuuid: campaignUUID });
+    },
     timeline: function (assemblyId, campaignId, isAnonymous, campaignUUID, filters) {
 
       // Get timeline of the campaign
@@ -579,10 +581,10 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
 
     /**
      * Returns the total number of notifications for the given user.
-     * 
+     *
      * @method services.Notifications#userStats
      * @param {Number} userId - User's ID
-     * @returns {$resource} 
+     * @returns {$resource}
      */
     userStats(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/stats', { userId });
@@ -590,10 +592,10 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
 
     /**
      * Returns the notifications for the given user.
-     * 
+     *
      * @method services.Notifications#userNotifications
-     * @param {Number} userId 
-     * @param {Number} page 
+     * @param {Number} userId
+     * @param {Number} page
      * @returns {$resource}
      */
     userNotifications(userId, page) {
@@ -602,10 +604,10 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
 
     /**
      * Marks the given notification as read.
-     * 
+     *
      * @method services.Notifications#read
-     * @param {Number} userId 
-     * @param {Number} notificationId 
+     * @param {Number} userId
+     * @param {Number} notificationId
      */
     read(userId, notificationId) {
       return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/:notificationId/read', { userId, notificationId },
@@ -616,9 +618,9 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
 
     /**
     * Marks all notifications as read.
-    * 
+    *
     * @method services.Notifications#readAll
-    * @param {Number} userId 
+    * @param {Number} userId
     */
     readAll(userId) {
       return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/read', { userId },

@@ -181,3 +181,36 @@
   .message { font-weight: bold; }
   .submessage { font-size: 0.8rem; }
 }
+
+#media-carousel {
+  margin: 1.5rem 0 3.5rem;
+  .carousel-inner img { margin: 0 auto; }
+  .carousel-inner {
+    .item {
+      transition-property: opacity;
+    }
+    .item,
+    .active.left,
+    .active.right {
+      left: calc(50% - 240px);
+      opacity: 0;
+    }
+    .active,
+    .next.left,
+    .prev.right {
+      left: 0;
+      opacity: 1;
+    }
+    .next,
+    .prev,
+    .active.left,
+    .active.right {
+      left: calc(50% - 240px);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  .carousel-control {
+    background: none;
+    color: black;
+  }
+}

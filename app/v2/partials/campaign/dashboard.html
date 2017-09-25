@@ -307,7 +307,8 @@
           <h3 class="modal-title" id="workingGroupsLabel">{{campaign.title}}</h3>
           <p>{{ 'Working groups' | translate }}</p>
         </div>
-        <div class="modal-body" ng-if="myWorkingGroups.length === 0 && otherWorkingGroups === 0 && topicsWorkingGroups === 0">
+        <div class="modal-body"
+             ng-if="(!myWorkingGroups || myWorkingGroups.length === 0) && (!otherWorkingGroups || otherWorkingGroups.length === 0) && (!topicsWorkingGroups || topicsWorkingGroups.length === 0)">
           <div class="noWorkingGroups">
             <h4>{{ 'There are no working groups yet' | translate }}</h4>
           </div>
@@ -360,7 +361,7 @@
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
-          <div class="noContent" ng-if="documents.length === 0">
+          <div class="noContent" ng-if="!documents || documents.length === 0">
             <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
           </div>
           <ul class="workingGroupList" ng-if="documents && documents.length > 0">
@@ -390,7 +391,7 @@
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
-          <div class="noContent" ng-if="media.length === 0">
+          <div class="noContent" ng-if="!media || media.length === 0">
             <h4>{{ 'There are no multimedia resources in this campaign' | translate }}</h4>
           </div>
           <ul class="workingGroupList" ng-if="media && media.length > 0">

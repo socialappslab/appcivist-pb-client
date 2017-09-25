@@ -36,6 +36,9 @@
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove();
       $('#workingGroups').modal('hide');
+      $('#documents').modal('hide');
+      $('#media').modal('hide');
+      $('#analytics').modal('hide');
     });
 
     activate();
@@ -390,8 +393,8 @@
         } else {
           $scope.campaignResources = [];
         }
-        $scope.documents = $scope.campaignResources.filter(resource => resource.type !== 'PICTURE' && resource.type !== 'VIDEO');
-        $scope.media = $scope.campaignResources.filter(resource => resource.type === 'PICTURE' || resource.type === 'VIDEO');
+        $scope.documents = $scope.campaignResources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
+        $scope.media = $scope.campaignResources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO');
       }, function (error) {
         Notify.show('Error loading campaign resources from server', 'error');
       });

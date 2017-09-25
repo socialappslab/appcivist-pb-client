@@ -1119,7 +1119,7 @@
   "was added to:": "was added to:",
   "About AppCivist": "About AppCivist",
   "Return to": "Return to",
-  "There are no working groups yet": "There are no working groups yet.",
+  "There are no working groups yet": "There are no working groups in this campaign.",
   "Newsletters": "Newsletters",
   "All caught up!": "All caught up!",
   "Mark all as read": "Mark all as read",
@@ -1137,5 +1137,8 @@
   "Documents": "Documents",
   "Analytics": "Analytics",
   "Media": "Media",
-  "There are no documents in this campaign":"There are no documents in this campaign"
+  "There are no documents in this campaign": "There are no documents in this campaign",
+  "There are no working groups in this list yet": "There are no working groups in this list yet.",
+  "There are no multimedia resources in this campaign": "There are no multimedia resources in this campaign",
+  "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following..."
 }

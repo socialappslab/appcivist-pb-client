@@ -1,4 +1,4 @@
-<main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
+  <main class="appmain" ng-class="{'anonymous' : isAnonymous}" resize>
     <article class="campaign">
       <!-- Campaign Header -->
       <header class="page__header" ng-style="coverStyle">
@@ -81,9 +81,9 @@
             <div class="overlay new_overlay" style="display: inline-flex">
               <ul class="overlay_buttons">
                 <li class="overlay_button">
-                  <a data-toggle="modal" data-target="#workinsgGroups">
+                  <a data-toggle="modal" data-target="#workingGroups">
                     <i class="fa fa-users fa-lg"></i><span>{{'Working groups'|translate}}</span>
-                    <span class="number" ng-if="myWorkingGroups.length > 0">({{myWorkingGroups.length}})</span>
+                    <span class="number" ng-if="myWorkingGroups.length > 0 || otherWorkingGroups.length > 0">({{myWorkingGroups.length+otherWorkingGroups.length}})</span>
                   </a>
                 </li>
                 <li class="overlay_button">
@@ -93,13 +93,14 @@
                   </a>
                 </li>
                 <li class="overlay_button">
-                  <a>
-                    <i class="fa fa-bar-chart fa-lg"></i><span>{{'Analytics'|translate}}</span><span class="number"></span>
+                  <a data-toggle="modal" data-target="#media">
+                    <i class="fa fa-film fa-lg"></i><span>{{'Media'|translate}}</span><span class="number"></span>
+                    <span class="number" ng-if="media.length > 0">({{media.length}})</span>
                   </a>
                 </li>
                 <li class="overlay_button">
-                  <a>
-                    <i class="fa fa-film fa-lg"></i><span>{{'Media'|translate}}</span><span class="number"></span>
+                  <a data-toggle="modal" data-target="#analytics">
+                    <i class="fa fa-bar-chart fa-lg"></i><span>{{'Analytics'|translate}}</span><span class="number"></span>
                   </a>
                 </li>
               </ul>
@@ -306,12 +307,27 @@
           <h3 class="modal-title" id="workingGroupsLabel">{{campaign.title}}</h3>
           <p>{{ 'Working groups' | translate }}</p>
         </div>
-        <div class="modal-body">
-          <div class="noWorkingGroups" ng-if="myWorkingGroups.length == 0 && otherWorkingGroups == 0 && topicsWorkingGroups == 0">
+        <div class="modal-body" ng-if="myWorkingGroups.length === 0 && otherWorkingGroups === 0 && topicsWorkingGroups === 0">
+          <div class="noWorkingGroups">
             <h4>{{ 'There are no working groups yet' | translate }}</h4>
+          </div>
+        </div>
+        <div class="modal-body" ng-if="myWorkingGroups.length > 0 || otherWorkingGroups.length > 0 || topicsWorkingGroups.length >0">
+          <h3>{{'My Working Groups'|translate}}</h3>
+          <div class="noContent" ng-if="!myWorkingGroups || myWorkingGroups.length ===0">
+            <h4>{{ 'There are no working groups in this list yet' | translate }}</h4>
           </div>
           <ul class="workingGroupList" ng-if="myWorkingGroups && myWorkingGroups.length > 0">
             <li ng-repeat="wg in myWorkingGroups">
+              <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
+            </li>
+          </ul>
+          <h3>{{'Other Working Groups'|translate}}</h3>
+          <div class="noContent" ng-if="!otherWorkingGroups || otherWorkingGroups.length ===0">
+            <h4>{{ 'There are no working groups in this list yet' | translate }}</h4>
+          </div>
+          <ul class="workingGroupList" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
+            <li ng-repeat="wg in otherWorkingGroups">
               <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
             </li>
           </ul>
@@ -333,14 +349,75 @@
           <p>{{ 'Documents' | translate }}</p>
         </div>
         <div class="modal-body">
-          <div class="noDocuments" ng-if="documents.length == 0">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div class="noContent" ng-if="documents.length === 0">
             <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
           </div>
-          <ul class="documentList" ng-if="documents && documents.length > 0">
-            <li ng-repeat="doc in documents">
-              <a class="documentLink" ng-href="doc.url"><span>{{doc.title}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
+          <ul class="workingGroupList" ng-if="documents && documents.length > 0">
+            <li ng-repeat="resource in documents">
+              <a class="workingGroupLink" ng-href="{{resource.url}}"><span>{{resource.title}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
             </li>
           </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Media Modal -->
+  <div class="modal fade dashboardModal" id="media" tabindex="-1" role="dialog" aria-labelledby="mediaLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="mediaLabel">{{campaign.title}}</h3>
+          <p>{{ 'Media' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div class="noContent" ng-if="media.length === 0">
+            <h4>{{ 'There are no multimedia resources in this campaign' | translate }}</h4>
+          </div>
+          <ul class="workingGroupList" ng-if="media && media.length > 0">
+            <li ng-repeat="resource in media">
+              <a class="workingGroupLink" ng-href="{{resource.url}}"><span>{{resource.title}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Modal -->
+
+  <div class="modal fade dashboardModal" id="analytics" tabindex="-1" role="dialog" aria-labelledby="analyticsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="analyticsLabel">{{campaign.title}}</h3>
+          <p>{{ 'Analytics' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div class="noContent">
+            <h4>{{ 'The analytics section is coming soon!' | translate }}</h4>
+            <img src="https://cloud.githubusercontent.com/assets/630150/25837931/4b100e16-345e-11e7-9077-9c247ec20f3e.png"/>
+          </div>
         </div>
         <div class="modal-footer text-left">
           <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>

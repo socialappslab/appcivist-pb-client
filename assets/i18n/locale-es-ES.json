@@ -1130,5 +1130,8 @@
   "Documents": "Documentos",
   "Analytics": "Estadísticas",
   "Media": "Multimedia",
-  "There are no documents in this campaign":"No hay documentos en esta iniciativa."
+  "There are no documents in this campaign":"No hay documentos en esta iniciativa.",
+  "There are no working groups in this list yet": "There are no working groups in this list.",
+  "There are no multimedia resources in this campaign": "There are no multimedia resources in this campaign",
+  "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following..."
 }

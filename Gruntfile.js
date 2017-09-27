@@ -184,6 +184,14 @@ module.exports = function(grunt) {
         }, {
           expand: true,
           dot: true,
+          cwd: './node_modules/bootstrap-sass/assets/fonts/bootstrap/',
+          dest: './app/fonts/bootstrap/',
+          src: [
+            '**/*',
+          ]
+        }, {
+          expand: true,
+          dot: true,
           cwd: './stylesheets/font',
           dest: './dist/font/',
           src: [

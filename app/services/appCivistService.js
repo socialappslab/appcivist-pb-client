@@ -2129,7 +2129,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "ideas_milestone_1",
               "position": 1,
               "description": "Idea collection begins on this day",
-              "date": "2017-03-01 00:00:00",
+              "date": moment().local().format("YYYY-MM-DD hh:mm:ss"),
               "type": "START"
             },
             {
@@ -2137,7 +2137,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "ideas_milestone_2",
               "position": 2,
               "description": "Idea collection ends on this day",
-              "date": "2017-03-14 23:59:59",
+              "date": moment().local().add(30, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "END"
             }
           ]
@@ -2198,7 +2198,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "proposals_milestone_1",
               "position": 1,
               "description": "Proposal development begins on this day",
-              "date": "2017-03-15 00:00:00",
+              "date": moment().local().add(31, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "START"
             },
             {
@@ -2206,7 +2206,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "proposals_milestone_2",
               "position": 2,
               "description": "Proposal development ends on this day",
-              "date": "2017-04-14 23:59:59",
+              "date": moment().local().add(60, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "END"
             }
           ]
@@ -2312,7 +2312,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "deliberation_milestone_1",
               "position": 1,
               "description": "Proposal development begins on this day",
-              "date": "2017-04-15 00:00:00",
+              "date": moment().local().add(61, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "START"
             },
             {
@@ -2320,7 +2320,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "deliberation_milestone_2",
               "position": 2,
               "description": "Proposal development ends on this day",
-              "date": "2017-04-30 23:59:59",
+              "date": moment().local().add(90, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "END"
             }
           ]
@@ -2435,7 +2435,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "voting_milestone_1",
               "position": 1,
               "description": "Voting begins on this day",
-              "date": "2017-05-01 00:00:00",
+              "date": moment().local().add(91, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "START"
             },
             {
@@ -2443,7 +2443,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "voting_milestone_2",
               "position": 2,
               "description": "Voting ends on this day",
-              "date": "2017-05-31 23:59:59",
+              "date": moment().local().add(120, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "END"
             }
           ]
@@ -2462,7 +2462,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "implementation_milestone_1",
               "position": 1,
               "description": "Implemenation begins on this day",
-              "date": "2017-06-01 00:00:00",
+              "date": moment().local().add(121, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "START"
             },
             {
@@ -2470,7 +2470,7 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
               "key": "implementation_milestone_2",
               "position": 2,
               "description": "Voting ends on this day",
-              "date": "2018-06-30 23:59:59",
+              "date": moment().local().add(365, 'days').format("YYYY-MM-DD hh:mm:ss"),
               "type": "END"
             }
           ]

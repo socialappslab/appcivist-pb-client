@@ -21,12 +21,12 @@
     'WorkingGroups',
     '$compile',
     '$state',
-    'votingService'
+    'Voting'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, votingService) {
+    $state, Voting) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";

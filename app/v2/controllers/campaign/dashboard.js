@@ -54,6 +54,7 @@
       $scope.vmTimeline = {};
       $scope.vmSearchFilters = {};
       $scope.vmPaginated = {};
+      $scope.configsLoaded = false;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -109,6 +110,10 @@
       $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
       $scope.afterComponentsLoaded = afterComponentsLoaded.bind($scope);
       $scope.loadCampaignConfigs = loadCampaignConfigs.bind($scope);
+      $scope.afterLoadingCampaignConfigsSuccess = afterLoadingCampaignConfigsSuccess.bind($scope);
+      $scope.afterLoadingCampaignConfigsError = afterLoadingCampaignConfigsError.bind($scope);
+      $scope.afterLoadingCampaignConfigs = afterLoadingCampaignConfigs.bind($scope);
+      $scope.loadVotingBallotAndCandidates = loadVotingBallotAndCandidates.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -220,23 +225,12 @@
       this.components = this.vmTimeline.components;
       let currentComponent = this.vmTimeline.currentComponent;
       this.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
-      this.showVotingButtons = this.currentComponentType === 'VOTING' ? true : false;
-      this.vmSearchFilters.currentComponent = currentComponent;
-      this.vmSearchFilters.pageSize = this.pageSize;
-      this.vmSearchFilters.mode =
-        this.currentComponentType === 'IDEAS' ? 'idea' :
-          currentComponent.type === 'VOTING' ?
-            getCurrentBallotEntityType() : 'proposal';
-      console.log(getCurrentBallotEntityType());
       this.currentComponent = currentComponent;
 
+      // If campaign has not been loaded yet, wait until its loaded to load its configs
       if(!this.campaign || !this.campaign.rsID || !this.campaign.rsUUID) {
-        this.$watch("campaign.rsID", function () {
-          if ($scope.campaign && $scope.campaign.rsID) $scope.loadCampaignConfigs();
-        });
-        this.$watch("campaign.rsUUID", function () {
-          if ($scope.campaign && $scope.campaign.rsUUID) $scope.loadCampaignConfigs();
-        });
+        this.$watch("campaign.rsID", this.loadCampaignConfigs);
+        this.$watch("campaign.rsUUID", this.loadCampaignConfigs);
       } else {
         this.loadCampaignConfigs();
       }
@@ -244,30 +238,50 @@
       localStorageService.set('currentCampaign.currentComponent', currentComponent);
     }
 
+    /**
+     * Load campaign configurations
+     */
     function loadCampaignConfigs () {
-      // load configurations
-      if(!this.campaignConfigs) {
-        let rsp = this.isAnonymous
-          ? Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
-          : Campaigns.getConfiguration(this.campaign.rsID).get();
-
-        let currentComponent = this.currentComponent;
-        let configs = {}
-        rsp.$promise.then(
-          function (data) {
-            $scope.campaignConfigs = data;
-            setSectionsButtonsVisibility(currentComponent);
-            loadGroupsAfterConfigs();
-          },
-          function (error) {
-            setSectionsButtonsVisibility(currentComponent);
-            loadGroupsAfterConfigs();
-            Notify.show('Error while trying to fetch campaign config', 'error');
-          }
-        );
+      if(this.campaign && (this.campaign.rsID || this.campaign.rsUUID) && !this.campaignConfigs && !this.configsLoaded) {
+        let rsp = null;
+        if (this.isAnonymous && this.campaign && this.campaign.rsUUID && !this.campaign.rsID) {
+          this.configsLoaded = true;
+          rsp = Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
+        } else {
+          this.configsLoaded = true;
+          rsp = Campaigns.getConfiguration(this.campaign.rsID).get();
+        }
+        rsp.$promise.then( this.afterLoadingCampaignConfigsSuccess, this.afterLoadingCampaignConfigsError);
       }
-
     }
+
+    function afterLoadingCampaignConfigsSuccess(data) {
+      this.campaignConfigs = data;
+      this.afterLoadingCampaignConfigs();
+    }
+
+    function afterLoadingCampaignConfigsError(data) {
+      Notify.show('Error while trying to fetch campaign config', 'error');
+      this.afterLoadingCampaignConfigs();
+    }
+
+    function afterLoadingCampaignConfigs() {
+      let currentComponent = this.currentComponent;
+      this.vmSearchFilters.currentComponent = currentComponent;
+      this.vmSearchFilters.pageSize = this.pageSize;
+      this.vmSearchFilters.mode =
+        this.currentComponentType === 'IDEAS' ? 'idea' :
+          currentComponent.type === 'VOTING' ?
+            getCurrentBallotEntityType() : 'proposal';
+      setSectionsButtonsVisibility(currentComponent);
+      loadGroupsAfterConfigs();
+      // TODO: check current component has not finished
+      // && this.currentComponent && this.currentComponent.endDate
+      if (this.currentComponentType === 'VOTING') {
+        this.loadVotingBallotAndCandidates();
+      }
+    }
+
     function getCurrentBallotEntityType() {
       if ($scope.campaign && $scope.campaign.ballotIndex && $scope.campaign.currentBallot) {
         let ballot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot]
@@ -275,6 +289,16 @@
         return type;
       } else {
         return 'proposal';
+      }
+    }
+
+    function loadVotingBallotAndCandidates() {
+      // Only users can vote
+      if (!this.isAnonymous) {
+        this.showVotingButtons = this.currentComponentType === 'VOTING' ? true : false;
+        // 1. Read user's voting
+        // GET /api/v0/ballot/:ballot_uuid/vote/:signature. ballot_uuid = campaign.bindingBallot, signature = user.uuid.
+
       }
     }
 
@@ -564,7 +588,7 @@
     }
 
     function readBallotPaper() {
-      
+
     }
   }
 })();

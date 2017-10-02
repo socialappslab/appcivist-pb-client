@@ -43,7 +43,7 @@
       localStorageService.set('sessionKey', user.sessionKey);
       localStorageService.set('authenticated', true);
       localStorageService.set('user', user);
-      // todo
+      $scope.user = user;
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
       }
@@ -61,7 +61,7 @@
               && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] === 'TRUE') {
             $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
           } else {
-            let campaign = ongoingCampaigns ? ongoingCampaigns[ongoingCampaigns.length-1] : null
+            let campaign = ongoingCampaigns ? ongoingCampaigns[0] : null
             $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
           }
 

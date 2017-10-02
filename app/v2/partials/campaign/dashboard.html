@@ -357,21 +357,18 @@
   <!-- This is the voting results modal test, it will appear on load if this div is uncommented -->
   <!-- <div ng-include="'/app/v2/mockups/voting-results-modal.html'"></div> -->
 
-  <p>External: {{ campaign.externalBallot }}</p>
-  <p>Current: {{ campaign.currentBallot }}</p>
-
   <!-- <voting-modal modal-id="externalBallot" open="campaign.externalBallot ? true : false" start-voting="false"> -->
-  <voting-modal modal-id="externalBallot" open="campaign.externalBallot || !campaign.currentBallot" start-voting="false">          
+  <voting-modal modal-id="externalBallot" open="campaign.externalBallot || !campaign.currentBallot" start-voting="false">
     <div ng-if="campaign.externalBallot">
       <p>Voting for <strong>{{campaign.title}}</strong> takes place outside of AppCivist. Follow <a href="{{campaign.externalBallot}}">this link</a> to learn more and vote.</p>
       <p>You can still use AppCivist to view the proposals that were included on the ballot.</p>
     </div>
     <div  ng-if="!campaign.currentBallot">
-      <p>Voting Ballot for {{campaign.title}} is being prepared and will be announced soon.</p>
+      <p>Voting Ballot for <strong>{{campaign.title}}</strong> is being prepared and will be announced soon.</p>
       <p>Stay tuned and come back when is ready!</p>
     </div>
   </voting-modal>
-  
+
   <!-- <voting-modal modal-id="noCurrentBallot" open="!campaign.currentBallot ? true : false" start-voting="false">
     <p>Voting Ballot for {{campaign.title}} is being prepared and will be announced soon.</p>
     <p>Stay tuned and come back when is ready!</p>

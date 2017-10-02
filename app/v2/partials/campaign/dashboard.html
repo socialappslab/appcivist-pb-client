@@ -164,30 +164,10 @@
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
                                  is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
                                  components="components" show-voting-buttons="showVotingButtons" filters="filters"
-                                 ng-if="showPagination">
+                                 ballot-paper="ballotPaper" ballot-tokens="ballotTokens" ng-if="showPagination">
               </pagination-widget>
             </div>
           </section>
-
-          <!--@depcreated since integration of filters with pagination widget -->
-          <!-- Ideas section -->
-          <!--<section class="list&#45;&#45;ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA') && ideasSectionExpanded && currentComponentType != 'IDEAS'">-->
-            <!--<header class="ideas__header" style="padding-left: 30px;">-->
-              <!--<a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>-->
-              <!--<a class="ideas__add_new" ng-if="newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>-->
-              <!--<a ng-if="ideasSectionExpanded" ng-click="toggleHideIdeasSection()"><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Hide Ideas' | translate }}</a>-->
-            <!--</header>-->
-              <!--<pagination-widget page-size="ideasPageSize" space="spaceID" type="'idea'"-->
-                               <!--is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"-->
-                               <!--components="components" filters="ideasFilters">-->
-              <!--</pagination-widget>-->
-            <!--&lt;!&ndash;<div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">&ndash;&gt;-->
-              <!--&lt;!&ndash;<contribution-card class="card__idea col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="idea in ideas track by $index"&ndash;&gt;-->
-                <!--&lt;!&ndash;contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous" is-coordinator="isCoordinator">&ndash;&gt;-->
-              <!--&lt;!&ndash;</contribution-card>&ndash;&gt;-->
-              <!--&lt;!&ndash;<p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-          <!--</section>-->
 
           <!-- Comments section -->
           <section class="list--ideas" ng-if="commentsSectionExpanded" ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">

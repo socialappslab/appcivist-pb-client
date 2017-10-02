@@ -22,7 +22,9 @@
         isAnonymous: '=',
         showIdeaBody: '@',
         isCoordinator: '=',
-        isTopicGroup: '='
+        isTopicGroup: '=',
+        ballotPaper: '=',
+        ballotTokens: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {

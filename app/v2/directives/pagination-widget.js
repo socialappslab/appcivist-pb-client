@@ -36,7 +36,9 @@
         campaign: '=',
         components: '=',
         filters: '=',
-        showVotingButtons: '='
+        showVotingButtons: '=',
+        ballotPaper: '=',
+        ballotTokens: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function(scope) {

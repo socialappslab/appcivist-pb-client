@@ -114,6 +114,9 @@
       $scope.afterLoadingCampaignConfigsError = afterLoadingCampaignConfigsError.bind($scope);
       $scope.afterLoadingCampaignConfigs = afterLoadingCampaignConfigs.bind($scope);
       $scope.loadVotingBallotAndCandidates = loadVotingBallotAndCandidates.bind($scope);
+      $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
+      $scope.afterLoadingBallotError = afterLoadingBallotError.bind($scope);
+      $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -294,12 +297,41 @@
 
     function loadVotingBallotAndCandidates() {
       // Only users can vote
-      if (!this.isAnonymous) {
+      if (!this.isAnonymous && this.campaign && this.campaign.currentBallot) {
         this.showVotingButtons = this.currentComponentType === 'VOTING' ? true : false;
+
         // 1. Read user's voting
         // GET /api/v0/ballot/:ballot_uuid/vote/:signature. ballot_uuid = campaign.bindingBallot, signature = user.uuid.
-
+        let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.user.uuid).get();
+        rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
       }
+    }
+
+    function afterLoadingBallotSuccess (data) {
+      this.ballotPaperNotFound = false;
+      this.ballotPaper = data;
+      if (this.ballotPaper) {
+        this.ballot = this.ballotPaper.ballot; // the voting ballot, which holds voting configs
+        this.voteRecord = this.ballotPaper.vote; // the ballot paper, which holds the votes of the user
+        this.votes = this.voteRecord ? this.voteRecord.votes : []; // array of votes, which contains the value for each vote
+        this.initializeBallotTokens();
+      }
+    }
+
+    function afterLoadingBallotError (error) {
+      this.ballotPaperNotFound = true;
+      console.log("Ballot paper does not exist yet");
+    }
+
+    function initializeBallotTokens () {
+      let max = this.ballot ? parseInt(this.ballot.votes_limit) : 0;
+      let index;
+      for (index = 0; index < this.votes.length; ++index) {
+        let value = this.votes[index].value;
+        let intValue = value ? parseInt(value) : 0;
+        max > 0 ? max -= intValue : 0;
+      }
+      this.ballotTokens = { "points": max};
     }
 
     function loadGroupsAfterConfigs() {

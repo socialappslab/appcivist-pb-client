@@ -13,7 +13,7 @@
       </p>
       <div class="title_block">
         <h1 class="heading--headline">
-          <a ng-if="isAnonymous" 
+          <a ng-if="isAnonymous"
              ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/group/{{guuid}}/contribution/{{contribution.uuid}}"
              style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
@@ -185,7 +185,9 @@
     <div class="card__footer">
       {{contribution.workingGroupAuthors[0].name}}
     </div>
-    <contribution-card-voting-control type="distributed" ng-if="showVotingButtons"></contribution-card-voting-control>
+    <contribution-card-voting-control
+      type="distributed" ng-if="showVotingButtons && ballotPaper"
+      ballot-paper="ballotPaper" contribution="contribution" ballot-tokens="ballotTokens"></contribution-card-voting-control>
   </div>
 </div>
 <!-- IDEA -->

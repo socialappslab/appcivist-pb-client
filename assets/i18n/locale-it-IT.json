@@ -1143,5 +1143,9 @@
   "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>",
   "voting.controls.remaining.points": "You have <span class=\"points-left\">{{points}} points</span> left",
   "Points": "Points",
-  "points": "points"
+  "points": "points",
+  "voting.modal.external-ballot.p1": "Voting for <strong>{{title}}</strong> takes place outside of AppCivist. Follow <a href='{{externalBallot}}'>this link</a> to learn more and vote.",
+  "voting.modal.external-ballot.p2": "You can still use AppCivist to view the proposals that were included on the ballot.",
+  "voting.modal.no-ballot-yet.p1": "Voting Ballot for <strong>{{title}}</strong> is being prepared and will be announced soon.</p>",
+  "voting.modal.no-ballot-yet.p2": "Stay tuned and come back when is ready!"
 }

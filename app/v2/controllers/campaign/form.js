@@ -623,7 +623,7 @@
 
     /**
      * Handler called when user clicks on timeline component
-     * 
+     *
      * @param {Object} component
      */
     function onComponentClick(component) {
@@ -632,8 +632,11 @@
       angular.forEach(component.milestones, function(m) {
         const parsedDate = moment(m.date, 'YYYY-MM-DD');
         m.date = parsedDate.toDate();
-        // test if milestone is editable. We can edit a milestone if we do not reach it yet.
-        m.isEditable = parsedDate.isAfter(moment(), 'day');
+        // test if milestone can be removed or changed its type
+        m.isMandatory = m.type === 'START' || m.type === 'END';
+        // test if milestone is editable. We can edit a milestone if we do not reach it yet
+        m.isEditable = parsedDate.isSameOrAfter(moment(), 'day');
+
       });
       this.selectedComponent = component;
     }
@@ -659,7 +662,7 @@
 
     /**
      * Deletes the selected milestones
-     * 
+     *
      * @param {Object} milestone
      */
     function deleteMilestone(milestone) {
@@ -672,8 +675,8 @@
 
     /**
      * Helper that formats the given date
-     * 
-     * @param {Date} date 
+     *
+     * @param {Date} date
      */
     function formatDate(date) {
       return moment(date).local().format('L');
@@ -746,8 +749,8 @@
 
     /**
      * Called when the campaign timeline directive finishs loading the components.
-     * 
-     * @param {Object[]} components 
+     *
+     * @param {Object[]} components
      */
     function componentsLoaded(components) {
       this.newCampaign.proposalComponents = components;

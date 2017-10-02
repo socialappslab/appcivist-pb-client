@@ -1,6 +1,7 @@
 @import "dashboard";
 @import "campaign-timeline";
 @import "page_header";
+@import "card_header";
 @import "proposals-ideas-searchbox";
 @import "pagination-widget";
 @import "discussion-panel";
@@ -1041,6 +1042,15 @@ contribution-card {
       a {
         color: white !important;
       }
+    }
+    .white-text {
+      &,
+      a {
+        color: white !important;
+      }
+    }
+    .icon-white {
+      fill: white;
     }
     .title_block {
       margin-top: 20px;

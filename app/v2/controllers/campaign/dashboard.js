@@ -37,6 +37,9 @@
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove();
       $('#workingGroups').modal('hide');
+      $('#documents').modal('hide');
+      $('#media').modal('hide');
+      $('#analytics').modal('hide');
     });
 
     activate();
@@ -75,6 +78,9 @@
       };
 
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
+        if ($stateParams.auuid && pattern.test($stateParams.auuid)) {
+          $scope.assemblyID = $stateParams.auuid;
+        }
         $scope.campaignID = $stateParams.cuuid;
         $scope.isAnonymous = true;
         $scope.fromURL = 'v2/campaign/' + $scope.campaignID;
@@ -121,9 +127,8 @@
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
         loadAssembly();
-        loadCampaignResources();
       }
-
+      loadCampaignResources();
       loadCampaigns();
 
       $scope.myObject = {};
@@ -363,7 +368,10 @@
             Notify.show('Error trayendo los grupos', 'error');
           }
         );
+      } else {
+        $scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
       }
+
     }
 
     function loadPublicCommentCount(sid) {
@@ -441,9 +449,19 @@
     }
 
     function loadCampaignResources() {
-      var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
+      if ($scope.isAnonymous) {
+        var rsp = Campaigns.publicResources($scope.campaignID).query();
+      } else {
+        var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
+      }
       rsp.$promise.then(function (resources) {
-        $scope.campaignResources = resources;
+        if (resources) {
+          $scope.campaignResources = resources;
+        } else {
+          $scope.campaignResources = [];
+        }
+        $scope.documents = $scope.campaignResources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
+        $scope.media = $scope.campaignResources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO');
       }, function (error) {
         Notify.show('Error loading campaign resources from server', 'error');
       });

@@ -102,8 +102,8 @@
       if (scope.needToRefresh(myWorkingGroups)) {
         Assemblies.setCurrentAssembly(parseInt($state.params.aid)).then(response => {
           scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
-          var current = scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId });
-          $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
+          var current = scope.ongoingCampaigns ? scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId }) : undefined;
+          $scope.currentCampaignUuid = current ? current.length > 0 ? current[0].uuid : '' : '';
           scope.assemblies = localStorageService.get('assemblies') || [];
           scope.fetchGroups().then(response => {
             scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
@@ -111,8 +111,8 @@
         });
       } else {
         scope.ongoingCampaigns = localStorageService.get('ongoingCampaigns');
-        var current = scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId });
-        $scope.currentCampaignUuid = current.length > 0 ? current[0].uuid : '';
+        var current = scope.ongoingCampaigns ? scope.ongoingCampaigns.filter(c => { return c.campaignId == $scope.currentCampaignId }) : undefined;
+        $scope.currentCampaignUuid = current ? current.length > 0 ? current[0].uuid : '' : '';
         scope.assemblies = localStorageService.get('assemblies') || [];
         scope.myWorkingGroups = localStorageService.get('myWorkingGroups');
         scope.topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');

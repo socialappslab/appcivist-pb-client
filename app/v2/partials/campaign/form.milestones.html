@@ -75,7 +75,7 @@
               <div uib-accordion-group class="panel-default" ng-repeat="milestone in selectedComponent.milestones">
                 <uib-accordion-heading>
                   {{milestone.title}} - {{formatDate(milestone.date)}}
-                  <i ng-if="milestone.isEditable" class="pull-right fa fa-trash" ng-click="$event.stopPropagation();$event.preventDefault();deleteMilestone(milestone)"></i>
+                  <i ng-if="milestone.isEditable && !milestone.isMandatory" class="pull-right fa fa-trash" ng-click="$event.stopPropagation();$event.preventDefault();deleteMilestone(milestone)"></i>
                 </uib-accordion-heading>
 
 
@@ -89,7 +89,7 @@
                 <fieldset class="col-lg-3">
                   <label for="group">{{'Type' | translate}}</label>
                   <div class="field-container">
-                    <select ng-disabled="!milestone.isEditable" name="type" class="col-lg-12" ng-model="milestone.type" ng-options="type as type for type in milestoneTypes"></select>
+                    <select ng-disabled="!milestone.isEditable || milestone.isMandatory" name="type" class="col-lg-12" ng-model="milestone.type" ng-options="type as type for type in milestoneTypes"></select>
                   </div>
                 </fieldset>
 

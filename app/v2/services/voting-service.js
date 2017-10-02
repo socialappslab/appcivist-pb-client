@@ -1,61 +1,65 @@
-(function () {
-  'use strict';
-  /**
-   * wrapper for Voting.
-   */
-  appCivistApp
-    .factory('Voting', Voting);
+function getVotingApiBaseUrl(localStorageService) {
+  var serverBaseUrl = localStorageService.get('votingApiUrl');
+  if (serverBaseUrl === undefined || serverBaseUrl === null) {
+    serverBaseUrl = "https://platform.appcivist.org/voting/api/v0";
+    if (serverBaseUrl) localStorageService.set("votingApiUrl", serverBaseUrl);
+    console.log("Setting Voting API Server to: " + serverBaseUrl);
+  }
+  return serverBaseUrl;
+}
 
-  Voting.$inject = ['localStorageService'];
 
-  function Voting(localStorageService) {
+appCivistApp.factory('Voting', function ($resource, localStorageService) {
+  return {
+    /**
+     * Returns the total number of notifications for the given user.
+     *
+     * @method services.Notifications#userStats
+     * @param {Number} userId - User's ID
+     * @returns {$resource}
+     */
+    ballot(uuid) {
+      return $resource(getVotingApiBaseUrl(localStorageService) + '/ballot/:uuid', { uuid: uuid});
+    },
 
-    return {
-      ballot: ballot,
-      ballotPaper: ballotPaper,
-    };
-
-    var getVotingApiURL = function(localStorageService) {
-      var url = localStorageService.get('votingApiUrl');
-      if (!url) {
-        url = votingApiUrl;
-        localStorageService.set("votingApiUrl", url);
-      }
-      return url;
-    }
-
-    var ballot = function($http, $resource, localStorageService) {
-      var url = getVotingApiURL(localStorageService);
-      return $resource(
-        url + '/ballot/:uuid/registration', { "uuid": "@id" }, {
-          results: {
-            method: "GET",
-            url: url + '/ballot/:uuid/results'
+    /**
+     * Returns the notifications for the given user.
+     *
+     * @method services.Notifications#userNotifications
+     * @param {Number} userId
+     * @param {Number} page
+     * @returns {$resource}
+     */
+    ballotPaper(uuid, sign) {
+      return $resource(getVotingApiBaseUrl(localStorageService) + '/ballot/:uuid/vote/:signature', { uuid: uuid, signature: sign},
+        {
+          read: { "method": "GET" },
+          update: { method: "PUT" },
+          complete: {
+            method: "PUT",
+            url: getVotingApiBaseUrl(localStorageService) + "/ballot/:uuid/vote/:signature/complete"
           },
-    
-          create: {
-            method: 'POST',
-            url: url + '/ballot'
+          single: {
+            method: "PUT",
+            url: getVotingApiBaseUrl(localStorageService) + "/ballot/:uuid/vote/:signature/single"
           }
         }
       );
-    };
+    },
 
-    var ballotPaper = function($http, $resource, localStorageService) {
-      var url = getVotingApiURL(localStorageService);
-      return $resource(url + '/ballot/:uuid/vote/:signature', { "uuid": "@id", "signature": "@id" }, {
-        "read": { "method": "GET" },
-        "update": { method: "PUT" },
-        "complete": {
-          method: "PUT",
-          url: url + "/ballot/:uuid/vote/:signature/complete"
-        },
-        "single": {
-          method: "PUT",
-          url: url + "/ballot/:uuid/vote/:signature/single"
-        }
-      });
-    };
+    ballotResults(uuid) {
+      return $resource(getVotingApiBaseUrl(localStorageService) + '/ballot/:uuid/results', {uuid: uuid});
+    }
+  };
+});
 
-  }
-} ());
+// TODO: Other voting api endpoints
+// '/ballot/:uuid/registration', { "uuid": uuid }, {
+//
+//         }
+//       );
+//     };
+//
+//     let ballotPaper = function(uuid, signature) {
+//       var url = getVotingApiURL(localStorageService);
+//       return $resource(url + '/ballot/:uuid/vote/:signature', { "uuid": uuid, "signature": signature },

@@ -1124,5 +1124,8 @@
   "voting.secret.contact":"To start the voting process, enter your email and the ballot secret code<br>here. Contact the <strong>campaign organizers</strong> to obtain the code.",
   "voting.secret.view": "If you don't have the secret code you can still view the proposals in the ballot.",
   "View proposals": "View proposals",
-  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>"
+  "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>",
+  "voting.controls.remaining.points": "You have <span class=\"points-left\">{{points}} points</span> left",
+  "Points": "Points",
+  "points": "points"
 }

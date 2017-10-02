@@ -1133,5 +1133,8 @@
   "wgroups.select.cover": "Pick a cover or upload an image to represent your Group (or upload a picture < 2Mb)*",
   "selected.cover": "Selected cover",
   "wgroups.select.color": "Pick a color to represent your Group",
-  "selected.color": "Selected color"
+  "selected.color": "Selected color",
+  "voting.controls.remaining.points": "You have <span class=\"points-left\">{{points}} points</span> left",
+  "Points": "Points",
+  "points": "points"
 }

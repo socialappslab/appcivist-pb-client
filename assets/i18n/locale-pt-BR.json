@@ -1139,7 +1139,7 @@
   "There are no documents in this campaign": "There are no documents in this campaign",
   "There are no working groups in this list yet": "There are no working groups in this list.",
   "There are no multimedia resources in this campaign": "There are no multimedia resources in this campaign",
-  "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following..."
+  "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following...",
   "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>",
   "voting.controls.remaining.points": "You have <span class=\"points-left\">{{points}} points</span> left",
   "Points": "Points",
@@ -1149,11 +1149,10 @@
   "voting.modal.no-ballot-yet.p1": "Voting Ballot for <strong>{{title}}</strong> is being prepared and will be announced soon.</p>",
   "voting.modal.no-ballot-yet.p2": "Stay tuned and come back when is ready!",
   "voting.stage.intro.title": "Voting Stage",
-  "voting.stage.intro.contributions-summary": "{{candidates.length}} {{entityType}} have been selected for this phase.",
+  "voting.stage.intro.contributions-summary": "{{candidates.length}} {{entity_type | lowercase}}s have been selected for this phase.",
   "voting.stage.intro.instructions": "Read the voting instructions to learn more.",
   "voting.stage.button.summary": "My Voting Summary",
   "voting.stage.button.instructions": "View Voting Instructions",
   "voting.stage.button.save": "Save Votes",
   "voting.stage.button.finalize": "Finalize Voting"
-
 }

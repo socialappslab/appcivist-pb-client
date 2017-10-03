@@ -22,6 +22,7 @@
           </div>
         </form>
         <p class="smaller" ng-if="vm.isAnonymous" translate="voting.secret.view"></p>
+        <p class="smaller" ng-if="!vm.isAnonymous" translate="voting.secret.view.authenticated"></p>
         <button class="btn btn-default btn-voting" data-dismiss="modal">{{'View proposals'|translate}}</button>
       </div>
     </div>

@@ -1128,6 +1128,7 @@
   "Start voting": "Start voting",
   "voting.secret.contact": "To start the voting process, enter your email and the ballot secret code<br>here. Contact the <strong>campaign organizers</strong> to obtain the code.",
   "voting.secret.view": "If you don't have the secret code you can still view the proposals in the ballot.",
+  "voting.secret.view.authenticated": "If you are not ready to start voting, you can still explore the candidate proposals and ideas that were included in the ballot.",
   "View proposals": "View proposals",
   "wgroups.select.cover": "Pick a cover or upload an image to represent your Group (or upload a picture < 2Mb)*",
   "selected.cover": "Selected cover",

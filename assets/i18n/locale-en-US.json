@@ -1154,5 +1154,6 @@
   "voting.stage.button.summary": "My Voting Summary",
   "voting.stage.button.instructions": "View Voting Instructions",
   "voting.stage.button.save": "Save Votes",
-  "voting.stage.button.finalize": "Finalize Voting"
+  "voting.stage.button.finalize": "Finalize Voting",
+  "voting.modal.start-voting": "Press <strong>Start Voting</strong> to view the voting controls under each card"
 }

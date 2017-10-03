@@ -514,3 +514,41 @@
     <p>Voting Ballot for {{campaign.title}} is being prepared and will be announced soon.</p>
     <p>Stay tuned and come back when is ready!</p>
   </voting-modal> -->
+  <div class="modal fade dashboardModal" id="voting" tabindex="-1" role="dialog" aria-labelledby="votingLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+          <h3 class="modal-title" id="votingLabel">{{'Voting instructions' | translate}}</h3>
+        </div>
+        <div class="modal-body" id="voting-instructions">
+          <p ng-bind-html="ballot.instructions"></p>
+          <!--&lt;!&ndash; TEST INSTRUCTIONS - This section be replaced by the actual instructions of the voting obtained via API call &ndash;&gt;-->
+          <!--&lt;!&ndash; This will be in ballot.instructions, with HTML format&ndash;&gt;-->
+          <!--<p><strong>Voting has begun!</strong></p>-->
+          <!--<p>You assembly has decided to use the method of <strong>Distrubuted Voting</strong>.</p>-->
+          <!--<p>You have 100 points that you can distribute across as many proposals as you want.</p>-->
+          <!--<p>You must utilize all your points in order for your vote to count.</p>-->
+          <!--<p>You can change your vote any time until &lt;voting end date&gt;. After this date you cannot change your votes.</p>-->
+          <!--<p>The 3 proposals with the highest number of points will be selected as the winning proposals at the end of the voting stage.</p>-->
+          <!--&lt;!&ndash; END TEST INSTRUCTIONS &ndash;&gt;-->
+        </div>
+        <div class="modal-footer text-right" ng-if="userIsAuthenticated">
+          <button class="btn btn-default btn-voting">{{'Start voting'|translate}}</button>
+        </div>
+        <div class="modal-footer text-right" ng-if="!userIsAuthenticated">
+          <p class="smaller">{{'voting.secret.contact'|translate}}</p>
+          <form class="form-inline">
+            <div class="form-group">
+              <input type="email" class="form-control form-inline" placeholder="Email">
+              <input type="password" class="form-control form-inline" placeholder="Code" style="width:9rem">
+              <button class="btn btn-default btn-voting" ng-click="vm.startVoting()">{{'Start voting'|translate}}</button>
+            </div>
+          </form>
+          <p class="smaller">{{'voting.secret.view'|translate}}</p>
+          <button class="btn btn-default btn-voting">{{'View proposals'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

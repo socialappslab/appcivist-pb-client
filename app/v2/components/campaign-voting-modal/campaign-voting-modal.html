@@ -3,16 +3,16 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
-        <h3 class="modal-title" id="votingLabel" ng-if="vm.title">{{vm.title}}</h3>
+        <h3 class="modal-title" id="votingLabel" ng-if="vm.title">{{vm.title | translate}}</h3>
       </div>
       <div class="modal-body">
         <ng-transclude></ng-transclude>
       </div>
-      <div class="modal-footer text-right" ng-if="userIsAuthenticated && vm.startVoting">
+      <div class="modal-footer text-right" ng-if="vm.isAnonymous  && vm.startVoting">
         <button class="btn btn-default btn-voting">{{'Start voting'|translate}}</button>
       </div>
-      <div class="modal-footer text-right" ng-if="!userIsAuthenticated && vm.startVoting">
-        <p class="smaller">{{'voting.secret.contact'|translate}}</p>
+      <div class="modal-footer text-right" ng-if="vm.isAnonymous && vm.startVoting">
+        <p class="smaller" translate="voting.secret.contact"></p>
         <form class="form-inline">
           <div class="form-group">
             <input type="email" class="form-control form-inline" placeholder="Email">
@@ -20,7 +20,7 @@
             <button class="btn btn-default btn-voting">{{'Start voting'|translate}}</button>
           </div>
         </form>
-        <p class="smaller">{{'voting.secret.view'|translate}}</p>
+        <p class="smaller" translate="voting.secret.view"></p>
         <button class="btn btn-default btn-voting">{{'View proposals'|translate}}</button>
       </div>
     </div>

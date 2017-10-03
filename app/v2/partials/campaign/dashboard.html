@@ -495,7 +495,10 @@
   <!-- This is the voting results modal test, it will appear on load if this div is uncommented -->
   <!-- <div ng-include="'/app/v2/mockups/voting-results-modal.html'"></div> -->
 
-  <voting-modal modal-id="externalBallot" open="votingStageIsActive && (campaign.externalBallot || !campaign.currentBallot)" start-voting="false">
+  <voting-modal modal-id="externalBallot"
+                open="votingStageIsActive && (campaign.externalBallot || !campaign.currentBallot)"
+                start-voting="false"
+                is-anonymous="isAnonymous">
     <div ng-if="campaign.externalBallot">
       <p translate="voting.modal.external-ballot.p1" translate-values="{{campaign}}"></p>
       <p translate="voting.modal.external-ballot.p2" translate-values="{{campaign}}"></p>
@@ -516,7 +519,9 @@
   </voting-modal> -->
   <voting-modal modal-id="voting"
                 open="votingStageIsActive && campaign.currentBallot"
-                start-voting="ballotPaperNotFound" title="Voting instructions">
+                start-voting="ballotPaperNotFound"
+                title="Voting instructions"
+                is-anonymous="isAnonymous">
     <p ng-if="!ballotPaperNotFound" ng-bind-html="ballot.instructions"></p>
     <p ng-if="ballotPaperNotFound && campaignBallot" ng-bind-html="campaignBallot.instructions"></p>
   </voting-modal>

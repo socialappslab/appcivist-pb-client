@@ -20,7 +20,8 @@
         modalId: '@',
         title: '@',
         open: '=',
-        startVoting: '='
+        startVoting: '=',
+        isAnonymous: '='
       },
       controller: CampaignVotingModalCtrl,
       controllerAs: 'vm',

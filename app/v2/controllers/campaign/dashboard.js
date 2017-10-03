@@ -54,6 +54,7 @@
       $scope.insightsSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
       $scope.showVotingButtons = false;
+      $scope.votingStageIsActive = false;
       $scope.vmTimeline = {};
       $scope.vmSearchFilters = {};
       $scope.vmPaginated = {};
@@ -302,14 +303,19 @@
 
     function loadVotingBallotAndCandidates() {
       // Only users can vote
-      if (!this.isAnonymous && this.campaign && this.campaign.currentBallot) {
-        this.showVotingButtons = this.currentComponentType === 'VOTING' ? true : false;
-
-        // 1. Read user's voting
-        // GET /api/v0/ballot/:ballot_uuid/vote/:signature. ballot_uuid = campaign.bindingBallot, signature = user.uuid.
-        let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.user.uuid).get();
-        rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
+      if (!this.isAnonymous) {
+        this.votingStageIsActive = true;
+        if (this.campaign && this.campaign.currentBallot) {
+          this.campaignBallot = this.campaign.ballotIndex[this.campaign.currentBallot]
+          this.showVotingButtons = this.votingStageIsActive
+          // read user's ballot paper
+          let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.user.uuid).get();
+          rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
+        }
+      } else {
+        // TODO implement config for enabling anonymous voting with form registration
       }
+
     }
 
     function afterLoadingBallotSuccess (data) {

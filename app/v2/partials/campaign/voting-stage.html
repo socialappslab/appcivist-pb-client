@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-xs-6">
       <h2>{{'voting.stage.intro.title'|translate}}</h2>
-      <p id="selected-proposal-text" translate="voting.stage.intro.contributions-summary" translate-values="{{ballot}}"></p>
+      <p id="selected-proposal-text" translate="voting.stage.intro.contributions-summary" translate-values="{{ballot ? ballot : campaignBallot}}"></p>
       <p><a data-toggle="modal" data-target="#voting">{{'voting.stage.intro.instructions'|translate}}</a></p>
     </div>
     <div class="col-xs-6 text-right">

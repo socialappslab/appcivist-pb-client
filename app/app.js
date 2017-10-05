@@ -581,22 +581,26 @@
       })
       .state('v2.assembly.aid.campaign.workingGroup.gid.contribution.pid', {
         url: '/:pid',
-        templateUrl: 'app/v2/partials/proposal/page.html',
-        controller: 'v2.ProposalPageCtrl',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
         access: {
           requiresLogin: true
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "Proposal"
+          label: "Contribution"
         }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {
         url: '/:puuid',
-        templateUrl: 'app/v2/partials/proposal/page.html',
-        controller: 'v2.ProposalPageCtrl',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.workingGroup.guuid",
+          label: "Contribution"
         }
       })
       .state('v2.space', {

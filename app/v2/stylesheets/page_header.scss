@@ -4,4 +4,12 @@
   .row {
     position:relative;
   }
+  &.ideaHeader {
+    background-color: #FBFBFB;
+    background-image: none;
+    color: #3c3c3c;
+    &:before { display: none; }
+    #breadcrumb, #breadcrumb a { color: #3c3c3c; }
+    h1 { color: #30698E; margin-top: 0; }
+  }
 }

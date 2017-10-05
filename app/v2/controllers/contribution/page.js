@@ -3,17 +3,17 @@
 
   angular
     .module('appCivistApp')
-    .controller('v2.ProposalPageCtrl', ProposalPageCtrl);
+    .controller('v2.ContributionPageCtrl', ContributionPageCtrl);
 
 
 
-  ProposalPageCtrl.$inject = [
+  ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns'
   ];
 
-  function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
+  function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
     $translate, Space, $http, FileUploader, $sce, Campaigns) {
 
@@ -157,6 +157,7 @@
           var workingGroupAuthors = data.workingGroupAuthors;
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
+          scope.contributionType = $scope.proposal.type;
 
           if ($scope.group) {
             $scope.group.profilePic = {
@@ -206,7 +207,7 @@
           loadCampaign();
         },
         function (error) {
-          Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
+          Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
         }
       );
     }

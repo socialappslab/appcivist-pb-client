@@ -497,31 +497,33 @@
 
   <voting-modal modal-id="externalBallot"
                 open="votingStageIsActive && (campaign.externalBallot || !campaign.currentBallot)"
-                start-voting="false"
-                is-anonymous="isAnonymous">
-    <div ng-if="campaign.externalBallot">
+                start-voting="startVotingDisabled"
+                is-anonymous="isAnonymous"
+                ballot-paper="ballotPaper"
+                ballot-uuid="ballot.uuid"
+                ballot-paper-signature="user.uuid"
+                ballot-password="ballotPassword"
+                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)">
+  <div ng-if="campaign.externalBallot">
       <p translate="voting.modal.external-ballot.p1" translate-values="{{campaign}}"></p>
       <p translate="voting.modal.external-ballot.p2" translate-values="{{campaign}}"></p>
-      <!--<p>Voting for <strong>{{campaign.title}}</strong> takes place outside of AppCivist. Follow <a href="{{campaign.externalBallot}}">this link</a> to learn more and vote.</p>-->
-      <!--<p>You can still use AppCivist to view the proposals that were included on the ballot.</p>-->
     </div>
     <div  ng-if="!campaign.currentBallot">
       <p translate="voting.modal.no-ballot-yet.p1" translate-values="{{campaign}}"></p>
       <p translate="voting.modal.no-ballot-yet.p2" translate-values="{{campaign}}"></p>
-      <!--<p>Voting Ballot for <strong>{{campaign.title}}</strong> is being prepared and will be announced soon.</p>-->
-      <!--<p>Stay tuned and come back when is ready!</p>-->
     </div>
   </voting-modal>
 
-  <!-- <voting-modal modal-id="noCurrentBallot" open="!campaign.currentBallot ? true : false" start-voting="false">
-    <p>Voting Ballot for {{campaign.title}} is being prepared and will be announced soon.</p>
-    <p>Stay tuned and come back when is ready!</p>
-  </voting-modal> -->
   <voting-modal modal-id="voting"
                 open="votingStageIsActive && campaign.currentBallot"
-                start-voting="ballotPaperNotFound"
+                start-voting="startVotingDisabled"
                 title="Voting instructions"
-                is-anonymous="isAnonymous">
+                is-anonymous="isAnonymous"
+                ballot-paper="ballotPaper"
+                ballot-uuid="ballot.uuid"
+                ballot-paper-signature="user.uuid"
+                ballot-password="ballotPassword"
+                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)">
     <p ng-if="!ballotPaperNotFound" ng-bind-html="ballot.instructions"></p>
     <p ng-if="ballotPaperNotFound && campaignBallot" ng-bind-html="campaignBallot.instructions"></p>
   </voting-modal>

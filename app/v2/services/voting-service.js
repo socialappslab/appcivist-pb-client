@@ -35,6 +35,10 @@ appCivistApp.factory('Voting', function ($resource, localStorageService) {
         {
           read: { "method": "GET" },
           update: { method: "PUT" },
+          create: {
+            method: "POST",
+            url: getVotingApiBaseUrl(localStorageService) + "/ballot/:uuid/vote"
+          },
           complete: {
             method: "PUT",
             url: getVotingApiBaseUrl(localStorageService) + "/ballot/:uuid/vote/:signature/complete"

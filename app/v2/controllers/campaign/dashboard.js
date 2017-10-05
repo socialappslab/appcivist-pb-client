@@ -124,6 +124,7 @@
       $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
       $scope.afterLoadingBallotError = afterLoadingBallotError.bind($scope);
       $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
+      $scope.loadVotingBallotAndCandidatesAfterStart = loadVotingBallotAndCandidatesAfterStart.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -314,15 +315,27 @@
         }
       } else {
         // TODO implement config for enabling anonymous voting with form registration
+        this.ballotPaperNotFound = true;
+        this.votingStageIsActive = this.startVotingDisabled = this.campaignConfigs ? this.campaignConfigs['component.voting.anonymous'] === "TRUE" : false;
+        if (this.campaign && this.campaign.currentBallot) {
+          this.campaignBallot = this.campaign.ballotIndex[this.campaign.currentBallot];
+          this.ballot = this.campaignBallot;
+        }
       }
+    }
 
+    function loadVotingBallotAndCandidatesAfterStart(signature) {
+      let rsp = Voting.ballotPaper(this.campaign.currentBallot, signature).get();
+      rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
     }
 
     function afterLoadingBallotSuccess (data) {
       this.ballotPaperNotFound = false;
+      this.startVotingDisabled = false;
       this.ballotPaper = data;
       if (this.ballotPaper) {
         this.ballot = this.ballotPaper.ballot; // the voting ballot, which holds voting configs
+        this.ballotPassword = this.ballot.password; // the password for creating a ballotPaper
         this.voteRecord = this.ballotPaper.vote; // the ballot paper, which holds the votes of the user
         this.votes = this.voteRecord ? this.voteRecord.votes : []; // array of votes, which contains the value for each vote
         this.initializeBallotTokens();
@@ -331,7 +344,12 @@
 
     function afterLoadingBallotError (error) {
       this.ballotPaperNotFound = true;
-      console.log("Ballot paper does not exist yet");
+      this.startVotingDisabled = true;
+      if (this.campaign && this.campaign.currentBallot) {
+        this.ballot = this.campaignBallot;
+        this.ballotPassword = this.ballot.password; // the password for creating a ballotPaper
+      }
+      console.log("Ballot paper does not exist yet. Using Ballot information in the campaign");
     }
 
     function initializeBallotTokens () {

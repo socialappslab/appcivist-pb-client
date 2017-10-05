@@ -21,7 +21,12 @@
         title: '@',
         open: '=',
         startVoting: '=',
-        isAnonymous: '='
+        isAnonymous: '=',
+        ballotPaper: '=',
+        ballotUuid: '=',
+        ballotPaperSignature: '=',
+        ballotPassword: '=',
+        createBallotSuccess: '&'
       },
       controller: CampaignVotingModalCtrl,
       controllerAs: 'vm',
@@ -29,10 +34,10 @@
     });
 
     CampaignVotingModalCtrl.$inject = [
-      '$scope', '$timeout'
-  ];
+      '$scope', '$timeout', 'Voting'
+    ];
 
-  function CampaignVotingModalCtrl($scope,$timeout) {
+  function CampaignVotingModalCtrl($scope,$timeout, Voting) {
     this.$postLink = () => {
       $timeout(() => {
         if (this.open) {
@@ -41,6 +46,26 @@
         }
       }, 2000)
     }
-  }
 
+    this.createBallotPaper = createBallotPaper.bind(this);
+
+    function createBallotPaper () {
+      let vote = {
+        "vote": {
+          "signature": this.ballotPaperSignature
+        },
+        "password": this.ballotPassword
+      };
+
+      console.log("Creating ballot paper with "+vote);
+      let rsp = Voting.ballotPaper(this.ballotUuid).create(vote);
+      rsp.$promise.then(
+        (data) => {
+          this.createBallotSuccess({signature: data.vote.signature});
+      },
+        (error) => {
+        console.log("Error on creating ballot paper: "+JSON.stringify(error));
+      } );
+    }
+  }
 }());

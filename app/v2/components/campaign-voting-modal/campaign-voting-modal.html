@@ -8,17 +8,14 @@
       <div class="modal-body">
         <ng-transclude></ng-transclude>
       </div>
-      <div class="modal-footer text-right" ng-if="vm.isAnonymous  && vm.startVoting">
-        <button class="btn btn-default btn-voting">{{'Start voting'|translate}}</button>
-      </div>
       <div class="modal-footer text-right" ng-if="vm.startVoting">
         <p ng-if="vm.isAnonymous" class="smaller" translate="voting.secret.contact"></p>
         <p ng-if="!vm.isAnonymous" class="smaller" translate="voting.modal.start-voting"></p>
         <form class="form-inline">
           <div class="form-group">
-            <input ng-if="vm.isAnonymous" type="email" class="form-control form-inline" placeholder="Email">
-            <input  ng-if="vm.isAnonymous" type="password" class="form-control form-inline" placeholder="Code" style="width:9rem">
-            <button class="btn btn-default btn-voting">{{'Start voting'|translate}}</button>
+            <input ng-if="vm.isAnonymous" ng-model="email" type="email" class="form-control form-inline" placeholder="Email">
+            <input  ng-if="vm.isAnonymous" ng-model="ballotPassword" type="password" class="form-control form-inline" placeholder="Code" style="width:9rem">
+            <button class="btn btn-default btn-voting" ng-click="vm.createBallotPaper()">{{'Start voting'|translate}}</button>
           </div>
         </form>
         <p class="smaller" ng-if="vm.isAnonymous" translate="voting.secret.view"></p>

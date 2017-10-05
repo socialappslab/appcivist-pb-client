@@ -4,7 +4,10 @@
   .row {
     position:relative;
   }
-  &.ideaHeader {
+  .heading--title {
+    font-weight: bold;
+  }
+  &.contributionHeader {
     background-color: #FBFBFB;
     background-image: none;
     color: #3c3c3c;

@@ -167,7 +167,7 @@
       <div class="row">
         <breadcrumb label="proposal.title"></breadcrumb>
       </div>
-      <div ng-include="'/app/v2/mockups/voting-summary-proposal-page.html'"></div>
+      <div ng-include="'/app/v2/partials/proposal/voting-summary-proposal-page.html'" ng-if="isVotingStage"></div>
       <div class="row type">
         <i class="fa fa-file-text"></i>&nbsp;&nbsp;{{'Proposal' | translate}}
         <span class="status">— {{proposal.status | translate}}</span>

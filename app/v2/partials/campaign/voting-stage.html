@@ -1,5 +1,4 @@
 <div class="voting-stage-header">
-
   <div class="row">
     <div class="col-xs-6">
       <h2>{{currentComponent.title}}</h2>
@@ -9,14 +8,21 @@
     <div class="col-xs-6 text-right">
       <div class="button-grid">
         <div class="button-row">
-          <a data-toggle="modal" data-target="#votingSummary" class="btn btn-default btn-voting-stage-header" ng-disable="ballotPaperNotFound">{{'voting.stage.button.summary'|translate}}</a>
-          <a data-toggle="modal" data-target="#voting" class="btn btn-default btn-voting-stage-header">{{'voting.stage.button.instructions'|translate}}</a>
+          <a data-toggle="modal" data-target="#votingSummary"
+             class="btn btn-default btn-voting-stage-header"
+             ng-disable="ballotPaperNotFound">{{'voting.stage.button.summary'|translate}}</a>
+          <a data-toggle="modal" data-target="#voting"
+             class="btn btn-default btn-voting-stage-header">{{'voting.stage.button.instructions'|translate}}</a>
         </div>
         <div class="button-row">
-          <a class="btn btn-default btn-voting-stage-header" ng-disable="ballotPaperNotFound">{{'voting.stage.button.save'|translate}}</a>
-          <a class="btn btn-default btn-voting-stage-header finish" ng-disable="ballotPaperNotFound">{{'voting.stage.button.finalize'|translate}}</a>
+          <a ng-click="saveVotes()"
+             class="btn btn-default btn-voting-stage-header"
+             ng-disable="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.save'|translate}}</a>
+          <a data-toggle="modal" data-target="#finalizeVotes"
+             class="btn btn-default btn-voting-stage-header finish"
+             ng-disable="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.finalize'|translate}}</a>
         </div>
       </div>
     </div>
-
   </div>
+</div>

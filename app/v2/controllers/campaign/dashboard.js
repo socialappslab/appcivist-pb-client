@@ -126,6 +126,8 @@
       $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
       $scope.loadVotingBallotAndCandidatesAfterStart = loadVotingBallotAndCandidatesAfterStart.bind($scope);
       $scope.checkVoteOnCandidate = checkVoteOnCandidate.bind($scope);
+      $scope.getCandidateSummary = getCandidateSummary.bind($scope);
+      $scope.saveVotes = saveVotes.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -326,9 +328,18 @@
     }
 
     function loadVotingBallotAndCandidatesAfterStart(signature) {
+      this.votingSignature=signature;
       let rsp = Voting.ballotPaper(this.campaign.currentBallot, signature).get();
       rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
     }
+
+    function saveVotes() {
+      this.savingVotes = true;
+      let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.votingSignature).save(this.ballotPaper);
+      rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
+    }
+
+
 
     function afterLoadingBallotSuccess (data) {
       this.ballotPaperNotFound = false;
@@ -338,13 +349,24 @@
         this.ballot = this.ballotPaper.ballot; // the voting ballot, which holds voting configs
         this.ballotPassword = this.ballot.password; // the password for creating a ballotPaper
         this.voteRecord = this.ballotPaper.vote; // the ballot paper, which holds the votes of the user
+        this.ballotPaperFinished = this.voteRecord.status>0;
+        this.votingSignature=this.voteRecord.signature;
+        if (!this.voteRecord) {
+          this.voteRecord = this.ballotPaper.vote = [];
+        }
         this.votes = this.voteRecord ? this.voteRecord.votes : []; // array of votes, which contains the value for each vote
         if (!this.votes || this.votes.length===0) {
-          this.votesIndex = this.voteRecord.votesIndex = [];
+          this.votesIndex = this.voteRecord.votesIndex = {};
         } else {
           this.votesIndex = this.voteRecord.votesIndex;
         }
         this.initializeBallotTokens();
+      }
+
+      if (this.savingVotes)
+      {
+        this.savingVotes = false;
+        angular.element('#saveVotes').modal({show:true});
       }
     }
 
@@ -375,6 +397,18 @@
       return (this && this.votes && this.votesIndex && this.votesIndex[candidateId] >= 0
                 && (this.votes[this.votesIndex[candidateId]] !== null || this.votes[this.votesIndex[candidateId]] !== undefined));
     }
+
+    function getCandidateSummary(candidateId) {
+
+      let index;
+      for (index = 0; index < this.campaignBallot.ballotCandidates; ++index) {
+        let candidate = this.campaignBallot.ballotCandidates[index];
+        if (candidate.id === candidateId)
+          return candidate.contributionSummary;
+      }
+
+    }
+
 
     function loadGroupsAfterConfigs() {
       // get groups

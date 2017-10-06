@@ -55,7 +55,7 @@
         this.candidates = this.ballot ? this.ballot.candidates : []; // candidates array, which holds the candidateId for each candidate
         this.votesIndex = this.voteRecord ? this.voteRecord.votesIndex : null; // map of [:candidateId] => pos. of vote in votes array
         if(!this.votesIndex) {
-          this.voteRecord.votesIndex = [];
+          this.voteRecord.votesIndex = {};
           this.votesIndex = this.voteRecord.votesIndex; // map of [:candidateId] => pos. of vote in votes array
         }
         this.votes = this.voteRecord ? this.voteRecord.votes : []; // array of votes, which contains the value for each vote
@@ -65,7 +65,7 @@
         this.candidateId = this.candidate ? this.candidate.id : null; // candidate id
         this.voteIndex = this.votesIndex && this.candidateId ? this.votesIndex[this.candidateId] : null; // individual vote index
         this.vote = this.voteIndex >= 0 ? this.votes[this.voteIndex] : null; // vote object
-        if (!this.vote) {
+        if (!this.vote && this.candidateId !== null && this.candidateId !== undefined) {
           this.vote = {
             "candidate_id": this.candidateId,
             "value": this.ballot.voting_system_type === "PLURALITY" ? "" : 0

@@ -488,13 +488,7 @@
   </div>
   -->
 
-  <!-- This is the voting modal test, it will appear on load if this div is uncommented -->
-
-  <!-- <div ng-include="'/app/v2/mockups/voting-modal.html'"></div> -->
-
-  <!-- This is the voting results modal test, it will appear on load if this div is uncommented -->
-  <!-- <div ng-include="'/app/v2/mockups/voting-results-modal.html'"></div> -->
-
+  <!-- Voting modal for when the ballot is not ready or there is an external ballot -->
   <voting-modal modal-id="externalBallot"
                 open="votingStageIsActive && (campaign.externalBallot || !campaign.currentBallot)"
                 start-voting="startVotingDisabled"
@@ -515,6 +509,7 @@
     </div>
   </voting-modal>
 
+  <!-- Voting modal for instructions -->
   <voting-modal modal-id="voting"
                 open="votingStageIsActive && campaign.currentBallot"
                 start-voting="startVotingDisabled"
@@ -530,7 +525,7 @@
     <p ng-if="ballotPaperNotFound && campaignBallot" ng-bind-html="campaignBallot.instructions"></p>
   </voting-modal>
 
-
+  <!-- Voting modal for the summary -->
   <voting-modal
     modal-id="votingSummary"
     open="false"
@@ -551,7 +546,7 @@
         <p class="col-xs-8" ng-if="checkVoteOnCandidate(candidate.id)">{{candidate.contributionSummary.title}}</p>
         <p class="col-xs-2 text-right" ng-if="checkVoteOnCandidate(candidate.id)">{{'Points'|translate}}</p>
         <p class="col-xs-2 text-left">
-          <input type="number" disabled="true" ng-value="{{votes[votesIndex[candidate.id]].value}}">
+          <input type="number" disabled="true" ng-value="votes[votesIndex[candidate.id]].value">
         </p>
       </div>
     </div>

@@ -499,12 +499,12 @@
                 ballot-paper-signature="user.uuid"
                 ballot-password="ballotPassword"
                 create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)"
-                ng-if="votingStageIsActive">>
-  <div ng-if="campaign.externalBallot">
+                ng-if="votingStageIsActive">
+    <div ng-if="campaign.externalBallot">
       <p translate="voting.modal.external-ballot.p1" translate-values="{{campaign}}"></p>
       <p translate="voting.modal.external-ballot.p2" translate-values="{{campaign}}"></p>
     </div>
-    <div  ng-if="!campaign.currentBallot">
+    <div ng-if="!campaign.currentBallot">
       <p translate="voting.modal.no-ballot-yet.p1" translate-values="{{campaign}}"></p>
       <p translate="voting.modal.no-ballot-yet.p2" translate-values="{{campaign}}"></p>
     </div>

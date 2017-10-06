@@ -311,8 +311,7 @@
       if (!this.isAnonymous) {
         this.votingStageIsActive = true;
         if (this.campaign && this.campaign.currentBallot) {
-          this.campaignBallot = this.campaign.ballotIndex[this.campaign.currentBallot]
-          this.showVotingButtons = this.votingStageIsActive
+          this.campaignBallot = this.campaign.ballotIndex[this.campaign.currentBallot];
           // read user's ballot paper
           let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.user.uuid).get();
           rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
@@ -351,6 +350,7 @@
     function afterLoadingBallotSuccess (data) {
       this.ballotPaperNotFound = false;
       this.startVotingDisabled = false;
+      this.showVotingButtons = true;
       this.ballotPaper = data;
       if (this.ballotPaper) {
         this.ballot = this.ballotPaper.ballot; // the voting ballot, which holds voting configs
@@ -420,7 +420,6 @@
       }
 
     }
-
 
     function loadGroupsAfterConfigs() {
       // get groups

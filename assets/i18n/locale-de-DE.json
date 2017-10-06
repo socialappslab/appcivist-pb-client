@@ -1156,5 +1156,7 @@
   "voting.stage.button.instructions": "View Voting Instructions",
   "voting.stage.button.save": "Save Votes",
   "voting.stage.button.finalize": "Finalize Voting",
-  "voting.modal.start-voting": "Press <strong>Start Voting</strong> to view the voting controls under each card"
+  "voting.modal.start-voting": "Press <strong>Start Voting</strong> to view the voting controls under each card",
+  "voting.modal.summary.intro.done.distributed": "Congratulations! You have distributed all your points. ",
+  "voting.modal.summary.intro.in-progress.distributed": "You  still have <strong>{{points}}</strong> points remaining. <br>Make sure you distribute all of your points."
 }

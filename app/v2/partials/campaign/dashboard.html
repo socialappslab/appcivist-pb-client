@@ -503,7 +503,8 @@
                 ballot-uuid="ballot.uuid"
                 ballot-paper-signature="user.uuid"
                 ballot-password="ballotPassword"
-                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)">
+                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)"
+                ng-if="votingStageIsActive">>
   <div ng-if="campaign.externalBallot">
       <p translate="voting.modal.external-ballot.p1" translate-values="{{campaign}}"></p>
       <p translate="voting.modal.external-ballot.p2" translate-values="{{campaign}}"></p>
@@ -523,7 +524,35 @@
                 ballot-uuid="ballot.uuid"
                 ballot-paper-signature="user.uuid"
                 ballot-password="ballotPassword"
-                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)">
+                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)"
+                ng-if="votingStageIsActive">
     <p ng-if="!ballotPaperNotFound" ng-bind-html="ballot.instructions"></p>
     <p ng-if="ballotPaperNotFound && campaignBallot" ng-bind-html="campaignBallot.instructions"></p>
+  </voting-modal>
+
+
+  <voting-modal
+    modal-id="votingSummary"
+    open="false"
+    start-voting="startVotingDisabled"
+    title="My Voting Summary"
+    is-anonymous="isAnonymous"
+    ballot-paper="ballotPaper"
+    ballot-uuid="ballot.uuid"
+    ballot-paper-signature="user.uuid"
+    ballot-password="ballotPassword"
+    ng-if="votingStageIsActive">
+
+    <p translate="voting.modal.summary.intro.done.distributed " ng-if="ballotTokens.points <= 0"></p>
+    <p translate="voting.modal.summary.intro.in-progress.distributed " translate-values="{{ballotTokens}}" ng-if="ballotTokens.points > 0"></p>
+
+    <div class="proposals">
+      <div ng-repeat="candidate in campaignBallot.ballotCandidates track by $index" class="proposal" ng-if="votes.length>0">
+        <p class="col-xs-8" ng-if="checkVoteOnCandidate(candidate.id)">{{candidate.contributionSummary.title}}</p>
+        <p class="col-xs-2 text-right" ng-if="checkVoteOnCandidate(candidate.id)">{{'Points'|translate}}</p>
+        <p class="col-xs-2 text-left">
+          <input type="number" disabled="true" ng-value="{{votes[votesIndex[candidate.id]].value}}">
+        </p>
+      </div>
+    </div>
   </voting-modal>

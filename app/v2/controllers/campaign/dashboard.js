@@ -125,6 +125,7 @@
       $scope.afterLoadingBallotError = afterLoadingBallotError.bind($scope);
       $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
       $scope.loadVotingBallotAndCandidatesAfterStart = loadVotingBallotAndCandidatesAfterStart.bind($scope);
+      $scope.checkVoteOnCandidate = checkVoteOnCandidate.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -338,6 +339,11 @@
         this.ballotPassword = this.ballot.password; // the password for creating a ballotPaper
         this.voteRecord = this.ballotPaper.vote; // the ballot paper, which holds the votes of the user
         this.votes = this.voteRecord ? this.voteRecord.votes : []; // array of votes, which contains the value for each vote
+        if (!this.votes || this.votes.length===0) {
+          this.votesIndex = this.voteRecord.votesIndex = [];
+        } else {
+          this.votesIndex = this.voteRecord.votesIndex;
+        }
         this.initializeBallotTokens();
       }
     }
@@ -354,13 +360,20 @@
 
     function initializeBallotTokens () {
       let max = this.ballot ? parseInt(this.ballot.votes_limit) : 0;
+      this.ballotTokens = { "points": max, "max": max};
+      let remaining = max;
       let index;
       for (index = 0; index < this.votes.length; ++index) {
         let value = this.votes[index].value;
         let intValue = value ? parseInt(value) : 0;
-        max > 0 ? max -= intValue : 0;
+        remaining > 0 ? remaining -= intValue : 0;
       }
-      this.ballotTokens = { "points": max};
+      this.ballotTokens.points = remaining;
+    }
+
+    function checkVoteOnCandidate(candidateId) {
+      return (this && this.votes && this.votesIndex && this.votesIndex[candidateId] >= 0
+                && (this.votes[this.votesIndex[candidateId]] !== null || this.votes[this.votesIndex[candidateId]] !== undefined));
     }
 
     function loadGroupsAfterConfigs() {
@@ -659,10 +672,6 @@
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;
-    }
-
-    function readBallotPaper() {
-
     }
   }
 })();

@@ -10,17 +10,17 @@
         <div class="button-row">
           <a data-toggle="modal" data-target="#votingSummary"
              class="btn btn-default btn-voting-stage-header"
-             ng-disable="ballotPaperNotFound">{{'voting.stage.button.summary'|translate}}</a>
+             ng-disabled="ballotPaperNotFound">{{'voting.stage.button.summary'|translate}}</a>
           <a data-toggle="modal" data-target="#voting"
              class="btn btn-default btn-voting-stage-header">{{'voting.stage.button.instructions'|translate}}</a>
         </div>
         <div class="button-row">
           <a ng-click="saveVotes()"
              class="btn btn-default btn-voting-stage-header"
-             ng-disable="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.save'|translate}}</a>
+             ng-disabled="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.save'|translate}}</a>
           <a data-toggle="modal" data-target="#finalizeVotes"
              class="btn btn-default btn-voting-stage-header finish"
-             ng-disable="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.finalize'|translate}}</a>
+             ng-disabled="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.finalize'|translate}}</a>
         </div>
       </div>
     </div>

@@ -51,6 +51,7 @@
       if (this.ballotPaper) {
         this.ballot = this.ballotPaper.ballot; // the voting ballot, which holds voting configs
         this.voteRecord = this.ballotPaper.vote; // the ballot paper, which holds the votes of the user
+        this.ballotPaperFinished = this.voteRecord.status > 0; // the user has finished voting
         this.candidatesIndex = this.ballot ? this.ballot.candidatesIndex : null; // map of [:contribution_uuid] => pos. of candidate in candidates array
         this.candidates = this.ballot ? this.ballot.candidates : []; // candidates array, which holds the candidateId for each candidate
         this.votesIndex = this.voteRecord ? this.voteRecord.votesIndex : null; // map of [:candidateId] => pos. of vote in votes array

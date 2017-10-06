@@ -128,6 +128,7 @@
       $scope.checkVoteOnCandidate = checkVoteOnCandidate.bind($scope);
       $scope.getCandidateSummary = getCandidateSummary.bind($scope);
       $scope.saveVotes = saveVotes.bind($scope);
+      $scope.finalizeVotes = finalizeVotes.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -339,7 +340,13 @@
       rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
     }
 
-
+    function finalizeVotes() {
+      this.finalizingVotes = true;
+      // there is a bug in the voting API by which status is not changed if present in body
+      delete this.ballotPaper.vote.status;
+      let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.votingSignature).complete(this.ballotPaper);
+      rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
+    }
 
     function afterLoadingBallotSuccess (data) {
       this.ballotPaperNotFound = false;
@@ -363,10 +370,15 @@
         this.initializeBallotTokens();
       }
 
-      if (this.savingVotes)
-      {
+      if (this.savingVotes) {
         this.savingVotes = false;
         angular.element('#saveVotes').modal({show:true});
+      }
+
+      if (this.finalizingVotes) {
+        this.finalizingVotes = false;
+        angular.element('#finalizeVotes').modal({show:false});
+        angular.element('#finalizeVotesDone').modal({show:true});
       }
     }
 

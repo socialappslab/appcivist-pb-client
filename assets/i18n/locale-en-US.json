@@ -1170,5 +1170,8 @@
   "voting.modal.finalize.confirmation.p1": "You are about to finalize voting. You will no longer be able to edit your votes after this.",
   "voting.modal.finalize.confirmation.p2": "Are you sure you want finish voting?.",
   "Not ready yet": "Not ready yet",
-  "Yes, finalize voting": "Yes, finalize voting"
+  "Yes, finalize voting": "Yes, finalize voting",
+  "voting.stage.button.finalize.done": "Voting finished!",
+  "voting.modal.finalize.done.p1": "Your voting ballot has now been closed and will be counted. You can no longer edit your votes.",
+  "voting.modal.finalize.done.p2": "Come back when the voting period is over to see the results!."
 }

@@ -33,6 +33,8 @@
     $scope.toggleCustomFieldsSection = toggleCustomFieldsSection.bind($scope);
     $scope.deleteAttachment = deleteAttachment.bind($scope);
     $scope.loadFeedback = loadFeedback.bind($scope);
+    $scope.loadBallotPaper = loadBallotPaper.bind($scope);
+    $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
 
     activate();
 
@@ -66,7 +68,7 @@
       $scope.commentsSectionExpanded = true;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      
+
       if (pattern.test($stateParams.puuid) === true) {
         $scope.proposalID = $stateParams.puuid;
         $scope.campaignID = $stateParams.cuuid;
@@ -193,6 +195,9 @@
                 scope.isProposalIdeaStage = true;
               } else {
                 scope.isProposalIdeaStage = false;
+                if (currentComponent.type == 'VOTING') {
+                  scope.isVotingStage = true;
+                }
               }
             }, function (error) {
               Notify.show('Error while trying to fetch campaign components', 'error');
@@ -209,6 +214,86 @@
           Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
         }
       );
+    }
+
+    function loadBallotPaper() {
+      // Only users can vote
+      if (!this.isAnonymous) {
+        if (this.campaign && this.campaign.currentBallot) {
+          this.campaignBallot = this.campaign.ballotIndex[this.campaign.currentBallot];
+          this.votingSignature = this.user.uuid;
+          // read user's ballot paper
+          let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.user.uuid).get();
+          rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
+        } else {
+          this.ballotPaperNotFound = true;
+        }
+      } else {
+          this.ballotPaperNotFound = true;
+      }
+    }
+
+
+    function afterLoadingBallotSuccess (data) {
+      this.ballotPaperNotFound = false;
+      this.ballotPaper = data;
+      if (this.ballotPaper) {
+        this.ballot = this.ballotPaper.ballot; // the voting ballot, which holds voting configs
+        this.candidates = this.ballot ? this.ballot.candidates : null;
+
+        // if no candates, disable voting
+        if(this.candidates) {
+          this.candidatesIndex = this.ballot ? this.ballot.candidatesIndex : null;
+          this.voteRecord = this.ballotPaper.vote; // the ballot paper, which holds the votes of the user
+          this.ballotPaperFinished = this.voteRecord.status>0;
+          if (!this.voteRecord) {
+            this.voteRecord = this.ballotPaper.vote = [];
+          }
+          this.votes = this.voteRecord ? this.voteRecord.votes : []; // array of votes, which contains the value for each vote
+          if (!this.votes || this.votes.length===0) {
+            this.votesIndex = this.voteRecord.votesIndex = {};
+          } else {
+            this.votesIndex = this.voteRecord.votesIndex;
+          }
+          this.initializeBallotTokens();
+
+          let candidateId = this.candidatesIndex[this.contributionUuid];
+          if (candidateId) {
+            let voteIndex = this.votesIndex[candidateId];
+            if (voteIndex>=0) {
+              this.vote = this.votes[voteIndex];
+            } else {
+              this.vote = {
+                "candidate_id": candidateId,
+                "value": this.ballot.voting_system_type === "PLURALITY" ? "" : 0
+              }
+            }
+          } else {
+            this.noCandidate = true;
+          }
+        } else {
+          this.noCandidate = true;
+        }
+      }
+    }
+
+    function afterLoadingBallotError (error) {
+      this.ballotPaperNotFound = true;
+      this.noCandidate = true;
+      console.log("Ballot paper does not exist yet. Using Ballot information in the campaign");
+    }
+
+    function initializeBallotTokens () {
+      let max = this.ballot ? parseInt(this.ballot.votes_limit) : 0;
+      this.ballotTokens = { "points": max, "max": max};
+      let remaining = max;
+      let index;
+      for (index = 0; index < this.votes.length; ++index) {
+        let value = this.votes[index].value;
+        let intValue = value ? parseInt(value) : 0;
+        remaining > 0 ? remaining -= intValue : 0;
+      }
+      this.ballotTokens.points = remaining;
     }
 
     /**
@@ -305,6 +390,7 @@
       $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
       $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
     }
+
     /**
      * Upload the given file to the server. Also, attachs it to
      * the current contribution.
@@ -397,12 +483,13 @@
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
         rsp.$promise.then(function (data) {
           $scope.campaignConfigs = data;
+          loadBallotPaper();
         }, function (error) {
+          loadBallotPaper();
           Notify.show('Error while trying to fetch campaign config', 'error');
         });
       }
     }
-
 
     /**
      * Sets the context of add button y page header.
@@ -554,7 +641,7 @@
 
     /**
      * Loads contribution's custom fields values.
-     * 
+     *
      * @param {number} sid - resource space ID
      * @param {boolean} anonymous - whether page is in public or authenticated mode
      */

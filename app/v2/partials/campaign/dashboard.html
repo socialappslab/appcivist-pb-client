@@ -416,7 +416,6 @@
   </div>
 
   <!-- Analytics Modal -->
-
   <div class="modal fade dashboardModal" id="analytics" tabindex="-1" role="dialog" aria-labelledby="analyticsLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -442,39 +441,41 @@
     </div>
   </div>
 
-  <!-- Subscribe when logged in
-  <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionLabel">
+  <!-- Subscribe when logged in -->
+  <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <p>Campaign Newsletter</p>
+          <p>{{'Campaign Newsletter'|translate}}</p>
         </div>
         <div class="modal-body">
-          <p>Would you like to subscribe to a weekly newsletter with the updates on the events in this campaign?</p>
+          <p>{{'campaign.newsletter.subscription.question.members'|translate}}</p>
         </div>
         <div class="modal-footer">
-          <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
-          <button class="confirm-modal accept" data-dismiss="modal">Subscribe</button>
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Subscribe'|translate}}</button>
         </div>
       </div>
     </div>
-  </div>-->
+  </div>
 
   <!-- Subscribe when not logged in -->
-  <div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel">
+  <div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn"
+       tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel" ng-if="!isAnonymous">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <p>Campaign Newsletter</p>
+          <p>{{'Campaign Newsletter'|translate}}</p>
         </div>
         <div class="modal-body">
-          <p>Would you like to sign up and receive updates about the events in this campaign?</p>
+          <p>{{'campaign.newsletter.subscription.question.non-members'|translate}}</p>
         </div>
         <div class="modal-footer">
-          <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
-          <button class="confirm-modal accept" data-dismiss="modal">Sign up</button>
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Sign up'}}</button>
         </div>
       </div>
     </div>

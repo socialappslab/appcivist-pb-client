@@ -222,6 +222,12 @@
             loadMembersCommentCount($scope.spaceID);
           }
 
+          Space.getSpaceBasicAnalytics(data.resourcesResourceSpaceUUID).then(
+            data => {
+              $scope.insights = data;
+            }
+          );
+
           $scope.showPagination = true;
           loadLatestActivities(data);
 

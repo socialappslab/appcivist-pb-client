@@ -176,7 +176,6 @@
                 style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
               <a ng-if="currentComponentType!=='IDEAS'" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.contributions_total.contributions_per_type.PROPOSAL.TOTAL}}</a>
               <a class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.contributions_total.contributions_per_type.IDEA.TOTAL}}</a>
-              <!--<a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.contributions_per_type.PROPOSAL.TOTAL}}</a>-->
             </header>
             <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"

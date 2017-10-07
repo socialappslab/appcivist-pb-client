@@ -1263,6 +1263,9 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         params.groups = _.flatMap(filters.groups, function (e) {
           return e.groupId;
         });
+
+        if (filters.status)
+          params.status = filters.status;
         return this.getContributions(target, type, isAnonymous, params);
       },
 

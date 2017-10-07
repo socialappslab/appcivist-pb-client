@@ -12,38 +12,34 @@
     return {
       restrict: 'E',
       scope: {
-        // Function (mode, filtersSpec)
+        // @Deprecated Function (mode, filtersSpec)
         searchHandler: '&',
         loadThemes: '&',
         loadGroups: '&?',
         isAnonymous: '=',
         campaignConfig: '=',
         campaignContributionTypes: '@',
-
-        // generated filters will be set in this property
-        generatedFilters: '=',
-
-        // false | true. If true, the widget will call the searchHandler. Otherwise, generated filters
+        // @Deprecated false | true. If true, the widget will call the searchHandler. Otherwise, generated filters
         // and sorting will be updated without calling the backend
         dryRun: '@',
-
         // the current component of the campaign
         currentComponent: '=',
-
         // currentComponent.type was not working in the watcher, so I added this variable to make sure it works
-        vmSearchFilters: '='
+        filters: '='
 
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
       link: function (scope, element, attrs) {
-        scope.filters = {
-          searchText: '',
-          themes: [],
-          groups: [],
-          // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
-          sorting: 'date_asc'
-        };
-
+        if (!scope.filters) {
+          scope.filters = {
+            searchText: '',
+            themes: [],
+            groups: [],
+            // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
+            sorting: 'date_desc',
+            pageSize: 12
+          };
+        }
         scope.vm = {
           selectedThemes: [],
           selectedGroups: []
@@ -57,7 +53,6 @@
           idField: 'groupId'
         };
         scope.searchMode = searchMode.bind(scope);
-        scope.$watch('filters.searchText', searchTextObserver.bind(scope));
         scope.selectedThemes = [];
         scope.isCategoriesModalOpened = false;
         scope.isSuggestionListVisible = false;
@@ -70,21 +65,17 @@
         scope.removeGroupFilter = removeGroupFilter.bind(scope);
         scope.setMode = setMode.bind(scope);
         scope.getDefaultMode = getDefaultMode.bind(scope);
+        scope.updateFilters = updateFilters.bind(scope);
 
-        if (scope.vmSearchFilters && scope.vmSearchFilters.mode) {
-          scope.setMode();
-        } else {
-          scope.$watch('vmSearchFilters.mode', function () {
-            if(scope.vmSearchFilters && scope.vmSearchFilters.mode) {
-              if (scope.vmSearchFilters && scope.vmSearchFilters.pageSize) {
-                scope.filters.pageSize = scope.vmSearchFilters.pageSize;
-              }
-              scope.setMode();
-            }
-          });
-        }
+        scope.$watch('filters.searchText', searchTextObserver.bind(scope));
+        scope.$on('filters:updateFilters', scope.updateFilters);
       }
     };
+
+    function updateFilters(evt, newFilters) {
+      this.filters = newFilters;
+      this.doSearch();
+    }
 
     /**
      * Set the current searchmode of the search textbox.
@@ -110,6 +101,7 @@
       this.filters.mode = mode;
 
       if (this.filters.searchText.trim().length > 0 || this.dryRun === 'true') {
+        console.log("filters.doSearch 1 (dryRun or searchText): "+JSON.stringify(this.filters));
         this.doSearch();
       }
     }
@@ -122,11 +114,15 @@
     function searchTextObserver(newVal) {
       var text = newVal.trim();
 
+
+      // doSearch 2
       if (text.length >= 4) {
+        console.log("filters.doSearch 2 (textObserver >=4): "+JSON.stringify(this.filters));
         this.doSearch();
       }
 
-      if (text.length === 0 && this.vmSearchFilters && this.vmSearchFilters.mode) {
+      if (text.length === 0 && this.filters && this.filters.mode) {
+        console.log("filters.doSearch 3 (textObserver === 0 && vmFilters): "+JSON.stringify(this.filters));
         this.doSearch();
       }
     }
@@ -157,6 +153,7 @@
         return e.groupId;
       });
       this.toggleModal('categoriesModal');
+      console.log("filters.doSearch 4 (add Selected): "+JSON.stringify(this.filters));
       this.doSearch();
     }
 
@@ -171,6 +168,7 @@
       var toRemove = { themeId: theme.themeId };
       _.remove(this.filters.themes, toRemove);
       _.remove(this.vm.selectedThemes, toRemove);
+      console.log("filters.doSearch 5 (removeThemeFilter): "+JSON.stringify(this.filters));
       this.doSearch();
     }
 
@@ -185,6 +183,7 @@
       var toRemove = { groupId: group.groupId };
       _.remove(this.filters.groups, toRemove);
       _.remove(this.vm.selectedGroups, toRemove);
+      console.log("filters.doSearch 6 (removeGroupFilter): "+JSON.stringify(this.filters));
       this.doSearch();
     }
 
@@ -208,6 +207,7 @@
       } else {
         this.filters.sorting = sort;
       }
+      console.log("filters.doSearch 7 (setSorting): "+JSON.stringify(this.filters));
       this.doSearch();
     }
 
@@ -250,12 +250,13 @@
         var _user = localStorageService.get('user');
         filters.by_author = _user.userId;
       }
-
-      if (this.dryRun === 'true') {
-        this.generatedFilters = filters;
-      } else {
-        this.searchHandler({ filters: filters });
-      }
+      //
+      // if (this.dryRun === 'true') {
+      //   this.generatedFilters = filters;
+      // } else {
+      //   this.searchHandler({ filters: filters });
+      // }
+      this.$emit('dashboard:fireDoSearch');
     }
 
     /**
@@ -279,8 +280,8 @@
     function getDefaultMode() {
       var mode = 'proposal';
 
-      if (this.vmSearchFilters && this.vmSearchFilters.mode) {
-        mode = this.vmSearchFilters.mode;
+      if (this && this.filters && this.filters.mode) {
+        mode = this.filters.mode;
       }
       return mode;
     }

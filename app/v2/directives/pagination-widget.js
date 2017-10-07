@@ -51,28 +51,18 @@
         scope.pageChanged = pageChanged.bind(scope);
         scope.paginationVisible = paginationVisible.bind(scope);
 
-        if (!scope.space) {
-          scope.$watch('space', value => {
-            if (!value) {
-              return;
-            }
-            scope.getResultsPage(1);
-          });
-        } else {
-          scope.getResultsPage(1);
-        }
-
         scope.$on('pagination:reloadCurrentPage', () => {
           scope.getResultsPage(scope.pagination.current);
         });
 
-        scope.$watchCollection('filters', value => {
-          scope.getResultsPage(scope.pagination.current);
+        scope.$on('pagination:fireDoSearch', () => {
+          scope.getResultsPage(1);
         });
 
-
-        function pageChanged(newPage) {
-          this.getResultsPage(newPage);
+        function pageChanged(newPage, oldPage) {
+          if(oldPage && newPage && newPage!==oldPage) {
+            this.getResultsPage(newPage);
+          }
         }
 
         function getResultsPage(pageNumber) {

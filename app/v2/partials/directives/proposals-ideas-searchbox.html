@@ -20,6 +20,9 @@
       </a>
     </div>
     <ul class="search_modes">
+      <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="currentComponent.type === 'IDEAS'">
+        <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate}}</a>
+      </li>
       <li class="search_mode__full_text" ng-class="{active: filters.mode === 'proposal'}" ng-if="currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('proposal', $event)">{{'Proposals' | translate}}</a>
       </li>

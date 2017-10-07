@@ -56,7 +56,7 @@
       $scope.showVotingButtons = false;
       $scope.votingStageIsActive = false;
       $scope.vmTimeline = {};
-      $scope.vmSearchFilters = {};
+      $scope.filters = {};
       $scope.vmPaginated = {};
       $scope.configsLoaded = false;
 
@@ -67,6 +67,14 @@
       $scope.pageSize = 12;
       $scope.showPagination = false;
       $scope.sorting = "date_desc";
+      $scope.filters = {
+        searchText: '',
+        themes: [],
+        groups: [],
+        // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
+        sorting: $scope.sorting,
+        pageSize: $scope.pageSize
+      };
 
       $scope.membersCommentCounter = { value: 0 };
       $scope.publicCommentCounter = { value: 0 };
@@ -144,13 +152,15 @@
       $scope.modals = {
         proposalNew: false,
       };
-      $scope.filters = {};
       $scope.displayJoinWorkingGroup = false;
       $scope.isModalOpened = isModalOpened.bind($scope);
       $scope.toggleModal = toggleModal.bind($scope);
       $scope.contributionTypeIsSupported = function (type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       };
+      $scope.$on('dashboard:fireDoSearch', function () {
+        $rootScope.$broadcast('pagination:fireDoSearch');
+      })
     }
 
     function loadAssembly() {
@@ -281,12 +291,13 @@
 
     function afterLoadingCampaignConfigs() {
       let currentComponent = this.currentComponent;
-      this.vmSearchFilters.currentComponent = currentComponent;
-      this.vmSearchFilters.pageSize = this.pageSize;
-      this.vmSearchFilters.mode =
+      this.filters.currentComponent = currentComponent;
+      this.filters.pageSize = this.pageSize;
+      this.filters.mode =
         this.currentComponentType === 'IDEAS' ? 'idea' :
           currentComponent.type === 'VOTING' ?
             getCurrentBallotEntityType() : 'proposal';
+      this.$broadcast('filters:updateFilters',this.filters);
       setSectionsButtonsVisibility(currentComponent);
       loadGroupsAfterConfigs();
       // TODO: check current component has not finished

@@ -1163,5 +1163,16 @@
   "campaign.newsletter": "Campaign Newsletter",
   "campaign.newsletter.subscription.question.members": "Would you like to subscribe to a weekly newsletter with the updates on the events in this campaign?",
   "campaign.newsletter.subscription.question.non-members": "Would you like to sign up and receive updates about the events in this campaign?",
-  "No, thank you": "No, thank you"
+  "No, thank you": "No, thank you",
+  "Save your votes": "Save your votes",
+  "voting.modal.save.confirmation.p1": "Your votes have been saved!. You can continue editing your votes if you wish as long as the voting period is open.",
+  "voting.modal.save.confirmation.p2": "When you are ready, use the <strong>Finalize Voting</strong> feature to finnish voting.",
+  "voting.modal.finalize.confirmation.p1": "You are about to finalize voting. You will no longer be able to edit your votes after this.",
+  "voting.modal.finalize.confirmation.p2": "Are you sure you want finish voting?.",
+  "Not ready yet": "Not ready yet",
+  "Yes, finalize voting": "Yes, finalize voting",
+  "voting.stage.button.finalize.done": "Voting finished!",
+  "voting.modal.finalize.done.p1": "Your voting ballot has now been closed and will be counted. You can no longer edit your votes.",
+  "voting.modal.finalize.done.p2": "Come back when the voting period is over to see the results!.",
+  "INBALLOT": "In Voting Ballot"
 }

@@ -146,15 +146,12 @@
         <!--</a>-->
       </div>
       <proposals-ideas-searchbox class="col-*-12"
-                                 search-handler="doSearch(filters)"
                                  load-themes="loadThemes(query)"
                                  is-anonymous="isAnonymous"
                                  campaign-config="campaignConfigs"
                                  campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
-                                 generated-filters="filters"
-                                 dry-run="true"
                                  current-component="currentComponet"
-                                 vm-search-filters="vmSearchFilters"></proposals-ideas-searchbox>
+                                 filters="filters"></proposals-ideas-searchbox>
 
       <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
         <section class="list--proposals">

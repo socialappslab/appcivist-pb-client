@@ -108,8 +108,11 @@
      * @param {string} newVal
      */
     function searchTextObserver(newVal) {
-      var text = newVal.trim();
+      if(!newVal) {
+        return;
+      }
 
+      let text = newVal.trim();
 
       // doSearch 2
       if (text.length >= 4) {

@@ -90,7 +90,6 @@
       $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
       $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
       $scope.toggleHideInsightsSection = toggleHideInsightsSection.bind($scope);
-      $scope.doSearch = doSearch.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.toggleAllMembers = toggleAllMembers.bind($scope);
       $scope.redirectToProposal = redirectToProposal.bind($scope);

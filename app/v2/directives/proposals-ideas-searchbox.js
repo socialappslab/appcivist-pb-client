@@ -108,7 +108,7 @@
      * @param {string} newVal
      */
     function searchTextObserver(newVal) {
-      if(!newVal) {
+      if(newVal === null || newVal === undefined) {
         return;
       }
 

@@ -448,17 +448,17 @@
         }
       })
       //working group routes
-      .state('v2.assembly.aid.campaign.workingGroup', {
-        url: '/:cid/group',
+      .state('v2.assembly.aid.campaign.cid.workingGroup', {
+        url: '/group',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.public.assembly.auuid.campaign.workingGroup', {
-        url: '/:cuuid/group',
+      .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup', {
+        url: '/group',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.workingGroup.new', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.new', {
         url: '/new',
         controller: 'v2.WgroupFormWizardCtrl',
         templateUrl: 'app/v2/partials/working-group/form.html',
@@ -466,7 +466,7 @@
           requiresLogin: true
         }
       })
-      .state('v2.assembly.aid.campaign.workingGroup.new.description', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.new.description', {
         url: '/description',
         controller: 'v2.WorkingGroupFormCtrl',
         templateUrl: 'app/v2/partials/working-group/form.description.html',
@@ -474,7 +474,7 @@
           requiresLogin: true
         }
       })
-      .state('v2.assembly.aid.campaign.workingGroup.new.configuration', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.new.configuration', {
         url: '/configuration',
         controller: 'v2.WorkingGroupFormCtrl',
         templateUrl: 'app/v2/partials/working-group/form.configuration.html',
@@ -482,17 +482,17 @@
           requiresLogin: true
         }
       })
-      .state('v2.assembly.aid.campaign.workingGroup.gid', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid', {
         url: '/:gid',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid', {
+      .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid', {
         url: '/:guuid',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.dashboard', {
         url: '',
         controller: 'v2.WorkingGroupDashboardCtrl',
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
@@ -504,7 +504,7 @@
           label: "Working Group"
         }
       })
-      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.dashboard', {
+      .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard', {
         url: '',
         controller: 'v2.WorkingGroupDashboardCtrl',
         templateUrl: 'app/v2/partials/working-group/dashboard.html',
@@ -512,73 +512,59 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
-          parent: "v2.public.assembly.auuid.campaign.cid",
+          parent: "v2.public.assembly.auuid.campaign.cuuid.dashboard",
           label: "Working Group"
         }
       })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.edit', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.edit', {
         url: '/edit',
         controller: 'v2.WgroupFormWizardCtrl',
         templateUrl: 'app/v2/partials/working-group/form.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid.workingGroup.gid",
+          label: "Working Group Edit"
         }
       })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.edit.description', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.edit.description', {
         url: '/description',
         controller: 'v2.WorkingGroupFormCtrl',
         templateUrl: 'app/v2/partials/working-group/form.description.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid.workingGroup.gid",
+          label: "Working Group Edit"
         }
       })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.edit.configuration', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.edit.configuration', {
         url: '/configuration',
         controller: 'v2.WorkingGroupFormCtrl',
         templateUrl: 'app/v2/partials/working-group/form.configuration.html',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid.workingGroup.gid",
+          label: "Working Group Edit"
         }
       })
       // deprecated. Now is /contribution. Soon to be removed.
-      .state('v2.assembly.aid.campaign.workingGroup.gid.proposal', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.proposal', {
         url: '/proposal',
         abstract: true,
         template: '<div ui-view></div>'
       })
       // deprecated. Now is /contribution. Soon to be removed.
-      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.proposal', {
+      .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal', {
         url: '/proposal',
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
-        url: '/:pid',
-        templateUrl: 'app/v2/partials/proposal/page.html',
-        controller: 'v2.ProposalPageCtrl',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.proposal.puuid', {
-        url: '/:puuid',
-        templateUrl: 'app/v2/partials/proposal/page.html',
-        controller: 'v2.ProposalPageCtrl',
-        access: {
-          requiresLogin: true
-        }
-      })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.contribution', {
-        url: '/contribution',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution', {
-        url: '/contribution',
-        abstract: true,
-        template: '<div ui-view></div>'
-      })
-      .state('v2.assembly.aid.campaign.workingGroup.gid.contribution.pid', {
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.proposal.pid', {
         url: '/:pid',
         templateUrl: 'app/v2/partials/proposal/page.html',
         controller: 'v2.ProposalPageCtrl',
@@ -586,16 +572,54 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
-          parent: "v2.assembly.aid.campaign.workingGroup.gid",
+          parent: "v2.assembly.aid.campaign.cid.workingGroup.gid",
           label: "Proposal"
         }
       })
-      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {
+      .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal.puuid', {
         url: '/:puuid',
         templateUrl: 'app/v2/partials/proposal/page.html',
         controller: 'v2.ProposalPageCtrl',
         access: {
           requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
+          label: "Proposal"
+        }
+      })
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.contribution', {
+        url: '/contribution',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.contribution', {
+        url: '/contribution',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.cid.workingGroup.gid.contribution.pid', {
+        url: '/:pid',
+        templateUrl: 'app/v2/partials/proposal/page.html',
+        controller: 'v2.ProposalPageCtrl',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid.workingGroup.gid",
+          label: "Contribution"
+        }
+      })
+      .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.contribution.puuid', {
+        url: '/:puuid',
+        templateUrl: 'app/v2/partials/proposal/page.html',
+        controller: 'v2.ProposalPageCtrl',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
+          label: "Contribution"
         }
       })
       .state('v2.space', {
@@ -611,7 +635,11 @@
       .state('v2.space.sid.contribution', {
         url: '/contributions?type&from',
         templateUrl: 'app/v2/partials/contribution/all.html',
-        controller: 'v2.ProposalsCtrl'
+        controller: 'v2.ProposalsCtrl',
+        ncyBreadcrumb: {
+          parent: "v2.home",
+          label: "Contribution"
+        }
       })
 
       // TODO: for the general login, let's add a step after signing in to ask which assembly to connect if the user

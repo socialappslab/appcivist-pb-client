@@ -541,9 +541,9 @@
     <p translate="voting.modal.summary.intro.in-progress.distributed " translate-values="{{ballotTokens}}" ng-if="ballotTokens.points > 0"></p>
 
     <div class="proposals">
-      <div ng-repeat="candidate in campaignBallot.ballotCandidates track by $index" class="proposal" ng-if="votes.length>0">
-        <p class="col-xs-8" ng-if="checkVoteOnCandidate(candidate.id)">{{candidate.contributionSummary.title}}</p>
-        <p class="col-xs-2 text-right" ng-if="checkVoteOnCandidate(candidate.id)">{{'Points'|translate}}</p>
+      <div ng-repeat="candidate in campaignBallot.ballotCandidates | orderBy:voteOnCandidate:true track by $index" class="proposal" ng-if="votes.length>0">
+        <p class="col-xs-8">{{candidate.contributionSummary.title}}</p>
+        <p class="col-xs-2 text-right">{{'Points'|translate}}</p>
         <p class="col-xs-2 text-left">
           <input type="number" disabled="true" ng-value="votes[votesIndex[candidate.id]].value">
         </p>

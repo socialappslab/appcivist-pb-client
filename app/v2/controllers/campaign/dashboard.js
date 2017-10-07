@@ -132,6 +132,7 @@
       $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
       $scope.afterLoadingBallotError = afterLoadingBallotError.bind($scope);
       $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
+      $scope.voteOnCandidate = voteOnCandidate.bind($scope);
       $scope.loadVotingBallotAndCandidatesAfterStart = loadVotingBallotAndCandidatesAfterStart.bind($scope);
       $scope.checkVoteOnCandidate = checkVoteOnCandidate.bind($scope);
       $scope.getCandidateSummary = getCandidateSummary.bind($scope);
@@ -414,11 +415,19 @@
       let remaining = max;
       let index;
       for (index = 0; index < this.votes.length; ++index) {
-        let value = this.votes[index].value;
+        let vote = this.votes[index];
+        let value = vote.value;
         let intValue = value ? parseInt(value) : 0;
         remaining > 0 ? remaining -= intValue : 0;
       }
       this.ballotTokens.points = remaining;
+    }
+
+    function voteOnCandidate(obj){
+      let vote = (this && this.votes && this.votesIndex && this.votesIndex[obj.id] >= 0
+        && (this.votes[this.votesIndex[obj.id]] !== null
+          || this.votes[this.votesIndex[obj.id]] !== undefined)) ? this.votes[this.votesIndex[obj.id]].value : -1;
+      return parseInt(vote);
     }
 
     function checkVoteOnCandidate(candidateId) {

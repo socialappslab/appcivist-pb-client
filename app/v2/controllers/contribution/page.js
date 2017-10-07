@@ -10,12 +10,12 @@
   ProposalPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting'
   ];
 
   function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
-    $translate, Space, $http, FileUploader, $sce, Campaigns) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -35,6 +35,7 @@
     $scope.loadFeedback = loadFeedback.bind($scope);
     $scope.loadBallotPaper = loadBallotPaper.bind($scope);
     $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
+    $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
 
     activate();
 
@@ -159,6 +160,7 @@
           var workingGroupAuthors = data.workingGroupAuthors;
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
+          $scope.wg = $scope.group;
 
           if ($scope.group) {
             $scope.group.profilePic = {
@@ -218,18 +220,18 @@
 
     function loadBallotPaper() {
       // Only users can vote
-      if (!this.isAnonymous) {
-        if (this.campaign && this.campaign.currentBallot) {
-          this.campaignBallot = this.campaign.ballotIndex[this.campaign.currentBallot];
-          this.votingSignature = this.user.uuid;
+      if (!$scope.isAnonymous) {
+        if ($scope.campaign && $scope.campaign.currentBallot) {
+          $scope.campaignBallot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot];
+          $scope.votingSignature = $scope.user.uuid;
           // read user's ballot paper
-          let rsp = Voting.ballotPaper(this.campaign.currentBallot, this.user.uuid).get();
-          rsp.$promise.then(this.afterLoadingBallotSuccess, this.afterLoadingBallotError);
+          let rsp = Voting.ballotPaper($scope.campaign.currentBallot, $scope.user.uuid).get();
+          rsp.$promise.then($scope.afterLoadingBallotSuccess, $scope.afterLoadingBallotError);
         } else {
-          this.ballotPaperNotFound = true;
+          $scope.ballotPaperNotFound = true;
         }
       } else {
-          this.ballotPaperNotFound = true;
+          $scope.ballotPaperNotFound = true;
       }
     }
 
@@ -257,7 +259,9 @@
           }
           this.initializeBallotTokens();
 
-          let candidateId = this.candidatesIndex[this.contributionUuid];
+          let candidateIdx = this.candidatesIndex[this.proposal.uuid];
+          let candidate = this.candidates[candidateIdx];
+          let candidateId = candidate.id;
           if (candidateId) {
             let voteIndex = this.votesIndex[candidateId];
             if (voteIndex>=0) {

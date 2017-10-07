@@ -33,6 +33,17 @@
       $scope.showPagination = false;
       $scope.isTopicGroup = false;
       $scope.sorting = 'date_desc';
+      $scope.filters = {
+        searchText: '',
+        themes: [],
+        groups: [],
+        // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
+        sorting: $scope.sorting,
+        pageSize: $scope.pageSize,
+        mode: $scope.type
+      };
+
+
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
@@ -49,20 +60,20 @@
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       if (pattern.test($stateParams.guuid)) {
         $scope.groupID = $stateParams.guuid;
+        $scope.assemblyID = $stateParams.auuid;
+        $scope.campaignID = $stateParams.cuuid;
         $scope.isAnonymous = true;
         $scope.fromURL = 'v2/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isWorkingGroupCoordinator($scope.groupID);
-        loadWorkingGroup();
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
+        $scope.campaignID = ($stateParams.cid) ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
-        loadAssembly();
-
-        loadCampaign();
       }
+      loadAssembly();
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -87,10 +98,18 @@
       $scope.contributionTypeIsSupported = function (type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       }
+
+      $scope.$on('dashboard:fireDoSearch', function () {
+        $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
+      })
     }
 
     function loadAssembly() {
-      var rsp = Assemblies.assembly($scope.assemblyID).get();
+      if ($scope.isAnonymous) {
+        var rsp = Assemblies.assemblyByUUID($scope.assemblyID).get();
+      } else {
+        var rsp = Assemblies.assembly($scope.assemblyID).get();
+      }
       rsp.$promise.then(function (data) {
         $scope.assembly = data;
         verifyMembership();
@@ -99,7 +118,77 @@
 
     function verifyMembership() {
       $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
-      loadWorkingGroup();
+      loadCampaign();
+    }
+
+    function loadCampaign() {
+      $scope.campaign = localStorageService.get('currentCampaign');
+      $scope.campaignID = $scope.campaign.campaignId;
+      $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
+      $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
+
+      if ($scope.campaign) {
+        $scope.components = localStorageService.get('currentCampaign.components');
+        let currentComponent = localStorageService.get('currentCampaign.currentComponent');
+        if (!$scope.components) {
+          var res;
+          if (!$scope.isAnonymous) {
+            res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
+            loadMembersCommentCount($scope.spaceID);
+          } else {
+            res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
+          }
+          res.then(
+            function (data) {
+              $scope.components = data;
+              let currentComponent = Campaigns.getCurrentComponent(data);
+              $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
+              $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
+              $scope.filters.currentComponent = currentComponent;
+              $scope.filters.pageSize = $scope.pageSize;
+              $scope.filters.mode =
+                $scope.currentComponentType === 'IDEAS' ? 'idea' :
+                  currentComponent.type === 'VOTING' ?
+                    getCurrentBallotEntityType() : 'proposal';
+              $scope.currentComponent = currentComponent;
+              localStorageService.set('currentCampaign.components', data);
+              localStorageService.set('currentCampaign.currentComponent', currentComponent);
+            },
+            function (error) {
+              Notify.show('Error loading data from server', 'error');
+            }
+          );
+        } else {
+          $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
+          $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
+          $scope.filters.currentComponent = currentComponent;
+          $scope.filters.pageSize = $scope.pageSize;
+          $scope.filters.mode =
+            $scope.currentComponentType === 'IDEAS' ? 'idea' :
+              currentComponent.type === 'VOTING' ?
+                getCurrentBallotEntityType() : 'proposal';
+          $scope.currentComponent = currentComponent;
+        }
+
+        if($scope.isAnonymous) {
+          var rsp = Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get();
+        } else {
+          var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+        }
+        rsp.$promise.then(function (data) {
+          $scope.campaignConfigs = data;
+
+          if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
+            $scope.showComments = false;
+          } else {
+            $scope.showComments = true;
+          }
+          loadWorkingGroup();
+        }, function (error) {
+          loadWorkingGroup();
+          Notify.show('Error while trying to fetch campaign config', 'error');
+        });
+      }
     }
 
     function loadWorkingGroup() {
@@ -123,7 +212,6 @@
             $scope.userIsMember = true;
           }
           loadMembers(data);
-          loadIdeas(data);
 
           if ($scope.isAnonymous) {
             $scope.spaceID = data.resourcesResourceSpaceUUID;
@@ -148,7 +236,9 @@
               } else {
                 $scope.showComments = true;
               }
+              $scope.$broadcast('filters:updateFilters',$scope.filters);
             }, function (error) {
+              $scope.$broadcast('filters:updateFilters',$scope.filters);
               Notify.show('Error while trying to fetch wg config', 'error');
             });
           }
@@ -182,33 +272,6 @@
           );
         }
       }
-    }
-
-    function loadProposals(group) {
-      Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous).then(
-        function (data) {
-          $scope.proposals = data.list;
-          $scope.insights.proposalsCount = data.list.length;
-          data.list.forEach(function (proposal) {
-            $scope.insights.proposalCommentsCount = $scope.insights.proposalCommentsCount + proposal.commentCount + proposal.forumCommentCount;
-          });
-        },
-        function (error) {
-          Notify.show('Error occurred while trying to load working group proposals', 'error');
-        }
-      );
-    }
-
-    function loadIdeas(group) {
-      Space.getContributions(group, 'IDEA', $scope.isAnonymous).then(
-        function (data) {
-          $scope.ideas = data.list;
-          $scope.insights.ideasCount = data.list.length;
-        },
-        function (error) {
-          Notify.show('Error occured while trying to load working group ideas', 'error');
-        }
-      );
     }
 
     function loadPublicCommentCount(sid) {
@@ -290,28 +353,6 @@
       }
     }
 
-    /**
-     * Space.doSearch wrapper.
-     * @param {object} filters
-     * @deprecated since integration between proposal-ideas-searchbox and pagination-widget.
-     */
-    function doSearch(filters) {
-      this.ideasSectionExpanded = filters.mode === 'idea';
-      var self = this;
-      var rsp = Space.doSearch(this.wg, this.isAnonymous, filters);
-
-      if (!rsp) {
-        return;
-      }
-      rsp.then(function (data) {
-        if (filters.mode === 'proposal') {
-          self.proposals = data ? data.list : [];
-        } else if (filters.mode === 'idea') {
-          self.ideas = data ? data.list : [];
-        }
-      });
-    }
-
     function loadThemes(query) {
       if (!this.wg) {
         return;
@@ -327,72 +368,6 @@
       }
     }
 
-    function nonPinnedContributions(error) {
-      console.log("No pinned contributions");
-    }
-
-    function loadCampaign() {
-      $scope.campaign = localStorageService.get('currentCampaign');
-      $scope.campaignID = $scope.campaign.campaignId;
-      $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
-
-      if ($scope.campaign && $scope.campaign.rsID) {
-        $scope.components = localStorageService.get('currentCampaign.components');
-        let currentComponent = localStorageService.get('currentCampaign.currentComponent');
-        if (!$scope.components) {
-          var res;
-          if (!$scope.isAnonymous) {
-            res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
-            loadMembersCommentCount($scope.spaceID);
-          } else {
-            res = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
-          }
-          res.then(
-            function (data) {
-              $scope.components = data;
-              let currentComponent = Campaigns.getCurrentComponent(data);
-              $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
-              $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
-              $scope.vmSearchFilters.currentComponent = currentComponent;
-              $scope.vmSearchFilters.pageSize = $scope.pageSize;
-              $scope.vmSearchFilters.mode =
-                $scope.currentComponentType === 'IDEAS' ? 'idea' :
-                  currentComponent.type === 'VOTING' ?
-                    getCurrentBallotEntityType() : 'proposal';
-              $scope.currentComponent = currentComponent;
-              localStorageService.set('currentCampaign.components', data);
-              localStorageService.set('currentCampaign.currentComponent', currentComponent);
-            },
-            function (error) {
-              Notify.show('Error loading data from server', 'error');
-            }
-          );
-        } else {
-          $scope.currentComponentType = currentComponent ? currentComponent.type ? currentComponent.type.toUpperCase() : "" : ""; ;
-          $scope.showVotingButtons = $scope.currentComponentType === 'VOTING' ? true : false;
-          $scope.vmSearchFilters.currentComponent = currentComponent;
-          $scope.vmSearchFilters.pageSize = $scope.pageSize;
-          $scope.vmSearchFilters.mode =
-            $scope.currentComponentType === 'IDEAS' ? 'idea' :
-              currentComponent.type === 'VOTING' ?
-                getCurrentBallotEntityType() : 'proposal';
-          $scope.currentComponent = currentComponent;
-        }
-
-        var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function (data) {
-          $scope.campaignConfigs = data;
-
-          if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
-            $scope.showComments = false;
-          } else {
-            $scope.showComments = true;
-          }
-        }, function (error) {
-          Notify.show('Error while trying to fetch campaign config', 'error');
-        });
-      }
-    }
     function getCurrentBallotEntityType() {
       if ($scope.campaign && $scope.campaign.ballotIndex && $scope.campaign.currentBallot) {
         let ballot = $scope.campaign.ballotIndex[$scope.campaign.currentBallot]

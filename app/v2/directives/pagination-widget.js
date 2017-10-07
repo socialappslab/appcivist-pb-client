@@ -59,6 +59,10 @@
           scope.getResultsPage(1);
         });
 
+        scope.$on('pagination:fireDoSearchFromGroup', () => {
+          scope.getResultsPage(1);
+        });
+
         function pageChanged(newPage, oldPage) {
           if(oldPage && newPage && newPage!==oldPage) {
             this.getResultsPage(newPage);

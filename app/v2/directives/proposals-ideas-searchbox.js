@@ -99,11 +99,7 @@
       }
 
       this.filters.mode = mode;
-
-      if (this.filters.searchText.trim().length > 0 || this.dryRun === 'true') {
-        console.log("filters.doSearch 1 (dryRun or searchText): "+JSON.stringify(this.filters));
-        this.doSearch();
-      }
+      this.doSearch();
     }
 
     /**
@@ -207,7 +203,6 @@
       } else {
         this.filters.sorting = sort;
       }
-      console.log("filters.doSearch 7 (setSorting): "+JSON.stringify(this.filters));
       this.doSearch();
     }
 

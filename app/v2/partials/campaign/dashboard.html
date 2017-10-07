@@ -134,7 +134,7 @@
                          vm-timeline="vmTimeline" components="components" on-components-loaded="afterComponentsLoaded()"></campaign-timeline>
 
       <!-- Voting stage -->
-      <div ng-include="'/app/v2/partials/campaign/voting-stage.html'" ng-if="showVotingButtons"></div>
+      <div ng-include="'/app/v2/partials/campaign/voting-stage.html'" ng-if="votingStageIsActive"></div>
 
       <!--Campaign Search, Filters and Contributions -->
       <section class="proposals_and_ideas">

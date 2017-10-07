@@ -137,6 +137,9 @@
       $scope.getCandidateSummary = getCandidateSummary.bind($scope);
       $scope.saveVotes = saveVotes.bind($scope);
       $scope.finalizeVotes = finalizeVotes.bind($scope);
+      $scope.loadGroupsAfterConfigs = loadGroupsAfterConfigs.bind($scope);
+      $scope.afterGroupsSuccess = afterGroupsSuccess.bind($scope);
+      $scope.afterGroupsError = afterGroupsError.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -294,12 +297,14 @@
       this.filters.currentComponent = currentComponent;
       this.filters.pageSize = this.pageSize;
       this.filters.mode =
-        this.currentComponentType === 'IDEAS' ? 'idea' :
+        currentComponent.type === 'IDEAS' ? 'idea' :
           currentComponent.type === 'VOTING' ?
             getCurrentBallotEntityType() : 'proposal';
-      this.$broadcast('filters:updateFilters',this.filters);
+      if (currentComponent.type === 'VOTING') {
+        this.filters.status = "INBALLOT";
+      }
       setSectionsButtonsVisibility(currentComponent);
-      loadGroupsAfterConfigs();
+      this.loadGroupsAfterConfigs();
       // TODO: check current component has not finished
       // && this.currentComponent && this.currentComponent.endDate
       if (this.currentComponentType === 'VOTING') {
@@ -434,37 +439,41 @@
 
     function loadGroupsAfterConfigs() {
       // get groups
-      let res,
-        res2;
+      let res;
       if (!$scope.isAnonymous) {
         res = loadGroups();
-        res.then(
-          function (data) {
-            $scope.groups = data;
-            data.forEach(
-              function (group) {
-                res2 = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
-                res2.$promise.then(
-                  function (data2) {
-                    group.proposalsCount = data2.length;
-                  },
-                  function (error) {
-                    group.proposalsCount = 0;
-                  }
-                );
-              }
-            );
-            $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility($scope.campaignConfigs);
-          },
-          function (error) {
-            $scope.displayJoinWorkingGroup = $scope.checkJoinWGButtonVisibility($scope.campaignConfigs);
-            Notify.show('Error trayendo los grupos', 'error');
-          }
-        );
+        res.then(this.afterGroupsSuccess, this.afterGroupsError);
       } else {
-        $scope.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
+        this.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
       }
+    }
 
+    function afterGroupsSuccess (data) {
+      this.groups = data;
+      data.forEach(
+        function (group) {
+          let res = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
+          res.$promise.then(
+            function (data2) {
+              group.proposalsCount = data2.length;
+            },
+            function (error) {
+              group.proposalsCount = 0;
+            }
+          );
+        }
+      );
+      this.displayJoinWorkingGroup = this.checkJoinWGButtonVisibility(this.campaignConfigs);
+
+      // after loading everything we need, we now activate the search of contributions
+      this.$broadcast('filters:updateFilters',this.filters);
+    }
+
+    function afterGroupsError (error) {
+      // after loading everything we need, we now activate the search of contributions
+      this.$broadcast('filters:updateFilters',this.filters);
+      this.displayJoinWorkingGroup = this.checkJoinWGButtonVisibility(this.campaignConfigs);
+      Notify.show('Error trayendo los grupos', 'error');
     }
 
     function loadPublicCommentCount(sid) {

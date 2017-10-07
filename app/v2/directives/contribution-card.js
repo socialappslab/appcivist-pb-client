@@ -159,7 +159,7 @@
               var currentComponent = Campaigns.getCurrentComponent(this.components);
               currentComponent = currentComponent ? currentComponent : {};
               if (currentComponent.type === 'VOTING') {
-                this.showVotingButtons = true;
+                this.showVotingButtons = !this.isAnonymous;
               } else if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
                 this.isProposalIdeaStage = true;
               } else {

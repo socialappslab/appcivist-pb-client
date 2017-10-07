@@ -1,6 +1,6 @@
 <div class="list__cards container__proposals">
   <section class="panel text-left pagination__widget__controls__padding" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
-    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber, oldPageNumber)"></dir-pagination-controls>
   </section>
 
   <section ng-if="filters.mode==='proposal'">
@@ -8,7 +8,7 @@
       <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
         total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="showVotingButtons"
         on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"
-        campaign="campaign" components="components">
+        campaign="campaign" components="components" ballot-paper="ballotPaper" ballot-tokens="ballotTokens">
       </contribution-card>
       <!-- TODO: it is always problematic to break strings in translation, let's replace this by a single translation string -->
       <p ng-if="contributions.length === 0" class="card card__message">
@@ -24,7 +24,7 @@
       <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"
         total-items="totalContributions" current-page="pagination.current" contribution="idea" show-voting-buttons="showVotingButtons"
         on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"
-        campaign="campaign" components="components"></contribution-card>
+        campaign="campaign" components="components" ballot-paper="ballotPaper" ballot-tokens="ballotTokens"></contribution-card>
       <p ng-if="contributions.length === 0" class="card card__message">
         {{ 'pagination.widget.no' | translate }} {{ filters.mode }}s {{ 'pagination.widget.description' | translate}}
       </p>

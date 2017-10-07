@@ -1,9 +1,20 @@
 <div class="voting-control">
+  <!-- DISTRIBUTED voting -->
   <div class="distributed" ng-if="vm.type == 'distributed'">
-    Points
-    <input type="number" min="0" value="0" class="form-control form-control-inline">
-    <span>You have <span class="points-left">64 points</span> left</span>
+    {{'Points'|translate}}
+    <input type="number"
+           min="0"
+           max="ballotPaper.ballot.votes_limit"
+           class="form-control form-control-inline"
+           ng-model="vm.voteValue"
+           ng-change="vm.updateVote()"
+           ng-disabled="vm.ballotPaperFinished">
+    <span
+      translate="voting.controls.remaining.points"
+      translate-values="{{vm.ballotTokens}}"></span>
   </div>
+
+  <!-- TODO: PLURALITY voting -->
   <div class="plurality text-center" ng-if="vm.type == 'plurality'" data-toggle="buttons">
     <div class="btn-group">
       <label class="btn">
@@ -20,10 +31,18 @@
       </label>
     </div>
   </div>
+
+  <!-- TODO: RANGE voting-->
   <div class="range" ng-if="vm.type == 'range'">
+
+     <span
+       translate="voting.controls.remaining.points"
+       translate-values="{{vm.ballotTokens}}"></span>
+
     Score
-    <input type="number" min="0" value="0" class="form-control form-control-inline">
-    <span>out of <span class="points-max">100</span></span>
+    <input type="number" min="0" value="0" max="ballotPaper.ballot.votes_limit" ng-disabled="vm.ballotPaperFinished"
+           class="form-control form-control-inline" ng-model="vm.voteValue" ng-click="vm.updateVote()">
+    <span>out of <span class="points-max">{{remainingTokens}}</span></span>
   </div>
   <div class="ranked" ng-if="vm.type == 'ranked'">
     Rank

@@ -22,7 +22,9 @@
         isAnonymous: '=',
         showIdeaBody: '@',
         isCoordinator: '=',
-        isTopicGroup: '='
+        isTopicGroup: '=',
+        ballotPaper: '=',
+        ballotTokens: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
@@ -157,7 +159,7 @@
               var currentComponent = Campaigns.getCurrentComponent(this.components);
               currentComponent = currentComponent ? currentComponent : {};
               if (currentComponent.type === 'VOTING') {
-                this.showVotingButtons = true;
+                this.showVotingButtons = !this.isAnonymous;
               } else if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
                 this.isProposalIdeaStage = true;
               } else {

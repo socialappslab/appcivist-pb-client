@@ -1,0 +1,27 @@
+<div class="modal fade dashboardModal campaignVotingModal" id="{{vm.modalId}}" tabindex="-1" role="dialog" aria-labelledby="votingLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <h3 class="modal-title" id="votingLabel" ng-if="vm.title">{{vm.title | translate}}</h3>
+      </div>
+      <div class="modal-body">
+        <ng-transclude></ng-transclude>
+      </div>
+      <div class="modal-footer text-right" ng-if="vm.startVoting">
+        <p ng-if="vm.isAnonymous" class="smaller" translate="voting.secret.contact"></p>
+        <p ng-if="!vm.isAnonymous" class="smaller" translate="voting.modal.start-voting"></p>
+        <form class="form-inline">
+          <div class="form-group">
+            <input ng-if="vm.isAnonymous" ng-model="email" type="email" class="form-control form-inline" placeholder="Email">
+            <input  ng-if="vm.isAnonymous" ng-model="ballotPassword" type="password" class="form-control form-inline" placeholder="Code" style="width:9rem">
+            <button class="btn btn-default btn-voting" ng-click="vm.createBallotPaper()">{{'Start voting'|translate}}</button>
+          </div>
+        </form>
+        <p class="smaller" ng-if="vm.isAnonymous" translate="voting.secret.view"></p>
+        <p class="smaller" ng-if="!vm.isAnonymous" translate="voting.secret.view.authenticated"></p>
+        <button class="btn btn-default btn-voting" data-dismiss="modal">{{'View proposals'|translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,10 +3,21 @@
     <!--&lt;!&ndash;<h2 class="heading&#45;&#45;header">{{ 'Conversations' | translate }}</h2>&ndash;&gt;-->
     <!--&lt;!&ndash;<div class="heading&#45;&#45;small"><a href="" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></div>&ndash;&gt;-->
   <!--</header>-->
+  <div class="row comments-header">
+    <div class="col-xs-4 text-left">
+      <strong>Comments ({{discussions.length}})</strong>
+    </div>
+    <div class="col-xs-8 text-right">
+      View comments by: 
+      <select name="comment-types">
+        <option value="public">Public</option>
+        <option value="members">Members only</option>
+      </select>
+    </div>
+  </div>
 
   <div class="comments__reply col-*-12">
-    <!--<h2 class="heading&#45;&#45;header">{{'Start a Conversation' | translate}}</h2>-->
-    <div class="comments__listing">
+    
       <div ng-if="isAnonymous" class="row recaptcha" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
       <form ng-submit="createNewDiscussion()" class="row comments__section__form">
         <fieldset class="col-*-12">
@@ -22,41 +33,34 @@
           </div>
           <div>
             <div class="field-container col-*-12">
-              <textarea id="discussion-field" style="height: auto;" ng-model="newDiscussion.text" rows="5" placeholder="{{'Write you comment here' | translate}}"
+              <textarea id="discussion-field" style="height: auto;" ng-model="newDiscussion.text" rows="4" placeholder="{{'Write you comment here' | translate}}"
                 ng-disabled="!vm.recaptchaResponseOK && isAnonymous"></textarea>
-            </div>
-          </div>
-          <br />
-          <div class="comment-form">
-            <div class="comment-meta">
-              <member-card action-bar="true" comments-section="true"></member-card>
-              <input class="button" type="submit" value="{{'Submit'| translate}}" style="margin-top: 50px;" />
             </div>
           </div>
         </fieldset>
       </form>
-    </div>
+    
   </div>
 
   <div class="comments__listing">
-    <li class="panel card conversation-container" ng-repeat="discussion in discussions track by (discussion.contributionId ? discussion.contributionId : discussion.uuid)">
+    <li class="conversation-container" ng-repeat="discussion in discussions track by (discussion.contributionId ? discussion.contributionId : discussion.uuid)">
       <div ng-if="discussion">
         <a ng-if="discussion.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
         <div class="row" style="margin-left: 0; margin-top: 1em">
-          <div class="col-*-8">
-            <p class="heading--header" style="float: left;">{{formatDate(discussion.creation)}}</p>
+          <div class="col-xs-7">
+            <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
+            <member-card ng-if="discussion.authors[0]" user="discussion.authors[0]" comments-section="true"></member-card>
+            <member-card ng-if="!discussion.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor"
+              comments-section="true"></member-card>
+            <member-card ng-if="!discussion.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}"
+              comments-section="true"></member-card>
           </div>
-          <div class="col-*-4" style="float: right; margin-right: 2em">
+          <!--<div class="col-*-8">
+            <p class="heading--header" style="float: left;">{{formatDate(discussion.creation)}}</p>
+          </div>-->
+          <div class="col-xs-5 text-right">
             <contribution-feedback contribution="discussion" with-delete="true" with-flag="true"></contribution-feedback>
           </div>
-        </div>
-        <div class="comment-meta">
-          <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
-          <member-card ng-if="discussion.authors[0]" user="discussion.authors[0]" comments-section="true"></member-card>
-          <member-card ng-if="!discussion.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor"
-            comments-section="true"></member-card>
-          <member-card ng-if="!discussion.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}"
-            comments-section="true"></member-card>
         </div>
         <div class="comment-text">
           <p>{{discussion.text}}</p>
@@ -66,22 +70,23 @@
           <a class="heading--subheader reply-count reply" ng-if="!discussion.showReplyForm" ng-click="writeReply(discussion)"><i class="fa fa-commenting-o"></i>&nbsp;{{'Reply to this comment' | translate}}</a>&nbsp;&nbsp;
         </div>
         <ul class="threaded-comments">
-          <li class="panel comment-container" ng-repeat="comment in discussion.comments track by (comment.contributionId ? comment.contributionId : comment.uuid)">
+          <li class="comment-container" ng-repeat="comment in discussion.comments track by (comment.contributionId ? comment.contributionId : comment.uuid)">
             <a ng-if="comment.stats.flags && isCoordinator" class="github-fork-ribbon" title="{{'Moderation pending' | translate}}"></a>
             <div class="row" style="margin-left: 0; margin-top: 1em">
-              <div class="col-*-8">
-                <p class="heading--header" style="float: left;">{{formatDate(comment.creation)}}</p>
-              </div>
-              <div class="col-*-4" style="float: right;">
-                <contribution-feedback contribution="comment" with-delete="true" with-flag="true"></contribution-feedback>
-              </div>
-            </div>
-            <div class="comment-meta">
-              <member-card ng-if="comment.authors[0]" user="comment.authors[0]" comments-section="true"></member-card>
-              <member-card ng-if="!comment.authors[0] && comment.nonMemberAuthor" user="comment.nonMemberAuthor" comments-section="true"></member-card>
-              <member-card ng-if="!comment.authors[0] && !comment.nonMemberAuthor" user="{'name':'None','email':'None'}"
-                comments-section="true"></member-card>
-              <p></p>
+                <div class="col-xs-6">
+                  <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
+                  <member-card ng-if="discussion.authors[0]" user="discussion.authors[0]" comments-section="true"></member-card>
+                  <member-card ng-if="!discussion.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor"
+                    comments-section="true"></member-card>
+                  <member-card ng-if="!discussion.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}"
+                    comments-section="true"></member-card>
+                </div>
+                <!--<div class="col-*-8">
+                  <p class="heading--header" style="float: left;">{{formatDate(discussion.creation)}}</p>
+                </div>-->
+                <div class="col-xs-6 text-right">
+                  <contribution-feedback contribution="discussion" with-delete="true" with-flag="true"></contribution-feedback>
+                </div>
             </div>
             <div class="comment-text">
               <p>{{comment.text}}</p>
@@ -92,8 +97,8 @@
           </li>
         </ul>
 
-        <div class="comments__reply" ng-if="discussion.showReplyForm">
-          <h2 class="heading--header">{{'Reply' | translate}}</h2>
+        <div class="comments__reply new" ng-if="discussion.showReplyForm">
+          <h3 class="heading--header">{{'Reply' | translate}}</h3>
           <div class="comments__listing">
             <div ng-if="isAnonymous" class="col-*-12" vc-recaptcha ng-model="discussion.recaptchaResponse" on-success="setCaptchaResponse(discussion, response)"
               style="margin-bottom: 10px;"></div>
@@ -110,14 +115,13 @@
                   </div>
                 </div>
                 <div class="field-container col-*-6">
-                  <textarea id="comment-field-{{discussion.uuid}}" style="height: auto;" ng-model="newComment.text" rows="5"
+                  <textarea id="comment-field-{{discussion.uuid}}" style="height: auto;" ng-model="newComment.text" rows="4"
                     placeholder="{{'Write you comment here' | translate}}" ng-disabled="!discussion.recaptchaResponseOK && isAnonymous"></textarea>
                 </div>
                 <br />
                 <div class="comment-form">
                   <div class="comment-meta">
-                    <member-card action-bar="true" comments-section="true"></member-card>
-                    <input class="button" type="submit" value="Publish" style="margin-top: 50px; margin-bottom: 10px;" />
+                    <input class="button" type="submit" value="Publish" style="margin-top: 4.5rem; margin-bottom: 10px;" />
                   </div>
                 </div>
               </fieldset>

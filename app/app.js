@@ -167,7 +167,7 @@
         controller: 'v2.HomeCtrl',
         templateUrl: 'app/v2/partials/home.html',
         ncyBreadcrumb: {
-          label: "AppCivist"
+          skip: true
         }
       })
       // Uncomment the following to test the newsletter templates
@@ -600,6 +600,30 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.workingGroup.guuid",
+          label: "Contribution"
+        }
+      })
+      .state('v2.assembly.aid.campaign.cid.contribution.coid', {
+        url: '/:coid',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid",
+          label: "Contribution"
+        }
+      })
+      .state('v2.public.assembly.auuid.campaign.cuuid.contribution.couuid', {
+        url: '/:couuid',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.cuuid",
           label: "Contribution"
         }
       })

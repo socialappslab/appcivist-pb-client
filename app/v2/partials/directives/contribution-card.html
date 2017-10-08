@@ -122,7 +122,6 @@
              style="display: block; width: 280px; word-wrap: break-word;">
              {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
            </a>
-        </a>
         </h3>
         <div class="heading--category">
           <span ng-repeat="author in contribution.nonMemberAuthors | limitTo:3 track by $index" class="{{contribution.cover ? 'white-text' : ''}}">

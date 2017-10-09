@@ -21,9 +21,9 @@
     .module('appCivistApp')
     .directive('paginationWidget', paginationWidget);
 
-  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space'];
+  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope'];
 
-  function paginationWidget($state, Contributions, Notify, Space) {
+  function paginationWidget($state, Contributions, Notify, Space, $rootScope) {
     var directive = {
       restrict: 'E',
       scope: {
@@ -62,6 +62,10 @@
         scope.$on('pagination:fireDoSearchFromGroup', () => {
           scope.getResultsPage(1);
         });
+        console.log('Pagination-Widget:Link => DECLARED => pagination:fireDoSearchFromGroup');
+
+        $rootScope.$broadcast('dashboard:paginationWidgetListenersAreReady');
+        console.log('Pagination-Widget:Link => BROADCASTED => dashboard:paginationWidgetListenersAreReady');
 
         function pageChanged(newPage, oldPage) {
           if(oldPage && newPage && newPage!==oldPage) {

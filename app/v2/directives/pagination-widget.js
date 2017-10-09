@@ -21,9 +21,9 @@
     .module('appCivistApp')
     .directive('paginationWidget', paginationWidget);
 
-  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope'];
+  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope', 'usSpinnerService', 'localStorageService'];
 
-  function paginationWidget($state, Contributions, Notify, Space, $rootScope) {
+  function paginationWidget($state, Contributions, Notify, Space, $rootScope, usSpinnerService, localStorageService) {
     var directive = {
       restrict: 'E',
       scope: {
@@ -88,12 +88,16 @@
             target.rsID = scope.space;
           }
 
+          if (filters.mode === 'myProposals' || filters.mode === 'myIdeas') {
+            filters.by_author = localStorageService.get('user').userId;
+          }
+
           if (filters) {
             Space.doSearch(target, scope.isAnonymous, filters).then(
               data => {
-                let contributions = data.list || [];
+                let contributions = data ? data.list || [] : [];
                 scope.contributions = contributions;
-                scope.totalContributions = data.total;
+                scope.totalContributions = data ? data.total : 0;
                 scope.pagination.current = pageNumber;
               }
             );

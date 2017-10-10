@@ -205,6 +205,7 @@
           loadRelatedContributions();
           loadRelatedStats();
           loadCampaign();
+          loadResources();
         },
         function (error) {
           Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
@@ -393,6 +394,21 @@
       }
     }
 
+    function loadResources() {
+      var res;
+      if ($scope.isAnonymous) {
+        res = Space.resourcesByUUID($scope.proposal.resourceSpaceUUID).get();
+      } else {
+        res = Space.resources($scope.proposal.resourceSpaceId).get();
+      }
+      res.$promise.then(function (data) {
+        $scope.resources = data;
+        console.log($scope.resources);
+      }, function(error) {
+        Notify.show('Error while trying to fetch resources', 'error');
+      });
+    }
+
     function loadCampaignConfig() {
       if ($scope.campaign && $scope.campaign.rsID) {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
@@ -466,12 +482,13 @@
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId);
       rsp.then(
         themes => {
-          vm.currentAdd.items = $filter('filter')(themes, { title: query });
+          vm.currentAdd.items = $filter('filter')(themes, { title: query, type: 'OFFICIAL_PRE_DEFINED', type: 'EMERGENT' });
         },
         error => {
           Notify.show('Error while trying to fetch themes from server', 'error');
         }
       );
+      console.log(rsp);
     }
 
     /**

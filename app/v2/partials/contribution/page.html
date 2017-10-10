@@ -219,16 +219,6 @@
           <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
         </p>-->
   
-  
-        <ul class="row tags">
-          <li ng-repeat="theme in proposal.themes track by $index" ng-mouseenter="theme.isHover = true" ng-mouseleave="theme.isHover = false">
-            <a href="">{{theme.title}}</a>
-            <i ng-if="theme.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
-            <span ng-if="!$last">,</span>
-          </li>
-        </ul>
-  
-  
         <div class="row attribution">
           <!--<p class="heading--subheader">{{ 'Created by' | translate }}</p>-->
           <div ng-repeat="author in proposal.authors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
@@ -261,6 +251,15 @@
             </div>
           </fieldset>
         </div>
+
+        <ul class="row tags">
+          <li class="title">Themes: </li>
+          <li ng-repeat="theme in proposal.themes track by $index" ng-mouseenter="theme.isHover = true" ng-mouseleave="theme.isHover = false">
+            <a>{{theme.title}}</a>
+            <i ng-if="theme.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+            <!--<span ng-if="!$last">,</span>-->
+          </li>
+        </ul>
   
         <div class="row voting_mechanism">
           <div class="temperature_check">

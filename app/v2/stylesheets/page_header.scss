@@ -8,11 +8,17 @@
     font-weight: bold;
   }
   &.contributionHeader {
-    background-color: #FBFBFB;
+    background-color: #FAFAFA;
     background-image: none;
     color: #3c3c3c;
     &:before { display: none; }
     #breadcrumb, #breadcrumb a { color: #3c3c3c; }
     h1 { color: #30698E; margin-top: 0; }
+    a { color: #3c3c3c; }
+    p.small {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      strong { font-weight: bold; }
+    }
   }
 }

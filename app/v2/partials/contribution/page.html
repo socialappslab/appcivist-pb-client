@@ -166,11 +166,12 @@
       <header class="page__header contributionHeader">
         <div class="row">
           <breadcrumb label="proposal.title"></breadcrumb>
+          <button class="btn btn-default follow-contribution" ng-if="contributionType">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
         </div>
-        <div class="row type" ng-if="contributionType != 'IDEA'">
+       <!--<div class="row type" ng-if="contributionType != 'IDEA'">
           <i class="fa fa-file-text"></i>&nbsp;&nbsp;{{contributionType}}
           <span class="status">— {{proposal.status | translate}}</span>
-        </div>
+        </div>-->
         <div class="row title_block">
           <h1 class="heading--title">{{proposal.title}}</h1>
   
@@ -212,11 +213,11 @@
             </div>
           </div>
         </div>
-        <p class="row parent_working_group" ng-if="group">
+        <!--<p class="row parent_working_group" ng-if="group">
           <i class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tag': group.isTopic}"></i>
           <a ng-if="isAnonymous" ng-href="/#/v2/p/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
           <a ng-if="!isAnonymous" ng-href="/#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{groupID}}">{{group.name}}</a>
-        </p>
+        </p>-->
   
   
         <ul class="row tags">
@@ -229,7 +230,7 @@
   
   
         <div class="row attribution">
-          <p class="heading--subheader">{{ 'Created by' | translate }}</p>
+          <!--<p class="heading--subheader">{{ 'Created by' | translate }}</p>-->
           <div ng-repeat="author in proposal.authors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
             style="display: inline-block; margin-left: 10px;">
             <member-card user="author"></member-card>
@@ -237,6 +238,7 @@
           </div>
   
           <member-card ng-if="!proposal.authors" user="group"></member-card>
+          <br><p class="small"><strong>Last updated: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}} <strong>Created: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}</p>
         </div>
         <div ng-if="userIsAuthor" class="row attribution campaign__filters">
           <ul class="search_modes">

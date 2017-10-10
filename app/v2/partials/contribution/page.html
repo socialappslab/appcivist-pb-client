@@ -309,49 +309,25 @@
   
         </div>
       </header>
-  
-      <section class="etherpad__embed customfields" ng-show="fieldsValues.length">
-        <section class="temp-array">
-          <div class="panel__heading">
-            <h2 class="heading--header">
-              <i class="fa fa-file-text"></i>&nbsp;&nbsp; {{'More Information' | translate }}
-            </h2>
-            <a ng-click="toggleCustomFieldsSection()">
-              <span ng-if="!isCustomFieldSectionVisible"><i class="fa fa-eye"></i> &nbsp; {{'Show' | translate}}</span>
-              <span ng-if="isCustomFieldSectionVisible"><i class="fa fa-eye-slash"></i> &nbsp;{{'Hide' | translate}}</span>
-            </a>
+
+      <section class="content" ng-if="contributionType == 'PROPOSAL'">
+        <div class="proposal-summary">
+          <h2>Summary</h2>
+          <p>Voluptate ex in commodo ut cupidatat ipsum ex. Ad dolore velit ipsum consequat mollit incididunt anim incididunt ea quis magna qui voluptate. Incididunt commodo laboris culpa ipsum. Nisi ipsum magna id culpa esse officia Lorem anim Lorem enim. Aliqua irure fugiat labore dolore velit Lorem occaecat veniam culpa minim excepteur laborum aliquip pariatur.</p>
+        </div>
+        <div class="proposal-text">
+          <h2>Proposal Text</h2>
+          <p>Esse aute ullamco consectetur aliqua consectetur id exercitation laborum ullamco nisi quis anim deserunt velit. Do do deserunt laboris irure proident proident sunt eu nisi laboris. Nisi culpa ullamco voluptate qui quis ea. Excepteur minim Lorem enim et ipsum Lorem magna ipsum excepteur nostrud. Nostrud sint proident Lorem voluptate nisi aute elit exercitation esse laboris. Labore quis non nulla elit mollit veniam fugiat tempor mollit magna commodo. Aliqua ipsum consectetur nisi eu.</p>
+          <div class="text-center" style="margin-top: 2rem">
+              <button class="btn btn-default proposal-btn">Etherpad</button>
+              <button class="btn btn-default proposal-btn">Google Docs</button>
+              <button class="btn btn-default proposal-btn">Default</button>
           </div>
-        </section>
-        <section class="col-lg-12 customfields__values" ng-if="isCustomFieldSectionVisible">
-          <custom-field ng-repeat="field in fieldsValues" definition="field.customFieldDefinition" value="field"
-            renderer="readonly"></custom-field>
-        </section>
+        </div>
       </section>
-  
-      <section class="etherpad__embed text-created-attachments-similar">
-        <section class="temp-array proposal-text">
-          <div class="panel__heading">
-            <h2 class="heading--header">
-              <i class="fa fa-file-text"></i>&nbsp;&nbsp; {{'Proposal Text' | translate }}
-            </h2>
-          </div>
-  
-          <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE' || campaignConfigs['appcivist.campaign.disable-etherpad'] === 'TRUE'"
-            class="etherpad__wrapper">
-            <iframe ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" name="embed_readonly"
-              ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
-            </iframe>
-            <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
-              width="100%" height="600px">
-            </iframe>
-          </div>
-  
-          <div ng-if="campaignConfigs['appcivist.campaign.disable-etherpad']==='TRUE'">
-            <br><br><br><br>
-            <p class="description" ng-bind-html="trustedHtml(proposal.text)"></p>
-          </div>
-  
-        </section>
+      
+      <section class="content" ng-if="contributionType == 'IDEA'">
+        <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
       </section>
   
       <section class="proposals_and_ideas">

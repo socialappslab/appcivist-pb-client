@@ -18,7 +18,10 @@
     p.small {
       margin-top: 1rem;
       font-size: 0.9rem;
-      strong { font-weight: bold; }
+      strong {
+        font-weight: bold;
+        &:last-child { margin-left: 2rem; }
+      }
     }
   }
 }

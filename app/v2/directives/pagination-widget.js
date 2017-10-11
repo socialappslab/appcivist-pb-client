@@ -50,6 +50,17 @@
         scope.getResultsPage = getResultsPage.bind(scope);
         scope.pageChanged = pageChanged.bind(scope);
         scope.paginationVisible = paginationVisible.bind(scope);
+        scope.startSpinner = startSpinner.bind(scope);
+        scope.stopSpinner = stopSpinner.bind(scope);
+        scope.spinnerActive = true;
+        scope.spinnerOptions = {
+          radius:10,
+          width:4,
+          length: 10,
+          top: '75%',
+          left: '50%',
+          zIndex: 1
+        };
 
         scope.$on('pagination:reloadCurrentPage', () => {
           scope.getResultsPage(scope.pagination.current);
@@ -67,6 +78,16 @@
         $rootScope.$broadcast('dashboard:paginationWidgetListenersAreReady');
         console.log('Pagination-Widget:Link => BROADCASTED => dashboard:paginationWidgetListenersAreReady');
 
+        function startSpinner () {
+          this.spinnerActive = true;
+          usSpinnerService.spin('contributions-page');
+        }
+
+        function stopSpinner () {
+          usSpinnerService.stop('contributions-page');
+          this.spinnerActive = false;
+        }
+
         function pageChanged(newPage, oldPage) {
           if(oldPage && newPage && newPage!==oldPage) {
             this.getResultsPage(newPage);
@@ -74,6 +95,7 @@
         }
 
         function getResultsPage(pageNumber) {
+          this.startSpinner();
           if (!scope.space) {
             return;
           }
@@ -99,8 +121,8 @@
                 scope.contributions = contributions;
                 scope.totalContributions = data ? data.total : 0;
                 scope.pagination.current = pageNumber;
-              }
-            );
+                scope.stopSpinner();
+              });
           }
         }
 

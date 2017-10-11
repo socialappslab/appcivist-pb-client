@@ -1266,6 +1266,16 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
         if (filters.status)
           params.status = filters.status;
+
+        if (type === 'myProposals') {
+          type='proposal';
+          params.by_author=filters.by_author;
+        } else if (type === 'myIdeas') {
+          type='idea';
+          params.by_author=filters.by_author;
+        } else if (type==='idea' || type==='proposal') {
+          delete params.by_author;
+        }
         return this.getContributions(target, type, isAnonymous, params);
       },
 

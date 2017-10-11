@@ -21,9 +21,9 @@
     .module('appCivistApp')
     .directive('paginationWidget', paginationWidget);
 
-  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space'];
+  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope', 'usSpinnerService', 'localStorageService'];
 
-  function paginationWidget($state, Contributions, Notify, Space) {
+  function paginationWidget($state, Contributions, Notify, Space, $rootScope, usSpinnerService, localStorageService) {
     var directive = {
       restrict: 'E',
       scope: {
@@ -50,6 +50,17 @@
         scope.getResultsPage = getResultsPage.bind(scope);
         scope.pageChanged = pageChanged.bind(scope);
         scope.paginationVisible = paginationVisible.bind(scope);
+        scope.startSpinner = startSpinner.bind(scope);
+        scope.stopSpinner = stopSpinner.bind(scope);
+        scope.spinnerActive = true;
+        scope.spinnerOptions = {
+          radius:10,
+          width:4,
+          length: 10,
+          top: '75%',
+          left: '50%',
+          zIndex: 1
+        };
 
         scope.$on('pagination:reloadCurrentPage', () => {
           scope.getResultsPage(scope.pagination.current);
@@ -62,6 +73,20 @@
         scope.$on('pagination:fireDoSearchFromGroup', () => {
           scope.getResultsPage(1);
         });
+        console.log('Pagination-Widget:Link => DECLARED => pagination:fireDoSearchFromGroup');
+
+        $rootScope.$broadcast('dashboard:paginationWidgetListenersAreReady');
+        console.log('Pagination-Widget:Link => BROADCASTED => dashboard:paginationWidgetListenersAreReady');
+
+        function startSpinner () {
+          this.spinnerActive = true;
+          usSpinnerService.spin('contributions-page');
+        }
+
+        function stopSpinner () {
+          usSpinnerService.stop('contributions-page');
+          this.spinnerActive = false;
+        }
 
         function pageChanged(newPage, oldPage) {
           if(oldPage && newPage && newPage!==oldPage) {
@@ -70,6 +95,7 @@
         }
 
         function getResultsPage(pageNumber) {
+          this.startSpinner();
           if (!scope.space) {
             return;
           }
@@ -84,15 +110,19 @@
             target.rsID = scope.space;
           }
 
+          if (filters.mode === 'myProposals' || filters.mode === 'myIdeas') {
+            filters.by_author = localStorageService.get('user').userId;
+          }
+
           if (filters) {
             Space.doSearch(target, scope.isAnonymous, filters).then(
               data => {
-                let contributions = data.list || [];
+                let contributions = data ? data.list || [] : [];
                 scope.contributions = contributions;
-                scope.totalContributions = data.total;
+                scope.totalContributions = data ? data.total : 0;
                 scope.pagination.current = pageNumber;
-              }
-            );
+                scope.stopSpinner();
+              });
           }
         }
 

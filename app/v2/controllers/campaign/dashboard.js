@@ -165,6 +165,16 @@
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearch');
       })
+      $scope.paginationWidgetListenersAreReady = false;
+      $scope.mostDataLoaded = false;
+      // HOTFIX: fire updateFilters if pagination is ready but data loaded faster than its linking in this controller
+      $scope.$on('dashboard:paginationWidgetListenersAreReady', () => {
+        if (!$scope.paginationWidgetListenersAreReady && $scope.mostDataLoaded) {
+          $scope.paginationWidgetListenersAreReady = true;
+          $scope.$broadcast('filters:updateFilters');
+        }
+      });
+      console.log('Campaign:Controller => DECLARED => dashboard:paginationWidgetListenersAreReady');
     }
 
     function loadAssembly() {
@@ -454,6 +464,7 @@
         res.then(this.afterGroupsSuccess, this.afterGroupsError);
       } else {
         this.otherWorkingGroups = localStorageService.get('otherWorkingGroups');
+        this.afterGroupsError();
       }
     }
 
@@ -474,15 +485,23 @@
       );
       this.displayJoinWorkingGroup = this.checkJoinWGButtonVisibility(this.campaignConfigs);
 
-      // after loading everything we need, we now activate the search of contributions
-      this.$broadcast('filters:updateFilters',this.filters);
+      $scope.mostDataLoaded = true;
+      if (!$scope.paginationWidgetListenersAreReady) {
+        $scope.paginationWidgetListenersAreReady = true;
+        // after loading everything we need, we now activate the search of contributions
+        this.$broadcast('filters:updateFilters',this.filters);
+        console.log('Campaign:Controller => BROADCASTED => filters:updateFilters');
+      }
     }
 
     function afterGroupsError (error) {
-      // after loading everything we need, we now activate the search of contributions
-      this.$broadcast('filters:updateFilters',this.filters);
-      this.displayJoinWorkingGroup = this.checkJoinWGButtonVisibility(this.campaignConfigs);
-      Notify.show('Error trayendo los grupos', 'error');
+      $scope.mostDataLoaded = true;
+      if (!$scope.paginationWidgetListenersAreReady) {
+        $scope.paginationWidgetListenersAreReady = true;
+        // after loading everything we need, we now activate the search of contributions
+        this.$broadcast('filters:updateFilters',this.filters);
+        console.log('Campaign:Controller => BROADCASTED => filters:updateFilters');
+      }
     }
 
     function loadPublicCommentCount(sid) {

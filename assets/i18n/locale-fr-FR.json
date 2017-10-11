@@ -1174,5 +1174,6 @@
   "voting.stage.button.finalize.done": "Voting finished!",
   "voting.modal.finalize.done.p1": "Your voting ballot has now been closed and will be counted. You can no longer edit your votes.",
   "voting.modal.finalize.done.p2": "Come back when the voting period is over to see the results!.",
-  "INBALLOT": "In Voting Ballot"
+  "INBALLOT": "In Voting Ballot",
+  "Participate": "Participate"
 }

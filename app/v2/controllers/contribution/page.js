@@ -431,7 +431,6 @@
           }
         }
       }
-      console.log($scope.resourcePictures);
     }
 
     function loadCampaignConfig() {
@@ -507,13 +506,21 @@
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId);
       rsp.then(
         themes => {
-          vm.currentAdd.items = $filter('filter')(themes, { title: query, type: 'OFFICIAL_PRE_DEFINED', type: 'EMERGENT' });
+          vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));
         },
         error => {
           Notify.show('Error while trying to fetch themes from server', 'error');
         }
       );
       console.log(rsp);
+    }
+
+    function queryThemes(query) {
+      return function (value, index, array) {
+        var lowerTitle = value.title.toLowerCase();
+        var lowerQuery = query.toLowerCase();
+        return lowerTitle.indexOf(lowerQuery) >= 0 && (value.type == 'EMERGENT' || value.type == 'OFFICIAL_PRE_DEFINED');
+      }
     }
 
     /**

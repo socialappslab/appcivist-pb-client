@@ -397,16 +397,27 @@
     function loadResources() {
       var res;
       if ($scope.isAnonymous) {
-        res = Space.resourcesByUUID($scope.proposal.resourceSpaceUUID).get();
+        res = Space.resourcesByUUID($scope.proposal.resourceSpaceUUID).query();
       } else {
-        res = Space.resources($scope.proposal.resourceSpaceId).get();
+        res = Space.resources($scope.proposal.resourceSpaceId).query();
       }
       res.$promise.then(function (data) {
         $scope.resources = data;
-        console.log($scope.resources);
+        loadPictureResources()
       }, function(error) {
         Notify.show('Error while trying to fetch resources', 'error');
       });
+    }
+
+    function loadPictureResources() {
+      $scope.resourcePictures = [];
+      if ($scope.resources.length > 0) {
+        for (let i in $scope.resources) {
+          if ($scope.resources[i].type == 'PICTURE') {
+            $scope.resourcePictures.push($scope.resources[i]);
+          }
+        }
+      }
     }
 
     function loadCampaignConfig() {

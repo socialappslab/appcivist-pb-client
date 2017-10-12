@@ -603,7 +603,7 @@
           label: "Contribution"
         }
       })
-      .state('v2.assembly.aid.campaign.cid.contribution.coid', {
+      .state('v2.assembly.aid.campaign.contribution.coid', {
         url: '/:coid',
         templateUrl: 'app/v2/partials/contribution/page.html',
         controller: 'v2.ContributionPageCtrl',
@@ -615,7 +615,7 @@
           label: "Contribution"
         }
       })
-      .state('v2.public.assembly.auuid.campaign.cuuid.contribution.couuid', {
+      .state('v2.public.assembly.auuid.campaign.contribution.couuid', {
         url: '/:couuid',
         templateUrl: 'app/v2/partials/contribution/page.html',
         controller: 'v2.ContributionPageCtrl',

@@ -413,11 +413,12 @@
       $scope.resourcePictures = [];
       if ($scope.resources.length > 0) {
         for (let i in $scope.resources) {
-          if ($scope.resources[i].type == 'PICTURE') {
+          if ($scope.resources[i].resourceType == 'PICTURE') {
             $scope.resourcePictures.push($scope.resources[i]);
           }
         }
       }
+      console.log($scope.resourcePictures);
     }
 
     function loadCampaignConfig() {

@@ -133,8 +133,8 @@
       <campaign-timeline title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID" campaign-id="campaignID"
                          vm-timeline="vmTimeline" components="components" on-components-loaded="afterComponentsLoaded()"></campaign-timeline>
 
-      <!-- Voting stage test -->
-      <!--<div ng-include="'/app/v2/mockups/voting-stage-header.html'"></div>-->
+      <!-- Voting stage -->
+      <div ng-include="'/app/v2/partials/campaign/voting-stage.html'" ng-if="votingStageIsActive"></div>
 
       <!--Campaign Search, Filters and Contributions -->
       <section class="proposals_and_ideas">
@@ -165,10 +165,9 @@
                                    is-anonymous="isAnonymous"
                                    campaign-config="campaignConfigs"
                                    campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
-                                   generated-filters="filters"
-                                   dry-run="true"
-                                   current-component="currentComponent"
-                                   vm-search-filters="vmSearchFilters"></proposals-ideas-searchbox>
+                                   filters="filters"
+                                   dry-run="false"
+                                   current-component="currentComponent"></proposals-ideas-searchbox>
 
         <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
           <section class="list--proposals">
@@ -177,36 +176,15 @@
                 style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
               <a ng-if="currentComponentType!=='IDEAS'" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.contributions_total.contributions_per_type.PROPOSAL.TOTAL}}</a>
               <a class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.contributions_total.contributions_per_type.IDEA.TOTAL}}</a>
-              <!--<a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.contributions_per_type.PROPOSAL.TOTAL}}</a>-->
             </header>
             <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
                                  is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
                                  components="components" show-voting-buttons="showVotingButtons" filters="filters"
-                                 ng-if="showPagination">
+                                 ballot-paper="ballotPaper" ballot-tokens="ballotTokens" ng-if="showPagination">
               </pagination-widget>
             </div>
           </section>
-
-          <!--@depcreated since integration of filters with pagination widget -->
-          <!-- Ideas section -->
-          <!--<section class="list&#45;&#45;ideas" ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA') && ideasSectionExpanded && currentComponentType != 'IDEAS'">-->
-            <!--<header class="ideas__header" style="padding-left: 30px;">-->
-              <!--<a class="ideas__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=idea&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>-->
-              <!--<a class="ideas__add_new" ng-if="newIdeasEnabled" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Idea' | translate}}</a>-->
-              <!--<a ng-if="ideasSectionExpanded" ng-click="toggleHideIdeasSection()"><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Hide Ideas' | translate }}</a>-->
-            <!--</header>-->
-              <!--<pagination-widget page-size="ideasPageSize" space="spaceID" type="'idea'"-->
-                               <!--is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"-->
-                               <!--components="components" filters="ideasFilters">-->
-              <!--</pagination-widget>-->
-            <!--&lt;!&ndash;<div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">&ndash;&gt;-->
-              <!--&lt;!&ndash;<contribution-card class="card__idea col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="idea in ideas track by $index"&ndash;&gt;-->
-                <!--&lt;!&ndash;contribution="idea" campaign="campaign" components="components" is-anonymous="isAnonymous" is-coordinator="isCoordinator">&ndash;&gt;-->
-              <!--&lt;!&ndash;</contribution-card>&ndash;&gt;-->
-              <!--&lt;!&ndash;<p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-          <!--</section>-->
 
           <!-- Comments section -->
           <section class="list--ideas" ng-if="commentsSectionExpanded" ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">
@@ -436,7 +414,6 @@
   </div>
 
   <!-- Analytics Modal -->
-
   <div class="modal fade dashboardModal" id="analytics" tabindex="-1" role="dialog" aria-labelledby="analyticsLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -462,39 +439,41 @@
     </div>
   </div>
 
-  <!-- Subscribe when logged in
-  <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionLabel">
+  <!-- Subscribe when logged in -->
+  <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <p>Campaign Newsletter</p>
+          <p>{{'Campaign Newsletter'|translate}}</p>
         </div>
         <div class="modal-body">
-          <p>Would you like to subscribe to a weekly newsletter with the updates on the events in this campaign?</p>
+          <p>{{'campaign.newsletter.subscription.question.members'|translate}}</p>
         </div>
         <div class="modal-footer">
-          <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
-          <button class="confirm-modal accept" data-dismiss="modal">Subscribe</button>
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Subscribe'|translate}}</button>
         </div>
       </div>
     </div>
-  </div>-->
+  </div>
 
   <!-- Subscribe when not logged in -->
-  <div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn" tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel">
+  <div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn"
+       tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel" ng-if="!isAnonymous">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <p>Campaign Newsletter</p>
+          <p>{{'Campaign Newsletter'|translate}}</p>
         </div>
         <div class="modal-body">
-          <p>Would you like to sign up and receive updates about the events in this campaign?</p>
+          <p>{{'campaign.newsletter.subscription.question.non-members'|translate}}</p>
         </div>
         <div class="modal-footer">
-          <button class="confirm-modal dismiss" data-dismiss="modal">No, thank you</button>
-          <button class="confirm-modal accept" data-dismiss="modal">Sign up</button>
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Sign up'}}</button>
         </div>
       </div>
     </div>
@@ -508,9 +487,127 @@
   </div>
   -->
 
-  <!-- This is the voting modal test, it will appear on load if this div is uncommented -->
+  <!-- Voting modal for when the ballot is not ready or there is an external ballot -->
+  <voting-modal modal-id="externalBallot"
+                open="votingStageIsActive && (campaign.externalBallot || !campaign.currentBallot)"
+                start-voting="startVotingDisabled"
+                is-anonymous="isAnonymous"
+                ballot-paper="ballotPaper"
+                ballot-uuid="ballot.uuid"
+                ballot-paper-signature="user.uuid"
+                ballot-password="ballotPassword"
+                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)"
+                ng-if="votingStageIsActive">
+    <div ng-if="campaign.externalBallot">
+      <p translate="voting.modal.external-ballot.p1" translate-values="{{campaign}}"></p>
+      <p translate="voting.modal.external-ballot.p2" translate-values="{{campaign}}"></p>
+    </div>
+    <div ng-if="!campaign.currentBallot">
+      <p translate="voting.modal.no-ballot-yet.p1" translate-values="{{campaign}}"></p>
+      <p translate="voting.modal.no-ballot-yet.p2" translate-values="{{campaign}}"></p>
+    </div>
+  </voting-modal>
 
-  <!-- <div ng-include="'/app/v2/mockups/voting-modal.html'"></div> -->
+  <!-- Voting modal for instructions -->
+  <voting-modal modal-id="voting"
+                open="votingStageIsActive && campaign.currentBallot"
+                start-voting="startVotingDisabled"
+                title="Voting instructions"
+                is-anonymous="isAnonymous"
+                ballot-paper="ballotPaper"
+                ballot-uuid="ballot.uuid"
+                ballot-paper-signature="user.uuid"
+                ballot-password="ballotPassword"
+                create-ballot-success="loadVotingBallotAndCandidatesAfterStart(signature)"
+                ng-if="votingStageIsActive">
+    <p ng-if="!ballotPaperNotFound" ng-bind-html="ballot.instructions"></p>
+    <p ng-if="ballotPaperNotFound && campaignBallot" ng-bind-html="campaignBallot.instructions"></p>
+  </voting-modal>
 
-  <!-- This is the voting results modal test, it will appear on load if this div is uncommented -->
-  <!-- <div ng-include="'/app/v2/mockups/voting-results-modal.html'"></div> -->
+  <!-- Voting modal for the summary -->
+  <voting-modal
+    modal-id="votingSummary"
+    open="false"
+    start-voting="startVotingDisabled"
+    title="My Voting Summary"
+    is-anonymous="isAnonymous"
+    ballot-paper="ballotPaper"
+    ballot-uuid="ballot.uuid"
+    ballot-paper-signature="user.uuid"
+    ballot-password="ballotPassword"
+    ng-if="votingStageIsActive">
+
+    <p translate="voting.modal.summary.intro.done.distributed " ng-if="ballotTokens.points <= 0"></p>
+    <p translate="voting.modal.summary.intro.in-progress.distributed " translate-values="{{ballotTokens}}" ng-if="ballotTokens.points > 0"></p>
+
+    <div class="proposals">
+      <div ng-repeat="candidate in campaignBallot.ballotCandidates | orderBy:voteOnCandidate:true track by $index" class="proposal" ng-if="votes.length>0">
+        <p class="col-xs-8">{{candidate.contributionSummary.title}}</p>
+        <p class="col-xs-2 text-right">{{'Points'|translate}}</p>
+        <p class="col-xs-2 text-left">
+          <input type="number" disabled="true" ng-value="votes[votesIndex[candidate.id]].value">
+        </p>
+      </div>
+    </div>
+  </voting-modal>
+
+  <!-- Save votes -->
+  <div class="modal fade dashboardModal" id="saveVotes" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>{{'voting.stage.button.save'|translate}}</p>
+        </div>
+        <div class="modal-body">
+          <p translate="voting.modal.save.confirmation.p1"></p>
+          <p translate="voting.modal.save.confirmation.p2"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Close'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finalize Votes question modal -->
+  <div class="modal fade dashboardModal" id="finalizeVotes" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>{{'voting.stage.button.finalize'|translate}}</p>
+        </div>
+        <div class="modal-body">
+          <p translate="voting.modal.finalize.confirmation.p1"></p>
+          <p translate="voting.modal.finalize.confirmation.p2"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'Not ready yet'|translate}}</button>
+          <button class="confirm-modal accept" ng-click="finalizeVotes()">{{'Yes, finalize voting'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finalize votes confirmation -->
+  <div class="modal fade dashboardModal" id="finalizeVotesDone" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>{{'voting.stage.button.finalize.done'|translate}}</p>
+        </div>
+        <div class="modal-body">
+          <p translate="voting.modal.finalize.done.p1"></p>
+          <p translate="voting.modal.finalize.done.p2"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Close'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>

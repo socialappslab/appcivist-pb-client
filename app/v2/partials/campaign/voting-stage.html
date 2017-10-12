@@ -1,0 +1,28 @@
+<div class="voting-stage-header">
+  <div class="row">
+    <div class="col-xs-6">
+      <h2>{{currentComponent.title}}</h2>
+      <p id="selected-proposal-text" translate="voting.stage.intro.contributions-summary" translate-values="{{ballot ? ballot : campaignBallot}}"></p>
+      <p><a data-toggle="modal" data-target="#voting">{{'voting.stage.intro.instructions'|translate}}</a></p>
+    </div>
+    <div class="col-xs-6 text-right">
+      <div class="button-grid">
+        <div class="button-row">
+          <a data-toggle="modal" data-target="#votingSummary"
+             class="btn btn-default btn-voting-stage-header"
+             ng-disabled="ballotPaperNotFound">{{'voting.stage.button.summary'|translate}}</a>
+          <a data-toggle="modal" data-target="#voting"
+             class="btn btn-default btn-voting-stage-header">{{'voting.stage.button.instructions'|translate}}</a>
+        </div>
+        <div class="button-row">
+          <a ng-click="saveVotes()"
+             class="btn btn-default btn-voting-stage-header"
+             ng-disabled="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.save'|translate}}</a>
+          <a data-toggle="modal" data-target="#finalizeVotes"
+             class="btn btn-default btn-voting-stage-header finish"
+             ng-disabled="ballotPaperNotFound || ballotPaperFinished">{{'voting.stage.button.finalize'|translate}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

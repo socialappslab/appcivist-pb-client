@@ -99,7 +99,9 @@
         <contribution-feedback contribution="contribution" ng-if="!showVotingButtons"></contribution-feedback>
       </div>
       <!-- Control types: distributed, plurality, range, ranked -->
-      <contribution-card-voting-control type="distributed" ng-if="showVotingButtons"></contribution-card-voting-control>
+      <contribution-card-voting-control
+        type="distributed" ng-if="showVotingButtons && ballotPaper"
+        ballot-paper="ballotPaper" contribution="contribution" ballot-tokens="ballotTokens"></contribution-card-voting-control>
     </div>
   </div>
 </div>
@@ -192,7 +194,9 @@
     <div class="card__footer">
       {{contribution.workingGroupAuthors[0].name}}
     </div>
-    <contribution-card-voting-control type="distributed" ng-if="showVotingButtons"></contribution-card-voting-control>
+    <contribution-card-voting-control
+      type="distributed" ng-if="showVotingButtons && ballotPaper"
+      ballot-paper="ballotPaper" contribution="contribution" ballot-tokens="ballotTokens"></contribution-card-voting-control>
   </div>
 </div>
 <!-- IDEA -->

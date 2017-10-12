@@ -146,32 +146,26 @@
         <!--</a>-->
       </div>
       <proposals-ideas-searchbox class="col-*-12"
-                                 search-handler="doSearch(filters)"
                                  load-themes="loadThemes(query)"
                                  is-anonymous="isAnonymous"
                                  campaign-config="campaignConfigs"
                                  campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
-                                 generated-filters="filters"
-                                 dry-run="true"
                                  current-component="currentComponet"
-                                 vm-search-filters="vmSearchFilters"></proposals-ideas-searchbox>
+                                 filters="filters"></proposals-ideas-searchbox>
 
       <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
         <section class="list--proposals">
           <header class="proposals__header" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
-            <!--<h2 class="heading&#45;&#45;header">{{'Proposals' | translate}}</h2>-->
-            <!--<a class="proposals__add_new" ng-if="user != null && newProposalsEnabled" ng-click="openModal('proposalFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add New' | translate}}</a>-->
-            <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
-              class="proposals__show_ideas" style="float: right; margin-right: 5px;" href=""><i class="fa fa-lightbulb-o"></i>&nbsp;{{'Show Ideas' | translate}}</a>&nbsp;&nbsp;&nbsp;
             <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
               style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;&nbsp;
-            <a ng-if="!insightsSectionExpanded" ng-click="toggleInsightsSection()" class="proposals__show_ideas"
-              href=""><i class="fa fa-bar-chart"></i>&nbsp;{{'Show Insights' | translate }}</a>&nbsp;&nbsp;&nbsp;
-            <a ng-if="insightsSectionExpanded" ng-click="toggleHideInsightsSection()" class="proposals__show_ideas"
-              href=""><i class="fa fa-bar-chart"></i>{{'Hide Insights'|translate}}</a>&nbsp;&nbsp;
-            <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.proposalsCount}}</a>
-            <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.ideasCount}}</a>
-            <a ng-if="insightsSectionExpanded" class="proposals__show_ideas" href=""><i class="fa fa-comment"></i> &nbsp;{{'Comments' | translate}}: {{ insights.proposalCommentsCount}}</a>
+            <a ng-if="currentComponentType!=='IDEAS'" class="proposals__show_ideas" href="">
+              <i class="fa fa-file"></i>
+              &nbsp;{{'Proposals' | translate}}: {{ insights.contributions_total.contributions_per_type.PROPOSAL.TOTAL}}
+            </a>
+            <a class="proposals__show_ideas" href="">
+              <i class="fa fa-lightbulb-o"></i>
+              &nbsp;{{'Ideas' | translate}}: {{ insights.contributions_total.contributions_per_type.IDEA.TOTAL}}
+            </a>
           </header>
           <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">
             <pagination-widget
@@ -186,7 +180,6 @@
               campaign="campaign"
               components="components"
               show-voting-buttons="showVotingButtons"></pagination-widget>
-            <p ng-if="!proposals || proposals.length === 0" class="card">{{'no.proposal.message' | translate}}</p>
           </div>
         </section>
 
@@ -206,7 +199,6 @@
                                 is-coordinator="isCoordinator"
                                 is-topic-group="isTopicGroup"
                                 components="components"></contribution-card>
-            <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
           </div>
         </section>
 

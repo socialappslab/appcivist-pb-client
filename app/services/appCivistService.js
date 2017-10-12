@@ -439,6 +439,9 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
     showAssemblyLogo: function (scope) {
       var showAssemblyLogo = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.show-assembly-logo'] : false;
       return showAssemblyLogo;
+    },
+    getPublicBriefByCampaignUUID: function(campaignUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/resources', { uuid: campaignUUID });
     }
   };
 

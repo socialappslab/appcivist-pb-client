@@ -274,7 +274,7 @@
 
       res.$promise.then(
         data => {
-          $scope.campaigBrief = $sce.trustAsHtml(data.brief);
+          $scope.campaignBrief = $sce.trustAsHtml(data.brief);
         }
       );
     }

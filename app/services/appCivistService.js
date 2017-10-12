@@ -441,7 +441,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
       return showAssemblyLogo;
     },
     getPublicBriefByCampaignUUID: function(campaignUUID) {
-      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/resources', { uuid: campaignUUID });
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/brief', { uuid: campaignUUID });
     }
   };
 

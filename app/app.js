@@ -603,6 +603,16 @@
           label: "Contribution"
         }
       })
+      .state('v2.assembly.aid.campaign.contribution', {
+        url: '/:cid/contribution',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.public.assembly.auuid.campaign.contribution', {
+        url: '/:cuuid/contribution',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
       .state('v2.assembly.aid.campaign.contribution.coid', {
         url: '/:coid',
         templateUrl: 'app/v2/partials/contribution/page.html',
@@ -611,7 +621,7 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
-          parent: "v2.assembly.aid.campaign.cid",
+          parent: "v2.assembly.aid.campaign",
           label: "Contribution"
         }
       })
@@ -623,7 +633,7 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
-          parent: "v2.public.assembly.auuid.campaign.cuuid",
+          parent: "v2.public.assembly.auuid.campaign",
           label: "Contribution"
         }
       })

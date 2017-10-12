@@ -67,7 +67,14 @@
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       
-      if (pattern.test($stateParams.puuid) === true) {
+      if (pattern.test($stateParams.couuid) === true) {
+        $scope.proposalID = $stateParams.couuid;
+        $scope.campaignID = $stateParams.cuuid;
+        $scope.assemblyID = $stateParams.auuid;
+        $scope.groupID = $stateParams.guuid;
+        $scope.isAnonymous = true;
+        $scope.loadFeedback($scope.proposalID);
+      } else if (pattern.test($stateParams.puuid) === true) {
         $scope.proposalID = $stateParams.puuid;
         $scope.campaignID = $stateParams.cuuid;
         $scope.assemblyID = $stateParams.auuid;
@@ -77,7 +84,13 @@
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
-        $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
+        if ($stateParams.coid) {
+          $scope.proposalID = parseInt($stateParams.coid);
+        } else if ($stateParams.pid) {
+          $scope.proposalID = parseInt($stateParams.pid);
+        } else {
+          $scope.proposalID = 0;
+        }
         $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
 

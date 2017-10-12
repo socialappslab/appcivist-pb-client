@@ -10,11 +10,6 @@
         <!--Campaign Header -> campaign.title + logo + actions menu-->
         <div class="row" style="position: unset;">
           <div class="row no-margin">
-            <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="hidden-xs type">
-                  <span><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
-                </div>
-              </div>
             <div class="title_block">
                 <h1 class="heading--title">{{campaign.title}}</h1>
                 <!-- HEADER -> actions menu -->
@@ -67,8 +62,9 @@
               <!--</p>-->
             <!--</div>-->
 
-            <div style="padding-top: 1em;">
-              <p class="description" ng-bind-html="((campaign.goal | limitTo:240)+((campaign.goal.length) > 240 ? '...' : '' )) | linky"></p>
+            <div>
+              <p class="description" style="margin-top:0.2em"
+                 ng-bind-html="((campaign.goal | limitTo:240)+((campaign.goal.length) > 240 ? '...' : '' )) | linky"></p>
               <p><a data-toggle></a>
                 <i class="fa fa-info"></i>&nbsp;&nbsp;
                 <a data-toggle="modal" data-target="#learnMoreModal"><span>{{'Read more'|translate}}</span></a>

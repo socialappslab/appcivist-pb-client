@@ -1,3 +1,5 @@
 <div id="dashboardBreadcrumb" class="no-padding col-xs-12">
-    <a href="#/">AppCivist</a> > <span ng-repeat="step in steps | limitTo:(steps.length-1)"><a href="{{step.ncyBreadcrumbLink}}" ng-bind-html="step.ncyBreadcrumbLabel"></a> > </span><span ng-bind-html="step.ncyBreadcrumbLabel" class="current" ng-repeat="step in steps | limitTo:-1"></span>
+  <a href="#/">AppCivist</a> > <span ng-repeat="step in steps | limitTo:(steps.length-1)">
+  <a href="{{step.ncyBreadcrumbLink}}" ng-bind-html="step.ncyBreadcrumbLabel"></a> >
+  </span><span ng-bind-html="step.ncyBreadcrumbLabel" class="current" ng-repeat="step in steps | limitTo:-1"></span>
 </div>

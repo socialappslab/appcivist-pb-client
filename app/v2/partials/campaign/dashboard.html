@@ -10,11 +10,6 @@
         <!--Campaign Header -> campaign.title + logo + actions menu-->
         <div class="row" style="position: unset;">
           <div class="row no-margin">
-            <div class="no-padding col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="hidden-xs type">
-                  <span><i class="fa fa-asterisk"></i>&nbsp;&nbsp;{{'Campaign' | translate}}</span>
-                </div>
-              </div>
             <div class="title_block">
                 <h1 class="heading--title">{{campaign.title}}</h1>
                 <!-- HEADER -> actions menu -->
@@ -57,18 +52,23 @@
                 </div>
             </div>
 
-            <div ng-if="logo" class="logo">
-              <div class="hidden-xs" style="float:left; margin-right:10px;">
-                <img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">
-              </div>
-              <p class="description"
-                 style="padding-right: 10px; margin-top: 0px; display: inline-block;"
-                 ng-bind-html="((campaign.goal | limitTo:400)+((campaign.goal.length) > 400 ? '...' : '' )) | linky">
-              </p>
-            </div>
+            <!--<div ng-if="logo" class="logo">-->
+              <!--<div class="hidden-xs" style="float:left; margin-right:10px;">-->
+                <!--<img ng-src="{{logo}}" height="140" width="140" style="border-radius:50%; max-height:100%; height:140px; width: 140px;">-->
+              <!--</div>-->
+              <!--<p class="description"-->
+                 <!--style="padding-right: 10px; margin-top: 0px; display: inline-block;"-->
+                 <!--ng-bind-html="((campaign.goal | limitTo:200)+((campaign.goal.length) > 200 ? '...' : '' )) | linky">-->
+              <!--</p>-->
+            <!--</div>-->
 
-            <div ng-if="!logo" style="padding-top: 1em;">
-              <p class="description" ng-bind-html="((campaign.goal | limitTo:400)+((campaign.goal.length) > 400 ? '...' : '' )) | linky"></p>
+            <div>
+              <p class="description" style="margin-top:0.2em"
+                 ng-bind-html="((campaign.goal | limitTo:240)+((campaign.goal.length) > 240 ? '...' : '' )) | linky"></p>
+              <p><a data-toggle></a>
+                <i class="fa fa-info"></i>&nbsp;&nbsp;
+                <a data-toggle="modal" data-target="#learnMoreModal"><span>{{'Read more'|translate}}</span></a>
+              </p>
             </div>
 
           </div>
@@ -607,6 +607,26 @@
         </div>
         <div class="modal-footer">
           <button class="confirm-modal accept" data-dismiss="modal">{{'Close'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learn more modal -->
+  <div class="modal fade dashboardModal" id="learnMoreModal" tabindex="-1"
+       role="dialog" aria-labelledby="learnMoreModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!--<div class="modal-header">-->
+          <!--<button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+        <!--</div>-->
+        <div class="modal-body">
+          <div ng-if="campaignBrief" ng-bind-html="campaignBrief"></div>
+          <div ng-if="!campaignBrief" ng-include="'/app/v2/partials/campaign/campaign-default-brief.html'"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Participate'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Explore the campaign'|translate}}</button>
         </div>
       </div>
     </div>

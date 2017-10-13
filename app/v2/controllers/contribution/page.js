@@ -3,17 +3,17 @@
 
   angular
     .module('appCivistApp')
-    .controller('v2.ProposalPageCtrl', ProposalPageCtrl);
+    .controller('v2.ContributionPageCtrl', ContributionPageCtrl);
 
 
 
-  ProposalPageCtrl.$inject = [
+  ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting'
   ];
 
-  function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
+  function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting) {
 
@@ -69,8 +69,15 @@
       $scope.commentsSectionExpanded = true;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-      if (pattern.test($stateParams.puuid) === true) {
+      
+      if (pattern.test($stateParams.couuid) === true) {
+        $scope.proposalID = $stateParams.couuid;
+        $scope.campaignID = $stateParams.cuuid;
+        $scope.assemblyID = $stateParams.auuid;
+        $scope.groupID = $stateParams.guuid;
+        $scope.isAnonymous = true;
+        $scope.loadFeedback($scope.proposalID);
+      } else if (pattern.test($stateParams.puuid) === true) {
         $scope.proposalID = $stateParams.puuid;
         $scope.campaignID = $stateParams.cuuid;
         $scope.assemblyID = $stateParams.auuid;
@@ -80,7 +87,13 @@
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
-        $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
+        if ($stateParams.coid) {
+          $scope.proposalID = parseInt($stateParams.coid);
+        } else if ($stateParams.pid) {
+          $scope.proposalID = parseInt($stateParams.pid);
+        } else {
+          $scope.proposalID = 0;
+        }
         $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
 
@@ -160,6 +173,7 @@
           var workingGroupAuthors = data.workingGroupAuthors;
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
+          scope.contributionType = $scope.proposal.type;
           $scope.wg = $scope.group;
 
           if ($scope.group) {
@@ -211,9 +225,10 @@
           loadRelatedContributions();
           loadRelatedStats();
           loadCampaign();
+          loadResources();
         },
         function (error) {
-          Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
+          Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
         }
       );
     }
@@ -482,6 +497,32 @@
       }
     }
 
+    function loadResources() {
+      var res;
+      if ($scope.isAnonymous) {
+        res = Space.resourcesByUUID($scope.proposal.resourceSpaceUUID).query();
+      } else {
+        res = Space.resources($scope.proposal.resourceSpaceId).query();
+      }
+      res.$promise.then(function (data) {
+        $scope.resources = data;
+        loadPictureResources()
+      }, function(error) {
+        Notify.show('Error while trying to fetch resources', 'error');
+      });
+    }
+
+    function loadPictureResources() {
+      $scope.resourcePictures = [];
+      if ($scope.resources.length > 0) {
+        for (let i in $scope.resources) {
+          if ($scope.resources[i].resourceType == 'PICTURE') {
+            $scope.resourcePictures.push($scope.resources[i]);
+          }
+        }
+      }
+    }
+
     function loadCampaignConfig() {
       if ($scope.campaign && $scope.campaign.rsID) {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
@@ -556,12 +597,21 @@
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId);
       rsp.then(
         themes => {
-          vm.currentAdd.items = $filter('filter')(themes, { title: query });
+          vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));
         },
         error => {
           Notify.show('Error while trying to fetch themes from server', 'error');
         }
       );
+      console.log(rsp);
+    }
+
+    function queryThemes(query) {
+      return function (value, index, array) {
+        var lowerTitle = value.title.toLowerCase();
+        var lowerQuery = query.toLowerCase();
+        return lowerTitle.indexOf(lowerQuery) >= 0 && (value.type == 'EMERGENT' || value.type == 'OFFICIAL_PRE_DEFINED');
+      }
     }
 
     /**

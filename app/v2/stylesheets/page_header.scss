@@ -4,4 +4,46 @@
   .row {
     position:relative;
   }
+  .heading--title {
+    font-weight: bold;
+  }
+  &.contributionHeader {
+    background-color: #FAFAFA;
+    background-image: none;
+    color: #3c3c3c;
+    &:before { display: none; }
+    #breadcrumb, #breadcrumb a { color: #3c3c3c; }
+    h1 { color: #30698E; margin-top: 0; }
+    a, a:hover { color: #3c3c3c; }
+    p.small {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      strong {
+        font-weight: bold;
+        &:last-child { margin-left: 2rem; }
+      }
+    }
+  }
+  .icon {
+    fill: #3c3c3c !important;
+  }
+  .tags li {
+    height: initial !important;
+    &.title {
+      padding-left: 0;
+      margin-top: 0.3rem;
+      margin-right: 0.3rem;
+      font-size: 0.9rem;
+    }
+    a {
+      display: inline-block !important;
+      padding: 0.4rem 1.2rem !important;
+      background-color: #E5E5E5;
+      font-size: 0.8rem;
+      color: #3c3c3c;
+      &:hover {
+        color: #3c3c3c;
+      }
+    }
+  }
 }

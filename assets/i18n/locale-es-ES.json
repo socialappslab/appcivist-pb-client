@@ -1175,5 +1175,8 @@
   "voting.modal.finalize.done.p1": "Su papeleta de votación ha sido cerrado y será contado. Ya no puedes editar tus votos.",
   "voting.modal.finalize.done.p2": "¡Vuelve cuando el período de votación termine para ver los resultados!.",
   "INBALLOT": "En Votación",
-  "Participate": "Participar"
+  "Participate": "Participar",
+  "contribution.summary": "Resumen",
+  "contribution.body": "Las <strong>propuestas</strong> difieren de las ideas en que proveen una descripción más detallada en la forma de un documento, construido colaborativamente, incorporando una o más ideas en una gran propuesta de proyecto.",
+  "contribution.body.empty": "Para detallar tu <strong>propuesta</strong>, agrega un documento a través de uno de los siguientes servicios."
 }

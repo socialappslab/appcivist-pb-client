@@ -578,7 +578,7 @@
           requiresLogin: true
         },
         ncyBreadcrumb: {
-          parent: "v2.assembly.aid.campaign",
+          parent: "v2.assembly.aid.campaign.cid",
           label: "Contribution"
         }
       })
@@ -586,11 +586,8 @@
         url: '/:couuid',
         templateUrl: 'app/v2/partials/contribution/page.html',
         controller: 'v2.ContributionPageCtrl',
-        access: {
-          requiresLogin: true
-        },
         ncyBreadcrumb: {
-          parent: "v2.public.assembly.auuid.campaign",
+          parent: "v2.public.assembly.auuid.campaign.cuuid",
           label: "Contribution"
         }
       })

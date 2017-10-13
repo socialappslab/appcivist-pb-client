@@ -21,12 +21,13 @@
     'WorkingGroups',
     '$compile',
     '$state',
-    'Voting'
+    'Voting',
+    '$sce'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting) {
+    $state, Voting, $sce) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -141,6 +142,8 @@
       $scope.loadGroupsAfterConfigs = loadGroupsAfterConfigs.bind($scope);
       $scope.afterGroupsSuccess = afterGroupsSuccess.bind($scope);
       $scope.afterGroupsError = afterGroupsError.bind($scope);
+      $scope.loadCampaignBrief = loadCampaignBrief.bind($scope);
+      $scope.translateDefaultBrief = translateDefaultBrief.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -174,11 +177,12 @@
           $scope.$broadcast('filters:updateFilters');
         }
       });
-      console.log('Campaign:Controller => DECLARED => dashboard:paginationWidgetListenersAreReady');
     }
 
     function loadAssembly() {
       $scope.assembly = localStorageService.get('currentAssembly');
+      // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
+      // get the assembly from backend
       verifyMembership($scope.assembly);
     }
 
@@ -246,6 +250,7 @@
               'background-position': 'center center',
             };
 
+          $scope.loadCampaignBrief();
           localStorageService.set("currentCampaign", $scope.campaign);
 
           loadPublicCommentCount($scope.forumSpaceID);
@@ -257,6 +262,29 @@
           );
         }
       );
+    }
+
+    function loadCampaignBrief() {
+      $scope.translateDefaultBrief();
+      $rootScope.$on('$translateChangeSuccess', function(event, current, previous) {
+        translateDefaultBrief();
+      });
+      //Campaigns.getBriefByCampaignUUID()
+      let res = Campaigns.getPublicBriefByCampaignUUID($scope.campaign.uuid).get();
+
+      res.$promise.then(
+        data => {
+          $scope.campaignBrief = $sce.trustAsHtml(data.brief);
+        }
+      );
+    }
+
+    function translateDefaultBrief() {
+      $translate('campaign.brief.default.svg-text')
+        .then(
+          brief => {
+            $scope.campaignBriefDefault = $sce.trustAsHtml(brief);
+          });
     }
 
     function afterComponentsLoaded() {

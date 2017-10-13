@@ -25,7 +25,7 @@
         var rsp = Assemblies.assemblyByShortName($scope.domain).get();
         rsp.$promise.then(function (data) {
           $scope.assembly = data;
-          if($scopa.assembly && $scope.assembly.lang && !$scope.user) {
+          if($scope.assembly && $scope.assembly.lang && !$scope.user) {
             $translate.use($scope.assembly.lang);
           }
           localStorageService.set('domain', data);

@@ -82,7 +82,17 @@
 
 
   function updateVote() {
+    if (this.voteValue===null || this.voteValue === undefined
+      || this.voteValue === "null" || this.voteValue === "undefined") {
+      this.voteValue = 0;
+    }
+
     let oldValue = this.vote.value;
+    if (oldValue === null || oldValue === undefined
+      || oldValue  === "null" || oldValue === "undefined") {
+      oldValue = 0;
+    }
+
     let diff = this.voteValue - oldValue;
     let updatedRemainder = this.ballotTokens ? this.ballotTokens.points-diff : 0;
     if((diff>0 && updatedRemainder >= 0) || (diff<0 && updatedRemainder <= this.maxTokens)) {

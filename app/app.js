@@ -166,7 +166,7 @@
         controller: 'v2.HomeCtrl',
         templateUrl: 'app/v2/partials/home.html',
         ncyBreadcrumb: {
-          label: "AppCivist"
+          skip: true
         }
       })
       // Uncomment the following to test the newsletter templates
@@ -538,13 +538,56 @@
       })
       .state('v2.assembly.aid.campaign.workingGroup.contribution.pid', {
         url: '/:pid',
-        templateUrl: 'app/v2/partials/proposal/page.html',
-        controller: 'v2.ProposalPageCtrl',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
         access: {
           requiresLogin: true
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
+          label: "Contribution"
+        }
+      })
+      .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {
+        url: '/:puuid',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.workingGroup.guuid",
+          label: "Contribution"
+        }
+      })
+      .state('v2.assembly.aid.campaign.contribution', {
+        url: '/:cid/contribution',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.public.assembly.auuid.campaign.contribution', {
+        url: '/:cuuid/contribution',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('v2.assembly.aid.campaign.contribution.coid', {
+        url: '/:coid',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid",
+          label: "Contribution"
+        }
+      })
+      .state('v2.public.assembly.auuid.campaign.contribution.couuid', {
+        url: '/:couuid',
+        templateUrl: 'app/v2/partials/contribution/page.html',
+        controller: 'v2.ContributionPageCtrl',
+        ncyBreadcrumb: {
+          parent: "v2.public.assembly.auuid.campaign.cuuid",
           label: "Contribution"
         }
       })

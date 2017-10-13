@@ -1,0 +1,128 @@
+.about__title {
+  background: #144236;
+  border: 1px solid #979797;
+  font-family: SourceSansPro-Regular;
+  font-size: 38px;
+  color: #FFFFFF;
+  display: flex;
+  text-align: center;
+  .about__title_logo {
+    margin-left:auto;
+    padding: 15px;
+  }
+  .about__title_text {
+    margin-right:auto;
+    padding: 15px;
+  }
+}
+.about__content {
+  text-align: left;
+  .about__content_intro {
+    p {
+      font-family: SourceSansPro-Regular;
+      font-size: 18px;
+      color: #23547D;
+      padding: 15px;
+      text-align: center;
+      margin: 0px;
+    }
+  }
+  .about__content_award {
+    display: flex;
+    .about__content_award_text {
+      padding: 15px;
+      p {
+        font-family: SourceSansPro-Regular;
+        font-size: 18px;
+        color: #23547D;
+        margin: 0px;
+      }
+      a {
+        color: #23547D !important;
+      }
+      .about__content_award_text_p2 {
+        font-style: italic;
+      }
+    }
+    .about__content_award_icon {
+      font-family: FontAwesome;
+      font-size: 75px;
+      color: #23547D;
+      padding: 15px;
+    }
+  }
+  .about__hr {
+    border: 0px solid #979797;
+    margin: 0px;
+    width: 95%;
+    margin: auto;
+  }
+  .about__content_copyright_icon_text {
+    display: flex;
+  }
+  .about__content_copyright_text {
+    p {
+      font-family: SourceSansPro-Regular;
+      font-size: 18px;
+      color: #237D70;
+      margin:0px;
+      padding: 15px;
+    }
+    a {
+      font-weight: bold !important;;
+      text-decoration: none !important;;
+      color: #237D70 !important;;
+    }
+  }
+  .about__content_copyright_icon {
+    font-family: FontAwesome;
+    font-size: 75px;
+    color: #237D70;
+    padding: 15px;
+  }
+  .about__content_copyright_team {
+    font-family: SourceSansPro-Regular;
+    font-size: 16px;
+    color: #237D70;
+    display: block;
+    padding: 0px 15px 15px 15px;
+    p {
+      margin: 0px;
+      strong {
+        font-weight: bold;
+      }
+    }
+  }
+  .about__content_license {
+    display: flex;
+
+    .about__content_license_icon {
+      font-family: FontAwesome;
+      font-size: 75px;
+      color: #828282;
+      padding: 15px;
+    }
+
+    .about__content_license_text {
+      font-family: SourceSansPro-Regular;
+      font-size: 18px;
+      color: #686868;
+      padding: 15px;
+      p {
+        margin: 0px;
+      }
+      a {
+        text-decoration: none !important;;
+        color: #686868 !important;;
+        font-weight: bold !important;;
+      }
+    }
+  }
+}
+.about__logos {
+  background: #144236;
+  border: 1px solid #979797;
+}
+.about__modal {
+  max-height: 780px;
+}

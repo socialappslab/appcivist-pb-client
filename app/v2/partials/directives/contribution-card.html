@@ -114,8 +114,16 @@
 
       <div class="col-lg-9">
         <h3 class="{{contribution.cover ? 'white-text' : ''}}">
-          <a ng-click="myObject.seeDetail()">{{contribution.title}}
-        </a>
+          <!--<a ng-click="myObject.seeDetail()">{{contribution.title}}-->
+          <a ng-if="isAnonymous"
+              ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/contribution/{{contribution.uuid}}"
+              style="display: block; width: 280px;word-wrap: break-word;">
+             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+           </a>
+           <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/contribution/{{contribution.contributionId}}"
+             style="display: block; width: 280px; word-wrap: break-word;">
+             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+           </a>
         </h3>
         <div class="heading--category">
           <span ng-repeat="author in contribution.nonMemberAuthors | limitTo:3 track by $index" class="{{contribution.cover ? 'white-text' : ''}}">

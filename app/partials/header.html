@@ -7,12 +7,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <div class="navbar-brand" ng-if='userIsAuthenticated()' style="padding-top:5%;">
+        <div class="navbar-brand" ng-if='userIsAuthenticated()'>
             <a href="#/"><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
             <strong style="vertical-align: super;">AppCivist</strong>
         </div>
 
-        <div class="navbar-brand" ng-if='!userIsAuthenticated()' style="padding-top:5%;">
+        <div class="navbar-brand" ng-if='!userIsAuthenticated()'>
             <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
             <strong style="vertical-align: super;">AppCivist</strong>
         </div>

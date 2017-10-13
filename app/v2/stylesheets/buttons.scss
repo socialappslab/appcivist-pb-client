@@ -2,10 +2,15 @@
   &.unsubscribe-newsletter, &.unfollow-proposal {
     background-color: #07473B;
   }
-  &.subscribe-newsletter, &.follow-proposal {
+  &.proposal-btn {
     background-color: #424242;
   }
-  &.unsubscribe-newsletter, &.unfollow-proposal, &.subscribe-newsletter, &.follow-proposal {
+  &.follow-contribution {
+    background-color: #424242;
+    float: right;
+    text-transform: capitalize;
+  }
+  &.unsubscribe-newsletter, &.unfollow-proposal, &.subscribe-newsletter, &.follow-contribution, &.proposal-btn {
     border: none;
     color: white;
     font-size: 0.8rem;

@@ -3,4 +3,19 @@
 </p>
 <p>{{'In partnership with the' | translate}} MiMove Team at INRIA, France</p>
 <p class="copyright">2017 © Regents of the University of California</p>
-<p><a href="https://www.appcivist.org/#/about">{{'About AppCivist' | translate}}</a></p>
+<p><a data-toggle="modal" data-target="#aboutAppCivistModal">{{'About AppCivist' | translate}}</a></p>
+
+<!-- Learn more modal -->
+<div class="modal fade dashboardModal" id="aboutAppCivistModal" tabindex="-1"
+     role="dialog" aria-labelledby="learnMoreModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div ng-include="'/app/v2/components/copyright/about.html'"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="confirm-modal accept" data-dismiss="modal">{{'Got it!'|translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

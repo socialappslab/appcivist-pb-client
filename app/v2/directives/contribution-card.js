@@ -44,10 +44,22 @@
           scope.mergedThemes = mergeThemes(scope.contribution);
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
 
+          console.log(scope.contribution);
+
           if (scope.contribution.cover) {
             let bkg_url = 'url(\"'+scope.contribution.cover.url+'\")';
             scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
             scope.showOverlay = true;
+          } else if (scope.contribution.workingGroupAuthors) {
+            if (scope.contribution.workingGroupAuthors[0].profile.cover) {
+              let bkg_url = 'url(\"'+scope.contribution.workingGroupAuthors[0].profile.cover+'\")';
+              scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+              scope.showOverlay = true;
+            } else if (scope.contribution.workingGroupAuthors[0].profile.color) {
+              let bkg_url = scope.contribution.workingGroupAuthors[0].profile.cover;
+              scope.coverPhotoStyle = { 'background-color': bkg_url };
+              scope.showOverlay = true;
+            }
           }
 
           if (assembly) {

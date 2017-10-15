@@ -69,7 +69,7 @@
       $scope.commentsSectionExpanded = true;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      
+
       if (pattern.test($stateParams.couuid) === true) {
         $scope.proposalID = $stateParams.couuid;
         $scope.campaignID = $stateParams.cuuid;
@@ -190,7 +190,14 @@
           }
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+            $scope.extendedTextIsEtherpad = data.extendedTextPad.resourceType === 'PAD';
+            $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
+            if ($scope.extendedTextIsEtherpad) {
+              $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+            } else if ($scope.extendedTextIsGdoc) {
+              $scope.gdocUrl = data.extendedTextPad.url;
+              $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
+            }
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -336,7 +343,12 @@
           }
         });
       } else if ($scope.userIsAuthor && checkEtherpad) {
-        loadEtherpadWriteUrl(proposal);
+        if ($scope.extendedTextIsEtherpad) {
+          loadEtherpadWriteUrl(proposal);
+        } else if ($scope.extendedTextIsGdoc) {
+          // TODO: load the write embed url for gdoc
+          $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
+        }
       }
     }
 

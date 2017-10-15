@@ -1142,7 +1142,7 @@
   "There are no multimedia resources in this campaign": "There are no multimedia resources in this campaign",
   "The analytics section is coming soon!": "The analytics section is coming soon!. It will look something like the following...",
   "voting.results.summary.intro": "This is a summary of votes cast by <strong>{{participants}}</strong>",
-  "voting.controls.remaining.points": "You have <span class=\"points-left\">{{points}} points</span> left",
+  "voting.controls.remaining.points": "You have <span class='points-left'>{{points}} points</span> left",
   "Points": "Points",
   "points": "points",
   "voting.modal.external-ballot.p1": "Voting for <strong>{{title}}</strong> takes place outside of AppCivist. Follow <a href='{{externalBallot}}'>this link</a> to learn more and vote.",

@@ -323,8 +323,29 @@
               <button class="btn btn-default proposal-btn">Google Docs</button>
               <button class="btn btn-default proposal-btn">Default</button>
           </div>
-          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad">
-            <!-- TODO: embed etherpad or google doc depending on the extendedTextPad.resourceType = [PAD || GDOC]-->
+          <div class="text-center" style="margin-top: 2rem" ng-if="extendedTextIsEtherpad && proposal.extendedTextPad">
+            <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'"
+                 class="etherpad__wrapper">
+              <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
+              <iframe ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" name="embed_readonly"
+                      ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
+              </iframe>
+              <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                      width="100%" height="600px">
+              </iframe>
+            </div>
+          </div>
+          <div class="text-center" style="margin-top: 2rem" ng-if="extendedTextIsGdoc && proposal.extendedTextPad">
+            <div class="etherpad__wrapper">
+              <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
+              <iframe ng-if="(!userIsAuthor && gdocUrl)" name="embed_readonly"
+                      ng-src="{{gdocUrlMinimal}}" width="100%" height="600px">
+              </iframe>
+              <iframe ng-if="userIsAuthor && writegDocUrl" name="embed_readwrite"
+                      ng-src="{{writegDocUrl}}"
+                      width="100%" height="600px">
+              </iframe>
+            </div>
           </div>
         </div>
       </section>

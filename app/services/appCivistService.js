@@ -1111,8 +1111,11 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
   };
 
   return {
-    embedUrl(id, revision) {
+    embedUrl(id, revision, resourceUrl) {
       var url = etherpadServer + "p/" + id;
+      if (/p\/r\./.test(resourceUrl)) {
+        url = resourceUrl;
+      }
       if (revision !== undefined) {
         url += '/timeslider#' + revision;
       }
@@ -1127,8 +1130,11 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
       });
     },
 
-    getEtherpadReadOnlyUrl(readOnlyPadId, revision) {
+    getEtherpadReadOnlyUrl(readOnlyPadId, revision, resourceUrl) {
       var url = localStorageService.get("etherpadServer") + "p/" + readOnlyPadId;
+      if (/p\/r\./.test(resourceUrl)) {
+        url = resourceUrl;
+      }
       if (revision !== undefined) {
         url += 'timeslider#' + revision;
       }

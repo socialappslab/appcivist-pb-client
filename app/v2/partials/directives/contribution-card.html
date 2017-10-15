@@ -1,7 +1,7 @@
 <!-- PROPOSAL CARD -->
 <div ng-if="isProposal">
   <div class="card__wrapper">
-    <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false" ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
+    <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false" ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}" ng-style="coverPhotoStyle">
       <div class="card__heading_bookmark" ng-if="contribution.pinned">
         <i class="fa fa-bookmark"></i>
       </div>
@@ -191,7 +191,7 @@
     </div>
     <contribution-card-themes themes="mergedThemes"></contribution-card-themes>
     <!-- Control types: distributed, plurality, range, ranked -->
-    <div class="card__footer">
+    <div class="card__footer" ng-style="footerBackgroundStyle">
       {{contribution.workingGroupAuthors[0].name}}
     </div>
     <contribution-card-voting-control

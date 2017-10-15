@@ -44,10 +44,59 @@
           scope.mergedThemes = mergeThemes(scope.contribution);
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
 
-          if (scope.contribution.cover) {
-            let bkg_url = 'url(\"'+scope.contribution.cover.url+'\")';
-            scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
-            scope.showOverlay = true;
+          console.log(scope.contribution);
+
+          // Se contribution card header cover style
+
+          // Prepare first WG's cover and color
+          let wgCover = null;
+          let wgColor = null;
+          let wgCoverIsSVG = null; // TODO: make sure is one of defaults
+          if (scope.contribution.workingGroupAuthors) {
+            wgColor = scope.contribution.workingGroupAuthors[0].profile.color ? scope.contribution.workingGroupAuthors[0].profile.color : null;
+            if (scope.contribution.workingGroupAuthors[0].profile.cover) {
+              wgCover = scope.contribution.workingGroupAuthors[0].profile.cover;
+              let wgCoverParts = wgCover.split("/assets/wgs/covers/");
+              if (wgCoverParts && wgCoverParts.length > 1) {
+                let fileName = wgCoverParts[1];
+                wgCoverIsSVG = /^[1-9]\.svg$/.test(fileName);
+              }
+            }
+          }
+
+          // Prepare contribution's cover
+          let cCover = scope.contribution.cover ? scope.contribution.cover.url : null;
+
+          // If contribution is IDEA:
+          // 1. Use the contribution's cover as cover (cCover)
+          // 2. Use contribution's WG cover as background, if one of the default SVGs
+          // 3. Use contribution's WG color as footer background
+          if (scope.contribution.type === 'IDEA') {
+            if (cCover) {
+              let bkg_url = 'url(\"'+cCover+'\")';
+              scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+              scope.showOverlay = true;
+            }
+            if (wgColor) {
+              scope.footerBackgroundStyle = { 'background-color': wgColor, 'background-position': 'center center', 'background-size': 'cover' };
+            }
+            if (wgCover && wgCoverIsSVG) {
+              let bkg_url = 'url(\"'+wgCover+'\")';
+              scope.footerBackgroundStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+            }
+          }
+
+          // If contribution is not idea, use as cover the cover of the WG
+          if (scope.contribution.type!=='IDEA') {
+            if (wgCover) {
+              let bkg_url = 'url(\"'+wgCover+'\")';
+              scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+              scope.showOverlay = true;
+            } else if (wgColor) {
+              let bkg_url = wgColor;
+              scope.coverPhotoStyle = { 'background-color': bkg_url };
+              scope.showOverlay = true;
+            }
           }
 
           if (assembly) {

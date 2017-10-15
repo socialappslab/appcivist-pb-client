@@ -44,8 +44,6 @@
           scope.mergedThemes = mergeThemes(scope.contribution);
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
 
-          console.log(scope.contribution);
-
           // Se contribution card header cover style
 
           // Prepare first WG's cover and color

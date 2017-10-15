@@ -101,27 +101,25 @@
             scope.assemblyId = assembly.assemblyId;
           }
 
-          if (!scope.isIdea) {
-            var workingGroupAuthors = scope.contribution.workingGroupAuthors;
-            var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-            scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
-            scope.notAssigned = true;
+          var workingGroupAuthors = scope.contribution.workingGroupAuthors;
+          var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+          scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
+          scope.notAssigned = true;
 
-            if (scope.group) {
-              scope.notAssigned = false;
-            }
+          if (scope.group) {
+            scope.notAssigned = false;
+          }
 
-            if (!scope.isAnonymous) {
-              scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
-              scope.contributionId = scope.contribution.contributionId;
-            } else {
-              scope.auuid = $stateParams.auuid;
-              scope.cuuid = $stateParams.cuuid;
-              scope.groupId = scope.guuid = $stateParams.guuid ?
-                $stateParams.guuid : workingGroupAuthorsLength ?
-                scope.contribution.workingGroupAuthors[0].uuid : "";
-              scope.contributionId = scope.contribution.uuid;
-            }
+          if (!scope.isAnonymous) {
+            scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+            scope.contributionId = scope.contribution.contributionId;
+          } else {
+            scope.auuid = $stateParams.auuid;
+            scope.cuuid = $stateParams.cuuid;
+            scope.groupId = scope.guuid = $stateParams.guuid ?
+              $stateParams.guuid : workingGroupAuthorsLength ?
+              scope.contribution.workingGroupAuthors[0].uuid : "";
+            scope.contributionId = scope.contribution.uuid;
           }
         }
 

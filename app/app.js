@@ -589,7 +589,7 @@
         templateUrl: 'app/v2/partials/contribution/page.html',
         controller: 'v2.ContributionPageCtrl',
         ncyBreadcrumb: {
-          parent: "v2.public.assembly.auuid.campaign.cuuid",
+          parent: "v2.public.assembly.auuid.campaign.cuuid.dashboard",
           label: "Contribution"
         }
       })

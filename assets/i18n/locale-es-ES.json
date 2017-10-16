@@ -1192,5 +1192,6 @@
   "about.content.license.text": "Todos los componentes de este proyecto tienen licencia de código abierto, y se distribuyen bajo los términos de la <a href='https://github.com/socialappslab/appcivist/blob/master/LICENSE.md'>Licencia de Código Abierto del Social Apps Lab Versión 1</a>. Visita nuestros <a href='https://github.com/socialappslab/appcivist-platform/'>repositorios GitHub</a> para contribuir al proyecto!",
   "Got it!": "Entendido!",
   "Contributing ideas": "Ideas relacionadas",
-  "Feedback": "Evaluación"
+  "Feedback": "Evaluación",
+  "History": "Historial"
 }

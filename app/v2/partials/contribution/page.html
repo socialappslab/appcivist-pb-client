@@ -261,52 +261,50 @@
           </li>
         </ul>
 
-        <div class="row voting_mechanism">
-          <div class="temperature_check">
-            <ul class="votes">
-              <li class="upvote">
-                <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">{{ 'Upvote' | translate }}</span></a>
+        <div class="overlay new_overlay contribution_toolbar" style="display: inline-flex">
+          <ul class="overlay_buttons">
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#ideas">
+                <i class="fa fa-lightbulb-o fa-lg"></i><span>{{'Contributing ideas'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button">
+              <a data-toggle="modal" data-target="#documents">
+                <i class="fa fa-file-text-o fa-lg"></i><span>{{'Documents'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'IDEA'">
+              <a data-toggle="modal" data-target="#history">
+                <i class="fa fa-history fa-lg"></i><span>{{'History'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#media">
+                <i class="fa fa-picture-o fa-lg"></i><span>{{'Media'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#feedback">
+                <i class="fa fa-star-half-o fa-lg"></i><span>{{'Feedback'|translate}}</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="votes">
+            <li class="downvote">
+                <a class="commentcount"><i class="fa fa-comment"></i> {{ isAnonymous ? proposal.forumCommentCount : totalComments }}</a>
               </li>
-              <li class="downvote">
-                <a class="thumbs-down" ng-click="updateFeedback('down')"><span class="screen-reader-only">{{ 'Downvote' | translate }}</span></a>
-              </li>
-              <li class="commentcount" ng-mouseenter="contribution.commentCount = true" ng-mouseleave="contribution.commentCount = false">
-                <a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>
-                <div class="popover" style="top: -50px;" ng-class="{active: contribution.commentCount}">
-                  <div class="content" ng-if="!isAnonymous">{{ totalComments }}</div>
-                  <div class="content" ng-if="isAnonymous">{{ proposal.forumCommentCount }}</div>
-                </div>
-              </li>
-            </ul>
-            <div ng-if="proposal.informalScore" class="informal_score" ng-class="{positive: proposal.informalScore > 0, negative: proposal.informalScore < 0}">
-              <em>{{proposal.informalScore}}</em>
-            </div>
-
-            <div class="informal_score stats2" style="cursor: pointer;">
-              <span ng-click="toggleFeedbackBar()" ng-if="!feedbackBar">{{'Show Results' | translate }}</span>
-              <span ng-click="toggleFeedbackBar()" ng-if="feedbackBar">{{'Hide Results' | translate }}</span>
-            </div>
-
-            <div ng-if="feedbackBar" class="informal_score">
-              <div class="informal_score positive stats2">
-                {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em>              {{ 'Comments' | translate}} <em>{{totalComments}}</em>
-              </div>
-              <div class="informal_score stats2">
-                <span>{{ 'Needs' | translate }}</span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"
-                />
-                <span>{{ 'Feasibility' | translate }} </span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"
-                />
-                <span>{{ 'Benefit' | translate }}</span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"
-                />
-              </div>
-            </div>
-
-          </div>
-
+            <li class="upvote" ng-click="updateFeedback('up')">
+                {{upSum}} <a class="thumbs-up"><i class="fa fa-thumbs-up"></i></a>
+            </li>
+            <li class="downvote" ng-click="updateFeedback('down')">
+                {{downSum}} <a class="thumbs-down"><i class="fa fa-thumbs-down"></i></a>
+            </li>
+            <li class="score" ng-if="proposal.informalScore">
+                {{proposal.informalScore}} <i class="fa" ng-class="{fa-arrow-up: proposal.informalScore > 0, fa-arrow-down: proposal.informalScore < 0}"></i>
+            </li>
+          </ul>
         </div>
+        
       </header>
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
@@ -520,6 +518,39 @@
       </div>
     </script>
   </main>
+
+  <!-- Documents Modal -->
+  <div class="modal fade dashboardModal" id="documents" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
+          <p>{{ 'Documents' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div class="noContent" ng-if="!documents || documents.length === 0">
+            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+          </div>
+          <ul class="workingGroupList" ng-if="documents && documents.length > 0">
+            <li ng-repeat="resource in documents">
+              <a class="workingGroupLink" target="_blank"
+                  ng-href="{{resource.url}}"><span>{{resource.name}}</span>
+                <!--<span class="number"><i class="fa fa-users"></i>32</span>-->
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     $(document).ready(function() {

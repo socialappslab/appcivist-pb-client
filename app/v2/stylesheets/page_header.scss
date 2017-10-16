@@ -11,6 +11,7 @@
     background-color: #FAFAFA;
     background-image: none;
     color: #3c3c3c;
+    padding-bottom: 4rem;
     &:before { display: none; }
     #breadcrumb, #breadcrumb a { color: #3c3c3c; }
     h1 { color: #30698E; margin-top: 0; }
@@ -21,6 +22,29 @@
       strong {
         font-weight: bold;
         &:last-child { margin-left: 2rem; }
+      }
+    }
+    .contribution_toolbar {
+      background-color: #ECECEC;
+      i { color: #036891; }
+      .overlay_buttons {
+        padding: 0.7rem 0;
+        li.overlay_button {
+          border-right: 2px solid #D6D6D6;
+        }
+      }
+      .votes {
+        position: absolute;
+        right: 0;
+        padding: 1rem;
+        li {
+          display: inline-block;
+          margin-right: 1rem;
+          cursor: pointer;
+          &:last-of-type {
+            margin-right: 0;
+          }
+        }
       }
     }
   }

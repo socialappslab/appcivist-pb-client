@@ -48,7 +48,7 @@
       $scope.feedbackBar = false;
       $scope.currentAdd = {
         suggestionsVisible: false,
-        context: 'AUTHORS'
+        context: 'THEMES'
       };
       $scope.toggleFeedbackBar = function (x) {
         $scope.feedbackBar = !$scope.feedbackBar;
@@ -105,7 +105,9 @@
           $translate.use(locale);
         }
         // user is member of Assembly
-        $scope.userIsMember = true;
+        $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyID);
+        $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+        $scope.userIsAdmin = Memberships.userIsAdmin();
       }
       $scope.etherpadLocale = Etherpad.getLocale();
       $scope.loadProposal($scope);
@@ -587,6 +589,8 @@
 
       if (this.currentAdd.context === 'AUTHORS') {
         this.addAuthorToProposal(item);
+      } else if (this.currentAdd.context === 'THEMES') {
+        this.addThemeToProposal(item);
       } else {
         this.addThemeToProposal(item);
       }
@@ -595,8 +599,10 @@
     function loadThemesOrAuthor() {
       if (this.currentAdd.context === 'AUTHORS') {
         this.loadAuthors(this.currentAdd.query);
+      } else if (this.currentAdd.context === 'THEMES') {
+        this.loadThemes(this.currentAdd.query, 'OFFICIAL_PRE_DEFINED');
       } else {
-        this.loadThemes(this.currentAdd.query);
+        this.loadThemes(this.currentAdd.query, 'EMERGENT');
       }
     }
 
@@ -604,9 +610,13 @@
      * Loads the available themes for the contribution.
      * @param {string} query
      */
-    function loadThemes(query) {
+    function loadThemes(query, type) {
       let vm = this;
-      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId);
+      let filters = {
+        query: query,
+        themeType: type
+      }
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         themes => {
           vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));

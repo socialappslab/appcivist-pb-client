@@ -230,13 +230,16 @@
           <member-card ng-if="!proposal.authors" user="group"></member-card>
           <br><p class="small"><strong>Last updated: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}} <strong>Created: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}</p>
         </div>
-        <div ng-if="userIsAuthor" class="row attribution campaign__filters">
+        <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">
           <ul class="search_modes">
-            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}">
-              <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
-            </li>
             <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
               <a ng-click="$parent.setAddContext('THEMES')" class="btn-sm">{{ 'Themes' | translate }}</a>
+            </li>
+            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}" ng-if="userIsAuthor">
+              <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
+            </li>
+            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'KEYWORDS'}">
+              <a ng-click="$parent.setAddContext('KEYWORDS')" class="btn-sm">{{ 'Keywords'| translate }}</a>
             </li>
           </ul>
           <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query" ng-change="$parent.currentAddQueryChange()">
@@ -247,6 +250,10 @@
                   class="suggestion-item" style="min-height: 50px;">
                   <span ng-bind-html="$parent.currentAddGetText(item)"></span>
                 </li>
+                <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
+                    class="suggestion-item" style="min-height: 50px;">
+                  <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
+                </li>
               </ul>
             </div>
           </fieldset>
@@ -256,7 +263,7 @@
           <li class="title">Themes: </li>
           <li ng-repeat="theme in proposal.themes track by $index" ng-mouseenter="theme.isHover = true" ng-mouseleave="theme.isHover = false">
             <a>{{theme.title}}</a>
-            <i ng-if="theme.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+            <i ng-if="theme.isHover && (userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
             <!--<span ng-if="!$last">,</span>-->
           </li>
         </ul>

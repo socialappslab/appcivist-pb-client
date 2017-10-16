@@ -561,8 +561,18 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
      */
     isMember: function (target, id) {
       return this.rolIn(target, id, 'MEMBER');
-    }
+    },
 
+    /**
+     * Check if current user has the general role ADMIN
+     * @returns {boolean}
+     */
+    userIsAdmin: function () {
+      let user = localStorageService.get("user");
+      let roles = user.roles;
+      let adminRole = roles.filter(r => r.name==="ADMIN");
+      return !adminRole || adminRole.length===0 ? false : true;
+    }
   };
 });
 

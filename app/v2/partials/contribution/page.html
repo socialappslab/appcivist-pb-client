@@ -227,7 +227,12 @@
             <i ng-if="author.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
           </div>
 
-          <member-card ng-if="!proposal.authors" user="group"></member-card>
+          <div ng-repeat="author in proposal.nonMemberAuthors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
+               style="display: inline-block; margin-left: 10px;">
+            <member-card user="author"></member-card>
+            <i ng-if="author.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+          </div>
+          <!--<member-card ng-if="!proposal.authors" user="group"></member-card>-->
           <br><p class="small"><strong>Last updated: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}} <strong>Created: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}</p>
         </div>
         <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">

@@ -513,7 +513,9 @@
         }
       });
       payload.emergentThemes = payload.emergentThemes.filter(t => t.themeId === undefined);
-      payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
+      if(payload.nonMemberAuthors)
+        payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
+
       // we save a reference to the authors list with their custom fields values.
       this.nonMemberAuthorsRef = payload.nonMemberAuthors;
 
@@ -642,25 +644,27 @@
       angular.forEach(this.values, value => payload.customFieldValues.push(value));
 
       // we need to save authors custom fields too.
-      contribution.nonMemberAuthors.forEach(nma => {
-        let ref = _.find(this.nonMemberAuthorsRef, { email: nma.email, name: nma.name });
-        if(ref && ref.customFieldValues) {
-          _.forIn(ref.customFieldValues, cfv => {
-            let value = cfv.value;
-            // if it corresponds to a multiple choice field, store each selected option as a custom value.
-            if (!angular.isArray(value)) {
-              value = [value];
-            }
+      if (contribution.nonMemberAuthors) {
+        contribution.nonMemberAuthors.forEach(nma => {
+          let ref = _.find(this.nonMemberAuthorsRef, {email: nma.email, name: nma.name});
+          if (ref && ref.customFieldValues) {
+            _.forIn(ref.customFieldValues, cfv => {
+              let value = cfv.value;
+              // if it corresponds to a multiple choice field, store each selected option as a custom value.
+              if (!angular.isArray(value)) {
+                value = [value];
+              }
 
-            value.forEach(v => payload.customFieldValues.push({
-              customFieldDefinition: cfv.customFieldDefinition,
-              value: v.value || v,
-              entityTargetType: 'NON_MEMBER_AUTHOR',
-              entityTargetUuid: nma.uuid,
-            }));
-          });
-        }
-      });
+              value.forEach(v => payload.customFieldValues.push({
+                customFieldDefinition: cfv.customFieldDefinition,
+                value: v.value || v,
+                entityTargetType: 'NON_MEMBER_AUTHOR',
+                entityTargetUuid: nma.uuid,
+              }));
+            });
+          }
+        });
+      }
 
       if (this.mode === 'create') {
         rsp = Space.fieldsValues(sid).save(payload).$promise;

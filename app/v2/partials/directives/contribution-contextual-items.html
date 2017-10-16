@@ -1,8 +1,10 @@
 <ul ng-if="vm.isProposal && vm.isHover">
   <!-- disabled by issue #398 -->
-  <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage"><a ng-click="vm.openModal('contributionEditModal')">{{'Edit information' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage">
+    <a ng-click="vm.openModal('contributionEditModal')">{{'Edit information' | translate}}</a>
+  </li>
   <li class="li-action-menu"
-      ng-if="vm.userIsAuthor || 
+      ng-if="vm.userIsAuthor ||
                 ((vm.userIsAuthor || vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator)
                   && (vm.contributionStatus === 'EXCLUDED' || vm.contributionStatus === 'NEW' || vm.contributionStatus === 'DRAFT'))">
      <a ng-click="vm.publish()">{{'Publish' | translate}}</a>
@@ -18,7 +20,9 @@
 
 <ul ng-if="vm.isIdea && vm.isHover">
   <!-- TODO: replace the default FALSE by a scope variable that is false only if the current campaign component is not of type PROPOSALS or IDEAS -->
-  <li class="action__edit" ng-if="vm.userIsAuthor && vm.isProposalIdeaStage"><a>{{'Edit information' | translate}}</a></li>
+  <li class="action__edit" ng-if="vm.userIsAuthor && vm.isProposalIdeaStage">
+    <a ng-click="vm.openModal('contributionEditModal')">{{'Edit information' | translate}}</a>
+  </li>
   <li class="action__assign" ng-if="vm.userIsAssemblyCoordinator"><a>{{'Assign to Working Group' | translate}}</a></li>
   <li class="action__promote" ng-if="vm.userIsWorkingGroupCoordinator"><a>{{'Promote to proposal' | translate}}</a></li>
   <li class="action__history"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
@@ -38,8 +42,7 @@
 </script>
 
 <script id="contributionEditModal" type="text/ng-template">
-  <contribution-form contribution="vm.contribution" on-success="vm.onEditContributionSuccess()" mode="edit" user="user">
-  </contribution-form>
+  <contribution-form contribution="vm.contribution" on-success="vm.onEditContributionSuccess()" mode="edit" user="user"></contribution-form>
 </script>
 
 <script id="contributionModerationForm" type="text/ng-template">

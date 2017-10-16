@@ -48,7 +48,7 @@
       $scope.feedbackBar = false;
       $scope.currentAdd = {
         suggestionsVisible: false,
-        context: 'AUTHORS'
+        context: 'THEMES'
       };
       $scope.toggleFeedbackBar = function (x) {
         $scope.feedbackBar = !$scope.feedbackBar;
@@ -69,7 +69,7 @@
       $scope.commentsSectionExpanded = true;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      
+
       if (pattern.test($stateParams.couuid) === true) {
         $scope.proposalID = $stateParams.couuid;
         $scope.campaignID = $stateParams.cuuid;
@@ -105,7 +105,9 @@
           $translate.use(locale);
         }
         // user is member of Assembly
-        $scope.userIsMember = true;
+        $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyID);
+        $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+        $scope.userIsAdmin = Memberships.userIsAdmin();
       }
       $scope.etherpadLocale = Etherpad.getLocale();
       $scope.loadProposal($scope);
@@ -190,7 +192,14 @@
           }
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+            $scope.extendedTextIsEtherpad = data.extendedTextPad.resourceType === 'PAD';
+            $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
+            if ($scope.extendedTextIsEtherpad) {
+              $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+            } else if ($scope.extendedTextIsGdoc) {
+              $scope.gdocUrl = data.extendedTextPad.url;
+              $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
+            }
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -215,6 +224,8 @@
                   scope.isVotingStage = true;
                 }
               }
+
+              scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
             }, function (error) {
               Notify.show('Error while trying to fetch campaign components', 'error');
             });
@@ -336,7 +347,12 @@
           }
         });
       } else if ($scope.userIsAuthor && checkEtherpad) {
-        loadEtherpadWriteUrl(proposal);
+        if ($scope.extendedTextIsEtherpad) {
+          loadEtherpadWriteUrl(proposal);
+        } else if ($scope.extendedTextIsGdoc) {
+          // TODO: load the write embed url for gdoc
+          $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
+        }
       }
     }
 
@@ -580,6 +596,8 @@
 
       if (this.currentAdd.context === 'AUTHORS') {
         this.addAuthorToProposal(item);
+      } else if (this.currentAdd.context === 'THEMES') {
+        this.addThemeToProposal(item);
       } else {
         this.addThemeToProposal(item);
       }
@@ -588,8 +606,10 @@
     function loadThemesOrAuthor() {
       if (this.currentAdd.context === 'AUTHORS') {
         this.loadAuthors(this.currentAdd.query);
+      } else if (this.currentAdd.context === 'THEMES') {
+        this.loadThemes(this.currentAdd.query, 'OFFICIAL_PRE_DEFINED');
       } else {
-        this.loadThemes(this.currentAdd.query);
+        this.loadThemes(this.currentAdd.query, 'EMERGENT');
       }
     }
 
@@ -597,9 +617,13 @@
      * Loads the available themes for the contribution.
      * @param {string} query
      */
-    function loadThemes(query) {
+    function loadThemes(query, type) {
       let vm = this;
-      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId);
+      let filters = {
+        query: query,
+        themeType: type
+      }
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         themes => {
           vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));

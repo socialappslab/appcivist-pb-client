@@ -57,7 +57,7 @@
       $scope.goToLogin = goToLogin;
       $rootScope.$on('$stateChangeSuccess', stateChangeHandler.bind($scope));
 
-      if ($scope.currentAssembly) {
+      if ($scope.userIsAuthenticated && $scope.currentAssembly) {
         var assemblyRols = Memberships.assemblyRols($scope.currentAssembly.assemblyId);
         if (assemblyRols) {
           $scope.isAssemblyCoordinator = Memberships.rolIn('assembly', $scope.currentAssembly.assemblyId, 'COORDINATOR');
@@ -141,6 +141,7 @@
       return rsp.then(
         assembly => {
           scope.anonymousAssembly = assembly;
+          localStorageService.set('anonymousAssembly',assembly);
           return assembly;
         }
       );
@@ -166,6 +167,7 @@
     }
 
     function stateChangeHandler(event) {
+      // Check state variables
       this.nav.isActive = false;
       this.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');
       this.isHomePage = $state.is('v2.homepage');
@@ -174,15 +176,31 @@
       this.userIsAuthenticated = loginService.userIsAuthenticated();
       this.userIsAuthenticated = this.userIsAuthenticated === null ? false : this.userIsAuthenticated;
 
+      // TODO: with the new menu, we no longer need to refresh user data, so review this to remove unrelevant parts
+      // Check variables related to the campaign
       if ($state.params && $state.params.cid) {
         $scope.currentCampaignId = parseInt($state.params.cid);
         var ongoing = localStorageService.get('ongoingCampaigns');
         var current = ongoing.filter(c => { return c.campaignId == $scope.currentCampaignId });
         $scope.currentCampaignUuid = current[0].uuid;
       }
-      var isCampaignDashboard = $state.is('v2.assembly.aid.campaign.cid');
 
-      if (isCampaignDashboard) {
+      // Check variables related to the current assembly
+      if (this.userIsAuthenticated) {
+        if (!this.currentAssembly) {
+          this.currentAssembly = localStorageService.get("currentAssembly");
+        }
+      } else {
+        if (!this.anonymousAssembly) {
+          this.currentAssemblyUuid = $state.params.auuid;
+          this.anonymousAssembly = localStorageService.get("anonymousAssembly");
+          if (!this.anonymousAssembly) {
+            fetchAnonymousAssembly(this);
+          }
+        }
+      }
+      // Load data for the campaign dashboard that is relevant to the header an footer
+      if (this.isCampaignDashboard) {
         loadUserData($scope);
       }
     }

@@ -1124,6 +1124,9 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
     embedUrl(id, revision, resourceUrl) {
       var url = etherpadServer + "p/" + id;
       if (/p\/r\./.test(resourceUrl)) {
+        if (/etherpad\.appcivist\.org/.test(resourceUrl)) {
+          resourceUrl = resourceUrl.replace("http://","https://");
+        }
         url = resourceUrl;
       }
       if (revision !== undefined) {

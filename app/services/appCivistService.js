@@ -561,8 +561,18 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
      */
     isMember: function (target, id) {
       return this.rolIn(target, id, 'MEMBER');
-    }
+    },
 
+    /**
+     * Check if current user has the general role ADMIN
+     * @returns {boolean}
+     */
+    userIsAdmin: function () {
+      let user = localStorageService.get("user");
+      let roles = user.roles;
+      let adminRole = roles.filter(r => r.name==="ADMIN");
+      return !adminRole || adminRole.length===0 ? false : true;
+    }
   };
 });
 
@@ -1111,8 +1121,11 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
   };
 
   return {
-    embedUrl(id, revision) {
+    embedUrl(id, revision, resourceUrl) {
       var url = etherpadServer + "p/" + id;
+      if (/p\/r\./.test(resourceUrl)) {
+        url = resourceUrl;
+      }
       if (revision !== undefined) {
         url += '/timeslider#' + revision;
       }
@@ -1127,8 +1140,11 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
       });
     },
 
-    getEtherpadReadOnlyUrl(readOnlyPadId, revision) {
+    getEtherpadReadOnlyUrl(readOnlyPadId, revision, resourceUrl) {
       var url = localStorageService.get("etherpadServer") + "p/" + readOnlyPadId;
+      if (/p\/r\./.test(resourceUrl)) {
+        url = resourceUrl;
+      }
       if (revision !== undefined) {
         url += 'timeslider#' + revision;
       }

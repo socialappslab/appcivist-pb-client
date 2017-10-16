@@ -10,9 +10,9 @@
    *
    * @example
    *
-   *  <contribution-contextual-items 
-   *      contribution="contribution" 
-   *      is-hover="cm.isHover" 
+   *  <contribution-contextual-items
+   *      contribution="contribution"
+   *      is-hover="cm.isHover"
    *      is-topic-group="isTopicGroup">
    *  </contribution-contextual-items>
    */
@@ -60,7 +60,6 @@
 
 
     this.$onInit = () => {
-
       if (!this.contribution) {
         $scope.$watch('vm.contribution', (newVal) => {
           if (newVal) {
@@ -72,6 +71,11 @@
       }
     };
 
+    $scope.$on('ContributionPage:CurrentComponentReady',
+      (evt, data) => {
+        $scope.vm.isProposalIdeaStage = data;
+      }
+    );
 
     function init() {
       this.vm = {};
@@ -83,22 +87,20 @@
 
       this.setContributionType();
 
-      if (!this.isIdea) {
-        var workingGroupAuthors = this.contribution.workingGroupAuthors;
-        var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
-        this.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
-        this.notAssigned = true;
+      var workingGroupAuthors = this.contribution.workingGroupAuthors;
+      var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
+      this.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
+      this.notAssigned = true;
 
-        if (this.group) {
-          this.notAssigned = false;
-        }
+      if (this.group) {
+        this.notAssigned = false;
+      }
 
-        if (!this.isAnonymous) {
-          this.groupId = workingGroupAuthorsLength ? this.contribution.workingGroupAuthors[0].groupId : 0;
-          this.assemblyId = localStorageService.get('currentAssembly').assemblyId;
-          this.campaignId = localStorageService.get('currentCampaign').campaignId;
-          this.setupMembershipInfo();
-        }
+      if (!this.isAnonymous) {
+        this.groupId = workingGroupAuthorsLength ? this.contribution.workingGroupAuthors[0].groupId : 0;
+        this.assemblyId = localStorageService.get('currentAssembly').assemblyId;
+        this.campaignId = localStorageService.get('currentCampaign').campaignId;
+        this.setupMembershipInfo();
       }
 
       // Read user contribution feedback

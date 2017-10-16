@@ -224,6 +224,8 @@
                   scope.isVotingStage = true;
                 }
               }
+
+              scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
             }, function (error) {
               Notify.show('Error while trying to fetch campaign components', 'error');
             });

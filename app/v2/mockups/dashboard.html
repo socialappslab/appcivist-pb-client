@@ -201,11 +201,11 @@
 
           <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
+            <!--<ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
               <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate}} ({{membersCommentCounter.value}})</a></li>
               <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate}} ({{publicCommentCounter.value}})</a></li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content">-->
               <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
                 <discussion-panel style="padding-left: 0px !important;" ng-if="userIsMember" space-id="spaceID"
                                   endpoint-id="campaignID"
@@ -220,7 +220,7 @@
                   endpoint-id="campaign.uuid" endpoint="campaign" public-board="true"
                                   is-anonymous="isAnonymous"></discussion-panel>
               </div>
-            </div>
+            <!--</div>-->
           </div>
         </section>
       </div>

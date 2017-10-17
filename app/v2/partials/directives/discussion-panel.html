@@ -1,20 +1,3 @@
-<section class="comments__section">
-  <!--<header class="panel-heading">-->
-    <!--&lt;!&ndash;<h2 class="heading&#45;&#45;header">{{ 'Conversations' | translate }}</h2>&ndash;&gt;-->
-    <!--&lt;!&ndash;<div class="heading&#45;&#45;small"><a href="" ng-click="startConversation()"><i class="fa fa-comments-o"></i>&nbsp;{{'Start a new conversation' | translate}}</a></div>&ndash;&gt;-->
-  <!--</header>-->
-  <div class="row comments-header">
-    <div class="col-xs-4 text-left">
-      <strong>Comments ({{discussions.length}})</strong>
-    </div>
-    <div class="col-xs-8 text-right">
-      View comments by: 
-      <select name="comment-types" ng-model="vm.commentType">
-        <option value="public">Public</option>
-        <option value="members">Members only</option>
-      </select>
-    </div>
-  </div>
 
   <div class="comments__reply col-*-12">
     
@@ -36,6 +19,9 @@
               <textarea id="discussion-field" style="height: auto;" ng-model="newDiscussion.text" rows="4" placeholder="{{'Write you comment here' | translate}}"
                 ng-disabled="!vm.recaptchaResponseOK && isAnonymous"></textarea>
             </div>
+          </div>
+          <div class="text-right">
+            <input class="button" type="submit" value="{{'Submit'| translate}}" style="margin-top: 50px; width: 200px">
           </div>
         </fieldset>
       </form>
@@ -85,7 +71,7 @@
                   <p class="heading--header" style="float: left;">{{formatDate(discussion.creation)}}</p>
                 </div>-->
                 <div class="col-xs-6 text-right">
-                  <contribution-feedback contribution="discussion" with-delete="true" with-flag="true"></contribution-feedback>
+                  <contribution-feedback contribution="comment" with-delete="true" with-flag="true"></contribution-feedback>
                 </div>
             </div>
             <div class="comment-text">
@@ -132,4 +118,4 @@
     </li>
     <p ng-if="!discussions || discussions.length === 0" class="card">{{'no.discussion.message' | translate}}</p>
   </div>
-</section>
+

@@ -68,7 +68,7 @@ discussion-panel {
 .comment-text{
   color: #11493b;
   font-size: 100%;
-  font-weight: 600;
+  padding-bottom: 1rem;
 }
 
 .reply-count{
@@ -119,8 +119,9 @@ discussion-panel {
         margin-top: -0.5rem;
         span {
           display: block;
-          font-size: 0.8rem;
-          margin-top: -0.2rem;
+          font-size: 0.7rem;
+          margin-top: 0.3rem;
+          font-weight: 400;
         }
       }
     }

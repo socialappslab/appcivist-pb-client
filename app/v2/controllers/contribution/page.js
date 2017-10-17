@@ -36,6 +36,7 @@
     $scope.loadBallotPaper = loadBallotPaper.bind($scope);
     $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
     $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
+    $scope.seeHistory = seeHistory.bind($scope);
 
     activate();
 
@@ -269,7 +270,6 @@
           $scope.ballotPaperNotFound = true;
       }
     }
-
 
     function afterLoadingBallotSuccess (data) {
       this.ballotPaperNotFound = false;
@@ -571,6 +571,10 @@
       }
     }
 
+    function seeHistory() {
+      console.log('Fired event: "ContributionPage:SeeHistory"');
+      $scope.$broadcast('ContributionPage:SeeHistory');
+    }
     /**
      * Sets the context of add button y page header.
      * @param {string} ctx AUTHORS | THEMES

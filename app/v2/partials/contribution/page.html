@@ -285,8 +285,8 @@
                 <i class="fa fa-file-text-o fa-lg"></i><span>{{'Documents'|translate}}</span>
               </a>
             </li>
-            <li class="overlay_button" ng-if="proposal.type == 'IDEA'">
-              <a data-toggle="modal" data-target="#history">
+            <li class="overlay_button">
+              <a ng-click="seeHistory()">
                 <i class="fa fa-history fa-lg"></i><span>{{'History'|translate}}</span>
               </a>
             </li>
@@ -316,7 +316,7 @@
             </li>
           </ul>
         </div>
-        
+
       </header>
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
@@ -388,7 +388,7 @@
             <strong>Comments ({{commentType == 'members' ? proposal.commentCount : proposal.forumCommentCount}})</strong>
           </div>
           <div class="col-xs-8 text-right">
-            View comments by: 
+            View comments by:
             <select name="comment-types" ng-model="commentType">
               <option value="public">Public</option>
               <option value="members">Members only</option>

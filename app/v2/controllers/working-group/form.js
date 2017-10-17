@@ -398,9 +398,9 @@
 
       // temporaryWGroup manage
       let temporaryWGroup = localStorageService.get('temporaryNewWGroup');
-      if ($stateParams.gid && ($state.is('v2.assembly.aid.campaign.workingGroup.gid.edit') ||
-          $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.description') ||
-          $state.is('v2.assembly.aid.campaign.workingGroup.gid.edit.configuration'))) {
+      if ($stateParams.gid && ($state.is('v2.assembly.aid.campaign.workingGroup.edit') ||
+          $state.is('v2.assembly.aid.campaign.workingGroup.edit.description') ||
+          $state.is('v2.assembly.aid.campaign.workingGroup.edit.configuration'))) {
         $scope.isEdit = true;
 
         if ((temporaryWGroup != null && temporaryWGroup.groupId != $stateParams.gid) || temporaryWGroup == null) {

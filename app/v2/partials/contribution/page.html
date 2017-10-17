@@ -273,52 +273,50 @@
           </li>
         </ul>
 
-        <div class="row voting_mechanism">
-          <div class="temperature_check">
-            <ul class="votes">
-              <li class="upvote">
-                <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">{{ 'Upvote' | translate }}</span></a>
+        <div class="overlay new_overlay contribution_toolbar" style="display: inline-flex">
+          <ul class="overlay_buttons">
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#ideas">
+                <i class="fa fa-lightbulb-o fa-lg"></i><span>{{'Contributing ideas'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button">
+              <a data-toggle="modal" data-target="#documents">
+                <i class="fa fa-file-text-o fa-lg"></i><span>{{'Documents'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'IDEA'">
+              <a data-toggle="modal" data-target="#history">
+                <i class="fa fa-history fa-lg"></i><span>{{'History'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#media">
+                <i class="fa fa-picture-o fa-lg"></i><span>{{'Media'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#feedback">
+                <i class="fa fa-star-half-o fa-lg"></i><span>{{'Feedback'|translate}}</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="votes">
+            <li class="downvote">
+                <a class="commentcount"><i class="fa fa-comment"></i> {{ isAnonymous ? proposal.forumCommentCount : totalComments }}</a>
               </li>
-              <li class="downvote">
-                <a class="thumbs-down" ng-click="updateFeedback('down')"><span class="screen-reader-only">{{ 'Downvote' | translate }}</span></a>
-              </li>
-              <li class="commentcount" ng-mouseenter="contribution.commentCount = true" ng-mouseleave="contribution.commentCount = false">
-                <a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>
-                <div class="popover" style="top: -50px;" ng-class="{active: contribution.commentCount}">
-                  <div class="content" ng-if="!isAnonymous">{{ totalComments }}</div>
-                  <div class="content" ng-if="isAnonymous">{{ proposal.forumCommentCount }}</div>
-                </div>
-              </li>
-            </ul>
-            <div ng-if="proposal.informalScore" class="informal_score" ng-class="{positive: proposal.informalScore > 0, negative: proposal.informalScore < 0}">
-              <em>{{proposal.informalScore}}</em>
-            </div>
-
-            <div class="informal_score stats2" style="cursor: pointer;">
-              <span ng-click="toggleFeedbackBar()" ng-if="!feedbackBar">{{'Show Results' | translate }}</span>
-              <span ng-click="toggleFeedbackBar()" ng-if="feedbackBar">{{'Hide Results' | translate }}</span>
-            </div>
-
-            <div ng-if="feedbackBar" class="informal_score">
-              <div class="informal_score positive stats2">
-                {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em>              {{ 'Comments' | translate}} <em>{{totalComments}}</em>
-              </div>
-              <div class="informal_score stats2">
-                <span>{{ 'Needs' | translate }}</span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"
-                />
-                <span>{{ 'Feasibility' | translate }} </span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"
-                />
-                <span>{{ 'Benefit' | translate }}</span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"
-                />
-              </div>
-            </div>
-
-          </div>
-
+            <li class="upvote" ng-click="updateFeedback('up')">
+                {{upSum}} <a class="thumbs-up"><i class="fa fa-thumbs-up"></i></a>
+            </li>
+            <li class="downvote" ng-click="updateFeedback('down')">
+                {{downSum}} <a class="thumbs-down"><i class="fa fa-thumbs-down"></i></a>
+            </li>
+            <li class="score" ng-if="proposal.informalScore">
+                {{proposal.informalScore}} <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
+            </li>
+          </ul>
         </div>
+        
       </header>
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
@@ -473,6 +471,140 @@
       </div>
     </script>
   </main>
+
+  <!-- Documents Modal -->
+  <div class="modal fade dashboardModal" id="documents" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
+          <p>{{ 'Documents' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div class="noContent" ng-if="!documents || documents.length === 0">
+            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+          </div>
+          <ul class="workingGroupList" ng-if="documents && documents.length > 0">
+            <li ng-repeat="resource in documents">
+              <a class="workingGroupLink" target="_blank"
+                  ng-href="{{resource.url}}"><span>{{resource.name}}</span>
+                <!--<span class="number"><i class="fa fa-users"></i>32</span>-->
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Media Modal -->
+  <div class="modal fade dashboardModal" id="media" tabindex="-1" role="dialog" aria-labelledby="mediaLabel" ng-if="proposal.type == 'PROPOSAL'">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="mediaLabel">{{proposal.title}}</h3>
+          <p>{{ 'Media' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div class="noContent" ng-if="!media || media.length === 0">
+            <h4>{{ 'There are no multimedia resources in this proposal' | translate }}</h4>
+          </div>
+
+          <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+            <div class="carousel-inner" role="listbox">
+              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in media track by $index">
+                <img ng-if="resource.resourceType === 'PICTURE'" ng-src="{{resource.url}}" alt="{{resource.name}}">
+                <!-- TODO: sanitize video URLs somewhere else -->
+                <iframe ng-if="resource.resourceType === 'VIDEO'" width="75%" height="315"
+                        ng-src="{{resource.url.replace('watch?v=', 'embed/');}}"
+                        frameborder="0" allowfullscreen style="display: block; margin: auto;"></iframe>
+                <div class="noContent">
+                  <h4 ng-if="resource.title">{{resource.title}}</h4>
+                  <h5 ng-if="resource.description"
+                      ng-bind-html="resource.description"></h5>
+                </div>
+
+              </div>
+            </div>
+            <!-- Controls -->
+            <a class="left carousel-control" data-target="#media-carousel" role="button" data-slide="prev" ng-if="media.length > 0">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              <span class="sr-only">{{'Previous'|translate}}</span>
+            </a>
+            <a class="right carousel-control" data-target="#media-carousel" role="button" data-slide="next" ng-if="media.length > 0">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              <span class="sr-only">{{'Next'|translate}}</span>
+            </a>
+            <ol class="carousel-indicators" ng-if="media.length > 0">
+              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-repeat="resource in media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
+            </ol>
+          </div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Modal -->
+  <div class="modal fade dashboardModal" id="feedback" tabindex="-1" role="dialog" aria-labelledby="feedbackLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="feedbackLabel">{{proposal.title}}</h3>
+          <p>{{ 'Feedback' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <div class="informal_score">
+            <div class="informal_score stats2">
+              <div style="margin-bottom: 1rem;">
+                <div class="col-xs-6 text-right">
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Needs' | translate }}</span>
+                </div>
+                <div class="col-xs-6">
+                  <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"></span>
+                </div>
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <div class="col-xs-6 text-right">
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Feasibility' | translate }} </span>
+                </div>
+                <div class="col-xs-6">
+                  <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"></span>
+                </div>
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <div class="col-xs-6 text-right">
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Benefit' | translate }}</span>
+                </div>
+                <div class="col-xs-6">
+                  <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     $(document).ready(function() {

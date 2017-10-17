@@ -205,6 +205,16 @@
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUID;
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
+          $scope.cover = $scope.campaign.cover ? $scope.campaign.cover.url : null;
+          $scope.coverStyle = $scope.cover ?
+            {
+              'background-image': 'url(' + $scope.cover + ')',
+              'background-position': 'center center',
+            }
+            : {
+              'background-image': 'url("../images/vallejo_header.jpg")',
+              'background-position': 'center center',
+            };
 
           if ($scope.isTopicGroup) {
             // if group is topic, then is OPEN to every assembly member.

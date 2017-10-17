@@ -69,6 +69,7 @@
 
         scope.$watch('filters.searchText', searchTextObserver.bind(scope));
         scope.$on('filters:updateFilters', scope.updateFilters);
+        console.log('Filters:Link => DECLARED => filters:updateFilters');
       }
     };
 

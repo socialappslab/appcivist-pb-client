@@ -23,11 +23,17 @@
     });
 
     TopbarLangpickerCtrl.$inject = [
-      '$scope', '$translate', 'localStorageService', 'LocaleService', '$compile'
+      '$scope', '$translate', 'localStorageService', 'LocaleService', '$compile', '$rootScope'
   ];
 
-  function TopbarLangpickerCtrl($scope, $translate, localStorageService, LocaleService, $compile) {
+  function TopbarLangpickerCtrl($scope, $translate, localStorageService, LocaleService, $compile, $rootScope) {
     let user = localStorageService.get('user');
+    $rootScope.$on("$translateChangeEnd",
+      (evt, current, previous)=> {
+        console.log("Language changed to: "+current.language+ " from "+previous);
+        let currentLanguage = current.language;
+        $scope.loadLangPickerFromLang(currentLanguage);      }
+    );
     $scope.changeLanguage = function(key) {
       $translate.use(key);
       if (user) {
@@ -40,8 +46,11 @@
       $scope.loadLangPicker();
     }
     $scope.loadLangPicker = function() {
-      let currentLanguage, availableLanguages, currentPosition, availableLanguagesContent;
-      currentLanguage = (user && user.language) ? user.language : LocaleService.getLocale();
+      let currentLanguage = (user && user.language) ? user.language : LocaleService.getLocale();
+      $scope.loadLangPickerFromLang(currentLanguage);
+    }
+    $scope.loadLangPickerFromLang = function(currentLanguage) {
+      let availableLanguages, currentPosition, availableLanguagesContent;
       availableLanguages = $translate.getAvailableLanguageKeys().slice();
       currentPosition = availableLanguages.indexOf(currentLanguage);
       availableLanguages.splice(currentPosition, 1);

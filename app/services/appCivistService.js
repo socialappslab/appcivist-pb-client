@@ -439,6 +439,9 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
     showAssemblyLogo: function (scope) {
       var showAssemblyLogo = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.show-assembly-logo'] : false;
       return showAssemblyLogo;
+    },
+    getPublicBriefByCampaignUUID: function(campaignUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/brief', { uuid: campaignUUID });
     }
   };
 
@@ -558,8 +561,18 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
      */
     isMember: function (target, id) {
       return this.rolIn(target, id, 'MEMBER');
-    }
+    },
 
+    /**
+     * Check if current user has the general role ADMIN
+     * @returns {boolean}
+     */
+    userIsAdmin: function () {
+      let user = localStorageService.get("user");
+      let roles = user.roles;
+      let adminRole = roles.filter(r => r.name==="ADMIN");
+      return !adminRole || adminRole.length===0 ? false : true;
+    }
   };
 });
 
@@ -1108,8 +1121,14 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
   };
 
   return {
-    embedUrl(id, revision) {
+    embedUrl(id, revision, resourceUrl) {
       var url = etherpadServer + "p/" + id;
+      if (/p\/r\./.test(resourceUrl)) {
+        if (/etherpad\.appcivist\.org/.test(resourceUrl)) {
+          resourceUrl = resourceUrl.replace("http://","https://");
+        }
+        url = resourceUrl;
+      }
       if (revision !== undefined) {
         url += '/timeslider#' + revision;
       }
@@ -1124,8 +1143,11 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
       });
     },
 
-    getEtherpadReadOnlyUrl(readOnlyPadId, revision) {
+    getEtherpadReadOnlyUrl(readOnlyPadId, revision, resourceUrl) {
       var url = localStorageService.get("etherpadServer") + "p/" + readOnlyPadId;
+      if (/p\/r\./.test(resourceUrl)) {
+        url = resourceUrl;
+      }
       if (revision !== undefined) {
         url += 'timeslider#' + revision;
       }
@@ -1266,6 +1288,16 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
         if (filters.status)
           params.status = filters.status;
+
+        if (type === 'myProposals') {
+          type='proposal';
+          params.by_author=filters.by_author;
+        } else if (type === 'myIdeas') {
+          type='idea';
+          params.by_author=filters.by_author;
+        } else if (type==='idea' || type==='proposal') {
+          delete params.by_author;
+        }
         return this.getContributions(target, type, isAnonymous, params);
       },
 

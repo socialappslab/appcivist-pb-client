@@ -1,11 +1,14 @@
 <!-- PROPOSAL CARD -->
 <div ng-if="isProposal">
   <div class="card__wrapper">
-    <header class="card__header" style="height: 192px;" ng-mouseenter="cm.isHover = false" ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
+    <header class="card__header {{coverPhotoStyle ? 'card__header__with_background':''}}"
+            style="height: 192px;" ng-mouseenter="cm.isHover = false"
+            ng-style="coverPhotoStyle"
+            ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
       <div class="card__heading_bookmark" ng-if="contribution.pinned">
         <i class="fa fa-bookmark"></i>
       </div>
-      <p class="heading--category">
+      <p class="heading--category row">
         <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
           {{theme.title}}
           <span ng-if="($index!=(contribution.themes.length-1))&&($index===0 || $index===1)">, </span>
@@ -110,12 +113,21 @@
 <div class="card__idea" ng-if="isIdea">
   <div class="card__wrapper">
     <a ng-if="contribution.stats.flags && isCoordinator" class="github-fork-ribbon rigth-top" style="z-index: 1;" title="{{'Moderation pending' | translate}}"></a>
-    <header class="card__header {{contribution.cover ? 'card__header__with_background' : ''}}" ng-style="coverPhotoStyle" ng-mouseenter="cm.isHover = false">
+    <header class="card__header {{contribution.cover ? 'card__header__with_background' : ''}}"
+            ng-style="coverPhotoStyle" ng-mouseenter="cm.isHover = false">
 
       <div class="col-lg-9">
         <h3 class="{{contribution.cover ? 'white-text' : ''}}">
-          <a ng-click="myObject.seeDetail()">{{contribution.title}}
-        </a>
+          <!--<a ng-click="myObject.seeDetail()">{{contribution.title}}-->
+          <a ng-if="isAnonymous"
+              ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/contribution/{{contribution.uuid}}"
+              style="display: block; width: 280px;word-wrap: break-word;">
+             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+           </a>
+           <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/contribution/{{contribution.contributionId}}"
+             style="display: block; width: 280px; word-wrap: break-word;">
+             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+           </a>
         </h3>
         <div class="heading--category">
           <span ng-repeat="author in contribution.nonMemberAuthors | limitTo:3 track by $index" class="{{contribution.cover ? 'white-text' : ''}}">
@@ -183,8 +195,8 @@
     </div>
     <contribution-card-themes themes="mergedThemes"></contribution-card-themes>
     <!-- Control types: distributed, plurality, range, ranked -->
-    <div class="card__footer">
-      {{contribution.workingGroupAuthors[0].name}}
+    <div class="card__footer {{footerBackgroundStyle ? 'card__header__with_background':''}}" ng-style="footerBackgroundStyle">
+      <div class="row no-margin">{{contribution.workingGroupAuthors[0].name}}</div>
     </div>
     <contribution-card-voting-control
       type="distributed" ng-if="showVotingButtons && ballotPaper"

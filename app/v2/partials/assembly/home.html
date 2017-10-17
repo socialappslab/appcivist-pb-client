@@ -1,14 +1,14 @@
 <div class="assembly-home">
   <nav class="navbar navbar-fixed-top" role="navigation">
     <div class="navbar-header">
-      <div class="navbar-brand" ng-if="userIsAuthenticated" style="padding-top:5%;">
+      <div class="navbar-brand" ng-if="userIsAuthenticated">
         <a href="/#/">
           <img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}" />
         </a>
         <strong class="logotext">AppCivist</strong>
       </div>
 
-      <div class="navbar-brand" ng-if="!userIsAuthenticated" style="padding-top:5%;">
+      <div class="navbar-brand" ng-if="!userIsAuthenticated">
         <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"
           /></a>
         <strong style="vertical-align: super;">AppCivist</strong>
@@ -31,7 +31,7 @@
         <p ng-if="assembly.location">
           <i class="fa fa-lg fa-map-marker"></i> {{assembly.location.placeName}}
         </p>
-        <a class="btn btn-default participate">Participate</a>
+        <a class="btn btn-default participate">{{'Participate' | translate}}</a>
       </div>
     </section>
 
@@ -192,29 +192,11 @@
         </uib-tabset>
       </div>
     </section>
-
-
-
   </div>
-
-
   <footer>
     <div class="logos col-lg-offset-2 col-lg-8">
       <div class="row text">
         <copyright></copyright>
-      </div>
-
-      <div class="row">
-        <img src="/assets/images/logo-social-app-labs.png">
-        <img src="/assets/images/logo-berkeley.png">
-        <img src="/assets/images/logo-inria.png">
-        <img src="/assets/images/logo-eit-digital.png">
-      </div>
-      <div class="row">
-        <img src="/assets/images/logo-citris.png">
-        <img src="/assets/images/logo-tu-b.png">
-        <img src="/assets/images/logo-mission-publique.png">
-        <img src="/assets/images/logo-nexus.png">
       </div>
     </div>
   </footer>

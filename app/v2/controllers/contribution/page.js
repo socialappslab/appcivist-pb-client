@@ -3,17 +3,17 @@
 
   angular
     .module('appCivistApp')
-    .controller('v2.ProposalPageCtrl', ProposalPageCtrl);
+    .controller('v2.ContributionPageCtrl', ContributionPageCtrl);
 
 
 
-  ProposalPageCtrl.$inject = [
+  ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting'
   ];
 
-  function ProposalPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
+  function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting) {
 
@@ -48,7 +48,7 @@
       $scope.feedbackBar = false;
       $scope.currentAdd = {
         suggestionsVisible: false,
-        context: 'AUTHORS'
+        context: 'THEMES'
       };
       $scope.toggleFeedbackBar = function (x) {
         $scope.feedbackBar = !$scope.feedbackBar;
@@ -70,7 +70,14 @@
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-      if (pattern.test($stateParams.puuid) === true) {
+      if (pattern.test($stateParams.couuid) === true) {
+        $scope.proposalID = $stateParams.couuid;
+        $scope.campaignID = $stateParams.cuuid;
+        $scope.assemblyID = $stateParams.auuid;
+        $scope.groupID = $stateParams.guuid;
+        $scope.isAnonymous = true;
+        $scope.loadFeedback($scope.proposalID);
+      } else if (pattern.test($stateParams.puuid) === true) {
         $scope.proposalID = $stateParams.puuid;
         $scope.campaignID = $stateParams.cuuid;
         $scope.assemblyID = $stateParams.auuid;
@@ -80,7 +87,13 @@
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
-        $scope.proposalID = ($stateParams.pid) ? parseInt($stateParams.pid) : 0;
+        if ($stateParams.coid) {
+          $scope.proposalID = parseInt($stateParams.coid);
+        } else if ($stateParams.pid) {
+          $scope.proposalID = parseInt($stateParams.pid);
+        } else {
+          $scope.proposalID = 0;
+        }
         $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
 
@@ -92,7 +105,9 @@
           $translate.use(locale);
         }
         // user is member of Assembly
-        $scope.userIsMember = true;
+        $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyID);
+        $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+        $scope.userIsAdmin = Memberships.userIsAdmin();
       }
       $scope.etherpadLocale = Etherpad.getLocale();
       $scope.loadProposal($scope);
@@ -160,6 +175,7 @@
           var workingGroupAuthors = data.workingGroupAuthors;
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
+          scope.contributionType = $scope.proposal.type;
           $scope.wg = $scope.group;
 
           if ($scope.group) {
@@ -176,7 +192,14 @@
           }
 
           if (data.extendedTextPad) {
-            $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+            $scope.extendedTextIsEtherpad = data.extendedTextPad.resourceType === 'PAD';
+            $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
+            if ($scope.extendedTextIsEtherpad) {
+              $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+            } else if ($scope.extendedTextIsGdoc) {
+              $scope.gdocUrl = data.extendedTextPad.url;
+              $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
+            }
           } else {
             console.warn('Proposal with no PAD associated');
           }
@@ -201,6 +224,8 @@
                   scope.isVotingStage = true;
                 }
               }
+
+              scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
             }, function (error) {
               Notify.show('Error while trying to fetch campaign components', 'error');
             });
@@ -211,9 +236,10 @@
           loadRelatedContributions();
           loadRelatedStats();
           loadCampaign();
+          loadResources();
         },
         function (error) {
-          Notify.show('Error occured when trying to load proposal: ' + JSON.stringify(error), 'error');
+          Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
         }
       );
     }
@@ -321,7 +347,12 @@
           }
         });
       } else if ($scope.userIsAuthor && checkEtherpad) {
-        loadEtherpadWriteUrl(proposal);
+        if ($scope.extendedTextIsEtherpad) {
+          loadEtherpadWriteUrl(proposal);
+        } else if ($scope.extendedTextIsGdoc) {
+          // TODO: load the write embed url for gdoc
+          $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
+        }
       }
     }
 
@@ -482,6 +513,32 @@
       }
     }
 
+    function loadResources() {
+      var res;
+      if ($scope.isAnonymous) {
+        res = Space.resourcesByUUID($scope.proposal.resourceSpaceUUID).query();
+      } else {
+        res = Space.resources($scope.proposal.resourceSpaceId).query();
+      }
+      res.$promise.then(function (data) {
+        $scope.resources = data;
+        loadPictureResources()
+      }, function(error) {
+        Notify.show('Error while trying to fetch resources', 'error');
+      });
+    }
+
+    function loadPictureResources() {
+      $scope.resourcePictures = [];
+      if ($scope.resources.length > 0) {
+        for (let i in $scope.resources) {
+          if ($scope.resources[i].resourceType == 'PICTURE') {
+            $scope.resourcePictures.push($scope.resources[i]);
+          }
+        }
+      }
+    }
+
     function loadCampaignConfig() {
       if ($scope.campaign && $scope.campaign.rsID) {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
@@ -534,6 +591,8 @@
 
       if (this.currentAdd.context === 'AUTHORS') {
         this.addAuthorToProposal(item);
+      } else if (this.currentAdd.context === 'THEMES') {
+        this.addThemeToProposal(item);
       } else {
         this.addThemeToProposal(item);
       }
@@ -542,8 +601,10 @@
     function loadThemesOrAuthor() {
       if (this.currentAdd.context === 'AUTHORS') {
         this.loadAuthors(this.currentAdd.query);
+      } else if (this.currentAdd.context === 'THEMES') {
+        this.loadThemes(this.currentAdd.query, 'OFFICIAL_PRE_DEFINED');
       } else {
-        this.loadThemes(this.currentAdd.query);
+        this.loadThemes(this.currentAdd.query, 'EMERGENT');
       }
     }
 
@@ -551,17 +612,30 @@
      * Loads the available themes for the contribution.
      * @param {string} query
      */
-    function loadThemes(query) {
+    function loadThemes(query, type) {
       let vm = this;
-      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId);
+      let filters = {
+        query: query,
+        themeType: type
+      }
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         themes => {
-          vm.currentAdd.items = $filter('filter')(themes, { title: query });
+          vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));
         },
         error => {
           Notify.show('Error while trying to fetch themes from server', 'error');
         }
       );
+      console.log(rsp);
+    }
+
+    function queryThemes(query) {
+      return function (value, index, array) {
+        var lowerTitle = value.title.toLowerCase();
+        var lowerQuery = query.toLowerCase();
+        return lowerTitle.indexOf(lowerQuery) >= 0 && (value.type == 'EMERGENT' || value.type == 'OFFICIAL_PRE_DEFINED');
+      }
     }
 
     /**

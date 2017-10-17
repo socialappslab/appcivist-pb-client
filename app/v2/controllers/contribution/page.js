@@ -524,6 +524,7 @@
         $scope.resources = data;
         loadPictureResources();
         loadDocuments();
+        loadMedia();
       }, function(error) {
         Notify.show('Error while trying to fetch resources', 'error');
       });
@@ -542,6 +543,10 @@
 
     function loadDocuments() {
       $scope.documents = $scope.resources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
+    }
+
+    function loadMedia() {
+      $scope.media = $scope.resources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO');
     }
 
     function loadCampaignConfig() {

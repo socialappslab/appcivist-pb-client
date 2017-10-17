@@ -45,8 +45,11 @@ label {
 <main class="appmain">
   <article class="campaign">
     <header class="page__header">
-      <h1 ng-if="!isEdit" class="heading--title">{{'Create Assembly' | translate}}</h1>
-      <h1 ng-if="isEdit" class="heading--title">{{'Update Assembly' | translate}}</h1>
+      <div class="row">
+        <breadcrumb label="campaign.title"></breadcrumb>
+      </div>
+      <h1 ng-if="!isEdit" class="heading--title row">{{'Create Assembly' | translate}}</h1>
+      <h1 ng-if="isEdit" class="heading--title row">{{'Update Assembly' | translate}}</h1>
     </header>
     <section>
       <wizard>

@@ -122,11 +122,6 @@
                 <i class="fa fa-file-text-o fa-lg"></i><span>{{'Attachments'|translate}}</span>
               </a>
             </li>
-            <li class="overlay_button">
-              <a ng-click="seeHistory()">
-                <i class="fa fa-history fa-lg"></i><span>{{'History'|translate}}</span>
-              </a>
-            </li>
             <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
               <a data-toggle="modal" data-target="#media">
                 <i class="fa fa-picture-o fa-lg"></i><span>{{'Media'|translate}}</span>
@@ -135,6 +130,11 @@
             <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
               <a data-toggle="modal" data-target="#feedback">
                 <i class="fa fa-star-half-o fa-lg"></i><span>{{'Feedback'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button">
+              <a ng-click="seeHistory()">
+                <i class="fa fa-history fa-lg"></i><span>{{'History'|translate}}</span>
               </a>
             </li>
           </ul>
@@ -316,6 +316,45 @@
       <!--</div>-->
     <!--</script>-->
   </main>
+
+
+  <!-- Ideas Modal -->
+  <div class="modal fade dashboardModal" id="ideas" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
+          <p>{{ 'Contributing ideas' | translate }}</p>
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
+        </div>
+        <div class="modal-body">
+          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
+          <span class="attachment-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
+
+          <div class="noContent" ng-if="!resources.relatedContributions || resources.relatedContributions.length === 0">
+            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+          </div>
+          <ul class="workingGroupList" ng-if="resources.relatedContributions && resources.relatedContributions.length > 0">
+            <li ng-repeat="contribution in resources.relatedContributions track by $index">
+              <a class="workingGroupLink" target="_blank"
+                 ng-href="">
+                <span>{{contribution.title}}</span>
+              </a>
+              <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Documents Modal -->
   <div class="modal fade dashboardModal" id="documents" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">

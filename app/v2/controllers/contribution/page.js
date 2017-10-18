@@ -446,7 +446,7 @@
             }
             related.push(r);
           });
-          $scope.relatedContributions = related;
+          $scope.resources.relatedContributions = related;
         },
         function (error) {
           Notify.show('Error loading contributions from server', 'error');

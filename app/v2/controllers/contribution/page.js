@@ -10,12 +10,12 @@
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
-    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -38,6 +38,7 @@
     $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
     $scope.seeHistory = seeHistory.bind($scope);
     $scope.loadUserFeedback = loadUserFeedback.bind($scope);
+    $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
 
     activate();
 
@@ -70,8 +71,19 @@
       $scope.ideasSectionExpanded = false;
       $scope.commentsSectionExpanded = true;
       $scope.commentType = 'public';
+      $scope.openAddAttachment = false;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      $scope.startSpinner = startSpinner.bind($scope);
+      $scope.stopSpinner = stopSpinner.bind($scope);
+      $scope.spinnerOptions = {
+        radius:10,
+        width:4,
+        length: 10,
+        top: '75%',
+        left: '50%',
+        zIndex: 1
+      };
 
       if (pattern.test($stateParams.couuid) === true) {
         $scope.proposalID = $stateParams.couuid;
@@ -143,6 +155,19 @@
       });
     }
 
+    function toggleOpenAddAttachment () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+    }
+
+    function startSpinner () {
+      this.spinnerActive = true;
+      usSpinnerService.spin('contributions-page');
+    }
+
+    function stopSpinner () {
+      usSpinnerService.stop('contributions-page');
+      this.spinnerActive = false;
+    }
     // Feedback update
     function updateFeedback(value) {
       //console.log(value);
@@ -454,6 +479,7 @@
      */
     function submitAttachment() {
       var vm = this;
+      this.startSpinner();
       var fd = new FormData();
       fd.append('file', this.newAttachment.file);
       $http.post(FileUploader.uploadEndpoint(), fd, {
@@ -462,6 +488,7 @@
         },
         transformRequest: angular.identity,
       }).then(function (response) {
+
         vm.createAttachmentResource(response.data.url);
       }, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
@@ -475,18 +502,33 @@
      */
     function createAttachmentResource(url) {
       var vm = this;
-      var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
+
+      var isPicture = (/\.(gif|jpg|jpeg|tiff|png)$/i).test(this.newAttachment.name);
+      var rType = isPicture ? "PICTURE" : "FILE";
+
+      var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name, resourceType: rType});
       var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
       rsp.then(function (response) {
 
-        if (!vm.proposal.attachments) {
-          vm.proposal.attachments = [];
+        var type = "Attachments";
+        if (!isPicture) {
+          if (!vm.documents)
+            vm.documents = [];
+          vm.documents.push(response);
+          vm.openAddAttachment = false;
+        } else {
+          if (!vm.media)
+            vm.media = [];
+          vm.media.push(response);
+          vm.openAddAttachment = false;
+          type = "MEDIA";
         }
-        vm.proposal.attachments.push(response);
-        vm.closeModal('addAttachmentForm');
-        Notify.show('Attachment saved!', 'success');
+
+        Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
+        vm.stopSpinner();
       }, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
+        vm.stopSpinner();
       });
     }
 

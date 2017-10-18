@@ -35,11 +35,13 @@
     </li>
   </ul>
   <ul class="pull-right votes" ng-if="isAnonymous" style="margin-right: 0.1em;">
-    <li class="upvote">
-      {{contribution.stats.ups}}<i class="fa fa-thumbs-up"></i>
+    <li class="downvote">
+      {{contribution.stats.ups}}
+      <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
     </li>
     <li class="downvote">
-      {{contribution.stats.downs}}<i class="fa fa-thumbs-down"></i>
+      {{contribution.stats.downs}}
+      <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
     </li>
     <li class="downvote" ng-if="contribution.informalScore != null && contribution.informalScore != undefined">
       {{contribution.informalScore}}<i class="fa" ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>

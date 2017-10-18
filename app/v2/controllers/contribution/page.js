@@ -37,6 +37,7 @@
     $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
     $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
     $scope.seeHistory = seeHistory.bind($scope);
+    $scope.loadUserFeedback = loadUserFeedback.bind($scope);
 
     activate();
 
@@ -119,7 +120,8 @@
         scope.showActionMenu = !scope.showActionMenu;
       };
       // Read user contribution feedback
-      $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
+      $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
+//      $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.cm = {
@@ -156,11 +158,22 @@
         $scope.userFeedback.flag = true;
       }
 
+      // Delete the id of the user feedback if there is one
+      delete $scope.userFeedback.id;
+
       var feedback = Contributions.userFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
         function (newStats) {
           $scope.proposal.stats = newStats;
           $scope.proposal.informalScore = Contributions.getInformalScore($scope.proposal);
+          $scope.upSum = $scope.proposal.stats.ups;
+          $scope.downSum = $scope.proposal.stats.downs;
+          $scope.flagSum = $scope.proposal.stats.flags;
+          // average of need, feasibility, benefict
+          $scope.needAvg = $scope.proposal.stats.averageNeed;
+          $scope.feasibilityAvg = $scope.proposal.stats.averageFeasibility;
+          $scope.benefictAvg = $scope.proposal.stats.averageBenefit;
+          $scope.totalComments = $scope.proposal.commentCount + contrib.forumCommentCount;
         },
         function (error) {
           Notify.show('Error when updating user feedbac', 'error');
@@ -783,6 +796,14 @@
       let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
       rsp.then(
         feedbacks => this.feedbacks = feedbacks,
+        error => Notify.show('Error while trying to fetch contribution feedback', 'error')
+      );
+    }
+
+    function loadUserFeedback(aid, cid, coid) {
+      let rsp = Contributions.authUserFeedback(aid,cid,coid).get().$promise;
+      rsp.then(
+        data => this.userFeedback = data,
         error => Notify.show('Error while trying to fetch contribution feedback', 'error')
       );
     }

@@ -282,7 +282,7 @@
             </li>
             <li class="overlay_button">
               <a data-toggle="modal" data-target="#documents">
-                <i class="fa fa-file-text-o fa-lg"></i><span>{{'Documents'|translate}}</span>
+                <i class="fa fa-file-text-o fa-lg"></i><span>{{'Attachments'|translate}}</span>
               </a>
             </li>
             <li class="overlay_button">
@@ -306,13 +306,20 @@
                 <a class="commentcount"><i class="fa fa-comment"></i> {{ isAnonymous ? proposal.forumCommentCount : totalComments }}</a>
               </li>
             <li class="upvote" ng-click="updateFeedback('up')">
-                {{upSum}} <a class="thumbs-up"><i class="fa fa-thumbs-up"></i></a>
+              {{upSum}}
+              <a class="thumbs-up">
+                <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
+              </a>
             </li>
             <li class="downvote" ng-click="updateFeedback('down')">
-                {{downSum}} <a class="thumbs-down"><i class="fa fa-thumbs-down"></i></a>
+                {{downSum}}
+              <a class="thumbs-down">
+                <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
+              </a>
             </li>
             <li class="score" ng-if="proposal.informalScore">
-                {{proposal.informalScore}} <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
+                {{proposal.informalScore}}
+              <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
             </li>
           </ul>
         </div>
@@ -388,10 +395,10 @@
             <strong>Comments ({{commentType == 'members' ? proposal.commentCount : proposal.forumCommentCount}})</strong>
           </div>
           <div class="col-xs-8 text-right">
-            View comments by:
+            {{'View comments by'|translate}}:
             <select name="comment-types" ng-model="commentType">
-              <option value="public">Public</option>
-              <option value="members">Members only</option>
+              <option value="public">{{'Public'|translate}}</option>
+              <option value="members">{{'Members only'|translate}}</option>
             </select>
           </div>
         </div>
@@ -479,7 +486,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
-          <p>{{ 'Documents' | translate }}</p>
+          <p>{{ 'Attachments' | translate }}</p>
         </div>
         <div class="modal-body">
           <!--

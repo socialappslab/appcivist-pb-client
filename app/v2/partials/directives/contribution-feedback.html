@@ -61,7 +61,7 @@
       <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
       <span class="screen-reader-only">{{ 'Downvote' | translate }}</span>
     </li>
-    <li class="downvote" ng-if="contribution.informalScore != null && contribution.informalScore != undefined">
+    <li class="downvote">
       {{contribution.informalScore}}
       <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
          ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>

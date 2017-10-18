@@ -804,7 +804,7 @@
       let rsp = Contributions.authUserFeedback(aid,cid,coid).get().$promise;
       rsp.then(
         data => this.userFeedback = data,
-        error => Notify.show('Error while trying to fetch contribution feedback', 'error')
+        error => this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
       );
     }
   }

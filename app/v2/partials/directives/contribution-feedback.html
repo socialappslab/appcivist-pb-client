@@ -7,21 +7,27 @@
 </style>
 <div class="temperature_check" ng-if="isCardView">
   <ul class="pull-right votes" ng-if="!isAnonymous" style="margin-right: 0.1em;">
-    <li class="upvote" ng-click="updateFeedback('up')" uib-tooltip="{{'Upvote this contribution' | translate}}">
-      {{contribution.stats.ups}}<i class="fa fa-thumbs-up"></i>
+    <li class="upvote" ng-click="updateFeedback('up')">
+      {{contribution.stats.ups}}
+      <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"
+         uib-tooltip="{{'Upvote this contribution' | translate}}"></i>
     </li>
     <li class="downvote" ng-click="updateFeedback('down')">
-      {{contribution.stats.downs}}<i class="fa fa-thumbs-down" uib-tooltip="{{'Downvote this contribution' | translate}}"></i>
+      {{contribution.stats.downs}}
+      <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"
+         uib-tooltip="{{'Downvote this contribution' | translate}}"></i>
     </li>
     <li class="downvote" ng-if="contribution.informalScore != null && contribution.informalScore != undefined">
       {{contribution.informalScore}}
-      <i class="fa" uib-tooltip="{{'Informal score' | translate}}" ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
+      <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
+         ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
     </li>
     <li class="downvote">
       {{contribution.totalComments}}<i class="fa fa-comments-o" uib-tooltip="{{'Total comments' | translate}}"></i>
     </li>
     <li class="downvote" ng-click="showModerationForm('flag')">
-      <i class="fa fa-flag" uib-tooltip="{{'Flag this contribution' | translate}}"></i>
+      <i class="fa" ng-class="{'fa-o-flag': !userFeedback.flag, 'fa-flag': userFeedback.flag}"
+         uib-tooltip="{{'Flag this contribution' | translate}}"></i>
     </li>
     <li class="downvote" ng-if="isAssemblyCoordinator" ng-click="$parent.showModerationForm('delete')">
       <i class="fa fa-trash" uib-tooltip="{{'Delete this contribution' | translate}}"></i>

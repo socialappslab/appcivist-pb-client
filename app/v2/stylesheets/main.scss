@@ -1176,6 +1176,13 @@ custom-field {
   }
 }
 
+.downvote {
+  cursor: pointer;
+  i {
+    cursor: pointer;
+  }
+}
+
 // In order to test new topbar mockup uncomment the following
 @import "buttons";
 //import "../mockups/navigation-bar";

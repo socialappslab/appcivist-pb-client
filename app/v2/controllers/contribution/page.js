@@ -561,6 +561,9 @@
           }
         }
       }
+      if ($scope.proposal.cover) {
+        $scope.resourcePictures.push($scope.proposal.cover);
+      }
     }
 
     function loadDocuments() {

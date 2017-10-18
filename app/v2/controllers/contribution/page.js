@@ -39,6 +39,8 @@
     $scope.seeHistory = seeHistory.bind($scope);
     $scope.loadUserFeedback = loadUserFeedback.bind($scope);
     $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
+    $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
+    $scope.sanitizeVideoResourceUrl = sanitizeVideoResourceUrl.bind($scope);
 
     activate();
 
@@ -46,6 +48,7 @@
       ModalMixin.init($scope);
       $scope.updateFeedback = updateFeedback.bind($scope);
       $scope.submitAttachment = submitAttachment.bind($scope);
+      $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
       $scope.feedbackBar = false;
@@ -153,10 +156,16 @@
           $scope.showCommentType = 'members';
         }
       });
+      $scope.resources = {};
     }
 
     function toggleOpenAddAttachment () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
+    }
+
+    function toggleOpenAddAttachmentByUrl () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+      $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
     }
 
     function startSpinner () {
@@ -488,40 +497,108 @@
         },
         transformRequest: angular.identity,
       }).then(function (response) {
-
-        vm.createAttachmentResource(response.data.url);
+        let resource = {
+          name: response.data.name,
+          url: response.data.url
+        }
+        vm.createAttachmentResource(resource, true);
       }, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
       });
     }
 
+
+    /**
+     * Upload the given file to the server. Also, attachs it to
+     * the current contribution.
+     */
+    function submitAttachmentByUrl() {
+      var vm = this;
+      this.startSpinner();
+      let resource = {
+        name: this.newAttachment.name,
+        url: this.newAttachment.url
+      };
+      vm.createAttachmentResource(resource, false);
+    }
+
+    function sanitizeVideoResourceUrl(url) {
+      let ytRegex = (/(http|https):\/\/(youtube\.com|www\.youtube\.com|youtu\.be)/);
+      let vimeoRegex = (/(http|https):\/\/(vimeo\.com|www\.vimeo\.com)/);
+      let vimeoEmbedRegex = (/(http|https):\/\/(player\.vimeo\.com)/);
+
+      if (ytRegex.test(url)) {
+        return url.replace('watch?v=', 'embed/');
+      } else if (vimeoRegex.test(url) && !vimeoEmbedRegex.test(url)) {
+        return url.replace('vimeo.com','player.vimeo.com/video');
+      } else {
+        return url;
+      }
+    }
     /**
      * After the file has been uploaded, we should relate it with the contribution.
      *
      * @param {string} url - The uploaded file's url.
      */
-    function createAttachmentResource(url) {
+    function createAttachmentResource(resource, isNewUploadedFile) {
       var vm = this;
 
-      var isPicture = (/\.(gif|jpg|jpeg|tiff|png)$/i).test(this.newAttachment.name);
-      var rType = isPicture ? "PICTURE" : "FILE";
+      let pictureRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
+      let videoRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
+      let onlineVideoRegex = (/(http|https):\/\/(youtube\.com|www\.youtube\.com|youtu\.be|vimeo\.com|www\.vimeo\.com)/);
 
-      var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name, resourceType: rType});
+      let fileTypeContainingString = resource.name; // If
+      let resourceName = resource.name;
+      let resourceUrl = resource.url;
+
+      let isPicture = false;
+      let isVideo = false;
+      let rType = "FILE";
+
+      if (isNewUploadedFile) {
+        fileTypeContainingString = this.newAttachment.file.type;
+        resourceName = this.newAttachment.name;
+        isPicture = pictureRegex.test(fileTypeContainingString);
+        if (!isPicture)
+          isVideo = videoRegex.test(fileTypeContainingString);
+      } else {
+        // If is not a new attachment and the resource is added by URL
+        // see if it is not a youtube or vimeo video
+        isVideo = onlineVideoRegex.test(resourceUrl);
+        if (!isVideo)
+          isPicture = pictureRegex.test(fileTypeContainingString);
+        if (!isPicture && !isVideo)
+          isVideo = videoRegex.test(fileTypeContainingString);
+      }
+
+      rType = isPicture ? "PICTURE" : isVideo ? "VIDEO" : "FILE";
+
+      var attachment = Contributions.newAttachmentObject({ url: resourceUrl, name: resourceName, resourceType: rType});
       var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
-      rsp.then(function (response) {
 
+      rsp.then(function (response) {
         var type = "Attachments";
-        if (!isPicture) {
-          if (!vm.documents)
-            vm.documents = [];
-          vm.documents.push(response);
+        if (!isPicture && !isVideo) {
+          if (!vm.resources.documents)
+            vm.resources.documents = [];
+          vm.resources.documents.push(response);
           vm.openAddAttachment = false;
         } else {
-          if (!vm.media)
-            vm.media = [];
-          vm.media.push(response);
+          if (!vm.resources.media)
+            vm.resources.media = [];
+          vm.resources.media.push(response);
+          type = "Media";
+          if (isPicture) {
+            if (!vm.resources.pictures)
+              vm.resources.pictures = [];
+            vm.resources.pictures.push(response);
+          }
+        }
+
+        if (isNewUploadedFile) {
           vm.openAddAttachment = false;
-          type = "MEDIA";
+        } else {
+          vm.openAddAttachmentByUrl = false;
         }
 
         Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
@@ -585,7 +662,7 @@
         res = Space.resources($scope.proposal.resourceSpaceId).query();
       }
       res.$promise.then(function (data) {
-        $scope.resources = data;
+        $scope.resources.all = data || [];
         loadPictureResources();
         loadDocuments();
         loadMedia();
@@ -595,25 +672,25 @@
     }
 
     function loadPictureResources() {
-      $scope.resourcePictures = [];
-      if ($scope.resources.length > 0) {
-        for (let i in $scope.resources) {
-          if ($scope.resources[i].resourceType == 'PICTURE') {
-            $scope.resourcePictures.push($scope.resources[i]);
-          }
-        }
-      }
+      $scope.resources.pictures = $scope.resources.all.filter(resource => resource.resourceType !== 'PICTURE');
       if ($scope.proposal.cover) {
-        $scope.resourcePictures.push($scope.proposal.cover);
+        $scope.resources.pictures.push($scope.proposal.cover);
       }
     }
 
     function loadDocuments() {
-      $scope.documents = $scope.resources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
+      $scope.resources.documents = $scope.resources.all.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
     }
 
     function loadMedia() {
-      $scope.media = $scope.resources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO');
+      $scope.resources.media = $scope.resources.all
+        .filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO')
+        .map((obj) => {
+          if (obj.resourceType === 'VIDEO') {
+            obj.embedUrl = $scope.sanitizeVideoResourceUrl(obj.url);
+          }
+          return obj;
+        });
     }
 
     function loadCampaignConfig() {
@@ -827,10 +904,19 @@
     }
 
     function deleteAttachment(attachment) {
-      _.remove(this.proposal.attachments, { resourceId: attachment.resourceId });
-
       Space.deleteResource(this.proposal.resourceSpaceId, attachment.resourceId).then(
-        response => Notify.show('Attachment deleted successfully', 'success'),
+        response => {
+          _.remove(this.resources.all, { resourceId: attachment.resourceId });
+          if (attachment.resourceType==='PICTURE') {
+            _.remove(this.resources.pictures, { resourceId: attachment.resourceId });
+            _.remove(this.resources.media, { resourceId: attachment.resourceId });
+          } else if (attachment.resourceType==='VIDEO') {
+            _.remove(this.resources.media, { resourceId: attachment.resourceId });
+          } else {
+            _.remove(this.resources.documents, { resourceId: attachment.resourceId });
+          }
+          Notify.show('Attachment deleted successfully', 'success');
+        } ,
         error => {
           Notify.show('Error while trying to delete attachment from the contribution', 'error');
         }

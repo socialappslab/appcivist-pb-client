@@ -1460,7 +1460,8 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} rsid - The resource ID.
        */
       deleteResource(sid, rsid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid }, { 'delete': { method: 'DELETE' } }).delete().$promise;
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid },
+          { 'delete': { method: 'DELETE' } }).delete().$promise;
       },
 
       /**

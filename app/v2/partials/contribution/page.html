@@ -204,23 +204,24 @@
         </div>
       </section>
 
+      <!-- Pictures carousel before idea content -->
       <section class="content" ng-if="contributionType == 'IDEA'">
-          <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resourcePictures.length > 0">
+          <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0">
             <div class="carousel-inner" role="listbox">
-              <div class="item" ng-class="{active:$first}" ng-repeat="picture in resourcePictures">
+              <div class="item" ng-class="{active:$first}" ng-repeat="picture in resources.pictures">
                 <img src="{{picture.url}}">
               </div>
             </div>
             <a class="left carousel-control" role="button" data-target="#media-carousel" data-slide="prev">
               <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               <span class="sr-only">Previous</span>
-            </spa>
+            </a>
             <a class="right carousel-control" role="button" data-target="#media-carousel" data-slide="next">
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               <span class="sr-only">Next</span>
             </a>
             <ol class="carousel-indicators">
-              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="picture in resourcePictures"></li>
+              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="picture in resources.pictures"></li>
             </ol>
           </div>
         <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
@@ -324,8 +325,11 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
           <p>{{ 'Attachments' | translate }}</p>
-          <button class="btn btn-default follow-contribution" ng-if="userIsAuthor && !openAddAttachment"
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
                   ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
           <!--
@@ -335,15 +339,16 @@
           <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
           <span class="attachment-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
 
-          <div class="noContent" ng-if="!documents || documents.length === 0">
+          <div class="noContent" ng-if="!resources.documents || resources.documents.length === 0">
             <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
           </div>
-          <ul class="workingGroupList" ng-if="documents && documents.length > 0">
-            <li ng-repeat="resource in documents">
+          <ul class="workingGroupList" ng-if="resources.documents && resources.documents.length > 0">
+            <li ng-repeat="resource in resources.documents track by $index">
               <a class="workingGroupLink" target="_blank"
-                  ng-href="{{resource.url}}"><span>{{resource.name}}</span>
-                <!--<span class="number"><i class="fa fa-users"></i>32</span>-->
+                  ng-href="{{resource.url}}">
+                <span>{{resource.name}}</span>
               </a>
+              <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>
           </ul>
         </div>
@@ -368,17 +373,18 @@
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
-          <div class="noContent" ng-if="!media || media.length === 0">
+          <div class="noContent" ng-if="!resources.media || resources.media.length === 0">
             <h4>{{ 'There are no multimedia resources in this proposal' | translate }}</h4>
           </div>
 
-          <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          <!-- Media Carousel in Media Modal-->
+          <div id="media-carousel-modal" class="carousel slide" data-ride="carousel" data-interval="false">
             <div class="carousel-inner" role="listbox">
-              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in media track by $index">
+              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in resources.media track by $index">
                 <img ng-if="resource.resourceType === 'PICTURE'" ng-src="{{resource.url}}" alt="{{resource.name}}">
                 <!-- TODO: sanitize video URLs somewhere else -->
                 <iframe ng-if="resource.resourceType === 'VIDEO'" width="75%" height="315"
-                        ng-src="{{resource.url.replace('watch?v=', 'embed/');}}"
+                        ng-src="{{resource.embedUrl}}"
                         frameborder="0" allowfullscreen style="display: block; margin: auto;"></iframe>
                 <div class="noContent">
                   <h4 ng-if="resource.title">{{resource.title}}</h4>
@@ -389,16 +395,16 @@
               </div>
             </div>
             <!-- Controls -->
-            <a class="left carousel-control" data-target="#media-carousel" role="button" data-slide="prev" ng-if="media.length > 0">
+            <a class="left carousel-control" data-target="#media-carousel-modal" role="button" data-slide="prev" ng-if="resources.media.length > 0">
               <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               <span class="sr-only">{{'Previous'|translate}}</span>
             </a>
-            <a class="right carousel-control" data-target="#media-carousel" role="button" data-slide="next" ng-if="media.length > 0">
+            <a class="right carousel-control" data-target="#media-carousel-modal" role="button" data-slide="next" ng-if="resources.media.length > 0">
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               <span class="sr-only">{{'Next'|translate}}</span>
             </a>
             <ol class="carousel-indicators" ng-if="media.length > 0">
-              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-repeat="resource in media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
+              <li data-target="#media-carousel-modal" data-slide-to="{{$index}}" ng-repeat="resource in resources.media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
             </ol>
           </div>
         </div>

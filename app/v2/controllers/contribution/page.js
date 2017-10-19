@@ -42,6 +42,7 @@
     $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
     $scope.sanitizeVideoResourceUrl = sanitizeVideoResourceUrl.bind($scope);
     $scope.toggleAssociateIdea = toggleAssociateIdea.bind($scope);
+    $scope.removeContributingIdea = removeContributingIdea.bind($scope);
 
     activate();
 
@@ -927,6 +928,10 @@
           Notify.show('Error while trying to delete attachment from the contribution', 'error');
         }
       );
+    }
+
+    function removeContributingIdea (idea) {
+      $scope.$broadcast('AssociatedContributionForm:RemoveRelatedContribution', idea);
     }
 
     function loadFeedback(uuid) {

@@ -1499,6 +1499,27 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           data => data,
           error => Notify.show('Error loading contributions from server', 'error')
         )
+      },
+
+      addContributionToResourceSpace(aid, cid, sid, contribution) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/space/:sid',
+          {aid: aid, cid: cid, sid: sid}).save(contribution);
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding contribution to resource space', 'error')
+        )
+      },
+      removeContributionFromResourceSpace(aid, cid, sid) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/space/:sid',
+          {aid: aid, cid: cid, sid: sid}).delete();
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding contribution to resource space', 'error')
+        )
       }
     };
   }

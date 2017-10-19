@@ -114,17 +114,29 @@
           <ul class="overlay_buttons">
             <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
               <a data-toggle="modal" data-target="#ideas">
-                <i class="fa fa-lightbulb-o fa-lg"></i><span>{{'Contributing ideas'|translate}}</span>
+                <i class="fa fa-lightbulb-o fa-lg"></i>
+                <span>
+                  {{'Contributing ideas'|translate}}
+                  {{ resources.relatedContributions.length > 0 ? '('+resources.relatedContributions.length+')' : '' }}
+                </span>
               </a>
             </li>
             <li class="overlay_button">
               <a data-toggle="modal" data-target="#documents">
-                <i class="fa fa-file-text-o fa-lg"></i><span>{{'Attachments'|translate}}</span>
+                <i class="fa fa-file-text-o fa-lg"></i>
+                <span>
+                  {{'Attachments'|translate}}
+                  {{ resources.documents.length > 0 ? '('+resources.documents.length+')' : ''}}
+                </span>
               </a>
             </li>
             <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
               <a data-toggle="modal" data-target="#media">
-                <i class="fa fa-picture-o fa-lg"></i><span>{{'Media'|translate}}</span>
+                <i class="fa fa-picture-o fa-lg"></i>
+                <span>
+                  {{'Media'|translate}}
+                  {{ resources.media.length > 0 ? '('+resources.media.length+')' : ''}}
+                </span>
               </a>
             </li>
             <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
@@ -334,6 +346,7 @@
                                          space="resources"
                                          assembly-id="assemblyID"
                                          campaign-id="campaignID"
+                                         campaign-space-id="campaign.resourceSpaceId"
                                          group-id="groupID"
                                          parent-contribution-id="proposalID"></associated-contributions-form>
 
@@ -342,10 +355,10 @@
           </div>
           <ul class="workingGroupList" ng-if="resources.relatedContributions && resources.relatedContributions.length > 0">
             <li ng-repeat="contribution in resources.relatedContributions track by $index">
-              <a class="workingGroupLink" target="_blank" ng-href="#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/contribution/{{contribution.contributionId}}">
+              <a class="workingGroupLink" ng-href="#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/contribution/{{contribution.contributionId}}">
                 <span>{{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}</span>
               </a>
-              <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
+              <span class="number clickable" ng-click="removeContributingIdea(contribution)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>
           </ul>
         </div>

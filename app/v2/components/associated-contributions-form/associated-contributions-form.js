@@ -23,6 +23,7 @@
       space: '=',
       assemblyId: '=',
       campaignId: '=',
+      campaignSpaceId: '=',
       groupId: '=',
       parentContributionId: '='
 
@@ -41,7 +42,7 @@
      * Initialization method.
      */
     this.$onInit = () => {
-      $scope.$watch('vm.space', space => {
+      $scope.$watch('vm.campaignSpaceId', space => {
         if (!space ) {
           return;
         }
@@ -52,6 +53,7 @@
     function activate() {
       this.searchContributionsInSpace = searchContributionsInSpace.bind(this);
       this.associateContributionToSpace = associateContributionToSpace.bind(this);
+      this.removeContributionFromSpace = removeContributionFromSpace.bind(this);
       this.startSpinner = startSpinner.bind(this);
       this.stopSpinner = stopSpinner.bind(this);
       this.filters = {
@@ -69,6 +71,11 @@
         left: '50%',
         zIndex: 1
       };
+      $scope.$on('AssociatedContributionForm:RemoveRelatedContribution',
+        (event, idea) => {
+          this.removeContributionFromSpace(idea);
+        }
+      );
     }
 
     function startSpinner () {
@@ -85,7 +92,7 @@
     function searchContributionsInSpace () {
       if (this.filters.searchText){
         this.startSpinner();
-        Space.doSearch({rsID:this.spaceId}, false, this.filters).then(
+        Space.doSearch({rsID:this.campaignSpaceId}, false, this.filters).then(
           data => {
             let contributions = data ? data.list || [] : [];
             this.filteredContributions = contributions;
@@ -95,7 +102,25 @@
     }
 
     function associateContributionToSpace (item) {
+      this.startSpinner();
+      Space.addContributionToResourceSpace(this.assemblyId, item.contributionId, this.spaceId, item).then(
+        data => {
+          this.space.relatedContributions.push(item);
+          this.filteredContributions = [];
+          this.stopSpinner();
+        }
+      )
+    }
 
+    function removeContributionFromSpace(item) {
+      this.startSpinner();
+      Space.removeContributionFromResourceSpace(this.assemblyId, item.contributionId, this.spaceId).then(
+        data => {
+          _.remove(this.space.relatedContributions, { contributionId: item.contributionId });
+          this.filteredContributions = [];
+          this.stopSpinner();
+        }
+      )
     }
   }
 })();

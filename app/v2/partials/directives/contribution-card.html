@@ -92,14 +92,12 @@
           </div>
         </a>
       </div>
+      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons"></contribution-feedback>
     </header>
 
     <div class="card__body" style="word-wrap:break-word;">
       <div class="excerpt" style="height: auto;">
         {{contribution.plainText | limitTo:152 }}{{contribution.plainText.length > 152 ? "..." : ""}}
-      </div>
-      <div class="voting_mechanism">
-        <contribution-feedback contribution="contribution" ng-if="!showVotingButtons"></contribution-feedback>
       </div>
       <!-- Control types: distributed, plurality, range, ranked -->
       <contribution-card-voting-control

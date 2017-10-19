@@ -1,0 +1,32 @@
+<div class="add__attachment_form" ng-if="openAddAttachment">
+  <form>
+    <fieldset>
+      <label for="name">{{'Name' | translate}}</label>
+      <div class="field-container col-lg-12 no-padding">
+        <input name="name" ng-model="newAttachment.name">
+      </div>
+    </fieldset>
+    <fieldset ng-if="!openAddAttachmentByUrl">
+      <label for="file">{{'File' | translate}}</label>
+      <input type="file" name="file" fileread="newAttachment.file">
+    </fieldset>
+    <fieldset ng-if="openAddAttachmentByUrl">
+      <label for="resource_url">{{'URL' | translate}}</label>
+      <div class="field-container col-lg-12 no-padding">
+        <input name="resource_url" ng-model="newAttachment.url">
+      </div>
+    </fieldset>
+    <fieldset>
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="!openAddAttachmentByUrl"
+              ng-click="toggleOpenAddAttachment()">{{'Cancel' | translate}}</button>
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="!openAddAttachmentByUrl"
+              ng-click="submitAttachment()">{{'Submit' | translate}}</button>
+
+
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="openAddAttachmentByUrl"
+              ng-click="toggleOpenAddAttachmentByUrl()">{{'Cancel' | translate}}</button>
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="openAddAttachmentByUrl"
+              ng-click="submitAttachmentByUrl()">{{'Submit' | translate}}</button>
+    </fieldset>
+  </form>
+</div>

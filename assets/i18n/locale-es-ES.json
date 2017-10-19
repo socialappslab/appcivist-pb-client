@@ -1190,5 +1190,14 @@
   "about.content.copyright.team.socialappslab": "<strong>Equipo del Social Apps Lab:</strong> Prof. James Holston (Director), Dr. Cristhian Parra (Director de Diseño & Desarrollo), y Rodrigo Ochigame",
   "about.content.copyright.team.inria": "<strong>Inria MiMove:</strong> Dr. Valerie Issarny, Dr. Nikolaos Georgantas, and Dr. Rafael Angarita",
   "about.content.license.text": "Todos los componentes de este proyecto tienen licencia de código abierto, y se distribuyen bajo los términos de la <a href='https://github.com/socialappslab/appcivist/blob/master/LICENSE.md'>Licencia de Código Abierto del Social Apps Lab Versión 1</a>. Visita nuestros <a href='https://github.com/socialappslab/appcivist-platform/'>repositorios GitHub</a> para contribuir al proyecto!",
-  "Got it!": "Entendido!"
+  "Got it!": "Entendido!",
+  "Contributing ideas": "Ideas relacionadas",
+  "Feedback": "Evaluación",
+  "History": "Historial",
+  "There are no multimedia resources in this proposal": "Esta propuesta no tiene recursos multimedia.",
+  "View comments by": "Filtrar comentarios",
+  "Members only": "Solo miembros",
+  "Add URL resource": "Agregar URL",
+  "Associate contributing idea": "Asociar una idea a la propuesta",
+  "There are no ideas associated to this contribution": "No hay ideas asociadas a esta contribución"
 }

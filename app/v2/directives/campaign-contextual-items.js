@@ -40,6 +40,7 @@
     this.refreshMenu = refreshMenu.bind(this);
     this.subscribe = subscribe.bind(this);
     this.downloadAuthorInfo = downloadAuthorInfo.bind(this);
+    this.edit = edit.bind(this);
 
     ModalMixin.init(this);
 

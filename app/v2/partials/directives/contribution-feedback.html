@@ -7,32 +7,41 @@
 </style>
 <div class="temperature_check" ng-if="isCardView">
   <ul class="pull-right votes" ng-if="!isAnonymous" style="margin-right: 0.1em;">
-    <li class="upvote" ng-click="updateFeedback('up')" uib-tooltip="{{'Upvote this contribution' | translate}}">
-      {{contribution.stats.ups}}<i class="fa fa-thumbs-up"></i>
+    <li class="downvote" ng-click="updateFeedback('up')">
+      {{contribution.stats.ups}}
+      <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"
+         uib-tooltip="{{'Upvote this contribution' | translate}}"></i>
     </li>
     <li class="downvote" ng-click="updateFeedback('down')">
-      {{contribution.stats.downs}}<i class="fa fa-thumbs-down" uib-tooltip="{{'Downvote this contribution' | translate}}"></i>
+      {{contribution.stats.downs}}
+      <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"
+         uib-tooltip="{{'Downvote this contribution' | translate}}"></i>
     </li>
-    <li class="downvote" ng-if="contribution.informalScore != null && contribution.informalScore != undefined">
+    <li class="downvote">
       {{contribution.informalScore}}
-      <i class="fa" uib-tooltip="{{'Informal score' | translate}}" ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
+      <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
+         ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
     </li>
     <li class="downvote">
       {{contribution.totalComments}}<i class="fa fa-comments-o" uib-tooltip="{{'Total comments' | translate}}"></i>
     </li>
     <li class="downvote" ng-click="showModerationForm('flag')">
-      <i class="fa fa-flag" uib-tooltip="{{'Flag this contribution' | translate}}"></i>
+      <i class="fa"
+         ng-class="{'fa-flag-o': !userFeedback.flag, 'fa-flag': userFeedback.flag}"
+         uib-tooltip="{{'Flag this contribution' | translate}}"></i>
     </li>
     <li class="downvote" ng-if="isAssemblyCoordinator" ng-click="$parent.showModerationForm('delete')">
       <i class="fa fa-trash" uib-tooltip="{{'Delete this contribution' | translate}}"></i>
     </li>
   </ul>
   <ul class="pull-right votes" ng-if="isAnonymous" style="margin-right: 0.1em;">
-    <li class="upvote">
-      {{contribution.stats.ups}}<i class="fa fa-thumbs-up"></i>
+    <li class="downvote">
+      {{contribution.stats.ups}}
+      <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
     </li>
     <li class="downvote">
-      {{contribution.stats.downs}}<i class="fa fa-thumbs-down"></i>
+      {{contribution.stats.downs}}
+      <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
     </li>
     <li class="downvote" ng-if="contribution.informalScore != null && contribution.informalScore != undefined">
       {{contribution.informalScore}}<i class="fa" ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
@@ -44,58 +53,34 @@
 </div>
 <div class="temperature_check" ng-if="!isCardView" style="padding-top: 10px;">
   <ul class="votes" style="margin-right: 0.1em;">
-    <li class="upvote" ng-mouseenter="contribution.overUp = true" ng-mouseleave="contribution.overUp = false">
-      <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">{{ 'Upvote' | translate }}</span></a>
-      <div class="popover" style="top: -56px;" ng-class="{active: contribution.overUp}">
-        <div class="content">{{contribution.stats.ups}}</div>
-      </div>
+    <li class="downvote" ng-click="updateFeedback('up')">
+      {{contribution.stats.ups}}
+      <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
+      <span class="screen-reader-only">{{ 'Upvote' | translate }}</span>
     </li>
-    <li class="downvote" ng-mouseenter="contribution.overDown = true" ng-mouseleave="contribution.overDown = false">
-      <a class="thumbs-down" ng-click="updateFeedback('down')"><span class="screen-reader-only">{{ 'Downvote' | translate }}</span></a>
-      <div class="popover" style="top: -56px;" ng-class="{active: contribution.overDown}">
-        <div class="content">{{contribution.stats.downs}}</div>
-      </div>
+    <li class="downvote" ng-click="updateFeedback('down')">
+      {{contribution.stats.downs}}
+      <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
+      <span class="screen-reader-only">{{ 'Downvote' | translate }}</span>
     </li>
-    <li class="delete" ng-if="withDelete && isAssemblyCoordinator" ng-mouseenter="contribution.overDelete = true" ng-mouseleave="contribution.overDelete = false">
-      <a ng-click="$parent.showModerationForm('delete')">
-        <i class="fa fa-trash"></i>
-        <span class="screen-reader-only">{{ 'Delete' | translate }}</span>
-      </a>
-      <div class="popover" style="top: -56px;" ng-class="{active: contribution.overDelete}">
-        <div class="content">{{'Remove' | translate}}</div>
-      </div>
+    <li class="downvote">
+      {{contribution.informalScore}}
+      <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
+         ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
     </li>
-    <li class="delete" ng-if="withFlag && isMemberOfAssembly" ng-mouseenter="contribution.overFlag = true" ng-mouseleave="contribution.overFlag = false">
-      <a ng-click="$parent.showModerationForm('flag')">
-        <i class="fa fa-flag"></i>
-        <span class="screen-reader-only">{{ 'Flag' | translate }}</span>
-      </a>
-      <div class="popover" style="top: -56px;" ng-class="{active: contribution.overFlag}">
-        <div class="content">{{'Flag as inappropriate' | translate}}</div>
-      </div>
+    <li class="downvote">
+      {{contribution.totalComments}}
+      <i class="fa fa-comments-o" uib-tooltip="{{'Total comments' | translate}}"></i>
+    </li>
+    <li class="downvote" ng-click="showModerationForm('flag')">
+      <i class="fa"
+         ng-class="{'fa-flag-o': !userFeedback.flag, 'fa-flag': userFeedback.flag}"
+         uib-tooltip="{{'Flag this contribution' | translate}}"></i>
+    </li>
+    <li class="delete" ng-if="isAssemblyCoordinator" ng-click="$parent.showModerationForm('delete')">
+      <i class="fa fa-trash" uib-tooltip="{{'Delete this contribution' | translate}}"></i>
     </li>
   </ul>
-  <div ng-if="contribution.informalScore != null && contribution.informalScore != undefined" class="informal_score" ng-class="{positive: contribution.informalScore >= 0, negative: contribution.informalScore < 0}">
-    <em>{{(contribution.informalScore != null && contribution.informalScore != undefined) ? contribution.informalScore : 0}}</em>
-  </div>
-
-  <div ng-if="(contribution.informalScore === null || contribution.informalScore === undefined)" class="informal_score" ng-class="{positive: contribution.popularity >= 0, negative: contribution.popularity < 0}">
-    <em>{{(contribution.popularity != null && contribution.popularity != undefined) ? contribution.popularity : 0}}</em>
-  </div>
-
-  <div ng-if="(contribution.totalComments != null && contribution.totalComments != undefined) && !isAnonymous" class="informal_score positive">
-    <em style="border-radius:15%">
-      <i class="fa fa-comment"></i>
-      {{contribution.totalComments}}
-    </em>
-  </div>
-
-  <div ng-if="(contribution.forumCommentCount != null && contribution.forumCommentCount != undefined) && isAnonymous" class="informal_score positive">
-    <em style="border-radius:15%">
-      <i class="fa fa-comment"></i>
-      {{contribution.forumCommentCount}}
-    </em>
-  </div>
 
   <script id="moderationForm" type="text/ng-template">
     <contribution-moderation-form contribution="contribution" context="moderationContext" on-success="moderationSuccess()"></contribution-moderation-form>

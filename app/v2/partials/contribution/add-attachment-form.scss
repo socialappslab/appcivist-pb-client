@@ -1,0 +1,16 @@
+.add__attachment_form {
+  padding: inherit;
+  form {
+    fieldset {
+      .submit__attachment {
+        margin-left: 0.6rem;
+      }
+
+      div {
+        input[type=file] {
+          border: none;
+        }
+      }
+    }
+  }
+}

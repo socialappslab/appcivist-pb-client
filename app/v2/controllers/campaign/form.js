@@ -32,7 +32,8 @@
     function init() {
       initScopeFunctions();
       initScopeContent();
-      setListOfLinkedAssemblies();
+      // setListOfLinkedAssemblies();
+      loadCampaignTemplates();
     }
 
     function initScopeFunctions() {
@@ -484,7 +485,9 @@
       }, function(error) {
         $scope.templateErrors.push(error);
       });
+    }
 
+    function loadCampaignTemplates() {
       var templateRes = Campaigns.templates().query();
       templateRes.$promise.then(function(templates) {
         $scope.templates = templates;

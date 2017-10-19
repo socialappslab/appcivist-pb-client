@@ -40,6 +40,7 @@
           scope.user = localStorageService.get('user');
           scope.validateCaptchaResponse = validateCaptchaResponse.bind(scope);
           scope.setCaptchaResponse = setCaptchaResponse.bind(scope);
+          scope.vm['commentType'] = 'public';
 
           if (scope.user) {
             var hasRol = Memberships.hasRol;
@@ -63,6 +64,14 @@
               }
             });
           }
+
+          scope.$watch('vm.commentType', function(value) {
+            if (value == 'public') {
+              scope.showCommentType = 'public';
+            } else {
+              scope.showCommentType = 'members';
+            }
+          });
           loadDiscussions(scope, scope.spaceId);
           scope.newDiscussion = initContribution('DISCUSSION');
           scope.newComment = initContribution('COMMENT');

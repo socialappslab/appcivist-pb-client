@@ -27,11 +27,18 @@
       link: function (scope, element, attrs) {
         var user = localStorageService.get('user');
         // Read user contribution feedback
-        scope.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false };
         scope.isAnonymous = true;
         scope.isCardView = scope.view === 'card';
         scope.moderationSuccess = moderationSuccess.bind(scope);
         scope.showModerationForm = showModerationForm.bind(scope);
+
+        scope.loadUserFeedback = function (aid, cid, coid) {
+          let rsp = Contributions.authUserFeedback(aid,cid,coid).get().$promise;
+          rsp.then(
+            data => scope.userFeedback = data,
+            error => scope.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
+          );
+        }
 
         if (user) {
           scope.assembly = localStorageService.get('currentAssembly');
@@ -39,6 +46,7 @@
           scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
           scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
           scope.isAnonymous = false;
+          scope.loadUserFeedback(scope.assembly.assemblyId, scope.campaign.campaignId, scope.contribution.contributionId);
         }
         scope.contribution.totalComments = scope.contribution.commentCount + scope.contribution.forumCommentCount;
 

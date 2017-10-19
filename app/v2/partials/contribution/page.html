@@ -1,166 +1,3 @@
-<style>
-    .page__header a {
-      text-decoration: none;
-    }
-
-    .action-bar .action-button {
-      margin-top: 10px;
-    }
-
-    .action-button svg g {
-      fill: #11493b;
-    }
-
-    .campaign_cards .attachments {
-      float: left;
-    }
-
-    .campaign_cards .attachments-shrinked {
-      width: 60%;
-    }
-
-    .campaign_cards .list--ideas {
-      left: 0;
-    }
-
-    .nav-tabs {
-      border-bottom: 1px solid #c6c8cb;
-    }
-
-    .nav-tabs>li {
-      float: left;
-      margin-bottom: -1px;
-    }
-
-    .nav-tabs>li>a {
-      margin-right: 2px;
-      line-height: 1.42857143;
-      border: 1px solid transparent;
-      border-radius: 4px 4px 0 0;
-      color: #555;
-      text-decoration: none;
-    }
-
-    .nav-tabs>li>a:hover {
-      border-color: #eeeeee #eeeeee #c6c8cb;
-      background-color: #e6e7e8;
-    }
-
-    .nav-tabs>li.active>a,
-    .nav-tabs>li.active>a:hover,
-    .nav-tabs>li.active>a:focus {
-      color: #555555;
-      background-color: #e6e7e8;
-      border: 1px solid #c6c8cb;
-      border-bottom-color: transparent;
-      cursor: default;
-    }
-
-    .nav-tabs.nav-justified {
-      width: 100%;
-      border-bottom: 0;
-    }
-
-    .nav-tabs.nav-justified>li {
-      float: none;
-    }
-
-    .nav-tabs.nav-justified>li>a {
-      text-align: center;
-      margin-bottom: 5px;
-    }
-
-    .nav-tabs.nav-justified>.dropdown .dropdown-menu {
-      top: auto;
-      left: auto;
-    }
-
-    @media (min-width: 768px) {
-      .nav-tabs.nav-justified>li {
-        display: table-cell;
-        width: 1%;
-      }
-      .nav-tabs.nav-justified>li>a {
-        margin-bottom: 0;
-      }
-    }
-
-    .nav-tabs.nav-justified>li>a {
-      margin-right: 0;
-      border-radius: 4px;
-    }
-
-    .nav-tabs.nav-justified>.active>a,
-    .nav-tabs.nav-justified>.active>a:hover,
-    .nav-tabs.nav-justified>.active>a:focus {
-      border: 1px solid #dddddd;
-    }
-
-    @media (min-width: 768px) {
-      .nav-tabs.nav-justified>li>a {
-        border-bottom: 1px solid #dddddd;
-        border-radius: 4px 4px 0 0;
-      }
-      .nav-tabs.nav-justified>.active>a,
-      .nav-tabs.nav-justified>.active>a:hover,
-      .nav-tabs.nav-justified>.active>a:focus {
-        border-bottom-color: #f6f6f7;
-      }
-    }
-
-    .nav.nav-tabs {
-      margin-left: 5%;
-      width: 90%;
-    }
-
-    .custom-ul {
-      /*padding-bottom: 50px;*/
-      padding-top: 50px;
-    }
-
-    .custom-li {
-      /*padding-bottom: 15px;*/
-      padding-top: 15px;
-    }
-
-    .custom-a {
-      padding: 15px;
-    }
-
-    .file_attachments h2 {
-      float: none !important;
-    }
-
-    .field-container {
-      height: 39.5px;
-      margin-bottom: 10px;
-    }
-
-    button.button__modal_submit {
-      width: 100%;
-      height: 39.5px;
-      margin-top: 20px !important;
-    }
-
-    form>fieldset {
-      margin-bottom: 20px;
-    }
-
-    .stats2 {
-      color: #11493b;
-      font-size: .875em;
-      font-family: Lato, sans-serif;
-    }
-
-    .star-filled {
-      color: #11493b;
-    }
-
-    .star-empty {
-      color: #757575;
-    }
-  </style>
-
   <main class="appmain" ng-class="{anonymous: isAnonymous}">
     <article class="proposal__single">
       <header class="page__header contributionHeader">
@@ -273,52 +110,69 @@
           </li>
         </ul>
 
-        <div class="row voting_mechanism">
-          <div class="temperature_check">
-            <ul class="votes">
-              <li class="upvote">
-                <a class="thumbs-up" ng-click="updateFeedback('up')"><span class="screen-reader-only">{{ 'Upvote' | translate }}</span></a>
+        <div class="overlay new_overlay contribution_toolbar" style="display: inline-flex">
+          <ul class="overlay_buttons">
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#ideas">
+                <i class="fa fa-lightbulb-o fa-lg"></i>
+                <span>
+                  {{'Contributing ideas'|translate}}
+                  {{ resources.relatedContributions.length > 0 ? '('+resources.relatedContributions.length+')' : '' }}
+                </span>
+              </a>
+            </li>
+            <li class="overlay_button">
+              <a data-toggle="modal" data-target="#documents">
+                <i class="fa fa-file-text-o fa-lg"></i>
+                <span>
+                  {{'Attachments'|translate}}
+                  {{ resources.documents.length > 0 ? '('+resources.documents.length+')' : ''}}
+                </span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#media">
+                <i class="fa fa-picture-o fa-lg"></i>
+                <span>
+                  {{'Media'|translate}}
+                  {{ resources.media.length > 0 ? '('+resources.media.length+')' : ''}}
+                </span>
+              </a>
+            </li>
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+              <a data-toggle="modal" data-target="#feedback">
+                <i class="fa fa-star-half-o fa-lg"></i><span>{{'Feedback'|translate}}</span>
+              </a>
+            </li>
+            <li class="overlay_button">
+              <a ng-click="seeHistory()">
+                <i class="fa fa-history fa-lg"></i><span>{{'History'|translate}}</span>
+              </a>
+            </li>
+          </ul>
+          <ul class="votes">
+            <li class="downvote">
+                <a class="commentcount"><i class="fa fa-comment"></i> {{ isAnonymous ? proposal.forumCommentCount : totalComments }}</a>
               </li>
-              <li class="downvote">
-                <a class="thumbs-down" ng-click="updateFeedback('down')"><span class="screen-reader-only">{{ 'Downvote' | translate }}</span></a>
-              </li>
-              <li class="commentcount" ng-mouseenter="contribution.commentCount = true" ng-mouseleave="contribution.commentCount = false">
-                <a><i class="fa fa-comment"></i><span class="screen-reader-only">{{ 'Comments' | translate }}</span></a>
-                <div class="popover" style="top: -50px;" ng-class="{active: contribution.commentCount}">
-                  <div class="content" ng-if="!isAnonymous">{{ totalComments }}</div>
-                  <div class="content" ng-if="isAnonymous">{{ proposal.forumCommentCount }}</div>
-                </div>
-              </li>
-            </ul>
-            <div ng-if="proposal.informalScore" class="informal_score" ng-class="{positive: proposal.informalScore > 0, negative: proposal.informalScore < 0}">
-              <em>{{proposal.informalScore}}</em>
-            </div>
-
-            <div class="informal_score stats2" style="cursor: pointer;">
-              <span ng-click="toggleFeedbackBar()" ng-if="!feedbackBar">{{'Show Results' | translate }}</span>
-              <span ng-click="toggleFeedbackBar()" ng-if="feedbackBar">{{'Hide Results' | translate }}</span>
-            </div>
-
-            <div ng-if="feedbackBar" class="informal_score">
-              <div class="informal_score positive stats2">
-                {{ 'Ups' | translate}} <em>{{upSum}}</em> {{ 'Downs' | translate }} <em>{{downSum}}</em>              {{ 'Comments' | translate}} <em>{{totalComments}}</em>
-              </div>
-              <div class="informal_score stats2">
-                <span>{{ 'Needs' | translate }}</span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"
-                />
-                <span>{{ 'Feasibility' | translate }} </span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"
-                />
-                <span>{{ 'Benefit' | translate }}</span>
-                <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"
-                />
-              </div>
-            </div>
-
-          </div>
-
+            <li class="upvote" ng-click="updateFeedback('up')">
+              {{upSum}}
+              <a class="thumbs-up">
+                <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
+              </a>
+            </li>
+            <li class="downvote" ng-click="updateFeedback('down')">
+                {{downSum}}
+              <a class="thumbs-down">
+                <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
+              </a>
+            </li>
+            <li class="score" ng-if="proposal.informalScore">
+                {{proposal.informalScore}}
+              <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
+            </li>
+          </ul>
         </div>
+
       </header>
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
@@ -362,142 +216,63 @@
         </div>
       </section>
 
+      <!-- Pictures carousel before idea content -->
       <section class="content" ng-if="contributionType == 'IDEA'">
-          <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resourcePictures.length > 0">
+          <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0">
             <div class="carousel-inner" role="listbox">
-              <div class="item" ng-class="{active:$first}" ng-repeat="picture in resourcePictures">
+              <div class="item" ng-class="{active:$first}" ng-repeat="picture in resources.pictures">
                 <img src="{{picture.url}}">
               </div>
             </div>
             <a class="left carousel-control" role="button" data-target="#media-carousel" data-slide="prev">
               <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               <span class="sr-only">Previous</span>
-            </spa>
+            </a>
             <a class="right carousel-control" role="button" data-target="#media-carousel" data-slide="next">
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               <span class="sr-only">Next</span>
             </a>
             <ol class="carousel-indicators">
-              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="picture in resourcePictures"></li>
+              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="picture in resources.pictures"></li>
             </ol>
           </div>
         <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
       </section>
 
-      <section class="proposals_and_ideas">
+      <section class="comments__section">
+        <div class="row comments-header">
+          <div class="col-xs-4 text-left">
+            <strong>Comments ({{commentType == 'members' ? proposal.commentCount : proposal.forumCommentCount}})</strong>
+          </div>
+          <div class="col-xs-8 text-right">
+            {{'View comments by'|translate}}:
+            <select name="comment-types" ng-model="commentType">
+              <option value="public">{{'Public'|translate}}</option>
+              <option value="members">{{'Members only'|translate}}</option>
+            </select>
+          </div>
+        </div>
         <div class="row">
-          <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-            <!-- div class="campaign_cards"> -->
-              <section class="attachments tex-created-attachments-similar" ng-class="{'attachments-shrinked': ideasSectionExpanded}" style="padding-top: 0px;">
-                <section class="temp-array created-attachments-similar">
-                  <div class="file_attachments">
-                    <div class="panel-heading">
-                      <h2 class="heading--header" ng-if="(proposal.attachments && proposal.attachments.length > 0) || userIsAuthor">{{'Attachments' | translate}}</h2>
-                      <div class="heading--small">
-                        <a href="" ng-if="userIsAuthor" ng-click="$parent.openModal('addAttachmentForm')"><i class="fa fa-paperclip"></i>&nbsp;{{'Add a new file' | translate}}</a>
-                        <a ng-if="!ideasSectionExpanded && contributionTypeIsSupported ('IDEA')" ng-click="toggleIdeasSection()"
-                          class="proposals__show_ideas hidden-md hidden-sm hidden-xs" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Related Ideas' | translate }}</a>&nbsp;&nbsp;
-                        <a ng-if="!commentsSectionExpanded" ng-click="toggleCommentsSection()" class="hidden-md hidden-sm hidden-xs"
-                          style="float: right" href=""><i class="fa fa-eye"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="card-list" ng-repeat="file in proposal.attachments">
-                    <div class="action-bar small-card file-card">
-                      <figure>
-                        <a ng-href="{{file.url}}" target="_blank">
-                          <img ng-if="file.resourceType !== 'PICTURE'" src="/bower_components/appcivist-patterns/dist/images/file-icon.png"
-                            alt="File icon" />
-                          <img ng-if="file.resourceType === 'PICTURE'" ng-src="{{file.url}}" alt="File icon" />
-                        </a>
-                      </figure>
-                      <h4>
-                        <a ng-href="{{file.url}}" target="_blank">{{(file.name && file.name != "" ? file.name : file.url)}}</a>
-                        <a href="" ng-if="userIsAuthor" ng-click="deleteAttachment(file)"><i class="fa fa-trash" style="margin-left: 5px;"></i></a>
-                      </h4>
-
-                      <!--TODO: add these buttons back when we implement their functionalities-->
-                      <!--<div class="action-button" ng-if="!isAnonymous">-->
-                      <!--<input id="menu04" type="checkbox" name="menu" ng-checked="file.checked" hidden/>-->
-                      <!--<svg ng-click="file.checked = !file.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg"-->
-                      <!--xmlns:xlink="http://www.w3.org/1999/xlink">-->
-                      <!--<title>{{'more' | translate}}</title>-->
-                      <!--<defs></defs>-->
-                      <!--<g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">-->
-                      <!--<g id="more">-->
-                      <!--<path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>-->
-                      <!--</g>-->
-                      <!--</g>-->
-                      <!--</svg>-->
-                      <!--<ul class="action-menu">-->
-                      <!--<li><a href="">{{'Delete' | translate}}</a></li>-->
-                      <!--<li><a href="">{{'Rename' | translate}}</a></li>-->
-                      <!--</ul>-->
-                      <!--</div>-->
-                    </div>
-                  </div>
-                </section>
-              </section>
+          <div class="tab-pane" ng-if="userIsMember && commentType === 'members'">
+            <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="proposal.rsID"
+                              endpoint-id="proposalID"
+                              endpoint="contribution"
+                              is-anonymous="isAnonymous"></discussion-panel>
           </div>
-          <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-              <section ng-class="{hide: !ideasSectionExpanded}" ng-if="contributionTypeIsSupported ('IDEA')">
-                <header class="ideas__header" style="padding-left: 30px;">
-                  <h2 class="heading--header">{{ 'Ideas' | translate }}</h2>
-                  <a ng-if="ideasSectionExpanded" ng-click="toggleIdeasSection()" class="proposals__show_ideas" href=""><i class="fa fa-eye-slash"></i>&nbsp;{{ 'Hide Ideas' | translate }}</a>&nbsp;&nbsp;
-                </header>
-
-                <div class="list__cards container__ideas">
-                  <contribution-card ng-repeat="idea in relatedContributions track by $index" class="card__idea col-*-12" contribution="idea"></contribution-card>
-                  <p ng-if="!ideas || ideas.length === 0" class="card" style="margin-left: 30px;">{{'no.idea.message' | translate}}</p>
-                </div>
-              </section>
-              <section ng-class="{hide: !commentsSectionExpanded}">
-                <header class="comments__header" style="padding-left: 30px;">
-                  <h2 class="heading--header">{{ 'Comments' | translate}}</h2>
-                  <!--<a class="comments__see_all" ng-href="#/v2/space/{{spaceID}}/contributions?type=comment&from={{fromURL}}"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;-->
-                  <!--<a class="comments__add_new" ng-if="user != null" ng-click="openModal('ideaFormModal')"><i class="fa fa-plus-square"></i>&nbsp;{{'Add Comment' | translate}}</a>-->
-                  <a ng-if="commentsSectionExpanded" ng-click="toggleCommentsSection()" class="comments__show_ideas" href=""><i class="fa fa-eye-slash"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
-                </header>
-
-                <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
-                  <!-- Nav tabs -->
-                  <ul class="nav nav-tabs custom-ul" style="height: 130px; padding-bottom: 0px;">
-                    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate }} ({{proposal.commentCount}})</a></li>
-                    <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate }} ({{proposal.forumCommentCount}})</a></li>
-                    <li ng-show="(feedbacks && feedbacks.length) || userIsMember" role="presentation" class="custom-li hidden-lg" ng-class="{'active': (activeTab === 'Feedbacks')}">
-                      <a class="custom-a" href="" ng-click="changeActiveTab(3)" role="tab" data-toggle="tab">{{ 'Textual feedbacks' | translate }}</a>
-                    </li>
-                  </ul>
-                  <!-- Tab panes -->
-                  <div class="tab-content">
-                    <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-                      <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="proposal.rsID"
-                                        endpoint-id="proposalID"
-                                        endpoint="contribution"
-                                        is-anonymous="isAnonymous"></discussion-panel>
-                    </div>
-                    <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-                      <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="proposal.forumResourceSpaceId"
-                                        endpoint-id="proposal.proposalId"
-                                        endpoint="contribution"
-                                        public-board="true"
-                                        is-anonymous="isAnonymous"></discussion-panel>
-                      <discussion-panel ng-if="isAnonymous" class="col-*-12"
-                                        space-id="proposal.frsUUID"
-                                        endpoint-id="proposal.uuid"
-                                        endpoint="contribution"
-                                        public-board="true"
-                                        is-anonymous="isAnonymous"></discussion-panel>
-                    </div>
-                    <div class="tab-pane" ng-class="{'active': activeTab === 'Feedbacks'}" ng-if="activeTab === 'Feedbacks'">
-                      <contribution-feedback-panel class="col-*-12" contribution="proposal" public-board="true"></contribution-feedback-panel>
-                    </div>
-                  </div>
-                </div>
-            </section>
+          <div class="tab-pane" ng-if="commentType === 'public'">
+            <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="proposal.forumResourceSpaceId"
+                              endpoint-id="proposal.proposalId"
+                              endpoint="contribution"
+                              public-board="true"
+                              is-anonymous="isAnonymous"></discussion-panel>
+            <discussion-panel ng-if="isAnonymous" class="col-*-12"
+                              space-id="proposal.frsUUID"
+                              endpoint-id="proposal.uuid"
+                              endpoint="contribution"
+                              public-board="true"
+                              is-anonymous="isAnonymous"></discussion-panel>
           </div>
-            <!-- </div> -->
+        </div>
       </section>
     </article>
     <!-- Nav tabs -->
@@ -528,31 +303,215 @@
     <modal open-if="modals.addAttachmentForm" close="closeModal('addAttachmentForm')" title="Edit Form" template-id="addAttachmentForm"></modal>
 
 
-    <script id="addAttachmentForm" type="text/ng-template">
-      <div class="modal_content__add_proposal">
-        <header class="modal-header" style="padding: 2em;">{{'Add a new file' | translate}}</header>
+    <!--<script id="addAttachmentForm" type="text/ng-template">-->
+      <!--<div class="modal_content__add_proposal">-->
+        <!--<header class="modal-header" style="padding: 2em;">{{'Add a new file' | translate}}</header>-->
+        <!--<div class="modal-body">-->
+          <!--<form>-->
+            <!--<fieldset>-->
+              <!--<label for="name">{{'Name' | translate}}</label>-->
+              <!--<div class="field-container col-lg-12">-->
+                <!--<input name="name" ng-model="newAttachment.name">-->
+              <!--</div>-->
+            <!--</fieldset>-->
+            <!--<fieldset>-->
+              <!--<label for="file">{{'File' | translate}}</label>-->
+              <!--<div class="field-container col-lg-12">-->
+                <!--<input type="file" name="file" fileread="newAttachment.file">-->
+              <!--</div>-->
+            <!--</fieldset>-->
+          <!--</form>-->
+          <!--<fieldset>-->
+            <!--<button class="button__modal_submit" ng-click="submitAttachment()">{{'Submit' | translate}}</button>-->
+          <!--</fieldset>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</script>-->
+  </main>
+
+
+  <!-- Ideas Modal -->
+  <div class="modal fade dashboardModal" id="ideas" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="ideasLabel">{{proposal.title}}</h3>
+          <p>{{ 'Contributing ideas' | translate }}</p>
+        </div>
         <div class="modal-body">
-          <form>
-            <fieldset>
-              <label for="name">{{'Name' | translate}}</label>
-              <div class="field-container col-lg-12">
-                <input name="name" ng-model="newAttachment.name">
-              </div>
-            </fieldset>
-            <fieldset>
-              <label for="file">{{'File' | translate}}</label>
-              <div class="field-container col-lg-12">
-                <input type="file" name="file" fileread="newAttachment.file">
-              </div>
-            </fieldset>
-          </form>
-          <fieldset>
-            <button class="button__modal_submit" ng-click="submitAttachment()">{{'Submit' | translate}}</button>
-          </fieldset>
+          <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)"
+                                         contribution-type="associatedContributionsType"
+                                         space-id="proposal.resourceSpaceId"
+                                         space="resources"
+                                         assembly-id="assemblyID"
+                                         campaign-id="campaignID"
+                                         campaign-space-id="campaign.resourceSpaceId"
+                                         group-id="groupID"
+                                         parent-contribution-id="proposalID"></associated-contributions-form>
+
+          <div class="noContent" ng-if="!resources.relatedContributions || resources.relatedContributions.length === 0">
+            <h4>{{ 'There are no ideas associated to this contribution' | translate }}</h4>
+          </div>
+          <ul class="workingGroupList" ng-if="resources.relatedContributions && resources.relatedContributions.length > 0">
+            <li ng-repeat="contribution in resources.relatedContributions track by $index">
+              <a class="workingGroupLink" ng-href="#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/contribution/{{contribution.contributionId}}">
+                <span>{{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}</span>
+              </a>
+              <span class="number clickable" ng-click="removeContributingIdea(contribution)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
         </div>
       </div>
-    </script>
-  </main>
+    </div>
+  </div>
+
+  <!-- Documents Modal -->
+  <div class="modal fade dashboardModal" id="documents" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
+          <p>{{ 'Attachments' | translate }}</p>
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
+        </div>
+        <div class="modal-body">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
+          <span class="attachment-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
+
+          <div class="noContent" ng-if="!resources.documents || resources.documents.length === 0">
+            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+          </div>
+          <ul class="workingGroupList" ng-if="resources.documents && resources.documents.length > 0">
+            <li ng-repeat="resource in resources.documents track by $index">
+              <a class="workingGroupLink" target="_blank"
+                  ng-href="{{resource.url}}">
+                <span>{{resource.name}}</span>
+              </a>
+              <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Media Modal -->
+  <div class="modal fade dashboardModal" id="media" tabindex="-1" role="dialog" aria-labelledby="mediaLabel" ng-if="proposal.type == 'PROPOSAL'">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="mediaLabel">{{proposal.title}}</h3>
+          <p>{{ 'Media' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <!--
+            TODO: investigate why simply using the class dashboardModal does not work
+            (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
+          -->
+          <div class="noContent" ng-if="!resources.media || resources.media.length === 0">
+            <h4>{{ 'There are no multimedia resources in this proposal' | translate }}</h4>
+          </div>
+
+          <!-- Media Carousel in Media Modal-->
+          <div id="media-carousel-modal" class="carousel slide" data-ride="carousel" data-interval="false">
+            <div class="carousel-inner" role="listbox">
+              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in resources.media track by $index">
+                <img ng-if="resource.resourceType === 'PICTURE'" ng-src="{{resource.url}}" alt="{{resource.name}}">
+                <!-- TODO: sanitize video URLs somewhere else -->
+                <iframe ng-if="resource.resourceType === 'VIDEO'" width="75%" height="315"
+                        ng-src="{{resource.embedUrl}}"
+                        frameborder="0" allowfullscreen style="display: block; margin: auto;"></iframe>
+                <div class="noContent">
+                  <h4 ng-if="resource.title">{{resource.title}}</h4>
+                  <h5 ng-if="resource.description"
+                      ng-bind-html="resource.description"></h5>
+                </div>
+
+              </div>
+            </div>
+            <!-- Controls -->
+            <a class="left carousel-control" data-target="#media-carousel-modal" role="button" data-slide="prev" ng-if="resources.media.length > 0">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              <span class="sr-only">{{'Previous'|translate}}</span>
+            </a>
+            <a class="right carousel-control" data-target="#media-carousel-modal" role="button" data-slide="next" ng-if="resources.media.length > 0">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              <span class="sr-only">{{'Next'|translate}}</span>
+            </a>
+            <ol class="carousel-indicators" ng-if="media.length > 0">
+              <li data-target="#media-carousel-modal" data-slide-to="{{$index}}" ng-repeat="resource in resources.media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
+            </ol>
+          </div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Modal -->
+  <div class="modal fade dashboardModal" id="feedback" tabindex="-1" role="dialog" aria-labelledby="feedbackLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="feedbackLabel">{{proposal.title}}</h3>
+          <p>{{ 'Feedback' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <div class="informal_score">
+            <div class="informal_score stats2">
+              <div style="margin-bottom: 1rem;">
+                <div class="col-xs-6 text-right">
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Needs' | translate }}</span>
+                </div>
+                <div class="col-xs-6">
+                  <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(needAvg) track by $index"></span>
+                </div>
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <div class="col-xs-6 text-right">
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Feasibility' | translate }} </span>
+                </div>
+                <div class="col-xs-6">
+                  <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(feasibilityAvg) track by $index"></span>
+                </div>
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <div class="col-xs-6 text-right">
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Benefit' | translate }}</span>
+                </div>
+                <div class="col-xs-6">
+                  <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     $(document).ready(function() {

@@ -66,7 +66,7 @@
           }
 
           scope.vm.edit = function() {
-            $state.go('v2.assembly.aid.campaign.workingGroup.gid.edit', { aid: scope.assemblyId, cid: $state.params.cid, gid: scope.wgroup.groupId });
+            $state.go('v2.assembly.aid.campaign.workingGroup.edit', { aid: scope.assemblyId, cid: $state.params.cid, gid: scope.wgroup.groupId });
           }
         }
       }

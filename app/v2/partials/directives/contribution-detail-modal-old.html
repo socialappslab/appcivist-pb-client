@@ -1,0 +1,71 @@
+<style type="text/css">
+  .custom-li {
+    /*padding-bottom: 10px !important;*/
+    padding-top: 12px !important;
+  }
+
+  hr {
+    margin-top: 0px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 5px;
+  }
+</style>
+<div class="modal_content__contribution_history">
+  <header class="modal-header">
+    <p class="heading--category">
+      <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index">
+        {{theme.title}}
+        <span ng-if="($index!=(contribution.themes.length-1))&&($index===0 || $index===1)">, </span>
+      </span>
+    </p>
+    <div class="title_block">
+      <h2 class="modal__title">
+        {{contribution.title}}
+      </h2>
+    </div>
+    <contribution-feedback contribution="contribution"></contribution-feedback>
+    <div class="attribution">
+      <!--<member-card ng-repeat="author in mergedAuthors" user="author"></member-card>-->
+      <span ng-repeat="author in mergedAuthors track by $index" >{{author.name}}{{!$last ? ', ' : ''}}</span>
+    </div>
+  </header>
+
+  <div class="modal-body">
+    <div class="contribution content">
+      <br>
+      <p class="contribution_description" ng-bind-html="trustedHtml(contribution.text)"></p>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs custom-ul">
+        <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }}</a></li>
+        <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }}</a></li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
+          <discussion-panel class="col-md-12" ng-if="userIsMember && enableDiscussions"
+                            space-id="contributionID"
+                            endpoint-id="contributionID"
+                            endpoint="contribution"
+                            is-anonymous="isAnonymous"></discussion-panel>
+        </div>
+        <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
+          <discussion-panel ng-if="!currentUser && enableDiscussions" class="col-md-12"
+                            space-id="contribution.forumResourceSpaceUUID"
+                            endpoint-id="contribution.uuid"
+                            endpoint="contribution"
+                            public-board="true"
+                            is-anonymous="isAnonymous"></discussion-panel>
+          <discussion-panel ng-if="currentUser && enableDiscussions" class="col-md-12"
+                            space-id="contribution.forumResourceSpaceId"
+                            endpoint-id="contributionID"
+                            endpoint="contribution"
+                            public-board="true"
+                            is-anonymous="isAnonymous"></discussion-panel>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

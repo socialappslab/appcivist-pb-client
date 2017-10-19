@@ -773,6 +773,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       });
     },
 
+    authUserFeedback: function (assemblyId, campaignId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/userfeedback',
+        { aid: assemblyId, cid: campaignId, coid: contributionId });
+    },
+
     userFeedback: function (assemblyId, campaignId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/feedback', { aid: assemblyId, cid: campaignId, coid: contributionId }, { 'update': { method: 'PUT' } });
     },
@@ -1455,7 +1460,8 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} rsid - The resource ID.
        */
       deleteResource(sid, rsid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid }, { 'delete': { method: 'DELETE' } }).delete().$promise;
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource/:rsid', { sid: sid, rsid: rsid },
+          { 'delete': { method: 'DELETE' } }).delete().$promise;
       },
 
       /**
@@ -1492,6 +1498,27 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         return rsp.$promise.then(
           data => data,
           error => Notify.show('Error loading contributions from server', 'error')
+        )
+      },
+
+      addContributionToResourceSpace(aid, cid, sid, contribution) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/space/:sid',
+          {aid: aid, cid: cid, sid: sid}).save(contribution);
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding contribution to resource space', 'error')
+        )
+      },
+      removeContributionFromResourceSpace(aid, cid, sid) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:cid/space/:sid',
+          {aid: aid, cid: cid, sid: sid}).delete();
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding contribution to resource space', 'error')
         )
       }
     };

@@ -136,8 +136,12 @@
       '*://etherpad.appcivist.org/**',
       '*://testetherpad.appcivist.org/**',
       '*://www.youtube.com/**',
+      '*://youtube.com/**',
+      '*://youtu.be/**',
       '*://drive.google.com/**',
-      '*://docs.google.com/**'
+      '*://docs.google.com/**',
+      '*://vimeo.com/**',
+      '*://player.vimeo.com/**'
     ]);
 
     /**
@@ -310,61 +314,61 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
-      // .state('v2.assembly.aid.campaign.new', {
-      //   url: '/new',
-      //   controller: 'v2.CampaignFormWizardCtrl',
-      //   templateUrl: 'app/v2/partials/campaign/form.html',
-      //   access: {
-      //     requiresLogin: true
-      //   }
-      // })
-      // .state('v2.assembly.aid.campaign.start', {
-      //   url: '/start',
-      //   redirect: 'v2.assembly.aid.campaign.new.description',
-      //   access: {
-      //     requiresLogin: true
-      //   },
-      //   ncyBreadcrumb: {
-      //     parent: 'v2.assembly.aid.home',
-      //     label: 'New Campaign'
-      //   }
-      // })
-      // .state('v2.assembly.aid.campaign.new.description', {
-      //   url: '/description',
-      //   controller: 'v2.CampaignFormCtrl',
-      //   templateUrl: 'app/v2/partials/campaign/form.description.html',
-      //   access: {
-      //     requiresLogin: true
-      //   },
-      //   ncyBreadcrumb: {
-      //     parent: 'v2.assembly.aid.home',
-      //     label: 'New Campaign description'
-      //   }
-      // })
-      // .state('v2.assembly.aid.campaign.new.milestones', {
-      //   url: '/milestones',
-      //   controller: 'v2.CampaignFormCtrl',
-      //   templateUrl: 'app/v2/partials/campaign/form.milestones.html',
-      //   access: {
-      //     requiresLogin: true
-      //   },
-      //   ncyBreadcrumb: {
-      //     parent: 'v2.assembly.aid.home',
-      //     label: 'New Campaign Milestones'
-      //   }
-      // })
-      // .state('v2.assembly.aid.campaign.new.stages', {
-      //   url: '/stages',
-      //   controller: 'v2.CampaignFormCtrl',
-      //   templateUrl: 'app/v2/partials/campaign/form.stages.html',
-      //   access: {
-      //     requiresLogin: true
-      //   },
-      //   ncyBreadcrumb: {
-      //     parent: 'v2.assembly.aid.home',
-      //     label: 'New Campaign Stages'
-      //   }
-      // })
+      .state('v2.assembly.aid.campaign.new', {
+        url: '/new',
+        controller: 'v2.CampaignFormWizardCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.html',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('v2.assembly.aid.campaign.start', {
+        url: '/start',
+        redirect: 'v2.assembly.aid.campaign.new.description',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: 'v2.assembly.aid.home',
+          label: 'New Campaign'
+        }
+      })
+      .state('v2.assembly.aid.campaign.new.description', {
+        url: '/description',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.description.html',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: 'v2.assembly.aid.home',
+          label: 'New Campaign description'
+        }
+      })
+      .state('v2.assembly.aid.campaign.new.milestones', {
+        url: '/milestones',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.milestones.html',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: 'v2.assembly.aid.home',
+          label: 'New Campaign Milestones'
+        }
+      })
+      .state('v2.assembly.aid.campaign.new.stages', {
+        url: '/stages',
+        controller: 'v2.CampaignFormCtrl',
+        templateUrl: 'app/v2/partials/campaign/form.stages.html',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: 'v2.assembly.aid.home',
+          label: 'New Campaign Stages'
+        }
+      })
       .state('v2.assembly.aid.campaign.cid', {
         url: '/:cid',
         controller: 'v2.CampaignDashboardCtrl',

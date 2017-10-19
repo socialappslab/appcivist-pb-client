@@ -136,8 +136,12 @@
       '*://etherpad.appcivist.org/**',
       '*://testetherpad.appcivist.org/**',
       '*://www.youtube.com/**',
+      '*://youtube.com/**',
+      '*://youtu.be/**',
       '*://drive.google.com/**',
-      '*://docs.google.com/**'
+      '*://docs.google.com/**',
+      '*://vimeo.com/**',
+      '*://player.vimeo.com/**'
     ]);
 
     /**

@@ -10,12 +10,12 @@
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify,
-    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -36,6 +36,13 @@
     $scope.loadBallotPaper = loadBallotPaper.bind($scope);
     $scope.afterLoadingBallotSuccess = afterLoadingBallotSuccess.bind($scope);
     $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
+    $scope.seeHistory = seeHistory.bind($scope);
+    $scope.loadUserFeedback = loadUserFeedback.bind($scope);
+    $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
+    $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
+    $scope.sanitizeVideoResourceUrl = sanitizeVideoResourceUrl.bind($scope);
+    $scope.toggleAssociateIdea = toggleAssociateIdea.bind($scope);
+    $scope.removeContributingIdea = removeContributingIdea.bind($scope);
 
     activate();
 
@@ -43,6 +50,7 @@
       ModalMixin.init($scope);
       $scope.updateFeedback = updateFeedback.bind($scope);
       $scope.submitAttachment = submitAttachment.bind($scope);
+      $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
       $scope.activeTab = 'Public';
       $scope.feedbackBar = false;
@@ -68,8 +76,19 @@
       $scope.ideasSectionExpanded = false;
       $scope.commentsSectionExpanded = true;
       $scope.commentType = 'public';
+      $scope.openAddAttachment = false;
       // if the param is uuid then is an anonymous user, use endpoints with uuid
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      $scope.startSpinner = startSpinner.bind($scope);
+      $scope.stopSpinner = stopSpinner.bind($scope);
+      $scope.spinnerOptions = {
+        radius:10,
+        width:4,
+        length: 10,
+        top: '75%',
+        left: '50%',
+        zIndex: 1
+      };
 
       if (pattern.test($stateParams.couuid) === true) {
         $scope.proposalID = $stateParams.couuid;
@@ -118,7 +137,8 @@
         scope.showActionMenu = !scope.showActionMenu;
       };
       // Read user contribution feedback
-      $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
+      $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
+//      $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.cm = {
@@ -138,8 +158,27 @@
           $scope.showCommentType = 'members';
         }
       });
+      $scope.resources = {};
     }
 
+    function toggleOpenAddAttachment () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+    }
+
+    function toggleOpenAddAttachmentByUrl () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+      $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
+    }
+
+    function startSpinner () {
+      this.spinnerActive = true;
+      usSpinnerService.spin('contributions-page');
+    }
+
+    function stopSpinner () {
+      usSpinnerService.stop('contributions-page');
+      this.spinnerActive = false;
+    }
     // Feedback update
     function updateFeedback(value) {
       //console.log(value);
@@ -155,11 +194,22 @@
         $scope.userFeedback.flag = true;
       }
 
+      // Delete the id of the user feedback if there is one
+      delete $scope.userFeedback.id;
+
       var feedback = Contributions.userFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
         function (newStats) {
           $scope.proposal.stats = newStats;
           $scope.proposal.informalScore = Contributions.getInformalScore($scope.proposal);
+          $scope.upSum = $scope.proposal.stats.ups;
+          $scope.downSum = $scope.proposal.stats.downs;
+          $scope.flagSum = $scope.proposal.stats.flags;
+          // average of need, feasibility, benefict
+          $scope.needAvg = $scope.proposal.stats.averageNeed;
+          $scope.feasibilityAvg = $scope.proposal.stats.averageFeasibility;
+          $scope.benefictAvg = $scope.proposal.stats.averageBenefit;
+          $scope.totalComments = $scope.proposal.commentCount + $scope.proposal.forumCommentCount;
         },
         function (error) {
           Notify.show('Error when updating user feedbac', 'error');
@@ -185,6 +235,7 @@
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
           scope.contributionType = $scope.proposal.type;
+          scope.associatedContributionsType = 'IDEA';
           $scope.wg = $scope.group;
 
           if ($scope.group) {
@@ -269,7 +320,6 @@
           $scope.ballotPaperNotFound = true;
       }
     }
-
 
     function afterLoadingBallotSuccess (data) {
       this.ballotPaperNotFound = false;
@@ -399,7 +449,7 @@
             }
             related.push(r);
           });
-          $scope.relatedContributions = related;
+          $scope.resources.relatedContributions = related;
         },
         function (error) {
           Notify.show('Error loading contributions from server', 'error');
@@ -441,6 +491,7 @@
      */
     function submitAttachment() {
       var vm = this;
+      this.startSpinner();
       var fd = new FormData();
       fd.append('file', this.newAttachment.file);
       $http.post(FileUploader.uploadEndpoint(), fd, {
@@ -449,31 +500,119 @@
         },
         transformRequest: angular.identity,
       }).then(function (response) {
-        vm.createAttachmentResource(response.data.url);
+        let resource = {
+          name: response.data.name,
+          url: response.data.url
+        }
+        vm.createAttachmentResource(resource, true);
       }, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
       });
     }
 
+
+    /**
+     * Upload the given file to the server. Also, attachs it to
+     * the current contribution.
+     */
+    function submitAttachmentByUrl() {
+      var vm = this;
+      this.startSpinner();
+      let resource = {
+        name: this.newAttachment.name,
+        url: this.newAttachment.url
+      };
+      vm.createAttachmentResource(resource, false);
+    }
+
+    function toggleAssociateIdea() {
+      $scope.openAssociateIdeaForm = !$scope.openAssociateIdeaForm;
+    }
+
+    function sanitizeVideoResourceUrl(url) {
+      let ytRegex = (/(http|https):\/\/(youtube\.com|www\.youtube\.com|youtu\.be)/);
+      let vimeoRegex = (/(http|https):\/\/(vimeo\.com|www\.vimeo\.com)/);
+      let vimeoEmbedRegex = (/(http|https):\/\/(player\.vimeo\.com)/);
+
+      if (ytRegex.test(url)) {
+        return url.replace('watch?v=', 'embed/');
+      } else if (vimeoRegex.test(url) && !vimeoEmbedRegex.test(url)) {
+        return url.replace('vimeo.com','player.vimeo.com/video');
+      } else {
+        return url;
+      }
+    }
     /**
      * After the file has been uploaded, we should relate it with the contribution.
      *
      * @param {string} url - The uploaded file's url.
      */
-    function createAttachmentResource(url) {
+    function createAttachmentResource(resource, isNewUploadedFile) {
       var vm = this;
-      var attachment = Contributions.newAttachmentObject({ url: url, name: this.newAttachment.name });
-      var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
-      rsp.then(function (response) {
 
-        if (!vm.proposal.attachments) {
-          vm.proposal.attachments = [];
+      let pictureRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
+      let videoRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
+      let onlineVideoRegex = (/(http|https):\/\/(youtube\.com|www\.youtube\.com|youtu\.be|vimeo\.com|www\.vimeo\.com)/);
+
+      let fileTypeContainingString = resource.name; // If
+      let resourceName = resource.name;
+      let resourceUrl = resource.url;
+
+      let isPicture = false;
+      let isVideo = false;
+      let rType = "FILE";
+
+      if (isNewUploadedFile) {
+        fileTypeContainingString = this.newAttachment.file.type;
+        resourceName = this.newAttachment.name;
+        isPicture = pictureRegex.test(fileTypeContainingString);
+        if (!isPicture)
+          isVideo = videoRegex.test(fileTypeContainingString);
+      } else {
+        // If is not a new attachment and the resource is added by URL
+        // see if it is not a youtube or vimeo video
+        isVideo = onlineVideoRegex.test(resourceUrl);
+        if (!isVideo)
+          isPicture = pictureRegex.test(fileTypeContainingString);
+        if (!isPicture && !isVideo)
+          isVideo = videoRegex.test(fileTypeContainingString);
+      }
+
+      rType = isPicture ? "PICTURE" : isVideo ? "VIDEO" : "FILE";
+
+      var attachment = Contributions.newAttachmentObject({ url: resourceUrl, name: resourceName, resourceType: rType});
+      var rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
+
+      rsp.then(function (response) {
+        var type = "Attachments";
+        if (!isPicture && !isVideo) {
+          if (!vm.resources.documents)
+            vm.resources.documents = [];
+          vm.resources.documents.push(response);
+          vm.openAddAttachment = false;
+        } else {
+          if (!vm.resources.media)
+            vm.resources.media = [];
+          vm.resources.media.push(response);
+          type = "Media";
+          if (isPicture) {
+            if (!vm.resources.pictures)
+              vm.resources.pictures = [];
+            vm.resources.pictures.push(response);
+          }
         }
-        vm.proposal.attachments.push(response);
-        vm.closeModal('addAttachmentForm');
-        Notify.show('Attachment saved!', 'success');
+
+        if (isNewUploadedFile) {
+          vm.openAddAttachment = false;
+        } else {
+          vm.openAddAttachmentByUrl = false;
+        }
+
+        Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
+        vm.stopSpinner();
       }, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
+        vm.stopSpinner();
       });
     }
 
@@ -530,7 +669,7 @@
         res = Space.resources($scope.proposal.resourceSpaceId).query();
       }
       res.$promise.then(function (data) {
-        $scope.resources = data;
+        $scope.resources.all = data || [];
         loadPictureResources();
         loadDocuments();
         loadMedia();
@@ -540,22 +679,25 @@
     }
 
     function loadPictureResources() {
-      $scope.resourcePictures = [];
-      if ($scope.resources.length > 0) {
-        for (let i in $scope.resources) {
-          if ($scope.resources[i].resourceType == 'PICTURE') {
-            $scope.resourcePictures.push($scope.resources[i]);
-          }
-        }
+      $scope.resources.pictures = $scope.resources.all.filter(resource => resource.resourceType !== 'PICTURE');
+      if ($scope.proposal.cover) {
+        $scope.resources.pictures.push($scope.proposal.cover);
       }
     }
 
     function loadDocuments() {
-      $scope.documents = $scope.resources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
+      $scope.resources.documents = $scope.resources.all.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
     }
 
     function loadMedia() {
-      $scope.media = $scope.resources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO');
+      $scope.resources.media = $scope.resources.all
+        .filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO')
+        .map((obj) => {
+          if (obj.resourceType === 'VIDEO') {
+            obj.embedUrl = $scope.sanitizeVideoResourceUrl(obj.url);
+          }
+          return obj;
+        });
     }
 
     function loadCampaignConfig() {
@@ -571,6 +713,10 @@
       }
     }
 
+    function seeHistory() {
+      console.log('Fired event: "ContributionPage:SeeHistory"');
+      $scope.$broadcast('ContributionPage:SeeHistory');
+    }
     /**
      * Sets the context of add button y page header.
      * @param {string} ctx AUTHORS | THEMES
@@ -765,14 +911,27 @@
     }
 
     function deleteAttachment(attachment) {
-      _.remove(this.proposal.attachments, { resourceId: attachment.resourceId });
-
       Space.deleteResource(this.proposal.resourceSpaceId, attachment.resourceId).then(
-        response => Notify.show('Attachment deleted successfully', 'success'),
+        response => {
+          _.remove(this.resources.all, { resourceId: attachment.resourceId });
+          if (attachment.resourceType==='PICTURE') {
+            _.remove(this.resources.pictures, { resourceId: attachment.resourceId });
+            _.remove(this.resources.media, { resourceId: attachment.resourceId });
+          } else if (attachment.resourceType==='VIDEO') {
+            _.remove(this.resources.media, { resourceId: attachment.resourceId });
+          } else {
+            _.remove(this.resources.documents, { resourceId: attachment.resourceId });
+          }
+          Notify.show('Attachment deleted successfully', 'success');
+        } ,
         error => {
           Notify.show('Error while trying to delete attachment from the contribution', 'error');
         }
       );
+    }
+
+    function removeContributingIdea (idea) {
+      $scope.$broadcast('AssociatedContributionForm:RemoveRelatedContribution', idea);
     }
 
     function loadFeedback(uuid) {
@@ -780,6 +939,14 @@
       rsp.then(
         feedbacks => this.feedbacks = feedbacks,
         error => Notify.show('Error while trying to fetch contribution feedback', 'error')
+      );
+    }
+
+    function loadUserFeedback(aid, cid, coid) {
+      let rsp = Contributions.authUserFeedback(aid,cid,coid).get().$promise;
+      rsp.then(
+        data => this.userFeedback = data,
+        error => this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
       );
     }
   }

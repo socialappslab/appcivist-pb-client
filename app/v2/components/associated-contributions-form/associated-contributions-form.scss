@@ -1,0 +1,19 @@
+.contribution__filter {
+  margin:auto;
+  .associated__contribution_form {
+    padding: inherit;
+    form {
+      fieldset {
+        .submit__contribution {
+          margin-left: 0.6rem;
+        }
+
+        div {
+          input[type=file] {
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}

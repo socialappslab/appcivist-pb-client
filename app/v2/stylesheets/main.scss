@@ -1176,6 +1176,14 @@ custom-field {
   }
 }
 
+.downvote {
+  color: #11493b;
+  cursor: pointer;
+  i {
+    cursor: pointer;
+  }
+}
+
 // In order to test new topbar mockup uncomment the following
 @import "buttons";
 //import "../mockups/navigation-bar";
@@ -1205,5 +1213,8 @@ custom-field {
 @import "working-group";
 @import "contributions-page";
 @import "voting-stage";
+@import "../partials/contribution/page";
+@import "../partials/contribution/add-attachment-form";
 @import "../partials/proposal/voting-summary-proposal-page";
 @import "../components/copyright/copyright";
+@import "../components/associated-contributions-form/associated-contributions-form";

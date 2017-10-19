@@ -1194,5 +1194,10 @@
   "Contributing ideas": "Ideas relacionadas",
   "Feedback": "Evaluación",
   "History": "Historial",
-  "There are no multimedia resources in this proposal": "There are no multimedia resources in this proposal"
+  "There are no multimedia resources in this proposal": "Esta propuesta no tiene recursos multimedia.",
+  "View comments by": "Filtrar comentarios",
+  "Members only": "Solo miembros",
+  "Add URL resource": "Agregar URL",
+  "Associate contributing idea": "Asociar una idea a la propuesta",
+  "There are no ideas associated to this contribution": "No hay ideas asociadas a esta contribución"
 }

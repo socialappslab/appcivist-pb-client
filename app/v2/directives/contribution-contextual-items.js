@@ -77,6 +77,12 @@
       }
     );
 
+    $scope.$on('ContributionPage:SeeHistory',
+      (evt, data) => {
+        $scope.vm.seeHistory();
+      }
+    );
+
     function init() {
       this.vm = {};
       this.cm = { isHover: false };

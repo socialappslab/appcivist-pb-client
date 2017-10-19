@@ -1,0 +1,20 @@
+<div class="row contribution__filter">
+  <form>
+    <input class="btn-sm" type="text" name="contributing-ideas"
+           ng-model="vm.filters.searchText"
+           ng-change="vm.searchContributionsInSpace()"
+           placeholder="{{'Associate contributing idea'|translate}}">
+
+    <fieldset class="tags">
+      <div class="autocomplete" ng-if="vm.filteredContributions && vm.filteredContributions.length > 0">
+        <ul class="suggestion-list">
+          <li ng-repeat="item in vm.filteredContributions track by $index" ng-click="vm.associateContributionToSpace(item)"
+              class="suggestion-item" style="min-height: 50px;">
+            <span>{{item.title | limitTo:50 }}...</span>
+          </li>
+        </ul>
+      </div>
+    </fieldset>
+  </form>
+  <span class="attachment-spinner" us-spinner="vm.spinnerOptions" spinner-key="associated-ideas-spinner"></span>
+</div>

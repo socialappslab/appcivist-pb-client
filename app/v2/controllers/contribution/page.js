@@ -41,6 +41,7 @@
     $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
     $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
     $scope.sanitizeVideoResourceUrl = sanitizeVideoResourceUrl.bind($scope);
+    $scope.toggleAssociateIdea = toggleAssociateIdea.bind($scope);
 
     activate();
 
@@ -207,7 +208,7 @@
           $scope.needAvg = $scope.proposal.stats.averageNeed;
           $scope.feasibilityAvg = $scope.proposal.stats.averageFeasibility;
           $scope.benefictAvg = $scope.proposal.stats.averageBenefit;
-          $scope.totalComments = $scope.proposal.commentCount + contrib.forumCommentCount;
+          $scope.totalComments = $scope.proposal.commentCount + $scope.proposal.forumCommentCount;
         },
         function (error) {
           Notify.show('Error when updating user feedbac', 'error');
@@ -233,6 +234,7 @@
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           $scope.group = workingGroupAuthorsLength ? data.workingGroupAuthors[0] : null;
           scope.contributionType = $scope.proposal.type;
+          scope.associatedContributionsType = 'IDEA';
           $scope.wg = $scope.group;
 
           if ($scope.group) {
@@ -520,6 +522,10 @@
         url: this.newAttachment.url
       };
       vm.createAttachmentResource(resource, false);
+    }
+
+    function toggleAssociateIdea() {
+      $scope.openAssociateIdeaForm = !$scope.openAssociateIdeaForm;
     }
 
     function sanitizeVideoResourceUrl(url) {

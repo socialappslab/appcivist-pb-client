@@ -324,26 +324,26 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
-          <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
+          <h3 class="modal-title" id="ideasLabel">{{proposal.title}}</h3>
           <p>{{ 'Contributing ideas' | translate }}</p>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
-                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
-
-          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
-                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
-          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
-          <span class="attachment-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
+          <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)"
+                                         contribution-type="associatedContributionsType"
+                                         space-id="proposal.resourceSpaceId"
+                                         space="resources"
+                                         assembly-id="assemblyID"
+                                         campaign-id="campaignID"
+                                         group-id="groupID"
+                                         parent-contribution-id="proposalID"></associated-contributions-form>
 
           <div class="noContent" ng-if="!resources.relatedContributions || resources.relatedContributions.length === 0">
-            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+            <h4>{{ 'There are no ideas associated to this contribution' | translate }}</h4>
           </div>
           <ul class="workingGroupList" ng-if="resources.relatedContributions && resources.relatedContributions.length > 0">
             <li ng-repeat="contribution in resources.relatedContributions track by $index">
-              <a class="workingGroupLink" target="_blank"
-                 ng-href="">
-                <span>{{contribution.title}}</span>
+              <a class="workingGroupLink" target="_blank" ng-href="#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/contribution/{{contribution.contributionId}}">
+                <span>{{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}</span>
               </a>
               <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>

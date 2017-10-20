@@ -380,7 +380,7 @@
   "landing.goal.assembly": "CREATE OR JOIN AN ASSEMBLY",
   "landing.goal.campaign": "CREATE A CAMPAIGN",
   "landing.goal.proposal": "SUBMIT AND EVALUATE PROPOSALS",
-  "landing.Learn more": "How it works",
+  "landing.Learn more": "Learn more",
   "landing.LoginErrorModal.text1": "Something went wrong! Check your email or password.",
   "landing.LoginErrorModal.text2": "Forgot your password?",
   "landing.section2.button": "CivicBudget",
@@ -1197,7 +1197,7 @@
   "There are no multimedia resources in this proposal": "There are no multimedia resources in this proposal",
   "View comments by": "View comments by",
   "Members only": "Members only",
-  "Add URL resource": "Add URL resource",
+  "Add URL resource": "Add Link",
   "Associate contributing idea": "Associate contributing idea",
   "There are no ideas associated to this contribution": "There are no ideas associated to this contribution",
   "import.column.code": "code*",
@@ -1224,5 +1224,8 @@
   "import.column.description.author-name": "name of the idea author",
   "import.column.description.author-phone": "phone of the idea author",
   "import.column.description.author-email": "email author",
-  "import.ideas.csv-description": "Each line of your CSV should represent one contribution, detailed by the following columns, with * indicating mandatory fields. The last three columns are about the author of the idea. If you have more than one author, repeat the trio of columns (name, email, phone) for each of them:"
+  "import.ideas.csv-description": "Each line of your CSV should represent one contribution, detailed by the following columns, with * indicating mandatory fields. The last three columns are about the author of the idea. If you have more than one author, repeat the trio of columns (name, email, phone) for each of them:",
+  "Participatory Budgeting": "Participatory Budgeting",
+  "Participatory Policy Making": "Participatory Policy Making",
+  "landing.who-is-using-it": "Who is using it?"
 }

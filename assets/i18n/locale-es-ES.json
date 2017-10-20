@@ -1197,7 +1197,7 @@
   "There are no multimedia resources in this proposal": "Esta propuesta no tiene recursos multimedia.",
   "View comments by": "Filtrar comentarios",
   "Members only": "Solo miembros",
-  "Add URL resource": "Agregar URL",
+  "Add URL resource": "Agregar Link",
   "Associate contributing idea": "Asociar una idea a la propuesta",
   "There are no ideas associated to this contribution": "No hay ideas asociadas a esta contribución",
   "import.column.code": "code*",
@@ -1224,5 +1224,8 @@
   "import.column.description.author-name": "name of the idea author",
   "import.column.description.author-phone": "phone of the idea author",
   "import.column.description.author-email": "email author",
-  "import.ideas.csv-description": "Each line of your CSV should represent one contribution, detailed by the following columns, with * indicating mandatory fields. The last three columns are about the author of the idea. If you have more than one author, repeat the trio of columns (name, email, phone) for each of them:"
+  "import.ideas.csv-description": "Each line of your CSV should represent one contribution, detailed by the following columns, with * indicating mandatory fields. The last three columns are about the author of the idea. If you have more than one author, repeat the trio of columns (name, email, phone) for each of them:",
+  "Participatory Budgeting": "Presupuesto Participativo",
+  "Participatory Policy Making": "Planificación Participativa de Políticas Públicas",
+  "landing.who-is-using-it": "Quién lo usa?"
 }

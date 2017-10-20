@@ -1197,7 +1197,7 @@
   "There are no multimedia resources in this proposal": "There are no multimedia resources in this proposal",
   "View comments by": "View comments by",
   "Members only": "Members only",
-  "Add URL resource": "Add URL resource",
+  "Add URL resource": "Add Link",
   "Associate contributing idea": "Associate contributing idea",
   "There are no ideas associated to this contribution": "There are no ideas associated to this contribution",
   "import.column.code": "code*",
@@ -1224,5 +1224,8 @@
   "import.column.description.author-name": "name of the idea author",
   "import.column.description.author-phone": "phone of the idea author",
   "import.column.description.author-email": "email author",
-  "import.ideas.csv-description": "Each line of your CSV should represent one contribution, detailed by the following columns, with * indicating mandatory fields. The last three columns are about the author of the idea. If you have more than one author, repeat the trio of columns (name, email, phone) for each of them:"
+  "import.ideas.csv-description": "Each line of your CSV should represent one contribution, detailed by the following columns, with * indicating mandatory fields. The last three columns are about the author of the idea. If you have more than one author, repeat the trio of columns (name, email, phone) for each of them:",
+  "Participatory Budgeting": "Budget Participatif",
+  "Participatory Policy Making": "Élaboration Participative de Politiques",
+  "landing.who-is-using-it": "Qui l'utilise?"
 }

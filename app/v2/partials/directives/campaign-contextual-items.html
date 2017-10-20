@@ -8,21 +8,21 @@
   </ul>
 
   <script id="ideasImportForm" type="text/ng-template">
-    <contribution-form campaign="vm.campaign" type="IDEA" on-import-success="$ideasImportForm.close()" import-only></contribution-form>
+    <contribution-form campaign="vm.campaign" type="IDEA" on-import-success="$ideasImportForm.close()" import-only="true"></contribution-form>
   </script>
 
-  <modal open-if="vm.modals.ideasImportForm" 
-         close="vm.closeModal('ideasImportForm')" 
+  <modal open-if="vm.modals.ideasImportForm"
+         close="vm.closeModal('ideasImportForm')"
          template-id="ideasImportForm"
          modal-instance-reference="ideasImportForm">
   </modal>
 
   <script id="proposalsImportForm" type="text/ng-template">
-    <contribution-form campaign="vm.campaign" type="PROPOSAL" on-import-success="$proposalsImportForm.close()" import-only></contribution-form>
+    <contribution-form campaign="vm.campaign" type="PROPOSAL" on-import-success="$proposalsImportForm.close()" import-only="true"></contribution-form>
   </script>
 
-  <modal open-if="vm.modals.proposalsImportForm" 
-         close="vm.closeModal('proposalsImportForm')" 
+  <modal open-if="vm.modals.proposalsImportForm"
+         close="vm.closeModal('proposalsImportForm')"
          template-id="proposalsImportForm"
          modal-instance-reference="proposalsImportForm">
   </modal>

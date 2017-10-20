@@ -141,7 +141,10 @@
       '*://drive.google.com/**',
       '*://docs.google.com/**',
       '*://vimeo.com/**',
-      '*://player.vimeo.com/**'
+      '*://player.vimeo.com/**',
+      '*://vallejopb.appcivist.org/**',
+      '*://ctsfrance.appcivist.org/**',
+      '*://pb.appcivist.org/**'
     ]);
 
     /**

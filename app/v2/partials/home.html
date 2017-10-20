@@ -13,33 +13,44 @@
         <span class="icon-bar"></span>
       </button>
       <div class="navbar-brand" ng-if='userIsAuthenticated()'>
-        <a href="#/"><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
-        <strong class="logotext">AppCivist</strong>
+        <a href="#/">
+          <img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/>
+          <strong class="logotext">AppCivist</strong>
+        </a>
       </div>
 
       <div class="navbar-brand" ng-if='!userIsAuthenticated()'>
-        <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"
-          /></a>
+        <a href="#section1" du-smooth-scroll><img src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/></a>
         <strong style="vertical-align: super;">AppCivist</strong>
       </div>
     </div>
     <div class="collapse navbar-collapse" id="navbar-options">
-      <form class="navbar-form navbar-right" role="login" style="padding-top:1%;">
-        <a ng-if='!userIsAuthenticated()' ng-href="/#/v2/login">{{'header.sign_in' | translate}}</a>
-        <a ng-if='userIsAuthenticated()' href="" ng-click="signout()">{{'header.sign_out' | translate}}</a>
-      </form>
+      <ul class="nav navbar-nav navbar-right menu-elements" role="login" style="padding-top:1%;">
+        <li><a ng-if='!userIsAuthenticated()' ng-href="/#/v2/login">{{'header.sign_in' | translate}}</a></li>
+        <li><a ng-if='userIsAuthenticated()' href="" ng-click="signout()">{{'header.sign_out' | translate}}</a></li>
+        <li><langpicker></langpicker></li>
+      </ul>
     </div>
   </nav>
+
   <!-- Landing Section 1 -->
   <div class="section first-section landing-section" id="section1">
     <h1 class="main-title text-center">{{'landing.tagline' | translate}}</h1>
-    <form ng-submit="login()">
-      <button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()" ng-if="false">{{'header.sign_up_individual' | translate}}</button>
-      <a ng-href="#/v1/assembly/create?userIsNew=true" ng-if="false"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
-      <a href="#section2" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.Learn more' | translate}}</a>
-      <div class="voffset4"></div>
-      <language-select></language-select>
-    </form>
+    <h2 class="main-title text-center">
+      {{'landing.who-is-using-it' | translate}}
+    </h2>
+    <div class="row instance__spotlight">
+      <div class="col-md-6 main-title" align="center" ng-repeat="instance in instanceSpotlight track by $index">
+        <h3>{{instance.name}}</h3>
+        <p><i class="fa fa-map-marker"></i>&nbsp;&nbsp;{{instance.location}}</p>
+        <p translate="{{instance.purpose}}"></p>
+        <a ng-href="{{instance.url}}" target="_blank"><site-thumbnail url="instance.url"></site-thumbnail></a>
+      </div>
+    </div>
+    <h2 class="main-title text-center">
+      <a href="#section2" du-smooth-scroll class="main-title text-center">{{'landing.Learn more' | translate}}</a>
+    </h2>
+
     <h6 class="text-center bottom-info"></h6>
   </div>
 

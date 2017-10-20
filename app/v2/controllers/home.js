@@ -19,6 +19,20 @@
       $scope.user = {};
       $scope.login = login;
       $scope.isHomePage = true;
+      $scope.instanceSpotlight = [
+        {
+          name: "City of Vallejo",
+          purpose: "Participatory Budgeting",
+          location: "Vallejo, CA, USA",
+          url:"https://pb.appcivist.org/#/v2/p/assembly/0bc7bea3-f253-4824-a9c8-bfedf8998daf/campaign/3de5a9f3-232d-4527-83b6-c850aeaf7388"}
+        ,
+        {
+          name: "Conférence territoriale du sport",
+          purpose: "Participatory Policy Making",
+          location: "Région Nouvelle Aquitaine, France",
+          url:"https://pb.appcivist.org/#/v2/p/assembly/ctsfrance"
+        }
+      ];
 
       if ($state.params.domain) {
         $scope.domain = $state.params.domain;

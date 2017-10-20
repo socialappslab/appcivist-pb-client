@@ -413,7 +413,6 @@ $dropDown: false;
     }
     & form {
       text-align: center;
-      margin-bottom: 20%;
       & * {
         height: 3rem;
       }
@@ -540,6 +539,8 @@ $dropDown: false;
   font: inherit;
   font-size: 35px;
   vertical-align: super;
+  color: white;
+  text-decoration: none;
 }
 
 
@@ -1182,6 +1183,10 @@ custom-field {
   i {
     cursor: pointer;
   }
+}
+
+.instance__spotlight {
+  display: flex;
 }
 
 // In order to test new topbar mockup uncomment the following

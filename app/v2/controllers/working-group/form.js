@@ -8,12 +8,12 @@
   WorkingGroupFormCtrl.$inject = [
     '$scope', 'localStorageService', '$translate', '$routeParams', 'LocaleService', 'Assemblies',
     'WorkingGroups', 'Campaigns', 'usSpinnerService', '$state', 'logService', '$stateParams',
-    'configService', '$location', 'Notify', 'Space'
+    'configService', '$location', 'Notify', 'Space', 'loginService'
   ];
 
   function WorkingGroupFormCtrl($scope, localStorageService, $translate, $routeParams, LocaleService,
     Assemblies, WorkingGroups, Campaigns, usSpinnerService, $state, logService, $stateParams,
-    configService, $location, Notify, Space) {
+    configService, $location, Notify, Space, loginService) {
 
     init();
 
@@ -27,6 +27,7 @@
     function initScopeFunctions() {
       $scope.onSuccess = onSuccess.bind($scope);
       $scope.saveConfigurations = saveConfigurations.bind($scope);
+      $scope.updateMyGroups = updateMyGroups.bind($scope);
 
       $scope.goToStep = function(step) {
         if (step === 1) {
@@ -504,10 +505,13 @@
     function onSuccess(response) {
       Notify.show('Working group saved');
       localStorageService.remove('temporaryNewWGroup');
-      $state.go('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
-        aid: $scope.assemblyID,
-        cid: $scope.campaignID,
-        gid: response.newResourceId
+      this.updateMyGroups(response);
+      loginService.loadAuthenticatedUserMemberships().then(function() {
+        $state.go('v2.assembly.aid.campaign.workingGroup.gid', {
+          aid: $scope.assemblyID,
+          cid: $scope.campaignID,
+          gid: response.groupId
+        });
       });
     }
 
@@ -521,6 +525,15 @@
       let payload = {};
       configs.forEach(config => payload[config.key] = config.value);
       return Space.configs(sid).update(payload).$promise;
+    }
+
+    /**
+     * Loads the working group associated with the current campaign.
+     */
+    function updateMyGroups(newGroup) {
+      let myWGs = localStorageService.get('myWorkingGroups');
+      myWGs.push(newGroup);
+      localStorageService.set('myWorkingGroups', myWGs);
     }
   }
 }());

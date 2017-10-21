@@ -98,6 +98,7 @@
   .modal-content { border-radius: 0; }
   .modal-body {
     overflow-y: auto;
+    min-height: 400px;
     h3 {
       // font-family: SourceSansPro-Semibold;
       font-size: 28px;

@@ -518,6 +518,8 @@
         newCampaign.campaignId = $scope.newCampaign.campaignId;
         newCampaign.title = $scope.newCampaign.title ? $scope.newCampaign.title : $scope.newCampaign.goal;
         newCampaign.goal = $scope.newCampaign.goal;
+        newCampaign.themes = $scope.newCampaign.themes;
+        newCampaign.configs = $scope.newCampaign.configs;
         // Setup existing themes
         newCampaign.existingThemes = [];
         addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);

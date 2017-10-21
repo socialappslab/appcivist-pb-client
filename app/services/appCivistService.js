@@ -1126,15 +1126,18 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
   };
 
   return {
-    embedUrl(id, revision, resourceUrl) {
+    embedUrl(id, revision, resourceUrl, writeEmbed) {
       var url = etherpadServer + "p/" + id;
       if (/p\/r\./.test(resourceUrl)) {
         if (/etherpad\.appcivist\.org/.test(resourceUrl)) {
           resourceUrl = resourceUrl.replace("http://","https://");
+          if (writeEmbed) {
+            resourceUrl = resourceUrl.split("/p")[0]+"/p/"+id;
+          }
         }
         url = resourceUrl;
       }
-      if (revision !== undefined) {
+      if (revision !== undefined && revision !== null) {
         url += '/timeslider#' + revision;
       }
       url += '?showChat=true&showLineNumbers=true&useMonospaceFont=false';
@@ -1170,7 +1173,30 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
       const user = localStorageService.get('user');
       const locale = user && user.language ? user.language : LocaleService.getLocale();
       return localesMap[locale] || 'en';
+    },
+
+    getReadOnlyHtml(assemblyId, campaignId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/body?format=:format&rev=:rev',
+        {
+          aid: assemblyId,
+          cid: campaignId,
+          coid: contributionId,
+          format: "HTML",
+          rev: 0
+        }
+      );
+    },
+
+    getReadOnlyHtmlPublic(contributionUUID) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/body?format=:format&rev=:rev',
+        {
+          couuid: contributionUUID,
+          format: "HTML",
+          rev: 0
+        }
+      );
     }
+
   };
 });
 

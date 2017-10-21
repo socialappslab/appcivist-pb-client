@@ -83,7 +83,7 @@
 
         <div class="overlay new_overlay contribution_toolbar" style="display: inline-flex">
           <ul class="overlay_buttons">
-            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL' && (!campaignConfigs || campaignConfigs['appcivist.campaign.contribution-types'].includes('IDEA') )">
               <a data-toggle="modal" data-target="#ideas">
                 <i class="fa fa-lightbulb-o fa-lg"></i>
                 <span>
@@ -164,12 +164,16 @@
             <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'"
                  class="etherpad__wrapper">
               <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
-              <iframe ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" name="embed_readonly"
-                      ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">
-              </iframe>
-              <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
-                      width="100%" height="600px">
-              </iframe>
+              <!--<iframe ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" name="embed_readonly"-->
+                      <!--ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">-->
+              <!--</iframe>-->
+              <div class="pad-html">
+                <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
+                        width="100%" height="600px">
+                </iframe>
+                <iframe id="etherpadHTML" ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" width="100%" height="600px"></iframe>
+              </div>
+
             </div>
           </div>
           <div class="text-center" style="margin-top: 2rem" ng-if="extendedTextIsGdoc && proposal.extendedTextPad">

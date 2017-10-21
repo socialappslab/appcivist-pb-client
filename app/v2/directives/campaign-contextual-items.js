@@ -58,8 +58,11 @@
       if (!this.isAnonymous) {
         this.assemblyId = localStorageService.get('currentAssembly').assemblyId;
         this.userIsAssemblyCoordinator = Memberships.rolIn('assembly', this.assemblyId, 'COORDINATOR');
-        this.showIdeasImport = this.currentComponentType === 'idea';
-        this.showProposalImport = this.currentComponentType === 'proposal';
+        this.showProposalImport = this.currentComponentType && this.currentComponentType.toLowerCase() === 'proposal'
+          || this.currentComponentType && this.currentComponentType.toLowerCase() === 'proposals';
+        // If prosposals can be imported, so to ideas as they can be used to create proposals
+        this.showIdeasImport = this.showProposalImport || (this.currentComponentType && this.currentComponentType.toLowerCase() === 'idea'
+          || this.currentComponentType && this.currentComponentType.toLowerCase() === 'ideas');
       }
     }
 

@@ -112,7 +112,22 @@
     </header>
     <div class="modal-body">
       <fieldset ng-if="vm.userIsAssemblyCoordinator && vm.isCreate">
-        <label for="upload">{{'Upload csv file' | translate}}</label>
+        <h4>{{'Upload csv file' | translate}}</h4>
+        <label for="upload">{{'import.ideas.csv-description'|translate}}</label>
+        <code>
+        <span translate='import.column.code' uib-tooltip="{{'import.column.description.code'|translate}}" tooltip-placement="bottom"></span>,
+        <span translate='import.column.source' uib-tooltip="{{'import.column.description.source'|translate}}"></span>,
+        <span translate='import.column.title' uib-tooltip="{{'import.column.description.title'|translate}}"></span>,
+        <span translate='import.column.description' uib-tooltip="{{'import.column.description.description'|translate}}"></span>,
+        <span translate='import.column.category' uib-tooltip="{{'import.column.description.category'|translate}}"></span>,
+        <span translate='import.column.keywords' uib-tooltip="{{'import.column.description.keywords'|translate}}"></span>,
+        <span translate='import.column.date' uib-tooltip="{{'import.column.description.date'|translate}}"></span>,
+        <span translate='import.column.location' uib-tooltip="{{'import.column.description.location'|translate}}"></span>,
+        <span translate='import.column.group' uib-tooltip="{{'import.column.description.group'|translate}}"></span>,
+        <span translate='import.column.author-name' uib-tooltip="{{'import.column.description.author-name'|translate}}"></span>,
+        <span translate='import.column.author-phone' uib-tooltip="{{'import.column.description.author-phone'|translate}}"></span>,
+        <span translate='import.column.author-email' uib-tooltip="{{'import.column.description.author-email'|translate}}"></span>
+        </code>
         <input type="file" name="upload" fileread on-file-read="vm.setFile($file)">
         <a class="button__modal_submit" ng-click="vm.submit()">{{'Upload' | translate}}</a>
       </fieldset>

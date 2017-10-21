@@ -43,6 +43,7 @@
     $scope.sanitizeVideoResourceUrl = sanitizeVideoResourceUrl.bind($scope);
     $scope.toggleAssociateIdea = toggleAssociateIdea.bind($scope);
     $scope.removeContributingIdea = removeContributingIdea.bind($scope);
+    $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
 
     activate();
 
@@ -212,10 +213,31 @@
           $scope.totalComments = $scope.proposal.commentCount + $scope.proposal.forumCommentCount;
         },
         function (error) {
-          Notify.show('Error when updating user feedbac', 'error');
+          Notify.show('Error when updating user feedback', 'error');
         }
       );
     };
+
+    function loadReadOnlyEtherpadHTML() {
+      let rsp;
+      if ($scope.isAnonymous) {
+        rsp = Etherpad.getReadOnlyHtmlPublic(this.proposalID).get();
+      } else {
+        rsp = Etherpad.getReadOnlyHtml(this.assemblyID, this.campaignID, this.proposalID).get();
+      }
+
+      rsp.$promise.then(
+        data => {
+          $scope.padHTML = data;
+          angular.element(document).ready(function () {
+            let iframe = document.getElementById('etherpadHTML');
+            let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframedoc.body.innerHTML = $scope.padHTML.text;
+          });
+        },
+        error => Notify.show('Error while trying to load proposals etherpad text', 'error')
+      )
+    }
 
     function loadProposal(scope) {
       let vm = this;
@@ -256,6 +278,7 @@
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
             if ($scope.extendedTextIsEtherpad) {
               $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+              $scope.loadReadOnlyEtherpadHTML();
             } else if ($scope.extendedTextIsGdoc) {
               $scope.gdocUrl = data.extendedTextPad.url;
               $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
@@ -419,7 +442,7 @@
       if (proposal.extendedTextPad) {
         var etherpadRes = Etherpad.getReadWriteUrl($scope.assemblyID, proposal.contributionId).get();
         etherpadRes.$promise.then(function (pad) {
-          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId) + '&userName=' + $scope.userName + '&lang=' + $scope.etherpadLocale;
+          $scope.etherpadReadWriteUrl = Etherpad.embedUrl(pad.padId,null,proposal.extendedTextPad.url, true) + '&userName=' + $scope.userName + '&lang=' + $scope.etherpadLocale;
         });
       }
     }
@@ -701,16 +724,19 @@
     }
 
     function loadCampaignConfig() {
+      let rsp;
       if ($scope.campaign && $scope.campaign.rsID) {
-        var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
-        rsp.$promise.then(function (data) {
-          $scope.campaignConfigs = data;
-          loadBallotPaper();
-        }, function (error) {
-          loadBallotPaper();
-          Notify.show('Error while trying to fetch campaign config', 'error');
-        });
+        rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
+      } else {
+        rsp = Campaigns.getConfigurationPublic($scope.campaign.resourceSpaceUUID).get();
       }
+      rsp.$promise.then(function (data) {
+        $scope.campaignConfigs = data;
+        loadBallotPaper();
+      }, function (error) {
+        loadBallotPaper();
+        Notify.show('Error while trying to fetch campaign config', 'error');
+      });
     }
 
     function seeHistory() {

@@ -6,16 +6,16 @@
           <div id="description" class="box descriptionBox">
             <p>{{'definition.wgroup' | translate}}</p>
           </div>
-          <!-- Campaign Select if no campaign has been selected -->
-          <div id="campaignSelect" class="form-horizontal" ng-if="!isEdit">
-            <div class="row form-group">
-              <label for="selectCampaignOfAssembly" class="no-padding col-sm-12 col-lg-12 col-md-12 col-xs-12 control-label">
-              {{'Campaigns of the Group'|translate}}:*</label>
-              <select name="campaignSelect" ng-model="newWorkingGroup.campaign" ng-options="campaign as campaign.title for campaign in ongoingCampaigns">
-                <option value="">{{'Select a campaign for the Workging Group' | translate}}</option>
-              </select>
-            </div>
-          </div>
+          <!--&lt;!&ndash; Campaign Select if no campaign has been selected &ndash;&gt;-->
+          <!--<div id="campaignSelect" class="form-horizontal" ng-if="!isEdit">-->
+            <!--<div class="row form-group">-->
+              <!--<label for="selectCampaignOfAssembly" class="no-padding col-sm-12 col-lg-12 col-md-12 col-xs-12 control-label">-->
+              <!--{{'Campaigns of the Group'|translate}}:*</label>-->
+              <!--<select name="campaignSelect" ng-model="newWorkingGroup.campaign" ng-options="campaign as campaign.title for campaign in ongoingCampaigns">-->
+                <!--<option value="">{{'Select a campaign for the Workging Group' | translate}}</option>-->
+              <!--</select>-->
+            <!--</div>-->
+          <!--</div>-->
           <div id="workingGroupName" class="form-horizontal">
             <div class="form-group">
               <label for="inputNameNewWorkingGroup" class="no-padding col-sm-2 col-md-2 control-label">{{'Name' | translate}}*</label>

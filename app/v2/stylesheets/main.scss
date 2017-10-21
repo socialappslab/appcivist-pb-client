@@ -401,7 +401,7 @@ $dropDown: false;
     vertical-align: middle;
     margin-top: -20px;
     &.landing-section {
-      padding-top: 20%;
+      padding-top: 15%;
     }
     &.invitation {
       padding-top: 10%;
@@ -413,7 +413,6 @@ $dropDown: false;
     }
     & form {
       text-align: center;
-      margin-bottom: 20%;
       & * {
         height: 3rem;
       }
@@ -540,6 +539,8 @@ $dropDown: false;
   font: inherit;
   font-size: 35px;
   vertical-align: super;
+  color: white;
+  text-decoration: none;
 }
 
 
@@ -1184,6 +1185,10 @@ custom-field {
   }
 }
 
+.instance__spotlight {
+  display: flex;
+}
+
 // In order to test new topbar mockup uncomment the following
 @import "buttons";
 //import "../mockups/navigation-bar";
@@ -1218,3 +1223,4 @@ custom-field {
 @import "../partials/proposal/voting-summary-proposal-page";
 @import "../components/copyright/copyright";
 @import "../components/associated-contributions-form/associated-contributions-form";
+@import "../components/site-thumbnail/site-thumbnail";

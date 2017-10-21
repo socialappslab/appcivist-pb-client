@@ -141,7 +141,10 @@
       '*://drive.google.com/**',
       '*://docs.google.com/**',
       '*://vimeo.com/**',
-      '*://player.vimeo.com/**'
+      '*://player.vimeo.com/**',
+      '*://vallejopb.appcivist.org/**',
+      '*://ctsfrance.appcivist.org/**',
+      '*://pb.appcivist.org/**'
     ]);
 
     /**
@@ -435,18 +438,6 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
-      .state('v2.assembly.aid.campaign.workingGroup.gid', {
-        url: '/:gid',
-        controller: 'v2.WorkingGroupDashboardCtrl',
-        templateUrl: 'app/v2/partials/working-group/dashboard.html',
-        access: {
-          requiresLogin: true
-        },
-        ncyBreadcrumb: {
-          parent: "v2.assembly.aid.campaign.cid",
-          label: "Working Group"
-        }
-      })
       .state('v2.assembly.aid.campaign.workingGroup.new', {
         url: '/new',
         controller: 'v2.WgroupFormWizardCtrl',
@@ -481,6 +472,18 @@
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
           label: 'New Working Group configuration'
+        }
+      })
+      .state('v2.assembly.aid.campaign.workingGroup.gid', {
+        url: '/:gid',
+        controller: 'v2.WorkingGroupDashboardCtrl',
+        templateUrl: 'app/v2/partials/working-group/dashboard.html',
+        access: {
+          requiresLogin: true
+        },
+        ncyBreadcrumb: {
+          parent: "v2.assembly.aid.campaign.cid",
+          label: "Working Group"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.edit', {

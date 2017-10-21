@@ -227,7 +227,7 @@
      */
     function isGroupActive(group) {
       let assembly = localStorageService.get('currentAssembly');
-      return $state.is('v2.assembly.aid.campaign.workingGroup.gid.dashboard', {
+      return $state.is('v2.assembly.aid.campaign.workingGroup.gid', {
         aid: assembly.assemblyId,
         gid: group.groupId,
         cid: this.campaignId
@@ -261,7 +261,8 @@
 
     /**
      * Based on the given working groups, checks if user data should be refreshed. This
-     * refreshing only happens when we move from one campaign to another.
+     * refreshing only happens when we move from one campaign to another or after we create
+     * a new WG.
      *
      * @param {Object[]} workingGroups
      */

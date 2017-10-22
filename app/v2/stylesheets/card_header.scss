@@ -25,3 +25,15 @@
     margin: auto;
   }
 }
+
+.wgdash {
+  .card__header__with_background {
+    background-image: none !important;
+    background-color: #434343;
+    padding-bottom: 4rem;
+    &:before { background-color: transparent; }
+    &.excluded {
+      background-color: #949494;
+    }
+  }
+}

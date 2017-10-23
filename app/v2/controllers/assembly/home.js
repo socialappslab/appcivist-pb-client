@@ -7,11 +7,11 @@
 
   AssemblyHomeCtrl.$inject = [
     '$state', '$scope', 'loginService', 'localStorageService', 'Campaigns', 'Utils', 'WorkingGroups',
-    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth', '$translate'
+    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth', '$translate', 'Memberships'
   ];
 
   function AssemblyHomeCtrl($state, $scope, loginService, localStorageService, Campaigns, Utils,
-    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth, $translate) {
+    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth, $translate, Memberships) {
 
     $scope.fetchCampaigns = fetchCampaigns.bind($scope);
     $scope.fetchWorkingGroups = fetchWorkingGroups.bind($scope);
@@ -22,6 +22,7 @@
     $scope.fetchConfigs = fetchConfigs.bind($scope);
     $scope.signout = signout.bind($scope);
     $scope.redirectCampaign = redirectCampaign.bind($scope);
+    $scope.userIsMember = false;
 
     activate();
 
@@ -43,10 +44,12 @@
           $translate.use($scope.user.language);
         }
         $scope.assemblyId = parseInt($stateParams.aid);
+        $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyId);
       }
       $scope.fetchAssembly($scope.assemblyId);
       $scope.shortname = "";
       $scope.readAssemblyByShortname = false;
+      console.log($scope.userIsMember);
     }
 
     function fetchAssembly(aid) {
@@ -100,6 +103,7 @@
             this.fetchOrganizations(assembly);
             this.fetchResources(assembly);
             this.fetchConfigs(assembly);
+            console.log(assembly);
           },
 
           error => {

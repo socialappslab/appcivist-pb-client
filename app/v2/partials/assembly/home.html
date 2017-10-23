@@ -31,7 +31,7 @@
         <p ng-if="assembly.location">
           <i class="fa fa-lg fa-map-marker"></i> {{assembly.location.placeName}}
         </p>
-        <a class="btn btn-default participate">{{'Participate' | translate}}</a>
+        <a class="btn btn-default participate" ng-if="isAnonymous || !userIsMember" data-toggle="modal" data-target="#signupModal">{{'Participate' | translate}}</a>
       </div>
     </section>
 

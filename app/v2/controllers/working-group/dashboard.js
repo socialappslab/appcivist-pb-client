@@ -103,6 +103,10 @@
       })
 
       $scope.resources = {};
+      // user is member of Assembly
+      $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyID);
+      $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+      $scope.userIsAdmin = Memberships.userIsAdmin();
     }
 
     function loadAssembly() {

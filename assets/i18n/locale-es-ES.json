@@ -1227,5 +1227,6 @@
   "import.ideas.csv-description": "Each line of your CSV should represent one contribution, detailed by the following columns, with * indicating mandatory fields. The last three columns are about the author of the idea. If you have more than one author, repeat the trio of columns (name, email, phone) for each of them:",
   "Participatory Budgeting": "Presupuesto Participativo",
   "Participatory Policy Making": "Planificación Participativa de Políticas Públicas",
-  "landing.who-is-using-it": "Quién lo usa?"
+  "landing.who-is-using-it": "Quién lo usa?",
+  "Assigned ideas": "Ideas asignadas"
 }

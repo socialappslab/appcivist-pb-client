@@ -53,7 +53,7 @@
             <li class="overlay_button">
               <a data-toggle="modal" data-target="#assignedIdeas">
                 <i class="fa fa-lightbulb-o fa-lg"></i><span>{{'Assigned ideas'|translate}}</span>
-                <span class="number" ng-if="myWorkingGroups.length > 0 || otherWorkingGroups.length > 0">({{myWorkingGroups.length+otherWorkingGroups.length}})</span>
+                <span class="number" ng-if="resources.relatedContributions.length > 0">({{resources.relatedContributions.length}})</span>
               </a>
             </li>
             <li class="overlay_button">
@@ -269,7 +269,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
         <h3 class="modal-title" id="ideasLabel">{{wg.name}}</h3>
-        <p>{{ 'Contributing ideas' | translate }}</p>
+        <p>{{ 'Assigned ideas' | translate }}</p>
       </div>
       <div class="modal-body">
         <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)"
@@ -288,7 +288,7 @@
         <ul class="workingGroupList" ng-if="resources.relatedContributions && resources.relatedContributions.length > 0">
           <li ng-repeat="contribution in resources.relatedContributions track by $index">
             <a class="workingGroupLink" ng-href="#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/contribution/{{contribution.contributionId}}">
-              <span>{{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}</span>
+              <span>{{contribution.title|limitTo:50}}{{(contribution.title.length) > 50 ? '...' : '.' }}</span>
             </a>
             <span class="number clickable" ng-click="removeContributingIdea(contribution)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
           </li>

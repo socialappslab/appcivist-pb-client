@@ -129,6 +129,7 @@
         <span translate='import.column.author-email' uib-tooltip="{{'import.column.description.author-email'|translate}}"></span>
         </code>
         <input type="file" name="upload" fileread on-file-read="vm.setFile($file)">
+       <label><input type="checkbox" name="createThemes" ng-model="vm.importCreateThemes">{{'Create Themes themes if they do not exist'|translate}}</label>
         <a class="button__modal_submit" ng-click="vm.submit()">{{'Upload' | translate}}</a>
       </fieldset>
     </div>

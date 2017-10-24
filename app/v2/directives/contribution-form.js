@@ -160,6 +160,7 @@
         status: this.isIdea ? 'PUBLISHED' : 'DRAFT',
         cover: {}
       };
+      this.importCreateThemes = false;
 
       this.addNewAuthor(true);
 
@@ -416,10 +417,11 @@
       Pace.start();
       var self = this;
       var url = localStorageService.get('serverBaseUrl');
-      url += '/assembly/{aid}/campaign/{cid}/contribution/import?type={type}';
+      url += '/assembly/{aid}/campaign/{cid}/contribution/import?type={type}&createThemes={createThemes}';
       url = url.replace('{aid}', this.assembly.assemblyId);
       url = url.replace('{cid}', this.campaign.campaignId);
       url = url.replace('{type}', this.type);
+      url = url.replace('{createThemes}', this.importCreateThemes);
       var fd = new FormData();
       fd.append('file', this.file.csv);
       $http.post(url, fd, {

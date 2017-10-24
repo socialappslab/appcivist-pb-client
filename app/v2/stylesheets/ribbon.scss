@@ -1,0 +1,24 @@
+.ribbon-wrapper {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  z-index: 99;
+  .ribbon {
+    display: none;
+    padding: 0.1rem 0;
+    color: white;
+    transform: rotate(-45deg);
+    text-align: center;
+    margin-top: 3.5rem;
+    margin-left: -2.1rem;
+    width: 200px;
+    font-size: 0.8rem;
+    &.published, &.new, &.excluded { display: block; }
+    &.published { background-color: #28571D; }
+    &.new { background-color: #58A547; }
+    &.excluded { background-color: #949494; }
+  }
+}

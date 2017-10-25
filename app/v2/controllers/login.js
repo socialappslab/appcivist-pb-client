@@ -31,6 +31,7 @@
     }
 
     function login() {
+      window.Pace.restart();
       if (!$scope.user.email || !$scope.user.password) {
         Notify.show('Email and password are required', 'error');
         return;
@@ -55,7 +56,7 @@
         var rsp = Space.configs(assembly.resourcesResourceSpaceId).get();
         rsp.$promise.then(function(data){
           $scope.assemblyConfig = data;
-
+          window.Pace.stop();
           if ($scope.assemblyConfig
               && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage']
               && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] === 'TRUE') {
@@ -66,12 +67,14 @@
           }
 
         }, function(error) {
+            window.Pace.stop();
             Notify.show('Error while trying to fetch assembly config', 'error');
         });
       });
     }
 
     function loginError(error) {
+      window.Pace.stop();
       console.log(error);
       var msg = 'Error while trying to authenticate to the server';
 

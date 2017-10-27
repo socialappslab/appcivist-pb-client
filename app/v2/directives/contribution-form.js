@@ -151,6 +151,7 @@
         text: '',
         workingGroupAuthors: [],
         nonMemberAuthors: [],
+        authors: [],
         existingThemes: [],
         officialThemes: [],
         emergentThemes: [],

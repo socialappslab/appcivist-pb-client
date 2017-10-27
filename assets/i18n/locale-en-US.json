@@ -1071,7 +1071,7 @@
   "Title of Idea": "Title of Idea",
   "Idea Themes": "Idea Themes",
   "idea.form.themes.description": "Click on the field to see the list of Themes of '{{ title }}'. Select the theme(s) that best categorize your idea (at least one).",
-  "Idea Author(s) Information": "Idea Author(s) Information",
+  "Idea Author(s) Information": "Idea Author(s) Complementary Information",
   "idea.form.keywords": "Add the keywords that best describe your idea. Write one keyword at a time. Press enter to confirm the keyword.",
   "Idea Keywords": "Idea Keywords",
   "optional.survey.info": "The following information will help make civic participation more inclusive and effective by letting researchers know who participates. We respect your privacy and will never publish this information anywhere. You are not required to provide this information.",
@@ -1232,5 +1232,7 @@
   "Title of Proposal": "Title of Proposal",
   "What is your Proposal?": "What is your Proposal?",
   "Proposal Themes": "Proposal Themes",
-  "Proposal Keywords": "Proposal Keywords"
+  "Proposal Keywords": "Proposal Keywords",
+  "contribution.form.add-authors.disclaimer": "Use this field to add authors besides yourself. You can select users who have already signup to participate in this initiative, or simply write the name of a person who has not signed up and add them by name. You will have to add their emails in the complementary information section.",
+  "Email is required": "Email is required"
 }

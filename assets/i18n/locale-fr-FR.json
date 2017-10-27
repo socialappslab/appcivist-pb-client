@@ -1232,5 +1232,7 @@
   "Title of Proposal": "Titre de la proposition",
   "What is your Proposal?": "Quelle est votre proposition?",
   "Proposal Themes": "Thèmes de proposition",
-  "Proposal Keywords": "Mots clés de proposition"
+  "Proposal Keywords": "Mots clés de proposition",
+  "contribution.form.member-author.disclaimer": "Utilisez ce champ pour rechercher et ajouter d'autres utilisateurs, déjà inscrits à cette initiative, en tant qu'auteurs de cette contribution",
+  "Email is required": "Email est requis"
 }

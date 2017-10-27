@@ -1101,7 +1101,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
 
 /**
  * Etherpad factory.
- *  
+ *
  * @description
  *
  * Defines methods to interact with etherpad.

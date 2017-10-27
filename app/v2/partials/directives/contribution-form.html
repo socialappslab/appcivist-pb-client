@@ -111,8 +111,11 @@
         <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['authors']">
           <fieldset class="user__assignment">
             <p class="intro bold" for="authors">{{'Authors' | translate}}</p>
+            <span ng-if="vm.isIdea">
+              {{'contribution.form.add-authors.disclaimer' | translate }}
+            </span>
             <tags-field id="authors" load-items="vm.loadAuthors(query)" options="vm.authorsOptions" selected="vm.contribution.authors"
-                        prefetch="true" disabled="vm.isAuthorsDisabled"></tags-field>
+                        prefetch="true" disabled="vm.isAuthorsDisabled" can-add="vm.isIdea"></tags-field>
           </fieldset>
         </div>
 
@@ -133,18 +136,16 @@
         <div class="field__container assign_proposal_to_users nonmember_author" ng-if="vm.isIdea && vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">
           <fieldset class="user__assignment">
             <uib-accordion close-others="true">
-              <div uib-accordion-group ng-repeat="author in vm.contribution.nonMemberAuthors" is-open="author.isOpen">
+              <div uib-accordion-group ng-repeat="author in vm.contribution.authors" is-open="author.isOpen">
                 <uib-accordion-heading>
                   <i class="pull-right fa fa-trash" ng-click="$event.stopPropagation();$event.preventDefault();vm.deleteAuthor(author)"></i>
                   <h5 ng-if="!author.name">{{'Author Information' | translate}}</h5>
-                  <h5 ng-if="author.name">{{author.name}}</h5>
+                  <h5 ng-if="author.name">{{author.name}}<span ng-if="!author.email" style="color: darkred;">&nbsp;&nbsp;({{'Email is required'|translate}})</span></h5>
                 </uib-accordion-heading>
-                <nonmember-author-form id="non-member-authors" author="author" ng-disabled="vm.disabled" form="contributionForm"></nonmember-author-form>
+                <nonmember-author-form id="non-member-authors" author="author" ng-disabled="vm.disabled" form="contributionForm" is-member="!author.userId.includes('tmp')"></nonmember-author-form>
               </div>
             </uib-accordion>
           </fieldset>
-
-          <button type="button" class="btn btn-default" ng-click="vm.addNewAuthor(false, $event)">{{'Add another author' | translate}}</button>
         </div>
 
         <div ng-if="vm.isAnonymous" class="col-*-12" vc-recaptcha ng-model="vm.recaptchaResponse" on-success="vm.setCaptchaResponse(response)"

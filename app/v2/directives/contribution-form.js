@@ -164,8 +164,6 @@
       };
       this.importCreateThemes = false;
 
-      this.addNewAuthor(true);
-
       this.contribution.location = this.contribution.location || {};
       this.contribution.addedThemes = [];
 
@@ -189,6 +187,7 @@
       } else {
         this.assembly = localStorageService.get('currentAssembly');
         this.user = localStorageService.get('user');
+        this.contribution.authors.push(this.user);
         this.recaptchaResponseOK = true;
       }
       this.values = {};
@@ -516,7 +515,8 @@
     function contributionSubmit() {
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
-      payload.existingThemes = payload.officialThemes;
+      payload.existingThemes = payload.officialThemes || [];
+      payload.emergentThemes = payload.emergentThemes || [];
       payload.emergentThemes.forEach(t => {
 
         if (angular.isNumber(t.themeId)) {
@@ -527,8 +527,17 @@
         }
       });
       payload.emergentThemes = payload.emergentThemes.filter(t => t.themeId === undefined);
-      if(payload.nonMemberAuthors)
-        payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
+
+      if (payload.authors) {
+        for (var index=0; index<payload.authors.length; index++) {
+          let author = payload.authors[index];
+          if(author && typeof author.userId === "string" && author.userId.includes("tmp")) {
+            _.remove(payload.authors, { userId: author.userId });
+            delete author.userId;
+            payload.nonMemberAuthors.push(author);
+          }
+        }
+      }
 
       // we save a reference to the authors list with their custom fields values.
       this.nonMemberAuthorsRef = payload.nonMemberAuthors;
@@ -537,8 +546,7 @@
         Notify.show('The form is invalid: you must fill all required values', 'error');
         return;
       }
-      Pace.stop();
-      Pace.start();
+      Pace.restart();
       let rsp;
 
       if (this.mode === 'create') {
@@ -680,6 +688,28 @@
         });
       }
 
+      if (contribution.authors) {
+        contribution.authors.forEach(ma => {
+          let ref = _.find(this.nonMemberAuthorsRef, {email: ma.email, name: ma.name});
+          if (ref && ref.customFieldValues) {
+            _.forIn(ref.customFieldValues, cfv => {
+              let value = cfv.value;
+              // if it corresponds to a multiple choice field, store each selected option as a custom value.
+              if (!angular.isArray(value)) {
+                value = [value];
+              }
+
+              value.forEach(v => payload.customFieldValues.push({
+                customFieldDefinition: cfv.customFieldDefinition,
+                value: v.value || v,
+                entityTargetType: 'APPCIVIST_USER',
+                entityTargetUuid: ma.uuid,
+              }));
+            });
+          }
+        });
+      }
+
       if (this.mode === 'create') {
         rsp = Space.fieldsValues(sid).save(payload).$promise;
       } else {
@@ -779,7 +809,7 @@
      * @param {Object} author
      */
     function deleteAuthor(author) {
-      _.remove(this.contribution.nonMemberAuthors, { tmpId: author.tmpId });
+      _.remove(this.contribution.authors, { userId: author.userId });
     }
 
     /**

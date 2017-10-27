@@ -348,11 +348,21 @@
         campaignId = this.contribution.campaignIds[0];
       }
 
+      let filters = {themeType: type};
+      if (query && query.query && query.query !== "") {
+        filters.query = query.query;
+      }
       if (this.isAnonymous) {
         campaignId = this.campaign.uuid;
-        return Campaigns.themes(null, null, true, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+        return Campaigns.themes(null, null, true, campaignId,filters).then(
+          themes => {
+            return themes;
+          });
       } else {
-        return Campaigns.themes(this.assembly.assemblyId, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+        return Campaigns.themes(this.assembly.assemblyId, campaignId,this.isAnonymous,null,filters).then(
+          themes => {
+            return themes;
+          });
       }
     }
 

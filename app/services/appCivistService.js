@@ -1101,7 +1101,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
 
 /**
  * Etherpad factory.
- *
+ *  
  * @description
  *
  * Defines methods to interact with etherpad.
@@ -1131,9 +1131,9 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
       if (/p\/r\./.test(resourceUrl)) {
         if (/etherpad\.appcivist\.org/.test(resourceUrl)) {
           resourceUrl = resourceUrl.replace("http://","https://");
-          if (writeEmbed) {
-            resourceUrl = resourceUrl.split("/p")[0]+"/p/"+id;
-          }
+        }
+        if (writeEmbed) {
+          resourceUrl = resourceUrl.split("/p")[0]+"/p/"+id;
         }
         url = resourceUrl;
       }

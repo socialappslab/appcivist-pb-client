@@ -51,12 +51,12 @@
   FormCtrl.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter', '$state', '$scope', '$stateParams', 'Captcha', '$attrs'
+    '$filter', '$state', '$scope', '$stateParams', 'Captcha', '$attrs', '$translate'
   ];
 
   function FormCtrl(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter, $state, $scope, $stateParams, Captcha, $attrs) {
+    $filter, $state, $scope, $stateParams, Captcha, $attrs, $translate) {
     this.init = init.bind(this);
     this.initEdit = initEdit.bind(this);
     this.initCreate = initCreate.bind(this);
@@ -94,6 +94,7 @@
     this.isIdea = this.type === 'IDEA';
     this.isProposal = this.type === 'PROPOSAL';
     this.tmpAuthorIDCount = 0;
+
 
     function setFile(file) {
       this.file.csv = file;
@@ -192,9 +193,9 @@
       }
       this.values = {};
       this.tinymceOptions = this.getEditorOptions();
-
       if (this.user) {
         this.verifyMembership();
+        $translate.use(this.user.lang);
       }
       this.hiddenFieldsMap = {};
       let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];

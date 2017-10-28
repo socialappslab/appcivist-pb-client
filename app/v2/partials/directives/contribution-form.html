@@ -129,8 +129,8 @@
         </div>
 
         <!-- Non Member Author -->
-        <p class="intro bold" ng-if="vm.isIdea">{{'Idea Author(s) Information' | translate}}</p>
-        <span ng-if="vm.isIdea">
+        <p class="intro bold" ng-if="vm.isIdea && vm.isCreate">{{'Idea Author(s) Information' | translate}}</p>
+        <span ng-if="vm.isIdea && vm.isCreate">
           {{'idea.form.author.disclaimer' | translate : vm.campaign}}
         </span>
         <div class="field__container assign_proposal_to_users nonmember_author" ng-if="vm.isIdea && vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">

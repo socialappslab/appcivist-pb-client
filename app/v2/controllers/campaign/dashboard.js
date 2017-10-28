@@ -67,7 +67,7 @@
 
       $scope.pageSize = 12;
       $scope.showPagination = false;
-      $scope.sorting = "date_desc";
+      $scope.sorting = "popularity_desc";
       $scope.filters = {
         searchText: '',
         themes: [],

@@ -1,9 +1,9 @@
 <form name="contributionForm">
   <!-- IDEAS FORM  -->
-  <div class="modal_content__add_proposal" ng-if="vm.isIdea && !vm.importOnlyForm">
+  <div class="modal_content__add_proposal" ng-if="!vm.importOnlyForm">
     <header class="modal-header" ng-style="vm.coverPhotoStyle">
       <div class="file-field">
-        <div class="add-button">
+        <div class="add-button" ng-if="vm.isIdea">
           <button class="btn add-button-item" type="button" ngf-select="vm.uploadFile($file, 'cover')" accept="*/*" ngf-max-size="{{vm.coverPhotoSize}}MB">
             {{ 'Edit Cover Photo' |  translate}}
           </button>
@@ -12,10 +12,10 @@
           </div>
         </div>
       </div>
-
+      <!-- Title -->
       <div class="field__container" ng-if="!vm.hiddenFieldsMap['title']">
         <input ng-model="vm.contribution.title" class="title" ng-required="true" ng-disabled="vm.disabled" id="add_proposal__title"
-          type="text" placeholder="{{ 'Title of Idea' | translate }}..." name="title" ng-maxlength="50">
+          type="text" placeholder="{{ vm.type === 'IDEA' ? ('Title of Idea' | translate ) : ('Title of Proposal' | translate) }}..." name="title" ng-maxlength="50">
         <div ng-messages="contributionForm.title.$error" style="color:maroon" role="alert">
           <div ng-message="required">{{'This field is required' | translate}}</div>
           <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
@@ -26,7 +26,10 @@
       <fieldset>
         <!-- Description -->
         <div class="field__container" ng-if="!vm.hiddenFieldsMap['description']">
-          <p for="add_proposal__description" class="bold">{{'What is your Idea?' | translate}} <abbr title="Required">*</abbr></p>
+          <p for="add_proposal__description" class="bold">
+            {{vm.type === 'IDEA' ? ('What is your Idea?' | translate) : ('What is your Proposal?' | translate)}}
+            <abbr title="Required">*</abbr>
+          </p>
           <label>{{'Where will this occur? Who will benefit? Why is this needed?' | translate}}</label>
           <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.contribution.text" ng-required="true" ng-disabled="disabled" id="add_proposal__description"
             name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
@@ -34,17 +37,30 @@
             <div ng-message="required">{{'This field is required' | translate}}</div>
           </div>
           <div style="color:maroon" role="alert">
-            <div ng-show="contribution.text.length > 200">{{'Value is too long' | translate}}, 200 {{'characters allowed' | translate}}</div>
+            <div ng-show="contribution.text.length > 500">{{'Value is too long' | translate}}, 500 {{'characters allowed' | translate}}</div>
           </div>
         </div>
 
+        <!-- Working Group -->
+        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && vm.isCreate && !vm.hiddenFieldsMap['working-group']">
+          <p class="intro bold" for="workingGroup">{{'Working Group' | translate}}<abbr title="Required">*</abbr></p>
+          <select id="workingGroup" name="workingGroup" ng-model="vm.selectedGroup" ng-required="vm.isProposal"
+                  ng-disabled="vm.disabled || vm.disableGroupSelection" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
+            <option value="">{{'Select a working group' | translate}}</option>
+          </select>
+          <div ng-messages="contributionForm.workingGroup.$error" style="color:maroon" role="alert">
+            <div ng-message="required">{{'This field is required' | translate}}</div>
+          </div>
+        </div>
 
         <!-- Themes -->
         <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['officialThemes']">
           <fieldset class="add_proposal__availble_themes">
-            <p class="intro bold">{{'Idea Themes' | translate}} *</p>
+            <p class="intro bold">
+              {{vm.type === 'IDEA' ? ('Idea Themes' | translate) : ('Proposal Themes' | translate)}}<abbr title="Required">*</abbr>
+            </p>
             <label class="add_proposal__categories_label">{{'idea.form.themes.description' | translate : vm.campaign}}</label>
-            <tags-field load-items="vm.loadOfficialThemes(query)" options="vm.themesOptions" selected="vm.contribution.officialThemes"
+            <tags-field load-items="vm.loadOfficialThemes({query: query})" options="vm.themesOptions" selected="vm.contribution.officialThemes"
               prefetch="true" disabled="vm.disabled"></tags-field>
           </fieldset>
         </div>
@@ -53,44 +69,83 @@
         <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['emergentThemes']">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro bold">
-              {{'Idea Keywords' | translate}}
+              {{vm.type === 'IDEA' ? ('Idea Keywords' | translate) : ('Proposal Keywords' | translate)}}
               <i class="fa fa-question-circle" tooltip-placement="right" uib-tooltip="{{'help.tooltip.idea.form.keywords' | translate}}"
                 data-toggle="tooltip" data-placement="right" title=""></i>
             </p>
             <label class="add_proposal__categories_label">{{'idea.form.keywords' | translate}}</label>
-            <tags-field load-items="vm.loadEmergentThemes(query)" options="vm.themesOptions" selected="vm.contribution.emergentThemes"
+            <tags-field load-items="vm.loadEmergentThemes({query: query})" options="vm.themesOptions" selected="vm.contribution.emergentThemes"
               prefetch="true" disabled="vm.disabled" can-add="true"></tags-field>
           </fieldset>
         </div>
 
+        <!-- Location -->
+        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['location']">
+          <fieldset class="add_proposal__availble_themes">
+            <p class="intro bold" for="location">{{'Location' | translate}}</p>
+            <input id="location" name="location" ng-model="vm.contribution.location.placeName" placeholder="{{'Location' | translate}}"
+                   ng-disabled="vm.disabled" ng-maxlength="50">
+            <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
+              <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>
+            </div>
+            <!-- TODO add map pinning -->
+          </fieldset>
+        </div>
+
+        <!-- Status -->
+        <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && !vm.hiddenFieldsMap['status']">
+          <p class="intro bold" for="status">{{'Status' | translate}}</p>
+          <select id="status" name="status" ng-model="vm.contribution.status" ng-disabled="disabled" style="height: 42px; width: 100%;">
+            <option value="DRAFT">{{'Draft' | translate}}</option>
+            <option value="PUBLISHED">{{'Published' | translate}}</option>
+          </select>
+        </div>
+
+        <!-- Pinned? -->
+        <div class="field__container" ng-if="vm.isProposal && vm.userIsAssemblyCoordinator && !vm.hiddenFieldsMap['pin']">
+          <p class="intro bold" for="pinned">{{'Pin contribution to make it always avaialable' | translate}}</p>
+          <input id="pinned" type="checkbox" ng-model="vm.contribution.pinned" />
+        </div>
+
+        <!-- Authors -->
+        <div class="field__container assign_proposal_to_users" ng-if="vm.isCreate && !vm.hiddenFieldsMap['authors']">
+          <fieldset class="user__assignment">
+            <p class="intro bold" for="authors">{{'Authors' | translate}}</p>
+            <span ng-if="vm.isIdea">
+              {{'contribution.form.add-authors.disclaimer' | translate }}
+            </span>
+            <tags-field id="authors" load-items="vm.loadAuthors(query)" options="vm.authorsOptions" selected="vm.contribution.authors"
+                        prefetch="true" disabled="vm.isAuthorsDisabled" can-add="vm.isIdea"></tags-field>
+          </fieldset>
+        </div>
+
+        <!-- Custom Fields -->
         <div class="field__container" ng-if="(vm.campaignFields && vm.campaignFields.length) || (vm.componentFields && vm.componentFields.length)">
           <fieldset>
-            <p class="intro">{{'Custom information' | translate}}</p>
+            <p class="intro bold">{{'Custom information' | translate}}</p>
             <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
             <custom-field ng-repeat="field in vm.componentFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
           </fieldset>
         </div>
 
         <!-- Non Member Author -->
-        <p class="intro bold">{{'Idea Author(s) Information' | translate}}</p>
-        <span>
+        <p class="intro bold" ng-if="vm.isIdea && vm.isCreate">{{'Idea Author(s) Information' | translate}}</p>
+        <span ng-if="vm.isIdea && vm.isCreate">
           {{'idea.form.author.disclaimer' | translate : vm.campaign}}
         </span>
-        <div class="field__container assign_proposal_to_users nonmember_author" ng-if="vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">
+        <div class="field__container assign_proposal_to_users nonmember_author" ng-if="vm.isIdea && vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">
           <fieldset class="user__assignment">
             <uib-accordion close-others="true">
-              <div uib-accordion-group ng-repeat="author in vm.contribution.nonMemberAuthors" is-open="author.isOpen">
+              <div uib-accordion-group ng-repeat="author in vm.contribution.authors" is-open="author.isOpen">
                 <uib-accordion-heading>
                   <i class="pull-right fa fa-trash" ng-click="$event.stopPropagation();$event.preventDefault();vm.deleteAuthor(author)"></i>
                   <h5 ng-if="!author.name">{{'Author Information' | translate}}</h5>
-                  <h5 ng-if="author.name">{{author.name}}</h5>
+                  <h5 ng-if="author.name">{{author.name}}<span ng-if="!author.email" style="color: darkred;">&nbsp;&nbsp;({{'Email is required'|translate}})</span></h5>
                 </uib-accordion-heading>
-                <nonmember-author-form id="non-member-authors" author="author" ng-disabled="vm.disabled" form="contributionForm"></nonmember-author-form>
+                <nonmember-author-form id="non-member-authors" author="author" ng-disabled="vm.disabled" form="contributionForm" is-member="!author.userId.includes('tmp')"></nonmember-author-form>
               </div>
             </uib-accordion>
           </fieldset>
-
-          <button type="button" class="btn btn-default" ng-click="vm.addNewAuthor(false, $event)">{{'Add another author' | translate}}</button>
         </div>
 
         <div ng-if="vm.isAnonymous" class="col-*-12" vc-recaptcha ng-model="vm.recaptchaResponse" on-success="vm.setCaptchaResponse(response)"

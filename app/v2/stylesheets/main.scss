@@ -1193,6 +1193,11 @@ custom-field {
   width: 1000px;
 }
 
+.carousel .item img {
+  max-height: 768px;
+  min-width: auto;
+}
+
 // In order to test new topbar mockup uncomment the following
 @import "buttons";
 //import "../mockups/navigation-bar";

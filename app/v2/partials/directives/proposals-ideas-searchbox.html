@@ -64,17 +64,17 @@
   <div class="sort">
     <span class="widget__label h4">{{'Sort by' | translate}}</span>
     <ul class="sort_modes right">
-      <li class="sarch_mode__date" ng-click="setSorting('date')" ng-class="{active: sortingIs('date')}">
-        <a href="">{{'Date' | translate}}</a>
-        <i ng-if="sortingIs('date_desc')" class="fa fa-sort-down"></i>
-        <i ng-if="sortingIs('date_asc')" class="fa fa-sort-up"></i>
-        <!--<i ng-if="!sortingIs('date_asc') && !sortingIs('date_desc')" class="fa fa-sort-up"></i>-->
-      </li>
       <li class="sarch_mode__popularity" ng-click="setSorting('popularity')" ng-class="{active: sortingIs('popularity')}">
         <a href="">{{'Most voted' | translate}}</a>
         <i ng-if="sortingIs('popularity_desc')" class="fa fa-sort-down"></i>
         <i ng-if="sortingIs('popularity_asc')" class="fa fa-sort-up"></i>
         <!--<i ng-if="!sortingIs('popularity_asc') && !sortingIs('popularity_desc')" class="fa fa-sort-up"></i>-->
+      </li>
+      <li class="sarch_mode__date" ng-click="setSorting('date')" ng-class="{active: sortingIs('date')}">
+        <a href="">{{'Date' | translate}}</a>
+        <i ng-if="sortingIs('date_desc')" class="fa fa-sort-down"></i>
+        <i ng-if="sortingIs('date_asc')" class="fa fa-sort-up"></i>
+        <!--<i ng-if="!sortingIs('date_asc') && !sortingIs('date_desc')" class="fa fa-sort-up"></i>-->
       </li>
       <li ng-if="isAnonymous" class="sarch_mode__most_commented_public" ng-click="setSorting('most_commented_public')"
         ng-class="{active: sortingIs('most_commented_public')}">

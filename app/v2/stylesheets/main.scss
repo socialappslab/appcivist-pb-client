@@ -1189,6 +1189,15 @@ custom-field {
   display: flex;
 }
 
+.vex.vex-theme-plain .vex-content {
+  width: 1000px;
+}
+
+.carousel .item img {
+  max-height: 768px;
+  min-width: auto;
+}
+
 // In order to test new topbar mockup uncomment the following
 @import "buttons";
 //import "../mockups/navigation-bar";
@@ -1218,6 +1227,7 @@ custom-field {
 @import "working-group";
 @import "contributions-page";
 @import "voting-stage";
+@import "ribbon";
 @import "../partials/contribution/page";
 @import "../partials/contribution/add-attachment-form";
 @import "../partials/proposal/voting-summary-proposal-page";

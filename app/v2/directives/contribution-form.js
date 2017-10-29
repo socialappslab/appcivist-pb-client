@@ -51,12 +51,12 @@
   FormCtrl.$inject = [
     'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
     'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
-    '$filter', '$state', '$scope', '$stateParams', 'Captcha', '$attrs'
+    '$filter', '$state', '$scope', '$stateParams', 'Captcha', '$attrs', '$translate'
   ];
 
   function FormCtrl(WorkingGroups, localStorageService, Notify, Memberships,
     Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
-    $filter, $state, $scope, $stateParams, Captcha, $attrs) {
+    $filter, $state, $scope, $stateParams, Captcha, $attrs, $translate) {
     this.init = init.bind(this);
     this.initEdit = initEdit.bind(this);
     this.initCreate = initCreate.bind(this);
@@ -94,6 +94,7 @@
     this.isIdea = this.type === 'IDEA';
     this.isProposal = this.type === 'PROPOSAL';
     this.tmpAuthorIDCount = 0;
+
 
     function setFile(file) {
       this.file.csv = file;
@@ -151,6 +152,7 @@
         text: '',
         workingGroupAuthors: [],
         nonMemberAuthors: [],
+        authors: [],
         existingThemes: [],
         officialThemes: [],
         emergentThemes: [],
@@ -160,8 +162,7 @@
         status: this.isIdea ? 'PUBLISHED' : 'DRAFT',
         cover: {}
       };
-
-      this.addNewAuthor(true);
+      this.importCreateThemes = false;
 
       this.contribution.location = this.contribution.location || {};
       this.contribution.addedThemes = [];
@@ -186,13 +187,14 @@
       } else {
         this.assembly = localStorageService.get('currentAssembly');
         this.user = localStorageService.get('user');
+        this.contribution.authors.push(this.user);
         this.recaptchaResponseOK = true;
       }
       this.values = {};
       this.tinymceOptions = this.getEditorOptions();
-
       if (this.user) {
         this.verifyMembership();
+        $translate.use(this.user.lang);
       }
       this.hiddenFieldsMap = {};
       let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];
@@ -220,9 +222,9 @@
         height: 400,
         max_chars: 200,
         plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
+          'advlist autolink lists link charmap preview anchor',
           'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table contextmenu paste imagetools'
+          'insertdatetime table contextmenu paste'
         ],
         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
         images_upload_credentials: true,
@@ -347,11 +349,21 @@
         campaignId = this.contribution.campaignIds[0];
       }
 
+      let filters = {themeType: type};
+      if (query && query.query && query.query !== "") {
+        filters.query = query.query;
+      }
       if (this.isAnonymous) {
         campaignId = this.campaign.uuid;
-        return Campaigns.themes(null, null, true, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+        return Campaigns.themes(null, null, true, campaignId,filters).then(
+          themes => {
+            return themes;
+          });
       } else {
-        return Campaigns.themes(this.assembly.assemblyId, campaignId).then(themes => $filter('filter')(themes, { title: query, type }));
+        return Campaigns.themes(this.assembly.assemblyId, campaignId,this.isAnonymous,null,filters).then(
+          themes => {
+            return themes;
+          });
       }
     }
 
@@ -416,10 +428,11 @@
       Pace.start();
       var self = this;
       var url = localStorageService.get('serverBaseUrl');
-      url += '/assembly/{aid}/campaign/{cid}/contribution/import?type={type}';
+      url += '/assembly/{aid}/campaign/{cid}/contribution/import?type={type}&createThemes={createThemes}';
       url = url.replace('{aid}', this.assembly.assemblyId);
       url = url.replace('{cid}', this.campaign.campaignId);
       url = url.replace('{type}', this.type);
+      url = url.replace('{createThemes}', this.importCreateThemes);
       var fd = new FormData();
       fd.append('file', this.file.csv);
       $http.post(url, fd, {
@@ -502,7 +515,8 @@
     function contributionSubmit() {
       var vm = this;
       let payload = _.cloneDeep(this.contribution);
-      payload.existingThemes = payload.officialThemes;
+      payload.existingThemes = payload.officialThemes || [];
+      payload.emergentThemes = payload.emergentThemes || [];
       payload.emergentThemes.forEach(t => {
 
         if (angular.isNumber(t.themeId)) {
@@ -513,8 +527,17 @@
         }
       });
       payload.emergentThemes = payload.emergentThemes.filter(t => t.themeId === undefined);
-      if(payload.nonMemberAuthors)
-        payload.nonMemberAuthors.forEach(nma => delete nma.tmpId);
+
+      if (payload.authors) {
+        for (var index=0; index<payload.authors.length; index++) {
+          let author = payload.authors[index];
+          if(author && typeof author.userId === "string" && author.userId.includes("tmp")) {
+            _.remove(payload.authors, { userId: author.userId });
+            delete author.userId;
+            payload.nonMemberAuthors.push(author);
+          }
+        }
+      }
 
       // we save a reference to the authors list with their custom fields values.
       this.nonMemberAuthorsRef = payload.nonMemberAuthors;
@@ -523,8 +546,7 @@
         Notify.show('The form is invalid: you must fill all required values', 'error');
         return;
       }
-      Pace.stop();
-      Pace.start();
+      Pace.restart();
       let rsp;
 
       if (this.mode === 'create') {
@@ -666,6 +688,28 @@
         });
       }
 
+      if (contribution.authors) {
+        contribution.authors.forEach(ma => {
+          let ref = _.find(this.nonMemberAuthorsRef, {email: ma.email, name: ma.name});
+          if (ref && ref.customFieldValues) {
+            _.forIn(ref.customFieldValues, cfv => {
+              let value = cfv.value;
+              // if it corresponds to a multiple choice field, store each selected option as a custom value.
+              if (!angular.isArray(value)) {
+                value = [value];
+              }
+
+              value.forEach(v => payload.customFieldValues.push({
+                customFieldDefinition: cfv.customFieldDefinition,
+                value: v.value || v,
+                entityTargetType: 'APPCIVIST_USER',
+                entityTargetUuid: ma.uuid,
+              }));
+            });
+          }
+        });
+      }
+
       if (this.mode === 'create') {
         rsp = Space.fieldsValues(sid).save(payload).$promise;
       } else {
@@ -765,7 +809,7 @@
      * @param {Object} author
      */
     function deleteAuthor(author) {
-      _.remove(this.contribution.nonMemberAuthors, { tmpId: author.tmpId });
+      _.remove(this.contribution.authors, { userId: author.userId });
     }
 
     /**

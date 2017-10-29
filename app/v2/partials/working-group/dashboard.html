@@ -46,6 +46,25 @@
           <img src="{{wg.profile.icon}}" height="140" width="140" style="border-radius:50%;">
         </div>
       </div>
+
+      <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
+        <div class="overlay new_overlay" style="display: inline-flex">
+          <ul class="overlay_buttons">
+            <li class="overlay_button">
+              <a data-toggle="modal" data-target="#assignedIdeas">
+                <i class="fa fa-lightbulb-o fa-lg"></i><span>{{'Assigned ideas'|translate}}</span>
+                <span class="number" ng-if="resources.relatedContributions.length > 0">({{resources.relatedContributions.length}})</span>
+              </a>
+            </li>
+            <li class="overlay_button">
+              <a data-toggle="modal" data-target="#members">
+                <i class="fa fa-users fa-lg"></i><span>{{'Members'|translate}}</span>
+                <span class="number" ng-if="members.length > 0">({{members.length}})</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </header>
 
     <!-- Working Group Activity and Resources -->
@@ -100,12 +119,12 @@
     </div>
 
     <!-- Working Group Ideas and Proposals -->
-    <section class="proposals_and_ideas">
+    <section class="proposals_and_ideas wgdash">
       <!--Working Group Ideas and Proposals Buttons-->
       <!--TODO: ADD button to joing working group if the user who is visiting is not a member-->
       <div class="campaign__filters">
         <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">{{'Proposals' | translate}}</h2>
-        <a class="primary__button right proposals__add_new"
+        <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-4"
            ng-if="user != null && newProposalsEnabled"
            ng-click="openModal('proposalFormModal')">
           <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
@@ -242,3 +261,42 @@
 
   <modal open-if="modals.proposalFormModal" close="closeModal('proposalFormModal')" template-id="proposalFormModal"></modal>
 </main>
+
+<!-- Ideas Modal -->
+<div class="modal fade dashboardModal" id="assignedIdeas" tabindex="-1" role="dialog" aria-labelledby="documentsLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+        <h3 class="modal-title" id="ideasLabel">{{wg.name}}</h3>
+        <p>{{ 'Assigned ideas' | translate }}</p>
+      </div>
+      <div class="modal-body">
+        <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)"
+                                       contribution-type="associatedContributionsType"
+                                       space-id="wg.rsId"
+                                       space="resources"
+                                       assembly-id="assemblyID"
+                                       campaign-id="campaignID"
+                                       campaign-space-id="campaign.resourceSpaceId"
+                                       group-id="groupID"
+                                       parent-contribution-id="proposalID"></associated-contributions-form>
+
+        <div class="noContent" ng-if="!resources.relatedContributions || resources.relatedContributions.length === 0">
+          <h4>{{ 'There are no ideas associated to this contribution' | translate }}</h4>
+        </div>
+        <ul class="workingGroupList" ng-if="resources.relatedContributions && resources.relatedContributions.length > 0">
+          <li ng-repeat="contribution in resources.relatedContributions track by $index">
+            <a class="workingGroupLink" ng-href="#/v2/assembly/{{assemblyID}}/campaign/{{campaignID}}/contribution/{{contribution.contributionId}}">
+              <span>{{contribution.title|limitTo:50}}{{(contribution.title.length) > 50 ? '...' : '.' }}</span>
+            </a>
+            <span class="number clickable" ng-click="removeContributingIdea(contribution)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer text-left">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{wg.name}}</a>
+      </div>
+    </div>
+  </div>
+</div>

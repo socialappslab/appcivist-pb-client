@@ -14,18 +14,18 @@
     <!-- name -->
     <div class="field__container col-lg-12">
       <label>{{'Name of Author' | translate}}</label>
-      <input name="nonmemberName" type="text" ng-model="vm.author.name" placeholder="{{'Your name' | translate}}" ng-disabled="disabled">
+      <input name="nonmemberName" type="text" ng-model="vm.author.name" placeholder="{{'Your name' | translate}}" ng-disabled="vm.disabled || vm.isMember">
     </div>
 
     <!-- publishContact -->
     <div class="field__container col-lg-12">
       <label>{{'Would you like to publish the name of the author along with the idea?' | translate}}</label>
       <label>
-      <input type="radio" ng-model="vm.author.publishContact" value="true">
+      <input type="radio" ng-model="vm.author.publishContact" value="true" ng-disabled="vm.disabled || vm.isMember">
       {{'Yes' | translate}}
     </label>
       <label>
-      <input type="radio" ng-model="vm.author.publishContact" value="false">
+      <input type="radio" ng-model="vm.author.publishContact" value="false" ng-disabled="vm.disabled || vm.isMember">
       {{'No' | translate}}
     </label>
     </div>
@@ -33,7 +33,7 @@
     <!-- email -->
     <div class="field__container col-lg-12">
       <label>{{'Email Address' | translate}}</label>
-      <input type="email" name="email" ng-model="vm.author.email" placeholder="{{'Your email' | translate}}" ng-disabled="disabled"
+      <input type="email" name="email" ng-model="vm.author.email" placeholder="{{'Your email' | translate}}" ng-disabled="disabled || vm.isMember"
         ng-required="true">
       <div ng-messages="nonmemberForm.email.$error" style="color:maroon" role="alert">
         <div ng-message="required">{{'This field is required' | translate}}</div>
@@ -41,21 +41,21 @@
       </div>
     </div>
 
-    <!-- email -->
+    <!-- phone -->
     <div class="field__container col-lg-12">
       <label>{{'Phone Number (if you don’t have email)' | translate}}</label>
-      <input type="text" ng-model="vm.author.phone" placeholder="{{'Your phone number' | translate}}" ng-disabled="disabled">
+      <input type="text" ng-model="vm.author.phone" placeholder="{{'Your phone number' | translate}}" ng-disabled="disabled || vm.isMember">
     </div>
 
     <!-- subscribed -->
     <div class="field__container col-lg-12">
       <label>{{'Would you like to receive updates about your idea by email?' | translate}}</label>
       <label>
-      <input type="radio" ng-model="vm.author.subscribed" value="true">
+      <input type="radio" ng-model="vm.author.subscribed" value="true" ng-disabled="vm.disabled || vm.isMember">
       {{'Yes' | translate}}
     </label>
       <label>
-      <input type="radio" ng-model="vm.author.subscribed" value="false">
+      <input type="radio" ng-model="vm.author.subscribed" value="false" ng-disabled="vm.disabled || vm.isMember">
       {{'No' | translate}}
     </label>
     </div>

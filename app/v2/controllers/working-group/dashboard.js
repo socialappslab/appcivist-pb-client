@@ -101,6 +101,12 @@
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
       })
+
+      $scope.resources = {};
+      // user is member of Assembly
+      $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyID);
+      $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+      $scope.userIsAdmin = Memberships.userIsAdmin();
     }
 
     function loadAssembly() {
@@ -256,6 +262,8 @@
               $scope.$broadcast('filters:updateFilters',$scope.filters);
               Notify.show('Error while trying to fetch wg config', 'error');
             });
+
+            loadRelatedContributions();
           }
         },
         function (error) {
@@ -287,6 +295,25 @@
           );
         }
       }
+    }
+
+    function loadRelatedContributions() {
+      var rsp = Space.getContributions($scope.wg, 'IDEA', $scope.isAnonymous);
+      rsp.then(
+        function (data) {
+          var related = [];
+          angular.forEach(data.list, function (r) {
+            angular.forEach(r.workingGroupAuthors, function(w) {
+              if (w.groupId === $scope.groupID) related.push(r);
+            });
+          });
+          $scope.resources.relatedContributions = related;
+          console.log(related);
+        },
+        function (error) {
+          Notify.show('Error loading contributions from server', 'error');
+        }
+      );
     }
 
     function loadPublicCommentCount(sid) {

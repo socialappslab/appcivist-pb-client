@@ -1,13 +1,12 @@
 #signupModal {
-  .onboarding__logo {
-		margin: auto;
-		height: 10rem;
-		padding-top: 75px;
-		display: flex;
-	}
 	.onboarding__assembly {
 		color: #4A4A4A;
-		padding: 15px 0px 50px 0px;
+    padding: 15px 0px 50px 0px;
+    img {
+      margin: auto;
+      height: 9rem;
+      display: flex;
+    }
 	}
 	.onboarding__assembly_title {
 		margin:auto;
@@ -18,8 +17,8 @@
 	.onboarding__assembly_location {	
 		margin:auto;
 		width: 50%;
-		display: flex;
-		font-family: SourceSansPro-Regular;
+		//display: flex;
+		font-family: "Source Sans Pro", sans-serif;
 		font-size: 18px;
 		color: #4A4A4A;	
 		text-align: center;
@@ -40,7 +39,7 @@
 		background: #FFFFFF;
 		border: 1px solid #979797;
 		/* Email: */
-		font-family: AvenirNext-Regular;
+		font-family: "Avenir Next", sans-serif;
 		font-size: 15px;
 		color: #7C7C7C;
 		letter-spacing: -0.06px;
@@ -53,7 +52,7 @@
 	.onboarding__form_submit_button {
 		background: #292929;
 		border-radius: 4px;
-		font-family: SourceSansPro-Regular;
+		font-family: "Source Sans Pro", sans-serif;
 		font-size: 20px;
 		color: #FFFFFF;	
 		border-color: #FFFFFF;    
@@ -71,7 +70,7 @@
 	    display: block;
 	    margin-bottom: 15px;
 	    text-align: center;
-		font-family: SourceSansPro-Regular;
+      font-family: "Source Sans Pro", sans-serif;
 		font-size: 15px;
 		color: #292929;
 	}
@@ -99,7 +98,7 @@
 		border: 1px solid #979797;
 	}
 	.onboarding__form_social_separator_text {
-		font-family: SourceSansPro-Regular;
+		font-family: "Source Sans Pro", sans-serif;
 		font-size: 15px;
 		color: #292929;
 		margin-bottom: 15px;
@@ -127,7 +126,7 @@
 	}
 	.onboarding__form_social_button_text {
 		/* Connect with Faceboo: */
-		font-family: SourceSansPro-Regular;
+		font-family: "Source Sans Pro", sans-serif;
 		font-size: 20px;
 		color: #FFFFFF;
 	}	

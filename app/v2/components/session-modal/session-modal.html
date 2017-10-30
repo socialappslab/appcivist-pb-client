@@ -2,39 +2,42 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <div class="onboarding__logo"></div>
         <div class="onboarding__assembly">
-          <div class="onboarding__assembly_title">Assembly Title</div>
-          <div class="onboarding__assembly_location">
-            <i class="fa fa-map-marker onboarding__assembly_location_text_icon"></i>
-            <span class="onboarding__assembly_location_text">Assembly Location</span>
+          <figure class="photo" style="text-align: center;" ng-if="vm.assembly.profile.icon">
+            <img ng-src="{{vm.assembly.profile.icon}}" alt="Avatar" width="250px" />
+          </figure>
+          <div class="onboarding__assembly_title">{{vm.assembly.name}}</div>
+          <div class="onboarding__assembly_location" ng-if="vm.assembly.location" style="text-align:center">
+              <i class="fa fa-lg fa-map-marker"></i> {{vm.assembly.location.placeName}}
           </div>
         </div>
-        <form class="onboarding__form">
-            <input type="text" placeholder="Email"/>
-            <input type="text" placeholder="Password"/>
-            <button class="onboarding__form_submit_button">Sign in</button>
-            <div class="onboarding__form_links">
-              <a href="#">Forgot Password?</a>
-              <a href="#">I already have an account</a>
-              <a href="#">I don't have an account yet</a>
+        <form class="onboarding__form" ng-submit="vm.signup()">
+          <input class="form-input" type="text" ng-model="vm.user.email" placeholder="Email"/>
+          <input class="form-input" type="password" ng-model="vm.user.password" placeholder="Password"/>
+          <input class="form-input" type="password" ng-model="vm.user.repeatPassword" placeholder="Repeat password"/>
+          <input type="hidden" ng-model="vm.user.lang" ng-value="{{vm.assembly.lang}}"/>
+          <button class="onboarding__form_submit_button">Sign in</button>
+          <div class="onboarding__form_links">
+            <a href="#">Forgot Password?</a>
+            <a href="#">I already have an account</a>
+            <a href="#">I don't have an account yet</a>
+          </div>
+          <button href="#" class="onboarding__form_submit_button">Sign up</button>
+          <div class="onboarding__form_social">
+            <div class="onboarding__form_social_separator">
+              <div class="onboarding__form_social_separator_line1"><hr></div>
+              <div class="onboarding__form_social_separator_text">OR</div>
+              <div class="onboarding__form_social_separator_line2"><hr></div>
             </div>
-            <button href="#" class="onboarding__form_submit_button">Sign up</button>
-            <div class="onboarding__form_social">
-              <div class="onboarding__form_social_separator">
-                <div class="onboarding__form_social_separator_line1"><hr></div>
-                <div class="onboarding__form_social_separator_text">OR</div>
-                <div class="onboarding__form_social_separator_line2"><hr></div>
-              </div>
-              <button class="onboarding__form_social_button">
-                <i class="fa fa-facebook onboarding__form_social_button_icon"></i>
-                <span class="onboarding__form_social_button_text">Connect with Facebook</span>
-              </button>
-              <button class="onboarding__form_social_button">
-                <i class="fa fa-google onboarding__form_social_button_icon"></i>
-                <span class="onboarding__form_social_button_text">Connect with Google</span>
-              </button>
-            </div>
+            <button class="onboarding__form_social_button">
+              <i class="fa fa-facebook onboarding__form_social_button_icon"></i>
+              <span class="onboarding__form_social_button_text">Connect with Facebook</span>
+            </button>
+            <button class="onboarding__form_social_button">
+              <i class="fa fa-google onboarding__form_social_button_icon"></i>
+              <span class="onboarding__form_social_button_text">Connect with Google</span>
+            </button>
+          </div>
         </form>
       </div>
     </div>

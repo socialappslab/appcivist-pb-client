@@ -1,0 +1,134 @@
+#signupModal {
+  .onboarding__logo {
+		margin: auto;
+		height: 10rem;
+		padding-top: 75px;
+		display: flex;
+	}
+	.onboarding__assembly {
+		color: #4A4A4A;
+		padding: 15px 0px 50px 0px;
+	}
+	.onboarding__assembly_title {
+		margin:auto;
+		width: 50%;
+		font-size: 36px;
+		text-align: center;
+	}
+	.onboarding__assembly_location {	
+		margin:auto;
+		width: 50%;
+		display: flex;
+		font-family: SourceSansPro-Regular;
+		font-size: 18px;
+		color: #4A4A4A;	
+		text-align: center;
+	}
+	.onboarding__assembly_location_text_icon {
+		margin-left: auto;
+	}
+	.onboarding__assembly_location_text {
+		margin-right: auto;
+		padding-left: 15px;
+		text-align: center;
+	}
+	.onboarding__form {
+		margin:auto;
+	}
+	input {
+		/* Rectangle 6: */
+		background: #FFFFFF;
+		border: 1px solid #979797;
+		/* Email: */
+		font-family: AvenirNext-Regular;
+		font-size: 15px;
+		color: #7C7C7C;
+		letter-spacing: -0.06px;
+		padding: 12px;
+	    width: 50%;
+	    margin: auto;
+	    display: block;
+	    margin-bottom: 15px;
+	}
+	.onboarding__form_submit_button {
+		background: #292929;
+		border-radius: 4px;
+		font-family: SourceSansPro-Regular;
+		font-size: 20px;
+		color: #FFFFFF;	
+		border-color: #FFFFFF;    
+		width: 50%;
+	    margin: auto;
+	    display: block;
+	    margin-bottom: 15px;
+	    text-align: center;
+	    padding: 12px;
+	    text-decoration: none;
+	}
+	.onboarding__form_links {
+		width: 50%;
+	    margin: auto;
+	    display: block;
+	    margin-bottom: 15px;
+	    text-align: center;
+		font-family: SourceSansPro-Regular;
+		font-size: 15px;
+		color: #292929;
+	}
+	.onboarding__form_links a {
+		color: #292929;
+		display: block;
+	}
+	.onboarding__form_social_separator {
+		display: flex;
+	    margin: auto;
+	}
+	.onboarding__form_social_separator_line1 {
+		width: 20%;		
+		margin-left: auto;
+
+	}
+	.onboarding__form_social_separator_line2 {
+		width: 20%;
+		margin-right: auto;
+	}
+	.onboarding__form_social_separator_line1 hr {
+		border: 1px solid #979797;
+	}
+	.onboarding__form_social_separator_line2 hr {
+		border: 1px solid #979797;
+	}
+	.onboarding__form_social_separator_text {
+		font-family: SourceSansPro-Regular;
+		font-size: 15px;
+		color: #292929;
+		margin-bottom: 15px;
+	    text-align: center;
+	    padding-left: 12px;
+	    padding-right: 12px;
+	    text-decoration: none;
+	}
+	.onboarding__form_social_button{
+		background: #12493B;
+		border-radius: 4px;
+		border-color: #12493B;
+		width: 50%;
+	    margin: auto;
+	    display: block;
+	    margin-bottom: 15px;
+	    text-align: center;
+	    padding: 12px;
+	    text-decoration: none;
+	}
+	.onboarding__form_social_button_icon {
+		font-size: 20px;
+		color: #FFFFFF;
+		padding-right: 15px;
+	}
+	.onboarding__form_social_button_text {
+		/* Connect with Faceboo: */
+		font-family: SourceSansPro-Regular;
+		font-size: 20px;
+		color: #FFFFFF;
+	}	
+}

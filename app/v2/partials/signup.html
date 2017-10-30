@@ -3,16 +3,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <form name="newUserForm" id="signup_form" class="form-horizontal">
-          <div class="form-group" ng-class="{ 'has-error': newUserForm.username.$touched && newUserForm.username.$invalid }">
-              <label for="username" class="col-md-4 control-label">{{'Username'|translate}}*</label>
-              <div class="col-md-8">
-                  <input type="text" class="form-control" id="username"
-                         name="username" placeholder="{{'Desired Username'|translate}}"
-                         ng-required="true"
-                         ng-model="newUser.name"/>
-              </div>
-          </div>
+        <form name="newUserForm" id="signup_form" class="form-horizontal" ng-submit="signup()">
           <div class="form-group" ng-class="{ 'has-error': newUserForm.email.$touched && newUserForm.email.$invalid }">
               <label for="email" class="col-md-4 control-label">{{'Email'|translate}}*</label>
               <div class="col-md-8">
@@ -38,22 +29,11 @@
                          ng-model="newUser.repeatPassword"/>
               </div>
           </div>
-          <div class="form-group">
-              <label for="repeatPassword" class="col-md-4 control-label">{{'Language'|translate}}*</label>
-              <div class="col-md-8">
-                  <select id="selectLanguage" name="lang"
-                          class="form-control"
-                          ng-model="currentLocaleDisplayName"
-                          ng-options="localesDisplayName for localesDisplayName in localesDisplayNames"
-                          ng-change="changeLanguage(currentLocaleDisplayName)">
-                  </select>
-              </div>
-          </div>
           <!-- Submit button when new user is created via Signup Button -->
           <div class="form-group">
               <div class="col-md-offset-3 col-md-8">
                   <input type="submit" name="submit" class="btn btn-primary"
-                         id="submit_person" ng-click="signup()" value="{{'Submit'|translate}}"
+                         id="submit_person" value="{{'Submit'|translate}}"
                          ng-disabled="!newUserForm.$valid"/>
               </div>
           </div>

@@ -11,6 +11,7 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
   };
 
   this.signUp = function(user, scope, modalInstance, callback) {
+    console.log("Click?!");
     $rootScope.startSpinner();
     if (user.password && user.password.localeCompare(user.repeatPassword) != 0) {
       $rootScope.stopSpinner();

@@ -52,6 +52,19 @@
       console.log($scope.userIsMember);
     }
 
+    function signup() {
+      if ($scope.isAnonymous) {
+        if (!$scope.user.email || !$scope.user.password) {
+          Notify.show('Email and password are required', 'error');
+          return;
+        }
+        var rsp = AppCivistAuth.signUp().save($scope.user);
+        rsp.$promise.then(loginSuccess, loginError);
+      } else {
+        console.log("CLICKED!");
+      }
+    }
+
     function fetchAssembly(aid) {
       let rsp;
 

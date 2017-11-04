@@ -24,10 +24,10 @@
     });
 
     SessionModalCtrl.$inject = [
-    '$scope', 'loginService', 'AppCivistAuth', 'Notify'
+    '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'loginService', 'Assemblies', 'Space'
   ];
 
-  function SessionModalCtrl($scope, LoginService, AppCivistAuth, Notify) {
+  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Assemblies, Space) {
     
     this.$onInit = () => {
       this.user = {}
@@ -35,7 +35,12 @@
 
     this.signup = () => {
       window.Pace.restart();
+      this.user.lang = this.assembly.lang;
+      this.user.existingAssembly = {}
+      this.user.existingAssembly.assemblyId = this.assembly.assemblyId;
+      this.user.existingAssembly.uuid = this.assembly.uuid;
       console.log(this.user);
+      console.log(this.assembly);
       if (this.isAnonymous || this.isAnonymous === undefined) {
         if (!this.user.email || !this.user.password) {
           Notify.show('Email and password are required', 'error');
@@ -43,7 +48,7 @@
           return;
         }
         var rsp = AppCivistAuth.signUp().save(this.user);
-        rsp.$promise.then(signupSuccess, signupError);
+        rsp.$promise.then(this.signupSuccess, this.signupError);
       } else {
         console.log("CLICK");
       }
@@ -82,7 +87,7 @@
       });
     }
 
-    this.signupError = () => {
+    this.signupError = (error) => {
       window.Pace.stop();
       console.log(error);
       var msg = 'Error while trying to authenticate to the server';

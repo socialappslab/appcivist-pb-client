@@ -498,9 +498,9 @@
           <p>{{ 'textPadGdoc' | translate }}</p>
         </div>
         <div class="modal-body" style="min-height:0; position:unset">
-          <form>
+          <form ng-submit="embedPadGdoc()">
             <p>{{ 'textPadGdocInsertText' | translate }}</p>
-            <input type="text" placeholder="{{ 'textPadGdocPlaceholder' | translate }}">
+            <input type="url" required ng-model="newDocUrl" placeholder="{{ 'textPadGdocPlaceholder' | translate }}">
             <button type="submit" class="btn btn-default padGdoc">{{ 'textPadGdocSubmit' | translate }}</button>
           </form>
         </div>

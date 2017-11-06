@@ -1187,6 +1187,15 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
       );
     },
 
+    embedDocument(assemblyId, campaignId, contributionId, format, payload) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/document', {
+        aid: assemblyId,
+        cid: campaignId,
+        coid: contributionId,
+        typeDocument: format
+      }).save(payload).$promise
+    },
+
     getReadOnlyHtmlPublic(contributionUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:couuid/body?format=:format&rev=:rev',
         {

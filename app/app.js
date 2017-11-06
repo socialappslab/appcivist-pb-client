@@ -144,7 +144,7 @@
       '*://player.vimeo.com/**',
       '*://vallejopb.appcivist.org/**',
       '*://ctsfrance.appcivist.org/**',
-      '*://pb.appcivist.org/**'
+      '*://pb.appcivist.org/**',
     ]);
 
     /**

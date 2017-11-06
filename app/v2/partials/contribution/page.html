@@ -156,20 +156,16 @@
           <p translate="contribution.body"></p>
           <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad"></p>
           <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad">
-              <button class="btn btn-default proposal-btn">Etherpad</button>
-              <button class="btn btn-default proposal-btn">Google Docs</button>
-              <button class="btn btn-default proposal-btn">Default</button>
+              <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
+              <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
+              <!--<button class="btn btn-default proposal-btn">Default</button>-->
           </div>
           <div class="text-center" style="margin-top: 2rem" ng-if="extendedTextIsEtherpad && proposal.extendedTextPad">
             <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'"
                  class="etherpad__wrapper">
-              <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
-              <!--<iframe ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" name="embed_readonly"-->
-                      <!--ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px">-->
-              <!--</iframe>-->
               <div class="pad-html">
-                <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite" ng-src="{{etherpadReadWriteUrl}}"
-                        width="100%" height="600px">
+                <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite"
+                        ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
                 </iframe>
                 <iframe id="etherpadHTML" ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl" width="100%" height="600px"></iframe>
               </div>
@@ -180,7 +176,7 @@
             <div class="etherpad__wrapper">
               <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
               <iframe ng-if="(!userIsAuthor && gdocUrl)" name="embed_readonly"
-                      ng-src="{{gdocUrlMinimal}}" width="100%" height="600px">
+                      ng-src="{{gdocUrlMinimal}}" width="100%" height="600px" id="gdocHTML">
               </iframe>
               <iframe ng-if="userIsAuthor && writegDocUrl" name="embed_readwrite"
                       ng-src="{{writegDocUrl}}"
@@ -487,6 +483,9 @@
       </div>
     </div>
   </div>
+
+  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="gdoc"></contribution-embed-modal>
+  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="etherpad"></contribution-embed-modal>
 
   <script>
     $(document).ready(function() {

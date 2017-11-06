@@ -44,6 +44,7 @@
     $scope.toggleAssociateIdea = toggleAssociateIdea.bind($scope);
     $scope.removeContributingIdea = removeContributingIdea.bind($scope);
     $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
+    $scope.embedPadGdoc = embedPadGdoc.bind($scope);
 
     activate();
 
@@ -160,6 +161,7 @@
         }
       });
       $scope.resources = {};
+      $scope.newDocUrl = "";
     }
 
     function toggleOpenAddAttachment () {
@@ -975,6 +977,28 @@
         data => this.userFeedback = data,
         error => this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
       );
+    }
+
+    function embedPadGdoc() {
+      if ($scope.newDocUrl != "") {
+        let url = $scope.newDocUrl;
+        let regex = /\b\/edit/i;
+        let match = url.match(regex);
+        if (match != null) {
+          url = url.substr(0, match.index);
+        }
+        let payload = {
+          url: url
+        }
+        Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'gdoc', payload).then(
+          response => {
+            console.log(response)
+          },
+          error => Notify.show('Error while trying to embed the document', 'error')
+        )
+      } else {
+        Notify.show('Error while trying to embed the document', 'error')
+      }
     }
   }
 }());

@@ -19,38 +19,44 @@
       controllerAs: 'vm',
       templateUrl: '/app/v2/components/session-modal/session-modal.html',
       bindings: {
-        assembly: '<'
+        assembly: '<',
+        showLogin: '='
       }
     });
 
     SessionModalCtrl.$inject = [
-    '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'loginService', 'Assemblies', 'Space'
+      '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies'
   ];
 
-  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Assemblies, Space) {
-    
+  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies) {
+
     this.$onInit = () => {
       this.user = {}
     }
 
     this.signup = () => {
       window.Pace.restart();
-      this.user.lang = this.assembly.lang;
-      this.user.existingAssembly = {}
-      this.user.existingAssembly.assemblyId = this.assembly.assemblyId;
-      this.user.existingAssembly.uuid = this.assembly.uuid;
-      console.log(this.user);
-      console.log(this.assembly);
+      this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
+      this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
+      if (!this.showLogin) {
+        this.user.existingAssembly = {};
+        this.user.existingAssembly.assemblyId = $stateParams.aid;
+        this.user.existingAssembly.uuid = $stateParams.auuid;
+        this.user.lang = LocaleService.getLocale();
+      }
       if (this.isAnonymous || this.isAnonymous === undefined) {
         if (!this.user.email || !this.user.password) {
           Notify.show('Email and password are required', 'error');
           window.Pace.stop();
           return;
         }
-        var rsp = AppCivistAuth.signUp().save(this.user);
-        rsp.$promise.then(this.signupSuccess, this.signupError);
-      } else {
-        console.log("CLICK");
+        if (this.showLogin) {
+          var rsp = AppCivistAuth.signIn().save(this.user);
+          rsp.$promise.then(this.signupSuccess, this.signupError);
+        } else {
+          var rsp = AppCivistAuth.signUp().save(this.user);
+          rsp.$promise.then(this.signupSuccess, this.signupError);
+        }
       }
     }
 
@@ -58,11 +64,11 @@
       localStorageService.set('sessionKey', user.sessionKey);
       localStorageService.set('authenticated', true);
       localStorageService.set('user', user);
-      $scope.user = user;
-      if ($scope.user && $scope.user.language) {
-        $translate.use($scope.user.language);
+      this.user = user;
+      if (this.user && this.user.language) {
+        $translate.use(this.user.language);
       }
-      user.assembly = $scope.assembly ? $scope.assembly : null;
+      user.assembly = this.assembly ? this.assembly : null;
       loginService.loadAuthenticatedUserMemberships(user).then(function () {
         var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
         var assembly = localStorageService.get('currentAssembly');
@@ -79,7 +85,10 @@
             let campaign = ongoingCampaigns ? ongoingCampaigns[0] : null
             $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
           }
-
+          // $('#sessionModal').modal('hide');
+          $('#sessionModal').modal('hide');
+          $('body').removeClass('modal-open');
+          $('.modal-backdrop').remove();
         }, function(error) {
             window.Pace.stop();
             Notify.show('Error while trying to fetch assembly config', 'error');
@@ -98,5 +107,19 @@
       Notify.show(msg, 'error');
     }
 
+    this.toggleShowLogin = () => {
+      if (this.showLogin===undefined) {
+        this.showLogin = false;
+      }
+      this.showLogin = !this.showLogin;
+    }
+
+    this.redirectToForgotPassword = () => {
+      // #/v2/user/password/forgot
+      $('#sessionModal').modal('hide');
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove()
+      $state.go('v2.user.password.forgot', {}, { reload: true });
+    }
   }
 }());

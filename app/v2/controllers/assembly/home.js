@@ -254,10 +254,44 @@
     }
 
     function redirect() {
-      localStorageService.clearAll();
-      $state.go('v2.login', null, { reload: true }).then(function() {
-        location.reload();
-      });
+      let currentAssembly = localStorageService.get('currentAssembly');
+      let auuid = currentAssembly.uuid;
+      if ($state.params.cid) {
+        let currentCampaign = localStorageService.get('currentCampaign');
+        let cuuid = currentCampaign.uuid;
+        if ($state.params.coid) {
+          let currentContribution = localStorageService.get('currentContribution');
+          let couuid = currentContribution.uuid;
+          localStorageService.clearAll();
+          $state.go("v2.public.assembly.auuid.campaign.contribution.couuid",
+            {auuid: auuid, cuuid: cuuid, couuid: couuid});
+        } else if ($state.params.gid) {
+          let currentGroup = localStorageService.get('currentWorkingGroup');
+          let guuid = currentGroup.uuid;
+          if ($state.params.pid) {
+            let currentContribution = localStorageService.get('currentContribution');
+            let puuid = currentContribution.uuid;
+            localStorageService.clearAll();
+            $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal.puuid",
+              {auuid: auuid, cuuid: cuuid, guuid: guuid, puuid: puuid},
+              {reload: true});
+          } else {
+            localStorageService.clearAll();
+            $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
+              {auuid: auuid, cuuid: cuuid, guuid: guuid},
+              {reload: true});
+          }
+        } else {
+          localStorageService.clearAll();
+          $state.go("v2.public.assembly.auuid.campaign.cuuid.dashboard",
+            {auuid: auuid, cuuid: cuuid},
+            {reload: true});
+        }
+      } else  {
+        localStorageService.clearAll();
+        $state.go("v2.public.assembly.auuid.home", {auuid: auuid}, {reload: true});
+      }
+      location.reload();
     }
 
     function redirectCampaign(assembly, campaign) {

@@ -7,11 +7,11 @@
 
   AssemblyHomeCtrl.$inject = [
     '$state', '$scope', 'loginService', 'localStorageService', 'Campaigns', 'Utils', 'WorkingGroups',
-    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth', '$translate', 'Memberships'
+    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth', '$translate', 'Memberships', '$rootScope'
   ];
 
   function AssemblyHomeCtrl($state, $scope, loginService, localStorageService, Campaigns, Utils,
-    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth, $translate, Memberships) {
+    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth, $translate, Memberships, $rootScope) {
 
     $scope.fetchCampaigns = fetchCampaigns.bind($scope);
     $scope.fetchWorkingGroups = fetchWorkingGroups.bind($scope);
@@ -95,6 +95,7 @@
             if (this.isAnonymous) {
               if (this.assembly && this.assembly.lang) {
                 $translate.use(this.assembly.lang);
+                localStorageService.set('anonymousAssembly',this.assembly);
               }
               this.assemblyId = this.assembly.uuid;
             } else {
@@ -266,11 +267,13 @@
 
     function loadSigninModal () {
       $scope.sessionModalIsSignIn = true;
+      $rootScope.$broadcast("SessionModal:setSessionModalIsSignIn");
       $('#sessionModal').modal('show');
     }
 
     function loadSignupModal () {
       $scope.sessionModalIsSignIn = false;
+      $rootScope.$broadcast("SessionModal:setSessionModalIsSignUp");
       $('#sessionModal').modal('show');
     }
 

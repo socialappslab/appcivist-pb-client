@@ -32,15 +32,21 @@
 
     this.$onInit = () => {
       this.user = {}
+      this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
+      this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
+
     }
 
     this.signup = () => {
       window.Pace.restart();
-      this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
-      this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
       if (!this.showLogin) {
         this.user.existingAssembly = {};
-        this.user.existingAssembly.assemblyId = $stateParams.aid;
+        if (typeof $stateParams.aid === "number") {
+          this.user.existingAssembly.assemblyId = $stateParams.aid;
+        } else {
+          this.user.existingAssembly.shortname = $stateParams.aid;
+        }
+
         this.user.existingAssembly.uuid = $stateParams.auuid;
         this.user.lang = LocaleService.getLocale();
       }

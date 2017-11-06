@@ -22,6 +22,8 @@
     $scope.signout = signout.bind($scope);
     $scope.loadSigninModal = loadSigninModal.bind($scope);
     $scope.loadSignupModal = loadSignupModal.bind($scope);
+    $scope.setSessionModalIsSignIn = setSessionModalIsSignIn .bind($scope);
+    $scope.setSessionModalIsSignUp = setSessionModalIsSignUp .bind($scope);
     activate();
 
     function activate() {
@@ -71,8 +73,17 @@
       }
       // TODO: read the following from the instance main assembly settings in the server
       $scope.creationPatternsEnabled = false;
+      $scope.$on("SessionModal:setSessionModalIsSignIn",$scope.setSessionModalIsSignIn);
+      $scope.$on("SessionModal:setSessionModalIsSignUp",$scope.setSessionModalIsSignUp);
     }
 
+    function setSessionModalIsSignIn () {
+      $scope.sessionModalIsSignIn = true;
+    }
+
+    function setSessionModalIsSignUp () {
+      $scope.sessionModalIsSignIn = false;
+    }
     function redirect() {
       let currentAssembly = localStorageService.get('currentAssembly');
       let domain = currentAssembly.shortname ? currentAssembly.shortname : null;

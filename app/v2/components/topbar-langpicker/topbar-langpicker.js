@@ -39,9 +39,8 @@
       if (user) {
         user.language = key;
         localStorageService.set('user', user);
-      } else {
-        LocaleService.setLocale(key);
       }
+      LocaleService.setLocale(key);
       // Redo the langpicker
       $scope.loadLangPicker();
     }

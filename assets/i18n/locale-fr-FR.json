@@ -1234,5 +1234,8 @@
   "Proposal Themes": "Thèmes de proposition",
   "Proposal Keywords": "Mots clés de proposition",
   "contribution.form.member-author.disclaimer": "Utilisez ce champ pour rechercher et ajouter d'autres utilisateurs, déjà inscrits à cette initiative, en tant qu'auteurs de cette contribution",
-  "Email is required": "Email est requis"
+  "Email is required": "Email est requis",
+  "I already have an account": "Je ai déjà un compte",
+  "I dont have an account yet": "Je n'ai pas encore de compte",
+  "Connect with Google": "Se connecter avec Google"
 }

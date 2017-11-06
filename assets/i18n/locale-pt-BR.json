@@ -1234,5 +1234,8 @@
   "Proposal Themes": "Proposal Themes",
   "Proposal Keywords": "Proposal Keywords",
   "contribution.form.member-author.disclaimer": "Use this field to add other users, who have already signup to participate in this initiative, as authors of this contribution.",
-  "Email is required": "Email is required"
+  "Email is required": "Email is required",
+  "I already have an account": "I already have an account",
+  "I dont have an account yet": "I don't have an account yet",
+  "Connect with Google": "Connect with Google"
 }

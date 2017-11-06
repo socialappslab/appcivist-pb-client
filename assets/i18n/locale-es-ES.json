@@ -1234,5 +1234,8 @@
   "Proposal Themes": "Categorías de la Propuesta",
   "Proposal Keywords": "Keywords de la Propuesta",
   "contribution.form.add-authors.disclaimer": "Utiliza este campo para agregar autores además de ti. Puedes seleccionar usuarios ya registrados, o si se trata de una Idea, escribir el nombre de una persona no registrada. Para los no registrados, tendrás que agregar sus emails en la sección de información complementaria de autores.",
-  "Email is required": "Email is required"
+  "Email is required": "Email es obligatorio",
+  "I already have an account": "Ya tengo una cuenta",
+  "I dont have an account yet": "Todavía no tengo una cuenta",
+  "Connect with Google": "Conectar con Google"
 }

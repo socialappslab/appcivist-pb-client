@@ -180,7 +180,7 @@
             <div class="etherpad__wrapper">
               <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
               <iframe ng-if="(!userIsAuthor && gdocUrl)" name="embed_readonly"
-                      ng-src="{{gdocUrlMinimal}}" width="100%" height="600px">
+                      ng-src="{{gdocUrlMinimal}}" width="100%" height="600px" id="gdocHTML">
               </iframe>
               <iframe ng-if="userIsAuthor && writegDocUrl" name="embed_readwrite"
                       ng-src="{{writegDocUrl}}"
@@ -489,7 +489,7 @@
   </div>
 
   <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="gdoc"></contribution-embed-modal>
-  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="pad"></contribution-embed-modal>
+  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="etherpad"></contribution-embed-modal>
 
   <script>
     $(document).ready(function() {

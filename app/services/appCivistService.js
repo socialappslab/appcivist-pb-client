@@ -1188,11 +1188,11 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
     },
 
     embedDocument(assemblyId, campaignId, contributionId, format, payload) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/body?format=:format', {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/document', {
         aid: assemblyId,
         cid: campaignId,
         coid: contributionId,
-        format: format
+        typeDocument: format
       }).save(payload).$promise
     },
 

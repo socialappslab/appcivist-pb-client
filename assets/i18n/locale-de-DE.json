@@ -1227,5 +1227,14 @@
   "Participatory Budgeting": "Participatory Budgeting",
   "Participatory Policy Making": "Participatory Policy Making",
   "landing.who-is-using-it": "Who is using it?",
-  "Assigned ideas": "Assigned ideas"
+  "Assigned ideas": "Assigned ideas",
+  "Title of Proposal": "Titre de la proposition",
+  "What is your Proposal?": "Quelle est votre proposition?",
+  "Proposal Themes": "Thèmes de proposition",
+  "Proposal Keywords": "Mots clés de proposition",
+  "contribution.form.add-authors.disclaimer": "Use this field to add authors besides yourself. You can select users who have already signup to participate in this initiative, or simply write the name of a person who has not signed up and add them by name. You will have to add their emails in the complementary information section.",
+  "Email is required": "Email is required",
+  "I already have an account": "I already have an account",
+  "I dont have an account yet": "I don't have an account yet",
+  "Connect with Google": "Connect with Google"
 }

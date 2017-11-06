@@ -221,13 +221,12 @@
 
     <!-- New Proposal Form Modal -->
     <script id="proposalFormModal" type="text/ng-template">
-      <contribution-proposal-form
+      <contribution-form
         campaign="campaign"
         configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
         type="PROPOSAL"
-        user="user"
         on-success="redirectToProposal(contribution)"
-        on-import-success="closeModal()"></contribution-proposal-form>
+        on-import-success="closeModal()"></contribution-form>
     </script>
 
     <!-- New Idea Form Modal -->

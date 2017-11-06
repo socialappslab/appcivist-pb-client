@@ -7,11 +7,11 @@
 
   AssemblyHomeCtrl.$inject = [
     '$state', '$scope', 'loginService', 'localStorageService', 'Campaigns', 'Utils', 'WorkingGroups',
-    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth', '$translate'
+    'Notify', 'Space', '$stateParams', 'Assemblies', 'AppCivistAuth', '$translate', 'Memberships', '$rootScope'
   ];
 
   function AssemblyHomeCtrl($state, $scope, loginService, localStorageService, Campaigns, Utils,
-    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth, $translate) {
+    WorkingGroups, Notify, Space, $stateParams, Assemblies, AppCivistAuth, $translate, Memberships, $rootScope) {
 
     $scope.fetchCampaigns = fetchCampaigns.bind($scope);
     $scope.fetchWorkingGroups = fetchWorkingGroups.bind($scope);
@@ -22,9 +22,12 @@
     $scope.fetchConfigs = fetchConfigs.bind($scope);
     $scope.signout = signout.bind($scope);
     $scope.redirectCampaign = redirectCampaign.bind($scope);
+    $scope.userIsMember = false;
+    $scope.loadSigninModal = loadSigninModal.bind($scope);
+    $scope.loadSignupModal = loadSignupModal.bind($scope);
+    $scope.hideSessionModal = hideSessionModal.bind($scope);
 
     activate();
-
 
     function activate() {
       $scope.unauthorizedAccess = false;
@@ -43,10 +46,26 @@
           $translate.use($scope.user.language);
         }
         $scope.assemblyId = parseInt($stateParams.aid);
+        $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyId);
       }
       $scope.fetchAssembly($scope.assemblyId);
       $scope.shortname = "";
       $scope.readAssemblyByShortname = false;
+      console.log($scope.userIsMember);
+      $scope.$on('sessionModal:closeSessionModal',$scope.hideSessionModal);
+    }
+
+    function signup() {
+      if ($scope.isAnonymous) {
+        if (!$scope.user.email || !$scope.user.password) {
+          Notify.show('Email and password are required', 'error');
+          return;
+        }
+        var rsp = AppCivistAuth.signUp().save($scope.user);
+        rsp.$promise.then(loginSuccess, loginError);
+      } else {
+        console.log("CLICKED!");
+      }
     }
 
     function fetchAssembly(aid) {
@@ -76,6 +95,7 @@
             if (this.isAnonymous) {
               if (this.assembly && this.assembly.lang) {
                 $translate.use(this.assembly.lang);
+                localStorageService.set('anonymousAssembly',this.assembly);
               }
               this.assemblyId = this.assembly.uuid;
             } else {
@@ -100,6 +120,7 @@
             this.fetchOrganizations(assembly);
             this.fetchResources(assembly);
             this.fetchConfigs(assembly);
+            console.log(assembly);
           },
 
           error => {
@@ -219,7 +240,7 @@
       }
       rsp.then(
         configs => {
-          this.usersCanSignUp = configs['appcivist.assembly.disable-new-memberships'] === 'true';
+          this.usersCanSignUp = configs['appcivist.assembly.disable-new-memberships'] === 'false';
         },
         error => {
           Notify.show('Error while trying to fetch assembly configurations from the server', 'error');
@@ -233,10 +254,44 @@
     }
 
     function redirect() {
-      localStorageService.clearAll();
-      $state.go('v2.login', null, { reload: true }).then(function() {
-        location.reload();
-      });
+      let currentAssembly = localStorageService.get('currentAssembly');
+      let auuid = currentAssembly.uuid;
+      if ($state.params.cid) {
+        let currentCampaign = localStorageService.get('currentCampaign');
+        let cuuid = currentCampaign.uuid;
+        if ($state.params.coid) {
+          let currentContribution = localStorageService.get('currentContribution');
+          let couuid = currentContribution.uuid;
+          localStorageService.clearAll();
+          $state.go("v2.public.assembly.auuid.campaign.contribution.couuid",
+            {auuid: auuid, cuuid: cuuid, couuid: couuid});
+        } else if ($state.params.gid) {
+          let currentGroup = localStorageService.get('currentWorkingGroup');
+          let guuid = currentGroup.uuid;
+          if ($state.params.pid) {
+            let currentContribution = localStorageService.get('currentContribution');
+            let puuid = currentContribution.uuid;
+            localStorageService.clearAll();
+            $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal.puuid",
+              {auuid: auuid, cuuid: cuuid, guuid: guuid, puuid: puuid},
+              {reload: true});
+          } else {
+            localStorageService.clearAll();
+            $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
+              {auuid: auuid, cuuid: cuuid, guuid: guuid},
+              {reload: true});
+          }
+        } else {
+          localStorageService.clearAll();
+          $state.go("v2.public.assembly.auuid.campaign.cuuid.dashboard",
+            {auuid: auuid, cuuid: cuuid},
+            {reload: true});
+        }
+      } else  {
+        localStorageService.clearAll();
+        $state.go("v2.public.assembly.auuid.home", {auuid: auuid}, {reload: true});
+      }
+      location.reload();
     }
 
     function redirectCampaign(assembly, campaign) {
@@ -244,6 +299,23 @@
       $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
     }
 
+    function loadSigninModal () {
+      $scope.sessionModalIsSignIn = true;
+      $rootScope.$broadcast("SessionModal:setSessionModalIsSignIn");
+      $('#sessionModal').modal('show');
+    }
+
+    function loadSignupModal () {
+      $scope.sessionModalIsSignIn = false;
+      $rootScope.$broadcast("SessionModal:setSessionModalIsSignUp");
+      $('#sessionModal').modal('show');
+    }
+
+    function hideSessionModal () {
+      $('#sessionModal').modal('hide');
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove()
+    }
   }
 
 }());

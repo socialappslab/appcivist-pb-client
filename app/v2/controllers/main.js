@@ -8,11 +8,12 @@
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
     '$rootScope', 'loginService', '$translate', '$state', '$stateParams',
-    'WorkingGroups', 'Assemblies', 'AppCivistAuth'
+    'WorkingGroups', 'Assemblies', 'AppCivistAuth', 'Space'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
-    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies, AppCivistAuth) {
+    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies,
+                    AppCivistAuth, Space) {
 
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
@@ -20,6 +21,11 @@
     $scope.fetchAnonymousGroups = fetchAnonymousGroups.bind($scope);
     $scope.needToRefresh = needToRefresh.bind($scope);
     $scope.signout = signout.bind($scope);
+    $scope.loadSigninModal = loadSigninModal.bind($scope);
+    $scope.loadSignupModal = loadSignupModal.bind($scope);
+    $scope.setSessionModalIsSignIn = setSessionModalIsSignIn .bind($scope);
+    $scope.setSessionModalIsSignUp = setSessionModalIsSignUp .bind($scope);
+    $scope.redirect = redirect.bind($scope);
     activate();
 
     function activate() {
@@ -39,6 +45,15 @@
 
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
+        var rsp = Space.configsByUUID($scope.currentAssembly.resourcesResourceSpaceId).get();
+        rsp.$promise.then(
+          configs => {
+            $scope.assemblyConfigs = configs;
+            $scope.signupsEnabled = configs["appcivist.assembly.disable-new-memberships"] === "false";
+          }
+        );
+
+
         if ($state.params && $state.params.cid) {
           $scope.currentCampaignId = parseInt($state.params.cid);
         }
@@ -69,26 +84,72 @@
       }
       // TODO: read the following from the instance main assembly settings in the server
       $scope.creationPatternsEnabled = false;
+      $scope.$on("SessionModal:setSessionModalIsSignIn",$scope.setSessionModalIsSignIn);
+      $scope.$on("SessionModal:setSessionModalIsSignUp",$scope.setSessionModalIsSignUp);
+    }
+
+    function setSessionModalIsSignIn () {
+      $scope.sessionModalIsSignIn = true;
+    }
+
+    function setSessionModalIsSignUp () {
+      $scope.sessionModalIsSignIn = false;
     }
 
     function redirect() {
       let currentAssembly = localStorageService.get('currentAssembly');
-      let domain = currentAssembly.shortname ? currentAssembly.shortname : null;
-      localStorageService.clearAll();
-      if(!domain) {
-        $state.go('v2.login').then(function() {
-          location.reload();
-        });
-      } else {
-        $state.go('v2.login2', { domain:domain }, { reload:true }).then(function() {
-          location.reload();
-        });
+      let auuid = currentAssembly.uuid;
+      if ($state.params.cid) {
+        let currentCampaign = localStorageService.get('currentCampaign');
+        let cuuid = currentCampaign.uuid;
+        if ($state.params.coid) {
+          let currentContribution = localStorageService.get('currentContribution');
+          let couuid = currentContribution.uuid;
+          localStorageService.clearAll();
+          $state.go("v2.public.assembly.auuid.campaign.contribution.couuid",
+            {auuid: auuid, cuuid: cuuid, couuid: couuid});
+        } else if ($state.params.gid) {
+          let currentGroup = localStorageService.get('currentWorkingGroup');
+          let guuid = currentGroup.uuid;
+          if ($state.params.pid) {
+            let currentContribution = localStorageService.get('currentContribution');
+            let puuid = currentContribution.uuid;
+            localStorageService.clearAll();
+            $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal.puuid",
+              {auuid: auuid, cuuid: cuuid, guuid: guuid, puuid: puuid},
+              {reload: true});
+          } else {
+            localStorageService.clearAll();
+            $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
+            {auuid: auuid, cuuid: cuuid, guuid: guuid},
+            {reload: true});
+          }
+        } else {
+          localStorageService.clearAll();
+          $state.go("v2.public.assembly.auuid.campaign.cuuid.dashboard",
+            {auuid: auuid, cuuid: cuuid},
+            {reload: true});
+        }
+      } else  {
+        localStorageService.clearAll();
+        $state.go("v2.public.assembly.auuid.home", {auuid: auuid}, {reload: true});
       }
+      location.reload();
     }
 
     function signout () {
       var rsp = AppCivistAuth.signOut().save();
       rsp.$promise.then(redirect, redirect);
+    }
+
+    function loadSigninModal () {
+      $scope.sessionModalIsSignIn = true;
+      $('#sessionModal').modal('show');
+    }
+
+    function loadSignupModal () {
+      $scope.sessionModalIsSignIn = false;
+      $('#sessionModal').modal('show');
     }
 
     /**
@@ -142,6 +203,13 @@
         assembly => {
           scope.anonymousAssembly = assembly;
           localStorageService.set('anonymousAssembly',assembly);
+          rsp = Space.configsByUUID(assembly.resourcesResourceSpaceUUID).get();
+          rsp.$promise.then(
+            configs => {
+              scope.assemblyConfigs = configs;
+              $scope.signupsEnabled = configs["appcivist.assembly.disable-new-memberships"] === "false";
+            }
+          );
           return assembly;
         }
       );
@@ -159,11 +227,12 @@
       $scope.isLoginPage = true;
       let currentCampaign = localStorageService.get('currentCampaign');
       let domain = currentCampaign.assemblyShortname ? currentCampaign.assemblyShortname[0] : null;
-      if(!domain) {
-        $state.go('v2.login')
-      } else {
-        $state.go('v2.login2', { domain:domain }, { reload:true });
-      }
+      $scope.loadSigninModal();
+      // if(!domain) {
+      //   $state.go('v2.login')
+      // } else {
+      //   $state.go('v2.login2', { domain:domain }, { reload:true });
+      // }
     }
 
     function stateChangeHandler(event) {

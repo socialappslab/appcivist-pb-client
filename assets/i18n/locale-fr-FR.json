@@ -1228,5 +1228,19 @@
   "Participatory Budgeting": "Budget Participatif",
   "Participatory Policy Making": "Élaboration Participative de Politiques",
   "landing.who-is-using-it": "Qui l'utilise?",
-  "Assigned ideas": "Assigned ideas"
+  "Assigned ideas": "Idées assignées",
+  "Title of Proposal": "Titre de la proposition",
+  "What is your Proposal?": "Quelle est votre proposition?",
+  "Proposal Themes": "Thèmes de proposition",
+  "Proposal Keywords": "Mots clés de proposition",
+  "contribution.form.member-author.disclaimer": "Utilisez ce champ pour rechercher et ajouter d'autres utilisateurs, déjà inscrits à cette initiative, en tant qu'auteurs de cette contribution",
+  "Email is required": "Email est requis",
+  "titleGdoc": "Google Docs",
+  "titlePad": "Etherpad",
+  "insertGdocText": "Paste the URL of the Google Docs document",
+  "insertPadText": "Paste the URL of the Etherpad",
+  "submitPadGdoc": "Embed document",
+  "I already have an account": "Je ai déjà un compte",
+  "I dont have an account yet": "Je n'ai pas encore de compte",
+  "Connect with Google": "Se connecter avec Google"
 }

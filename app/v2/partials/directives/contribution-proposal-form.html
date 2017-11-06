@@ -5,12 +5,6 @@
   </header>
   <div class="modal-body">
     <form name="contributionForm">
-      <fieldset class="divider" ng-if="vm.userIsAssemblyCoordinator && vm.isCreate">
-        <label for="upload">{{'Upload csv file' | translate}}</label>
-        <input type="file" name="upload" fileread="vm.file.csv">
-        <a class="button__modal_submit" ng-click="vm.submit()">{{'Upload' | translate}}</a>
-      </fieldset>
-
       <fieldset>
         <!-- Title -->
         <div class="field__container" ng-if="!vm.hiddenFieldsMap['title']">
@@ -52,7 +46,6 @@
         <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && !vm.hiddenFieldsMap['status']">
           <label for="status">{{'Status' | translate}}</label>
           <select id="status" name="status" ng-model="vm.contribution.status" ng-disabled="disabled" style="height: 42px; width: 100%;">
-            <option value="NEW">{{'New' | translate}}</option>
             <option value="DRAFT">{{'Draft' | translate}}</option>
             <option value="PUBLISHED">{{'Published' | translate}}</option>
           </select>

@@ -569,8 +569,8 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
      */
     userIsAdmin: function () {
       let user = localStorageService.get("user");
-      let roles = user.roles;
-      let adminRole = roles.filter(r => r.name==="ADMIN");
+      let roles = user ? user.roles : null;
+      let adminRole = roles ? roles.filter(r => r.name==="ADMIN") : null;
       return !adminRole || adminRole.length===0 ? false : true;
     }
   };
@@ -1131,9 +1131,9 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
       if (/p\/r\./.test(resourceUrl)) {
         if (/etherpad\.appcivist\.org/.test(resourceUrl)) {
           resourceUrl = resourceUrl.replace("http://","https://");
-          if (writeEmbed) {
-            resourceUrl = resourceUrl.split("/p")[0]+"/p/"+id;
-          }
+        }
+        if (writeEmbed) {
+          resourceUrl = resourceUrl.split("/p")[0]+"/p/"+id;
         }
         url = resourceUrl;
       }
@@ -1185,6 +1185,15 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
           rev: 0
         }
       );
+    },
+
+    embedDocument(assemblyId, campaignId, contributionId, format, payload) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/document', {
+        aid: assemblyId,
+        cid: campaignId,
+        coid: contributionId,
+        typeDocument: format
+      }).save(payload).$promise
     },
 
     getReadOnlyHtmlPublic(contributionUUID) {

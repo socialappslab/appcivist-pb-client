@@ -10,7 +10,7 @@
     float: right;
     text-transform: capitalize;
   }
-  &.unsubscribe-newsletter, &.unfollow-proposal, &.subscribe-newsletter, &.follow-contribution, &.proposal-btn {
+  &.unsubscribe-newsletter, &.unfollow-proposal, &.subscribe-newsletter, &.follow-contribution, &.proposal-btn, &.padGdoc {
     border: none;
     color: white;
     font-size: 0.8rem;
@@ -20,5 +20,11 @@
       background-color: #1f1f1f;
       color: #efefef;
     }
+  }
+  &.padGdoc {
+    background-color: #26557B;
+    bottom: 12px;
+    position: absolute;
+    right: 14px;
   }
 }

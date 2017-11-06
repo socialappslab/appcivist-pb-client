@@ -57,9 +57,9 @@
     production: "https://etherpad.appcivist.org/",
     testing: "https://testetherpad.appcivist.org/",
     development: "https://testetherpad.appcivist.org/",
-    local: "http://localhost:9001/",
+    //local: "http://localhost:9001/",
     //local: "https://testetherpad.appcivist.org/",
-    //local: "https://etherpad.appcivist.org/",
+    local: "https://etherpad.appcivist.org/",
     mimove: "https://mimove-apps.paris.inria.fr/etherpad/"
     //mimove: "https://etherpad.appcivist.org/"
   };

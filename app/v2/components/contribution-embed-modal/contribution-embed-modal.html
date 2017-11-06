@@ -8,15 +8,27 @@
         <p>{{ (vm.format == 'gdoc' ? 'titleGdoc' : 'titlePad') | translate }}</p>
       </div>
       <div class="modal-body" style="min-height:0; position:unset">
+
         <form ng-submit="vm.embedPadGdoc()">
-          <p>{{ (vm.format == 'gdoc' ? 'insertGdocText' : 'insertPadText') | translate }}</p>
-          <input type="url" required ng-model="vm.newDocUrl">
+          <p ng-if="vm.format === 'gdoc' ">{{ 'gdocs.disclaimer'| translate }}</p>
+          <p ng-if="vm.format !== 'gdoc' ">{{ 'etherpad.disclaimer'| translate }}</p>
+          <p ng-if="vm.format === 'gdoc' ">
+            <a href="https://docs.google.com" target="_blank">{{'gdocs.link' | translate}}</a>
+          </p>
+
+          <label>{{ (vm.format === 'gdoc' ? 'insertGdocText' : 'insertPadText') | translate }}</label>
+
+          <input type="url" required ng-model="vm.newDocUrl" ng-if="vm.format === 'gdoc' "
+                 placeholder="e.g., https://docs.google.com/document/d/1lEOoORrQI47x133wY9mR5295iP7svdxxwWBIQuGCv6U/edit">
+          <input type="url" ng-model="vm.newDocUrl" ng-if="vm.format !== 'gdoc' "
+                 placeholder="e.g., https://pad.riseup.net">
+          <input type="text" ng-model="vm.etherpadApiKey" ng-if="vm.format !== 'gdoc' "
+                 placeholder="e.g., 7889879879jasdjfha8sd7f09asdf0as7df...">
           <button type="submit" class="btn btn-default padGdoc">{{ 'submitPadGdoc' | translate }}</button>
         </form>
       </div>
       <div class="modal-footer text-left" style="padding-bottom:20px">
         <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
-        
       </div>
     </div>
   </div>

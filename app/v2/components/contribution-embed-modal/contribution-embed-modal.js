@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
   'use strict';
 
@@ -10,14 +12,16 @@
    *
    * @example
    *
-   *  <voting-modal></voting-modal>
+   *  <contribution-embed-modal></contribution-embed-modal>
    */
   appCivistApp
     .component('contributionEmbedModal', {
       selector: 'contributionEmbedModal',
-      transclude: true,
       bindings: {
-        format: '<'
+        format: '@',
+        assemblyId: '=',
+        campaignId: '=',
+        contributionId: '='
       },
       controller: ContributionEmbedModal,
       controllerAs: 'vm',
@@ -28,11 +32,15 @@
       '$scope', 'Notify', 'Etherpad'
     ];
 
-  function ContributionEmbedModal($scope,Notify, Etherpad) {
+  function ContributionEmbedModal($scope, Notify, Etherpad) {
+
+    this.$onInit = () => {
+      this.newDocUrl = "";
+    }
 
     this.embedPadGdoc = () => {
-      if ($scope.newDocUrl != "") {
-        let url = $scope.newDocUrl;
+      if (this.newDocUrl != "") {
+        let url = this.newDocUrl;
         let regex = /\b\/edit/i;
         let match = url.match(regex);
         if (match != null) {
@@ -41,7 +49,7 @@
         let payload = {
           url: url
         }
-        Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, format, payload).then(
+        Etherpad.embedDocument(this.assemblyId, this.campaignId, this.contributionId, this.format, payload).then(
           response => {
             console.log(response)
           },

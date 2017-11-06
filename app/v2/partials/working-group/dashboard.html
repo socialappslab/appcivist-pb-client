@@ -274,13 +274,14 @@
       <div class="modal-body">
         <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)"
                                        contribution-type="associatedContributionsType"
-                                       space-id="wg.rsId"
+                                       space-id="wg.resourcesResourceSpaceId"
                                        space="resources"
                                        assembly-id="assemblyID"
                                        campaign-id="campaignID"
                                        campaign-space-id="campaign.resourceSpaceId"
                                        group-id="groupID"
-                                       parent-contribution-id="proposalID"></associated-contributions-form>
+                                       parent-contribution-id="proposalID"
+                                       space-is-group="true"></associated-contributions-form>
 
         <div class="noContent" ng-if="!resources.relatedContributions || resources.relatedContributions.length === 0">
           <h4>{{ 'There are no ideas associated to this contribution' | translate }}</h4>

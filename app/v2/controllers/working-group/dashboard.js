@@ -43,6 +43,7 @@
         mode: $scope.type
       };
 
+      $scope.associatedContributionsType = "idea";
 
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;

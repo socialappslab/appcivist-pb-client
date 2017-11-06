@@ -25,7 +25,8 @@
       campaignId: '=',
       campaignSpaceId: '=',
       groupId: '=',
-      parentContributionId: '='
+      parentContributionId: '=',
+      spaceIsGroup: '='
 
     },
     controller: associatedContributionsCtrl,
@@ -103,13 +104,24 @@
 
     function associateContributionToSpace (item) {
       this.startSpinner();
-      Space.addContributionToResourceSpace(this.assemblyId, item.contributionId, this.spaceId, item).then(
-        data => {
-          this.space.relatedContributions.push(item);
-          this.filteredContributions = [];
-          this.stopSpinner();
-        }
-      )
+
+      if (this.spaceIsGroup) {
+        Space.assignContributionToGroupResourceSpace(this.assemblyId, this.campaignId, this.groupId, [item.contributionId]).then(
+          data => {
+            this.space.relatedContributions.push(item);
+            this.filteredContributions = [];
+            this.stopSpinner();
+          }
+        )
+      } else {
+        Space.addContributionToResourceSpace(this.assemblyId, item.contributionId, this.spaceId, item).then(
+          data => {
+            this.space.relatedContributions.push(item);
+            this.filteredContributions = [];
+            this.stopSpinner();
+          }
+        )
+      }
     }
 
     function removeContributionFromSpace(item) {

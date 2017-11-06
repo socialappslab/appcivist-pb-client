@@ -1242,5 +1242,8 @@
   "submitPadGdoc": "Embed document",
   "I already have an account": "I already have an account",
   "I dont have an account yet": "I don't have an account yet",
-  "Connect with Google": "Connect with Google"
+  "Connect with Google": "Connect with Google",
+  "gdocs.disclaimer": "If you want to develop your proposal using Google Docs, you first have to create a document on the Google Docs website. Be sure to select the share settings for the kind of collaboration you want. Once you have done that, copy and paste the Google Doc link below.",
+  "gdocs.link": "Open Google Docs",
+  "etherpad.disclaimer": "Etherpad is an open source real-time collaborative editor, maintained by the Etherpad Community. AppCivist has its own etherpad server, so you don't need to provide a link for this, but if you have your own etherpad server, make sure you add its base URL below and API key below."
 }

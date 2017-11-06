@@ -1234,7 +1234,6 @@
   "Proposal Themes": "Categorías de la Propuesta",
   "Proposal Keywords": "Keywords de la Propuesta",
   "contribution.form.add-authors.disclaimer": "Utiliza este campo para agregar autores además de ti. Puedes seleccionar usuarios ya registrados, o si se trata de una Idea, escribir el nombre de una persona no registrada. Para los no registrados, tendrás que agregar sus emails en la sección de información complementaria de autores.",
-  "Email is required": "Email is required",
   "titleGdoc": "Google Docs",
   "titlePad": "Etherpad",
   "insertGdocText": "Paste the URL of the Google Docs document",
@@ -1243,5 +1242,8 @@
   "Email is required": "Email es obligatorio",
   "I already have an account": "Ya tengo una cuenta",
   "I dont have an account yet": "Todavía no tengo una cuenta",
-  "Connect with Google": "Conectar con Google"
+  "Connect with Google": "Conectar con Google",
+  "gdocs.disclaimer": "If you want to develop your proposal using Google Docs, you first have to create a document on the Google Docs website. Be sure to select the share settings for the kind of collaboration you want. Once you have done that, copy and paste the Google Doc link below.",
+  "gdocs.link": "Open Google Docs",
+  "etherpad.disclaimer": "Etherpad is an open source real-time collaborative editor, maintained by the Etherpad Community. AppCivist has its own etherpad server, so you don't need to provide a link for this, but if you have your own etherpad server, make sure you add its base URL below and API key below."
 }

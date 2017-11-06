@@ -23,9 +23,11 @@
     $scope.signout = signout.bind($scope);
     $scope.redirectCampaign = redirectCampaign.bind($scope);
     $scope.userIsMember = false;
+    $scope.loadSigninModal = loadSigninModal.bind($scope);
+    $scope.loadSignupModal = loadSignupModal.bind($scope);
+    $scope.hideSessionModal = hideSessionModal.bind($scope);
 
     activate();
-
 
     function activate() {
       $scope.unauthorizedAccess = false;
@@ -50,6 +52,7 @@
       $scope.shortname = "";
       $scope.readAssemblyByShortname = false;
       console.log($scope.userIsMember);
+      $scope.$on('sessionModal:closeSessionModal',$scope.hideSessionModal);
     }
 
     function signup() {
@@ -261,6 +264,21 @@
       $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
     }
 
+    function loadSigninModal () {
+      $scope.sessionModalIsSignIn = true;
+      $('#sessionModal').modal('show');
+    }
+
+    function loadSignupModal () {
+      $scope.sessionModalIsSignIn = false;
+      $('#sessionModal').modal('show');
+    }
+
+    function hideSessionModal () {
+      $('#sessionModal').modal('hide');
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove()
+    }
   }
 
 }());

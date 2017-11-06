@@ -20,6 +20,8 @@
     $scope.fetchAnonymousGroups = fetchAnonymousGroups.bind($scope);
     $scope.needToRefresh = needToRefresh.bind($scope);
     $scope.signout = signout.bind($scope);
+    $scope.loadSigninModal = loadSigninModal.bind($scope);
+    $scope.loadSignupModal = loadSignupModal.bind($scope);
     activate();
 
     function activate() {
@@ -91,6 +93,16 @@
       rsp.$promise.then(redirect, redirect);
     }
 
+    function loadSigninModal () {
+      $scope.sessionModalIsSignIn = true;
+      $('#sessionModal').modal('show');
+    }
+
+    function loadSignupModal () {
+      $scope.sessionModalIsSignIn = false;
+      $('#sessionModal').modal('show');
+    }
+
     /**
      *
      * @param {Object} scope -  component scope
@@ -159,11 +171,12 @@
       $scope.isLoginPage = true;
       let currentCampaign = localStorageService.get('currentCampaign');
       let domain = currentCampaign.assemblyShortname ? currentCampaign.assemblyShortname[0] : null;
-      if(!domain) {
-        $state.go('v2.login')
-      } else {
-        $state.go('v2.login2', { domain:domain }, { reload:true });
-      }
+      $scope.loadSigninModal();
+      // if(!domain) {
+      //   $state.go('v2.login')
+      // } else {
+      //   $state.go('v2.login2', { domain:domain }, { reload:true });
+      // }
     }
 
     function stateChangeHandler(event) {

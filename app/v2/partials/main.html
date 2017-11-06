@@ -59,8 +59,9 @@
   <div ng-if="userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/partials/navigation-bar/navigation-bar-large.html'"></div>
   <div ng-if="!userIsAuthenticated && !isLoginPage && !isHomePage && !isAssemblyHome" ng-include="'/app/v2/partials/navigation-bar/navigation-bar-large-anonymous.html'"></div>
 
-
   <ui-view></ui-view>
+
+  <session-modal show-login="sessionModalIsSignIn"></session-modal>
 
   <footer class="appmain" ng-if="!isAssemblyHome">
     <div class="footer__content">
@@ -69,7 +70,7 @@
           <svglogo width="32" height="32"></svglogo>
         </div>
         <copyright></copyright>
-      </div>
+      </p>
     </div>
   </footer>
 </div>

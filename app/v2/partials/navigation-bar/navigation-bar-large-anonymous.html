@@ -16,10 +16,10 @@
         <!-- Menu when the user is logged in-->
         <ul class="nav navbar-nav navbar-right menu-elements">
             <li>
-                <a ng-click="goToLogin()" href="">{{'Sign in' | translate}}</a>
+                <a ng-click="loadSigninModal()" href="">{{'Sign in' | translate}}</a>
             </li>
             <li>
-                <a ng-href="#/v2/signup" ng-if="signupsEnabled">{{'Sign up' | translate}}</a>
+                <a ng-href="loadSignupModal()" ng-if="signupsEnabled">{{'Sign up' | translate}}</a>
             </li>
             <langpicker></langpicker>
         </ul>

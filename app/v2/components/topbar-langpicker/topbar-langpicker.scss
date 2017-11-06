@@ -40,3 +40,40 @@
     vertical-align: top;
   }
 }
+
+.onboarding__form li#langpicker {
+  position: relative;
+  display: block;
+}
+@media screen and (min-width: 768px) {
+  .onboarding__form li#langpicker {
+    a {
+      line-height: 20px;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .25);
+      position: relative;
+      display: block;
+      padding: 15px 10px 10px;
+      color: #FFFFFF;
+      &.langitem {
+        padding: 10px 15px;
+      }
+    }
+    &.open a {
+      color: white;
+      background: none;
+    }
+    ul {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    a.langitem:hover {
+      background-color: #e8e8e8;
+    }
+  }
+}
+@media screen and (max-width: 40em) {
+  ul.onboarding__form li#langpicker {
+    display: inline-block;
+    vertical-align: top;
+  }
+}

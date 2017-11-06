@@ -254,6 +254,7 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
+          localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
           var workingGroupAuthors = data.workingGroupAuthors;
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;

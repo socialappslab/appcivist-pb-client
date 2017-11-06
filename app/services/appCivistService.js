@@ -569,8 +569,8 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
      */
     userIsAdmin: function () {
       let user = localStorageService.get("user");
-      let roles = user.roles;
-      let adminRole = roles.filter(r => r.name==="ADMIN");
+      let roles = user ? user.roles : null;
+      let adminRole = roles ? roles.filter(r => r.name==="ADMIN") : null;
       return !adminRole || adminRole.length===0 ? false : true;
     }
   };

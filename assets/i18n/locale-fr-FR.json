@@ -1239,5 +1239,8 @@
   "titlePad": "Etherpad",
   "insertGdocText": "Paste the URL of the Google Docs document",
   "insertPadText": "Paste the URL of the Etherpad",
-  "submitPadGdoc": "Embed document"
+  "submitPadGdoc": "Embed document",
+  "I already have an account": "Je ai déjà un compte",
+  "I dont have an account yet": "Je n'ai pas encore de compte",
+  "Connect with Google": "Se connecter avec Google"
 }

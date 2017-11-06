@@ -240,7 +240,7 @@
       }
       rsp.then(
         configs => {
-          this.usersCanSignUp = configs['appcivist.assembly.disable-new-memberships'] === 'true';
+          this.usersCanSignUp = configs['appcivist.assembly.disable-new-memberships'] === 'false';
         },
         error => {
           Notify.show('Error while trying to fetch assembly configurations from the server', 'error');

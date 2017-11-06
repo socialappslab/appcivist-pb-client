@@ -8,11 +8,12 @@
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
     '$rootScope', 'loginService', '$translate', '$state', '$stateParams',
-    'WorkingGroups', 'Assemblies', 'AppCivistAuth'
+    'WorkingGroups', 'Assemblies', 'AppCivistAuth', 'Space'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
-    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies, AppCivistAuth) {
+    $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies,
+                    AppCivistAuth, Space) {
 
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
@@ -43,6 +44,15 @@
 
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
+        var rsp = Space.configsByUUID($scope.currentAssembly.resourcesResourceSpaceId).get();
+        rsp.$promise.then(
+          configs => {
+            $scope.assemblyConfigs = configs;
+            $scope.signupsEnabled = configs["appcivist.assembly.disable-new-memberships"] === "false";
+          }
+        );
+
+
         if ($state.params && $state.params.cid) {
           $scope.currentCampaignId = parseInt($state.params.cid);
         }
@@ -165,6 +175,13 @@
         assembly => {
           scope.anonymousAssembly = assembly;
           localStorageService.set('anonymousAssembly',assembly);
+          rsp = Space.configsByUUID(assembly.resourcesResourceSpaceUUID).get();
+          rsp.$promise.then(
+            configs => {
+              scope.assemblyConfigs = configs;
+              $scope.signupsEnabled = configs["appcivist.assembly.disable-new-memberships"] === "false";
+            }
+          );
           return assembly;
         }
       );

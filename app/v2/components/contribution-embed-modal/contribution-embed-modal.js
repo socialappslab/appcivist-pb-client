@@ -40,16 +40,16 @@
 
     this.embedPadGdoc = () => {
       if (this.newDocUrl != "") {
-        this.startSpinner();
+        //$scope.startSpinner();
         let url = this.newDocUrl;
         let regex = /\b\/edit/i;
         let match = url.match(regex);
         if (match != null) {
           url = url.substr(0, match.index);
         }
-        let payload = {
-          url: url
-        }
+        let payload = {}
+        if (this.format == 'gdoc') payload = { gdocLink: url };
+        else payload = { etherpadServerUrl: url };
         Etherpad.embedDocument(this.assemblyId, this.campaignId, this.contributionId, this.format, payload).then(
           response => {
             if (this.format == 'etherpad') {
@@ -58,7 +58,7 @@
               angular.element(window).open(url, 'embed_readonly');
             }
             Notify.show('Document embedded successfully', 'success');
-            this.stopSpinner();
+            //$scope.stopSpinner();
           },
           error => Notify.show('Error while trying to embed the document', 'error')
         )

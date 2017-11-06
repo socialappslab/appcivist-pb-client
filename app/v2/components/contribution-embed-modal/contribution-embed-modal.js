@@ -29,10 +29,10 @@
     });
 
     ContributionEmbedModal.$inject = [
-      '$scope', 'Notify', 'Etherpad'
+      '$scope', 'Notify', 'Etherpad', '$window'
     ];
 
-  function ContributionEmbedModal($scope, Notify, Etherpad) {
+  function ContributionEmbedModal($scope, Notify, Etherpad, $window) {
 
     this.$onInit = () => {
       this.newDocUrl = "";
@@ -47,17 +47,18 @@
         if (match != null) {
           url = url.substr(0, match.index);
         }
-        let payload = {}
+        let payload = {
+          "gdocLink": url,
+          "etherpadServerUrl": url,
+          "etherpadServerApiKey": 'demoapikeythisisatest'
+        }/*
         if (this.format == 'gdoc') payload = { gdocLink: url };
-        else payload = { etherpadServerUrl: url };
+        else payload = { etherpadServerUrl: url };*/
         Etherpad.embedDocument(this.assemblyId, this.campaignId, this.contributionId, this.format, payload).then(
           response => {
-            if (this.format == 'etherpad') {
-              $scope.loadReadOnlyEtherpadHTML();
-            } else {
-              angular.element(window).open(url, 'embed_readonly');
-            }
             Notify.show('Document embedded successfully', 'success');
+            angular.element("#"+this.format+"EmbedModal").modal("hide");
+            $window.location.reload();
             //$scope.stopSpinner();
           },
           error => Notify.show('Error while trying to embed the document', 'error')

@@ -1234,5 +1234,10 @@
   "Proposal Themes": "Proposal Themes",
   "Proposal Keywords": "Proposal Keywords",
   "contribution.form.member-author.disclaimer": "Use this field to add other users, who have already signup to participate in this initiative, as authors of this contribution.",
-  "Email is required": "Email is required"
+  "Email is required": "Email is required",
+  "titleGdoc": "Google Docs",
+  "titlePad": "Etherpad",
+  "insertGdocText": "Paste the URL of the Google Docs document",
+  "insertPadText": "Paste the URL of the Etherpad",
+  "submitPadGdoc": "Embed document"
 }

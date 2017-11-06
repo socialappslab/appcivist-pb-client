@@ -1234,5 +1234,10 @@
   "Proposal Themes": "Proposal Themes",
   "Proposal Keywords": "Proposal Keywords",
   "contribution.form.add-authors.disclaimer": "Use this field to add authors besides yourself. You can select users who have already signup to participate in this initiative, or simply write the name of a person who has not signed up and add them by name. You will have to add their emails in the complementary information section.",
-  "Email is required": "Email is required"
+  "Email is required": "Email is required",
+  "titleGdoc": "Google Docs",
+  "titlePad": "Etherpad",
+  "insertGdocText": "Paste the URL of the Google Docs document",
+  "insertPadText": "Paste the URL of the Etherpad",
+  "submitPadGdoc": "Embed document"
 }

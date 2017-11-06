@@ -488,29 +488,8 @@
     </div>
   </div>
 
-  <!-- Text Modal -->
-  <div class="modal fade dashboardModal" id="textPadGdoc" tabindex="-1" role="dialog" aria-labelledby="textPadGdocLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
-          <h3 class="modal-title" id="textPadGdocLabel">{{proposal.title}}</h3>
-          <p>{{ 'textPadGdoc' | translate }}</p>
-        </div>
-        <div class="modal-body" style="min-height:0; position:unset">
-          <form ng-submit="embedPadGdoc()">
-            <p>{{ 'textPadGdocInsertText' | translate }}</p>
-            <input type="url" required ng-model="newDocUrl" placeholder="{{ 'textPadGdocPlaceholder' | translate }}">
-            <button type="submit" class="btn btn-default padGdoc">{{ 'textPadGdocSubmit' | translate }}</button>
-          </form>
-        </div>
-        <div class="modal-footer text-left" style="padding-bottom:20px">
-          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
-          
-        </div>
-      </div>
-    </div>
-  </div>
+  <contribution-embed-modal format="gdoc"></contribution-embed-modal>
+  <contribution-embed-modal format="pad"></contribution-embed-modal>
 
   <script>
     $(document).ready(function() {

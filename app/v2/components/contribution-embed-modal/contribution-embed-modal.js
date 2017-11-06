@@ -39,8 +39,7 @@
     }
 
     this.embedPadGdoc = () => {
-      if (this.newDocUrl != "") {
-        //$scope.startSpinner();
+      if ((this.format === "gdoc" && this.newDocUrl != "")||(this.format!=="gdoc")) {
         let url = this.newDocUrl;
         let regex = /\b\/edit/i;
         let match = url.match(regex);

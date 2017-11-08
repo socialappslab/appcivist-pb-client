@@ -643,6 +643,7 @@
         m.isMandatory = m.type === 'START' || m.type === 'END';
         // test if milestone is editable. We can edit a milestone if we do not reach it yet
         m.isEditable = parsedDate.isSameOrAfter(moment(), 'day');
+        m.isRemovable = m.type !== 'START' && m.type !== 'END';
 
       });
       this.selectedComponent = component;
@@ -703,8 +704,12 @@
         description: '',
         type: 'REMINDER',
         date: new Date(),
-        position: endMilestone.position
+        position: endMilestone.position,
+        isEditable: true,
+        isMandatory: false,
+        isRemovable: true
       });
+
       endMilestone.position += 1;
       this.selectedComponent.milestones = _.sortBy(milestones, ['position']);
     }

@@ -242,16 +242,25 @@
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUID;
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
-          $scope.cover = $scope.campaign.cover ? $scope.campaign.cover.url : null;
-          $scope.coverStyle = $scope.cover ?
-            {
-              'background-image': 'url(' + $scope.cover + ')',
-              'background-position': 'center center',
-            }
-            : {
-              'background-image': 'url("../images/vallejo_header.jpg")',
-              'background-position': 'center center',
-            };
+
+
+          // Prepare first WG's cover and color
+          let wgCover = $scope.wg.profile.cover;
+          let wgColor = $scope.wg.profile.color;
+          let wgCoverIsSVG = null; // TODO: make sure is one of defaults
+          let wgCoverParts = wgCover !=null ? wgCover.split("/assets/wgs/covers/") : null;
+          if (wgCoverParts && wgCoverParts.length > 1) {
+            let fileName = wgCoverParts[1];
+            wgCoverIsSVG = /^[1-9]\.svg$/.test(fileName);
+          }
+
+          // if (wgColor) {
+          //   scope.footerBackgroundStyle = { 'background-color': wgColor, 'background-position': 'center center', 'background-size': 'cover' };
+          // }
+          if (wgCover && wgCoverIsSVG) {
+            var _bkg_url = 'url(\"' + wgCover + '\")';
+            $scope.coverStyle = { 'background-image': _bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+          }
 
           if ($scope.isTopicGroup) {
             // if group is topic, then is OPEN to every assembly member.

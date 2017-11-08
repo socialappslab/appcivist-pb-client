@@ -40,6 +40,7 @@
       $scope.goNext = goNext.bind($scope);
       $scope.goPrev = goPrev.bind($scope);
       $scope.componentsLoaded = componentsLoaded.bind($scope);
+      $scope.vmTimeline = {};
 
       $scope.updateConfigOptionValue = function(config, optionValue) {
         config.value = optionValue.value;
@@ -302,28 +303,29 @@
       $scope.prevStep = 2;
 
       // Campaign creation steps and templates for each step
-      $scope.steps = [{
-        step: 1,
-        title: "Campaign description",
-        template: "app/partials/campaign/creation/newCampaign1.html",
-        info: "",
-        active: true,
-        disabled: false
-      }, {
-        step: 2,
-        title: "Campaign milestones",
-        template: "app/partials/campaign/creation/newCampaign2.html",
-        info: "",
-        active: false,
-        disabled: false
-      }, {
-        step: 3,
-        title: "Campaign stages",
-        template: "app/partials/campaign/creation/newCampaign3.html",
-        info: "",
-        active: false,
-        disabled: false
-      }];
+      $scope.steps = [
+        {
+          step: 1,
+          title: "Campaign description",
+          template: "app/partials/campaign/creation/newCampaign1.html",
+          info: "",
+          active: true,
+          disabled: false
+        }, {
+          step: 2,
+          title: "Campaign milestones",
+          template: "app/partials/campaign/creation/newCampaign2.html",
+          info: "",
+          active: false,
+          disabled: false
+        }, {
+          step: 3,
+          title: "Campaign stages",
+          template: "app/partials/campaign/creation/newCampaign3.html",
+          info: "",
+          active: false,
+          disabled: false
+        }];
 
       // Setting up help info tooltips
       if ($scope.info === undefined || $scope.info === null) {
@@ -380,10 +382,9 @@
     function initializeExistingCampaignModel() {
       var inProgressNewCampaign = localStorageService.get('newCampaign');
       $scope.newCampaign = inProgressNewCampaign ? inProgressNewCampaign : Campaigns.defaultNewCampaign();
+      $scope.newCampaign.components = $scope.newCampaign.componentsByTimeline;
       $scope.newCampaign.template = $scope.templateOptions[1];
-      $scope.defaultComponents = $scope.newCampaign.proposalComponents;
       $scope.newCampaign.enableBudget = 'yes';
-      $scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
       $scope.newCampaign.linkedComponents = $scope.newCampaign.linkedComponents || [];
       $scope.getExistingConfigs();
 
@@ -502,6 +503,7 @@
 
       if ($scope.isEdit) {
         newCampaign = _.cloneDeep($scope.newCampaign);
+        newCampaign.transientComponents = newCampaign.proposalComponents;
         delete newCampaign.listed;
         delete newCampaign.themes;
         delete newCampaign.ballots;
@@ -728,7 +730,6 @@
         }
       }
     }
-
 
     /**
      * Handler for the previous button click event.

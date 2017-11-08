@@ -15,7 +15,14 @@
             on-component-click="onComponentClick(component)"></campaign-timeline>
 
           <campaign-timeline ng-if="isEdit" title="{{'Campaign Timeline' | translate}}" assembly-id="assemblyID"
-            campaign-id="newCampaign.campaignId" on-component-click="onComponentClick(component)" on-components-loaded="componentsLoaded(components)"></campaign-timeline>
+                             components="newCampaign.proposalComponents" campaign-id="newCampaign.campaignId"
+                             on-component-click="onComponentClick(component)"
+                             on-components-loaded="componentsLoaded(components)"
+                             vm-timeline="vmTimeline"></campaign-timeline>
+
+
+
+
         </section>
 
         <div class="panel panel-default" style="margin-top: 20px;">
@@ -39,7 +46,7 @@
             <fieldset class="col-lg-6">
               <label for="group">{{'Type' | translate}}</label>
               <div class="field-container">
-                <select ng-disabled="isEdit" name="type" class="col-lg-12" ng-model="selectedComponent.type" ng-options="type as type for type in componentTypes"></select>
+                <select name="type" class="col-lg-12" ng-model="selectedComponent.type" ng-options="type as type for type in componentTypes"></select>
               </div>
             </fieldset>
 
@@ -82,7 +89,7 @@
                 <fieldset class="col-lg-6">
                   <label for="group">{{'Title' | translate}}</label>
                   <div class="field-container">
-                    <input ng-disabled="!milestone.isEditable" ng-model="milestone.title" type="text" class="col-lg-12">
+                    <input ng-model="milestone.title" type="text" class="col-lg-12">
                   </div>
                 </fieldset>
 
@@ -96,7 +103,7 @@
                 <fieldset class="col-lg-3">
                   <label for="group">{{'Date' | translate}}</label>
                   <p class="input-group">
-                    <input ng-disabled="!milestone.isEditable" type="text" class="form-control" uib-datepicker-popup ng-model="milestone.date"
+                    <input type="text" class="form-control" uib-datepicker-popup ng-model="milestone.date"
                       is-open="datepicker.opened" datepicker-options="dateOptions" ng-required="true" close-text="{{'Close' | translate}}"
                     />
                     <span class="input-group-btn">
@@ -109,7 +116,7 @@
                 <fieldset class="col-lg-12">
                   <label for="group">{{'Description' | translate}}</label>
                   <div class="field-container">
-                    <textarea ng-disabled="!milestone.isEditable" rows="8" ng-model="milestone.description"></textarea>
+                    <textarea rows="8" ng-model="milestone.description"></textarea>
                   </div>
                 </fieldset>
               </div>

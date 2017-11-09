@@ -382,7 +382,8 @@
     function initializeExistingCampaignModel() {
       var inProgressNewCampaign = localStorageService.get('newCampaign');
       $scope.newCampaign = inProgressNewCampaign ? inProgressNewCampaign : Campaigns.defaultNewCampaign();
-      $scope.newCampaign.components = $scope.newCampaign.componentsByTimeline;
+      $scope.newCampaign.proposalComponents = $scope.newCampaign.componentsByTimeline;
+      $scope.newCampaign.components = $scope.newCampaign.proposalComponents;
       $scope.newCampaign.template = $scope.templateOptions[1];
       $scope.newCampaign.enableBudget = 'yes';
       $scope.newCampaign.linkedComponents = $scope.newCampaign.linkedComponents || [];
@@ -401,7 +402,7 @@
       var inProgressNewCampaign = localStorageService.get('newCampaign');
       $scope.newCampaign = inProgressNewCampaign ? inProgressNewCampaign : Campaigns.defaultNewCampaign();
       $scope.newCampaign.template = $scope.templateOptions[1];
-      $scope.newCampaign.proposalComponents = inProgressNewCampaign ? inProgressNewCampaign.proposalComponents : _.cloneDeep(Components.defaultComponents());;
+      $scope.newCampaign.components = inProgressNewCampaign ? inProgressNewCampaign.proposalComponents : _.cloneDeep(Components.defaultComponents());;
       $scope.newCampaign.enableBudget = 'yes';
       $scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
       $scope.newCampaign.linkedComponents = [];
@@ -413,7 +414,6 @@
         localStorageService.set('newCampaign', newVal);
       });
     }
-
 
     /**
      * Non-scope function to update current/previous step models
@@ -428,7 +428,6 @@
         $scope.steps[prevStep - 1].active = false;
       }
     }
-
 
     function updateMilestoneStartDate(newValue, campaignStartDate) {
       return moment(campaignStartDate).add(newValue, 'd');
@@ -678,6 +677,10 @@
         Notify.show('Milestone of type ' + milestone.type + ' can\'t be deleted.', 'warn');
         return;
       }
+      if (!this.selectedComponent.deletedMilestones) {
+        this.selectedComponent.deletedMilestones = [];
+      }
+      this.selectedComponent.deletedMilestones.push(milestone);
       _.remove(this.selectedComponent.milestones, { position: milestone.position });
     }
 
@@ -687,6 +690,7 @@
      * @param {Date} date
      */
     function formatDate(date) {
+      moment.locale($scope.user.lang);
       return moment(date).local().format('L');
     }
 
@@ -704,14 +708,14 @@
         description: '',
         type: 'REMINDER',
         date: new Date(),
-        position: endMilestone.position,
+        position: endMilestone.position+1,
         isEditable: true,
         isMandatory: false,
         isRemovable: true
-      });
+    });
 
-      endMilestone.position += 1;
-      this.selectedComponent.milestones = _.sortBy(milestones, ['position']);
+      // endMilestone.position += 1;
+      // this.selectedComponent.milestones = _.sortBy(milestones, ['position']);
     }
 
     /**

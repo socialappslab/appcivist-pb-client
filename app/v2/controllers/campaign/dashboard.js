@@ -144,6 +144,8 @@
       $scope.afterGroupsError = afterGroupsError.bind($scope);
       $scope.loadCampaignBrief = loadCampaignBrief.bind($scope);
       $scope.translateDefaultBrief = translateDefaultBrief.bind($scope);
+      $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
+      $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -285,6 +287,15 @@
           brief => {
             $scope.campaignBriefDefault = $sce.trustAsHtml(brief);
           });
+    }
+
+    function toggleOpenAddAttachment () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+    }
+
+    function toggleOpenAddAttachmentByUrl () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+      $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
     }
 
     function afterComponentsLoaded() {

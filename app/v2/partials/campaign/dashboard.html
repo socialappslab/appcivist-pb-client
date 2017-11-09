@@ -297,6 +297,11 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
           <p>{{ 'Documents' | translate }}</p>
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+
+          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
           <!--

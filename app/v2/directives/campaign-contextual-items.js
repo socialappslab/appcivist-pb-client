@@ -83,6 +83,7 @@
     }
 
     function edit() {
+      localStorageService.set('newCampaign',this.campaign);
       $state.go('v2.assembly.aid.campaign.edit', { aid: this.assemblyId, cid: this.campaign.campaignId });
     }
 

@@ -81,7 +81,7 @@
             <uib-accordion close-others="true">
               <div uib-accordion-group class="panel-default" ng-repeat="milestone in selectedComponent.milestones">
                 <uib-accordion-heading>
-                  {{milestone.title}} - {{formatDate(milestone.date)}}
+                  [{{milestone.componentMilestoneId}}] {{formatDate(milestone.date)}} - {{milestone.title}}
                   <i ng-if="milestone.isRemovable && !milestone.isMandatory" class="pull-right fa fa-trash"
                      ng-click="$event.stopPropagation();$event.preventDefault();deleteMilestone(milestone)"></i>
                 </uib-accordion-heading>

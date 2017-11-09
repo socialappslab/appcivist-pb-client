@@ -294,13 +294,11 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
           <p>{{ 'Documents' | translate }}</p>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+          <button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"
                   ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
-
-          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+          <button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"
                   ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
@@ -308,6 +306,7 @@
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
+          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
           <div class="noContent" ng-if="!documents || documents.length === 0">
             <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
           </div>

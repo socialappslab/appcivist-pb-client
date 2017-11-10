@@ -538,20 +538,23 @@
           if ($scope.isEdit) {
             delete component.templates;
           }
-          const startMilestone = component.milestones.filter(m => m.type === 'START')[0];
-          const endMilestone = component.milestones.filter(m => m.type === 'END')[0];
 
-          if (startMilestone) {
-            component.startDate = moment(startMilestone.date).format('YYYY-MM-DD HH:mm');
+          if (component.milestones) {
+            const startMilestone = component.milestones.filter(m => m.type === 'START')[0];
+            const endMilestone = component.milestones.filter(m => m.type === 'END')[0];
+
+            if (startMilestone) {
+              component.startDate = moment(startMilestone.date).format('YYYY-MM-DD HH:mm');
+            }
+
+            if (endMilestone) {
+              component.endDate = moment(endMilestone.date).format('YYYY-MM-DD HH:mm');
+            }
+
+            angular.forEach(component.milestones, m => {
+              m.date = m.date = moment(m.date).format('YYYY-MM-DD HH:mm');
+            })
           }
-
-          if (endMilestone) {
-            component.endDate = moment(endMilestone.date).format('YYYY-MM-DD HH:mm');
-          }
-
-          angular.forEach(component.milestones, m => {
-            m.date = m.date = moment(m.date).format('YYYY-MM-DD HH:mm');
-          })
         });
         newCampaign.components = components;
       } else {

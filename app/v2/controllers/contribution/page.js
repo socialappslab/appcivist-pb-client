@@ -299,7 +299,7 @@
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
-                verifyAuthorship(scope.proposal, true);
+                verifyAuthorship(scope.proposal, $scope.extendedTextIsEtherpad);
               } else {
                 verifyAuthorship(scope.proposal, false);
               }

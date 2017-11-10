@@ -128,6 +128,7 @@
         }
         // user is member of Assembly
         $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyID);
+        $scope.userIsGroupMember = Memberships.isMember("group",$scope.groupID);
         $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         $scope.userIsAdmin = Memberships.userIsAdmin();
       }
@@ -425,13 +426,17 @@
 
       // 2. If is not in the list of authorships, check if the user is member of one of the responsible groups
       if (!$scope.userIsAuthor && $scope.group && $scope.group.groupId) {
-        var authorship = Contributions.verifyGroupAuthorship($scope.user, proposal, $scope.group).get();
-        authorship.$promise.then(function (response) {
-          $scope.userIsAuthor = response.responseStatus === 'OK';
-          if ($scope.userIsAuthor && checkEtherpad) {
-            loadEtherpadWriteUrl(proposal);
+        // From 2017-11-01, group editing is only possible if config GROUP_EDITING is true
+        $scope.userIsGroupMember = Memberships.isMember("group",$scope.group.groupId);
+        //
+        let groupMembershipEnabledConfig = $scope.campaignConfigs ? $scope.campaignConfigs['appcivist.campaign.enable-group-authorship'] : null;
+        if (groupMembershipEnabledConfig) {
+          if (groupMembershipEnabledConfig === "TRUE") {
+            $scope.userIsAuthor = $scope.userIsGroupMember;
+            if (checkEtherpad)
+              loadEtherpadWriteUrl(proposal);
           }
-        });
+        }
       } else if ($scope.userIsAuthor && checkEtherpad) {
         if ($scope.extendedTextIsEtherpad) {
           loadEtherpadWriteUrl(proposal);

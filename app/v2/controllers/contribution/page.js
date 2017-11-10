@@ -277,6 +277,7 @@
           }
 
           if (data.extendedTextPad) {
+            console.log("Document is "+data.extendedTextPad.resourceType);
             $scope.extendedTextIsEtherpad = data.extendedTextPad.resourceType === 'PAD';
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
             if ($scope.extendedTextIsEtherpad) {

@@ -160,7 +160,7 @@
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
               <!--<button class="btn btn-default proposal-btn">Default</button>-->
           </div>
-          <div class="text-center" style="margin-top: 2rem" ng-if="extendedTextIsEtherpad && proposal.extendedTextPad">
+          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PAD' && proposal.extendedTextPad">
             <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'"
                  class="etherpad__wrapper">
               <div class="pad-html">
@@ -172,7 +172,7 @@
 
             </div>
           </div>
-          <div class="text-center" style="margin-top: 2rem" ng-if="extendedTextIsGdoc && proposal.extendedTextPad">
+          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='GDOC' && proposal.extendedTextPad">
             <div class="etherpad__wrapper">
               <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
               <iframe ng-if="(!userIsAuthor && gdocUrl)" name="embed_readonly"

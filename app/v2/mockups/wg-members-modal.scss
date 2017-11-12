@@ -1,0 +1,87 @@
+#wgMembers {
+
+  .btn {
+    &.btn-smaller {
+      padding: 2px 10px;
+      min-width: 70px;
+      margin: 0 2px;
+      &.approved {
+        background-color: #87A669;
+        color: white;
+      }
+      &.rejected {
+        background-color: #DC5364;
+        color: white;
+      }
+      &.resend {
+        background-color: #8C8C8C;
+        color: white;
+        min-width: 120px;
+      }
+    }
+    &.btn-add-members {
+      background-color: #424242;
+      float: right;
+      margin-top: 40px;
+      margin-right: -40px;
+    }
+    &.btn-add-members {
+      border: none;
+      color: white;
+      font-size: 0.8rem;
+      text-shadow: none;
+      padding: 0.6rem 1rem;
+      &:active {
+        background-color: #1f1f1f;
+        color: #efefef;
+      }
+    }
+  }
+  
+  .nav-pills {
+    text-align: center;
+    li {
+      float: none;
+      display: inline-block;
+      margin: 0 auto;
+      a {
+        border-radius: 0;
+        padding: 5px 10px;
+        border-bottom: 2px solid transparent;
+        font-weight: bold;
+        color: #acacac;
+        &:hover {
+          background-color: transparent;
+          color: #8c8c8c;
+        }
+      }
+      &.active > a, &.active > a:focus {
+        background-color: transparent;
+        color: black;
+        border-bottom: 2px solid black;
+      }
+    }
+  }
+
+  table {
+    margin-top: 20px;
+    border: 0;
+  }
+  .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > td {
+    border: 0;
+  }
+  th {
+    background-color: #F2F5F5;
+    font-weight: bold;
+    text-align: center;
+  }
+  td {
+    border: 0;
+    text-align: center;
+    i {
+      margin: 0 3px;
+      cursor: pointer;
+    }
+  }
+
+}

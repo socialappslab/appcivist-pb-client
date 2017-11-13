@@ -4,6 +4,7 @@
     <header class="page__header" ng-style="coverStyle">
       <div class="row">
         <breadcrumb label="wg.name"></breadcrumb>
+        <a class="btn btn-join" ng-click="joinWg(wg.groupId)" ng-if="!userIsMember">{{'Join'|translate}}</a>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -80,40 +81,6 @@
           </div>
           <activity-card ng-repeat="activity in activities | limitTo:activitiesLimit track by $index " activity="activity"></activity-card>
           <p ng-if="!activities || activities.length === 0" class="card">{{'no.latest.activity' | translate}}</p>
-        </section>
-        <section class="members-panel" ng-if="wg.supportedMembership!='OPEN'">
-          <div class="panel-heading panel-heading-relative">
-            <h1 class="heading--header">{{'Members' | translate}}</h1>
-            <p class="heading--small">
-              <a href="" ng-click="toggleAllMembers()"><i class="fa fa-arrows-alt"></i>&nbsp;{{'See All' | translate}}</a>&nbsp;&nbsp;
-              <!--<a class="proposals__add_new" ng-if="!isAnonymous && newProposalsEnabled" ng-click="openModal('proposalFormModal')">
-                <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
-              </a>-->
-            </p>
-          </div>
-          <div class="card-list" ng-repeat="member in members | limitTo:membersLimit">
-            <div class="action-bar">
-              <member-card user="member.user"></member-card>
-              <div ng-if="userIsMember" class="action-button">
-                <input id="menu04" type="checkbox" name="menu" ng-checked="member.checked" hidden/>
-                <svg ng-click="member.checked = !member.checked" width="4px" height="16px" viewBox="0 0 4 16" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                  <title>{{'more' | translate}}</title>
-                  <defs></defs>
-                  <g id="Icon/Light/More-Vert" transform="translate(-10.000000, -4.000000)">
-                    <g id="more">
-                      <path d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
-                    </g>
-                  </g>
-                </svg>
-                <ul class="action-menu" ng-class="{shrinked: !member.checked}">
-                  <li><a>{{'Message this user' | translate}}</a></li>
-                  <li><a>{{'Remove this user' | translate}}</a></li>
-                </ul>
-              </div>
-            </div>
-            <p ng-if="!members || members.length === 0" class="card">{{'no.members.message' | translate}}</p>
-          </div>
         </section>
       </section>
     </div>
@@ -302,4 +269,108 @@
   </div>
 </div>
 
-<ng-include src="'app/v2/mockups/wg-members-modal.html'"></ng-include>
+<div class="modal fade dashboardModal" id="wgMembers" tabindex="-1" role="dialog" aria-labelledby="wgMembersLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <button class="btn btn-default btn-add-members" ng-if="isCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
+        <h3 class="modal-title" id="wgMembersLabel">{{wg.name}}</h3>
+        <p>{{ 'Members' | translate }}</p>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-pills" ng-if="isCoordinator">
+          <li class="active"><a data-toggle="tab" data-target="#approved">Approved</a></li>
+          <li><a data-toggle="tab" data-target="#pending">Pending approval</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="approved" class="tab-pane fade in active">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email Address</th>
+                  <th ng-if="isCoordinator">Role</th>
+                  <th ng-if="isCoordinator"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="member in members">
+                  <td style="text-align:left"><member-card user="member.user"></member-card></td>
+                  <td>{{member.user.email}}</td>
+                  <td ng-if="isCoordinator">
+                    <select>
+                      <option ng-selected="member.roles[0].name == 'COORDINATOR'">Coordinator</option>
+                      <option ng-selected="member.roles[0].name == 'MODERATOR'">Moderator</option>
+                      <option ng-selected="member.roles[0].name == 'MEMBER'">Member</option>
+                    </select>
+                  </td>
+                  <td ng-if="isCoordinator"><i class="fa fa-envelope-o fa-lg"></i> <i class="fa fa-trash-o fa-lg"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="pending" class="tab-pane fade">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email Address</th>
+                  <th>Invitation Status</th>
+                  <th>Approval Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="member in memberRequests">
+                  <td>{{member.user.name}}</td>
+                  <td>{{member.user.email}}</td>
+                  <td>{{member.status}}</td>
+                  <td ng-if="member.status === 'REQUESTED'">
+                    <a class="btn btn-smaller btn-default" ng-click="updateStatus(member, 'accepted', $event)">Approve</a> <a class="btn btn-smaller btn-default" ng-click="updateStatus(member, 'rejected', $event)">Reject</a>
+                  </td>
+                  <td ng-if="member.status === 'INVITED'">
+                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(member)">Resend invitation</a>
+                  </td>
+                  <td ng-if="member.status === 'REJECTED'">
+                    Invitation rejected
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer text-left">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{wg.name}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade dashboardModal" id="addMembers" tabindex="-1" role="dialog" aria-labelledby="addMembersLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+          <h3 class="modal-title" id="addMembersLabel">{{'Add new members'|translate}}</h3>
+        </div>
+        <div class="modal-body">
+          <form ng-submit="submitMembers(assemblyId)">
+            <label>Upload a CSV file containing the list of members you want to add. Each line should contain email, name, lastname, language, and role (MEMBER, MODERATOR or COORDINATOR)</label>
+            <input type="file" fileread="membersFile">
+            <input type="checkbox" ng-model="membersSendInvitations"> Send invitations
+            <label>If checked, only when the invited person accepts the membership will be effective. If not check, the user will become an accepted member automatically.</label>
+            <button type="submit" class="btn btn-default padGdoc">{{ 'Add new members' | translate }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  $(document).ready(function() {
+    $("#wgMembers .nav-pills a").on("click", function(e) {
+      e.preventDefault();
+    });
+  });
+</script>

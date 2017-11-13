@@ -424,9 +424,10 @@
 
     function submitMembers(assemblyId) {
       console.log(assemblyId);
-      var url = localStorageService.get('serverBaseUrl') + '/assembly/' + assemblyId + '/member?send_invitations=' + $scope.membersSendInvitations;
+      var url = localStorageService.get('serverBaseUrl') + '/assembly/' + assemblyId + '/campaign/'+ $scope.campaignID +'/group/'+ $scope.groupID +'/member';
       var fd = new FormData();
       fd.append('file', $scope.membersFileUrl);
+      fd.append('send_invitations', $scope.membersSendInvitations);
       $http.post(url, fd, {
         headers: {
           'Content-Type': undefined

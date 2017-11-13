@@ -46,12 +46,6 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService, $in
     assembly: function (assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },
-    uploadMembers: function (assemblyId, send, payload) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/member?send_invitations=:send', {
-        aid: assemblyId,
-        send: send
-      }).save(payload).$promise;
-    },
     assemblyInAssembly: function (assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/assembly', { aid: assemblyId }, { 'update': { method: 'PUT' } });
     },

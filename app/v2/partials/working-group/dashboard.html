@@ -57,7 +57,7 @@
               </a>
             </li>
             <li class="overlay_button">
-              <a data-toggle="modal" data-target="#members">
+              <a data-toggle="modal" data-target="#wgMembers">
                 <i class="fa fa-users fa-lg"></i><span>{{'Members'|translate}}</span>
                 <span class="number" ng-if="members.length > 0">({{members.length}})</span>
               </a>
@@ -301,3 +301,5 @@
     </div>
   </div>
 </div>
+
+<ng-include src="'app/v2/mockups/wg-members-modal.html'"></ng-include>

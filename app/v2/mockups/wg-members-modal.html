@@ -1,0 +1,131 @@
+<div class="modal fade dashboardModal" id="wgMembers" tabindex="-1" role="dialog" aria-labelledby="wgMembersLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <button class="btn btn-default btn-add-members">{{'Add new members'|translate}}</button>
+        <h3 class="modal-title" id="wgMembersLabel">{{wg.name}}</h3>
+        <p>{{ 'Members' | translate }}</p>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-pills">
+          <li class="active"><a data-toggle="tab" href="#approved">Approved</a></li>
+          <li><a data-toggle="tab" href="#pending">Pending approval</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="approved" class="tab-pane fade in active">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email Address</th>
+                  <th>Role</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]">
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>
+                    <select>
+                      <option>WG Coordinator</option>
+                      <option>Moderator</option>
+                      <option>Member</option>
+                    </select>
+                  </td>
+                  <td><i class="fa fa-envelope-o fa-lg"></i> <i class="fa fa-trash-o fa-lg"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="pending" class="tab-pane fade">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email Address</th>
+                  <th>Invitation Status</th>
+                  <th>Approval Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller btn-default">Approve</a> <a class="btn btn-smaller btn-default">Reject</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller resend btn-default">Resend invitation</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller btn-default">Approve</a> <a class="btn btn-smaller btn-default">Reject</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller approved btn-default">Approve</a> <a class="btn btn-smaller btn-default">Reject</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller btn-default">Approve</a> <a class="btn btn-smaller rejected btn-default">Rejecte</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td>Invitation rejected</td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller resend btn-default">Resend invitation</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller resend btn-default">Resend invitation</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller approved btn-default">Approve</a> <a class="btn btn-smaller btn-default">Reject</a></td>
+                </tr>
+                <tr>
+                  <td>John Smith</td>
+                  <td>john.smith@gmail.com</td>
+                  <td>Accepted</td>
+                  <td><a class="btn btn-smaller btn-default">Approve</a> <a class="btn btn-smaller btn-default">Reject</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer text-left">
+        <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{wg.name}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(".nav-pills a").on("click", function(e) {
+      e.preventDefault();
+    })
+  })
+</script>

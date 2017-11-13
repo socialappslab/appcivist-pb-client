@@ -119,7 +119,7 @@
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
           </a>
           <a class="primary__button right join__working_group"
-             ng-if="newProposalsEnabled && displayJoinWorkingGroup && !newIdeasEnabled">
+             ng-if="newProposalsEnabled && displayJoinWorkingGroup && !newIdeasEnabled" data-toggle="modal" data-target="#workingGroups">
             <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
           </a>
         </div>
@@ -272,6 +272,7 @@
           <ul class="workingGroupList" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
             <li ng-repeat="wg in otherWorkingGroups">
               <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
+              <a class="btn btn-default" ng-click="joinWg(wg.groupId)"><i class="fa fa-sign-in fa-lg"></i> {{'Join'|translate}}</a>
             </li>
           </ul>
         </div>

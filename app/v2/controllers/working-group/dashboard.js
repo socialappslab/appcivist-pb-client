@@ -98,10 +98,30 @@
       $scope.contributionTypeIsSupported = function (type) {
         return Campaigns.isContributionTypeSupported(type, $scope);
       }
+      $scope.joinWg = joinWg.bind($scope);
+      $scope.updateStatus = updateStatus.bind($scope);
+      $scope.resendInvitation = resendInvitation.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
       })
+
+      function joinWg(groupId) {
+        let member = {
+          userId: $scope.user.userId,
+          email: $scope.user.email,
+          type: 'REQUEST',
+          targetCollection: 'GROUP',
+          status: 'REQUESTED'
+        }
+        let rsp = Memberships.membershipRequest('group', groupId).save(member);
+        rsp.$promise.then(
+          response => {
+            Notify.show("Request completed successfully. We'll get in contact soon.", "success");
+          },
+          error => Notify.show("Error while trying to join working group", "error")
+        )
+      }
 
       $scope.resources = {};
       // user is member of Assembly
@@ -323,8 +343,16 @@
             .filter(function (m) {
               return m.status === 'ACCEPTED';
             });
+          $scope.memberRequests = group.members
+            .filter(function (m) {
+              return m.status === 'REQUESTED';
+            });
+          $scope.membersInvited = group.members
+            .filter(function (m) {
+              return m.status === 'INVITED';
+            });
         } else {
-          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ALL').query();
+          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
           res.$promise.then(
             function (data) {
               $scope.members = data;
@@ -333,8 +361,46 @@
               Notify.show('Error occured while trying to load working group members', 'error');
             }
           );
+          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'REQUESTED').query();
+          res.$promise.then(
+            function (data) {
+              $scope.memberRequests = data;
+            }
+          );
+          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'INVITED').query();
+          res.$promise.then(
+            function (data) {
+              $scope.membersInvited = data;
+            }
+          );
         }
       }
+    }
+
+    function updateStatus(member, status) {
+      let model = {
+        userId: member.user.userId,
+        email: member.user.email,
+        type: 'GROUP',
+        targetCollection: $scope.wg.groupId,
+        status: status
+      }
+      let rsp = Memberships.updateStatus(member.membershipId, status).update(model);
+      rsp.$promise.then(
+        response => {
+          switch (status) {
+            case "accepted":
+              Notify.show("Member accepted successfully.", "success"); break;
+            case "rejected":
+              Notify.show("Member rejected successfully.", "success"); break;
+          }
+        },
+        error => Notify.show("Error while trying to update the status", "error")
+      )
+    }
+
+    function resendInvitation(member) {
+      console.log("TODO: Resend");
     }
 
     function loadRelatedContributions() {
@@ -348,7 +414,6 @@
             });
           });
           $scope.resources.relatedContributions = related;
-          console.log(related);
         },
         function (error) {
           Notify.show('Error loading contributions from server', 'error');

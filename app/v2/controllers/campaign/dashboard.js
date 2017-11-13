@@ -146,6 +146,7 @@
       $scope.translateDefaultBrief = translateDefaultBrief.bind($scope);
       $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
       $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
+      $scope.joinWg = joinWg.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -179,6 +180,23 @@
           $scope.$broadcast('filters:updateFilters');
         }
       });
+    }
+    
+    function joinWg(groupId) {
+      let member = {
+        userId: $scope.user.userId,
+        email: $scope.user.email,
+        type: 'REQUEST',
+        targetCollection: 'GROUP',
+        status: 'REQUESTED'
+      }
+      let rsp = Memberships.membershipRequest('group', groupId).save(member);
+      rsp.$promise.then(
+        response => {
+          Notify.show("Request completed successfully. We'll get in contact soon.", "success");
+        },
+        error => Notify.show("Error while trying to join working group", "error")
+      )
     }
 
     function loadAssembly() {

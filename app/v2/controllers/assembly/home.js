@@ -107,7 +107,9 @@
             this.logoStyle = this.logo ?
             {
               'background-image': 'url(' + this.logo + ')'
-            } : '';
+            } : {
+              'display': 'none'
+            };
             this.cover = this.assembly.profile.cover;
             this.coverStyle = this.cover ?
             {

@@ -21,4 +21,12 @@
     min-height: unset;
   }
   input[type=file] { border: 0; }
+  .btn-submit {
+    border: none;
+    color: white;
+    font-size: 0.8rem;
+    text-shadow: none;
+    padding: 0.6rem 1rem;
+    background-color: #26557B;
+  }
 }

@@ -15,3 +15,10 @@
     }
   }
 }
+
+#addMembers {
+  .modal-body {
+    min-height: unset;
+  }
+  input[type=file] { border: 0; }
+}

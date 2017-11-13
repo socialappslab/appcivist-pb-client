@@ -43,6 +43,9 @@
         mode: $scope.type
       };
 
+      $scope.membersFile = null;
+      $scope.membersSendInvitations = null;
+
       $scope.associatedContributionsType = "idea";
 
       // if the param is uuid then it is an anonymous user
@@ -101,6 +104,7 @@
       $scope.joinWg = joinWg.bind($scope);
       $scope.updateStatus = updateStatus.bind($scope);
       $scope.resendInvitation = resendInvitation.bind($scope);
+      $scope.submitMembers = submitMembers.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
@@ -401,6 +405,21 @@
 
     function resendInvitation(member) {
       console.log("TODO: Resend");
+    }
+
+    function submitMembers(assemblyId) {
+      let payload = {
+        file: $scope.membersFile
+      }
+      Assemblies.uploadMembers(assemblyId, $scope.membersSendInvitations, payload).then(
+        response => {
+          console.log(response);
+          Notify.show("Members invited successfully", "success");
+        },
+        error => {
+          Notify.show("Error while trying to invite members", "error");
+        }
+      )
     }
 
     function loadRelatedContributions() {

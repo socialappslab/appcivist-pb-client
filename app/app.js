@@ -145,6 +145,8 @@
       '*://vallejopb.appcivist.org/**',
       '*://ctsfrance.appcivist.org/**',
       '*://pb.appcivist.org/**',
+      '*://www.facebook.com/**',
+      '*://facebook.com/**'
     ]);
 
     /**
@@ -917,7 +919,7 @@
     $translateProvider
       .preferredLanguage('en-US')
       .fallbackLanguage('en-US')
-      .registerAvailableLanguageKeys(["en-US", "es-ES", "fr-FR", "de-DE", "pt-BR"], {
+      .registerAvailableLanguageKeys(["en-US", "es-ES", "fr-FR", "de-DE", "pt-BR", "fr-CA"], {
         'en': 'en-US',
         'es': 'es-ES',
         'it': 'it-IT',
@@ -929,7 +931,9 @@
         'it_IT': 'it-IT',
         'fr_FR': 'fr-FR',
         'de_DE': 'de-DE',
-        'pt_BR': 'pt-BR'
+        'pt_BR': 'pt-BR',
+        'fr_CA': 'fr-CA',
+        'ca': 'fr-CA'
       })
       .useSanitizeValueStrategy(null);
 

@@ -8,11 +8,11 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http'
   ];
 
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, $state) {
+    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, $state, $http) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) {
@@ -42,9 +42,24 @@
         pageSize: $scope.pageSize,
         mode: $scope.type
       };
+      $scope.getFromFile = getFromFile.bind($scope);
 
       $scope.membersFile = null;
+      $scope.membersFileUrl = null;
       $scope.membersSendInvitations = null;
+
+      $scope.$watch('membersFile', $scope.getFromFile);
+
+      function getFromFile(file) {
+        if (!file) {
+          return;
+        }
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          $scope.$apply(() => $scope.membersFileUrl = e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
 
       $scope.associatedContributionsType = "idea";
 
@@ -408,13 +423,22 @@
     }
 
     function submitMembers(assemblyId) {
-      let payload = {
-        file: $scope.membersFile
-      }
-      Assemblies.uploadMembers(assemblyId, $scope.membersSendInvitations, payload).then(
+      console.log(assemblyId);
+      var url = localStorageService.get('serverBaseUrl') + '/assembly/' + assemblyId + '/campaign/'+ $scope.campaignID +'/group/'+ $scope.groupID +'/member';
+      var fd = new FormData();
+      fd.append('file', $scope.membersFile);
+      $http.post(url, fd, {
+        headers: {
+          'Content-Type': undefined
+        },
+        transformRequest: angular.identity,
+        params: {
+          send_invitations: $scope.membersSendInvitations
+        }
+      }).then(
         response => {
-          console.log(response);
           Notify.show("Members invited successfully", "success");
+          angular.element('#addMembers button.close').trigger('click');
         },
         error => {
           Notify.show("Error while trying to invite members", "error");

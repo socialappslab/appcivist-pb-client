@@ -34,6 +34,16 @@
         let currentLanguage = current.language;
         $scope.loadLangPickerFromLang(currentLanguage);      }
     );
+    $scope.getLanguageShortCode = function(lang) {
+      let langParts = lang.split('-');
+      let langShort;
+      if (langParts.length>1) {
+        langShort = langParts[1].toLowerCase();
+      } else {
+        langShort = langParts[0].toLowerCase();
+      }
+      return langShort;
+    }
     $scope.changeLanguage = function(key) {
       $translate.use(key);
       if (user) {
@@ -53,10 +63,12 @@
       availableLanguages = $translate.getAvailableLanguageKeys().slice();
       currentPosition = availableLanguages.indexOf(currentLanguage);
       availableLanguages.splice(currentPosition, 1);
-      angular.element($('#currentlang')).html('<img class="i18flag" src="../assets/i18n/flags/'+currentLanguage.split('-')[0]+'.png" alt="'+currentLanguage+'">');
+      let currentLangShortCode = $scope.getLanguageShortCode(currentLanguage);
+      angular.element($('#currentlang')).html('<img class="i18flag" src="../assets/i18n/flags/'+currentLangShortCode+'.png" alt="'+currentLanguage+'">');
       availableLanguagesContent = "";
       angular.forEach(availableLanguages, function(lang) {
-        availableLanguagesContent += '<li><a class="langitem" ng-click="changeLanguage(\''+lang+'\')"><img class="i18flag" src="../assets/i18n/flags/'+lang.split('-')[0]+'.png" alt="'+lang+'"></a></li>';
+        let langShortCode = $scope.getLanguageShortCode(lang);
+        availableLanguagesContent += '<li><a class="langitem" ng-click="changeLanguage(\''+lang+'\')"><img class="i18flag" src="../assets/i18n/flags/'+langShortCode+'.png" alt="'+lang+'"></a></li>';
       });
       angular.element($("#availablelangs")).html($compile(availableLanguagesContent)($scope));
     }

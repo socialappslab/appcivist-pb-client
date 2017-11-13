@@ -25,13 +25,13 @@
         $translate.use($scope.user.language);
       }
       $scope.profile = {
-        firstname: $scope.user.name.split(' ')[0],
-        lastname: $scope.user.name.split(' ')[1],
-        email: $scope.user.email,
-        username: $scope.user.username,
-        facebookUserId: $scope.user.facebookUserId,
-        userAccessToken: $scope.user.userAccessToken,
-        tokenExpiresIn: $scope.user.tokenExpiresIn
+        firstname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[0] : '' :  '',
+        lastname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[1] : '' :  '',
+        email: $scope.user ? $scope.user.email : '',
+        username: $scope.user ? $scope.user.username : '',
+        facebookUserId: $scope.user ? $scope.user.facebookUserId : '',
+        userAccessToken: $scope.user ? $scope.user.userAccessToken : '',
+        tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : ''
       };
       $scope.userFromServer = {
         firstname: $scope.profile.firstname,
@@ -53,18 +53,17 @@
 
     function blurReset() {
       if (!$scope.profile.firstname) {
-        $scope.profile.firstname = $scope.user.name.split(' ')[0];
+        $scope.profile.firstname = $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[0] : '' : '';
       }
       if (!$scope.profile.lastname) {
-        $scope.profile.lastname = $scope.user.name.split(' ')[1];
+        $scope.profile.lastname = $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[1] : '' : '';
       }
       if (!$scope.profile.email) {
-        $scope.profile.email = $scope.user.email;
+        $scope.profile.email = $scope.user ? $scope.user.email : '';
       }
       if (!$scope.profile.username) {
-        $scope.profile.username = $scope.user.username;
+        $scope.profile.username = $scope.user ? $scope.user.username : '';
       }
-
     }
 
     function updateProfile() {
@@ -75,7 +74,7 @@
       fd.append('email', $scope.profile.email);
       fd.append('username', $scope.profile.username);
       fd.append('facebookUserId', $scope.profile.facebookUserId);
-      
+
       if (userInfoChanged()) {
         $http.put(url, fd, {
           headers: {

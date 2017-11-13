@@ -426,14 +426,15 @@
       console.log(assemblyId);
       var url = localStorageService.get('serverBaseUrl') + '/assembly/' + assemblyId + '/campaign/'+ $scope.campaignID +'/group/'+ $scope.groupID +'/member';
       var fd = new FormData();
-      fd.append('file', $scope.membersFileUrl);
-      fd.append('send_invitations', $scope.membersSendInvitations);
+      fd.append('file', $scope.membersFile);
       $http.post(url, fd, {
         headers: {
           'Content-Type': undefined
         },
         transformRequest: angular.identity,
-        params: {}
+        params: {
+          send_invitations: $scope.membersSendInvitations
+        }
       }).then(
         response => {
           Notify.show("Members invited successfully", "success");

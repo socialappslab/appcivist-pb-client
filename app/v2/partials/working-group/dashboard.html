@@ -339,9 +339,8 @@
         </div>
         <div class="modal-body">
           <form ng-submit="submitMembers(assemblyID)">
-            <label>Upload a CSV file containing the list of members you want to add. Each line should contain email, name, lastname, language, and role (MEMBER, MODERATOR or COORDINATOR)</label>
-            <input type="file" fileread="membersFile">
-            <input type="checkbox" ng-model="membersSendInvitations"> Send invitations
+            <label>Upload a CSV file containing the list of members you want to add. Each line should contain email, name, lastname, language, and role (MEMBER, MODERATOR or COORDINATOR) <input type="file" fileread="membersFile"></label>
+            <label><input type="checkbox" ng-model="membersSendInvitations"> Send invitations</label>
             <label>If checked, only when the invited person accepts the invitation the membership will be effective. If not checked, the user will become an accepted member automatically.</label>
             <div class="text-right">
               <button type="submit" class="btn btn-default btn-submit">{{ 'Add new members' | translate }}</button>

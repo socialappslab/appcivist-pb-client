@@ -666,8 +666,39 @@
       if (!this.selectedComponent.title) {
         return;
       }
-      this.newCampaign.proposalComponents.push(this.selectedComponent);
-      this.selectedComponent = {};
+      let newComponent =
+        {
+          key: this.selectedComponent.key + "_" + this.newCampaign.proposalComponents.length,
+          lang: this.selectedComponent.lang,
+          milestones: [
+            {
+              title: 'Start',
+              description: '',
+              type: 'START',
+              date: new Date(),
+              position: 1,
+              isEditable: true,
+              isMandatory: true,
+              isRemovable: false
+            },
+            {
+
+              title: 'End',
+              description: '',
+              type: 'END',
+              date: new Date(),
+              position: 1,
+              isEditable: true,
+              isMandatory: true,
+              isRemovable: false
+            }
+          ],
+          position: this.newCampaign.proposalComponents.length,
+          title: "NEW " + this.selectedComponent.title,
+          type: this.selectedComponent.type
+        };
+      this.newCampaign.proposalComponents.push(newComponent);
+      this.selectedComponent = newComponent;
     }
 
     /**
@@ -711,7 +742,7 @@
         description: '',
         type: 'REMINDER',
         date: new Date(),
-        position: endMilestone.position+1,
+        position: endMilestone ? endMilestone.position+1 : milestones.length+1,
         isEditable: true,
         isMandatory: false,
         isRemovable: true

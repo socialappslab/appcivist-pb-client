@@ -217,7 +217,7 @@
               var assemblyId = data.assemblyId != null ? data.assemblyId : data.newResourceId;
               Assemblies.setCurrentAssembly(assemblyId).then(function() {
                 //redirect to manage page
-                $state.go('v2.assembly.aid.campaign.start', { aid: assemblyId }, { reload: true });
+                $state.go('v2.assembly.aid.campaign.new', { aid: assemblyId }, { reload: true });
               })
             },
             // Error

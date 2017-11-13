@@ -40,3 +40,19 @@
     }
   }
 }
+
+.org-logos {
+  a {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px;
+    .orgbox {
+      max-width: 300px;
+      max-height: 300px;
+      font-weight: bold;
+      padding: 15px 10px;
+      border: 1px solid #DDD;
+      border-radius: 5px;
+    }
+  }
+}

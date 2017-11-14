@@ -244,8 +244,7 @@
       }
 
       $scope.createOrUpdateWorkingGroup = function() {
-        // const resourceSpaceId = $scope.newWorkingGroup.resourcesResourceSpaceId;
-        // temporal fix
+        let resourceSpaceId = $scope.newWorkingGroup.resourcesResourceSpaceId;
         delete $scope.newWorkingGroup.resourcesResourceSpaceId;
         delete $scope.newWorkingGroup.forumResourceSpaceId;
 
@@ -335,6 +334,7 @@
     }
 
     function initScopeContent() {
+      $scope.currentWorkingGroup = localStorageService.get('currentWorkingGroup');
       $scope.isEdit = false;
       $scope.errors = [];
       var currentAssembly = localStorageService.get('currentAssembly');
@@ -510,7 +510,7 @@
         $state.go('v2.assembly.aid.campaign.workingGroup.gid', {
           aid: $scope.assemblyID,
           cid: $scope.campaignID,
-          gid: response.groupId
+          gid: response.newResourceId ? response.newResourceId : response.groupId ? response.groupId : $scope.newWorkingGroup.groupId
         });
       });
     }

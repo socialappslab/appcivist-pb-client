@@ -75,9 +75,14 @@
       <div class="campaign__filters">
         <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">{{'Proposals' | translate}}</h2>
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-4"
-           ng-if="user != null && newProposalsEnabled"
+           ng-if="user != null && newProposalsEnabled && userIsMember"
            ng-click="openModal('proposalFormModal')">
           <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
+        </a>
+
+        <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-4"
+           ng-if="user === null || !userIsMember" disabled>
+          {{'Join the Group to create proposals' | translate}}
         </a>
 
         <!--<a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"-->
@@ -198,15 +203,26 @@
     </div>-
   </article>
 
+  <!--<script id="proposalFormModal" type="text/ng-template">-->
+    <!--<contribution-proposal-form-->
+      <!--group="wg"-->
+      <!--campaign="campaign"-->
+      <!--configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"-->
+      <!--type="PROPOSAL"-->
+      <!--on-success="redirectToProposal(contribution)"-->
+      <!--on-import-success="closeModal()"-->
+      <!--user="user"></contribution-proposal-form>-->
+  <!--</script>-->
+
+  <!-- New Proposal Form Modal -->
   <script id="proposalFormModal" type="text/ng-template">
-    <contribution-proposal-form
+    <contribution-form
       group="wg"
       campaign="campaign"
       configs="campaignConfigs['appcivist.campaign.contribution.hidden-fields']"
       type="PROPOSAL"
       on-success="redirectToProposal(contribution)"
-      on-import-success="closeModal('proposalFormModal')"
-      user="user"></contribution-proposal-form>
+      on-import-success="closeModal()"></contribution-form>
   </script>
 
   <modal open-if="modals.proposalFormModal" close="closeModal('proposalFormModal')" template-id="proposalFormModal"></modal>
@@ -222,7 +238,7 @@
         <p>{{ 'Assigned ideas' | translate }}</p>
       </div>
       <div class="modal-body">
-        <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)"
+        <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || isCoordinator || userIsAdmin)"
                                        contribution-type="associatedContributionsType"
                                        space-id="wg.resourcesResourceSpaceId"
                                        space="resources"
@@ -316,6 +332,18 @@
                   </td>
                   <td ng-if="member.status === 'REJECTED'">
                     Invitation rejected
+                  </td>
+                </tr>
+                <tr ng-repeat="invitation in membersInvited">
+                  <td>{{invitation.name}}</td>
+                  <td>{{invitation.email}}</td>
+                  <td>{{invitation.status}}</td>
+                  <td ng-if="invitation.status === 'INVITED'">
+                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(member)">Resend invitation</a>
+                  </td>
+                  <td ng-if="invitation.status === 'REJECTED'">
+                    Invitation rejected
+                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(member)">Resend invitation</a>
                   </td>
                 </tr>
               </tbody>

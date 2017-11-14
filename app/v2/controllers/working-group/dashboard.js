@@ -7,12 +7,13 @@
 
 
   WorkingGroupDashboardCtrl.$inject = [
-    '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
+    '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', 'Invitations', '$filter',
     'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http'
   ];
 
-  function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope, $state, $http) {
+  function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions, Invitations,
+                                     $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
+                                     $state, $http) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) {
@@ -26,8 +27,8 @@
 
     function activate() {
       ModalMixin.init($scope);
-      $scope.membersCommentCounter = { value: 0 };
-      $scope.publicCommentCounter = { value: 0 };
+      $scope.membersCommentCounter = {value: 0};
+      $scope.publicCommentCounter = {value: 0};
       $scope.pageSize = 12;
       $scope.type = 'proposal';
       $scope.showPagination = false;
@@ -43,7 +44,6 @@
         mode: $scope.type
       };
       $scope.getFromFile = getFromFile.bind($scope);
-
       $scope.membersFile = null;
       $scope.membersFileUrl = null;
       $scope.membersSendInvitations = null;
@@ -81,9 +81,9 @@
         $scope.groupID = $stateParams.guuid;
         $scope.assemblyID = $stateParams.auuid;
         $scope.campaignID = $stateParams.cuuid;
-        $scope.isAnonymous = true;
         $scope.fromURL = 'v2/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isWorkingGroupCoordinator($scope.groupID);
+        $scope.isAnonymous = true;
       } else {
         $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : 0;
         $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
@@ -91,12 +91,14 @@
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
-      }
-      loadAssembly();
-
-      if (!$scope.isAnonymous) {
+        $scope.userIsMember = Memberships.isMember("assembly", $scope.assemblyID);
+        $scope.userIsGroupMember = Memberships.isMember("group", $scope.groupID);
+        $scope.userIsAdmin = Memberships.userIsAdmin();
         $scope.activeTab = "Members";
       }
+
+      loadAssembly();
+
       $scope.activitiesLimit = 4;
       $scope.membersLimit = 5;
       $scope.ideasSectionExpanded = false;
@@ -125,28 +127,24 @@
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
       })
 
-      function joinWg(groupId) {
-        let member = {
-          userId: $scope.user.userId,
-          email: $scope.user.email,
-          type: 'REQUEST',
-          targetCollection: 'GROUP',
-          status: 'REQUESTED'
-        }
-        let rsp = Memberships.membershipRequest('group', groupId).save(member);
-        rsp.$promise.then(
-          response => {
-            Notify.show("Request completed successfully. We'll get in contact soon.", "success");
-          },
-          error => Notify.show("Error while trying to join working group", "error")
-        )
-      }
-
       $scope.resources = {};
-      // user is member of Assembly
-      $scope.userIsMember = Memberships.isMember("assembly",$scope.assemblyID);
-      $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
-      $scope.userIsAdmin = Memberships.userIsAdmin();
+    }
+
+    function joinWg(groupId) {
+      let member = {
+        userId: $scope.user.userId,
+        email: $scope.user.email,
+        type: 'REQUEST',
+        targetCollection: 'GROUP',
+        status: 'REQUESTED'
+      }
+      let rsp = Memberships.membershipRequest('group', groupId).save(member);
+      rsp.$promise.then(
+        response => {
+          Notify.show("Request completed successfully. We'll get in contact soon.", "success");
+        },
+        error => Notify.show("Error while trying to join working group", "error")
+      )
     }
 
     function loadAssembly() {
@@ -265,11 +263,16 @@
         Notify.show('Error while trying to fetch campaign config', 'error');
       });
     }
+
     function loadWorkingGroup() {
       var res;
 
-      if ($scope.isAnonymous) {
-        res = WorkingGroups.workingGroupByUUID($scope.groupID).get();
+      if ($scope.isAnonymous || !$scope.userIsMember) {
+        if (!$scope.userIsMember) {
+          res = WorkingGroups.workingGroupPublicProfile($scope.assemblyID, $scope.groupID).get()
+        } else {
+          res = WorkingGroups.workingGroupByUUID($scope.groupID).get();
+        }
       } else {
         res = WorkingGroups.workingGroup($scope.assemblyID, $scope.groupID).get();
       }
@@ -307,7 +310,7 @@
           }
           loadMembers(data);
 
-          if ($scope.isAnonymous) {
+          if ($scope.isAnonymous || !$scope.userIsMember) {
             $scope.spaceID = data.resourcesResourceSpaceUUID;
             $translate.use($scope.wg.lang);
           } else {
@@ -327,7 +330,7 @@
           loadLatestActivities(data);
 
           if ($scope.wg) {
-            var rsp = $scope.isAnonymous ? Space.configsByUUID($scope.wg.rsUUID).get() : Space.configs($scope.wg.rsID).get();
+            var rsp = ($scope.isAnonymous || !$scope.userIsMember) ? Space.configsByUUID($scope.wg.rsUUID).get() : Space.configs($scope.wg.rsID).get();
             rsp.$promise.then(function (data) {
               $scope.wgConfigs = data;
 
@@ -357,7 +360,7 @@
       var res;
 
       if (group.supportedMembership && group.supportedMembership != "OPEN") {
-        if ($scope.isAnonymous) {
+        if ($scope.isAnonymous || !$scope.userIsMember) {
           $scope.members = group.members
             .filter(function (m) {
               return m.status === 'ACCEPTED';
@@ -386,7 +389,7 @@
               $scope.memberRequests = data;
             }
           );
-          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'INVITED').query();
+          res = Invitations.invitations('group', gid, 'INVITED').query();
           res.$promise.then(
             function (data) {
               $scope.membersInvited = data;

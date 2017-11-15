@@ -417,9 +417,9 @@
      * Verify current user authorship status.
      *
      * @param {Object} proposal
-     * @param {boolean} checkEtherpad - whether we should verify read/write etherpad URL.
+     * @param {boolean} extendedTextIsPad - whether we should verify read/write etherpad URL.
      */
-    function verifyAuthorship(proposal, checkEtherpad) {
+    function verifyAuthorship(proposal, extendedTextIsPad) {
       // Check Authorship
       // 1. Check if user is in the list of authors
       $scope.userIsAuthor = Contributions.verifyAuthorship($scope.user, proposal);
@@ -433,17 +433,17 @@
         if (groupMembershipEnabledConfig) {
           if (groupMembershipEnabledConfig === "TRUE") {
             $scope.userIsAuthor = $scope.userIsGroupMember;
-            if (checkEtherpad)
+            if (extendedTextIsPad)
               loadEtherpadWriteUrl(proposal);
           }
         }
-      } else if ($scope.userIsAuthor && checkEtherpad) {
+      } else if ($scope.userIsAuthor && extendedTextIsPad) {
         if ($scope.extendedTextIsEtherpad) {
           loadEtherpadWriteUrl(proposal);
-        } else if ($scope.extendedTextIsGdoc) {
-          // TODO: load the write embed url for gdoc
-          $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
         }
+      } else if ($scope.userIsAuthor && $scope.extendedTextIsGdoc) {
+        // TODO: load the write embed url for gdoc
+        $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
       }
     }
 

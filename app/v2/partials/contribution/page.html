@@ -154,8 +154,8 @@
         <div class="proposal-text">
           <h2>{{contributionType|titlecase|translate}}</h2>
           <p translate="contribution.body"></p>
-          <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad"></p>
-          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad">
+          <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)"></p>
+          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)">
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
               <!--<button class="btn btn-default proposal-btn">Default</button>-->

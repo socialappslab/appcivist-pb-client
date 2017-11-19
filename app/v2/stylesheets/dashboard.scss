@@ -264,3 +264,28 @@ a.join__working_group {
   display: table;
   width: 100%;
 }
+
+
+#themes-keywords {
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    li {
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 5px;
+      &.theme {
+        background-color: #DFDFDF;
+        cursor: pointer;
+      }
+      &.keyword { background-color: #D9EAFE; }
+    }
+  }
+  #description {
+    display: none;
+    background-color: #efefef;
+    margin-top: 20px;
+    padding: 10px;
+    strong { font-weight: bold; }
+  }
+}

@@ -68,6 +68,11 @@
                     <i class="fa fa-bar-chart fa-lg"></i><span>{{'Analytics'|translate}}</span><span class="number"></span>
                   </a>
                 </li>
+                <li class="overlay_button">
+                  <a data-toggle="modal" data-target="#themes-keywords">
+                    <i class="fa fa-tags fa-lg"></i><span>{{'Themes & Keywords'|translate}}</span><span class="number"></span>
+                  </a>
+                </li>
               </ul>
               <div class="powered_logo">
                   <div class="logo__wrapper__light">
@@ -295,6 +300,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
           <p>{{ 'Documents' | translate }}</p>
           <button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"
@@ -596,6 +602,34 @@
         <div class="modal-footer">
           <button class="confirm-modal accept" data-dismiss="modal">{{'Participate'|translate}}</button>
           <button class="confirm-modal accept" data-dismiss="modal">{{'Explore the campaign'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Themes & Keywords modal -->
+  <div class="modal fade dashboardModal" id="themes-keywords" tabindex="-1"
+       role="dialog" aria-labelledby="themesKeywordsLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="analyticsLabel">{{campaign.title}}</h3>
+          <p>{{ 'Themes & Keywords' | translate }}</p>
+        </div>
+        <div class="modal-body about__modal">
+          <h4>{{'Themes' | translate}}</h4>
+          <ul>
+              <li class="theme" ng-repeat="theme in themes" ng-click="loadThemeKeywordDescription(theme.title, theme.description)">{{theme.title}}</li>
+            </ul>
+          <h4 style="margin-top: 20px;">{{'Keywords' | translate}}</h4>
+          <ul>
+            <li class="keyword" ng-repeat="keyword in keywords">{{keyword.title}}</li>
+          </ul>
+          <div id="description"></div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>
         </div>
       </div>
     </div>

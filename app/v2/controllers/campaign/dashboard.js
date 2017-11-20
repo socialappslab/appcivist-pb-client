@@ -147,6 +147,7 @@
       $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
       $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
       $scope.joinWg = joinWg.bind($scope);
+      $scope.loadThemeKeywordDescription = loadThemeKeywordDescription.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -280,8 +281,22 @@
               $scope.insights = data;
             }
           );
+
+          Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {}).then(
+            response => {
+              $scope.themes = response.filter(r => r.type == 'OFFICIAL_PREDEFINED_THEMES');
+              $scope.keywords = response.filter(r => r.type == 'EMERGENT');
+            },
+            error => {
+              Notify.show('Error loading themes from server', 'error');
+            }
+          );
         }
       );
+    }
+
+    function loadThemeKeywordDescription(title, content) {
+      angular.element('#themes-keywords #description').show().html("<p><strong>"+title+"</strong></p><p>"+content+"</p>");
     }
 
     function loadCampaignBrief() {
@@ -699,7 +714,7 @@
       if (!$scope.campaign) {
         return;
       }
-      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {});
+      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
     }
 
     function loadGroups(query) {

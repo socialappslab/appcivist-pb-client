@@ -268,8 +268,8 @@
       var res;
 
       if ($scope.isAnonymous || !$scope.userIsMember) {
-        if (!$scope.userIsMember) {
-          res = WorkingGroups.workingGroupPublicProfile($scope.assemblyID, $scope.groupID).get()
+        if (!$scope.userIsMember && !$scope.isAnonymous) {
+          res = WorkingGroups.workingGroupPublicProfile($scope.assemblyID, $scope.groupID).get();
         } else {
           res = WorkingGroups.workingGroupByUUID($scope.groupID).get();
         }

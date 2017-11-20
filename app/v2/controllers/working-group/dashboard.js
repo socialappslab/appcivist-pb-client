@@ -422,7 +422,15 @@
     }
 
     function resendInvitation(member) {
-      console.log("TODO: Resend");
+      let rsp = Invitations.resendInvitation(member.id);
+      rsp.then(
+        response => {
+          Notify.show("The invitation has been sent", "success");
+        },
+        error => {
+          Notify.show("The invitation couldn't be sent. Please try again later.", "error");
+        }
+      );
     }
 
     function submitMembers(assemblyId) {
@@ -441,6 +449,7 @@
       }).then(
         response => {
           Notify.show("Members invited successfully", "success");
+          loadMembers($scope.wg);
           angular.element('#addMembers button.close').trigger('click');
         },
         error => {

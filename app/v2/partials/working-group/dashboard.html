@@ -327,23 +327,17 @@
                   <td ng-if="member.status === 'REQUESTED'">
                     <a class="btn btn-smaller btn-default" ng-click="updateStatus(member, 'accepted', $event)">Approve</a> <a class="btn btn-smaller btn-default" ng-click="updateStatus(member, 'rejected', $event)">Reject</a>
                   </td>
-                  <td ng-if="member.status === 'INVITED'">
-                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(member)">Resend invitation</a>
-                  </td>
-                  <td ng-if="member.status === 'REJECTED'">
-                    Invitation rejected
-                  </td>
                 </tr>
                 <tr ng-repeat="invitation in membersInvited">
                   <td>{{invitation.name}}</td>
                   <td>{{invitation.email}}</td>
                   <td>{{invitation.status}}</td>
                   <td ng-if="invitation.status === 'INVITED'">
-                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(member)">Resend invitation</a>
+                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(invitation)">Resend invitation</a>
                   </td>
                   <td ng-if="invitation.status === 'REJECTED'">
                     Invitation rejected
-                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(member)">Resend invitation</a>
+                    <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(invitation)">Resend invitation</a>
                   </td>
                 </tr>
               </tbody>

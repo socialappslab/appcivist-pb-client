@@ -2716,6 +2716,9 @@ appCivistApp.factory('Invitations', function ($resource, localStorageService) {
         invitationEmail: defaultEmail
       }
       return newInvitation;
+    },
+    resendInvitation: function (iid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email', { iid: iid }).save().$promise;
     }
   }
 });

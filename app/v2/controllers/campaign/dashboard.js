@@ -699,7 +699,7 @@
       if (!$scope.campaign) {
         return;
       }
-      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {});
+      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
     }
 
     function loadGroups(query) {

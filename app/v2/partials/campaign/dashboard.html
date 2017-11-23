@@ -142,10 +142,9 @@
         <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
           <section class="list--proposals">
             <header class="proposals__header">
-              <a class="hidden-md hidden-sm hidden-xs" ng-if="!commentsSectionExpanded && showComments" ng-click="toggleCommentsSection()"
-                style="float: right; margin-right: 5px;" href=""><i class="fa fa-comments-o"></i>&nbsp;{{'Show Comments' | translate }}</a>&nbsp;&nbsp;
-              <a ng-if="currentComponentType!=='IDEAS'" class="proposals__show_ideas" href=""><i class="fa fa-file"></i> &nbsp;{{'Proposals' | translate}}: {{ insights.contributions_total.contributions_per_type.PROPOSAL.TOTAL}}</a>
-              <a class="proposals__show_ideas" href=""><i class="fa fa-lightbulb-o"></i> &nbsp;{{'Ideas' | translate}}: {{ insights.contributions_total.contributions_per_type.IDEA.TOTAL}}</a>
+              <div class="dash_insights">
+                <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFTS || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFTS || 0}} <small>({{'Draft' | translate}})</small></span>
+              </div>
             </header>
             <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
               <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"

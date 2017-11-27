@@ -96,7 +96,7 @@
               </a>
 
               <!-- If public view, show links to public campaigns -->
-              <a ng-if="isAnonymous || !readAssemblyByShortname"
+              <a ng-if="isAnonymous || readAssemblyByShortname"
                  ng-href="/#/v2/p/assembly/{{assemblyId}}/campaign/{{campaign.uuid}}"
                  class="list-group-item">
 

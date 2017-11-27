@@ -51,7 +51,6 @@
       $scope.fetchAssembly($scope.assemblyId);
       $scope.shortname = "";
       $scope.readAssemblyByShortname = false;
-      console.log($scope.userIsMember);
       $scope.$on('sessionModal:closeSessionModal',$scope.hideSessionModal);
     }
 

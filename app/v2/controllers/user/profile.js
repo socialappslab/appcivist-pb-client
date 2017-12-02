@@ -24,24 +24,26 @@
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
       }
-      $scope.profile = {
-        firstname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[0] : '' :  '',
-        lastname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[1] : '' :  '',
-        email: $scope.user ? $scope.user.email : '',
-        username: $scope.user ? $scope.user.username : '',
-        facebookUserId: $scope.user ? $scope.user.facebookUserId : '',
-        userAccessToken: $scope.user ? $scope.user.userAccessToken : '',
-        tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : ''
-      };
-      $scope.userFromServer = {
-        firstname: $scope.profile.firstname,
-        lastname: $scope.profile.lastname,
-        email: $scope.profile.email,
-        username: $scope.profile.username,
-        facebookUserId: $scope.profile.facebookUserId,
-        userAccessToken: $scope.profile.userAccessToken,
-        tokenExpiresIn: $scope.profile.tokenExpiresIn
-      };
+      if ($scope.user != undefined) {
+        $scope.profile = {
+          firstname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[0] : '' :  '',
+          lastname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[1] : '' :  '',
+          email: $scope.user ? $scope.user.email : '',
+          username: $scope.user ? $scope.user.username : '',
+          facebookUserId: $scope.user ? $scope.user.facebookUserId : '',
+          userAccessToken: $scope.user ? $scope.user.userAccessToken : '',
+          tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : ''
+        };
+        $scope.userFromServer = {
+          firstname: $scope.profile.firstname,
+          lastname: $scope.profile.lastname,
+          email: $scope.profile.email,
+          username: $scope.profile.username,
+          facebookUserId: $scope.profile.facebookUserId,
+          userAccessToken: $scope.profile.userAccessToken,
+          tokenExpiresIn: $scope.profile.tokenExpiresIn
+        };
+      }
       $scope.blurReset = blurReset;
       $scope.updateProfile = updateProfile;
       $scope.toggleChangePassword = toggleChangePassword;

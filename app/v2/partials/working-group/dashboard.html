@@ -97,7 +97,7 @@
       </div>
       <proposals-ideas-searchbox class="col-*-12"
                                  load-themes="loadThemes(query)"
-                                 is-anonymous="isAnonymous"
+                                 is-anonymous="isAnonymous || !userIsMember"
                                  campaign-config="campaignConfigs"
                                  campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
                                  current-component="currentComponet"
@@ -123,7 +123,7 @@
               space="spaceID"
               resource="contribution"
               type="type"
-              is-anonymous="isAnonymous"
+              is-anonymous="isAnonymous || !userIsMember"
               is-coordinator="isCoordinator"
               filters="filters"
               is-topic-group="isTopicGroup"
@@ -145,7 +145,7 @@
             <contribution-card ng-repeat="idea in ideas track by $index" class="card__idea col-lg-12 col-md-12 col-sm-12 col-xs-12"
                                 contribution="idea"
                                 campaign="campaign"
-                                is-anonymous="isAnonymous"
+                                is-anonymous="isAnonymous || !userIsMember"
                                 is-coordinator="isCoordinator"
                                 is-topic-group="isTopicGroup"
                                 components="components"></contribution-card>
@@ -169,13 +169,13 @@
             <div class="tab-content">
               <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
                 <discussion-panel style="padding-left: 0px !important;" class="col-md-12" ng-if="userIsMember" space-id="spaceID"
-                  endpoint-id="spaceID" endpoint="group" is-anonymous="isAnonymous"></discussion-panel>
+                  endpoint-id="spaceID" endpoint="group" is-anonymous="isAnonymous || !userIsMember"></discussion-panel>
               </div>
               <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
                 <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID"
-                  endpoint-id="wg.uuid" endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+                  endpoint-id="wg.uuid" endpoint="group" public-board="true" is-anonymous="isAnonymous || !userIsMember"></discussion-panel>
                 <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId"
-                  endpoint-id="wg.groupId" endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+                  endpoint-id="wg.groupId" endpoint="group" public-board="true" is-anonymous="isAnonymous || !userIsMember"></discussion-panel>
               </div>
             </div>
           </div>
@@ -192,13 +192,13 @@
     <div class="hidden-lg tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
         <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"
-          is-anonymous="isAnonymous"></discussion-panel>
+          is-anonymous="isAnonymous || !userIsMember"></discussion-panel>
       </div>
       <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
         <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="wg.frsUUID" endpoint-id="wg.uuid" endpoint="group"
-          public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+          public-board="true" is-anonymous="isAnonymous || !userIsMember"></discussion-panel>
         <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="wg.forumResourceSpaceId" endpoint-id="wg.groupId"
-          endpoint="group" public-board="true" is-anonymous="isAnonymous"></discussion-panel>
+          endpoint="group" public-board="true" is-anonymous="isAnonymous || !userIsMember"></discussion-panel>
       </div>
     </div>-
   </article>

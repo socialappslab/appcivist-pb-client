@@ -206,7 +206,7 @@
       let currentComponent = localStorageService.get('currentCampaign.currentComponent');
       if (!$scope.components) {
         var res;
-        if (!$scope.isAnonymous) {
+        if (!$scope.isAnonymous || $scope.userIsMember) {
           res = Campaigns.components($scope.assemblyID, $scope.campaignID, false, null, null);
           loadMembersCommentCount($scope.spaceID);
         } else {
@@ -244,7 +244,7 @@
         $scope.currentComponent = currentComponent;
       }
 
-      if($scope.isAnonymous) {
+      if($scope.isAnonymous || !$scope.userIsMember) {
         var rsp = Campaigns.getConfigurationPublic($scope.campaign.rsUUID).get();
       } else {
         var rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
@@ -459,7 +459,7 @@
     }
 
     function loadRelatedContributions() {
-      var rsp = Space.getContributions($scope.wg, 'IDEA', $scope.isAnonymous);
+      var rsp = Space.getContributions($scope.wg, 'IDEA', ($scope.isAnonymous || !$scope.userIsMember));
       rsp.then(
         function (data) {
           var related = [];
@@ -504,7 +504,8 @@
 
     // TODO: just show the latest contributions until notifications API is ready
     function loadLatestActivities(group) {
-      var rsp = Space.getContributions(group, 'PROPOSAL', $scope.isAnonymous);
+      console.log("loadLatestActivities: " + ($scope.isAnonymous || !$scope.userIsMember));
+      var rsp = Space.getContributions(group, 'PROPOSAL', ($scope.isAnonymous || !$scope.userIsMember));
       rsp.then(
         function (data) {
           $scope.activities = data.list;

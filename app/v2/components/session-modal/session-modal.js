@@ -30,11 +30,14 @@
 
   function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies) {
 
+    var self = this;
+
+    $rootScope.$on('$stateChangeSuccess', fetchAnonymousAssembly.bind(this));
+
     this.$onInit = () => {
       this.user = {}
       this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
       this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
-
     }
 
     this.signup = () => {
@@ -126,6 +129,16 @@
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove()
       $state.go('v2.user.password.forgot', {}, { reload: true });
+    }
+
+    function fetchAnonymousAssembly() {
+      let rsp = Assemblies.assemblyByUUID($state.params.auuid).get().$promise;
+      rsp.then(
+        assembly => {
+          localStorageService.set('anonymousAssembly',assembly);
+          self.assembly = assembly;
+        }
+      );
     }
   }
 }());

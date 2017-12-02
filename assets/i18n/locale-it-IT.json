@@ -1248,5 +1248,6 @@
   "etherpad.disclaimer": "Etherpad is an open source real-time collaborative editor, maintained by the Etherpad Community. AppCivist has its own etherpad server, so you don't need to provide a link for this, but if you have your own etherpad server, make sure you add its base URL below and API key below.",
   "Add new members": "Add new members",
   "Join the Group to create proposals": "Join the Group to create proposals",
-  "Themes & Keywords": "Themes & Keywords"
+  "Themes & Keywords": "Themes & Keywords",
+  "Drafts": "Drafts"
 }

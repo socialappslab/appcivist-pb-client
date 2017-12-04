@@ -17,11 +17,14 @@ spectacle -d doc.json
 ```
 
 The documentation will be located in the public directory by default.
+More info about this package [here](https://github.com/sourcey/spectacle).
 
 
 ## 2. Bootprint
 
 
+
+More info about this package [here](https://github.com/sourcey/spectacle).
 
 ## 3. HTML-Inline
 

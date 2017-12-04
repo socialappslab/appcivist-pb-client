@@ -2,7 +2,7 @@
 
 All you need to generate the static HMTL is the JSON file created by Swagger
 
-1. Spectacles
+## 1. Spectacles
 
 Simply install Spectacle from `npm`  typing:
 
@@ -19,9 +19,9 @@ spectacle -d doc.json
 The documentation will be located in the public directory by default.
 
 
-2. Bootprint
+## 2. Bootprint
 
 
 
-3. HTML-Inline
+## 3. HTML-Inline
 

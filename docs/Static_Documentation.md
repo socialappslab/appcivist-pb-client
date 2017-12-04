@@ -11,13 +11,15 @@ I preffer using the pre-built docker image directly from Dockerhub:
 docker pull swaggerapi/swagger-ui
 ```
 
-The next step will run the docker image for production:
+The next step will run the docker image for production,
+
+The base URL of the web application can be changed by specifying the `BASE_URL` environment variable:
 
 ```
-docker run -d -p 9900:8080 swaggerapi/swagger-ui
+docker run -d -p 80:8080 -e BASE_URL=/api/ -e SWAGGER_JSON=/foo/doc.json -v /bar:/foo swaggerapi/swagger-ui
 ```
 
-> Note: This command will start nginx server on port 9900, you can change it but :8080 must be untouched 
+> This will serve Swagger UI at ´/api´ . 
 
 More info about Swagger-UI [here](https://github.com/swagger-api/swagger-ui).
 

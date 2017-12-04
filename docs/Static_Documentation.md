@@ -5,7 +5,21 @@ All you need to generate the static HMTL is the JSON file created by Swagger
 
 ## 1. Swaager-UI
 
+I preffer using the pre-built docker image directly from Dockerhub:
 
+```
+docker pull swaggerapi/swagger-ui
+```
+
+The next step will run the docker image for production:
+
+```
+docker run -d -p 9900:8080 swaggerapi/swagger-ui
+```
+
+> Note: This command will start nginx server on port 9900, you can change it but :8080 must be untouched 
+
+More info about Swagger-UI [here](https://github.com/swagger-api/swagger-ui).
 
 ## 2. Spectacles
 

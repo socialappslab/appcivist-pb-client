@@ -629,7 +629,6 @@
       let key = component ? component.type ? component.type.toUpperCase() : "" : ""; // In old implementation, it was key, changed to type
       $scope.currentComponentType = key;
       $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
-      $scope.newProposalsEnabled = key === 'PROPOSALS' && !$scope.isAnonymous;
       if ($scope.campaignConfigs) {
         let configs = $scope.campaignConfigs
         $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
@@ -648,6 +647,7 @@
         $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
+      $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous) || (key === 'IDEAS' && $scope.newIdeasEnabled);
     }
 
     function loadCampaignResources() {

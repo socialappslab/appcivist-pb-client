@@ -28,10 +28,10 @@
     });
 
   Ctrl.$inject = [
-    'Notifications', '$scope', 'Notify'
+    'Notifications', '$scope', 'Notify', '$timeout', '$http'
   ];
 
-  function Ctrl(Notifications, $scope, Notify) {
+  function Ctrl(Notifications, $scope, Notify, $timeout, $http) {
     this.getUserStats = getUserStats.bind(this);
     this.getNotifications = getNotifications.bind(this);
     this.formatDate = formatDate.bind(this);
@@ -39,6 +39,10 @@
     this.readAll = readAll.bind(this);
     this.currentPage = 0;
     this.notifications = [];
+
+    let pollTime = 10000;
+    let errorCount = 0;
+    let pollPromise = null;
 
     /**
      * Initialization method.
@@ -49,8 +53,16 @@
           return;
         }
         this.getUserStats(user);
+        pollData();
       });
     };
+
+    /**
+     * Destroy method
+     */
+    this.$onDestroy = () => {
+      cancelNextPoll();
+    }
 
 
     /**
@@ -134,6 +146,31 @@
      */
     function formatDate(date) {
       return moment(date, 'yyyy-MM-DD').format('YYYY-MM-DD');
+    }
+
+    /**
+     * Poll the notifications data from server
+     */
+    let self = this;
+    function pollData() {
+      getUserStats(self.user);
+      nextLoad();
+    }
+    
+    /**
+     * Create timeout for poll
+     */
+    function nextLoad(time) {
+      time = time || pollTime;
+      cancelNextPoll();
+      pollPromise = $timeout(pollData, time);
+    }
+
+    /**
+     * Destroy poll promise
+     */
+    function cancelNextPoll() {
+      $timeout.cancel(pollPromise);
     }
   }
 }());

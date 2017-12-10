@@ -284,7 +284,7 @@
 
           Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {}).then(
             response => {
-              $scope.themes = response.filter(r => r.type == 'OFFICIAL_PREDEFINED_THEMES');
+              $scope.themes = response.filter(r => r.type == 'OFFICIAL_PRE_DEFINED');
               $scope.keywords = response.filter(r => r.type == 'EMERGENT');
             },
             error => {

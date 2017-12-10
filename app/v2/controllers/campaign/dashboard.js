@@ -22,12 +22,13 @@
     '$compile',
     '$state',
     'Voting',
-    '$sce'
+    '$sce',
+    'Notifications'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce) {
+    $state, Voting, $sce, Notifications) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -148,6 +149,7 @@
       $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
       $scope.joinWg = joinWg.bind($scope);
       $scope.loadThemeKeywordDescription = loadThemeKeywordDescription.bind($scope);
+      $scope.subscribeNewsletter = subscribeNewsletter.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -837,6 +839,13 @@
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;
+    }
+
+    function subscribeNewsletter() {
+      let sub = {
+        subscriptionType: "NEWSLETTER"
+      }
+      Notifications.subscribe().save(sub);
     }
   }
 })();

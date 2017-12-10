@@ -37,10 +37,10 @@
             </div>
 
           </div>
-          <!-- Subscribe when logged in
-          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription">Subscribe to Newsletter</button>-->
-          <!-- Subscribe when not logged in
-          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn">Subscribe to Newsletter</button> -->
+          
+          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription" ng-if="userIsMember">Subscribe to Newsletter</button>
+          
+          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember">Subscribe to Newsletter</button>
           <!-- HEADER -> AppCivist Logo Attribution -->
           <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
             <div class="overlay new_overlay" style="display: inline-flex">
@@ -427,7 +427,7 @@
         </div>
         <div class="modal-footer">
           <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
-          <button class="confirm-modal accept" data-dismiss="modal">{{'Subscribe'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="subscribeNewsletter()">{{'Subscribe'|translate}}</button>
         </div>
       </div>
     </div>

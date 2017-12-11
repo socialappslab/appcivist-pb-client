@@ -295,7 +295,8 @@
       );
     }
 
-    function loadThemeKeywordDescription(title, content) {
+    function loadThemeKeywordDescription(title, description) {
+      let content = description === undefined ? 'No description available' : description;
       angular.element('#themes-keywords #description').show().html("<p><strong>"+title+"</strong></p><p>"+content+"</p>");
     }
 

@@ -598,6 +598,10 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
       return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
     },
 
+    subscriptionsBySpace(spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/:sid', { sid: spaceId });
+    },
+
     /**
      * Returns the total number of notifications for the given user.
      *

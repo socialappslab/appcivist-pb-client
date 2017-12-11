@@ -150,6 +150,7 @@
       $scope.joinWg = joinWg.bind($scope);
       $scope.loadThemeKeywordDescription = loadThemeKeywordDescription.bind($scope);
       $scope.subscribeNewsletter = subscribeNewsletter.bind($scope);
+      $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -293,8 +294,14 @@
               Notify.show('Error loading themes from server', 'error');
             }
           );
+
+          checkIfSubscribed($scope.campaign.rsUUID);
         }
       );
+    }
+
+    function checkIfSubscribed(sid) {
+      console.log(Notifications.subscriptionsBySpace(sid).query())
     }
 
     function loadThemeKeywordDescription(title, content) {
@@ -843,9 +850,19 @@
 
     function subscribeNewsletter() {
       let sub = {
+        spaceId: $scope.campaign.rsUUID,
+        userId: $scope.user.userId,
+        spaceType: "CAMPAIGN",
         subscriptionType: "NEWSLETTER"
       }
-      Notifications.subscribe().save(sub);
+      Notifications.subscribe().save(sub).$promise.then(
+        response => {
+          Notify.show("Subscribed successfully. We'll be in touch", "success");
+        },
+        error => {
+          Notify.show("Error trying to subscribe. Please try again later.", "error")
+        }
+      );
     }
   }
 })();

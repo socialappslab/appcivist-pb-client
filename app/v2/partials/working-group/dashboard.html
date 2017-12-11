@@ -176,13 +176,13 @@
     </div>
 
     <!-- Nav tabs -->
-    <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
+    <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members Conversations' | translate }} ({{membersCommentCounter.value}})</a></li>
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public Conversations' | translate }} ({{publicCommentCounter.value}})</a></li>
     </ul>
 
     <!-- Tab panes -->
-    <div class="hidden-lg tab-content">
+    <div class="tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
         <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="spaceID" endpoint-id="spaceID" endpoint="group"
           is-anonymous="isAnonymous || !userIsMember"></discussion-panel>

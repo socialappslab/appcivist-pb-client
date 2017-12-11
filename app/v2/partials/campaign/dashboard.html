@@ -189,7 +189,7 @@
     </article>
 
     <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
-    <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
+    <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
       <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember">
         <a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">
           {{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})
@@ -203,7 +203,7 @@
     </ul>
 
     <!-- Discussions: list of comments under the Conversation Tabs -->
-    <div class="hidden-lg tab-content">
+    <div class="tab-content">
       <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
         <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
                           endpoint-id="campaignID" endpoint="campaign">

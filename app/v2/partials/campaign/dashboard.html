@@ -117,12 +117,12 @@
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Idea' | translate}}
           </a>
           <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
-             ng-if="newProposalsEnabled && !displayJoinWorkingGroup && !newIdeasEnabled"
+             ng-if="newProposalsEnabled && !displayJoinWorkingGroup"
              ng-click="openModal('proposalFormModal')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
           </a>
           <a class="primary__button right join__working_group"
-             ng-if="newProposalsEnabled && displayJoinWorkingGroup && !newIdeasEnabled" data-toggle="modal" data-target="#workingGroups">
+             ng-if="newProposalsEnabled && displayJoinWorkingGroup" data-toggle="modal" data-target="#workingGroups">
             <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
           </a>
         </div>

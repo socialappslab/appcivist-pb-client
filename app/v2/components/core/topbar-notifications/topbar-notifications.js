@@ -39,10 +39,13 @@
     this.readAll = readAll.bind(this);
     this.currentPage = 0;
     this.notifications = [];
+    this.stats = null;
 
     let pollTime = 10000;
     let errorCount = 0;
     let pollPromise = null;
+
+    let self = this;
 
     /**
      * Initialization method.
@@ -73,8 +76,8 @@
       let rsp = Notifications.userStats(user.userId).get().$promise;
       rsp.then(
         stats => {
-          this.stats = stats;
-          this.getNotifications();
+          self.stats = stats;
+          self.getNotifications();
         },
         error => Notify.show('Error while trying to load user\'s notifications from the server', 'error')
       );
@@ -94,11 +97,11 @@
         let rsp = Notifications.userNotifications(this.user.userId, this.currentPage).get().$promise;
         rsp.then(
           data => {
-            this.notifications = this.notifications.concat(data.list);
-            this.loading = false;
+            self.notifications = self.notifications.concat(data.list);
+            self.loading = false;
           },
           error => {
-            this.loading = false;
+            self.loading = false;
             Notify.show('Error while trying to load user\'s notifications from the server', 'error');
           }
         );
@@ -117,7 +120,7 @@
       rsp.then(
         response => {
           notification.read = true;
-          this.getUserStats(this.user);
+          self.getUserStats(self.user);
         },
         error => Notify.show('Error while trying to mark notification as read', 'error')
       );
@@ -132,8 +135,8 @@
       let rsp = Notifications.readAll(this.user.userId).update().$promise;
       rsp.then(
         response => {
-          this.getUserStats(this.user);
-          this.notifications.forEach(n => n.read = true);
+          self.getUserStats(self.user);
+          self.notifications.forEach(n => n.read = true);
         },
         error => Notify.show('Error while trying to mark notification as read', 'error')
       );
@@ -151,7 +154,6 @@
     /**
      * Poll the notifications data from server
      */
-    let self = this;
     function pollData() {
       getUserStats(self.user);
       nextLoad();

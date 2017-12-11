@@ -284,7 +284,8 @@
 
           Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {}).then(
             response => {
-              $scope.themes = response.filter(r => r.type == 'OFFICIAL_PREDEFINED_THEMES');
+              $scope.themes = response.filter(r => r.type == 'OFFICIAL_PRE_DEFINED');
+              console.log($scope.themes);
               $scope.keywords = response.filter(r => r.type == 'EMERGENT');
             },
             error => {
@@ -295,7 +296,8 @@
       );
     }
 
-    function loadThemeKeywordDescription(title, content) {
+    function loadThemeKeywordDescription(title, description) {
+      let content = description === undefined ? 'No description available' : description;
       angular.element('#themes-keywords #description').show().html("<p><strong>"+title+"</strong></p><p>"+content+"</p>");
     }
 

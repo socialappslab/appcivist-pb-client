@@ -648,7 +648,7 @@
         $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
-      $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous) || (key === 'IDEAS' && $scope.newIdeasEnabled);
+      $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous);
     }
 
     function loadCampaignResources() {

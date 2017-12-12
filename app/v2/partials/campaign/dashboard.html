@@ -108,15 +108,15 @@
       <section class="proposals_and_ideas">
         <!--Campaign Search and filters-->
         <div class="campaign__filters">
-          <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">
+          <h2 class="heading--header no-padding col-xs-12 col-lg-5 col-md-5 col-sm-5">
             {{filters.mode === 'idea' ? 'Ideas' : 'Proposals' | translate}}
           </h2>
-          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
-             ng-if="newIdeasEnabled && !newProposalsEnabled"
+          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
+             ng-if="newIdeasEnabled"
              ng-click="openModal('ideaFormModal')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Idea' | translate}}
           </a>
-          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
+          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
              ng-if="newProposalsEnabled && !displayJoinWorkingGroup"
              ng-click="openModal('proposalFormModal')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}

@@ -107,7 +107,7 @@
         <section class="list--proposals">
           <header class="proposals__header" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
             <div class="dash_insights">
-              <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFTS || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFTS || 0}} <small>({{'Draft' | translate}})</small></span>
+              <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}} <small>({{'Draft' | translate}})</small></span>
             </div>
           </header>
           <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">

@@ -51,8 +51,6 @@
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
       $scope.userIsMember = false;
-      $scope.ideasSectionExpanded = false;
-      $scope.insightsSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
       $scope.showVotingButtons = false;
       $scope.votingStageIsActive = false;
@@ -106,14 +104,8 @@
         }
       }
 
-      $scope.showResourcesSection = false;
-      $scope.toggleResourcesSection = toggleResourcesSection.bind($scope);
-      $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
-      $scope.toggleInsightsSection = toggleInsightsSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
-      $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
       $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
-      $scope.toggleHideInsightsSection = toggleHideInsightsSection.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
       $scope.openModal = openModal.bind($scope);
@@ -121,7 +113,6 @@
       $scope.redirectToProposal = redirectToProposal.bind($scope);
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
       $scope.checkJoinWGButtonVisibility = checkJoinWGButtonVisibility.bind($scope);
-      $scope.checkConfigOpenIdeasDefault = checkConfigOpenIdeasDefault.bind($scope);
       $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
       $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
       $scope.afterComponentsLoaded = afterComponentsLoaded.bind($scope);
@@ -182,7 +173,7 @@
         }
       });
     }
-    
+
     function joinWg(groupId) {
       let member = {
         userId: $scope.user.userId,
@@ -632,7 +623,6 @@
       $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
       if ($scope.campaignConfigs) {
         let configs = $scope.campaignConfigs
-        $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
         $scope.showComments = $scope.checkConfigDisableComments(configs);
         // New Ideas are allowed if:
         // 1. current stage is of type IDEAS
@@ -644,7 +634,6 @@
           key === 'IDEAS' && allowAnonIdeas
           || (key === 'PROPOSALS' && allowIdeaProposals && allowAnonIdeas);
       } else {
-        $scope.ideasSectionExpanded = false; // by default, ideas section is closed
         $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
@@ -675,40 +664,12 @@
       return show;
     }
 
-    function toggleResourcesSection() {
-      $scope.showResourcesSection = !$scope.showResourcesSection;
-    }
-
-    function toggleIdeasSection() {
-      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      $scope.commentsSectionExpanded = false;
-      $scope.insightsSectionExpanded = false;
-      // $rootScope.$broadcast('eqResize', true);
-    }
-
-    function toggleInsightsSection() {
-      $scope.ideasSectionExpanded = false;
-      $scope.commentsSectionExpanded = false;
-      $scope.insightsSectionExpanded = !$scope.insightsSectionExpanded;
-    }
-
     function toggleCommentsSection() {
       $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
-      $scope.ideasSectionExpanded = false;
-      $scope.insightsSectionExpanded = false;
-      // $rootScope.$broadcast('eqResize', true);
-    }
-
-    function toggleHideIdeasSection() {
-      $scope.ideasSectionExpanded = false;
     }
 
     function toggleHideCommentsSection() {
       $scope.commentsSectionExpanded = false;
-    }
-
-    function toggleHideInsightsSection() {
-      $scope.insightsSectionExpanded = false;
     }
 
     function loadThemes(query) {
@@ -802,15 +763,6 @@
         this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
       }
       return this.displayJoinWorkingGroup;
-    }
-
-    function checkConfigOpenIdeasDefault(configs) {
-      const OPEN_IDEA_SECTION = 'appcivist.campaign.open-idea-section-default';
-      let ideasSectionExpanded = false;
-      if (configs && configs[OPEN_IDEA_SECTION] && configs[OPEN_IDEA_SECTION] === 'TRUE') {
-        ideasSectionExpanded = true;
-      }
-      return ideasSectionExpanded;
     }
 
     function checkConfigDisableComments(configs) {

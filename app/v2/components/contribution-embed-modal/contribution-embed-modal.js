@@ -49,7 +49,7 @@
         let payload = {
           "gdocLink": url,
           "etherpadServerUrl": url,
-          "etherpadServerApiKey": 'demoapikeythisisatest'
+          "etherpadServerApiKey": this.etherpadApiKey
         }/*
         if (this.format == 'gdoc') payload = { gdocLink: url };
         else payload = { etherpadServerUrl: url };*/

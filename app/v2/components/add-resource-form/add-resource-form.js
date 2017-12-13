@@ -55,6 +55,7 @@
       this.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind(this);
       this.addedResourceToSpaceSuccess = addedResourceToSpaceSuccess.bind(this);
       this.addedResourceToSpaceError = addedResourceToSpaceError.bind(this);
+      this.fileUploadedSuccess = fileUploadedSuccess.bind(this);
 
       this.spinnerOptions = {
         radius:10,
@@ -99,17 +100,19 @@
           'Content-Type': undefined
         },
         transformRequest: angular.identity,
-      }).then(function (response) {
-        let resource = {
-          name: response.data.name,
-          url: response.data.url,
-          description: this.newAttachment.description,
-          title: this.newAttachment.title
-        }
-        this.createAttachmentResource(resource, true);
-      }, function (error) {
+      }).then(fileUploadedSuccess, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
       });
+    }
+
+    function fileUploadedSuccess (response) {
+      let resource = {
+        name: response.data.name,
+        url: response.data.url,
+        description: this.newAttachment.description,
+        title: this.newAttachment.title
+      }
+      this.createAttachmentResource(resource, true);
     }
 
     /**

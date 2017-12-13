@@ -1,3 +1,9 @@
+<div class="add__attachment_form" ng-if="vm.includeAddButtons && !vm.openAddAttachment">
+  <button class="btn btn-default follow-contribution modal-button" ng-if="vm.includeAddButtons && !vm.openAddAttachment"
+        ng-click="vm.toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+  <button class="btn btn-default follow-contribution modal-button" ng-if="vm.includeAddButtons && !vm.openAddAttachment"
+        ng-click="vm.toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
+</div>
 <div class="add__attachment_form" ng-if="vm.openAddAttachment">
   <form>
     <fieldset>
@@ -27,7 +33,6 @@
               ng-click="vm.toggleOpenAddAttachment()">{{'Cancel' | translate}}</button>
       <button class="btn btn-default follow-contribution submit__attachment" ng-if="!vm.openAddAttachmentByUrl"
               ng-click="vm.submitAttachment()">{{'Submit' | translate}}</button>
-
 
       <button class="btn btn-default follow-contribution submit__attachment" ng-if="vm.openAddAttachmentByUrl"
               ng-click="vm.toggleOpenAddAttachmentByUrl()">{{'Cancel' | translate}}</button>

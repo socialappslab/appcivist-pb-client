@@ -19,17 +19,17 @@
     selector: 'addResourceForm',
     bindings: {
       resources: '=',
-      spaceId: '='
-
+      spaceId: '=',
+      includeAddButtons: '='
     },
     controller: addResourceFormCtrl,
     controllerAs: 'vm',
     templateUrl: '/app/v2/components/add-resource-form/add-resource-form.html'
   });
 
-  addResourceFormCtrl.$inject = ['$scope','Space', 'usSpinnerService', 'Contributions', 'Notify'];
+  addResourceFormCtrl.$inject = ['$scope','Space', 'usSpinnerService', 'Contributions', 'Notify', '$http', 'FileUploader'];
 
-  function addResourceFormCtrl($scope, Space, usSpinnerService, Contributions, Notify) {
+  function addResourceFormCtrl($scope, Space, usSpinnerService, Contributions, Notify, $http, FileUploader) {
     this.activate = activate.bind(this);
 
     /**
@@ -102,7 +102,9 @@
       }).then(function (response) {
         let resource = {
           name: response.data.name,
-          url: response.data.url
+          url: response.data.url,
+          description: this.newAttachment.description,
+          title: this.newAttachment.title
         }
         this.createAttachmentResource(resource, true);
       }, function (error) {
@@ -115,7 +117,6 @@
      * the current contribution.
      */
     function submitAttachmentByUrl() {
-      var vm = this;
       this.startSpinner();
       let resource = {
         name: this.newAttachment.title,
@@ -149,7 +150,7 @@
       this.attachmentFlags = {
         isPicture: false,
         isVideo: false,
-        isNewUploadedFile: false
+        isNewUploadedFile: isNewUploadedFile
       }
 
       let pictureRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
@@ -204,21 +205,22 @@
     function addedResourceToSpaceSuccess(response) {
       var type = "Attachments";
       if (!this.attachmentFlags.isPicture && !this.attachmentFlags.isVideo) {
-        if (!this.resources.documents)
-          this.resources.documents = [];
-        this.resources.documents.push(response);
+        // if (!this.resources.documents)
+        //   this.resources.documents = [];
+        // this.resources.documents.push(response);
         this.openAddAttachment = false;
       } else {
-        if (!this.resources.media)
-          this.resources.media = [];
-        this.resources.media.push(response);
+        // if (!this.resources.media)
+        //   this.resources.media = [];
+        // this.resources.media.push(response);
         type = "Media";
-        if (this.attachmentFlags.isPicture) {
-          if (!this.resources.pictures)
-            this.resources.pictures = [];
-          this.resources.pictures.push(response);
-        }
+        // if (this.attachmentFlags.isPicture) {
+          // if (!this.resources.pictures)
+          //   this.resources.pictures = [];
+          // this.resources.pictures.push(response);
+        // }
       }
+      this.resources.push(response);
 
       if (this.attachmentFlags.isNewUploadedFile) {
         this.openAddAttachment = false;
@@ -228,20 +230,25 @@
 
       Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
       this.stopSpinner();
+      $scope.$emit('FromAddResourceForm:AddedResourceSuccess');
     }
 
     function addedResourceToSpaceError(error) {
       Notify.show('Error while uploading file to the server: '+JSON.stringify(error), 'error');
       this.stopSpinner();
+      $scope.$emit('FromAddResourceForm:AddedResourceError');
     }
 
     function toggleOpenAddAttachment () {
       this.openAddAttachment = !this.openAddAttachment;
+      $scope.$emit('FromAddResourceForm:ToggleOpenAddAttachment');
+
     }
 
     function toggleOpenAddAttachmentByUrl () {
       this.openAddAttachment = !this.openAddAttachment;
       this.openAddAttachmentByUrl = !this.openAddAttachmentByUrl;
+      $scope.$emit('FromAddResourceForm:ToggleOpenAddAttachmentByUrl');
     }
   }
 })();

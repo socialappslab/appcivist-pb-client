@@ -852,7 +852,9 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       return {
         name: newAttachment.name,
         url: newAttachment.url,
-        resourceType: newAttachment.resourceType
+        resourceType: newAttachment.resourceType,
+        title: newAttachment.title || "",
+        description: newAttachment.description || ""
       }
     },
     copyAttachmentObject: function (oldAtt, newAtt) {
@@ -860,6 +862,8 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       oldAtt.url = newAtt.url;
       oldAtt.resourceType = newAtt.resourceType;
       oldAtt.showForm = newAtt.showForm;
+      oldAtt.title = newAtt.title;
+      oldAtt.description = newAtt.description;
     },
     copyContributionObject: function (oldC, newC) {
       if (newC.contributionId) {
@@ -1374,7 +1378,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id.
        */
       resources(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource', { sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/resource', { sid }, {
+          save: {
+            method: 'POST'
+          }
+        });
       },
 
       /**

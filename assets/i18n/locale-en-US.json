@@ -1239,7 +1239,7 @@
   "titlePad": "Etherpad",
   "insertGdocText": "Paste the URL of the Google Docs document",
   "insertPadText": "Paste the URL and API Key of your Etherpad Server",
-  "submitPadGdoc": "Add PAD to proposal",
+  "submitPadGdoc": "Add document to proposal",
   "I already have an account": "I already have an account",
   "I dont have an account yet": "I don't have an account yet",
   "Connect with Google": "Connect with Google",
@@ -1249,5 +1249,8 @@
   "Add new members": "Add new members",
   "Join the Group to create proposals": "Join the Group to create proposals",
   "Themes & Keywords": "Themes & Keywords",
-  "Drafts": "Drafts"
+  "Drafts": "Drafts",
+  "contribution.body.replace": "You can replace your current <strong>Proposal Document</strong> using from the menu. If you do, the old document will be moved to the <strong>Attachments</strong> section of the proposal with the title 'Previous Proposal Document'.",
+  "New Etherpad PAD": "New Etherpad PAD",
+  "New Google Doc": "New Google Doc"
 }

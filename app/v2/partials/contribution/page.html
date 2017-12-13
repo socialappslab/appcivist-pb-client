@@ -155,6 +155,7 @@
           <h2>{{contributionType|titlecase|translate}}</h2>
           <p translate="contribution.body"></p>
           <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)"></p>
+          <p translate="contribution.body.replace" ng-if="proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)"></p>
           <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)">
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
@@ -369,7 +370,7 @@
             <li ng-repeat="resource in resources.documents track by $index">
               <a class="workingGroupLink" target="_blank"
                   ng-href="{{resource.url}}">
-                <span>{{resource.name}}</span>
+                <span>{{resource.title ? resource.title : resource.name}}</span>
               </a>
               <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>

@@ -300,28 +300,28 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
           <p>{{ 'Documents' | translate }}</p>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"
-                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"
-                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
+          <add-resource-form space-id="spaceID" resources="resources" include-add-buttons="isCoordinator" ng-if="isCoordinator"></add-resource-form>
+          <!--<button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"-->
+                  <!--ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>-->
+          <!--<button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"-->
+                  <!--ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>-->
         </div>
         <div class="modal-body">
           <!--
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
-          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
-          <div class="noContent" ng-if="!documents || documents.length === 0">
-            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
-          </div>
-          <ul class="workingGroupList" ng-if="documents && documents.length > 0">
-            <li ng-repeat="resource in documents">
+          <ul class="workingGroupList">
+            <li ng-repeat="resource in resources | filter:resourceIsDocument as documents">
               <a class="workingGroupLink" target="_blank"
                  ng-href="{{resource.url}}"><span>{{resource.title}}</span>
-                <!--<span class="number"><i class="fa fa-users"></i>32</span>-->
               </a>
+              <span class="number clickable" ng-click="deleteResource(resource)" ng-if="isCoordinator" ><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>
           </ul>
+          <div class="noContent" ng-if="documents.length === 0">
+            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+          </div>
         </div>
         <div class="modal-footer text-left">
           <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>
@@ -344,13 +344,13 @@
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
-          <div class="noContent" ng-if="!media || media.length === 0">
+          <div class="noContent" ng-if="media.length === 0">
             <h4>{{ 'There are no multimedia resources in this campaign' | translate }}</h4>
           </div>
 
           <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
             <div class="carousel-inner" role="listbox">
-              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in media track by $index">
+              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in resources | filter:resourceIsMedia as media track by $index">
                 <img ng-if="resource.resourceType === 'PICTURE'" ng-src="{{resource.url}}" alt="{{resource.name}}">
                 <!-- TODO: sanitize video URLs somewhere else -->
                 <iframe ng-if="resource.resourceType === 'VIDEO'" width="75%" height="315"
@@ -365,16 +365,16 @@
               </div>
             </div>
             <!-- Controls -->
-            <a class="left carousel-control" data-target="#media-carousel" role="button" data-slide="prev">
+            <a class="left carousel-control" data-target="#media-carousel" role="button" data-slide="prev" ng-if="media.length != 0">
               <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               <span class="sr-only">{{'Previous'|translate}}</span>
             </a>
-            <a class="right carousel-control" data-target="#media-carousel" role="button" data-slide="next">
+            <a class="right carousel-control" data-target="#media-carousel" role="button" data-slide="next" ng-if="media.length != 0">
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               <span class="sr-only">{{'Next'|translate}}</span>
             </a>
-            <ol class="carousel-indicators">
-              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-repeat="resource in media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
+            <ol class="carousel-indicators" ng-if="media.length != 0">
+              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-repeat="resource in resources | filter:resourceIsMedia as media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
             </ol>
           </div>
         </div>

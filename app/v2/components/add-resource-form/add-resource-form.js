@@ -100,12 +100,12 @@
           'Content-Type': undefined
         },
         transformRequest: angular.identity,
-      }).then(fileUploadedSuccess, function (error) {
+      }).then(this.fileUploadedSuccess, function (error) {
         Notify.show('Error while uploading file to the server', 'error');
       });
     }
 
-    function fileUploadedSuccess (response) {
+    function fileUploadedSuccess(response) {
       let resource = {
         name: response.data.name,
         url: response.data.url,

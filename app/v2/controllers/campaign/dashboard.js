@@ -137,8 +137,17 @@
       $scope.translateDefaultBrief = translateDefaultBrief.bind($scope);
       $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
       $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
+      $scope.deleteResource = deleteResource.bind($scope);
       $scope.joinWg = joinWg.bind($scope);
       $scope.loadThemeKeywordDescription = loadThemeKeywordDescription.bind($scope);
+      $scope.resourceIsDocument = resourceIsDocument.bind($scope);
+      $scope.resourceIsMedia = resourceIsMedia.bind($scope);
+      $scope.resourceIsPicture = resourceIsPicture.bind($scope);
+      $scope.resourceIsVideo = resourceIsVideo.bind($scope);
+      $scope.documentCount = documentCount.bind($scope);
+      $scope.mediaCount = mediaCount.bind($scope);
+      $scope.pictureCount = pictureCount.bind($scope);
+      $scope.videoCount = videoCount.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -171,6 +180,10 @@
           $scope.paginationWidgetListenersAreReady = true;
           $scope.$broadcast('filters:updateFilters');
         }
+      });
+      $scope.$on('AddResourceForm:AddedResourceSuccess', () => {
+        $scope.openAddAttachmentByUrl = false;
+        $scope.openAddAttachment = false;
       });
     }
 
@@ -316,11 +329,25 @@
 
     function toggleOpenAddAttachment () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
+      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachment");
     }
 
     function toggleOpenAddAttachmentByUrl () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
       $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
+      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachmentByUrl");
+    }
+
+    function deleteResource(attachment) {
+      Space.deleteResource(this.spaceID, attachment.resourceId).then(
+        response => {
+          _.remove(this.resources, { resourceId: attachment.resourceId });
+          Notify.show('Attachment deleted successfully', 'success');
+        } ,
+        error => {
+          Notify.show('Error while trying to delete attachment from the contribution', 'error');
+        }
+      );
     }
 
     function afterComponentsLoaded() {
@@ -647,16 +674,49 @@
         var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
       }
       rsp.$promise.then(function (resources) {
+        $scope.resources = [];
         if (resources) {
-          $scope.campaignResources = resources;
-        } else {
-          $scope.campaignResources = [];
+          $scope.resources = resources;
         }
-        $scope.documents = $scope.campaignResources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
-        $scope.media = $scope.campaignResources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO');
       }, function (error) {
-        Notify.show('Error loading campaign resources from server', 'error');
+        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
       });
+    }
+
+    function resourceIsDocument(resource) {
+      return resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO';
+    }
+
+    function resourceIsMedia(resource) {
+      return resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO';
+    }
+
+    function resourceIsPicture(resource) {
+      return resource.resourceType === 'PICTURE';
+    }
+
+    function resourceIsVideo(resource) {
+      return resource.resourceType === 'VIDEO';
+    }
+
+    function documentCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO').length : 0;
+      return selectedCount;
+    }
+
+    function mediaCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO').length : 0;
+      return selectedCount;
+    }
+
+    function pictureCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType === 'PICTURE').length : 0;
+      return selectedCount;
+    }
+
+    function videoCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType === 'VIDEO').length : 0;
+      return selectedCount;
     }
 
     function showAssemblyLogo() {

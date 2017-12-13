@@ -266,7 +266,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
-        <button class="btn btn-default btn-add-members" ng-if="isCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
+        <button class="btn btn-default btn-add-members" ng-if="isCoordinator || isWGCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
         <h3 class="modal-title" id="wgMembersLabel">{{wg.name}}</h3>
         <p>{{ 'Members' | translate }}</p>
       </div>

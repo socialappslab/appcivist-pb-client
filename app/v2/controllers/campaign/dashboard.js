@@ -802,7 +802,7 @@
       let group = contribution.workingGroupAuthors && contribution.workingGroupAuthors[0];
 
       if (group) {
-        $state.go('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
+        $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
           pid: contribution.contributionId,
           aid: this.assemblyID,
           cid: this.campaignID,

@@ -39,9 +39,10 @@
     this.readAll = readAll.bind(this);
     this.currentPage = 0;
     this.notifications = [];
+    this.pushQueue = [];
     this.stats = null;
 
-    let pollTime = 10000;
+    let pollTime = 30000;
     let errorCount = 0;
     let pollPromise = null;
 
@@ -55,7 +56,7 @@
         if (!user) {
           return;
         }
-        this.getUserStats(user);
+        // this.getUserStats(user);
         pollData();
       });
     };
@@ -98,6 +99,7 @@
         rsp.then(
           data => {
             self.notifications = self.notifications.concat(data.list);
+            self.pushQueue = data.list.reverse();
             self.loading = false;
           },
           error => {

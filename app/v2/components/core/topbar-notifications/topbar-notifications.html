@@ -52,7 +52,7 @@
   </li>
 </ul>
 
-<div class="alert alert-dismissible subconfirm" role="alert">
+<div class="alert alert-dismissible subconfirm" role="alert" ng-if="vm.pushQueue.length > 0">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <p class="message">Congratulations! You have successfully subscribed to the newsletter of {{campaign.title}}.</p>
   <p class="submessage">If you would like to receive the newsletter by email, click here: <a href="#">Notification settings</a></p>

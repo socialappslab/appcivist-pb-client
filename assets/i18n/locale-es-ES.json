@@ -1238,7 +1238,7 @@
   "titlePad": "Etherpad",
   "insertGdocText": "Paste the URL of the Google Docs document",
   "insertPadText": "Paste the URL of the Etherpad",
-  "submitPadGdoc": "Embed document",
+  "submitPadGdoc": "PAD to proposal",
   "Email is required": "Email es obligatorio",
   "I already have an account": "Ya tengo una cuenta",
   "I dont have an account yet": "Todavía no tengo una cuenta",

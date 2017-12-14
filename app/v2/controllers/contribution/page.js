@@ -9,12 +9,12 @@
 
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
+    'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, Memberships, Etherpad, Notify,
+    $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService) {
 
     $scope.setAddContext = setAddContext.bind($scope);
@@ -45,6 +45,7 @@
     $scope.removeContributingIdea = removeContributingIdea.bind($scope);
     $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
     $scope.embedPadGdoc = embedPadGdoc.bind($scope);
+    $scope.loadCampaignResources = loadCampaignResources.bind($scope);
 
     activate();
 
@@ -325,6 +326,7 @@
           loadRelatedStats();
           loadCampaign();
           loadResources();
+          $scope.loadCampaignResources();
         },
         function (error) {
           Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
@@ -1005,6 +1007,23 @@
       } else {
         Notify.show('Error while trying to embed the document', 'error')
       }
+    }
+
+    function loadCampaignResources() {
+      if ($scope.isAnonymous) {
+        var rsp = Campaigns.publicResources($scope.campaignID).query();
+      } else {
+        var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
+      }
+      $scope.campaignResources = [];
+      rsp.$promise.then(function (resources) {
+        if (resources) {
+          $scope.campaignResources = resources;
+          $rootScope.$broadcast("ToContributionEmbedModal:CampaignResourcesReady", {resources: resources});
+        }
+      }, function (error) {
+        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+      });
     }
   }
 }());

@@ -16,6 +16,16 @@
             <a href="https://docs.google.com" target="_blank">{{'gdocs.link' | translate}}</a>
           </p>
 
+          <p ng-if="templates.length>0">
+            {{'Campaign proposal templates' | translate}}:
+            <ul>
+                <li ng-repeat="template in resources | filter:isTemplate as templates track by $index">
+                <a href="template.url" ng-if="!template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
+                <a href="gDocCopyUrl(template.url)" ng-if="template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
+              </li>
+            </ul>
+          </p>
+
           <label>{{ (vm.format === 'gdoc' ? 'insertGdocText' : 'insertPadText') | translate }}</label>
 
           <input type="url" required ng-model="vm.newDocUrl" ng-if="vm.format === 'gdoc' "

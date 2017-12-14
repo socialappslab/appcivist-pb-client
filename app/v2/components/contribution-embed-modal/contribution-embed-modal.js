@@ -21,7 +21,8 @@
         format: '@',
         assemblyId: '=',
         campaignId: '=',
-        contributionId: '='
+        contributionId: '=',
+        resources: '='
       },
       controller: ContributionEmbedModal,
       controllerAs: 'vm',
@@ -37,6 +38,10 @@
     this.$onInit = () => {
       this.newDocUrl = "";
     }
+
+    $scope.$on("ToContributionEmbedModal:CampaignResourcesReady", (event, data) => {
+      $scope.resources = data.resources;
+    });
 
     this.embedPadGdoc = () => {
       if ((this.format === "gdoc" && this.newDocUrl != "")||(this.format!=="gdoc")) {
@@ -65,6 +70,20 @@
       } else {
         Notify.show('Error while trying to embed the document', 'error');
       }
+    }
+
+    this.isTemplate = (resource) => {
+      return resource.isTemplate;
+    }
+
+    this.gDocCopyUrl = (docUrl) => {
+      let url = docUrl;
+      let regex = /\b\/edit/i;
+      let match = url.match(regex);
+      if (match != null) {
+        url = url.substr(0, match.index)+"/copy";
+      }
+      return url;
     }
 
   }

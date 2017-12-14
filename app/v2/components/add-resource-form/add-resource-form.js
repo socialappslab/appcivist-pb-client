@@ -160,6 +160,7 @@
       let pictureRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
       let videoRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
       let onlineVideoRegex = (/(http|https):\/\/(youtube\.com|www\.youtube\.com|youtu\.be|vimeo\.com|www\.vimeo\.com)/);
+      let gDocsRegex = (/(http|https):\/\/(docs\.google\.com)/);
 
       let fileTypeContainingString = resource.name; // If
       let resourceName = resource.name;
@@ -170,6 +171,7 @@
 
       let isPicture = false;
       let isVideo = false;
+      let isGdoc = false;
       let rType = "FILE";
 
       if (isNewUploadedFile) {
@@ -186,14 +188,17 @@
           isPicture = pictureRegex.test(fileTypeContainingString);
         if (!isPicture && !isVideo)
           isVideo = videoRegex.test(fileTypeContainingString);
+        if(!isVideo)
+          isGdoc = gDocsRegex.test(resourceUrl);
       }
 
-      rType = isPicture ? "PICTURE" : isVideo ? "VIDEO" : "FILE";
+      rType = isPicture ? "PICTURE" : isVideo ? "VIDEO" : isGdoc ? "GDOC" : "FILE";
 
       this.attachmentFlags = {
         isPicture: isPicture,
         isVideo: isVideo,
-        isNewUploadedFile: isNewUploadedFile
+        isNewUploadedFile: isNewUploadedFile,
+        isGdoc: isGdoc
       }
       var attachment = Contributions.newAttachmentObject({
         url: resourceUrl,

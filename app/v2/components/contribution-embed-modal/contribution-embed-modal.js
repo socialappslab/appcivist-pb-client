@@ -82,6 +82,8 @@
       let match = url.match(regex);
       if (match != null) {
         url = url.substr(0, match.index)+"/copy";
+      } else {
+        url = url+"/copy";
       }
       return url;
     }

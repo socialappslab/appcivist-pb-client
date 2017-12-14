@@ -20,8 +20,8 @@
             {{'Campaign proposal templates' | translate}}:
             <ul>
                 <li ng-repeat="template in vm.resources | filter:isTemplate as templates track by $index">
-                <a href="template.url" ng-if="!template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
-                <a ng-href="{{vm.gDocCopyUrl(template.url)}}" ng-if="template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
+                <a href="template.url" ng-if="!template.resourceType==='GDOC'" target="_blank">{{template.title ? template.title : template.name}}</a>
+                <a ng-href="{{vm.gDocCopyUrl(template.url)}}" target="_blank" ng-if="template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
               </li>
             </ul>
           </p>

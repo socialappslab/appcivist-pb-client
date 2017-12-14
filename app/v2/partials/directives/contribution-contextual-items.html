@@ -48,7 +48,7 @@
 </script>
 
 <script id="contributionEditModal" type="text/ng-template">
-  <contribution-form contribution="vm.contribution" on-success="vm.onEditContributionSuccess()" mode="edit" user="user"></contribution-form>
+  <contribution-form contribution="vm.contribution" on-success="vm.onEditContributionSuccess()" mode="edit" user="user" type="{{vm.contribution.type}}"></contribution-form>
 </script>
 
 <script id="contributionModerationForm" type="text/ng-template">

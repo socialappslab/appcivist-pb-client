@@ -12,16 +12,16 @@
         <form ng-submit="vm.embedPadGdoc()">
           <p ng-if="vm.format === 'gdoc' ">{{ 'gdocs.disclaimer'| translate }}</p>
           <p ng-if="vm.format !== 'gdoc' ">{{ 'etherpad.disclaimer'| translate }}</p>
-          <p ng-if="vm.format === 'gdoc' ">
+          <p ng-if="vm.format === 'gdoc' && templates.length === 0">
             <a href="https://docs.google.com" target="_blank">{{'gdocs.link' | translate}}</a>
           </p>
 
           <p ng-if="templates.length>0">
             {{'Campaign proposal templates' | translate}}:
             <ul>
-                <li ng-repeat="template in resources | filter:isTemplate as templates track by $index">
+                <li ng-repeat="template in vm.resources | filter:isTemplate as templates track by $index">
                 <a href="template.url" ng-if="!template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
-                <a href="gDocCopyUrl(template.url)" ng-if="template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
+                <a ng-href="{{vm.gDocCopyUrl(template.url)}}" ng-if="template.resourceType==='GDOC'">{{template.title ? template.title : template.name}}</a>
               </li>
             </ul>
           </p>

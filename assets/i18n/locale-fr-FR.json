@@ -1249,6 +1249,10 @@
   "Add new members": "Add new members",
   "Join the Group to create proposals": "Rejoignez le Groupe pour créer des propositions",
   "Themes & Keywords": "Themes & Keywords",
-  "Drafts": "Drafts"
-
+  "Drafts": "Drafts",
+  "contribution.body.replace": "You can replace your current <strong>Proposal Document</strong> using from the menu. If you do, the old document will be moved to the <strong>Attachments</strong> section of the proposal with the title 'Previous Proposal Document'.",
+  "New Etherpad PAD": "New Etherpad PAD",
+  "New Google Doc": "New Google Doc",
+  "Is this resource a proposal template?": "Is this resource a proposal template?",
+  "Campaign proposal templates": "Campaign proposal templates"
 }

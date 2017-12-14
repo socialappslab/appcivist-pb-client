@@ -125,7 +125,8 @@
         name: this.newAttachment.title,
         title: this.newAttachment.title,
         description: this.newAttachment.description,
-        url: this.newAttachment.url
+        url: this.newAttachment.url,
+        isTemplate: this.newAttachment.isTemplate
       };
       this.createAttachmentResource(resource, false);
     }
@@ -165,6 +166,7 @@
       let resourceUrl = resource.url;
       let resourceTitle = resource.title;
       let resourceDescription = resource.description;
+      let resourceIsTemplate = resource.isTemplate;
 
       let isPicture = false;
       let isVideo = false;
@@ -198,7 +200,8 @@
         name: resourceName,
         resourceType: rType,
         title: resourceTitle,
-        description: resourceDescription
+        description: resourceDescription,
+        isTemplate: resourceIsTemplate
       });
       var rsp = Space.resources(this.spaceId).save(attachment).$promise;
 

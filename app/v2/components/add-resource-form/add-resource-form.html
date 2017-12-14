@@ -9,23 +9,29 @@
     <fieldset>
       <label for="title">{{'Title' | translate}}</label>
       <div class="field-container col-lg-12 no-padding">
-        <input name="name" ng-model="vm.newAttachment.title">
+        <input class="field-container-input" name="name" ng-model="vm.newAttachment.title">
       </div>
     </fieldset>
     <fieldset>
       <label for="description">{{'Description' | translate}}</label>
       <div class="field-container col-lg-12 no-padding">
-        <input name="name" ng-model="vm.newAttachment.description">
+        <input class="field-container-input" name="name" ng-model="vm.newAttachment.description">
       </div>
     </fieldset>
     <fieldset ng-if="!vm.openAddAttachmentByUrl">
       <label for="file">{{'File' | translate}}</label>
-      <input type="file" name="file" fileread="vm.newAttachment.file">
+      <input class="field-container-input" type="file" name="file" fileread="vm.newAttachment.file">
     </fieldset>
     <fieldset ng-if="vm.openAddAttachmentByUrl">
       <label for="resource_url">{{'URL' | translate}}</label>
       <div class="field-container col-lg-12 no-padding">
-        <input name="resource_url" ng-model="vm.newAttachment.url">
+        <input class="field-container-input" name="resource_url" ng-model="vm.newAttachment.url">
+      </div>
+    </fieldset>
+    <fieldset>
+      <label for="is_template">{{'Is this resource a proposal template?' | translate}}</label>
+      <div class="field-container col-lg-12 no-padding">
+        <input class="field-container-input" name="resource_url" type="checkbox" ng-model="vm.newAttachment.isTemplate">
       </div>
     </fieldset>
     <fieldset>

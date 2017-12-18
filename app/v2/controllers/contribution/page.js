@@ -28,7 +28,9 @@
     $scope.loadAuthors = loadAuthors.bind($scope);
     $scope.addAuthorToProposal = addAuthorToProposal.bind($scope);
     $scope.deleteAuthor = deleteAuthor.bind($scope);
+    $scope.loadFields = loadFields.bind($scope);
     $scope.loadValues = loadValues.bind($scope);
+    $scope.loadCustomFields = loadCustomFields.bind($scope);
     $scope.loadProposal = loadProposal.bind($scope);
     $scope.toggleCustomFieldsSection = toggleCustomFieldsSection.bind($scope);
     $scope.deleteAttachment = deleteAttachment.bind($scope);
@@ -164,6 +166,7 @@
       });
       $scope.resources = {};
       $scope.newDocUrl = "";
+      loadCustomFields();
     }
 
     function toggleOpenAddAttachment () {
@@ -1025,5 +1028,52 @@
         Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
       });
     }
+  }
+
+  function loadFields(sid) {
+    let rsp = {};
+    if (this.isAnonymous) {
+      rsp = Space.fieldsPublic(sid).query().$promise;
+    } else {
+      rsp = Space.fields(sid).query().$promise;
+    }
+
+    return rsp.then(
+      fields => fields,
+      error => {
+        Notify.show('Error while trying to get fields from resource space', 'error');
+      }
+    );
+  }
+
+  function filterCustomFields(fields) {
+    return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
+  }
+
+  function loadCustomFields() {
+    let currentComponent = localStorageService.get('currentCampaign.currentComponent');
+    $scope.currentComponent = currentComponent;
+    if ($scope.isAnonymous) {
+      $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceUUID;
+      $scope.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+    } else {
+      $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceId;
+      $scope.componentResourceSpaceId = currentComponent.resourceSpaceId;
+    }
+
+    loadFields($scope.campaignResourceSpaceId).then(fields => {
+      $timeout(() => {
+        $scope.campaignFields = $scope.filterCustomFields(fields);
+        $scope.$digest();
+      });
+    });
+    loadFields($scope.componentResourceSpaceId).then(fields => {
+      $timeout(() => {
+        $scope.componentFields = $scope.filterCustomFields(fields);
+        $scope.$digest();
+      });
+    });
+
+    loadValues($scope.contribution.resourceSpaceId);
   }
 }());

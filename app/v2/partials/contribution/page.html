@@ -211,6 +211,15 @@
         <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
       </section>
 
+      <section id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
+        <!-- Custom Fields -->
+        <div class="field__container">
+          <p class="intro bold">{{'Custom information' | translate}}</p>
+          <custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]"></custom-field>
+          <custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]"></custom-field>
+        </div>
+      </section>
+
       <section class="comments__section">
         <div class="row comments-header">
           <div class="col-xs-4 text-left">

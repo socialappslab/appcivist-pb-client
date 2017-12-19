@@ -855,7 +855,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         resourceType: newAttachment.resourceType,
         title: newAttachment.title || "",
         description: newAttachment.description || "",
-        isTemplate: newAttachment.isTemplate || ""
+        isTemplate: newAttachment.isTemplate || false
       }
     },
     copyAttachmentObject: function (oldAtt, newAtt) {

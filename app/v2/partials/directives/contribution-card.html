@@ -118,11 +118,12 @@
         <div class="card__heading_actions">
           <ul class="actions">
             <li class="action__toggle_selection">
-              <a>
+              <a><!--
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px"
                   height="16px" viewBox="0 0 16 16" enable-background="new 0 0 15.998 15.998" xml:space="preserve">
                   <path class="{{contribution.cover ? 'icon-white' : 'icon'}}" d="M8,1.002c3.857,0,6.996,3.14,6.996,6.999S11.857,14.998,8,14.998c-3.86,0-7-3.139-7-6.998 S4.14,1.002,8,1.002 M8,0.002C3.581,0.002,0,3.583,0,8c0,4.417,3.581,7.998,8,7.998c4.415,0,7.996-3.58,7.996-7.998 C15.996,3.583,12.415,0.002,8,0.002L8,0.002z"></path>
-                </svg>
+                </svg>-->
+                <button ng-click="$ctrl.onSelected('Hello')">Select</button>
               </a>
             </li>
             <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">

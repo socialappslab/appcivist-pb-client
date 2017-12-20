@@ -42,7 +42,7 @@
     this.pushQueue = [];
     this.stats = null;
 
-    let pollTime = 30000;
+    let pollTime = 10000;
     let errorCount = 0;
     let pollPromise = null;
 
@@ -168,6 +168,7 @@
       time = time || pollTime;
       cancelNextPoll();
       pollPromise = $timeout(pollData, time);
+      self.repeats += 1;
     }
 
     /**

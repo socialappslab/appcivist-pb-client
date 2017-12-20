@@ -12,42 +12,15 @@
       </h3>
       <li ng-repeat-start="n in vm.notifications track by $index">
         <a ng-click="vm.readNotification(n, $event)">
-          <div class="title" ng-class="{unseen: !n.read}">{{n.signal.title}}</div>
-          <div class="preview" ng-class="{unseen: !n.read}">{{notification.text}}</div>
-          <div class="date">{{vm.formatDate(n.signal.creation)}}</div>
+          <div class="title" ng-class="{unseen: !n.read}">{{n.title}}</div>
+          <div class="preview" ng-class="{unseen: !n.read}">{{n.text}}</div>
+          <div class="date">{{vm.formatDate(n.date)}}</div>
         </a>
       </li>
       <li ng-repeat-end role="separator" class="divider"></li>
       <li ng-if="vm.notifications && vm.notifications.length === 0" style="text-align: center;">
         <a>{{'All caught up!' | translate}}</a>
       </li>
-
-      <!--<li>
-        <a>
-          <div class="title unseen">Fugiat occaecat irure commodo.</div>
-          <div class="preview unseen">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse
-            magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
-          <div class="date">07/08/2017</div>
-        </a>
-      </li>
-      <li role="separator" class="divider"></li>
-      <li>
-        <a>
-          <div class="title">Fugiat occaecat irure commodo.</div>
-          <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse
-            magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
-          <div class="date">07/08/2017</div>
-        </a>
-      </li>
-      <li role="separator" class="divider"></li>
-      <li>
-        <a>
-          <div class="title">Fugiat occaecat irure commodo.</div>
-          <div class="preview">Aliqua esse do duis pariatur duis elit in nulla sunt nostrud ad. Culpa anim labore labore quis commodo ea. In esse
-            magna eu eu labore culpa. Proident voluptate eiusmod aliqua proident.</div>
-          <div class="date">07/08/2017</div>
-        </a>
-      </li>-->
     </ul>
   </li>
 </ul>

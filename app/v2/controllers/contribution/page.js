@@ -985,6 +985,11 @@
         data => this.userFeedback = data,
         error => this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
       );
+      let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
+      rsp2.then(
+        data => this.userFeedbackArray = data,
+        error => this.userFeedbackArray = []
+      )
     }
 
     function embedPadGdoc() {

@@ -818,9 +818,7 @@
      * @param {Object[]} fields
      */
     function filterCustomFields(fields) {
-      return fields.filter(f => f.entityType === 'CONTRIBUTION' &&
-        f.entityFilterAttributeName === 'type' &&
-        f.entityFilter === this.type);
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
     }
 
 

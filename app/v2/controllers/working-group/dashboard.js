@@ -66,6 +66,7 @@
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
+      $scope.isWGCoordinator = false;
       $scope.insights = {
         proposalsCount: 0,
         ideasCount: 0,
@@ -91,6 +92,7 @@
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+        $scope.isWGCoordinator = Memberships.isWorkingGroupCoordinator($scope.groupID);
         $scope.userIsMember = Memberships.isMember("assembly", $scope.assemblyID);
         $scope.userIsGroupMember = Memberships.isMember("group", $scope.groupID);
         $scope.userIsAdmin = Memberships.userIsAdmin();

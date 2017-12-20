@@ -73,14 +73,14 @@
       <!--Working Group Ideas and Proposals Buttons-->
       <!--TODO: ADD button to joing working group if the user who is visiting is not a member-->
       <div class="campaign__filters">
-        <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">{{'Proposals' | translate}}</h2>
+        <h2 class="heading--header no-padding col-xs-12 col-lg-5 col-md-5 col-sm-5">{{'Proposals' | translate}}</h2>
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-4"
            ng-if="user != null && newProposalsEnabled && userIsMember"
            ng-click="openModal('proposalFormModal')">
           <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
         </a>
 
-        <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-4"
+        <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
            ng-if="user === null || !userIsMember" disabled>
           {{'Join the Group to create proposals' | translate}}
         </a>
@@ -107,7 +107,7 @@
         <section class="list--proposals">
           <header class="proposals__header" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
             <div class="dash_insights">
-              <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFTS || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFTS || 0}} <small>({{'Draft' | translate}})</small></span>
+              <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}} <small>({{'Draft' | translate}})</small></span>
             </div>
           </header>
           <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">
@@ -266,7 +266,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
-        <button class="btn btn-default btn-add-members" ng-if="isCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
+        <button class="btn btn-default btn-add-members" ng-if="isCoordinator || isWGCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
         <h3 class="modal-title" id="wgMembersLabel">{{wg.name}}</h3>
         <p>{{ 'Members' | translate }}</p>
       </div>

@@ -42,7 +42,7 @@
     this.pushQueue = [];
     this.stats = null;
 
-    let pollTime = 10000;
+    let pollTime = 60000;
     let errorCount = 0;
     let pollPromise = null;
 

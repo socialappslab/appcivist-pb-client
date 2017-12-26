@@ -212,11 +212,15 @@
       </section>
 
       <section id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
-        <!-- Custom Fields -->
-        <div class="field__container">
-          <p class="intro bold">{{'Custom information' | translate}}</p>
-          <custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]"></custom-field>
-          <custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]"></custom-field>
+        <div class="row">
+          <div class="col-xs-12" style="padding: 1rem 2rem 0">
+            <!-- Custom Fields -->
+            <div class="field__container">
+              <h4 class="intro bold">{{'Custom information' | translate}}</h4>
+              <custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
+              <custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
+            </div>
+          </div>
         </div>
       </section>
 

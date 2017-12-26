@@ -987,7 +987,12 @@
       );
       let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
       rsp2.then(
-        data => this.userFeedbackArray = data,
+        data => {
+          this.userFeedbackArray = data
+          if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
+            this.userFeedbackArray = data.filter(f => f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT')
+          }
+        },
         error => this.userFeedbackArray = []
       )
     }

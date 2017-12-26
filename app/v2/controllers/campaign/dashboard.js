@@ -22,12 +22,13 @@
     '$compile',
     '$state',
     'Voting',
-    '$sce'
+    '$sce',
+    '$breadcrumb'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce) {
+    $state, Voting, $sce, $breadcrumb) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -274,6 +275,9 @@
               'background-image': 'url("../images/vallejo_header.jpg")',
               'background-position': 'center center',
             };
+          
+          $scope.campaignLabel = $scope.campaign.title;
+          $scope.assemblyLabel = $scope.assembly.name;
 
           $scope.loadCampaignBrief();
           localStorageService.set("currentCampaign", $scope.campaign);

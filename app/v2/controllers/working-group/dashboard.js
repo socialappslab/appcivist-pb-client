@@ -8,12 +8,12 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', 'Invitations', '$filter',
-    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http', '$breadcrumb'
   ];
 
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions, Invitations,
                                      $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
-                                     $state, $http) {
+                                     $state, $http, $breadcrumb) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) {
@@ -157,6 +157,8 @@
       }
       rsp.$promise.then(function (data) {
         $scope.assembly = data;
+        $scope.assemblyLabel = $scope.assembly.name;
+        console.log($scope);
         verifyMembership();
       });
     }
@@ -204,6 +206,7 @@
     }
 
     function onCampaignReady () {
+      $scope.campaignLabel = $scope.campaign.title;
       $scope.components = localStorageService.get('currentCampaign.components');
       let currentComponent = localStorageService.get('currentCampaign.currentComponent');
       if (!$scope.components) {
@@ -286,6 +289,7 @@
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUID;
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
+          $scope.workingGroupLabel = data.name;
 
 
           // Prepare first WG's cover and color

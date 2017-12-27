@@ -10,12 +10,12 @@
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', '$breadcrumb'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
-    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, $breadcrumb) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -205,6 +205,7 @@
       var feedback = Contributions.userFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID).update($scope.userFeedback);
       feedback.$promise.then(
         function (newStats) {
+          console.log($scope.proposal)
           $scope.proposal.stats = newStats;
           $scope.proposal.informalScore = Contributions.getInformalScore($scope.proposal);
           $scope.upSum = $scope.proposal.stats.ups;
@@ -264,6 +265,7 @@
           scope.contributionType = $scope.proposal.type;
           scope.associatedContributionsType = 'IDEA';
           $scope.wg = $scope.group;
+          $scope.contributionLabel = $scope.proposal.title;
 
           if ($scope.group) {
             $scope.group.profilePic = {
@@ -735,6 +737,7 @@
     }
 
     function loadCampaignConfig() {
+      $scope.campaignLabel = $scope.campaign.title;
       let rsp;
       if ($scope.campaign && $scope.campaign.rsID) {
         rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();

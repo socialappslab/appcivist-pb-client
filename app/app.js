@@ -243,7 +243,7 @@
         abstract: true,
         template: '<div ui-view></div>',
         ncyBreadcrumb: {
-          label: "Assembly"
+          label: "{{assemblyLabel || 'Assembly'}}"
         }
       })
       //assembly: no princial assembly routes
@@ -252,7 +252,7 @@
         templateUrl: 'app/v2/partials/assembly/home.html',
         controller: 'v2.AssemblyHomeCtrl',
         ncyBreadcrumb: {
-          label: "Assembly"
+          label: "{{assemblyLabel || 'Assembly'}}"
         }
       })
       // the new URL for assembly home is /assembly/:id /assembly/:uuid. We left /assembly/:id/home for compatibility.
@@ -261,7 +261,7 @@
         templateUrl: 'app/v2/partials/assembly/home.html',
         controller: 'v2.AssemblyHomeCtrl',
         ncyBreadcrumb: {
-          label: "Assembly"
+          label: "{{assemblyLabel || 'Assembly'}}"
         }
       })
       .state('v2.assembly.aid.assembly', {
@@ -383,7 +383,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.home",
-          label: "Campaign"
+          label: "{{campaignLabel || 'Campaign'}}"
         }
       })
       .state('v2.assembly.aid.campaign.edit', {
@@ -485,7 +485,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.cid",
-          label: "Working Group"
+          label: "{{ workingGroupLabel || 'Working Group' }}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.edit', {
@@ -539,7 +539,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "Proposal"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.contribution', {
@@ -556,7 +556,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "Contribution"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {
@@ -568,7 +568,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.workingGroup.guuid",
-          label: "Contribution"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
       .state('v2.assembly.aid.campaign.contribution', {
@@ -590,7 +590,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.cid",
-          label: "Contribution"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.contribution.couuid', {
@@ -599,7 +599,7 @@
         controller: 'v2.ContributionPageCtrl',
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.dashboard",
-          label: "Contribution"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
       .state('v2.space', {
@@ -618,7 +618,7 @@
         controller: 'v2.ProposalsCtrl',
         ncyBreadcrumb: {
           parent: "v2.home",
-          label: "Contribution"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
 
@@ -641,7 +641,7 @@
         abstract: true,
         template: '<div ui-view></div>',
         ncyBreadcrumb: {
-          label: "Assembly"
+          label: "{{assemblyLabel || 'Assembly'}}"
         }
       })
       .state('v2.public.assembly.auuid.home', {
@@ -649,7 +649,7 @@
         templateUrl: 'app/v2/partials/assembly/home.html',
         controller: 'v2.AssemblyHomeCtrl',
         ncyBreadcrumb: {
-          label: "Assembly"
+          label: "{{assemblyLabel || 'Assembly'}}"
         }
       })
       .state('v2.public.assembly.auuid.campaign', {
@@ -668,7 +668,7 @@
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
         ncyBreadcrumb: {
           parent: 'v2.public.assembly.auuid.home',
-          label: 'Campaign'
+          label: '{{campaignLabel || "Campaign"}}'
         }
       })
       .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup', {
@@ -690,7 +690,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.dashboard",
-          label: "Working Group"
+          label: "{{ workingGroupLabel || 'Working Group' }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal', {
@@ -707,7 +707,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
-          label: "Proposal"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.contribution', {
@@ -724,7 +724,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
-          label: "Contribution"
+          label: "{{ contributionLabel || 'Contribution' }}"
         }
       })
       // TODO: for the general login, let's add a step after signing in to ask which assembly to connect if the user

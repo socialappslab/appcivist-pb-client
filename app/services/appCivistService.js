@@ -615,10 +615,12 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
      * @method services.Notifications#userNotifications
      * @param {Number} userId
      * @param {Number} page
+     * @param {Number} pageSize
      * @returns {$resource}
      */
-    userNotifications(userId, page) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page });
+    userNotifications(userId, page, pageSize) {
+      let size = pageSize || 5;
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page, size });
     },
 
     /**

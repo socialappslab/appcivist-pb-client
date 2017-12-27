@@ -1069,7 +1069,6 @@
           $scope.componentFields = $scope.filterCustomFields(fields);
           console.log($scope.componentFields);
       });
-      console.log($scope.proposal);
       loadValues($scope.proposal.resourceSpaceId);
     }
   }

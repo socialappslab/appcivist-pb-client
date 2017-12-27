@@ -615,10 +615,12 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
      * @method services.Notifications#userNotifications
      * @param {Number} userId
      * @param {Number} page
+     * @param {Number} pageSize
      * @returns {$resource}
      */
-    userNotifications(userId, page) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page });
+    userNotifications(userId, page, pageSize) {
+      let size = pageSize || 5;
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page, size });
     },
 
     /**
@@ -855,7 +857,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         resourceType: newAttachment.resourceType,
         title: newAttachment.title || "",
         description: newAttachment.description || "",
-        isTemplate: newAttachment.isTemplate || ""
+        isTemplate: newAttachment.isTemplate || false
       }
     },
     copyAttachmentObject: function (oldAtt, newAtt) {

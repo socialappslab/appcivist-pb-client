@@ -356,7 +356,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           return data;
         },
         function (error) {
-          Notify.show('Error loading contributions from server', 'error');
+          Notify.show('Error loading campaign timeline: '+ error.statusMessage ? error.statusMessage : '', 'error');
         }
       );
       return rsp.$promise;

@@ -1409,6 +1409,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           update: {
             method: 'PUT',
             isArray: false
+          },
+          save: {
+            method: 'POST',
+            isArray: false
           }
         });
       },
@@ -1561,6 +1565,31 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         return rsp.$promise.then(
           data => data,
           error => Notify.show('Error adding contribution to resource space', 'error')
+        )
+      },
+      addThemeToResourceSpace(sid, theme) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/space/:sid/theme',
+          {sid: sid}).save(theme);
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding theme to resource space: '+error.statusMessage ? error.statusMessage : '', 'error')
+        )
+      },
+      addListOfThemesToResourceSpace(sid, themes) {
+        /*
+        {
+          "themes": {...}
+        }
+        */
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/space/:sid/themes',
+          {sid: sid}).save(themes);
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding theme to resource space: '+error.statusMessage ? error.statusMessage : '', 'error')
         )
       },
       assignContributionToGroupResourceSpace(aid, cid, gid, contributions) {

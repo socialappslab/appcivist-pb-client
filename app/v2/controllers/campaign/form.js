@@ -5,7 +5,7 @@
 
   CampaignFormCtrl.$inject = [
     '$scope', '$sce', '$http', '$templateCache', '$routeParams', '$resource', '$location',
-    '$timeout', 'localStorageService', 'Campaigns', 'Assemblies', 'Components',
+    '$timeout', 'localStorageService', 'Campaigns', 'Assemblies', 'Components', 'Space',
     'Contributions', 'moment', 'modelFormatConfig', '$translate', 'Notify', '$state',
      'configService', '$stateParams'
   ];
@@ -23,7 +23,7 @@
    *   style
    */
   function CampaignFormCtrl($scope, $sce, $http, $templateCache, $routeParams, $resource,
-    $location, $timeout, localStorageService, Campaigns, Assemblies, Components,
+    $location, $timeout, localStorageService, Campaigns, Assemblies, Components, Space,
     Contributions, moment, modelFormatConfig, $translate, Notify, $state,
     configService, $stateParams) {
 
@@ -77,7 +77,7 @@
       $scope.addTheme = function(ts) {
         var themes = ts.split(',');
         themes.forEach(function(theme) {
-          var addedTheme = { title: theme.trim() };
+          var addedTheme = { title: theme.trim(), type: 'OFFICIAL_PRE_DEFINED' };
           $scope.newCampaign.themes.push(addedTheme);
         });
         $scope.themes = "";
@@ -536,6 +536,7 @@
         newCampaign.goal = $scope.newCampaign.goal;
         newCampaign.themes = $scope.newCampaign.themes;
         newCampaign.configs = $scope.newCampaign.configs;
+        newCampaign.transientComponents = $scope.newCampaign.components;
         // Setup existing themes
         newCampaign.existingThemes = [];
         addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);
@@ -544,6 +545,7 @@
           addToExistingThemes(newCampaign.existingThemes, $scope.campaignThemes);
         }
       }
+
       const requiredFields = newCampaign.title != undefined && newCampaign.goal != undefined;
 
       if (requiredFields) {
@@ -621,15 +623,19 @@
           let campaignRes;
 
           if (!$scope.isEdit) {
+            payload.status = 'PUBLISHED'; // TODO: remove when the step by step creation is implemented
             campaignRes = Campaigns.newCampaign($scope.assemblyID).save(payload);
           } else {
             campaignRes = Campaigns.campaign($scope.assemblyID, $scope.newCampaign.campaignId).update(payload);
           }
-          campaignRes.$promise.then(data => {
-            $scope.newCampaign = data;
-            localStorageService.remove('newCampaign');
-            $location.url('/v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.newCampaign.campaignId);
-          }, error => Notify.show('Error. Could not save the campaign', 'error'));
+          campaignRes.$promise.then(
+            data => {
+              $scope.newCampaign = data;
+              localStorageService.remove('newCampaign');
+              $location.url('/v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.newCampaign.campaignId);
+              // TODO: use separated endpoints for themes, components and configs
+            },
+              error => Notify.show('Could not save the campaign', 'error'));
         } else {
           $scope.errors.push(payload.error);
           Notify.show('Error. Could not save the campaign', 'error');

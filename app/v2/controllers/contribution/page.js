@@ -135,6 +135,10 @@
         $scope.userIsGroupMember = Memberships.isMember("group",$scope.groupID);
         $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         $scope.userIsAdmin = Memberships.userIsAdmin();
+
+        if ($scope.userIsGroupMember || $scope.userIsCoordinator || $scope.userIsAdmin) {
+          $scope.commentType = 'members';
+        }
       }
       $scope.etherpadLocale = Etherpad.getLocale();
       $scope.loadProposal($scope);
@@ -1037,7 +1041,7 @@
       } else {
         rsp = Space.fields(sid).query().$promise;
       }
-  
+
       return rsp.then(
         fields => fields,
         error => {
@@ -1045,11 +1049,11 @@
         }
       );
     }
-  
+
     function filterCustomFields(fields) {
       return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
     }
-  
+
     function loadCustomFields() {
       let currentComponent = localStorageService.get('currentCampaign.currentComponent');
       $scope.currentComponent = currentComponent;
@@ -1060,7 +1064,7 @@
         $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceId;
         $scope.componentResourceSpaceId = currentComponent.resourceSpaceId;
       }
-  
+
       loadFields($scope.campaignResourceSpaceId).then(fields => {
           $scope.campaignFields = $scope.filterCustomFields(fields);
           console.log($scope.campaignFields);

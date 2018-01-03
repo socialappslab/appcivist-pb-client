@@ -149,6 +149,15 @@ form>fieldset {
   color: #11493b;
   font-size: .875em;
   font-family: Lato, sans-serif;
+  ul {
+    padding-left: 0;
+    list-style-type: none;
+    text-align: center;
+    li {
+      display: inline-block;
+      margin: 2rem 1rem 2rem;
+    }
+  }
 }
 
 .star-filled {

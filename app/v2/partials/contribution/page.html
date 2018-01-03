@@ -476,6 +476,22 @@
                 </div>
               </div>
             </div>
+            <div class="informal_score stats2">
+              <ul>
+                <li>
+                  <i class="fa fa-lg fa-thumbs-up"></i>
+                  {{upSum}}
+                </li>
+                <li>
+                  <i class="fa fa-lg fa-thumbs-down"></i>
+                  {{downSum}}
+                </li>
+                <li>
+                  <i class="fa fa-lg" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
+                  {{proposal.informalScore}}
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="feedback-list">
             <div class="feedback" ng-repeat="f in userFeedbackArray">
@@ -485,7 +501,7 @@
                 <div class="label label-1" ng-if="f.status">{{ f.status }}</div>
                 <div class="label label-2" ng-if="f.type">{{ f.type }}</div>
               </div>
-              <member-card user="f.userId"></member-card>
+              <member-card user="f.user"></member-card>
               <div class="textual" ng-if="f.textualFeedback" ng-bind-html="f.textualFeedback"></div>
             </div>
           </div>

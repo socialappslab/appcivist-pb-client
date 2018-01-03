@@ -356,7 +356,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           return data;
         },
         function (error) {
-          Notify.show('Error loading contributions from server', 'error');
+          Notify.show('Error loading campaign timeline: '+ error.statusMessage ? error.statusMessage : '', 'error');
         }
       );
       return rsp.$promise;
@@ -615,10 +615,12 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
      * @method services.Notifications#userNotifications
      * @param {Number} userId
      * @param {Number} page
+     * @param {Number} pageSize
      * @returns {$resource}
      */
-    userNotifications(userId, page) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page });
+    userNotifications(userId, page, pageSize) {
+      let size = pageSize || 5;
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications', { userId, page, size });
     },
 
     /**
@@ -1411,6 +1413,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           update: {
             method: 'PUT',
             isArray: false
+          },
+          save: {
+            method: 'POST',
+            isArray: false
           }
         });
       },
@@ -1563,6 +1569,31 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         return rsp.$promise.then(
           data => data,
           error => Notify.show('Error adding contribution to resource space', 'error')
+        )
+      },
+      addThemeToResourceSpace(sid, theme) {
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/space/:sid/theme',
+          {sid: sid}).save(theme);
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding theme to resource space: '+error.statusMessage ? error.statusMessage : '', 'error')
+        )
+      },
+      addListOfThemesToResourceSpace(sid, themes) {
+        /*
+        {
+          "themes": {...}
+        }
+        */
+        var rsp;
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/space/:sid/themes',
+          {sid: sid}).save(themes);
+
+        return rsp.$promise.then(
+          data => data,
+          error => Notify.show('Error adding theme to resource space: '+error.statusMessage ? error.statusMessage : '', 'error')
         )
       },
       assignContributionToGroupResourceSpace(aid, cid, gid, contributions) {

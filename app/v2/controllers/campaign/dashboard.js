@@ -22,12 +22,13 @@
     '$compile',
     '$state',
     'Voting',
-    '$sce'
+    '$sce',
+    '$breadcrumb'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce) {
+    $state, Voting, $sce, $breadcrumb) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -208,7 +209,28 @@
       $scope.assembly = localStorageService.get('currentAssembly');
       // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
       // get the assembly from backend
-      verifyMembership($scope.assembly);
+      if ($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) {
+        if ($scope.isAnonymous) {
+          $scope.assemblyID = $stateParams.auuid;
+          var assemblyRes = Assemblies.assemblyByUUID($scope.assemblyID).get();
+        } else {
+          $scope.assemblyID = $stateParams.aid;
+          var assemblyRes = Assemblies.assembly($scope.assemblyID).get();
+        }
+
+        assemblyRes.$promise.then(
+          assembly => {
+            $scope.assembly = assembly;
+            localStorageService.set("currentAssembly", $scope.assembly);
+            verifyMembership($scope.assembly);
+          },
+          error => {
+            console.log("Error getting assembly: " + error.statusMessage);
+          }
+        );
+      } else {
+        verifyMembership($scope.assembly);
+      }
     }
 
     function loadAssemblyPublicProfile() {
@@ -274,6 +296,9 @@
               'background-image': 'url("../images/vallejo_header.jpg")',
               'background-position': 'center center',
             };
+
+          $scope.campaignLabel = $scope.campaign.title;
+          $scope.assemblyLabel = $scope.assembly.name;
 
           $scope.loadCampaignBrief();
           localStorageService.set("currentCampaign", $scope.campaign);

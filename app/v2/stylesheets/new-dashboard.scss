@@ -176,20 +176,20 @@
 }
 
 .alert.subconfirm {
-  width: 40em;
+  width: 30em;
   background-color: #FFFAD9;
   border: none;
   position: fixed;
-  top: 30%;
-  left: 50%;
+  bottom: 0;
+  right: 10px;
   margin-left: -20em;
   border-radius: 0;
   padding: 25px;
   z-index: 10;
-  .close { right: -15px; top: -17px; }
+  .close { right: -10px; top: -15px; }
   button:hover { background: none; }
   .message { font-weight: bold; }
-  .submessage { font-size: 0.8rem; }
+  .submessage, a { font-size: 0.8rem; }
 }
 
 #media-carousel {

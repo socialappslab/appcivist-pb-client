@@ -28,7 +28,9 @@
     $scope.loadAuthors = loadAuthors.bind($scope);
     $scope.addAuthorToProposal = addAuthorToProposal.bind($scope);
     $scope.deleteAuthor = deleteAuthor.bind($scope);
+    $scope.loadFields = loadFields.bind($scope);
     $scope.loadValues = loadValues.bind($scope);
+    $scope.loadCustomFields = loadCustomFields.bind($scope);
     $scope.loadProposal = loadProposal.bind($scope);
     $scope.toggleCustomFieldsSection = toggleCustomFieldsSection.bind($scope);
     $scope.deleteAttachment = deleteAttachment.bind($scope);
@@ -46,6 +48,7 @@
     $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
     $scope.embedPadGdoc = embedPadGdoc.bind($scope);
     $scope.loadCampaignResources = loadCampaignResources.bind($scope);
+    $scope.filterCustomFields = filterCustomFields.bind($scope);
 
     activate();
 
@@ -132,6 +135,10 @@
         $scope.userIsGroupMember = Memberships.isMember("group",$scope.groupID);
         $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         $scope.userIsAdmin = Memberships.userIsAdmin();
+
+        if ($scope.userIsGroupMember || $scope.userIsCoordinator || $scope.userIsAdmin) {
+          $scope.commentType = 'members';
+        }
       }
       $scope.etherpadLocale = Etherpad.getLocale();
       $scope.loadProposal($scope);
@@ -689,6 +696,7 @@
           // update current campaign reference
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
+          loadCustomFields();
         }, function (error) {
           Notify.show('Error while trying to fetch campaign', 'error');
         });
@@ -935,7 +943,7 @@
       }
       return rsp.then(
         fieldsValues => {
-          this.fieldsValues = fieldsValues;
+          $scope.fieldsValues = fieldsValues;
         },
         error => {
           Notify.show('Error while trying to get field values from resource space', 'error');
@@ -1034,6 +1042,48 @@
       }, function (error) {
         Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
       });
+    }
+
+    function loadFields(sid) {
+      let rsp = {};
+      if ($scope.isAnonymous) {
+        rsp = Space.fieldsPublic(sid).query().$promise;
+      } else {
+        rsp = Space.fields(sid).query().$promise;
+      }
+
+      return rsp.then(
+        fields => fields,
+        error => {
+          Notify.show('Error while trying to get fields from resource space', 'error');
+        }
+      );
+    }
+
+    function filterCustomFields(fields) {
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
+    }
+
+    function loadCustomFields() {
+      let currentComponent = localStorageService.get('currentCampaign.currentComponent');
+      $scope.currentComponent = currentComponent;
+      if ($scope.isAnonymous) {
+        $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceUUID;
+        $scope.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+      } else {
+        $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceId;
+        $scope.componentResourceSpaceId = currentComponent.resourceSpaceId;
+      }
+
+      loadFields($scope.campaignResourceSpaceId).then(fields => {
+          $scope.campaignFields = $scope.filterCustomFields(fields);
+          console.log($scope.campaignFields);
+      });
+      loadFields($scope.componentResourceSpaceId).then(fields => {
+          $scope.componentFields = $scope.filterCustomFields(fields);
+          console.log($scope.componentFields);
+      });
+      loadValues($scope.proposal.resourceSpaceId);
     }
   }
 }());

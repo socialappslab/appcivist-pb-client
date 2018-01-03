@@ -98,6 +98,7 @@
               }
               this.assemblyId = this.assembly.uuid;
             } else {
+              localStorageService.set('currentAssembly',this.assembly);
               this.assemblyId = this.assembly.assemblyId ? this.assembly.assemblyId : this.assembly.uuid;
               this.readAssemblyByShortname = this.assembly.assemblyId ? false : true;
             }
@@ -151,6 +152,7 @@
             return moment().isBetween(startDate, endDate);
           });
 
+          localStorageService.set("ongoingCampaigns", this.ongoings);
           this.pastCampaigns = campaigns.filter(c => {
             const endDate = Utils.parseDateToLocal(c.endDate);
 
@@ -159,6 +161,19 @@
             }
             return moment().isAfter(endDate);
           });
+
+          localStorageService.set("pastCampaigns", this.pastCampaigns);
+          
+          this.upcomingCampaigns = campaigns.filter(c => {
+            const startDate = Utils.parseDateToLocal(c.startDate);
+
+            if (!startDate) {
+              return false;
+            }
+            return moment().isBefore(startDate);
+          });
+
+          localStorageService.set("upcomingCampaigns", this.upcomingCampaigns);
 
           angular.forEach(this.ongoings, c => this.fetchWorkingGroups(this.assemblyId, c));
           angular.forEach(this.pastCampaigns, c => this.fetchWorkingGroups(this.assemblyId, c));

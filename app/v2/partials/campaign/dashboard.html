@@ -138,88 +138,59 @@
                                    current-component="currentComponent"></proposals-ideas-searchbox>
 
         <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
-          <section class="list--proposals">
-            <header class="proposals__header">
-              <div class="dash_insights">
-                <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}} <small>({{'Draft' | translate}})</small></span>
-              </div>
-            </header>
-            <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
-              <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
-                                 is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
-                                 components="components" show-voting-buttons="showVotingButtons" filters="filters"
-                                 ballot-paper="ballotPaper" ballot-tokens="ballotTokens" ng-if="showPagination">
-              </pagination-widget>
-            </div>
-          </section>
-
-          <!-- Comments section -->
-          <section class="list--ideas" ng-if="commentsSectionExpanded" ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">
-            <header class="comments__header" style="padding-left: 30px;">
-              <a ng-if="commentsSectionExpanded" ng-click="toggleHideCommentsSection()" class="comments__show_ideas"
-                href=""><i class="fa fa-comments-o"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
-            </header>
-
-            <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
-                <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate}} ({{membersCommentCounter.value}})</a></li>
-                <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate}} ({{publicCommentCounter.value}})</a></li>
-              </ul>
-              <div class="tab-content">
-                <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="userIsMember" space-id="spaceID"
-                                    endpoint-id="campaignID"
-                                    endpoint="campaign"
-                                    is-anonymous="isAnonymous"></discussion-panel>
+          <div class="col-lg-8 col-md-12">
+            <section class="list--proposals">
+              <header class="proposals__header">
+                <div class="dash_insights">
+                  <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}} <small>({{'Draft' | translate}})</small></span>
                 </div>
-                <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" space-id="campaign.forumSpaceID"
-                    endpoint-id="$parent.campaignID" endpoint="campaign" public-board="true"
-                                    is-anonymous="isAnonymous"></discussion-panel>
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" space-id="campaign.frsUUID"
-                    endpoint-id="campaign.uuid" endpoint="campaign" public-board="true"
-                                    is-anonymous="isAnonymous"></discussion-panel>
+              </header>
+              <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
+                <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
+                                    is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
+                                    components="components" show-voting-buttons="showVotingButtons" filters="filters"
+                                    ballot-paper="ballotPaper" ballot-tokens="ballotTokens" ng-if="showPagination">
+                </pagination-widget>
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-4 col-md-12">
+            <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
+            <section class="comments__section">
+              <div class="row comments-header">
+                <div class="col-xs-4 text-left">
+                  <strong>Comments ({{commentType == 'members' ? membersCommentCounter.value : publicCommentCounter.value}})</strong>
+                </div>
+                <div class="col-xs-8 text-right">
+                  {{'View comments by'|translate}}:
+                  <select name="comment-types" ng-model="commentType">
+                    <option value="public">{{'Public'|translate}}</option>
+                    <option value="members">{{'Members only'|translate}}</option>
+                  </select>
                 </div>
               </div>
-            </div>
-          </section>
+              <div class="row">
+                <div class="tab-pane" ng-if="userIsMember && commentType === 'members'">
+                    <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
+                                      endpoint-id="campaignID" endpoint="campaign">
+                    </discussion-panel>
+                </div>
+                <div class="tab-pane" ng-if="commentType === 'public'">
+                    <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID"
+                                      endpoint-id="$parent.campaignID" endpoint="campaign"
+                                      public-board="true" is-anonymous="isAnonymous">
+                    </discussion-panel>
+                    <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID"
+                                      endpoint-id="campaign.uuid" endpoint="campaign"
+                                      public-board="true" is-anonymous="isAnonymous">
+                    </discussion-panel>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </section>
     </article>
-
-    <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
-    <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember">
-        <a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">
-          {{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})
-        </a>
-      </li>
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}">
-        <a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">
-          {{'Public Conversations' | translate}} ({{publicCommentCounter.value}})
-        </a>
-      </li>
-    </ul>
-
-    <!-- Discussions: list of comments under the Conversation Tabs -->
-    <div class="tab-content">
-      <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-        <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
-                          endpoint-id="campaignID" endpoint="campaign">
-        </discussion-panel>
-      </div>
-      <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-        <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID"
-                          endpoint-id="$parent.campaignID" endpoint="campaign"
-                          public-board="true" is-anonymous="isAnonymous">
-        </discussion-panel>
-        <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID"
-                          endpoint-id="campaign.uuid" endpoint="campaign"
-                          public-board="true" is-anonymous="isAnonymous">
-        </discussion-panel>
-      </div>
-    </div>
 
     <!-- New Proposal Form Modal -->
     <script id="proposalFormModal" type="text/ng-template">

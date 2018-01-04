@@ -1,15 +1,15 @@
 (function () {
   'use strict';
 
-  /** 
+  /**
    * @name custom-field
    * @memberof directives
-   * 
+   *
    * @description
    *  Component that renders an input/select element based on CustomFieldDefinition
-   * 
+   *
    * @example
-   * 
+   *
    *  <custom-field definition="vm.field" value="vm.fieldValue"></custom-field>
    */
   appCivistApp
@@ -58,6 +58,8 @@
       this.stringOpenSingleValue = '';
       this.imageExtensions = ['png', 'jpeg', 'jpg', 'gif', 'tiff'];
       this.checkType();
+      this.isUpdatingModel = false;
+
 
       // watcher for updating internal model.
       $scope.$watchCollection('vm.value', value => {
@@ -86,11 +88,11 @@
 
     /**
      * This methods is responsible for updating the internal value when users update their selection.
-     * 
-     * @param {Object|String} value 
+     *
+     * @param {Object|String} value
      */
     function modelUpdateHandler(value) {
-      if (this.isUpdatingModel || !value || _.isEmpty(value)) {
+      if (this.isUpdatingModel || !value || (!_.isNumber(value) && _.isEmpty(value))) {
         return;
       }
       this.sync(value);
@@ -127,7 +129,7 @@
 
     /**
      * Uploads the selected file to the server
-     * 
+     *
      * @param {Object} file - The file to upload
      */
     function uploadFiles(file) {
@@ -152,8 +154,8 @@
 
     /**
      * Updates the custom-field component's internal model property.
-     * 
-     * @param {object} fieldValue - CustomFieldValue 
+     *
+     * @param {object} fieldValue - CustomFieldValue
      */
     function updateModel(fieldValue) {
       let value = fieldValue.value;
@@ -172,8 +174,8 @@
 
     /**
      * Determines if given URL is an image file.
-     * 
-     * @param {string} url 
+     *
+     * @param {string} url
      */
     function isImage(url) {
       const parts = url.split('.');
@@ -183,8 +185,8 @@
 
     /**
      * Updates the custom-field value property.
-     * 
-     * @param {string} value - internal model value 
+     *
+     * @param {string} value - internal model value
      */
     function sync(value) {
       if (!this.value) {
@@ -216,9 +218,9 @@
 
     /**
      * This callback gets called when the user clicks on a multiple choice option.
-     * 
+     *
      * @param {Object[]} options
-     * @param {Object} selectedOption 
+     * @param {Object} selectedOption
      */
     function selectMultipleChoiceOption(options, selectedOption) {
       options.forEach(option => option.showInputText = false);

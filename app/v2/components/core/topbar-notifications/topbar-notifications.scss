@@ -3,4 +3,12 @@ topbar-notifications {
     max-height: 350px;
     overflow-y: scroll;
   }
+  .alert-area {
+    position: fixed;
+    bottom: 0;
+    right: 10px;
+  }
+  .alert.subconfirm {
+    position: relative !important;
+  }
 }

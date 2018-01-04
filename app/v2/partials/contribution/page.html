@@ -155,6 +155,7 @@
           <h2>{{contributionType|titlecase|translate}}</h2>
           <p translate="contribution.body"></p>
           <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)"></p>
+          <p translate="contribution.body.replace" ng-if="proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)"></p>
           <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)">
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
@@ -208,6 +209,19 @@
             </ol>
           </div>
         <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
+      </section>
+
+      <section id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
+        <div class="row">
+          <div class="col-xs-12" style="padding: 1rem 2rem 0">
+            <!-- Custom Fields -->
+            <div class="field__container">
+              <h4 class="intro bold">{{'Custom information' | translate}}</h4>
+              <custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
+              <custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section class="comments__section">
@@ -369,7 +383,7 @@
             <li ng-repeat="resource in resources.documents track by $index">
               <a class="workingGroupLink" target="_blank"
                   ng-href="{{resource.url}}">
-                <span>{{resource.name}}</span>
+                <span>{{resource.title ? resource.title : resource.name}}</span>
               </a>
               <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>
@@ -484,8 +498,8 @@
     </div>
   </div>
 
-  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="gdoc"></contribution-embed-modal>
-  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="etherpad"></contribution-embed-modal>
+  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="gdoc" resources="campaignResources"></contribution-embed-modal>
+  <contribution-embed-modal assembly-id="assemblyID" campaign-id="campaignID" contribution-id="proposalID" format="etherpad" resources="campaignResources"></contribution-embed-modal>
 
   <script>
     $(document).ready(function() {

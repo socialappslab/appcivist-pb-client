@@ -22,12 +22,13 @@
     '$compile',
     '$state',
     'Voting',
-    '$sce'
+    '$sce',
+    '$breadcrumb'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce) {
+    $state, Voting, $sce, $breadcrumb) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -51,8 +52,6 @@
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
       $scope.userIsMember = false;
-      $scope.ideasSectionExpanded = false;
-      $scope.insightsSectionExpanded = false;
       $scope.commentsSectionExpanded = false;
       $scope.showVotingButtons = false;
       $scope.votingStageIsActive = false;
@@ -106,14 +105,8 @@
         }
       }
 
-      $scope.showResourcesSection = false;
-      $scope.toggleResourcesSection = toggleResourcesSection.bind($scope);
-      $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
-      $scope.toggleInsightsSection = toggleInsightsSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
-      $scope.toggleHideIdeasSection = toggleHideIdeasSection.bind($scope);
       $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
-      $scope.toggleHideInsightsSection = toggleHideInsightsSection.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
       $scope.loadGroups = loadGroups.bind($scope);
       $scope.openModal = openModal.bind($scope);
@@ -121,7 +114,6 @@
       $scope.redirectToProposal = redirectToProposal.bind($scope);
       $scope.showAssemblyLogo = showAssemblyLogo.bind($scope);
       $scope.checkJoinWGButtonVisibility = checkJoinWGButtonVisibility.bind($scope);
-      $scope.checkConfigOpenIdeasDefault = checkConfigOpenIdeasDefault.bind($scope);
       $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
       $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
       $scope.afterComponentsLoaded = afterComponentsLoaded.bind($scope);
@@ -146,8 +138,17 @@
       $scope.translateDefaultBrief = translateDefaultBrief.bind($scope);
       $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
       $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
+      $scope.deleteResource = deleteResource.bind($scope);
       $scope.joinWg = joinWg.bind($scope);
       $scope.loadThemeKeywordDescription = loadThemeKeywordDescription.bind($scope);
+      $scope.resourceIsDocument = resourceIsDocument.bind($scope);
+      $scope.resourceIsMedia = resourceIsMedia.bind($scope);
+      $scope.resourceIsPicture = resourceIsPicture.bind($scope);
+      $scope.resourceIsVideo = resourceIsVideo.bind($scope);
+      $scope.documentCount = documentCount.bind($scope);
+      $scope.mediaCount = mediaCount.bind($scope);
+      $scope.pictureCount = pictureCount.bind($scope);
+      $scope.videoCount = videoCount.bind($scope);
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -181,8 +182,12 @@
           $scope.$broadcast('filters:updateFilters');
         }
       });
+      $scope.$on('AddResourceForm:AddedResourceSuccess', () => {
+        $scope.openAddAttachmentByUrl = false;
+        $scope.openAddAttachment = false;
+      });
     }
-    
+
     function joinWg(groupId) {
       let member = {
         userId: $scope.user.userId,
@@ -204,7 +209,28 @@
       $scope.assembly = localStorageService.get('currentAssembly');
       // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
       // get the assembly from backend
-      verifyMembership($scope.assembly);
+      if ($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) {
+        if ($scope.isAnonymous) {
+          $scope.assemblyID = $stateParams.auuid;
+          var assemblyRes = Assemblies.assemblyByUUID($scope.assemblyID).get();
+        } else {
+          $scope.assemblyID = $stateParams.aid;
+          var assemblyRes = Assemblies.assembly($scope.assemblyID).get();
+        }
+
+        assemblyRes.$promise.then(
+          assembly => {
+            $scope.assembly = assembly;
+            localStorageService.set("currentAssembly", $scope.assembly);
+            verifyMembership($scope.assembly);
+          },
+          error => {
+            console.log("Error getting assembly: " + error.statusMessage);
+          }
+        );
+      } else {
+        verifyMembership($scope.assembly);
+      }
     }
 
     function loadAssemblyPublicProfile() {
@@ -271,6 +297,9 @@
               'background-position': 'center center',
             };
 
+          $scope.campaignLabel = $scope.campaign.title;
+          $scope.assemblyLabel = $scope.assembly.name;
+
           $scope.loadCampaignBrief();
           localStorageService.set("currentCampaign", $scope.campaign);
 
@@ -325,11 +354,25 @@
 
     function toggleOpenAddAttachment () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
+      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachment");
     }
 
     function toggleOpenAddAttachmentByUrl () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
       $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
+      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachmentByUrl");
+    }
+
+    function deleteResource(attachment) {
+      Space.deleteResource(this.spaceID, attachment.resourceId).then(
+        response => {
+          _.remove(this.resources, { resourceId: attachment.resourceId });
+          Notify.show('Attachment deleted successfully', 'success');
+        } ,
+        error => {
+          Notify.show('Error while trying to delete attachment from the contribution', 'error');
+        }
+      );
     }
 
     function afterComponentsLoaded() {
@@ -632,7 +675,6 @@
       $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
       if ($scope.campaignConfigs) {
         let configs = $scope.campaignConfigs
-        $scope.ideasSectionExpanded = $scope.checkConfigOpenIdeasDefault(configs);
         $scope.showComments = $scope.checkConfigDisableComments(configs);
         // New Ideas are allowed if:
         // 1. current stage is of type IDEAS
@@ -644,11 +686,10 @@
           key === 'IDEAS' && allowAnonIdeas
           || (key === 'PROPOSALS' && allowIdeaProposals && allowAnonIdeas);
       } else {
-        $scope.ideasSectionExpanded = false; // by default, ideas section is closed
         $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
-      $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous) || (key === 'IDEAS' && $scope.newIdeasEnabled);
+      $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous);
     }
 
     function loadCampaignResources() {
@@ -658,16 +699,49 @@
         var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
       }
       rsp.$promise.then(function (resources) {
+        $scope.resources = [];
         if (resources) {
-          $scope.campaignResources = resources;
-        } else {
-          $scope.campaignResources = [];
+          $scope.resources = resources;
         }
-        $scope.documents = $scope.campaignResources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO');
-        $scope.media = $scope.campaignResources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO');
       }, function (error) {
-        Notify.show('Error loading campaign resources from server', 'error');
+        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
       });
+    }
+
+    function resourceIsDocument(resource) {
+      return resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO';
+    }
+
+    function resourceIsMedia(resource) {
+      return resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO';
+    }
+
+    function resourceIsPicture(resource) {
+      return resource.resourceType === 'PICTURE';
+    }
+
+    function resourceIsVideo(resource) {
+      return resource.resourceType === 'VIDEO';
+    }
+
+    function documentCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType !== 'PICTURE' && resource.resourceType !== 'VIDEO').length : 0;
+      return selectedCount;
+    }
+
+    function mediaCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType === 'PICTURE' || resource.resourceType === 'VIDEO').length : 0;
+      return selectedCount;
+    }
+
+    function pictureCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType === 'PICTURE').length : 0;
+      return selectedCount;
+    }
+
+    function videoCount() {
+      var selectedCount = this.resources ? this.resources.filter(resource => resource.resourceType === 'VIDEO').length : 0;
+      return selectedCount;
     }
 
     function showAssemblyLogo() {
@@ -675,40 +749,12 @@
       return show;
     }
 
-    function toggleResourcesSection() {
-      $scope.showResourcesSection = !$scope.showResourcesSection;
-    }
-
-    function toggleIdeasSection() {
-      $scope.ideasSectionExpanded = !$scope.ideasSectionExpanded;
-      $scope.commentsSectionExpanded = false;
-      $scope.insightsSectionExpanded = false;
-      // $rootScope.$broadcast('eqResize', true);
-    }
-
-    function toggleInsightsSection() {
-      $scope.ideasSectionExpanded = false;
-      $scope.commentsSectionExpanded = false;
-      $scope.insightsSectionExpanded = !$scope.insightsSectionExpanded;
-    }
-
     function toggleCommentsSection() {
       $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
-      $scope.ideasSectionExpanded = false;
-      $scope.insightsSectionExpanded = false;
-      // $rootScope.$broadcast('eqResize', true);
-    }
-
-    function toggleHideIdeasSection() {
-      $scope.ideasSectionExpanded = false;
     }
 
     function toggleHideCommentsSection() {
       $scope.commentsSectionExpanded = false;
-    }
-
-    function toggleHideInsightsSection() {
-      $scope.insightsSectionExpanded = false;
     }
 
     function loadThemes(query) {
@@ -781,7 +827,7 @@
       let group = contribution.workingGroupAuthors && contribution.workingGroupAuthors[0];
 
       if (group) {
-        $state.go('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
+        $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
           pid: contribution.contributionId,
           aid: this.assemblyID,
           cid: this.campaignID,
@@ -802,15 +848,6 @@
         this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
       }
       return this.displayJoinWorkingGroup;
-    }
-
-    function checkConfigOpenIdeasDefault(configs) {
-      const OPEN_IDEA_SECTION = 'appcivist.campaign.open-idea-section-default';
-      let ideasSectionExpanded = false;
-      if (configs && configs[OPEN_IDEA_SECTION] && configs[OPEN_IDEA_SECTION] === 'TRUE') {
-        ideasSectionExpanded = true;
-      }
-      return ideasSectionExpanded;
     }
 
     function checkConfigDisableComments(configs) {

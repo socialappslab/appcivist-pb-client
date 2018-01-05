@@ -47,6 +47,7 @@
       $scope.membersFile = null;
       $scope.membersFileUrl = null;
       $scope.membersSendInvitations = null;
+      $scope.commentType = 'public';
 
       $scope.$watch('membersFile', $scope.getFromFile);
 

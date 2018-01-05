@@ -44,8 +44,8 @@
           scope.mergedThemes = mergeThemes(scope.contribution);
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
 
-          if (contribution.source !== undefined && contribution.source == 'social_ideation_facebook') {
-            scope.source_url = contribution.source_url;
+          if (scope.contribution.source !== undefined && scope.contribution.source == 'social_ideation_facebook') {
+            scope.source_url = scope.contribution.source_url;
           }
 
           // Se contribution card header cover style

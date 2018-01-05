@@ -153,8 +153,8 @@
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
-        loadAssembly();
       }
+      loadAssembly();
       loadCampaignResources();
       loadCampaigns();
 
@@ -210,7 +210,7 @@
       $scope.assembly = localStorageService.get('currentAssembly');
       // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
       // get the assembly from backend
-      if ($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) {
+      if (($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) || !$scope.assembly ){
         if ($scope.isAnonymous) {
           $scope.assemblyID = $stateParams.auuid;
           var assemblyRes = Assemblies.assemblyByUUID($scope.assemblyID).get();
@@ -222,6 +222,7 @@
         assemblyRes.$promise.then(
           assembly => {
             $scope.assembly = assembly;
+            $scope.assemblyLabel = $scope.assembly.name;
             localStorageService.set("currentAssembly", $scope.assembly);
             verifyMembership($scope.assembly);
           },
@@ -230,6 +231,7 @@
           }
         );
       } else {
+        $scope.assemblyLabel = $scope.assembly.name;
         verifyMembership($scope.assembly);
       }
     }
@@ -299,7 +301,6 @@
             };
 
           $scope.campaignLabel = $scope.campaign.title;
-          $scope.assemblyLabel = $scope.assembly.name;
 
           $scope.loadCampaignBrief();
           localStorageService.set("currentCampaign", $scope.campaign);

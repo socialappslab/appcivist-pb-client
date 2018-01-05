@@ -137,12 +137,28 @@
                                    dry-run="false"
                                    current-component="currentComponent"></proposals-ideas-searchbox>
 
-        <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
-          <div class="col-lg-8 col-md-12">
+        <div class="campaign_cards">
+          <div ng-class="{'col-lg-8 col-md-12': commentsSectionExpanded}">
             <section class="list--proposals">
               <header class="proposals__header">
+                <!-- Statistics/Insights summary section-->
                 <div class="dash_insights">
-                  <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}} <small>({{'Draft' | translate}})</small></span>
+                  <span ng-if="!commentsSectionExpanded"><a ng-click="toggleCommentsSection()">Show comments</a></span>
+                  <span ng-if="commentsSectionExpanded"><a ng-click="toggleCommentsSection()">Hide comments</a></span>
+                  <span ng-if="currentComponentType!=='IDEAS'">
+                    <strong>{{'Proposals' | translate}}:</strong>
+                    {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}}
+                    <small>({{'Published' | translate}})</small>,
+                    {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}}
+                    <small>({{'Drafts' | translate}})</small>
+                    &nbsp;&ndash;&nbsp;
+                  </span>
+                  <span>
+                    <strong>{{'Ideas' | translate}}:</strong>
+                    {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}}
+                    <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}}
+                    <small>({{'Draft' | translate}})</small>
+                </span>
                 </div>
               </header>
               <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
@@ -154,7 +170,7 @@
               </div>
             </section>
           </div>
-          <div class="col-lg-4 col-md-12">
+          <div ng-class="{'col-lg-4 col-md-12': commentsSectionExpanded}" ng-if="commentsSectionExpanded">
             <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
             <section class="comments__section">
               <div class="row comments-header">

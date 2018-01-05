@@ -752,6 +752,7 @@
 
     function toggleCommentsSection() {
       $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
+      $rootScope.$broadcast('eqResize', true); // resize cards to make sure they are rendered well
     }
 
     function toggleHideCommentsSection() {

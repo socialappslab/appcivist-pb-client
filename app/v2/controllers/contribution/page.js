@@ -993,6 +993,16 @@
         data => this.userFeedback = data,
         error => this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
       );
+      let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
+      rsp2.then(
+        data => {
+          this.userFeedbackArray = data.filter(f => f.textualFeedback.length > 0)
+          if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
+            this.userFeedbackArray = data.filter(f => ((f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT') && f.textualFeedback.length > 0))
+          }
+        },
+        error => this.userFeedbackArray = []
+      )
     }
 
     function embedPadGdoc() {

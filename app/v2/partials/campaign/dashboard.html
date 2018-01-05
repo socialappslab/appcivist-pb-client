@@ -181,7 +181,7 @@
                   {{'View comments by'|translate}}:
                   <select name="comment-types" ng-model="commentType">
                     <option value="public">{{'Public'|translate}}</option>
-                    <option value="members">{{'Members only'|translate}}</option>
+                    <option value="members" ng-if="userIsMember">{{'Members only'|translate}}</option>
                   </select>
                 </div>
               </div>

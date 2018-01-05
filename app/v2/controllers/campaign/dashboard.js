@@ -102,6 +102,7 @@
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.campaignID;
 
         if ($scope.user && $scope.user.language) {
+          $scope.commentType = 'members';
           $translate.use($scope.user.language);
         }
       }

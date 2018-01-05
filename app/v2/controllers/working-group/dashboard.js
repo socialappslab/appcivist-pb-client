@@ -100,6 +100,10 @@
         $scope.activeTab = "Members";
       }
 
+      if ($scope.userIsGroupMember) {
+        $scope.commentType = 'members';
+      }
+
       loadAssembly();
 
       $scope.activitiesLimit = 4;

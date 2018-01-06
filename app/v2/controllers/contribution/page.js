@@ -149,7 +149,6 @@
       };
       // Read user contribution feedback
       $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
-//      $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.cm = {
@@ -982,7 +981,7 @@
     function loadFeedback(uuid) {
       let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
       rsp.then(
-        feedbacks => this.feedbacks = feedbacks,
+        feedbacks => this.userFeedbackArray = feedbacks,
         error => Notify.show('Error while trying to fetch contribution feedback', 'error')
       );
     }

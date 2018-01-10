@@ -77,7 +77,7 @@
           Notify.show('Subscribed successfully', 'success');
         },
         function () {
-          Notify.show('Error while trying to communicate with the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -108,7 +108,7 @@
           })[0].click();
           anchor.remove();
         },
-        error => Notify.show('Error while trying to retrieve non-member authors from the server', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       );
     }
   }

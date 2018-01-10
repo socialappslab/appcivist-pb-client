@@ -147,7 +147,7 @@
         this.fileIsImage = this.isImage(this.model.url);
         Pace.stop();
       }, error => {
-        Notify.show('Error while uploading file to the server', 'error');
+        Notify.show(error.statusMessage, 'error');
         Pace.stop();
       });
     }

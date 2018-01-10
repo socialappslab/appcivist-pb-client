@@ -184,7 +184,7 @@
           $scope.campaignResources = resources;
         },
         function(error) {
-          Notify.show('Error loading campaign resources from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

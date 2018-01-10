@@ -1,0 +1,50 @@
+<div class="add__attachment_form" ng-if="vm.includeAddButtons && !vm.openAddAttachment">
+  <button class="btn btn-default follow-contribution modal-button" ng-if="vm.includeAddButtons && !vm.openAddAttachment"
+        ng-click="vm.toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+  <button class="btn btn-default follow-contribution modal-button" ng-if="vm.includeAddButtons && !vm.openAddAttachment"
+        ng-click="vm.toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
+</div>
+<div class="add__attachment_form" ng-if="vm.openAddAttachment">
+  <form>
+    <fieldset>
+      <label for="title">{{'Title' | translate}}</label>
+      <div class="field-container col-lg-12 no-padding">
+        <input class="field-container-input" name="name" ng-model="vm.newAttachment.title">
+      </div>
+    </fieldset>
+    <fieldset>
+      <label for="description">{{'Description' | translate}}</label>
+      <div class="field-container col-lg-12 no-padding">
+        <input class="field-container-input" name="name" ng-model="vm.newAttachment.description">
+      </div>
+    </fieldset>
+    <fieldset ng-if="!vm.openAddAttachmentByUrl">
+      <label for="file">{{'File' | translate}}</label>
+      <input class="field-container-input" type="file" name="file" fileread="vm.newAttachment.file">
+    </fieldset>
+    <fieldset ng-if="vm.openAddAttachmentByUrl">
+      <label for="resource_url">{{'URL' | translate}}</label>
+      <div class="field-container col-lg-12 no-padding">
+        <input class="field-container-input" name="resource_url" ng-model="vm.newAttachment.url">
+      </div>
+    </fieldset>
+    <fieldset>
+      <label for="is_template">{{'Is this resource a proposal template?' | translate}}</label>
+      <div class="field-container col-lg-12 no-padding">
+        <input class="field-container-input" name="resource_url" type="checkbox" ng-model="vm.newAttachment.isTemplate">
+      </div>
+    </fieldset>
+    <fieldset>
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="!vm.openAddAttachmentByUrl"
+              ng-click="vm.toggleOpenAddAttachment()">{{'Cancel' | translate}}</button>
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="!vm.openAddAttachmentByUrl"
+              ng-click="vm.submitAttachment()">{{'Submit' | translate}}</button>
+
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="vm.openAddAttachmentByUrl"
+              ng-click="vm.toggleOpenAddAttachmentByUrl()">{{'Cancel' | translate}}</button>
+      <button class="btn btn-default follow-contribution submit__attachment" ng-if="vm.openAddAttachmentByUrl"
+              ng-click="vm.submitAttachmentByUrl()">{{'Submit' | translate}}</button>
+    </fieldset>
+  </form>
+  <span class="attachment-spinner" us-spinner="vm.spinnerOptions" spinner-key="add-resource-form"></span>
+</div>

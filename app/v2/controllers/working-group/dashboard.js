@@ -8,12 +8,12 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', 'Invitations', '$filter',
-    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http', '$breadcrumb'
   ];
 
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions, Invitations,
                                      $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
-                                     $state, $http) {
+                                     $state, $http, $breadcrumb) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) {
@@ -47,6 +47,7 @@
       $scope.membersFile = null;
       $scope.membersFileUrl = null;
       $scope.membersSendInvitations = null;
+      $scope.commentType = 'public';
 
       $scope.$watch('membersFile', $scope.getFromFile);
 
@@ -66,6 +67,7 @@
       // if the param is uuid then it is an anonymous user
       $scope.isAnonymous = false;
       $scope.isCoordinator = false;
+      $scope.isWGCoordinator = false;
       $scope.insights = {
         proposalsCount: 0,
         ideasCount: 0,
@@ -91,10 +93,15 @@
         $scope.user = localStorageService.get('user');
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/group/' + $scope.groupID;
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+        $scope.isWGCoordinator = Memberships.isWorkingGroupCoordinator($scope.groupID);
         $scope.userIsMember = Memberships.isMember("assembly", $scope.assemblyID);
         $scope.userIsGroupMember = Memberships.isMember("group", $scope.groupID);
         $scope.userIsAdmin = Memberships.userIsAdmin();
         $scope.activeTab = "Members";
+      }
+
+      if ($scope.userIsGroupMember) {
+        $scope.commentType = 'members';
       }
 
       loadAssembly();
@@ -155,6 +162,8 @@
       }
       rsp.$promise.then(function (data) {
         $scope.assembly = data;
+        $scope.assemblyLabel = $scope.assembly.name;
+        console.log($scope);
         verifyMembership();
       });
     }
@@ -202,6 +211,7 @@
     }
 
     function onCampaignReady () {
+      $scope.campaignLabel = $scope.campaign.title;
       $scope.components = localStorageService.get('currentCampaign.components');
       let currentComponent = localStorageService.get('currentCampaign.currentComponent');
       if (!$scope.components) {
@@ -284,6 +294,7 @@
           $scope.wg.rsUUID = data.resourcesResourceSpaceUUID;
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
+          $scope.workingGroupLabel = data.name;
 
 
           // Prepare first WG's cover and color

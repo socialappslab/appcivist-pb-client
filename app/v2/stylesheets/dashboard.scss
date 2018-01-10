@@ -295,3 +295,35 @@ a.join__working_group {
   color: #11493b;
   strong { font-weight: bold; }
 }
+
+.proposals__add_new {
+  margin-left: 2px;
+  margin-bottom: 2px;
+}
+
+.facebook-bookmark {
+  left: 60px !important;
+  top: -7px !important;
+  cursor: pointer !important;
+  a {
+    color: #3B5998 !important;
+    cursor: pointer !important;
+    i:before { cursor: pointer !important; }
+    i:after {
+      content: "\f09a";
+      cursor: pointer !important;
+      color: white !important;
+      display: block;
+      font-family: 'FontAwesome';
+      font-size: 0.9rem;
+      position: absolute;
+      left: 10px;
+      right: 0;
+      top: 1px;
+    }
+  }
+  &.ideas {
+    left: 10px !important;
+    top: -10px !important;
+  }
+}

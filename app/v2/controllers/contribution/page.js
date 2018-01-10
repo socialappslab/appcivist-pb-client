@@ -9,12 +9,12 @@
 
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
-    'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$translate',
+    'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
-    $filter, localStorageService, Memberships, Etherpad, Notify,
+    $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService) {
 
     $scope.setAddContext = setAddContext.bind($scope);
@@ -28,7 +28,9 @@
     $scope.loadAuthors = loadAuthors.bind($scope);
     $scope.addAuthorToProposal = addAuthorToProposal.bind($scope);
     $scope.deleteAuthor = deleteAuthor.bind($scope);
+    $scope.loadFields = loadFields.bind($scope);
     $scope.loadValues = loadValues.bind($scope);
+    $scope.loadCustomFields = loadCustomFields.bind($scope);
     $scope.loadProposal = loadProposal.bind($scope);
     $scope.toggleCustomFieldsSection = toggleCustomFieldsSection.bind($scope);
     $scope.deleteAttachment = deleteAttachment.bind($scope);
@@ -45,6 +47,8 @@
     $scope.removeContributingIdea = removeContributingIdea.bind($scope);
     $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
     $scope.embedPadGdoc = embedPadGdoc.bind($scope);
+    $scope.loadCampaignResources = loadCampaignResources.bind($scope);
+    $scope.filterCustomFields = filterCustomFields.bind($scope);
 
     activate();
 
@@ -131,6 +135,10 @@
         $scope.userIsGroupMember = Memberships.isMember("group",$scope.groupID);
         $scope.userIsCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
         $scope.userIsAdmin = Memberships.userIsAdmin();
+
+        if ($scope.userIsGroupMember || $scope.userIsCoordinator || $scope.userIsAdmin) {
+          $scope.commentType = 'members';
+        }
       }
       $scope.etherpadLocale = Etherpad.getLocale();
       $scope.loadProposal($scope);
@@ -141,7 +149,6 @@
       };
       // Read user contribution feedback
       $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
-//      $scope.userFeedback = $scope.userFeedback || { 'up': false, 'down': false, 'fav': false, 'flag': false };
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.cm = {
@@ -325,6 +332,7 @@
           loadRelatedStats();
           loadCampaign();
           loadResources();
+          $scope.loadCampaignResources();
         },
         function (error) {
           Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
@@ -687,6 +695,7 @@
           // update current campaign reference
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
+          loadCustomFields();
         }, function (error) {
           Notify.show('Error while trying to fetch campaign', 'error');
         });
@@ -933,7 +942,7 @@
       }
       return rsp.then(
         fieldsValues => {
-          this.fieldsValues = fieldsValues;
+          $scope.fieldsValues = fieldsValues;
         },
         error => {
           Notify.show('Error while trying to get field values from resource space', 'error');
@@ -972,7 +981,7 @@
     function loadFeedback(uuid) {
       let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
       rsp.then(
-        feedbacks => this.feedbacks = feedbacks,
+        feedbacks => this.userFeedbackArray = feedbacks,
         error => Notify.show('Error while trying to fetch contribution feedback', 'error')
       );
     }
@@ -983,6 +992,16 @@
         data => this.userFeedback = data,
         error => this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
       );
+      let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
+      rsp2.then(
+        data => {
+          this.userFeedbackArray = data.filter(f => f.textualFeedback.length > 0)
+          if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
+            this.userFeedbackArray = data.filter(f => ((f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT') && f.textualFeedback.length > 0))
+          }
+        },
+        error => this.userFeedbackArray = []
+      )
     }
 
     function embedPadGdoc() {
@@ -1005,6 +1024,65 @@
       } else {
         Notify.show('Error while trying to embed the document', 'error')
       }
+    }
+
+    function loadCampaignResources() {
+      if ($scope.isAnonymous) {
+        var rsp = Campaigns.publicResources($scope.campaignID).query();
+      } else {
+        var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
+      }
+      $scope.campaignResources = [];
+      rsp.$promise.then(function (resources) {
+        if (resources) {
+          $scope.campaignResources = resources;
+          $rootScope.$broadcast("ToContributionEmbedModal:CampaignResourcesReady", {resources: resources});
+        }
+      }, function (error) {
+        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+      });
+    }
+
+    function loadFields(sid) {
+      let rsp = {};
+      if ($scope.isAnonymous) {
+        rsp = Space.fieldsPublic(sid).query().$promise;
+      } else {
+        rsp = Space.fields(sid).query().$promise;
+      }
+
+      return rsp.then(
+        fields => fields,
+        error => {
+          Notify.show('Error while trying to get fields from resource space', 'error');
+        }
+      );
+    }
+
+    function filterCustomFields(fields) {
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
+    }
+
+    function loadCustomFields() {
+      let currentComponent = localStorageService.get('currentCampaign.currentComponent');
+      $scope.currentComponent = currentComponent;
+      if ($scope.isAnonymous) {
+        $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceUUID;
+        $scope.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+      } else {
+        $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceId;
+        $scope.componentResourceSpaceId = currentComponent.resourceSpaceId;
+      }
+
+      loadFields($scope.campaignResourceSpaceId).then(fields => {
+          $scope.campaignFields = $scope.filterCustomFields(fields);
+          console.log($scope.campaignFields);
+      });
+      loadFields($scope.componentResourceSpaceId).then(fields => {
+          $scope.componentFields = $scope.filterCustomFields(fields);
+          console.log($scope.componentFields);
+      });
+      loadValues($scope.proposal.resourceSpaceId);
     }
   }
 }());

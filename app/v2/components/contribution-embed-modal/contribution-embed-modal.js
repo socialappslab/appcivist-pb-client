@@ -21,7 +21,8 @@
         format: '@',
         assemblyId: '=',
         campaignId: '=',
-        contributionId: '='
+        contributionId: '=',
+        resources: '='
       },
       controller: ContributionEmbedModal,
       controllerAs: 'vm',
@@ -38,6 +39,10 @@
       this.newDocUrl = "";
     }
 
+    $scope.$on("ToContributionEmbedModal:CampaignResourcesReady", (event, data) => {
+      $scope.resources = data.resources;
+    });
+
     this.embedPadGdoc = () => {
       if ((this.format === "gdoc" && this.newDocUrl != "")||(this.format!=="gdoc")) {
         let url = this.newDocUrl;
@@ -49,7 +54,7 @@
         let payload = {
           "gdocLink": url,
           "etherpadServerUrl": url,
-          "etherpadServerApiKey": 'demoapikeythisisatest'
+          "etherpadServerApiKey": this.etherpadApiKey
         }/*
         if (this.format == 'gdoc') payload = { gdocLink: url };
         else payload = { etherpadServerUrl: url };*/
@@ -67,5 +72,20 @@
       }
     }
 
+    this.isTemplate = (resource) => {
+      return resource.isTemplate;
+    }
+
+    this.gDocCopyUrl = (docUrl) => {
+      let url = docUrl;
+      let regex = /\b\/edit/i;
+      let match = url.match(regex);
+      if (match != null) {
+        url = url.substr(0, match.index)+"/copy";
+      } else {
+        url = url+"/copy";
+      }
+      return url;
+    }
   }
 }());

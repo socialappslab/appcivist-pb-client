@@ -33,6 +33,9 @@
               <p><a data-toggle></a>
                 <i class="fa fa-info"></i>&nbsp;&nbsp;
                 <a data-toggle="modal" data-target="#learnMoreModal"><span>{{'Read more'|translate}}</span></a>
+                &nbsp;&nbsp;<a data-toggle="modal" data-target="#themes-keywords">
+                  <i class="fa fa-tags"></i><span>{{'Themes & Keywords'|translate}}</span>
+                </a>
               </p>
             </div>
 
@@ -66,11 +69,6 @@
                 <li class="overlay_button">
                   <a data-toggle="modal" data-target="#analytics">
                     <i class="fa fa-bar-chart fa-lg"></i><span>{{'Analytics'|translate}}</span><span class="number"></span>
-                  </a>
-                </li>
-                <li class="overlay_button">
-                  <a data-toggle="modal" data-target="#themes-keywords">
-                    <i class="fa fa-tags fa-lg"></i><span>{{'Themes & Keywords'|translate}}</span><span class="number"></span>
                   </a>
                 </li>
               </ul>
@@ -110,21 +108,21 @@
       <section class="proposals_and_ideas">
         <!--Campaign Search and filters-->
         <div class="campaign__filters">
-          <h2 class="heading--header no-padding col-xs-12 col-lg-9 col-md-9 col-sm-8">
+          <h2 class="heading--header no-padding col-xs-12 col-lg-5 col-md-5 col-sm-5">
             {{filters.mode === 'idea' ? 'Ideas' : 'Proposals' | translate}}
           </h2>
-          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
-             ng-if="newIdeasEnabled && !newProposalsEnabled"
+          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
+             ng-if="newIdeasEnabled"
              ng-click="openModal('ideaFormModal')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Idea' | translate}}
           </a>
-          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"
-             ng-if="newProposalsEnabled && !displayJoinWorkingGroup && !newIdeasEnabled"
+          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
+             ng-if="newProposalsEnabled && !displayJoinWorkingGroup"
              ng-click="openModal('proposalFormModal')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
           </a>
           <a class="primary__button right join__working_group"
-             ng-if="newProposalsEnabled && displayJoinWorkingGroup && !newIdeasEnabled" data-toggle="modal" data-target="#workingGroups">
+             ng-if="newProposalsEnabled && displayJoinWorkingGroup" data-toggle="modal" data-target="#workingGroups">
             <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
           </a>
         </div>
@@ -139,89 +137,76 @@
                                    dry-run="false"
                                    current-component="currentComponent"></proposals-ideas-searchbox>
 
-        <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
-          <section class="list--proposals">
-            <header class="proposals__header">
-              <div class="dash_insights">
-                <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFTS || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFTS || 0}} <small>({{'Draft' | translate}})</small></span>
-              </div>
-            </header>
-            <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
-              <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
-                                 is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
-                                 components="components" show-voting-buttons="showVotingButtons" filters="filters"
-                                 ballot-paper="ballotPaper" ballot-tokens="ballotTokens" ng-if="showPagination">
-              </pagination-widget>
-            </div>
-          </section>
-
-          <!-- Comments section -->
-          <section class="list--ideas" ng-if="commentsSectionExpanded" ng-class="{hide: !commentsSectionExpanded}" ng-if="showComments">
-            <header class="comments__header" style="padding-left: 30px;">
-              <a ng-if="commentsSectionExpanded" ng-click="toggleHideCommentsSection()" class="comments__show_ideas"
-                href=""><i class="fa fa-comments-o"></i>{{'Hide Comments'|translate}}</a>&nbsp;&nbsp;
-            </header>
-
-            <div class="list__cards container__comments" data-eq-pts="small: 768, medium: 1024, large: 1500">
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
-                <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate}} ({{membersCommentCounter.value}})</a></li>
-                <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate}} ({{publicCommentCounter.value}})</a></li>
-              </ul>
-              <div class="tab-content">
-                <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="userIsMember" space-id="spaceID"
-                                    endpoint-id="campaignID"
-                                    endpoint="campaign"
-                                    is-anonymous="isAnonymous"></discussion-panel>
+        <div class="campaign_cards">
+          <div ng-class="{'col-lg-8 col-md-12': commentsSectionExpanded}">
+            <section class="list--proposals">
+              <header class="proposals__header">
+                <!-- Statistics/Insights summary section-->
+                <div class="dash_insights">
+                  <span ng-if="!commentsSectionExpanded"><a ng-click="toggleCommentsSection()">Show comments</a></span>
+                  <span ng-if="commentsSectionExpanded"><a ng-click="toggleCommentsSection()">Hide comments</a></span>
+                  <span ng-if="currentComponentType!=='IDEAS'">
+                    <strong>{{'Proposals' | translate}}:</strong>
+                    {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}}
+                    <small>({{'Published' | translate}})</small>,
+                    {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}}
+                    <small>({{'Drafts' | translate}})</small>
+                    &nbsp;&ndash;&nbsp;
+                  </span>
+                  <span>
+                    <strong>{{'Ideas' | translate}}:</strong>
+                    {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}}
+                    <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}}
+                    <small>({{'Draft' | translate}})</small>
+                </span>
                 </div>
-                <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="!isAnonymous" space-id="campaign.forumSpaceID"
-                    endpoint-id="$parent.campaignID" endpoint="campaign" public-board="true"
-                                    is-anonymous="isAnonymous"></discussion-panel>
-                  <discussion-panel style="padding-left: 0px !important;" ng-if="isAnonymous" space-id="campaign.frsUUID"
-                    endpoint-id="campaign.uuid" endpoint="campaign" public-board="true"
-                                    is-anonymous="isAnonymous"></discussion-panel>
+              </header>
+              <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
+                <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
+                                    is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
+                                    components="components" show-voting-buttons="showVotingButtons" filters="filters"
+                                    ballot-paper="ballotPaper" ballot-tokens="ballotTokens" ng-if="showPagination">
+                </pagination-widget>
+              </div>
+            </section>
+          </div>
+          <div ng-class="{'col-lg-4 col-md-12': commentsSectionExpanded}" ng-if="commentsSectionExpanded">
+            <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
+            <section class="comments__section">
+              <div class="row comments-header">
+                <div class="col-xs-4 text-left">
+                  <strong>Comments ({{commentType == 'members' ? membersCommentCounter.value : publicCommentCounter.value}})</strong>
+                </div>
+                <div class="col-xs-8 text-right">
+                  {{'View comments by'|translate}}:
+                  <select name="comment-types" ng-model="commentType">
+                    <option value="public">{{'Public'|translate}}</option>
+                    <option value="members" ng-if="userIsMember">{{'Members only'|translate}}</option>
+                  </select>
                 </div>
               </div>
-            </div>
-          </section>
+              <div class="row">
+                <div class="tab-pane" ng-if="userIsMember && commentType === 'members'">
+                    <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
+                                      endpoint-id="campaignID" endpoint="campaign">
+                    </discussion-panel>
+                </div>
+                <div class="tab-pane" ng-if="commentType === 'public'">
+                    <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID"
+                                      endpoint-id="$parent.campaignID" endpoint="campaign"
+                                      public-board="true" is-anonymous="isAnonymous">
+                    </discussion-panel>
+                    <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID"
+                                      endpoint-id="campaign.uuid" endpoint="campaign"
+                                      public-board="true" is-anonymous="isAnonymous">
+                    </discussion-panel>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </section>
     </article>
-
-    <!-- Conversation tabs: Members (only registered members), Public (including comments received from public site -->
-    <ul class="hidden-lg nav nav-tabs custom-ul" style="padding-top: 0px; padding-bottom: 0px;">
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember">
-        <a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">
-          {{ 'Members Conversations' | translate}} ({{membersCommentCounter.value}})
-        </a>
-      </li>
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}">
-        <a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">
-          {{'Public Conversations' | translate}} ({{publicCommentCounter.value}})
-        </a>
-      </li>
-    </ul>
-
-    <!-- Discussions: list of comments under the Conversation Tabs -->
-    <div class="hidden-lg tab-content">
-      <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-        <discussion-panel class="col-*-12" ng-if="userIsMember" space-id="spaceID"
-                          endpoint-id="campaignID" endpoint="campaign">
-        </discussion-panel>
-      </div>
-      <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-        <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="campaign.forumSpaceID"
-                          endpoint-id="$parent.campaignID" endpoint="campaign"
-                          public-board="true" is-anonymous="isAnonymous">
-        </discussion-panel>
-        <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="campaign.frsUUID"
-                          endpoint-id="campaign.uuid" endpoint="campaign"
-                          public-board="true" is-anonymous="isAnonymous">
-        </discussion-panel>
-      </div>
-    </div>
 
     <!-- New Proposal Form Modal -->
     <script id="proposalFormModal" type="text/ng-template">
@@ -302,28 +287,28 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{campaign.title}}</h3>
           <p>{{ 'Documents' | translate }}</p>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"
-                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"
-                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
+          <add-resource-form space-id="spaceID" resources="resources" include-add-buttons="isCoordinator" ng-if="isCoordinator"></add-resource-form>
+          <!--<button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"-->
+                  <!--ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>-->
+          <!--<button class="btn btn-default follow-contribution modal-button" ng-if="isCoordinator && !openAddAttachment"-->
+                  <!--ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>-->
         </div>
         <div class="modal-body">
           <!--
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
-          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
-          <div class="noContent" ng-if="!documents || documents.length === 0">
-            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
-          </div>
-          <ul class="workingGroupList" ng-if="documents && documents.length > 0">
-            <li ng-repeat="resource in documents">
+          <ul class="workingGroupList">
+            <li ng-repeat="resource in resources | filter:resourceIsDocument as documents">
               <a class="workingGroupLink" target="_blank"
                  ng-href="{{resource.url}}"><span>{{resource.title}}</span>
-                <!--<span class="number"><i class="fa fa-users"></i>32</span>-->
               </a>
+              <span class="number clickable" ng-click="deleteResource(resource)" ng-if="isCoordinator" ><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>
           </ul>
+          <div class="noContent" ng-if="documents.length === 0">
+            <h4>{{ 'There are no documents in this campaign' | translate }}</h4>
+          </div>
         </div>
         <div class="modal-footer text-left">
           <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>
@@ -346,13 +331,13 @@
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
-          <div class="noContent" ng-if="!media || media.length === 0">
+          <div class="noContent" ng-if="media.length === 0">
             <h4>{{ 'There are no multimedia resources in this campaign' | translate }}</h4>
           </div>
 
           <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false">
             <div class="carousel-inner" role="listbox">
-              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in media track by $index">
+              <div class="item {{$index===0 ? 'active' : ''}}" ng-repeat="resource in resources | filter:resourceIsMedia as media track by $index">
                 <img ng-if="resource.resourceType === 'PICTURE'" ng-src="{{resource.url}}" alt="{{resource.name}}">
                 <!-- TODO: sanitize video URLs somewhere else -->
                 <iframe ng-if="resource.resourceType === 'VIDEO'" width="75%" height="315"
@@ -367,16 +352,16 @@
               </div>
             </div>
             <!-- Controls -->
-            <a class="left carousel-control" data-target="#media-carousel" role="button" data-slide="prev">
+            <a class="left carousel-control" data-target="#media-carousel" role="button" data-slide="prev" ng-if="media.length != 0">
               <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
               <span class="sr-only">{{'Previous'|translate}}</span>
             </a>
-            <a class="right carousel-control" data-target="#media-carousel" role="button" data-slide="next">
+            <a class="right carousel-control" data-target="#media-carousel" role="button" data-slide="next" ng-if="media.length != 0">
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               <span class="sr-only">{{'Next'|translate}}</span>
             </a>
-            <ol class="carousel-indicators">
-              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-repeat="resource in media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
+            <ol class="carousel-indicators" ng-if="media.length != 0">
+              <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-repeat="resource in resources | filter:resourceIsMedia as media track by $index" class="{{$index===0 ? 'active' : ''}}"></li>
             </ol>
           </div>
         </div>
@@ -620,12 +605,12 @@
           <h4>{{'Themes' | translate}}</h4>
           <ul>
               <li class="theme" ng-repeat="theme in themes" ng-click="loadThemeKeywordDescription(theme.title, theme.description)">{{theme.title}}</li>
-            </ul>
+          </ul>
+          <div id="description"></div>
           <h4 style="margin-top: 20px;">{{'Keywords' | translate}}</h4>
           <ul>
             <li class="keyword" ng-repeat="keyword in keywords">{{keyword.title}}</li>
           </ul>
-          <div id="description"></div>
         </div>
         <div class="modal-footer text-left">
           <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{campaign.title}}</a>

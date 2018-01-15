@@ -26,8 +26,9 @@
   BreadcrumbCtrl.$inject = [
     '$state', '$scope'
   ];
-
+  
   function BreadcrumbCtrl($state, $scope) {
+    /*
     $scope.$watch('vm.label', newLabel => {
       if (!newLabel) {
         return;
@@ -36,5 +37,6 @@
       var element = angular.element($('#breadcrumbLastLabel'));
       element.html($state.current.ncyBreadcrumb.label);
     });
+    */
   }
 }());

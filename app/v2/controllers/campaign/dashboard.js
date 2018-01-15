@@ -22,12 +22,13 @@
     '$compile',
     '$state',
     'Voting',
-    '$sce'
+    '$sce',
+    '$breadcrumb'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce) {
+    $state, Voting, $sce, $breadcrumb) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -58,6 +59,7 @@
       $scope.filters = {};
       $scope.vmPaginated = {};
       $scope.configsLoaded = false;
+      $scope.commentType = 'public';
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -100,6 +102,7 @@
         $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.campaignID;
 
         if ($scope.user && $scope.user.language) {
+          $scope.commentType = 'members';
           $translate.use($scope.user.language);
         }
       }
@@ -151,8 +154,8 @@
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
-        loadAssembly();
       }
+      loadAssembly();
       loadCampaignResources();
       loadCampaigns();
 
@@ -208,7 +211,30 @@
       $scope.assembly = localStorageService.get('currentAssembly');
       // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
       // get the assembly from backend
-      verifyMembership($scope.assembly);
+      if (($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) || !$scope.assembly ){
+        if ($scope.isAnonymous) {
+          $scope.assemblyID = $stateParams.auuid;
+          var assemblyRes = Assemblies.assemblyByUUID($scope.assemblyID).get();
+        } else {
+          $scope.assemblyID = $stateParams.aid;
+          var assemblyRes = Assemblies.assembly($scope.assemblyID).get();
+        }
+
+        assemblyRes.$promise.then(
+          assembly => {
+            $scope.assembly = assembly;
+            $scope.assemblyLabel = $scope.assembly.name;
+            localStorageService.set("currentAssembly", $scope.assembly);
+            verifyMembership($scope.assembly);
+          },
+          error => {
+            console.log("Error getting assembly: " + error.statusMessage);
+          }
+        );
+      } else {
+        $scope.assemblyLabel = $scope.assembly.name;
+        verifyMembership($scope.assembly);
+      }
     }
 
     function loadAssemblyPublicProfile() {
@@ -274,6 +300,8 @@
               'background-image': 'url("../images/vallejo_header.jpg")',
               'background-position': 'center center',
             };
+
+          $scope.campaignLabel = $scope.campaign.title;
 
           $scope.loadCampaignBrief();
           localStorageService.set("currentCampaign", $scope.campaign);
@@ -726,6 +754,7 @@
 
     function toggleCommentsSection() {
       $scope.commentsSectionExpanded = !$scope.commentsSectionExpanded;
+      $rootScope.$broadcast('eqResize', true); // resize cards to make sure they are rendered well
     }
 
     function toggleHideCommentsSection() {

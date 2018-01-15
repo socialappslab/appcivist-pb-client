@@ -45,6 +45,10 @@
           scope.mergedThemes = mergeThemes(scope.contribution);
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
 
+          if (scope.contribution.source !== undefined && scope.contribution.source == 'social_ideation_facebook') {
+            scope.source_url = scope.contribution.source_url;
+          }
+
           // Se contribution card header cover style
 
           // Prepare first WG's cover and color

@@ -211,6 +211,19 @@
         <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
       </section>
 
+      <section id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
+        <div class="row">
+          <div class="col-xs-12" style="padding: 1rem 2rem 0">
+            <!-- Custom Fields -->
+            <div class="field__container">
+              <h4 class="intro bold">{{'Custom information' | translate}}</h4>
+              <custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
+              <custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="comments__section">
         <div class="row comments-header">
           <div class="col-xs-4 text-left">
@@ -475,6 +488,34 @@
                   <span class="glyphicon glyphicon-star" ng-class="i" ng-repeat="i in createArray(benefictAvg) track by $index"></span>
                 </div>
               </div>
+            </div>
+            <div class="informal_score stats2">
+              <ul>
+                <li>
+                  <i class="fa fa-lg fa-thumbs-up"></i>
+                  {{upSum}}
+                </li>
+                <li>
+                  <i class="fa fa-lg fa-thumbs-down"></i>
+                  {{downSum}}
+                </li>
+                <li>
+                  <i class="fa fa-lg" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
+                  {{proposal.informalScore}}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="feedback-list">
+            <div class="feedback" ng-repeat="f in userFeedbackArray">
+              <div class="labels">
+                <div class="icon" ng-if="f.up"><i class="fa fa-lg fa-thumbs-up"></i></div>
+                <div class="icon" ng-if="f.down"><i class="fa fa-lg fa-thumbs-down"></i></div>
+                <div class="label label-1" ng-if="f.status">{{ f.status }}</div>
+                <div class="label label-2" ng-if="f.type">{{ f.type }}</div>
+              </div>
+              <member-card user="f.user"></member-card>
+              <div class="textual" ng-if="f.textualFeedback" ng-bind-html="f.textualFeedback"></div>
             </div>
           </div>
         </div>

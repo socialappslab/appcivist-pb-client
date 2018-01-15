@@ -5,6 +5,9 @@
             style="height: 192px;" ng-mouseenter="cm.isHover = false"
             ng-style="coverPhotoStyle"
             ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
+      <div class="card__heading_bookmark facebook-bookmark" ng-if="source_url">
+        <a href="{{source_url}}" target="_blank"><i class="fa fa-lg fa-bookmark"></i></a>
+      </div>
       <div class="card__heading_bookmark" ng-if="contribution.pinned">
         <i class="fa fa-bookmark"></i>
       </div>
@@ -89,7 +92,9 @@
     <a ng-if="contribution.stats.flags && isCoordinator" class="github-fork-ribbon rigth-top" style="z-index: 1;" title="{{'Moderation pending' | translate}}"></a>
     <header class="card__header {{contribution.cover ? 'card__header__with_background' : ''}}"
             ng-style="coverPhotoStyle" ng-mouseenter="cm.isHover = false">
-
+      <div class="card__heading_bookmark facebook-bookmark ideas" ng-if="source_url">
+        <a href="{{source_url}}" target="_blank"><i class="fa fa-lg fa-bookmark"></i></a>
+      </div>
       <div class="col-lg-9">
         <h3 class="{{contribution.cover ? 'white-text' : ''}}">
           <!--<a ng-click="myObject.seeDetail()">{{contribution.title}}-->

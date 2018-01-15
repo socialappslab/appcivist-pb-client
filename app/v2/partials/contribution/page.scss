@@ -149,6 +149,15 @@ form>fieldset {
   color: #11493b;
   font-size: .875em;
   font-family: Lato, sans-serif;
+  ul {
+    padding-left: 0;
+    list-style-type: none;
+    text-align: center;
+    li {
+      display: inline-block;
+      margin: 2rem 1rem 2rem;
+    }
+  }
 }
 
 .star-filled {
@@ -156,9 +165,40 @@ form>fieldset {
 }
 
 .star-empty {
-  color: #757575;
+  color: #CCC;
 }
 
 .pad-html {
   background-color: #ececec;
+}
+
+.feedback-list {
+  clear: both;
+  margin-top: 6rem;
+  .feedback {
+    border-radius: 5px;
+    border: 2px solid #11493b;
+    padding: 1rem;
+    margin-bottom: 1rem; 
+    font-size: 0.9rem;
+    .textual { margin-top: 2rem; }
+    .labels {
+      float: right;
+      margin-top: -10px;
+      margin-right: -10px;
+      .icon {
+        display: inline-block;
+        i { color: #11493b; }
+      }
+      .label {
+        padding: 0.5rem 1rem;
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: bold;
+        color: white;
+        &.label-1 { background-color: red; }
+        &.label-2 { background-color: green; }
+      }
+    }
+  }
 }

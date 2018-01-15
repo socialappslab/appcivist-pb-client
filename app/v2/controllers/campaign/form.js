@@ -5,7 +5,7 @@
 
   CampaignFormCtrl.$inject = [
     '$scope', '$sce', '$http', '$templateCache', '$routeParams', '$resource', '$location',
-    '$timeout', 'localStorageService', 'Campaigns', 'Assemblies', 'Components',
+    '$timeout', 'localStorageService', 'Campaigns', 'Assemblies', 'Components', 'Space',
     'Contributions', 'moment', 'modelFormatConfig', '$translate', 'Notify', '$state',
      'configService', '$stateParams'
   ];
@@ -23,7 +23,7 @@
    *   style
    */
   function CampaignFormCtrl($scope, $sce, $http, $templateCache, $routeParams, $resource,
-    $location, $timeout, localStorageService, Campaigns, Assemblies, Components,
+    $location, $timeout, localStorageService, Campaigns, Assemblies, Components, Space,
     Contributions, moment, modelFormatConfig, $translate, Notify, $state,
     configService, $stateParams) {
 
@@ -77,7 +77,7 @@
       $scope.addTheme = function(ts) {
         var themes = ts.split(',');
         themes.forEach(function(theme) {
-          var addedTheme = { title: theme.trim() };
+          var addedTheme = { title: theme.trim(), type: 'OFFICIAL_PRE_DEFINED' };
           $scope.newCampaign.themes.push(addedTheme);
         });
         $scope.themes = "";
@@ -297,8 +297,22 @@
 
       if (!$scope.assembly) {
         return;
+      } else if ($scope.assembly.assemblyId !== $stateParams.aid) {
+        $scope.assemblyID = $stateParams.aid;
+        var assemblyRes = Assemblies.assembly($scope.assemblyID).get();
+
+        assemblyRes.$promise.then(
+          assembly => {
+            $scope.assembly = assembly;
+            localStorageService.set("currentAssembly", $scope.assembly);
+          },
+          error => {
+            console.log("Error getting assembly: "+error.statusMessage);
+          }
+        );
+      } else {
+        $scope.assemblyID = $scope.assembly.assemblyId;
       }
-      $scope.assemblyID = $scope.assembly.assemblyId;
       $scope.currentStep = 1;
       $scope.prevStep = 2;
 
@@ -402,7 +416,8 @@
       var inProgressNewCampaign = localStorageService.get('newCampaign');
       $scope.newCampaign = inProgressNewCampaign ? inProgressNewCampaign : Campaigns.defaultNewCampaign();
       $scope.newCampaign.template = $scope.templateOptions[1];
-      $scope.newCampaign.components = inProgressNewCampaign ? inProgressNewCampaign.proposalComponents : _.cloneDeep(Components.defaultComponents());;
+      $scope.newCampaign.components = inProgressNewCampaign && inProgressNewCampaign.components ? inProgressNewCampaign.components : _.cloneDeep(Components.defaultComponents());;
+      $scope.newCampaign.proposalComponents = $scope.newCampaign.components;
       $scope.newCampaign.enableBudget = 'yes';
       $scope.newCampaign.supportingComponents = Components.defaultSupportingComponents();
       $scope.newCampaign.linkedComponents = [];
@@ -521,6 +536,7 @@
         newCampaign.goal = $scope.newCampaign.goal;
         newCampaign.themes = $scope.newCampaign.themes;
         newCampaign.configs = $scope.newCampaign.configs;
+        newCampaign.transientComponents = $scope.newCampaign.components;
         // Setup existing themes
         newCampaign.existingThemes = [];
         addToExistingThemes(newCampaign.existingThemes, $scope.assemblyThemes);
@@ -529,6 +545,7 @@
           addToExistingThemes(newCampaign.existingThemes, $scope.campaignThemes);
         }
       }
+
       const requiredFields = newCampaign.title != undefined && newCampaign.goal != undefined;
 
       if (requiredFields) {
@@ -606,15 +623,19 @@
           let campaignRes;
 
           if (!$scope.isEdit) {
+            payload.status = 'PUBLISHED'; // TODO: remove when the step by step creation is implemented
             campaignRes = Campaigns.newCampaign($scope.assemblyID).save(payload);
           } else {
             campaignRes = Campaigns.campaign($scope.assemblyID, $scope.newCampaign.campaignId).update(payload);
           }
-          campaignRes.$promise.then(data => {
-            $scope.newCampaign = data;
-            localStorageService.remove('newCampaign');
-            $location.url('/v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.newCampaign.campaignId);
-          }, error => Notify.show('Error. Could not save the campaign', 'error'));
+          campaignRes.$promise.then(
+            data => {
+              $scope.newCampaign = data;
+              localStorageService.remove('newCampaign');
+              $location.url('/v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.newCampaign.campaignId);
+              // TODO: use separated endpoints for themes, components and configs
+            },
+              error => Notify.show('Could not save the campaign', 'error'));
         } else {
           $scope.errors.push(payload.error);
           Notify.show('Error. Could not save the campaign', 'error');

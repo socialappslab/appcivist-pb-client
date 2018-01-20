@@ -25,7 +25,7 @@
         isTopicGroup: '=',
         ballotPaper: '=',
         ballotTokens: '=',
-        onSelected: '&'
+        selected: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
@@ -36,6 +36,7 @@
           scope.showContextualMenu = false;
           scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
           scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
+          scope.showSelected = showSelected.bind(scope);
           scope.ideaExcerptStyle = scope.showIdeaBody ? { height: '120px' } : { height: '110px' };
           scope.ideaHeaderStyle = scope.showIdeaBody ? { height: '100px' } : { height: '150px' };
           setContributionType(scope);
@@ -184,6 +185,10 @@
           }
 
           return scope.trustedHtmlText;
+        }
+
+        function showSelected () {
+          console.log(scope.selected);
         }
 
         function formatDate(date) {

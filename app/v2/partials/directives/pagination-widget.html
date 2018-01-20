@@ -8,7 +8,7 @@
       <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
         total-items="totalContributions" current-page="pagination.current" contribution="proposal" show-voting-buttons="showVotingButtons"
         on-finish-render="eqResize" is-coordinator="isCoordinator" is-anonymous="isAnonymous" is-topic-group="isTopicGroup"
-        campaign="campaign" components="components" ballot-paper="ballotPaper" ballot-tokens="ballotTokens" on-selected="onCardSelected('Hello')">
+        campaign="campaign" components="components" ballot-paper="ballotPaper" ballot-tokens="ballotTokens" selected="selected">
       </contribution-card>
       <!-- TODO: it is always problematic to break strings in translation, let's replace this by a single translation string -->
       <p ng-if="contributions.length === 0" class="card card__message">

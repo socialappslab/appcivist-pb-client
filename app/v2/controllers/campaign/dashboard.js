@@ -60,6 +60,7 @@
       $scope.vmPaginated = {};
       $scope.configsLoaded = false;
       $scope.commentType = 'public';
+      $scope.selectedCards = [];
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;

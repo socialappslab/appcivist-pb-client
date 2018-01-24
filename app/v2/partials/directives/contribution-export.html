@@ -4,6 +4,19 @@
             <h2 class="modal__title">{{'Export proposal' | translate}}</h2>
         </header>
         <div class="modal-body">
+            <div class="field__container">
+                <p class="intro bold">Fields to export</p>
+                <label for="title"><input id="title" type="checkbox" />{{ 'Title of Proposal' | translate }}</label>
+                <label for="text"><input id="text" type="checkbox" />{{ 'Description' | translate }}</label>
+            </div>
+            <div class="field__container">
+                <p class="intro bold">Export format</p>
+                <select id="exportFormat">
+                    <option value="csv">CSV</option>
+                    <option value="pdf">PDF</option>
+                    <option value="rtf">RTF</option>
+                </select>
+            </div>
             <fieldset>
                 <a class="button__modal_submit" ng-click="vm.submit()">{{'Export' | translate}}</a>
             </fieldset>

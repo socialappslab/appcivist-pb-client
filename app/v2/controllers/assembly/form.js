@@ -262,7 +262,7 @@
           } else {
             $scope.setNewAssemblyCoverIcon(response.data.url, response.data.name);
           }
-        }, error => Notify.show('Error while uploading file to the server', 'error'));
+        }, error => Notify.show(error.statusMessage, 'error'));
       }
 
       $scope.shortnameChanged = function(shortname) {

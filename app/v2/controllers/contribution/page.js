@@ -223,7 +223,7 @@
           $scope.totalComments = $scope.proposal.commentCount + $scope.proposal.forumCommentCount;
         },
         function (error) {
-          Notify.show('Error when updating user feedback', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     };
@@ -245,7 +245,7 @@
             iframedoc.body.innerHTML = $scope.padHTML.text;
           });
         },
-        error => Notify.show('Error while trying to load proposals etherpad text', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       )
     }
 
@@ -322,7 +322,7 @@
 
               scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
             }, function (error) {
-              Notify.show('Error while trying to fetch campaign components', 'error');
+              Notify.show(error.statusMessage, 'error');
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
           } else {
@@ -335,7 +335,7 @@
           $scope.loadCampaignResources();
         },
         function (error) {
-          Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
+          Notify.show('Error occured when trying to load contribution: ' + error.statusMessage, 'error');
         }
       );
     }
@@ -492,7 +492,7 @@
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show('Error loading contributions from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -546,7 +546,7 @@
         }
         vm.createAttachmentResource(resource, true);
       }, function (error) {
-        Notify.show('Error while uploading file to the server', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -651,7 +651,7 @@
         Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
         vm.stopSpinner();
       }, function (error) {
-        Notify.show('Error while uploading file to the server', 'error');
+        Notify.show(error.statusMessage, 'error');
         vm.stopSpinner();
       });
     }
@@ -697,7 +697,7 @@
           loadCampaignConfig();
           loadCustomFields();
         }, function (error) {
-          Notify.show('Error while trying to fetch campaign', 'error');
+          Notify.show(error.statusMessage, 'error');
         });
       }
     }
@@ -715,7 +715,7 @@
         loadDocuments();
         loadMedia();
       }, function(error) {
-        Notify.show('Error while trying to fetch resources', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -753,7 +753,7 @@
         loadBallotPaper();
       }, function (error) {
         loadBallotPaper();
-        Notify.show('Error while trying to fetch campaign config', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -833,7 +833,7 @@
           vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));
         },
         error => {
-          Notify.show('Error while trying to fetch themes from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
       console.log(rsp);
@@ -862,7 +862,7 @@
       Contributions.deleteTheme(this.proposal.uuid, theme.themeId).then(
         response => Notify.show('Theme deleted successfully', 'success'),
         error => {
-          Notify.show('Error while trying to delete theme from the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -882,7 +882,7 @@
       Contributions.deleteAuthor(this.proposal.uuid, author.uuid).then(
         response => Notify.show('Author deleted successfully', 'success'),
         error => {
-          Notify.show('Error while trying to delete author from the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -895,7 +895,7 @@
         response => Notify.show('Theme added successfully', 'success'),
         error => {
           this.deleteTheme(theme, true);
-          Notify.show('Error while trying to add theme to the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -909,7 +909,7 @@
           this.currentAdd.items = items;
         },
         function (error) {
-          Notify.show('Error while trying to fetch assembly members from the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -921,7 +921,7 @@
         response => Notify.show('Author added successfully', 'success'),
         error => {
           this.deleteAuthor(author, true);
-          Notify.show('Error while trying to add author to the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -945,7 +945,7 @@
           $scope.fieldsValues = fieldsValues;
         },
         error => {
-          Notify.show('Error while trying to get field values from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -969,7 +969,7 @@
           Notify.show('Attachment deleted successfully', 'success');
         } ,
         error => {
-          Notify.show('Error while trying to delete attachment from the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -982,7 +982,7 @@
       let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
       rsp.then(
         feedbacks => this.userFeedbackArray = feedbacks,
-        error => Notify.show('Error while trying to fetch contribution feedback', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       );
     }
 
@@ -1019,7 +1019,7 @@
           response => {
             console.log(response)
           },
-          error => Notify.show('Error while trying to embed the document', 'error')
+          error => Notify.show(error.statusMessage, 'error')
         )
       } else {
         Notify.show('Error while trying to embed the document', 'error')
@@ -1054,7 +1054,7 @@
       return rsp.then(
         fields => fields,
         error => {
-          Notify.show('Error while trying to get fields from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

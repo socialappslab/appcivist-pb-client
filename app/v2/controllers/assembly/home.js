@@ -126,7 +126,7 @@
           },
 
           error => {
-            Notify.show('Error while trying to fetch assembly information from the server', 'error');
+            Notify.show(error.statusMessage, 'error');
           }
         )
       }
@@ -179,7 +179,7 @@
           angular.forEach(this.pastCampaigns, c => this.fetchWorkingGroups(this.assemblyId, c));
         },
         error => {
-          Notify.show('Error while trying to fetch campaigns from the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       )
     }
@@ -201,7 +201,7 @@
         error => {
           // TODO: find out why the Pace loader keeps showing after the whole page loaded, in the meantime, the following is a patch
           window.Pace.stop();
-          Notify.show('Error while trying to fetch working groups from the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -218,7 +218,7 @@
           this.organizations = organizations;
         },
         error => {
-          Notify.show('Error while trying to fetch assembly organizations from the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -235,7 +235,7 @@
           this.resources = resources;
         },
         error => {
-          Notify.show('Error while trying to fetch assembly resources from the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -259,7 +259,7 @@
           this.usersCanSignUp = configs['appcivist.assembly.disable-new-memberships'] === 'false';
         },
         error => {
-          Notify.show('Error while trying to fetch assembly configurations from the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

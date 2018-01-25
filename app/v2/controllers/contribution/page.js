@@ -995,7 +995,7 @@
       let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
       rsp2.then(
         data => {
-          this.userFeedbackArray = data.filter(f => f.textualFeedback.length > 0)
+          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback.length > 0))
           if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
             this.userFeedbackArray = data.filter(f => ((f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT') && f.textualFeedback.length > 0))
           }
@@ -1076,11 +1076,9 @@
 
       loadFields($scope.campaignResourceSpaceId).then(fields => {
           $scope.campaignFields = $scope.filterCustomFields(fields);
-          console.log($scope.campaignFields);
       });
       loadFields($scope.componentResourceSpaceId).then(fields => {
           $scope.componentFields = $scope.filterCustomFields(fields);
-          console.log($scope.componentFields);
       });
       loadValues($scope.proposal.resourceSpaceId);
     }

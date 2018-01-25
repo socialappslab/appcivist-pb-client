@@ -1,22 +1,33 @@
 <div class="user__logged_in user__card person">
-  <a class="avatar_link">
-    <figure class="photo">
-      <img ng-if="!currentUser || !currentUser.profilePic" src="../assets/images/avatar.png" alt="Avatar" />
-      <img ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlAsString}}" alt="Avatar" />
-    </figure>
-  </a>
-  <div class="fn" style="font-weight: 600; font-style: italic;">{{currentUser.name}}</div>
-  <div class="account__actions" ng-if="actionBar && !commentsSection">
-    <a href="/#/v2/user/{{currentUser.userId}}/profile">{{'My Settings' | translate}}</a>
-    <a href="" ng-click="signout()">{{'Log Out' | translate}}</a>
+    <a class="avatar_link" ng-if="currentUser.source != 'social_ideation_facebook'">
+      <figure class="photo">
+        <img ng-if="!currentUser || !currentUser.profilePic" src="../assets/images/avatar.png" alt="Avatar" />
+        <img ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlAsString}}" alt="Avatar" />
+      </figure>
+    </a>
+    <a class="avatar_link" href="{{currentUser.source_url}}" ng-if="currentUser.source == 'social_ideation_facebook'">
+      <figure class="photo">
+        <div id="fblogo"><i class="fa fa-lg fa-facebook"></i></div>
+      </figure>
+    </a>
+    <div class="fn" style="font-weight: 600;">
+      {{currentUser.name}}
+      <span ng-if="commentsSection">
+        May 17, 2017
+      </span>
+    </div>
+    <div class="account__actions" ng-if="actionBar && !commentsSection">
+      <a href="/#/v2/user/{{currentUser.userId}}/profile">{{'My Settings' | translate}}</a>
+      <a href="" ng-click="signout()">{{'Log Out' | translate}}</a>
+    </div>
+    <a ng-if="commentsSection" class="menu__contextual" >
+      <svg class="icon__more" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <path class="svg__shape" d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
+      </svg>
+    </a>
+    <ul class="action__menu">
+      <li><a >Message this user</a></li>
+      <li><a >Remove this user</a></li>
+    </ul>
   </div>
-  <a ng-if="commentsSection" class="menu__contextual" >
-    <svg class="icon__more" width="4px" height="16px" viewBox="0 0 4 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <path class="svg__shape" d="M12,8 C13.1,8 14,7.1 14,6 C14,4.9 13.1,4 12,4 C10.9,4 10,4.9 10,6 C10,7.1 10.9,8 12,8 L12,8 Z M12,10 C10.9,10 10,10.9 10,12 C10,13.1 10.9,14 12,14 C13.1,14 14,13.1 14,12 C14,10.9 13.1,10 12,10 L12,10 Z M12,16 C10.9,16 10,16.9 10,18 C10,19.1 10.9,20 12,20 C13.1,20 14,19.1 14,18 C14,16.9 13.1,16 12,16 L12,16 Z"></path>
-    </svg>
-  </a>
-  <ul class="action__menu">
-    <li><a >Message this user</a></li>
-    <li><a >Remove this user</a></li>
-  </ul>
-</div>
+  

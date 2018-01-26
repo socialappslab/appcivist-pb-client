@@ -682,6 +682,7 @@
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();
+        loadCustomFields();
       } else {
         var res;
         if ($scope.isAnonymous) {
@@ -952,6 +953,12 @@
       return rsp.then(
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
+          // if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
+          //   $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
+          //     map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
+          //     return map;
+          //   }, {});
+          // }
         },
         error => {
           Notify.show(error.statusMessage, 'error');
@@ -1069,7 +1076,7 @@
     }
 
     function filterCustomFields(fields) {
-      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type);
     }
 
     function loadCustomFields() {
@@ -1077,18 +1084,22 @@
       $scope.currentComponent = currentComponent;
       if ($scope.isAnonymous) {
         $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceUUID;
-        $scope.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+        $scope.componentResourceSpaceId = currentComponent ? currentComponent.resourceSpaceUUID : null;
       } else {
         $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceId;
-        $scope.componentResourceSpaceId = currentComponent.resourceSpaceId;
+        $scope.componentResourceSpaceId = currentComponent ? currentComponent.resourceSpaceId : null;
       }
 
-      loadFields($scope.campaignResourceSpaceId).then(fields => {
+      if ($scope.campaignResourceSpaceId) {
+        loadFields($scope.campaignResourceSpaceId).then(fields => {
           $scope.campaignFields = $scope.filterCustomFields(fields);
-      });
-      loadFields($scope.componentResourceSpaceId).then(fields => {
+        });
+      }
+      if ($scope.componentResourceSpaceId) {
+        loadFields($scope.componentResourceSpaceId).then(fields => {
           $scope.componentFields = $scope.filterCustomFields(fields);
-      });
+        });
+      }
       loadValues($scope.proposal.resourceSpaceId);
     }
   }

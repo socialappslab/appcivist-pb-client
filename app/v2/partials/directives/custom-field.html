@@ -31,15 +31,15 @@
     <div ng-if="vm.isSingleChoice">
       <div class="radio" ng-repeat="option in vm.definition.customFieldValueOptions track by $index">
         <label>
-          <input type="radio" ng-model="vm.model" 
-                 value="{{option.customFieldValueOptionId}}" 
+          <input type="radio" ng-model="vm.model"
+                 value="{{option.customFieldValueOptionId}}"
                  ng-click="vm.selectMultipleChoiceOption(vm.definition.customFieldValueOptions, option)">
           {{option.value}}
         </label>
         <!-- if valueOption is STRING_OPEN we show an input text -->
         <label ng-if="option.isStringOpen && option.showInputText">
-          <input type="text" 
-                 ng-model="vm.stringOpenSingleValue" 
+          <input type="text"
+                 ng-model="vm.stringOpenSingleValue"
                  placeholder="{{'Enter value' | translate}}...">
         </label>
       </div>
@@ -48,34 +48,35 @@
     <div ng-if="vm.isMultipleChoice">
       <div class="checkbox" ng-repeat="option in vm.definition.customFieldValueOptions track by $index">
         <label>
-          <input type="checkbox" 
-                 ng-model="vm.model[option.customFieldValueOptionId]" 
+          <input type="checkbox"
+                 ng-model="vm.model[option.customFieldValueOptionId]"
                  value="{{option.customFieldValueOptionId}}"
                  ng-click="vm.selectMultipleChoiceOption(vm.definition.customFieldValueOptions, option)">
           {{option.value}}
         </label>
          <!-- if valueOption is STRING_OPEN we show an input text -->
         <label ng-if="option.isStringOpen && option.showInputText">
-          <input type="text" 
-                 ng-model="vm.stringOpenMultipleValue[option.customFieldValueOptionId]" 
+          <input type="text"
+                 ng-model="vm.stringOpenMultipleValue[option.customFieldValueOptionId]"
                  placeholder="{{'Enter value' | translate}}...">
         </label>
       </div>
     </div>
+  </div>
 
-    <div class="field__container" ng-if="vm.isReadonly">
-      <label for="{{vm.getFieldName(vm.definition)}}">
+  <div class="field__container" ng-if="vm.isReadonly">
+    <h3 for="{{vm.getFieldName(vm.definition)}}">
       {{vm.definition.name}}
-    </label>
-      <p ng-if="!vm.isFile">{{vm.model}}</p>
+    </h3>
+    <p ng-if="!vm.isFile">{{vm.value}}</p>
 
-      <!-- TODO: multiple choice readonly version -->
+    <!-- TODO: multiple choice readonly version -->
 
-      <div ng-if="vm.isFile" class="file-filed">
-        <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
-          <img ng-if="vm.fileIsImage" alt="{{vm.model.name}}" ng-src="{{vm.model.url}}" class="image-circle image-circle-selected">
-          <a ng-if="!vm.fileIsImage" ng-href="{{vm.model.url}}">{{vm.model.name}}</a>
-        </div>
+    <div ng-if="vm.isFile" class="file-filed">
+      <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
+        <img ng-if="vm.fileIsImage" alt="{{vm.model.name}}" ng-src="{{vm.model.url}}" class="image-circle image-circle-selected">
+        <a ng-if="!vm.fileIsImage" ng-href="{{vm.model.url}}">{{vm.model.name}}</a>
       </div>
     </div>
+  </div>
 </fieldset>

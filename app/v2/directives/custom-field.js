@@ -63,7 +63,7 @@
 
       // watcher for updating internal model.
       $scope.$watchCollection('vm.value', value => {
-        if (!value) {
+        if (!value || !this.isEdition) {
           return;
         }
         this.isUpdatingModel = true;
@@ -92,7 +92,7 @@
      * @param {Object|String} value
      */
     function modelUpdateHandler(value) {
-      if (this.isUpdatingModel || !value || (!_.isNumber(value) && _.isEmpty(value))) {
+      if (!this.isEdition && (this.isUpdatingModel || !value || (!_.isNumber(value) && _.isEmpty(value)))) {
         return;
       }
       this.sync(value);

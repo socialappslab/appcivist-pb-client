@@ -143,7 +143,7 @@
       var feedback = Contributions.userFeedback(this.assemblyId, this.campaignId, this.contribution.contributionId).update(this.userFeedback);
       feedback.$promise.then(
         newStats => this.contribution.stats = newStats,
-        error => Notify.show('Error when updating user feedback', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       );
     };
 
@@ -152,7 +152,7 @@
       let res = Contributions.contributionSoftRemoval(this.assemblyId, this.contribution.contributionId).update(this.contribution);
       res.$promise.then(
         data => $window.location.reload(),
-        error => Notify.show('Error while publishing proposal', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       );
     }
 
@@ -160,7 +160,7 @@
       var rsp = Contributions.publishProposal(this.assemblyId, this.group.groupId, this.contribution.contributionId).update();
       rsp.$promise.then(
         () => $window.location.reload(),
-        () => Notify.show('Error while publishing proposal', 'error')
+        () => Notify.show(error.statusMessage, 'error')
       )
     }
 
@@ -189,7 +189,7 @@
           Notify.show('Subscribed successfully', 'success');
         },
         function () {
-          Notify.show('Error while trying to communicate with the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

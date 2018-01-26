@@ -21,6 +21,7 @@
     $scope.loadThemes = loadThemes.bind($scope);
     $scope.loadThemesOrAuthor = loadThemesOrAuthor.bind($scope);
     $scope.currentAddQueryChange = currentAddQueryChange.bind($scope);
+    $scope.currentAddQueryChangeOnClick = currentAddQueryChangeOnClick.bind($scope);
     $scope.currentAddGetText = currentAddGetText.bind($scope);
     $scope.currentAddOnSelect = currentAddOnSelect.bind($scope);
     $scope.deleteTheme = deleteTheme.bind($scope);
@@ -223,7 +224,7 @@
           $scope.totalComments = $scope.proposal.commentCount + $scope.proposal.forumCommentCount;
         },
         function (error) {
-          Notify.show('Error when updating user feedback', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     };
@@ -245,7 +246,7 @@
             iframedoc.body.innerHTML = $scope.padHTML.text;
           });
         },
-        error => Notify.show('Error while trying to load proposals etherpad text', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       )
     }
 
@@ -322,7 +323,7 @@
 
               scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
             }, function (error) {
-              Notify.show('Error while trying to fetch campaign components', 'error');
+              Notify.show(error.statusMessage, 'error');
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
           } else {
@@ -335,7 +336,7 @@
           $scope.loadCampaignResources();
         },
         function (error) {
-          Notify.show('Error occured when trying to load contribution: ' + JSON.stringify(error), 'error');
+          Notify.show('Error occured when trying to load contribution: ' + error.statusMessage, 'error');
         }
       );
     }
@@ -492,7 +493,7 @@
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show('Error loading contributions from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -546,7 +547,7 @@
         }
         vm.createAttachmentResource(resource, true);
       }, function (error) {
-        Notify.show('Error while uploading file to the server', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -651,7 +652,7 @@
         Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
         vm.stopSpinner();
       }, function (error) {
-        Notify.show('Error while uploading file to the server', 'error');
+        Notify.show(error.statusMessage, 'error');
         vm.stopSpinner();
       });
     }
@@ -681,6 +682,7 @@
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();
+        loadCustomFields();
       } else {
         var res;
         if ($scope.isAnonymous) {
@@ -697,7 +699,7 @@
           loadCampaignConfig();
           loadCustomFields();
         }, function (error) {
-          Notify.show('Error while trying to fetch campaign', 'error');
+          Notify.show(error.statusMessage, 'error');
         });
       }
     }
@@ -715,7 +717,7 @@
         loadDocuments();
         loadMedia();
       }, function(error) {
-        Notify.show('Error while trying to fetch resources', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -753,7 +755,7 @@
         loadBallotPaper();
       }, function (error) {
         loadBallotPaper();
-        Notify.show('Error while trying to fetch campaign config', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -767,6 +769,14 @@
      */
     function setAddContext(ctx) {
       this.currentAdd.context = ctx;
+    }
+
+    function currentAddQueryChangeOnClick() {
+      this.currentAdd.suggestionsVisible = !this.currentAdd.suggestionsVisible;
+      if (this.currentAdd.query === undefined || this.currentAdd.query === null || this.currentAdd.query === "") {
+        this.currentAdd.query = "";
+        this.loadThemesOrAuthor();
+      }
     }
 
     function currentAddQueryChange() {
@@ -783,7 +793,7 @@
       if (this.currentAdd.context === 'AUTHORS') {
         return $sce.trustAsHtml(`
           <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
-          <span style="margin-left: 15px;">${item.name}</span>`);
+          <span style="margin-left: 15px;">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
       } else {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }
@@ -833,7 +843,7 @@
           vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));
         },
         error => {
-          Notify.show('Error while trying to fetch themes from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
       console.log(rsp);
@@ -862,7 +872,7 @@
       Contributions.deleteTheme(this.proposal.uuid, theme.themeId).then(
         response => Notify.show('Theme deleted successfully', 'success'),
         error => {
-          Notify.show('Error while trying to delete theme from the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -882,7 +892,7 @@
       Contributions.deleteAuthor(this.proposal.uuid, author.uuid).then(
         response => Notify.show('Author deleted successfully', 'success'),
         error => {
-          Notify.show('Error while trying to delete author from the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -895,7 +905,7 @@
         response => Notify.show('Theme added successfully', 'success'),
         error => {
           this.deleteTheme(theme, true);
-          Notify.show('Error while trying to add theme to the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -909,7 +919,7 @@
           this.currentAdd.items = items;
         },
         function (error) {
-          Notify.show('Error while trying to fetch assembly members from the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -921,7 +931,7 @@
         response => Notify.show('Author added successfully', 'success'),
         error => {
           this.deleteAuthor(author, true);
-          Notify.show('Error while trying to add author to the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -943,9 +953,15 @@
       return rsp.then(
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
+          // if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
+          //   $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
+          //     map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
+          //     return map;
+          //   }, {});
+          // }
         },
         error => {
-          Notify.show('Error while trying to get field values from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -969,7 +985,7 @@
           Notify.show('Attachment deleted successfully', 'success');
         } ,
         error => {
-          Notify.show('Error while trying to delete attachment from the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -982,7 +998,7 @@
       let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
       rsp.then(
         feedbacks => this.userFeedbackArray = feedbacks,
-        error => Notify.show('Error while trying to fetch contribution feedback', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       );
     }
 
@@ -995,7 +1011,7 @@
       let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
       rsp2.then(
         data => {
-          this.userFeedbackArray = data.filter(f => f.textualFeedback.length > 0)
+          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback.length > 0))
           if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
             this.userFeedbackArray = data.filter(f => ((f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT') && f.textualFeedback.length > 0))
           }
@@ -1019,7 +1035,7 @@
           response => {
             console.log(response)
           },
-          error => Notify.show('Error while trying to embed the document', 'error')
+          error => Notify.show(error.statusMessage, 'error')
         )
       } else {
         Notify.show('Error while trying to embed the document', 'error')
@@ -1054,13 +1070,13 @@
       return rsp.then(
         fields => fields,
         error => {
-          Notify.show('Error while trying to get fields from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
 
     function filterCustomFields(fields) {
-      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type);
     }
 
     function loadCustomFields() {
@@ -1068,20 +1084,22 @@
       $scope.currentComponent = currentComponent;
       if ($scope.isAnonymous) {
         $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceUUID;
-        $scope.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+        $scope.componentResourceSpaceId = currentComponent ? currentComponent.resourceSpaceUUID : null;
       } else {
         $scope.campaignResourceSpaceId = $scope.campaign.resourceSpaceId;
-        $scope.componentResourceSpaceId = currentComponent.resourceSpaceId;
+        $scope.componentResourceSpaceId = currentComponent ? currentComponent.resourceSpaceId : null;
       }
 
-      loadFields($scope.campaignResourceSpaceId).then(fields => {
+      if ($scope.campaignResourceSpaceId) {
+        loadFields($scope.campaignResourceSpaceId).then(fields => {
           $scope.campaignFields = $scope.filterCustomFields(fields);
-          console.log($scope.campaignFields);
-      });
-      loadFields($scope.componentResourceSpaceId).then(fields => {
+        });
+      }
+      if ($scope.componentResourceSpaceId) {
+        loadFields($scope.componentResourceSpaceId).then(fields => {
           $scope.componentFields = $scope.filterCustomFields(fields);
-          console.log($scope.componentFields);
-      });
+        });
+      }
       loadValues($scope.proposal.resourceSpaceId);
     }
   }

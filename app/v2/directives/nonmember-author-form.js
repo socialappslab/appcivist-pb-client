@@ -60,7 +60,7 @@
           this.campaignFields = fields.filter(f => f.entityType === 'NON_MEMBER_AUTHOR');
         },
         error => {
-          Notify.show('Error while trying to get fields from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

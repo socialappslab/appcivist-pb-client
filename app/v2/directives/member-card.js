@@ -33,9 +33,7 @@ function MemberCard(localStorageService, AppCivistAuth, $state, $stateParams) {
       actionBar: '=',
       commentsSection: '='
     },
-    // Uncomment this to test the discussion panel
-    templateUrl: '/app/v2/mockups/member-card.html',
-    //templateUrl: '/app/v2/partials/directives/member-card.html',
+    templateUrl: '/app/v2/partials/directives/member-card.html',
     link: function postLink(scope, element, attrs) {
       scope.currentUser = scope.user;
 

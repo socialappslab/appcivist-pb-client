@@ -101,7 +101,7 @@
         },
         transformRequest: angular.identity,
       }).then(this.fileUploadedSuccess, function (error) {
-        Notify.show('Error while uploading file to the server', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 

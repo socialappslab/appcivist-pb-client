@@ -206,7 +206,7 @@
         response => {
           Notify.show("Request completed successfully. We'll get in contact soon.", "success");
         },
-        error => Notify.show("Error while trying to join working group", "error")
+        error => Notify.show(error.statusMessage, "error")
       )
     }
 
@@ -248,7 +248,7 @@
         rsp.$promise.then(function (assembly) {
           $scope.assembly = assembly;
         }, function (error) {
-          Notify.show('Error while loading public profile of assembly with shortname', 'error');
+          Notify.show(error.statusMessage, 'error');
         });
       } else {
         var assemblyUUID = $scope.campaign ? $scope.campaign.assemblies ? $scope.campaign.assemblies[0] : null : null;
@@ -258,7 +258,7 @@
           rsp.$promise.then(function (assembly) {
             $scope.assembly = assembly;
           }, function (error) {
-            Notify.show('Error while loading public profile of assembly by its Universal ID', 'error');
+            Notify.show(error.statusMessage, 'error');
           });
         }
       }
@@ -323,7 +323,7 @@
               $scope.keywords = response.filter(r => r.type == 'EMERGENT');
             },
             error => {
-              Notify.show('Error loading themes from server', 'error');
+              Notify.show(error.statusMessage, 'error');
             }
           );
 
@@ -382,7 +382,7 @@
           Notify.show('Attachment deleted successfully', 'success');
         } ,
         error => {
-          Notify.show('Error while trying to delete attachment from the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -646,7 +646,7 @@
           $scope.publicCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show('Error occurred while trying to load working group proposals', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -659,7 +659,7 @@
           $scope.membersCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show('Error occurred while trying to load working group proposals', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -677,7 +677,7 @@
           }
         },
         function (error) {
-          Notify.show('Error occurred while trying to load discussions', 'error');
+          Notify.show(error.statusMessage, 'error');
         });
     }
 

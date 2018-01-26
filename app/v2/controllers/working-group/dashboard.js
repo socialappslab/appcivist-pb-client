@@ -150,7 +150,7 @@
         response => {
           Notify.show("Request completed successfully. We'll get in contact soon.", "success");
         },
-        error => Notify.show("Error while trying to join working group", "error")
+        error => Notify.show(error.statusMessage, "error")
       )
     }
 
@@ -239,7 +239,7 @@
             localStorageService.set('currentCampaign.currentComponent', currentComponent);
           },
           function (error) {
-            Notify.show('Error loading data from server', 'error');
+            Notify.show(error.statusMessage, 'error');
           }
         );
       } else {
@@ -270,7 +270,7 @@
         loadWorkingGroup();
       }, function (error) {
         loadWorkingGroup();
-        Notify.show('Error while trying to fetch campaign config', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -353,14 +353,14 @@
               $scope.$broadcast('filters:updateFilters',$scope.filters);
             }, function (error) {
               $scope.$broadcast('filters:updateFilters',$scope.filters);
-              Notify.show('Error while trying to fetch wg config', 'error');
+              Notify.show(error.statusMessage, 'error');
             });
 
             loadRelatedContributions();
           }
         },
         function (error) {
-          Notify.show('Error occured trying to initialize the working group: ' + JSON.stringify(error), 'error');
+          Notify.show('Error occured trying to initialize the working group: ' + error.statusMessage, 'error');
         }
       );
     }
@@ -391,7 +391,7 @@
               $scope.members = data;
             },
             function (error) {
-              Notify.show('Error occured while trying to load working group members', 'error');
+              Notify.show(error.statusMessage, 'error');
             }
           );
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'REQUESTED').query();
@@ -428,7 +428,7 @@
               Notify.show("Member rejected successfully.", "success"); break;
           }
         },
-        error => Notify.show("Error while trying to update the status", "error")
+        error => Notify.show(error.statusMessage, "error")
       )
     }
 
@@ -439,7 +439,7 @@
           Notify.show("The invitation has been sent", "success");
         },
         error => {
-          Notify.show("The invitation couldn't be sent. Please try again later.", "error");
+          Notify.show(error.statusMessage, "error");
         }
       );
     }
@@ -464,7 +464,7 @@
           angular.element('#addMembers button.close').trigger('click');
         },
         error => {
-          Notify.show("Error while trying to invite members", "error");
+          Notify.show(error.statusMessage, "error");
         }
       )
     }
@@ -482,7 +482,7 @@
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show('Error loading contributions from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -495,7 +495,7 @@
           $scope.publicCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show('Error occurred while trying to load working group proposals', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -508,7 +508,7 @@
           $scope.membersCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show('Error occurred while trying to load working group proposals', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -522,7 +522,7 @@
           $scope.activities = data.list;
         },
         function (error) {
-          Notify.show('Error loading working group activities from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

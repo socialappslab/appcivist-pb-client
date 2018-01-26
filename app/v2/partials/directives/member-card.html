@@ -11,7 +11,7 @@
       </figure>
     </a>
     <div class="fn" style="font-weight: 600;">
-      {{currentUser.name}}
+      {{(currentUser.name === undefined || currentUser.name === null || currentUser.name === "" || currentUser.name === " ") ? currentUser.userId : currentUser.name}}
       <span ng-if="commentsSection">
         May 17, 2017
       </span>
@@ -30,4 +30,3 @@
       <li><a >Remove this user</a></li>
     </ul>
   </div>
-  

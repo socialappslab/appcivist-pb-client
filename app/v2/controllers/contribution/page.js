@@ -21,6 +21,7 @@
     $scope.loadThemes = loadThemes.bind($scope);
     $scope.loadThemesOrAuthor = loadThemesOrAuthor.bind($scope);
     $scope.currentAddQueryChange = currentAddQueryChange.bind($scope);
+    $scope.currentAddQueryChangeOnClick = currentAddQueryChangeOnClick.bind($scope);
     $scope.currentAddGetText = currentAddGetText.bind($scope);
     $scope.currentAddOnSelect = currentAddOnSelect.bind($scope);
     $scope.deleteTheme = deleteTheme.bind($scope);
@@ -769,6 +770,14 @@
       this.currentAdd.context = ctx;
     }
 
+    function currentAddQueryChangeOnClick() {
+      this.currentAdd.suggestionsVisible = !this.currentAdd.suggestionsVisible;
+      if (this.currentAdd.query === undefined || this.currentAdd.query === null || this.currentAdd.query === "") {
+        this.currentAdd.query = "";
+        this.loadThemesOrAuthor();
+      }
+    }
+
     function currentAddQueryChange() {
       this.currentAdd.suggestionsVisible = this.currentAdd.query.length > 0;
       this.loadThemesOrAuthor();
@@ -783,7 +792,7 @@
       if (this.currentAdd.context === 'AUTHORS') {
         return $sce.trustAsHtml(`
           <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
-          <span style="margin-left: 15px;">${item.name}</span>`);
+          <span style="margin-left: 15px;">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
       } else {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }

@@ -28,13 +28,18 @@
           <!--<member-card ng-if="!proposal.authors" user="group"></member-card>-->
           <div ng-repeat="author in proposal.authors" style="display: inline-block; margin-left: 10px;">
             <member-card user="author"></member-card>
-            <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+            <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
           </div>
-
           <div ng-repeat="author in proposal.nonMemberAuthors" style="display: inline-block; margin-left: 10px;">
             <member-card user="author"></member-card>
             <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
           </div>
+          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
+          <!--<div style="display: inline-block; margin-left: 10px;">-->
+            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'AUTHORS'">-->
+              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
+            <!--</a>-->
+          <!--</div>-->
           <p class="small">
             <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
@@ -50,6 +55,12 @@
             </a>
             <!--<span ng-if="!$last">,</span>-->
           </li>
+          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
+          <!--<li>-->
+            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'THEMES'">-->
+              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
+            <!--</a>-->
+          <!--</li>-->
         </ul>
 
         <ul class="row tags">
@@ -61,6 +72,12 @@
             </a>
             <!--<span ng-if="!$last">,</span>-->
           </li>
+          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
+          <!--<li>-->
+            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'KEYWORDS'">-->
+              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
+            <!--</a>-->
+          <!--</li>-->
         </ul>
 
         <!-- Add Theme/Author/Keyword Form -->
@@ -535,6 +552,56 @@
               <member-card user="f.user"></member-card>
               <div class="textual" ng-if="f.textualFeedback" ng-bind-html="f.textualFeedback"></div>
             </div>
+          </div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add author/theme/keyword modal-->
+  <div class="modal fade dashboardModal" id="addToContributionModal" tabindex="-1" role="dialog" aria-labelledby="addToContributionLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="addToContributionLabel" ng-if="proposal.type==='PROPOSAL'">{{'Add to proposal'|translate}}</h3>
+          <h3 class="modal-title" id="addToContributionLabel" ng-if="proposal.type==='IDEA'">{{'Add to proposal'|translate}}</h3>
+          <p>{{ 'Themes, Keywords or Authors' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">
+            <ul class="search_modes">
+              <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
+                <a ng-click="$parent.setAddContext('THEMES')" class="btn-sm">{{ 'Themes' | translate }}</a>
+              </li>
+              <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}"
+                  ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
+                <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
+              </li>
+              <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'KEYWORDS'}">
+                <a ng-click="$parent.setAddContext('KEYWORDS')" class="btn-sm">{{ 'Keywords'| translate }}</a>
+              </li>
+            </ul>
+            <br>
+            <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query"
+                   ng-click="$parent.currentAddQueryChangeOnClick()" ng-change="$parent.currentAddQueryChange()">
+            <fieldset class="tags">
+              <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
+                <ul class="suggestion-list">
+                  <li ng-repeat="item in $parent.currentAdd.items track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                      class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                  </li>
+                  <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
+                      class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
+                  </li>
+                </ul>
+              </div>
+            </fieldset>
           </div>
         </div>
         <div class="modal-footer text-left">

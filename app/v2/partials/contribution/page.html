@@ -3,7 +3,8 @@
       <header class="page__header contributionHeader">
         <div class="row">
           <breadcrumb label="proposal.title"></breadcrumb>
-          <button class="btn btn-default follow-contribution" ng-if="contributionType">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
+          <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#followModal" ng-if="contributionType && !following">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
+          <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal" ng-if="contributionType && following">Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
         </div>
         <div class="row title_block">
           <h1 class="heading--title">{{proposal.title}}</h1>
@@ -555,6 +556,66 @@
         </div>
         <div class="modal-footer text-left">
           <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscribe when logged in -->
+  <div class="modal fade dashboardModal" id="followModal" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</p>
+        </div>
+        <div class="modal-body">
+          <p>Would you like to follow this {{contributionType == 'PROPOSAL' ? 'proposal' : 'idea'}}?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="follow()">{{'Subscribe'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Unubscribe when logged in -->
+  <div class="modal fade dashboardModal" id="unfollowModal" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</p>
+        </div>
+        <div class="modal-body">
+          <p>Would you like to unfollow this {{contributionType == 'PROPOSAL' ? 'proposal' : 'idea'}}?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="unfollow()">{{'Unsubscribe'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscribe when not logged in -->
+  <div class="modal fade dashboardModal" id="followModalNotLoggedIn"
+       tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</p>
+        </div>
+        <div class="modal-body">
+          <p>{{'campaign.newsletter.subscription.question.non-members'|translate}}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Sign up'}}</button>
         </div>
       </div>
     </div>

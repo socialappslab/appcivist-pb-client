@@ -61,6 +61,7 @@
       $scope.vmPaginated = {};
       $scope.configsLoaded = false;
       $scope.commentType = 'public';
+      $scope.subscribed = false;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -145,6 +146,7 @@
       $scope.joinWg = joinWg.bind($scope);
       $scope.loadThemeKeywordDescription = loadThemeKeywordDescription.bind($scope);
       $scope.subscribeNewsletter = subscribeNewsletter.bind($scope);
+      $scope.unsubscribeNewsletter = unsubscribeNewsletter.bind($scope);
       $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
       $scope.resourceIsDocument = resourceIsDocument.bind($scope);
       $scope.resourceIsMedia = resourceIsMedia.bind($scope);
@@ -327,13 +329,21 @@
             }
           );
 
-          checkIfSubscribed($scope.campaign.rsUUID);
+          checkIfSubscribed($scope.campaign.rsID);
         }
       );
     }
 
     function checkIfSubscribed(sid) {
-      console.log(Notifications.subscriptionsBySpace(sid).query())
+      let res = Notifications.subscriptionsBySpace(sid).get();
+      res.$promise.then(
+        function (data) {
+          $scope.subscribed = data.subscribed;
+        },
+        function (error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
     }
 
     function loadThemeKeywordDescription(title, description) {
@@ -899,10 +909,24 @@
       }
       Notifications.subscribe().save(sub).$promise.then(
         response => {
+          $scope.subscribed = true;
           Notify.show("Subscribed successfully. We'll be in touch", "success");
         },
         error => {
           Notify.show("Error trying to subscribe. Please try again later.", "error")
+        }
+      );
+    }
+    
+    function unsubscribeNewsletter() {
+      let spaceId = $scope.campaign.rsID
+      Notifications.unsubscribe(spaceId).then(
+        response => {
+          $scope.subscribed = false;
+          Notify.show("Unsubscribed successfully.", "success");
+        },
+        error => {
+          Notify.show("Error trying to unsubscribe. Please try again later.", "error")
         }
       );
     }

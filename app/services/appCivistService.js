@@ -597,9 +597,15 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
     subscribe() {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
     },
+    
+    unsubscribe: function(spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/space/:sid', { sid: spaceId }, {
+        'delete': { method: 'delete' }
+      }).delete().$promise;
+    },
 
     subscriptionsBySpace(spaceId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/:sid', { sid: spaceId });
+      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/space/:sid', { sid: spaceId });
     },
 
     /**

@@ -76,7 +76,7 @@
           scope.seeAllTitle = space.name;
         },
         function (error) {
-          Notify.show('Error when updating user feedback', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

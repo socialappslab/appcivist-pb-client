@@ -1297,5 +1297,10 @@
   "DELETED_CONTRIBUTION": "A contribution has been deleted: <strong>{{event}}</strong>",
   "MODERATED_CONTRIBUTION": "A contribution has been moderated: <strong>{{event}}</strong>",
   "NEW_CONTRIBUTION_FEEDBACK_FLAG": "A contribution has been flagged: <strong>{{event}}</strong>",
-  "NEWSLETTER": "A newsletter is available: <strong>{{event}}</strong>"
+  "NEWSLETTER": "A newsletter is available: <strong>{{event}}</strong>",
+  "Add to proposal": "Ajouter à la proposition",
+  "Add to idea": "Ajouter à l'idée",
+  "Created": "Créé",
+  "Last updated": "Mis à jour",
+  "Additional info": "Informations supplémentaires"
 }

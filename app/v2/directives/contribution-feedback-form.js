@@ -207,7 +207,7 @@
             // currently, field values are for authenticated users only.
             this.saveFieldsValues(this.contribution.resourceSpaceId).then(
               response => successCallback(newStats),
-              error => Notify.show('Error while updating user feedback', 'error')
+              error => Notify.show(error.statusMessage, 'error')
             );
           } else {
             successCallback(newStats);
@@ -365,7 +365,7 @@
       return rsp.then(
         fields => fields.filter(f => f.entityType === 'CONTRIBUTION_FEEDBACK'),
         error => {
-          Notify.show('Error while trying to get fields from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -382,7 +382,7 @@
           fieldsValues.forEach(v => this.values[v.customFieldDefinition.customFieldDefinitionId] = v);
         },
         error => {
-          Notify.show('Error while trying to get field values from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

@@ -110,10 +110,15 @@
             {auuid: auuid, cuuid: cuuid, couuid: couuid});
         } else if ($state.params.gid) {
           let currentGroup = localStorageService.get('currentWorkingGroup');
-          let guuid = currentGroup.uuid;
+          let guuid = null;
+          if (currentGroup != null && currentGroup != undefined)
+            guuid = currentGroup.uuid;
           if ($state.params.pid) {
             let currentContribution = localStorageService.get('currentContribution');
             let puuid = currentContribution.uuid;
+            if ((currentGroup === null || currentGroup === undefined) && $state.params.gid ) {
+              guuid = currentContribution.workingGroupAuthors ? currentContribution.workingGroupAuthors[0].uuid : null;
+            }
             localStorageService.clearAll();
             $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal.puuid",
               {auuid: auuid, cuuid: cuuid, guuid: guuid, puuid: puuid},

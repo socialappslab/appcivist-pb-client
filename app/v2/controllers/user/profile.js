@@ -97,7 +97,7 @@
               }
             },
             function(error) {
-              Notify.show('Error fetching user information from the server', 'error');
+              Notify.show(error.statusMessage, 'error');
             }
           );
         });
@@ -132,7 +132,7 @@
           },
           function(error) {
             console.log(error);
-            Notify.show('Error updating user password', 'error');
+            Notify.show(error.statusMessage, 'error');
           }
         );
       } else {

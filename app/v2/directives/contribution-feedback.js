@@ -86,7 +86,7 @@
               scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
             },
             function (error) {
-              Notify.show('Error when updating user feedback', 'error');
+              Notify.show(error.statusMessage, 'error');
             }
           );
         };

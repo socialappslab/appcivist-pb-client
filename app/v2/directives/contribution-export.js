@@ -107,7 +107,6 @@
         } else {
           this.fields.push(field);
         }
-        console.log(this.fields);
       }
   
   
@@ -231,9 +230,12 @@
       }
 
       function exportContribution() {
-        let rsp = Contributions.contributionInResouceSpaceExport(this.contribution.resourceSpaceId, this.exportFormat).getText().$promise.then(
+        let rsp = Contributions.contributionInResouceSpaceExport(this.contribution.resourceSpaceId, this.exportFormat, this.fields).getText().$promise.then(
           returned => {
             Notify.show(returned.content, 'success')
+            if (angular.isFunction(this.onSuccess)) {
+              this.onSuccess();
+            }
           },
           error => {
             Notify.show(error.statusMessage, 'error')

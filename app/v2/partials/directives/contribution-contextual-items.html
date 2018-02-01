@@ -56,7 +56,7 @@
 </script>
 
 <script id="contributionExport" type="text/ng-template">
-  <contribution-export contribution="vm.contribution" on-success="vm.onEditContributionSuccess()" mode="edit" user="user" type="{{vm.contribution.type}}"></contribution-export>
+  <contribution-export contribution="vm.contribution" on-success="vm.closeModal('contributionExport')" mode="edit" user="user" type="{{vm.contribution.type}}"></contribution-export>
 </script>
 
 <script id="contributionModerationForm" type="text/ng-template">

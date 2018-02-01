@@ -65,7 +65,7 @@
               }
             }
           }
-
+console.log(scope.contribution)
           // Prepare contribution's cover
           let cCover = scope.contribution.cover ? scope.contribution.cover.url : null;
 

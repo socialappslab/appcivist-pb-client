@@ -334,18 +334,6 @@
       );
     }
 
-    function checkIfSubscribed(sid) {
-      let res = Notifications.subscriptionsBySpace(sid).get();
-      res.$promise.then(
-        function (data) {
-          $scope.subscribed = data.subscribed;
-        },
-        function (error) {
-          Notify.show(error.statusMessage, 'error');
-        }
-      );
-    }
-
     function loadThemeKeywordDescription(title, description) {
       let content = description === undefined ? 'No description available' : description;
       angular.element('#themes-keywords #description').show().html("<p><strong>"+title+"</strong></p><p>"+content+"</p>");
@@ -910,6 +898,7 @@
       Notifications.subscribe().save(sub).$promise.then(
         response => {
           $scope.subscribed = true;
+          /*$scope.subscriptionId = response.id;*/
           Notify.show("Subscribed successfully. We'll be in touch", "success");
         },
         error => {
@@ -920,13 +909,29 @@
     
     function unsubscribeNewsletter() {
       let spaceId = $scope.campaign.rsID
-      Notifications.unsubscribe(spaceId).then(
+      Notifications.unsubscribe(spaceId, $scope.subscriptionId).then(
         response => {
           $scope.subscribed = false;
           Notify.show("Unsubscribed successfully.", "success");
         },
         error => {
           Notify.show("Error trying to unsubscribe. Please try again later.", "error")
+        }
+      );
+    }
+
+    function checkIfSubscribed(sid) {
+      let res = Notifications.getSubscriptions(sid).query();
+      res.$promise.then(
+        function (response) {
+          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
+          if (substatus.length > 0) {
+            $scope.subscriptionId = substatus[0].id;
+            $scope.subscribed = true;
+          }
+        },
+        function (error) {
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }

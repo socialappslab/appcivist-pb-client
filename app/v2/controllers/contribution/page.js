@@ -1118,6 +1118,7 @@
       Notifications.subscribe().save(sub).$promise.then(
         response => {
           $scope.following = true;
+          /*$scope.subscriptionId = response.id;*/
           Notify.show("Subscribed successfully. We'll be in touch", "success");
         },
         error => {
@@ -1128,7 +1129,7 @@
     
     function unfollow() {
       let spaceId = $scope.campaign.rsID
-      Notifications.unsubscribe(spaceId).then(
+      Notifications.unsubscribe(spaceId, $scope.subscriptionId).then(
         response => {
           $scope.following = false;
           Notify.show("Unsubscribed successfully.", "success");
@@ -1140,10 +1141,14 @@
     }
 
     function checkIfFollowing(sid) {
-      let res = Notifications.subscriptionsBySpace(sid).get();
+      let res = Notifications.getSubscriptions(sid).query();
       res.$promise.then(
-        function (data) {
-          $scope.following = data.subscribed;
+        function (response) {
+          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
+          if (substatus.length > 0) {
+            $scope.subscriptionId = substatus[0].id;
+            $scope.subscribed = response.subscribed;
+          }
         },
         function (error) {
           Notify.show(error.statusMessage, 'error');

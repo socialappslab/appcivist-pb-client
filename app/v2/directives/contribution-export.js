@@ -86,6 +86,8 @@
       this.filterCustomFields = filterCustomFields.bind(this);
       this.setCaptchaResponse = setCaptchaResponse.bind(this);
       this.setFile = setFile.bind(this);
+      this.exportContribution = exportContribution.bind(this);
+      this.toggleSelection = toggleSelection.bind(this);
   
       this.mode = this.mode || 'create';
       this.isEdit = this.mode === 'edit';
@@ -94,6 +96,19 @@
       this.isIdea = this.type === 'IDEA';
       this.isProposal = this.type === 'PROPOSAL';
       this.tmpAuthorIDCount = 0;
+      this.exportFormat = 'csv';
+      this.fields = []
+      this.customFields = []
+
+      function toggleSelection(field) {
+        var idx = this.fields.indexOf(field);
+        if (idx > -1) {
+          this.fields.splice(field, 1);
+        } else {
+          this.fields.push(field);
+        }
+        console.log(this.fields);
+      }
   
   
       function setFile(file) {
@@ -213,6 +228,17 @@
             self.disableAll();
           }
         });
+      }
+
+      function exportContribution() {
+        let rsp = Contributions.contributionInResouceSpaceExport(this.contribution.resourceSpaceId, this.exportFormat).getText().$promise.then(
+          returned => {
+            Notify.show(returned.content, 'success')
+          },
+          error => {
+            Notify.show(error.statusMessage, 'error')
+          }
+        )
       }
   
   

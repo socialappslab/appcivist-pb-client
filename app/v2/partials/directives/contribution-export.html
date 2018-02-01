@@ -6,19 +6,23 @@
         <div class="modal-body">
             <div class="field__container">
                 <p class="intro bold">Fields to export</p>
-                <label for="title"><input id="title" type="checkbox" />{{ 'Title of Proposal' | translate }}</label>
-                <label for="text"><input id="text" type="checkbox" />{{ 'Description' | translate }}</label>
+                <label></label><input name="title" value="title" type="checkbox" ng-checked="vm.fields.indexOf('title') > -1" ng-click="vm.toggleSelection('title')"/>{{ 'Title of Proposal' | translate }}</label>
+                <label><input name="text" value="text" type="checkbox" ng-checked="vm.fields.indexOf('text') > -1" ng-click="vm.toggleSelection('text')"/>{{ 'Description' | translate }}</label>
+                <label><input name="location" value="location" type="checkbox" ng-checked="vm.fields.indexOf('location') > -1" ng-click="vm.toggleSelection('location')"/>{{ 'Location' | translate }}</label>
+                <label><input name="status" value="status" type="checkbox" ng-checked="vm.fields.indexOf('status') > -1" ng-click="vm.toggleSelection('status')"/>{{ 'Status' | translate }}</label>
             </div>
             <div class="field__container">
                 <p class="intro bold">Export format</p>
-                <select id="exportFormat">
+                <select id="exportFormat" ng-model="vm.exportFormat">
                     <option value="csv">CSV</option>
+                    <option value="txt">TXT</option>
                     <option value="pdf">PDF</option>
                     <option value="rtf">RTF</option>
+                    <option value="doc">DOC</option>
                 </select>
             </div>
             <fieldset>
-                <a class="button__modal_submit" ng-click="vm.submit()">{{'Export' | translate}}</a>
+                <a class="button__modal_submit" ng-click="vm.exportContribution()">{{'Export' | translate}}</a>
             </fieldset>
         </div>
     </div>

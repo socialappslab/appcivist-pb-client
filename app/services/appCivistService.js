@@ -759,6 +759,21 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
+    contributionInResouceSpaceExport: function (spaceId, format, fields, customFields, selectedContributions) {
+      if (selectedContributions) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution?format=:format&selectedContributions=:selectedContributions&fields=:fields&customFields=:customFields', {sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields, customFields: customFields}, {
+          'getText': {
+            transformResponse: function(data, headersGetter, status) { return { content: data } }
+          }
+        })
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution?format=:format&fields=:fields&customFields=:customFields', {sid: spaceId, format: format, fields: fields, customFields: customFields}, {
+          'getText': {
+            transformResponse: function(data, headersGetter, status) { return { content: data } }
+          }
+        })
+      }
+    },
     /**
      * Returns a $resource to interact with the following endpoints:
      *  - POST  /campaign/:uuid/contribution

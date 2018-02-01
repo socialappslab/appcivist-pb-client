@@ -183,7 +183,7 @@
         this.contribution.authors.push(this.user);
         this.recaptchaResponseOK = true;
       }
-      this.values = {};
+      this.values = {}; // dictionary of customized fields values
       this.tinymceOptions = this.getEditorOptions();
       if (this.user) {
         this.verifyMembership();
@@ -197,7 +197,11 @@
         this.loadWorkingGroups();
         this.loadCustomFields();
       } else if (this.isEdit) {
-        this.loadCampaign(this.contribution.campaignIds[0]).then(response => this.loadCustomFields());
+        this.loadCampaign(this.contribution.campaignIds[0]).then(
+          response => this.loadValues(this.contribution.resourceSpaceId).then(
+            response => this.loadCustomFields()
+          )
+        );
       }
       var self = this;
       // setup listener for upload field
@@ -208,7 +212,10 @@
       });
     }
 
-
+    /**
+     * Options for tiny editor
+     * @returns {{height: number, max_chars: number, plugins: [string,string,string], toolbar: string, images_upload_credentials: boolean, image_advtab: boolean, image_title: boolean, statusbar: boolean, automatic_uploads: boolean, file_picker_types: string, imagetools_cors_hosts: [string], images_upload_handler: images_upload_handler, file_picker_callback: file_picker_callback}}
+     */
     function getEditorOptions() {
       var vm = this;
       return {
@@ -603,23 +610,19 @@
     }
 
     /**
-     * Loads contribution's custom fields.
+     * Loads the campaign from the server.
      *
-     * @param {number} sid - resource space ID
+     * @param {number} cid - campaign ID.
      */
-    function loadFields(sid) {
-      let rsp = {};
-      if (this.isAnonymous) {
-        rsp = Space.fieldsPublic(sid).query().$promise;
-      } else {
-        rsp = Space.fields(sid).query().$promise;
-      }
-
+    function loadCampaign(cid) {
+      let vm = this;
+      let rsp = Campaigns.campaign(this.assembly.assemblyId, cid).get().$promise;
       return rsp.then(
-        fields => fields,
-        error => {
-          Notify.show(error.statusMessage, 'error');
-        }
+        campaign => {
+          vm.campaign = campaign;
+          return campaign
+        },
+        error => Notify.show(error.statusMessage, 'error')
       );
     }
 
@@ -646,6 +649,52 @@
     }
 
     /**
+     * Loads contribution's custom fields.
+     *
+     * @param {number} sid - resource space ID
+     */
+    function loadFields(sid) {
+      let rsp = {};
+      if (this.isAnonymous) {
+        rsp = Space.fieldsPublic(sid).query().$promise;
+      } else {
+        rsp = Space.fields(sid).query().$promise;
+      }
+
+      return rsp.then(
+        fields => fields,
+        error => {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
+    function loadCustomFields() {
+      let currentComponent = localStorageService.get('currentCampaign.currentComponent');
+      this.currentComponent = currentComponent;
+      if (this.isAnonymous) {
+        this.campaignResourceSpaceId = this.campaign.resourceSpaceUUID;
+        this.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
+      } else {
+        this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
+        this.componentResourceSpaceId = currentComponent.resourceSpaceId;
+      }
+
+      this.loadFields(this.campaignResourceSpaceId).then(fields => {
+        $timeout(() => {
+          this.campaignFields = this.filterCustomFields(fields);
+          //$scope.$digest();
+        });
+      });
+      this.loadFields(this.componentResourceSpaceId).then(fields => {
+        $timeout(() => {
+          this.componentFields = this.filterCustomFields(fields);
+          //$scope.$digest();
+        });
+      });
+    }
+
+    /**
      * Updates custom field values.
      *
      * @param {Object} contribution - the created contribution.
@@ -656,7 +705,11 @@
       let payload = {
         customFieldValues: []
       };
-      angular.forEach(this.values, value => payload.customFieldValues.push(value));
+      angular.forEach(this.values,
+          value => {
+            payload.customFieldValues.push(value);
+          }
+      );
 
       // we need to save authors custom fields too.
       if (contribution.nonMemberAuthors) {
@@ -712,50 +765,12 @@
     }
 
     /**
-     * Loads the campaign from the server.
+     * Filter the given custom fields array based on the contribution type.
      *
-     * @param {number} cid - campaign ID.
+     * @param {Object[]} fields
      */
-    function loadCampaign(cid) {
-      let vm = this;
-      let rsp = Campaigns.campaign(this.assembly.assemblyId, cid).get().$promise;
-      return rsp.then(
-        campaign => {
-          vm.campaign = campaign;
-          return campaign
-        },
-        error => Notify.show(error.statusMessage, 'error')
-      );
-    }
-
-
-    function loadCustomFields() {
-      let currentComponent = localStorageService.get('currentCampaign.currentComponent');
-      this.currentComponent = currentComponent;
-      if (this.isAnonymous) {
-        this.campaignResourceSpaceId = this.campaign.resourceSpaceUUID;
-        this.componentResourceSpaceId = currentComponent.resourceSpaceUUID;
-      } else {
-        this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
-        this.componentResourceSpaceId = currentComponent.resourceSpaceId;
-      }
-
-      this.loadFields(this.campaignResourceSpaceId).then(fields => {
-        $timeout(() => {
-          this.campaignFields = this.filterCustomFields(fields);
-          $scope.$digest();
-        });
-      });
-      this.loadFields(this.componentResourceSpaceId).then(fields => {
-        $timeout(() => {
-          this.componentFields = this.filterCustomFields(fields);
-          $scope.$digest();
-        });
-      });
-
-      if (this.isEdit) {
-        this.loadValues(this.contribution.resourceSpaceId);
-      }
+    function filterCustomFields(fields) {
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
     }
 
     /**
@@ -804,16 +819,6 @@
     function deleteAuthor(author) {
       _.remove(this.contribution.authors, { userId: author.userId });
     }
-
-    /**
-     * Filter the given custom fields array based on the contribution type.
-     *
-     * @param {Object[]} fields
-     */
-    function filterCustomFields(fields) {
-      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
-    }
-
 
     /**
      * Recaptcha on-success handler.

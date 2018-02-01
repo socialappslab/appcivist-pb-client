@@ -68,7 +68,7 @@
 
         }, function(error) {
             window.Pace.stop();
-            Notify.show('Error while trying to fetch assembly config', 'error');
+            Notify.show(error.statusMessage, 'error');
         });
       });
     }

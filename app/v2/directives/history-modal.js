@@ -64,7 +64,7 @@
                 scope.vm.historyElements = response;
               },
               function(error) {
-                Notify.show('Error while trying to communicate with the server', 'error');
+                Notify.show(error.statusMessage, 'error');
               }
             );
           }

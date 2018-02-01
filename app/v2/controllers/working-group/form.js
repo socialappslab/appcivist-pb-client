@@ -83,7 +83,7 @@
           transformRequest: angular.identity,
         }).then(
           response => $scope.setNewWorkingGroupIcon(response.data.url, response.data.name),
-          error => Notify.show('Error while uploading file to the server', 'error'));
+          error => Notify.show(error.statusMessage, 'error'));
       }
 
       $scope.addEmailsToList = function(emailsText) {
@@ -204,7 +204,7 @@
           let rsp = Space.configs($scope.newWorkingGroup.resourcesResourceSpaceId).get().$promise;
           rsp.then(
             configs => $scope.newWorkingGroup.configs = $scope.getConfigurations(configs),
-            error => Notify.show('Error while trying to load working group configurations', 'error')
+            error => Notify.show(error.statusMessage, 'error')
           );
         } else {
           $scope.newWorkingGroup.configs = $scope.getConfigurations($scope.newWorkingGroup.configs);
@@ -293,7 +293,7 @@
               $scope.saveConfigurations(resourceSpaceId, configs)
                 .then(
                   res => $scope.onSuccess(response),
-                  error => Notify.show('Error while trying to save working group\'s configurations', 'error')
+                  error => Notify.show(error.statusMessage, 'error')
                 );
             } else {
               $scope.onSuccess(response);
@@ -301,7 +301,7 @@
           },
           error => {
             $scope.errors.push(error.data);
-            Notify.show('Error while trying to safe working group', 'error');
+            Notify.show(error.statusMessage, 'error');
           }
         );
       }

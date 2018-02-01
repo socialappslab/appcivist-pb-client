@@ -399,7 +399,7 @@
             return $filter('filter')(self.assemblyMembers, { name: query });
           },
           function (error) {
-            Notify.show('Error while trying to fetch assembly members from the server', 'error');
+            Notify.show(error.statusMessage, 'error');
           }
         );
       } else {
@@ -451,7 +451,7 @@
         },
         error => {
           Pace.stop();
-          Notify.show('Error while trying to save the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
         );
     }
@@ -488,7 +488,7 @@
         }
       }, function (error) {
         Pace.stop();
-        Notify.show('Error while uploading file to the server', 'error');
+        Notify.show(error.statusMessage, 'error');
       });
     }
 
@@ -553,12 +553,12 @@
         if (this.isAnonymous) {
           rsp = Contributions.contributionInResourceSpaceByUUID(this.campaign.resourceSpaceUUID).save(payload).$promise.then(
             contribution => this.saveFieldsValues(contribution).then(response => contribution),
-            error => Notify.show('Error while trying to save the contribution', 'error')
+            error => Notify.show(error.statusMessage, 'error')
           );
         } else {
           rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
             contribution => this.saveFieldsValues(contribution).then(response => contribution),
-            error => Notify.show('Error while trying to save the contribution', 'error')
+            error => Notify.show(error.statusMessage, 'error')
           );
         }
       } else if (this.mode === 'edit') {
@@ -582,7 +582,7 @@
         },
         error => {
           Pace.stop();
-          Notify.show('Error while trying to save the contribution', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -625,7 +625,7 @@
       return rsp.then(
         fields => fields,
         error => {
-          Notify.show('Error while trying to get fields from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -647,7 +647,7 @@
           fieldsValues.forEach(v => this.values[v.customFieldDefinition.customFieldDefinitionId] = v);
         },
         error => {
-          Notify.show('Error while trying to get field values from resource space', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
     }
@@ -731,7 +731,7 @@
           vm.campaign = campaign;
           return campaign
         },
-        error => Notify.show('Error while trying to get campaign from server', 'error')
+        error => Notify.show(error.statusMessage, 'error')
       );
     }
 

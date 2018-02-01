@@ -65,7 +65,7 @@
             $window.location.reload();
             //$scope.stopSpinner();
           },
-          error => Notify.show('Error while trying to embed the document', 'error')
+          error => Notify.show(error.statusMessage, 'error')
         )
       } else {
         Notify.show('Error while trying to embed the document', 'error');

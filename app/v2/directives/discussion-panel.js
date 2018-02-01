@@ -132,7 +132,7 @@
           loadComments(scope, data.list);
         },
         function(error) {
-          Notify.show('Error loading discussions from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
       return rsp.$promise;

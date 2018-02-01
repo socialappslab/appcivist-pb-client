@@ -104,7 +104,7 @@
         }
       },
       function(error) {
-        vm.Notify.show(error.data.error, 'error');
+        vm.Notify.show(error.data.statusMessage, 'error');
       }
     );
   }

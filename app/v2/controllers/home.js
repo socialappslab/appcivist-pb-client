@@ -27,10 +27,10 @@
           url:"https://pb.appcivist.org/#/v2/p/assembly/0bc7bea3-f253-4824-a9c8-bfedf8998daf/campaign/3de5a9f3-232d-4527-83b6-c850aeaf7388"}
         ,
         {
-          name: "Conférence territoriale du sport",
-          purpose: "Participatory Policy Making",
-          location: "Région Nouvelle Aquitaine, France",
-          url:"https://pb.appcivist.org/#/v2/p/assembly/ctsfrance"
+          name: "City of Dieppe",
+          purpose: "Participatory Budgeting",
+          location: "Dieppe, Canada",
+          url:"https://pb.appcivist.org/#/v2/p/assembly/f5c3bba8-c3dd-40e1-b891-0add8a446615/campaign/0b1e72a2-df31-44f4-ac26-bcef4c667671"
         }
       ];
 

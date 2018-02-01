@@ -98,7 +98,7 @@
           scope.feedbacks = data;
         },
         function(error) {
-          Notify.show('Error loading feedbacks from server', 'error');
+          Notify.show(error.statusMessage, 'error');
         }
       );
       return rsp.$promise;

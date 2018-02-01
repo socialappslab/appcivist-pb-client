@@ -5,10 +5,6 @@
           <breadcrumb label="proposal.title"></breadcrumb>
           <button class="btn btn-default follow-contribution" ng-if="contributionType">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
         </div>
-       <!--<div class="row type" ng-if="contributionType != 'IDEA'">
-          <i class="fa fa-file-text"></i>&nbsp;&nbsp;{{contributionType}}
-          <span class="status">— {{proposal.status | translate}}</span>
-        </div>-->
         <div class="row title_block">
           <h1 class="heading--title">{{proposal.title}}</h1>
 
@@ -28,34 +24,82 @@
         </div>
 
         <div class="row attribution">
-          <!--<p class="heading--subheader">{{ 'Created by' | translate }}</p>-->
-          <div ng-repeat="author in proposal.authors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
-            style="display: inline-block; margin-left: 10px;">
-            <member-card user="author"></member-card>
-            <i ng-if="author.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
-          </div>
 
-          <div ng-repeat="author in proposal.nonMemberAuthors" ng-mouseenter="author.isHover = true" ng-mouseleave="author.isHover = false"
-               style="display: inline-block; margin-left: 10px;">
-            <member-card user="author"></member-card>
-            <i ng-if="author.isHover && userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
-          </div>
           <!--<member-card ng-if="!proposal.authors" user="group"></member-card>-->
-          <br><p class="small"><strong>Last updated: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}} <strong>Created: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}</p>
+          <div ng-repeat="author in proposal.authors" style="display: inline-block; margin-left: 10px;">
+            <member-card user="author"></member-card>
+            <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+          </div>
+          <div ng-repeat="author in proposal.nonMemberAuthors" style="display: inline-block; margin-left: 10px;">
+            <member-card user="author"></member-card>
+            <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+          </div>
+          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
+          <!--<div style="display: inline-block; margin-left: 10px;">-->
+            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'AUTHORS'">-->
+              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
+            <!--</a>-->
+          <!--</div>-->
+          <p class="small">
+            <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
+            <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
+          </p>
         </div>
+
+        <ul class="row tags">
+          <li class="title">{{'Themes'|translate}}: </li>
+          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index">
+            <a>
+              {{theme.title}}
+              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+            </a>
+            <!--<span ng-if="!$last">,</span>-->
+          </li>
+          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
+          <!--<li>-->
+            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'THEMES'">-->
+              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
+            <!--</a>-->
+          <!--</li>-->
+        </ul>
+
+        <ul class="row tags">
+          <li class="title">{{'Keywords'|translate}}: </li>
+          <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
+            <a>
+              {{theme.title}}
+              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+            </a>
+            <!--<span ng-if="!$last">,</span>-->
+          </li>
+          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
+          <!--<li>-->
+            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'KEYWORDS'">-->
+              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
+            <!--</a>-->
+          <!--</li>-->
+        </ul>
+
+        <!-- Add Theme/Author/Keyword Form -->
         <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">
+          <ul class="tags">
+            <li class="title" ng-if="proposal.type==='PROPOSAL'">{{'Add to proposal'|translate}}: </li>
+            <li class="title" ng-if="proposal.type==='IDEA'">{{'Add to idea'|translate}}: </li>
+          </ul>
           <ul class="search_modes">
             <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
               <a ng-click="$parent.setAddContext('THEMES')" class="btn-sm">{{ 'Themes' | translate }}</a>
             </li>
-            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}" ng-if="userIsAuthor">
+            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}"
+                ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
               <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
             </li>
             <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'KEYWORDS'}">
               <a ng-click="$parent.setAddContext('KEYWORDS')" class="btn-sm">{{ 'Keywords'| translate }}</a>
             </li>
           </ul>
-          <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query" ng-change="$parent.currentAddQueryChange()">
+          <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query"
+                 ng-click="$parent.currentAddQueryChangeOnClick()" ng-change="$parent.currentAddQueryChange()">
           <fieldset class="tags">
             <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
               <ul class="suggestion-list">
@@ -71,15 +115,6 @@
             </div>
           </fieldset>
         </div>
-
-        <ul class="row tags">
-          <li class="title">Themes: </li>
-          <li ng-repeat="theme in proposal.themes track by $index" ng-mouseenter="theme.isHover = true" ng-mouseleave="theme.isHover = false">
-            <a>{{theme.title}}</a>
-            <i ng-if="theme.isHover && (userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
-            <!--<span ng-if="!$last">,</span>-->
-          </li>
-        </ul>
 
         <div class="overlay new_overlay contribution_toolbar" style="display: inline-flex">
           <ul class="overlay_buttons">
@@ -186,6 +221,18 @@
             </div>
           </div>
         </div>
+        <div class="proposal-summary" id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
+          <!-- Custom Fields -->
+          <div class="field__container">
+            <h2 class="intro bold">{{'Additional info' | translate}}</h2>
+            <!--<custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" -->
+                          <!--value="fieldsValuesDict[field.customFieldDefinitionId]" renderer="readonly"></custom-field>-->
+            <!--<custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" -->
+                          <!--value="fieldsValuesDict[field.customFieldDefinitionId]" renderer="readonly"></custom-field>-->
+            <custom-field ng-repeat="field in fieldsValues | orderBy:'position'" definition="field.customFieldDefinition"
+                          value="field.value" renderer="readonly"></custom-field>
+          </div>
+        </div>
       </section>
 
       <!-- Pictures carousel before idea content -->
@@ -209,19 +256,6 @@
             </ol>
           </div>
         <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
-      </section>
-
-      <section id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
-        <div class="row">
-          <div class="col-xs-12" style="padding: 1rem 2rem 0">
-            <!-- Custom Fields -->
-            <div class="field__container">
-              <h4 class="intro bold">{{'Custom information' | translate}}</h4>
-              <custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
-              <custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" value="values[field.customFieldDefinitionId]" renderer="readonly"></custom-field>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section class="comments__section">
@@ -517,6 +551,56 @@
               <member-card user="f.user"></member-card>
               <div class="textual" ng-if="f.textualFeedback" ng-bind-html="f.textualFeedback"></div>
             </div>
+          </div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add author/theme/keyword modal-->
+  <div class="modal fade dashboardModal" id="addToContributionModal" tabindex="-1" role="dialog" aria-labelledby="addToContributionLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
+          <h3 class="modal-title" id="addToContributionLabel" ng-if="proposal.type==='PROPOSAL'">{{'Add to proposal'|translate}}</h3>
+          <h3 class="modal-title" id="addToContributionLabel" ng-if="proposal.type==='IDEA'">{{'Add to proposal'|translate}}</h3>
+          <p>{{ 'Themes, Keywords or Authors' | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">
+            <ul class="search_modes">
+              <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
+                <a ng-click="$parent.setAddContext('THEMES')" class="btn-sm">{{ 'Themes' | translate }}</a>
+              </li>
+              <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}"
+                  ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
+                <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
+              </li>
+              <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'KEYWORDS'}">
+                <a ng-click="$parent.setAddContext('KEYWORDS')" class="btn-sm">{{ 'Keywords'| translate }}</a>
+              </li>
+            </ul>
+            <br>
+            <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query"
+                   ng-click="$parent.currentAddQueryChangeOnClick()" ng-change="$parent.currentAddQueryChange()">
+            <fieldset class="tags">
+              <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
+                <ul class="suggestion-list">
+                  <li ng-repeat="item in $parent.currentAdd.items track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                      class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                  </li>
+                  <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
+                      class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
+                  </li>
+                </ul>
+              </div>
+            </fieldset>
           </div>
         </div>
         <div class="modal-footer text-left">

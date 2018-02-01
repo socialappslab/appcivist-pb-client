@@ -60,7 +60,7 @@
                 Notify.show('Subscribed successfully', 'success');
               },
               function() {
-                Notify.show('Error while trying to communicate with the server', 'error');
+                Notify.show(error.statusMessage, 'error');
               }
             );
           }

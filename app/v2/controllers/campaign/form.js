@@ -481,7 +481,7 @@
           campaignEl.campaign.components = components;
           $scope.initializeLinkedCampaignOptionThemes(campaignEl);
         }, function(error) {
-          Notify.show('Error while trying to communicate with the server', 'error');
+          Notify.show(error.statusMessage, 'error');
         });
 
         $scope.assembly = localStorageService.get("currentAssembly");
@@ -635,10 +635,10 @@
               $location.url('/v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.newCampaign.campaignId);
               // TODO: use separated endpoints for themes, components and configs
             },
-              error => Notify.show('Could not save the campaign', 'error'));
+              error => Notify.show(error.statusMessage, 'error'));
         } else {
           $scope.errors.push(payload.error);
-          Notify.show('Error. Could not save the campaign', 'error');
+          Notify.show(error.statusMessage, 'error');
           payload.error = undefined;
         }
       } else {

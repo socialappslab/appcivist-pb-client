@@ -3,6 +3,9 @@
   <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage">
     <a ng-click="vm.openModal('contributionEditModal')">{{'Edit information' | translate}}</a>
   </li>
+  <li class="li-action-menu">
+    <a ng-click="vm.openModal('contributionExport')">{{'Export proposal' | translate}}</a>
+  </li>
   <li class="li-action-menu"
       ng-if="vm.userIsAuthor ||
                 ((vm.userIsAuthor || vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator)
@@ -42,6 +45,7 @@
 
 <modal open-if="vm.modals.feedbackModal" close="vm.closeModal('feedbackModal')" title="Feedback Form" template-id="feedbackModal"></modal>
 <modal open-if="vm.modals.contributionEditModal" close="vm.closeModal('contributionEditModal')" title="Edit Form" template-id="contributionEditModal"></modal>
+<modal open-if="vm.modals.contributionExport" close="vm.closeModal('contributionExport')" title="Edit Form" template-id="contributionExport"></modal>
 
 <script id="feedbackModal" type="text/ng-template">
   <contribution-feedback-form contribution="vm.contribution" on-success="vm.closeModal('feedbackModal')"></contribution-feedback-form>
@@ -49,6 +53,10 @@
 
 <script id="contributionEditModal" type="text/ng-template">
   <contribution-form contribution="vm.contribution" on-success="vm.onEditContributionSuccess()" mode="edit" user="user" type="{{vm.contribution.type}}"></contribution-form>
+</script>
+
+<script id="contributionExport" type="text/ng-template">
+  <contribution-export contribution="vm.contribution" on-success="vm.closeModal('contributionExport')" mode="edit" user="user" type="{{vm.contribution.type}}"></contribution-export>
 </script>
 
 <script id="contributionModerationForm" type="text/ng-template">

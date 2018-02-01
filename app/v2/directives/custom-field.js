@@ -60,29 +60,46 @@
       this.checkType();
       this.isUpdatingModel = false;
 
-
-      // watcher for updating internal model.
-      $scope.$watchCollection('vm.value', value => {
-        if (!value || !this.isEdition) {
-          return;
-        }
-        this.isUpdatingModel = true;
-        this.updateModel(value);
-        this.isUpdatingModel = false;
-      });
-
-      // watcher for updating custom-field value.
-      $scope.$watchCollection('vm.model', this.modelUpdateHandler);
-
-      // watcher for updating custom-field value (for STRING_OPEN options).
-      $scope.$watch('vm.stringOpenSingleValue', this.modelUpdateHandler);
-      $scope.$watchCollection('vm.stringOpenMultipleValue', this.modelUpdateHandler);
-
       if (this.renderer) {
         this.isReadonly = this.renderer === 'readonly';
         this.isEdition = this.renderer === 'edition';
       } else {
         this.isEdition = true;
+        this.isReadonly = false;
+      }
+
+      if (this.value) {
+          this.isUpdatingModel = true;
+          this.updateModel(this.value);
+          this.isUpdatingModel = false;
+      } else {
+        if (this.isEdition) {
+          // watcher for updating internal model.
+          $scope.$watchCollection('vm.value', value => {
+            if (!value) {
+              return;
+            }
+            this.isUpdatingModel = true;
+            this.updateModel(value);
+            this.isUpdatingModel = false;
+          });
+        }
+      }
+
+      // Define watchers on the value object if we are in editing mode
+      if (this.isEdition) {
+        // watcher for updating custom-field value.
+        $scope.$watchCollection('vm.model', value => {
+          this.modelUpdateHandler(value)
+        });
+
+        // watcher for updating custom-field value (for STRING_OPEN options).
+        $scope.$watch('vm.stringOpenSingleValue', value => {
+          this.modelUpdateHandler(value);
+        });
+        $scope.$watchCollection('vm.stringOpenMultipleValue', value => {
+          this.modelUpdateHandler(value);
+        });
       }
     };
 
@@ -98,18 +115,21 @@
       this.sync(value);
     }
 
+    /**
+     * Checks the type of the Custom Field Definition to initialize variables used to support rendering
+     * of the field values and options
+     */
     function checkType() {
       const type = this.definition.fieldType;
 
       if (type === 'TEXT') {
         this.isText = true;
-        this.isTextArea = parseInt(this.definition.limit) >= 200 || this.definition.limitType === 'WORDS';
+        this.isTextArea = parseInt(this.definition.limit) >= 200 || this.definition.limitType === 'WORDS' || this.definition.limitType === 'PARAGRAPHS';
       } else if (type === 'NUMBER') {
         this.isNumber = true;
       } else if (type === 'FILE') {
         this.isFile = true;
       } else if (type == 'MULTIPLE_CHOICE') {
-
         if (this.definition.limit === '1') {
           this.isSingleChoice = true;
         } else if (this.definition.limit === 'MULTIPLE') {
@@ -121,11 +141,14 @@
       }
     }
 
-
+    /**
+     * Returns a Field Name Angular String
+     * @param definition
+     * @returns {string}
+     */
     function getFieldName(definition) {
       return `${definition.name}-${definition.customFieldDefinitionId}`;
     }
-
 
     /**
      * Uploads the selected file to the server
@@ -153,7 +176,8 @@
     }
 
     /**
-     * Updates the custom-field component's internal model property.
+     * Updates the custom-field component's internal model property, which directly represents the value of the
+     * CustomFieldValue object.
      *
      * @param {object} fieldValue - CustomFieldValue
      */
@@ -205,6 +229,34 @@
           return option.isStringOpen ? this.stringOpenMultipleValue[option.customFieldValueOptionId] : this.model[option.customFieldValueOptionId];
         });
       } else {
+        let error = false;
+        let limit = this.value.customFieldDefinition.limit;
+        let limitType = this.value.customFieldDefinition.limitType;
+        if (this.isText || this.isTextArea) {
+          // validate the value
+          if (limitType === 'CHARS') {
+            if (limit) {
+              error = value.length > limit;
+            }
+          } else if (limitType === 'WORDS') {
+            var s = value ? value.split(/\s+/) : 0; // it splits the text on space/tab/enter
+            error = s ? s.length > limit : false;
+          } else if (limitType === 'PARAGRAPHS') {
+            var s = value ? value.split(/\n+/) : 0; // it splits the text on space/tab/enter
+            error = s ? s.length > limit : false;
+          }
+        }
+
+        if (this.isNumber) {
+          if (limit) {
+            error = value > limit;
+          }
+        }
+
+        if (error) {
+          Notify.show('Only '+limit+' '+limitType ? limitType : ''+' allowed', 'error');
+          return;
+        }
         this.value.value = value;
       }
     }

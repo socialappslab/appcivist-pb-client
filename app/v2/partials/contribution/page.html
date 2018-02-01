@@ -226,12 +226,8 @@
           <!-- Custom Fields -->
           <div class="field__container">
             <h2 class="intro bold">{{'Additional info' | translate}}</h2>
-            <!--<custom-field ng-repeat="field in campaignFields | orderBy:'position'" definition="field" -->
-                          <!--value="fieldsValuesDict[field.customFieldDefinitionId]" renderer="readonly"></custom-field>-->
-            <!--<custom-field ng-repeat="field in componentFields | orderBy:'position'" definition="field" -->
-                          <!--value="fieldsValuesDict[field.customFieldDefinitionId]" renderer="readonly"></custom-field>-->
-            <custom-field ng-repeat="field in fieldsValues | orderBy:'position'" definition="field.customFieldDefinition"
-                          value="field.value" renderer="readonly"></custom-field>
+            <custom-field ng-repeat="value in fieldsValues | orderBy:'position'" definition="value.customFieldDefinition"
+                          value="value" renderer="readonly"></custom-field>
           </div>
         </div>
       </section>

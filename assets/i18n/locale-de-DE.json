@@ -1297,6 +1297,11 @@
   "Created": "Created",
   "Last updated": "Last updated",
   "Additional info": "Additional information",
+  "Campaign Newsletter": "Campaign Newsletter",
+  "Working Group Newsletter": "Working Group Newsletter",
+  "workinggroup.newsletter.subscription.question.members": "Would you like to subscribe to a weekly newsletter with the updates on the events in this working group?",
+  "workinggroup.newsletter.subscription.question.non-members": "Would you like to sign up and receive updates about the events in this working group?",
+  "Unsubscribe": "Unsubscribe",
   "Export proposal": "Export proposal",
   "Export": "Export"
 }

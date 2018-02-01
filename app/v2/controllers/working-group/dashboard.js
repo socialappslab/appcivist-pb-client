@@ -8,12 +8,12 @@
 
   WorkingGroupDashboardCtrl.$inject = [
     '$scope', 'Campaigns', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', 'Invitations', '$filter',
-    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http', '$breadcrumb'
+    'localStorageService', 'Notify', 'Memberships', 'Space', '$translate', '$rootScope', '$state', '$http', '$breadcrumb', 'Notifications'
   ];
 
   function WorkingGroupDashboardCtrl($scope, Campaigns, WorkingGroups, $stateParams, Assemblies, Contributions, Invitations,
                                      $filter, localStorageService, Notify, Memberships, Space, $translate, $rootScope,
-                                     $state, $http, $breadcrumb) {
+                                     $state, $http, $breadcrumb, Notifications) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) {
@@ -48,6 +48,7 @@
       $scope.membersFileUrl = null;
       $scope.membersSendInvitations = null;
       $scope.commentType = 'public';
+      $scope.subscribed = false;
 
       $scope.$watch('membersFile', $scope.getFromFile);
 
@@ -129,6 +130,9 @@
       $scope.updateStatus = updateStatus.bind($scope);
       $scope.resendInvitation = resendInvitation.bind($scope);
       $scope.submitMembers = submitMembers.bind($scope);
+      $scope.subscribeNewsletter = subscribeNewsletter.bind($scope);
+      $scope.unsubscribeNewsletter = unsubscribeNewsletter.bind($scope);
+      $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
@@ -358,6 +362,8 @@
 
             loadRelatedContributions();
           }
+          
+          checkIfSubscribed($scope.wg.rsID);
         },
         function (error) {
           Notify.show('Error occured trying to initialize the working group: ' + error.statusMessage, 'error');
@@ -600,6 +606,54 @@
         cid: this.campaignID,
         gid: this.groupID
       });
+    }
+
+    function subscribeNewsletter() {
+      let sub = {
+        spaceId: $scope.wg.rsUUID,
+        userId: $scope.user.userId,
+        spaceType: "WORKING_GROUP",
+        subscriptionType: "NEWSLETTER"
+      }
+      Notifications.subscribe().save(sub).$promise.then(
+        response => {
+          $scope.subscribed = true;
+          /*$scope.subscriptionId = response.id;*/
+          Notify.show("Subscribed successfully. We'll be in touch", "success");
+        },
+        error => {
+          Notify.show("Error trying to subscribe. Please try again later.", "error")
+        }
+      );
+    }
+    
+    function unsubscribeNewsletter() {
+      let spaceId = $scope.wg.rsID
+      Notifications.unsubscribe(spaceId, $scope.subscriptionId).then(
+        response => {
+          $scope.subscribed = false;
+          Notify.show("Unsubscribed successfully.", "success");
+        },
+        error => {
+          Notify.show("Error trying to unsubscribe. Please try again later.", "error")
+        }
+      );
+    }
+
+    function checkIfSubscribed(sid) {
+      let res = Notifications.getSubscriptions(sid).query();
+      res.$promise.then(
+        function (response) {
+          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
+          if (substatus.length > 0) {
+            $scope.subscriptionId = substatus[0].id;
+            $scope.subscribed = true;
+          }
+        },
+        function (error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
     }
   }
 }());

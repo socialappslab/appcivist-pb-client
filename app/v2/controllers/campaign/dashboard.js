@@ -23,12 +23,13 @@
     '$state',
     'Voting',
     '$sce',
+    'Notifications',
     '$breadcrumb'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce, $breadcrumb) {
+    $state, Voting, $sce, Notifications, $breadcrumb) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -60,6 +61,7 @@
       $scope.vmPaginated = {};
       $scope.configsLoaded = false;
       $scope.commentType = 'public';
+      $scope.subscribed = false;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -143,6 +145,9 @@
       $scope.deleteResource = deleteResource.bind($scope);
       $scope.joinWg = joinWg.bind($scope);
       $scope.loadThemeKeywordDescription = loadThemeKeywordDescription.bind($scope);
+      $scope.subscribeNewsletter = subscribeNewsletter.bind($scope);
+      $scope.unsubscribeNewsletter = unsubscribeNewsletter.bind($scope);
+      $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
       $scope.resourceIsDocument = resourceIsDocument.bind($scope);
       $scope.resourceIsMedia = resourceIsMedia.bind($scope);
       $scope.resourceIsPicture = resourceIsPicture.bind($scope);
@@ -323,6 +328,8 @@
               Notify.show(error.statusMessage, 'error');
             }
           );
+
+          checkIfSubscribed($scope.campaign.rsID);
         }
       );
     }
@@ -879,6 +886,54 @@
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;
+    }
+
+    function subscribeNewsletter() {
+      let sub = {
+        spaceId: $scope.campaign.rsUUID,
+        userId: $scope.user.userId,
+        spaceType: "CAMPAIGN",
+        subscriptionType: "NEWSLETTER"
+      }
+      Notifications.subscribe().save(sub).$promise.then(
+        response => {
+          $scope.subscribed = true;
+          /*$scope.subscriptionId = response.id;*/
+          Notify.show("Subscribed successfully. We'll be in touch", "success");
+        },
+        error => {
+          Notify.show("Error trying to subscribe. Please try again later.", "error")
+        }
+      );
+    }
+    
+    function unsubscribeNewsletter() {
+      let spaceId = $scope.campaign.rsID
+      Notifications.unsubscribe(spaceId, $scope.subscriptionId).then(
+        response => {
+          $scope.subscribed = false;
+          Notify.show("Unsubscribed successfully.", "success");
+        },
+        error => {
+          Notify.show("Error trying to unsubscribe. Please try again later.", "error")
+        }
+      );
+    }
+
+    function checkIfSubscribed(sid) {
+      let res = Notifications.getSubscriptions(sid).query();
+      res.$promise.then(
+        function (response) {
+          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
+          if (substatus.length > 0) {
+            $scope.subscriptionId = substatus[0].id;
+            $scope.subscribed = true;
+          }
+        },
+        function (error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
     }
   }
 })();

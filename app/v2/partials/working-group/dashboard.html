@@ -64,6 +64,10 @@
               </a>
             </li>
           </ul>
+          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription" ng-if="!isAnonymous && !subscribed">Subscribe to Newsletter</button>
+          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterUnsubscribe" ng-if="!isAnonymous && subscribed">Unsubscribe to Newsletter</button>
+          
+          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember">Subscribe to Newsletter</button>
         </div>
       </div>
     </header>
@@ -342,6 +346,67 @@
               <button type="submit" class="btn btn-default btn-submit">{{ 'Add new members' | translate }}</button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Subscribe when logged in -->
+  <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>{{'Working Group Newsletter'|translate}}</p>
+        </div>
+        <div class="modal-body">
+          <p>{{'workinggroup.newsletter.subscription.question.members'|translate}}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="subscribeNewsletter()">{{'Subscribe'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Unubscribe when logged in -->
+  <div class="modal fade dashboardModal" id="newsletterUnsubscribe" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>{{'Working Group Newsletter'|translate}}</p>
+        </div>
+        <div class="modal-body">
+          <p>{{'workinggroup.newsletter.subscription.question.members'|translate}}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="unsubscribeNewsletter()">{{'Unsubscribe'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscribe when not logged in -->
+  <div class="modal fade dashboardModal" id="newsletterSubscriptionNotLoggedIn"
+       tabindex="-1" role="dialog" aria-labelledby="newsletterSubscriptionNotLoggedInLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p>{{'Working Group Newsletter'|translate}}</p>
+        </div>
+        <div class="modal-body">
+          <p>{{'workinggroup.newsletter.subscription.question.non-members'|translate}}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal">{{'Sign up'}}</button>
         </div>
       </div>
     </div>

@@ -12,6 +12,8 @@ section.content {
   }
   &+label:before { content: "\f10c"; } /* unchecked icon */
   &:checked + label:before { content: "\f05d"; } /* checked icon */
+}
+
 #fblogo {
   height: 100%;
   text-align: center;

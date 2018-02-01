@@ -100,7 +100,6 @@
       this.file.csv = file;
     }
 
-
     this.$onInit = () => {
       if (this.mode === 'create') {
         this.initCreate()
@@ -171,15 +170,9 @@
         textField: 'title',
         idField: 'themeId'
       };
-      this.authorsOptions = {
-        idField: 'userId',
-        textField: 'name'
-      };
       this.isProposal = this.contribution.type === 'PROPOSAL';
       this.isIdea = this.contribution.type === 'IDEA';
-      this.isAuthorsDisabled = this.isProposal;
 
-      // TODO we should move the anonymous site to include the path of the assembly
       this.isAnonymous = false;
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         this.isAnonymous = true;

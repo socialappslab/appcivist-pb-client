@@ -597,6 +597,23 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
     subscribe() {
       return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
     },
+    
+    unsubscribe: function(spaceId, subId) {
+      /*return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/space/:sid', { sid: spaceId }, {
+        'delete': { method: 'delete' }
+      }).delete().$promise;*/
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/subscription/:subid', { sid: spaceId, subid: subId }, {
+        'delete': { method: 'delete' }
+      }).delete().$promise;
+    },
+
+    getSubscriptions: function(spaceId, subId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/subscription', { sid: spaceId });
+    },
+
+    subscriptionsBySpace(spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/space/:sid', { sid: spaceId });
+    },
 
     /**
      * Returns the total number of notifications for the given user.

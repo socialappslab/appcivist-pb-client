@@ -10,12 +10,12 @@
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
-    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -50,6 +50,8 @@
     $scope.embedPadGdoc = embedPadGdoc.bind($scope);
     $scope.loadCampaignResources = loadCampaignResources.bind($scope);
     $scope.filterCustomFields = filterCustomFields.bind($scope);
+    $scope.follow = follow.bind($scope);
+    $scope.unfollow = unfollow.bind($scope);
 
     activate();
 
@@ -171,6 +173,7 @@
       });
       $scope.resources = {};
       $scope.newDocUrl = "";
+      $scope.following = false;
     }
 
     function toggleOpenAddAttachment () {
@@ -684,6 +687,7 @@
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();
         loadCustomFields();
+        checkIfFollowing($scope.campaign.rsID);
       } else {
         var res;
         if ($scope.isAnonymous) {
@@ -699,6 +703,7 @@
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
           loadCustomFields();
+          checkIfFollowing($scope.campaign.rsID);
         }, function (error) {
           Notify.show(error.statusMessage, 'error');
         });
@@ -1102,6 +1107,54 @@
         });
       }
       loadValues($scope.proposal.resourceSpaceId);
+    }
+
+    function follow() {
+      let sub = {
+        spaceId: $scope.campaign.rsUUID,
+        userId: $scope.user.userId,
+        spaceType: "CONTRIBUTION",
+        subscriptionType: "REGULAR"
+      }
+      Notifications.subscribe().save(sub).$promise.then(
+        response => {
+          $scope.following = true;
+          /*$scope.subscriptionId = response.id;*/
+          Notify.show("Subscribed successfully. We'll be in touch", "success");
+        },
+        error => {
+          Notify.show("Error trying to subscribe. Please try again later.", "error")
+        }
+      );
+    }
+    
+    function unfollow() {
+      let spaceId = $scope.campaign.rsID
+      Notifications.unsubscribe(spaceId, $scope.subscriptionId).then(
+        response => {
+          $scope.following = false;
+          Notify.show("Unsubscribed successfully.", "success");
+        },
+        error => {
+          Notify.show("Error trying to unsubscribe. Please try again later.", "error")
+        }
+      );
+    }
+
+    function checkIfFollowing(sid) {
+      let res = Notifications.getSubscriptions(sid).query();
+      res.$promise.then(
+        function (response) {
+          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
+          if (substatus.length > 0) {
+            $scope.subscriptionId = substatus[0].id;
+            $scope.subscribed = response.subscribed;
+          }
+        },
+        function (error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
     }
   }
 }());

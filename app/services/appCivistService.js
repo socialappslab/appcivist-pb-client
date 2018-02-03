@@ -776,25 +776,42 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
-    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, pub) {
+    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub) {
+      let queryParams = '?format=:format&fields=[:fields]&customFields=:customFields';
+
+      if(includeDoc) {
+        queryParams = queryParams + '&includeExtendedText=:includeDoc&extendedTextFormat=:docExportFormat';
+      }
+
       if (selectedContributions) {
-        return $resource(getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution?format=:format&selectedContributions=:selectedContributions&fields=[:fields]&customFields=:customFields', {sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields, customFields: customFields}, {
-          'getText': {
-            transformResponse: function(data, headersGetter, status) { return { content: data } }
-          }
-        })
-      } else if (contributionId) {
-          return $resource(getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid?format=:format&fields=[:fields}&customFields=:customFields', {sid: spaceId, format: format, fields: fields, customFields: customFields, coid: contributionId}, {
+        queryParams = queryParams + '&selectedContributions=:selectedContributions'
+      }
+      if (contributionId) {
+          return $resource(
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid' + queryParams,
+            {
+              sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
+              customFields: customFields, coid: contributionId, includeDoc: includeDoc, docExportFormat: docExportFormat
+            },
+            {
+              'getText': {
+                transformResponse: function(data, headersGetter, status) { return { content: data } }
+              }
+            }
+          )
+      } else {
+        return $resource(
+          getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution' + queryParams,
+          {
+            sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
+            customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat
+          },
+          {
             'getText': {
               transformResponse: function(data, headersGetter, status) { return { content: data } }
             }
-          })
-      } else {
-        return $resource(getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution?format=:format&fields=[:fields}&customFields=:customFields', {sid: spaceId, format: format, fields: fields, customFields: customFields}, {
-          'getText': {
-            transformResponse: function(data, headersGetter, status) { return { content: data } }
           }
-        })
+        )
       }
     },
     /**

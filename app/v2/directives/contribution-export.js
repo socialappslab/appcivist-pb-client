@@ -96,9 +96,11 @@
       this.isIdea = this.type === 'IDEA';
       this.isProposal = this.type === 'PROPOSAL';
       this.tmpAuthorIDCount = 0;
-      this.exportFormat = 'csv';
+      this.exportFormat = 'CSV';
       this.fields = []
       this.customFields = []
+      this.includeDoc = false;
+      this.docExportFormat = 'PDF';
 
       function toggleSelection(field) {
         var idx = this.fields.indexOf(field);
@@ -238,17 +240,20 @@
           coid = this.contribution.uuid;
           pub = true;
         }
-        let rsp = Contributions.contributionInResouceSpaceExport(sid, coid, this.exportFormat, this.fields, pub).getText().$promise.then(
-          returned => {
-            Notify.show(returned.content, 'success')
-            if (angular.isFunction(this.onSuccess)) {
-              this.onSuccess();
-            }
-          },
-          error => {
-            Notify.show(error.statusMessage, 'error')
-          }
-        )
+        let rsp = Contributions.contributionInResouceSpaceExport(sid, coid, this.exportFormat, this.fields,
+          this.customFields, this.selectedContributions,
+          this.includeDoc, this.docExportFormat, pub)
+            .getText().$promise.then(
+              returned => {
+                Notify.show(returned.content, 'success')
+               if (angular.isFunction(this.onSuccess)) {
+                  this.onSuccess();
+                }
+              },
+              error => {
+                Notify.show(error.statusMessage, 'error')
+              }
+            )
       }
 
 

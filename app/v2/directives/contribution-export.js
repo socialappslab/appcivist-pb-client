@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-  
+
     /**
      * @name contribution-export
      * @memberof directives
@@ -17,29 +17,29 @@
         selector: 'contributionExport',
         bindings: {
           campaign: '=?',
-  
+
           // associates the given group with the contribution
           group: '=?',
-  
+
           //supported values:  PROPOSAL | IDEA
           type: '@',
-  
+
           // handler called when contribution creation has succeeded.
           // The function gets as a parameter the created contribution. An example of onSuccess callback is
           // function onSuccessCallback(contribution) { ... }
           onSuccess: '&',
-  
+
           // handler called when import has succeeded.
           // An example of onSuccess callback is
           // function onSuccessCallback() { ... }
           onImportSuccess: '&',
-  
+
           // in edit mode, the contribution to edit.
           contribution: '<',
-  
+
           // edit | create, default value is create
           mode: '@',
-  
+
           // campaign or current component configs
           configs: '=?',
         },
@@ -47,13 +47,13 @@
         controllerAs: 'vm',
         templateUrl: '/app/v2/partials/directives/contribution-export.html'
       });
-  
+
     ExportCtrl.$inject = [
       'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
       'Assemblies', 'Contributions', '$http', 'FileUploader', 'Space', '$q', '$timeout',
       '$filter', '$state', '$scope', '$stateParams', 'Captcha', '$attrs', '$translate'
     ];
-  
+
     function ExportCtrl(WorkingGroups, localStorageService, Notify, Memberships,
       Campaigns, Assemblies, Contributions, $http, FileUploader, Space, $q, $timeout,
       $filter, $state, $scope, $stateParams, Captcha, $attrs, $translate) {
@@ -88,7 +88,7 @@
       this.setFile = setFile.bind(this);
       this.exportContribution = exportContribution.bind(this);
       this.toggleSelection = toggleSelection.bind(this);
-  
+
       this.mode = this.mode || 'create';
       this.isEdit = this.mode === 'edit';
       this.isCreate = this.mode === 'create';
@@ -108,13 +108,13 @@
           this.fields.push(field);
         }
       }
-  
-  
+
+
       function setFile(file) {
         this.file.csv = file;
       }
-  
-  
+
+
       this.$onInit = () => {
         if (this.mode === 'create') {
           this.initCreate()
@@ -122,10 +122,10 @@
           this.initEdit();
         }
       };
-  
+
       function initEdit() {
         var vm = this;
-  
+
         if (!this.contribution) {
           $scope.$watch('vm.contribution', function (newVal) {
             if (newVal) {
@@ -137,10 +137,10 @@
           this.init();
         }
       }
-  
+
       function initCreate() {
         var vm = this;
-  
+
         if (!this.campaign) {
           $scope.$watch('vm.campaign', function (newVal) {
             if (newVal) {
@@ -152,7 +152,7 @@
           this.init();
         }
       }
-  
+
       function init() {
         this.importOnlyForm = $attrs.importOnly !== undefined;
         // Example http://localhost:8000/#/v2/assembly/8/campaign/56c08723-0758-4319-8dee-b752cf8004e6
@@ -177,10 +177,10 @@
           cover: {}
         };
         this.importCreateThemes = false;
-  
+
         this.contribution.location = this.contribution.location || {};
         this.contribution.addedThemes = [];
-  
+
         this.themesOptions = {
           textField: 'title',
           idField: 'themeId'
@@ -192,7 +192,7 @@
         this.isProposal = this.contribution.type === 'PROPOSAL';
         this.isIdea = this.contribution.type === 'IDEA';
         this.isAuthorsDisabled = this.isProposal;
-  
+
         // TODO we should move the anonymous site to include the path of the assembly
         this.isAnonymous = false;
         if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
@@ -213,7 +213,7 @@
         this.hiddenFieldsMap = {};
         let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];
         hiddenFields.forEach(hf => this.hiddenFieldsMap[hf] = true);
-  
+
         if (this.isCreate) {
           this.loadWorkingGroups();
           this.loadCustomFields();
@@ -230,7 +230,15 @@
       }
 
       function exportContribution() {
-        let rsp = Contributions.contributionInResouceSpaceExport(this.contribution.resourceSpaceId, this.exportFormat, this.fields).getText().$promise.then(
+        let sid = this.campaign.resourceSpaceId;
+        let coid = this.contribution.contributionId;
+        let pub = false;
+        if ($stateParams.cuuid) {
+          sid = this.campaign.resurceSpaceUUID;
+          coid = this.contribution.uuid;
+          pub = true;
+        }
+        let rsp = Contributions.contributionInResouceSpaceExport(sid, coid, this.exportFormat, this.fields, pub).getText().$promise.then(
           returned => {
             Notify.show(returned.content, 'success')
             if (angular.isFunction(this.onSuccess)) {
@@ -242,8 +250,8 @@
           }
         )
       }
-  
-  
+
+
       function getEditorOptions() {
         var vm = this;
         return {
@@ -269,13 +277,13 @@
             xhr.open('POST', FileUploader.uploadEndpoint());
             xhr.onload = function () {
               var json;
-  
+
               if (xhr.status != 200) {
                 failure('HTTP Error: ' + xhr.status);
                 return;
               }
               json = JSON.parse(xhr.responseText);
-  
+
               if (!json || typeof json.url != 'string') {
                 failure('Invalid JSON: ' + xhr.responseText);
                 return;
@@ -305,7 +313,7 @@
           }
         };
       }
-  
+
       /**
        * Disable all field in the form.
        */
@@ -313,7 +321,7 @@
         this.disabled = true;
         this.isAuthorsDisabled = true;
       }
-  
+
       /**
        * Load available working groups for current assembly. If a group
        * is passed as an attribute, we set that as the working group for the
@@ -337,31 +345,31 @@
           if (topicWgs) {
             groups = groups.concat(topicWgs);
           }
-  
+
           let otherWgs = localStorageService.get('otherWorkingGroups');
           if (otherWgs) {
             groups = groups.concat(otherWgs);
           }
-  
+
           this.groups = groups;
         }
       }
-  
+
       /**
        * Validates current user's memberships information.
        */
       function verifyMembership() {
         this.userIsAssemblyCoordinator = Memberships.rolIn('assembly', this.assembly.assemblyId, 'COORDINATOR');
       }
-  
+
       function loadOfficialThemes(query) {
         return this.loadThemes(query, 'OFFICIAL_PRE_DEFINED');
       }
-  
+
       function loadEmergentThemes(query) {
         return this.loadThemes(query, 'EMERGENT');
       }
-  
+
       /**
        * Gets themes from the backend.
        *
@@ -370,13 +378,13 @@
        */
       function loadThemes(query, type) {
         var campaignId;
-  
+
         if (this.isCreate) {
           campaignId = this.campaign.campaignId;
         } else {
           campaignId = this.contribution.campaignIds[0];
         }
-  
+
         let filters = {themeType: type};
         if (query && query.query && query.query !== "") {
           filters.query = query.query;
@@ -394,7 +402,7 @@
             });
         }
       }
-  
+
       /**
        * Called whenever currently selected working group changes
        */
@@ -404,7 +412,7 @@
           this.isAuthorsDisabled = false;
         }
       }
-  
+
       /**
        * This method is responsible for loading the list of authors. It simply loads the members of
        * the current assembly.
@@ -414,7 +422,7 @@
       function loadAuthors(query) {
         var self = this;
         var rsp;
-  
+
         if (!self.assemblyMembers) {
           rsp = Assemblies.assemblyMembers(self.assembly.assemblyId).query().$promise;
           return rsp.then(
@@ -434,7 +442,7 @@
           return $filter('filter')(self.assemblyMembers, { name: query });
         }
       }
-  
+
       /**
        * Sends the contribution to the backend.
        */
@@ -448,7 +456,7 @@
           this.contributionSubmit();
         }
       }
-  
+
       /**
        * Upload csv file.
        */
@@ -472,7 +480,7 @@
           response => {
             Pace.stop();
             Notify.show('Contribution created', 'success');
-  
+
             if (angular.isFunction(self.onImportSuccess)) {
               self.onImportSuccess();
             }
@@ -483,7 +491,7 @@
           }
           );
       }
-  
+
       /**
        * Upload the given file to the server. Also, attachs it to
        * the current contribution.
@@ -497,7 +505,7 @@
         let fd = new FormData();
         //fd.append('file', this.newAttachment.file);
         fd.append('file', file);
-  
+
         $http.post(FileUploader.uploadEndpoint(), fd, {
           headers: {
             'Content-Type': undefined
@@ -519,7 +527,7 @@
           Notify.show('Error while uploading file to the server', 'error');
         });
       }
-  
+
       /**
        * After the file has been uploaded, we should relate it with the contribution.
        *
@@ -536,7 +544,7 @@
         this.newAttachment.name = "";
         this.newAttachment.file = undefined;
       }
-  
+
       /**
        * Creates a new contribution.
        */
@@ -546,7 +554,7 @@
         payload.existingThemes = payload.officialThemes || [];
         payload.emergentThemes = payload.emergentThemes || [];
         payload.emergentThemes.forEach(t => {
-  
+
           if (angular.isNumber(t.themeId)) {
             payload.existingThemes.push(t);
           } else {
@@ -555,7 +563,7 @@
           }
         });
         payload.emergentThemes = payload.emergentThemes.filter(t => t.themeId === undefined);
-  
+
         if (payload.authors) {
           for (var index=0; index<payload.authors.length; index++) {
             let author = payload.authors[index];
@@ -566,17 +574,17 @@
             }
           }
         }
-  
+
         // we save a reference to the authors list with their custom fields values.
         this.nonMemberAuthorsRef = payload.nonMemberAuthors;
-  
+
         if ($scope.contributionForm.$invalid) {
           Notify.show('The form is invalid: you must fill all required values', 'error');
           return;
         }
         Pace.restart();
         let rsp;
-  
+
         if (this.mode === 'create') {
           if (this.isAnonymous) {
             rsp = Contributions.contributionInResourceSpaceByUUID(this.campaign.resourceSpaceUUID).save(payload).$promise.then(
@@ -598,12 +606,12 @@
           console.warn('Only create or edit are accepted mode in contribution form');
           return;
         }
-  
+
         rsp.then(
           data => {
             Pace.stop();
             Notify.show('Contribution saved', 'success');
-  
+
             if (angular.isFunction(vm.onSuccess)) {
               vm.onSuccess({ contribution: data });
             }
@@ -614,7 +622,7 @@
           }
         );
       }
-  
+
       /**
        * In edit mode, we copy the given contribution and remove the properties that
        * the PUT service does not need.
@@ -631,12 +639,12 @@
         delete contribution.extendedTextPad;
         this.contribution = contribution;
       }
-  
+
       function deleteAttachment(item) {
         var index = this.contribution.attachments.indexOf(item)
         this.contribution.attachments.splice(index, 1);
       }
-  
+
       /**
        * Loads contribution's custom fields.
        *
@@ -649,7 +657,7 @@
         } else {
           rsp = Space.fields(sid).query().$promise;
         }
-  
+
         return rsp.then(
           fields => fields,
           error => {
@@ -657,7 +665,7 @@
           }
         );
       }
-  
+
       /**
        * Loads contribution's custom fields values.
        *
@@ -679,7 +687,7 @@
           }
         );
       }
-  
+
       /**
        * Updates custom field values.
        *
@@ -692,7 +700,7 @@
           customFieldValues: []
         };
         angular.forEach(this.values, value => payload.customFieldValues.push(value));
-  
+
         // we need to save authors custom fields too.
         if (contribution.nonMemberAuthors) {
           contribution.nonMemberAuthors.forEach(nma => {
@@ -704,7 +712,7 @@
                 if (!angular.isArray(value)) {
                   value = [value];
                 }
-  
+
                 value.forEach(v => payload.customFieldValues.push({
                   customFieldDefinition: cfv.customFieldDefinition,
                   value: v.value || v,
@@ -715,7 +723,7 @@
             }
           });
         }
-  
+
         if (contribution.authors) {
           contribution.authors.forEach(ma => {
             let ref = _.find(this.nonMemberAuthorsRef, {email: ma.email, name: ma.name});
@@ -726,7 +734,7 @@
                 if (!angular.isArray(value)) {
                   value = [value];
                 }
-  
+
                 value.forEach(v => payload.customFieldValues.push({
                   customFieldDefinition: cfv.customFieldDefinition,
                   value: v.value || v,
@@ -737,7 +745,7 @@
             }
           });
         }
-  
+
         if (this.mode === 'create') {
           rsp = Space.fieldsValues(sid).save(payload).$promise;
         } else {
@@ -745,7 +753,7 @@
         }
         return rsp;
       }
-  
+
       /**
        * Loads the campaign from the server.
        *
@@ -762,8 +770,8 @@
           error => Notify.show('Error while trying to get campaign from server', 'error')
         );
       }
-  
-  
+
+
       function loadCustomFields() {
         let currentComponent = localStorageService.get('currentCampaign.currentComponent');
         this.currentComponent = currentComponent;
@@ -774,7 +782,7 @@
           this.campaignResourceSpaceId = this.campaign.resourceSpaceId;
           this.componentResourceSpaceId = currentComponent.resourceSpaceId;
         }
-  
+
         this.loadFields(this.campaignResourceSpaceId).then(fields => {
           $timeout(() => {
             this.campaignFields = this.filterCustomFields(fields);
@@ -787,12 +795,12 @@
             $scope.$digest();
           });
         });
-  
+
         if (this.isEdit) {
           this.loadValues(this.contribution.resourceSpaceId);
         }
       }
-  
+
       /**
        * Add a new author to the list of non-member authors.
        *
@@ -803,11 +811,11 @@
           tmpId: `tmp-${this.tmpAuthorIDCount++}`,
           isOpen: true
         };
-  
+
         if (prefill && typeof prefill === 'boolean') {
           const isCoordinator = !this.isAnonymous || Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
           const isModerator = !this.isAnonymous || Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
-  
+
           if (!isCoordinator && !isModerator && !this.isAnonymous) {
             let user = localStorageService.get('user');
             author.name = user.name;
@@ -821,7 +829,7 @@
             return;
           }
         }
-  
+
         $timeout(() => {
           // scroll up
           const fieldsetEl = $('fieldset.user__assignment').last()[0];
@@ -830,7 +838,7 @@
           $(newEl).focus();
         });
       }
-  
+
       /**
        * Deletes the given author from the array of contribution authors.
        *
@@ -839,7 +847,7 @@
       function deleteAuthor(author) {
         _.remove(this.contribution.authors, { userId: author.userId });
       }
-  
+
       /**
        * Filter the given custom fields array based on the contribution type.
        *
@@ -848,8 +856,8 @@
       function filterCustomFields(fields) {
         return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === this.type);
       }
-  
-  
+
+
       /**
        * Recaptcha on-success handler.
        *
@@ -866,4 +874,3 @@
       }
     }
   }());
-  

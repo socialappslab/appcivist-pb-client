@@ -1309,5 +1309,8 @@
   "workinggroup.newsletter.subscription.question.non-members": "Would you like to sign up and receive updates about the events in this working group?",
   "Unsubscribe": "Unsubscribe",
   "Export proposal": "Export proposal",
-  "Export": "Export"
+  "Export": "Export",
+  "Select a format to export the proposal": "Select a format to export the proposal",
+  "Include document (GDOC or Etherpad)": "Include document (GDOC or Etherpad)",
+  "Select a format to export the document": "Select a format to export the document"
 }

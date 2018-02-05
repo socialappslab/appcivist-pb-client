@@ -95,10 +95,14 @@
 
         // watcher for updating custom-field value (for STRING_OPEN options).
         $scope.$watch('vm.stringOpenSingleValue', value => {
-          this.modelUpdateHandler(value);
+          if (this.isMultipleChoice || this.isSingleChoice) {
+            this.modelUpdateHandler(value);
+          }
         });
         $scope.$watchCollection('vm.stringOpenMultipleValue', value => {
-          this.modelUpdateHandler(value);
+          if (this.isMultipleChoice || this.isSingleChoice) {
+            this.modelUpdateHandler(value);
+          }
         });
       }
     };

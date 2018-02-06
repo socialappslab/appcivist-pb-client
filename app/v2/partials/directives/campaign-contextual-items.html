@@ -15,7 +15,7 @@
   </script>
 
   <script id="contributionExport" type="text/ng-template">
-    <contribution-export campaign="vm.campaign" on-success="vm.closeModal('contributionExport')" mode="edit" user="user" type="PROPOSAL"></contribution-export>
+    <contribution-export campaign="vm.campaign" on-success="vm.closeModal('contributionExport')" mode="multiple" user="user" type="PROPOSAL" contributions="vm.contributions"></contribution-export>
   </script>
 
   <modal open-if="vm.modals.ideasImportForm"

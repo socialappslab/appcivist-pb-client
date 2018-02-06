@@ -784,7 +784,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       }
 
       if (selectedContributions) {
-        queryParams = queryParams + '&selectedContributions=:selectedContributions'
+        queryParams = queryParams + '&selectedContributions=[:selectedContributions]'
       }
       if (contributionId) {
           return $resource(

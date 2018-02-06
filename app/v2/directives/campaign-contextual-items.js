@@ -21,7 +21,8 @@
         campaign: '=',
 
         // {string} proposal | idea
-        currentComponentType: '='
+        currentComponentType: '=',
+        contributions: '='
       },
       controller: FormCtrl,
       controllerAs: 'vm',

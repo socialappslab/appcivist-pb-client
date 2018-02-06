@@ -36,7 +36,6 @@
           scope.showContextualMenu = false;
           scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
           scope.toggleContextualMenu = toggleContextualMenu.bind(scope);
-          scope.showSelected = showSelected.bind(scope);
           scope.ideaExcerptStyle = scope.showIdeaBody ? { height: '120px' } : { height: '110px' };
           scope.ideaHeaderStyle = scope.showIdeaBody ? { height: '100px' } : { height: '150px' };
           setContributionType(scope);
@@ -45,6 +44,7 @@
           scope.formatDate = formatDate.bind(scope);
           scope.mergedThemes = mergeThemes(scope.contribution);
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
+          scope.toggleSelection = toggleSelection.bind(scope);
 
           if (scope.contribution.source !== undefined && scope.contribution.source == 'social_ideation_facebook') {
             scope.source_url = scope.contribution.source_url;
@@ -67,7 +67,7 @@
               }
             }
           }
-console.log(scope.contribution)
+
           // Prepare contribution's cover
           let cCover = scope.contribution.cover ? scope.contribution.cover.url : null;
 
@@ -111,6 +111,7 @@ console.log(scope.contribution)
           var workingGroupAuthorsLength = workingGroupAuthors ? workingGroupAuthors.length : 0;
           scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
           scope.notAssigned = true;
+          scope.conids = [];
 
           if (scope.group) {
             scope.notAssigned = false;
@@ -187,8 +188,13 @@ console.log(scope.contribution)
           return scope.trustedHtmlText;
         }
 
-        function showSelected () {
-          console.log(scope.selected);
+        function toggleSelection(conid) {
+          var idx = scope.selected.indexOf(conid);
+          if (idx > -1) {
+            scope.selected.splice(idx, 1);
+          } else {
+            scope.selected.push(conid);
+          }
         }
 
         function formatDate(date) {

@@ -1,5 +1,8 @@
 <div>
   <ul ng-if="vm.userIsAssemblyCoordinator">
+    <li class="li-action-menu">
+      <a ng-click="vm.openModal('contributionExport')">{{'Export proposals' | translate}}</a>
+    </li>
     <li class="li-action-menu"><a href="" ng-click="vm.edit()">{{'Edit' | translate}}</a></li>
     <li class="li-action-menu" ng-if="vm.showIdeasImport"><a ng-click="vm.openModal('ideasImportForm')">{{'Import ideas' | translate}}</a></li>
     <li class="li-action-menu" ng-if="vm.showProposalImport"><a ng-click="vm.openModal('proposalsImportForm')">{{'Import proposals' | translate}}</a></li>
@@ -9,6 +12,10 @@
 
   <script id="ideasImportForm" type="text/ng-template">
     <contribution-form campaign="vm.campaign" type="IDEA" on-import-success="$ideasImportForm.close()" import-only="true"></contribution-form>
+  </script>
+
+  <script id="contributionExport" type="text/ng-template">
+    <contribution-export campaign="vm.campaign" on-success="vm.closeModal('contributionExport')" mode="edit" user="user" type="PROPOSAL"></contribution-export>
   </script>
 
   <modal open-if="vm.modals.ideasImportForm"
@@ -26,4 +33,7 @@
          template-id="proposalsImportForm"
          modal-instance-reference="proposalsImportForm">
   </modal>
+
+  <modal open-if="vm.modals.contributionExport" close="vm.closeModal('contributionExport')" title="Edit Form" template-id="contributionExport"></modal>
+  
 </div>

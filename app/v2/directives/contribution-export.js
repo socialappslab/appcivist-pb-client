@@ -116,13 +116,11 @@
 
       function exportContribution() {
         let sid = this.campaign.resourceSpaceId;
-        console.log(this.campaign.resourceSpaceId);
-        console.log(this.mode);
         let coid = this.mode != 'multiple' ? this.contribution.contributionId : false;
         let pub = false;
         if ($stateParams.cuuid) {
           sid = this.campaign.resurceSpaceUUID;
-          coid = this.contribution.uuid;
+          coid = this.mode != 'multiple' ? this.contribution.uuid : false;
           pub = true;
         }
         console.log(coid);

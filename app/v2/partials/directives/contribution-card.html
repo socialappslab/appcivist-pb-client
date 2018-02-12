@@ -32,7 +32,7 @@
         <div class="card__heading_actions">
           <ul class="actions">
             <li ng-if="isCoordinator" class="action__toggle_selection">
-              <input type="checkbox" id="checkbox_{{contribution.contributionId}}" value="{{contribution.contributionId}}" class="contribution-select" ng-model="selected" ng-click="toggleSelection(contribution.contributionId)"><label for="checkbox_{{contribution.contributionId}}"></label>
+              <input type="checkbox" id="checkbox_{{contribution.uuid}}" value="{{contribution.uuid}}" class="contribution-select" ng-model="selected" ng-click="toggleSelection(contribution.uuid)"><label for="checkbox_{{contribution.uuid}}"></label>
             </li>
             <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
               <a><i class="fa fa-cog"></i></a>

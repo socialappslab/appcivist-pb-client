@@ -1,7 +1,10 @@
 <div>
   <ul ng-if="vm.userIsAssemblyCoordinator">
     <li class="li-action-menu">
-      <a ng-click="vm.openModal('contributionExport')">{{'Export proposals' | translate}}</a>
+      <a ng-click="vm.openModal('contributionExport')">
+        {{vm.filters.mode === 'idea' || vm.filters.mode === 'myideas' ? 'Export ideas'
+              : vm.filters.mode === 'proposal' || vm.filters.mode === 'myproposals' ? 'Export proposals' : 'Export contributions' | translate}}
+      </a>
     </li>
     <li class="li-action-menu"><a href="" ng-click="vm.edit()">{{'Edit' | translate}}</a></li>
     <li class="li-action-menu" ng-if="vm.showIdeasImport"><a ng-click="vm.openModal('ideasImportForm')">{{'Import ideas' | translate}}</a></li>
@@ -15,7 +18,9 @@
   </script>
 
   <script id="contributionExport" type="text/ng-template">
-    <contribution-export campaign="vm.campaign" on-success="vm.closeModal('contributionExport')" mode="multiple" user="user" type="PROPOSAL" contributions="vm.contributions"></contribution-export>
+    <contribution-export campaign="vm.campaign" on-success="vm.closeModal('contributionExport')"
+                         mode="multiple" user="user" type="{{vm.filters.mode | uppercase}}"
+                         contributions="vm.contributions"></contribution-export>
   </script>
 
   <modal open-if="vm.modals.ideasImportForm"
@@ -35,5 +40,5 @@
   </modal>
 
   <modal open-if="vm.modals.contributionExport" close="vm.closeModal('contributionExport')" title="Edit Form" template-id="contributionExport"></modal>
-  
+
 </div>

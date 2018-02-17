@@ -1,42 +1,48 @@
 <form name="contributionExportForm">
-    <div class="modal_content__add_proposal">
-        <header class="modal-header">
-            <h2 class="modal__title">{{'Export proposal' | translate}}</h2>
-        </header>
-        <div class="modal-body">
-          <div class="field__container">
-            <!--<p class="intro bold">Fields to export</p>-->
-            <!--<label></label><input name="title" value="title" type="checkbox" ng-checked="vm.fields.indexOf('title') > -1" ng-click="vm.toggleSelection('title')"/>{{ 'Title of Proposal' | translate }}</label>-->
-            <!--<label><input name="text" value="text" type="checkbox" ng-checked="vm.fields.indexOf('text') > -1" ng-click="vm.toggleSelection('text')"/>{{ 'Description' | translate }}</label>-->
-            <!--<label><input name="location" value="location" type="checkbox" ng-checked="vm.fields.indexOf('location') > -1" ng-click="vm.toggleSelection('location')"/>{{ 'Location' | translate }}</label>-->
-            <!--<label><input name="status" value="status" type="checkbox" ng-checked="vm.fields.indexOf('status') > -1" ng-click="vm.toggleSelection('status')"/>{{ 'Status' | translate }}</label>-->
-          </div>
-          <div class="field__container">
-            <p class="intro bold">{{'Select a format to export the proposal' | translate}}</p>
-            <select id="exportFormat" ng-model="vm.exportFormat">
-              <option value="CSV">CSV</option>
-              <option value="TXT">TXT</option>
-              <option value="PDF">PDF</option>
-              <option value="RTF">RTF</option>
-              <option value="DOC">DOC</option>
-            </select>
-          </div>
-          <div class="field__container">
-            <label></label><input name="document" value="document" type="checkbox" ng-model="vm.includeDoc"/>
-            {{ 'Include document (GDOC or Etherpad)' | translate }}</label>
-          </div>
-          <div ng-if="vm.includeDoc" class="field__container">
-            <p class="intro bold">{{'Select a format to export the document' | translate}}</p>
-            <select id="docExportFormat" ng-model="vm.docExportFormat">
-              <option value="TXT">TXT</option>
-              <option value="PDF">PDF</option>
-              <option value="RTF">RTF</option>
-              <option value="DOC">DOC</option>
-            </select>
-          </div>
-          <fieldset>
-            <a class="button__modal_submit" ng-click="vm.exportContribution()">{{'Export' | translate}}</a>
-          </fieldset>
-        </div>
+  <div class="modal_content__add_proposal">
+    <header class="modal-header">
+      <h2 ng-if="vm.type==='PROPOSAL'" class="modal__title">{{vm.mode === 'multiple' ? 'Export proposals' : 'Export proposal' | translate}}</h2>
+      <h2 ng-if="vm.type==='IDEA'" class="modal__title">{{vm.mode === 'multiple' ? 'Export ideas' : 'Export idea' | translate}}</h2>
+      <h2 ng-if="vm.type!='IDEA' && vm.type!='PROPOSAL'" class="modal__title">{{vm.mode === 'multiple' ? 'Export contributions' : 'Export contribution' | translate}}</h2>
+    </header>
+    <div class="modal-body">
+      <div class="field__container">
+        <!--<p class="intro bold">Fields to export</p>-->
+        <!--<label></label><input name="title" value="title" type="checkbox" ng-checked="vm.fields.indexOf('title') > -1" ng-click="vm.toggleSelection('title')"/>{{ 'Title of Proposal' | translate }}</label>-->
+        <!--<label><input name="text" value="text" type="checkbox" ng-checked="vm.fields.indexOf('text') > -1" ng-click="vm.toggleSelection('text')"/>{{ 'Description' | translate }}</label>-->
+        <!--<label><input name="location" value="location" type="checkbox" ng-checked="vm.fields.indexOf('location') > -1" ng-click="vm.toggleSelection('location')"/>{{ 'Location' | translate }}</label>-->
+        <!--<label><input name="status" value="status" type="checkbox" ng-checked="vm.fields.indexOf('status') > -1" ng-click="vm.toggleSelection('status')"/>{{ 'Status' | translate }}</label>-->
+      </div>
+      <div class="field__container">
+        <p class="intro bold">{{'Select a format to export the proposal' | translate}}</p>
+        <p class="intro">{{'export.email.notice' | translate}}</p>
+        <select id="exportFormat" ng-model="vm.exportFormat">
+          <option value="CSV">CSV</option>
+          <option value="TXT">TXT</option>
+          <option value="PDF">PDF</option>
+          <option value="RTF">RTF</option>
+          <option value="DOC">DOC</option>
+        </select>
+      </div>
+      <div class="field__container">
+        <label>
+          <input id="includeDoc" name="document" type="checkbox" ng-model="vm.includeDoc" ng-click="vm.toggleExtendedDocFormat()"/>
+          {{ 'Include document (GDOC or Etherpad)' | translate }}
+        </label>
+        <label>{{ 'export.extended.text.format.notice' | translate : vm.docExportFormat }}</label>
+      </div>
+      <div ng-if="vm.showExtendedDocFormat" class="field__container">
+        <p class="intro bold">{{'Select a format to export the document' | translate}}</p>
+        <select id="docExportFormat" ng-model="vm.docExportFormat">
+          <option value="TXT">TXT</option>
+          <option value="PDF">PDF</option>
+          <option value="RTF">RTF</option>
+          <option value="DOC">DOC</option>
+        </select>
+      </div>
+      <fieldset>
+        <a class="button__modal_submit" ng-click="vm.exportContribution()">{{'Export' | translate}}</a>
+      </fieldset>
     </div>
+  </div>
 </form>

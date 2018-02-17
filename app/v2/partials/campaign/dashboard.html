@@ -22,7 +22,7 @@
                   <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
                     ng-if="cm.isHover">
                     <div class="content">
-                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType" contributions="selectedCards"></campaign-contextual-items>
+                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType" contributions="selectedCards" filters="filters"></campaign-contextual-items>
                     </div>
                   </div>
                 </div>
@@ -40,10 +40,10 @@
             </div>
 
           </div>
-          
+
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription" ng-if="!isAnonymous && !subscribed">Subscribe to Newsletter</button>
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterUnsubscribe" ng-if="!isAnonymous && subscribed">Unsubscribe to Newsletter</button>
-          
+
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember">Subscribe to Newsletter</button>
           <!-- HEADER -> AppCivist Logo Attribution -->
           <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
@@ -418,7 +418,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Unubscribe when logged in -->
   <div class="modal fade dashboardModal" id="newsletterUnsubscribe" tabindex="-1"
        role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">

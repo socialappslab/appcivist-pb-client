@@ -62,6 +62,9 @@
             <label class="add_proposal__categories_label">{{'idea.form.themes.description' | translate : vm.campaign}}</label>
             <tags-field load-items="vm.loadOfficialThemes({query: query})" options="vm.themesOptions" selected="vm.contribution.officialThemes"
               prefetch="true" disabled="vm.disabled"></tags-field>
+            <div ng-messages="contributionForm.officialThemes.$error" style="color:maroon" role="alert">
+              <div ng-message="required">{{'This field is required' | translate}}</div>
+            </div>
           </fieldset>
         </div>
 

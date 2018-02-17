@@ -62,11 +62,11 @@
       this.init = init.bind(this);
       this.loadCampaign = loadCampaign.bind(this);
       this.exportContribution = exportContribution.bind(this);
+      this.toggleExtendedDocFormat = toggleExtendedDocFormat.bind(this);
 
       this.exportFormat = 'CSV';
       this.fields = []
       this.customFields = []
-      this.includeDoc = false;
       this.docExportFormat = 'PDF';
 
       this.$onInit = () => {
@@ -108,10 +108,7 @@
           this.contribution.authors.push(this.user);
           this.recaptchaResponseOK = true;
         }
-
-        this.loadCampaign(this.campaign.campaignId);
-
-        var self = this;
+        //this.loadCampaign(this.campaign.campaignId);
       }
 
       function exportContribution() {
@@ -154,6 +151,10 @@
             )
       }
 
+      function toggleExtendedDocFormat() {
+        console.log("includeDoc = "+this.includeDoc);
+        this.showExtendedDocFormat = this.includeDoc;
+      }
       /**
        * Loads the campaign from the server.
        *
@@ -170,6 +171,5 @@
           error => Notify.show('Error while trying to get campaign from server', 'error')
         );
       }
-
     }
   }());

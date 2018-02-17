@@ -22,7 +22,8 @@
 
         // {string} proposal | idea
         currentComponentType: '=',
-        contributions: '='
+        contributions: '=',
+        filters: '='
       },
       controller: FormCtrl,
       controllerAs: 'vm',

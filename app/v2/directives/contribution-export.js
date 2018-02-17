@@ -108,9 +108,9 @@
           this.contribution.authors.push(this.user);
           this.recaptchaResponseOK = true;
         }
-        
+
         this.loadCampaign(this.campaign.campaignId);
-        
+
         var self = this;
       }
 
@@ -130,8 +130,21 @@
           this.includeDoc, this.docExportFormat, pub)
             .getText().$promise.then(
               returned => {
-                Notify.show(returned.content, 'success')
-               if (angular.isFunction(this.onSuccess)) {
+                if (this.exportFormat==="CSV") {
+                  // save the csv file that was returned
+                  console.log("download csv");
+                  var fileName = "contributions.csv";
+                  var a = document.createElement("a");
+                  document.body.appendChild(a);
+                  var file = new Blob([returned.content], {type: 'application/csv'});
+                  var fileURL = URL.createObjectURL(file);
+                  a.href = fileURL;
+                  a.download = fileName;
+                  a.click();
+                } else {
+                  Notify.show(returned.content, 'success');
+                }
+                if (angular.isFunction(this.onSuccess)) {
                   this.onSuccess();
                 }
               },

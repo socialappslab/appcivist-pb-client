@@ -22,7 +22,7 @@
                   <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
                     ng-if="cm.isHover">
                     <div class="content">
-                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType"></campaign-contextual-items>
+                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType" contributions="selectedCards"></campaign-contextual-items>
                     </div>
                   </div>
                 </div>
@@ -166,7 +166,7 @@
                 <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
                                     is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
                                     components="components" show-voting-buttons="showVotingButtons" filters="filters"
-                                    ballot-paper="ballotPaper" ballot-tokens="ballotTokens" ng-if="showPagination">
+                                    ballot-paper="ballotPaper" ballot-tokens="ballotTokens" selected="selectedCards" ng-if="showPagination">
                 </pagination-widget>
               </div>
             </section>

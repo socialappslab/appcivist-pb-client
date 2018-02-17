@@ -38,7 +38,8 @@
         filters: '=',
         showVotingButtons: '=',
         ballotPaper: '=',
-        ballotTokens: '='
+        ballotTokens: '=',
+        selected: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function(scope) {
@@ -61,6 +62,7 @@
           left: '50%',
           zIndex: 1
         };
+        scope.selectedContributions = [];
 
         scope.$on('pagination:reloadCurrentPage', () => {
           scope.getResultsPage(scope.pagination.current);
@@ -69,6 +71,10 @@
         scope.$on('pagination:fireDoSearch', () => {
           scope.getResultsPage(1);
         });
+
+        scope.onCardSelected = function(card) {
+          alert(card);
+        }
 
         scope.$on('pagination:fireDoSearchFromGroup', () => {
           scope.getResultsPage(1);

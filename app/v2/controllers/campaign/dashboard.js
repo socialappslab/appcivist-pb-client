@@ -61,6 +61,7 @@
       $scope.vmPaginated = {};
       $scope.configsLoaded = false;
       $scope.commentType = 'public';
+      $scope.selectedCards = [];
       $scope.subscribed = false;
 
       // TODO: read the following from configurations in the campaign/component

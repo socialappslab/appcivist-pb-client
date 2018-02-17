@@ -37,11 +37,13 @@
           // in edit mode, the contribution to edit.
           contribution: '<',
 
-          // edit | create, default value is create
+          // multiple is for export many
           mode: '@',
 
           // campaign or current component configs
           configs: '=?',
+          // selected contributions
+          contributions: '='
         },
         controller: ExportCtrl,
         controllerAs: 'vm',
@@ -107,22 +109,24 @@
           this.recaptchaResponseOK = true;
         }
         
-        this.loadCampaign(this.contribution.campaignIds[0]);
+        this.loadCampaign(this.campaign.campaignId);
         
         var self = this;
       }
 
       function exportContribution() {
         let sid = this.campaign.resourceSpaceId;
-        let coid = this.contribution.contributionId;
+        let coid = this.mode != 'multiple' ? this.contribution.contributionId : false;
         let pub = false;
         if ($stateParams.cuuid) {
           sid = this.campaign.resurceSpaceUUID;
-          coid = this.contribution.uuid;
+          coid = this.mode != 'multiple' ? this.contribution.uuid : false;
           pub = true;
         }
+        console.log(coid);
+        console.log(this.contributions);
         let rsp = Contributions.contributionInResouceSpaceExport(sid, coid, this.exportFormat, this.fields,
-          this.customFields, this.selectedContributions,
+          this.customFields, this.contributions,
           this.includeDoc, this.docExportFormat, pub)
             .getText().$promise.then(
               returned => {

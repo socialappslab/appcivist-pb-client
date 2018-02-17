@@ -2,6 +2,18 @@ section.content {
   padding: 1rem 2rem;
 }
 
+.contribution-select {
+  display: none;
+  &+label:before {
+    font-family: 'FontAwesome';
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
+    display: inline-block;
+  }
+  &+label:before { content: "\f10c"; } /* unchecked icon */
+  &:checked + label:before { content: "\f05d"; } /* checked icon */
+}
+
 #fblogo {
   height: 100%;
   text-align: center;

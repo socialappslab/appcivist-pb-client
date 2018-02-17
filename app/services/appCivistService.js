@@ -777,21 +777,12 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
     contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub) {
-      let queryParams = '?format=:format&fields=[:fields]&customFields=:customFields';
-
-      if(includeDoc) {
-        queryParams = queryParams + '&includeExtendedText=:includeDoc&extendedTextFormat=:docExportFormat';
-      }
-
-      if (selectedContributions) {
-        queryParams = queryParams + '&selectedContributions=[:selectedContributions]'
-      }
       if (contributionId) {
           return $resource(
-            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid' + queryParams,
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid',
             {
-              sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
-              customFields: customFields, coid: contributionId, includeDoc: includeDoc, docExportFormat: docExportFormat
+              sid: spaceId, format: format, fields: fields, customFields: customFields, coid: contributionId, includeDoc: includeDoc,
+              docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
             },
             {
               'getText': {
@@ -801,10 +792,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
           )
       } else {
         return $resource(
-          getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution' + queryParams,
+          getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
           {
             sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
-            customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat
+            customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
+            includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
           },
           {
             'getText': {

@@ -1111,7 +1111,7 @@
 
     function follow() {
       let sub = {
-        spaceId: $scope.contribution.rsID,
+        spaceId: $scope.proposal.rsID,
         userId: $scope.user.userId,
         spaceType: "CONTRIBUTION",
         subscriptionType: "REGULAR"
@@ -1129,7 +1129,7 @@
     }
 
     function unfollow() {
-      let spaceId = $scope.contribution.rsID;
+      let spaceId = $scope.proposal.rsID;
       let subId = $scope.subscription ? $scope.subscription.id : null;
       Notifications.unsubscribe(spaceId, subId).then(
         response => {

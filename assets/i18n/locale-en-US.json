@@ -1319,6 +1319,23 @@
   "Export contributions": "Export contributions",
   "Export idea": "Export idea",
   "Export ideas": "Export ideas",
-  "export.extended.text.format.notice": "Check this to include the document (GDOC or Etherpad) attached to your contribution in {{format}} format"
+  "export.extended.text.format.notice": "Check this to include the document (GDOC or Etherpad) attached to your contribution in {{format}} format",
+  "motivational.commentbox.message1": "Everything is improved when you leave comments!",
+  "motivational.commentbox.message2": "Debate (discussion, deliberation, conversation) is the lifeblood of democracy",
+  "motivational.commentbox.message3": "Don’t be afraid to leave a comment!",
+  "motivational.commentbox.message4": "Comments are strongly encouraged.",
+  "motivational.commentbox.message5": "It’s not participatory budgeting unless you participate--leave a comment!",
+  "motivational.commentbox.message6": "Could also have separate messages for each of the boxes in the comment window. E.g. “Email can be used to continue the discussion in a longer, more civil way.",
+  "motivational.contributing.message1": "Link the ideas here that inspired your proposal.",
+  "motivational.contributing.message2": "Make sure others can see the ideas that inspired your proposal.",
+  "motivational.contributing.message3": "Let others know what ideas are incorporated in your proposal.",
+  "motivational.attachments.message1": "Adding attachments increases the chance of your proposal being considered.",
+  "motivational.attachments.message2": "Add a map, a finance breakdown, images, videos, blueprints, letters, petitions etc.",
+  "motivational.attachments.message3": "Adding attachments helps others understand your proposal better.",
+  "motivational.attachments.message4": "Jazz your proposal up by adding attachments of all sorts!",
+  "motivational.follow.message1": "Get updates about proposals you like!",
+  "motivational.follow.message2": "Track other proposals as they develop!",
+  "motivational.follow.message3": "Receive notifications as this proposal gets improved!"
+
 }
 

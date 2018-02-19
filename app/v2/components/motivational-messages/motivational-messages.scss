@@ -1,0 +1,39 @@
+motivational {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1s;
+    .message {
+        z-index: 99;
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #efefef;
+        border-radius: 0.2rem;
+        box-shadow: 1px 1px 6px #999;
+        width: 30rem;
+        padding: 1.2rem 1rem 1rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    &.show {
+        visibility: visible;
+        opacity: 1;
+    }
+    a:hover, a:active, a:visited {
+        color: #11493b;
+        text-decoration: none;
+    }
+    a.hideMessage {
+        position: absolute;
+        top: 0;
+        left: 0.5rem;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    a.turnOff {
+        display: block;
+        font-size: 0.7rem;
+        margin-top: 0.5rem;
+    }
+}

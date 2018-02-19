@@ -29,9 +29,9 @@
       templateUrl: '/app/v2/components/contribution-embed-modal/contribution-embed-modal.html'
     });
 
-    ContributionEmbedModal.$inject = [
-      '$scope', 'Notify', 'Etherpad', '$window'
-    ];
+  ContributionEmbedModal.$inject = [
+    '$scope', 'Notify', 'Etherpad', '$window'
+  ];
 
   function ContributionEmbedModal($scope, Notify, Etherpad, $window) {
 

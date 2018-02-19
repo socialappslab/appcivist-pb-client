@@ -48,7 +48,7 @@
         controller: ExportCtrl,
         controllerAs: 'vm',
         templateUrl: '/app/v2/partials/directives/contribution-export.html'
-      });
+    });
 
     ExportCtrl.$inject = [
       'WorkingGroups', 'localStorageService', 'Notify', 'Memberships', 'Campaigns',
@@ -68,6 +68,7 @@
       this.fields = []
       this.customFields = []
       this.docExportFormat = 'PDF';
+      this.includeDoc = false;
 
       this.$onInit = () => {
         this.init();
@@ -155,6 +156,7 @@
         console.log("includeDoc = "+this.includeDoc);
         this.showExtendedDocFormat = this.includeDoc;
       }
+
       /**
        * Loads the campaign from the server.
        *

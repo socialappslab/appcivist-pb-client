@@ -1116,7 +1116,7 @@
         spaceType: "CONTRIBUTION",
         subscriptionType: "REGULAR"
       }
-      Notifications.subscribe().save(sub).$promise.then(
+      Notifications.subscribe(sub.spaceId).save(sub).$promise.then(
         response => {
           $scope.following = true;
           $scope.subscription = response;

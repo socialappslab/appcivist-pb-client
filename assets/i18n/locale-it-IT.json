@@ -383,12 +383,12 @@
   "landing.Learn more": "How it works",
   "landing.LoginErrorModal.text1": "Something went wrong! Check your email or password.",
   "landing.LoginErrorModal.text2": "Forgot your password?",
-  "landing.section2.button": "CivicBudget",
+  "landing.section2.button": "AppCivist per Bilanci Partecipati",
   "landing.section3.button": "Other features",
-  "landing.section3.desc1": "CivicBudget is a web application that uses AppCivist for collaborative development and selection of proposals. ",
+  "landing.section3.desc1": "AppCivist per BP è una app web per lo sviluppo e selezione collaborativo de proposte. ",
   "landing.section3.desc2": "It supports the following stages, each with distinctive milestones.",
   "landing.section3.desc3": "Campaigns can be linked to each other at various stages, allowing assemblies of different kinds to collaborate.",
-  "landing.section3.title": "CivicBudget for Participatory Budgeting Campaigns",
+  "landing.section3.title": "AppCivist per Bilanci Partecipati (BP)",
   "landing.section4.title": "Customizable tools for democratic action",
   "landing.tagline": "AppCivist is a platform for democratic assembly and collective action.",
   "Last Name": "Last Name",
@@ -1319,5 +1319,6 @@
   "Export contributions": "Export contributions",
   "Export idea": "Export idea",
   "Export ideas": "Export ideas",
-  "export.extended.text.format.notice": "Check this to include the document (GDOC or Etherpad) attached to your contribution in {{format}} format"
+  "export.extended.text.format.notice": "Check this to include the document (GDOC or Etherpad) attached to your contribution in {{format}} format",
+  "landing.opensource_phrase": "AppCivist is entirely free and open source for non-commercial purposes."
 }

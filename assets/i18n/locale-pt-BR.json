@@ -1317,5 +1317,6 @@
   "Export contributions": "Export contributions",
   "Export idea": "Export idea",
   "Export ideas": "Export ideas",
-  "export.extended.text.format.notice": "Check this to include the document (GDOC or Etherpad) attached to your contribution in {{format}} format"
+  "export.extended.text.format.notice": "Check this to include the document (GDOC or Etherpad) attached to your contribution in {{format}} format",
+  "landing.opensource_phrase": "AppCivist is entirely free and open source for non-commercial purposes."
 }

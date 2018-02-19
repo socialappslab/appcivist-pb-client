@@ -6,15 +6,15 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="notificationsDropdown" infinite-scroll="vm.getNotifications()">
       <h3>
-        {{'header.menu.Notifications'|translate}} 
+        {{'header.menu.Notifications'|translate}}
         <span><a data-toggle="modal" data-target="#notificationsModal" ng-if="false">{{'View all'|translate}}</a></span>
         <span><a ng-click="vm.readAll()">{{'Mark all as read' | translate}}</a></span>
       </h3>
       <li ng-repeat-start="n in vm.notifications track by $index">
         <a ng-click="vm.readNotification(n, $event)">
-          <div class="title" ng-class="{unseen: !n.read}">{{n.title}}</div>
-          <div class="preview" ng-class="{unseen: !n.read}">{{n.text}}</div>
-          <div class="date">{{vm.formatDate(n.date)}}</div>
+          <div class="title" ng-class="{unseen: !n.read}">{{n.signal.data.eventName | translate}}</div>
+          <div class="preview" ng-class="{unseen: !n.read}">{{n.signal.data.resourceTitle}}</div>
+          <div class="date">{{vm.formatDate(n.creation)}}</div>
         </a>
       </li>
       <li ng-repeat-end role="separator" class="divider"></li>

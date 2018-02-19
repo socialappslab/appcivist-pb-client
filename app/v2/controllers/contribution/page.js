@@ -1111,7 +1111,7 @@
 
     function follow() {
       let sub = {
-        spaceId: $scope.campaign.rsUUID,
+        spaceId: $scope.contribution.rsID,
         userId: $scope.user.userId,
         spaceType: "CONTRIBUTION",
         subscriptionType: "REGULAR"
@@ -1119,20 +1119,22 @@
       Notifications.subscribe().save(sub).$promise.then(
         response => {
           $scope.following = true;
-          /*$scope.subscriptionId = response.id;*/
-          Notify.show("Subscribed successfully. We'll be in touch", "success");
+          $scope.subscription = response;
+          Notify.show("Subscribed successfully! You will begin to receive notifications about this from now on.", "success");
         },
         error => {
           Notify.show("Error trying to subscribe. Please try again later.", "error")
         }
       );
     }
-    
+
     function unfollow() {
-      let spaceId = $scope.campaign.rsID
-      Notifications.unsubscribe(spaceId, $scope.subscriptionId).then(
+      let spaceId = $scope.contribution.rsID;
+      let subId = $scope.subscription ? $scope.subscription.id : null;
+      Notifications.unsubscribe(spaceId, subId).then(
         response => {
           $scope.following = false;
+          $scope.subscription = null;
           Notify.show("Unsubscribed successfully.", "success");
         },
         error => {
@@ -1142,13 +1144,13 @@
     }
 
     function checkIfFollowing(sid) {
-      let res = Notifications.getSubscriptions(sid).query();
+      let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"REGULAR").query();
       res.$promise.then(
         function (response) {
           let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
           if (substatus.length > 0) {
-            $scope.subscriptionId = substatus[0].id;
-            $scope.subscribed = response.subscribed;
+            $scope.subscription = substatus[0];
+            $scope.subscribed = true;
           }
         },
         function (error) {

@@ -594,25 +594,22 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
       return $resource(getServerBaseUrl(localStorageService) + '/notification/user/:uuid', { uuid: userUUID });
     },
 
-    subscribe() {
-      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription');
+    subscribe(spaceId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/subscription', {sid: spaceId});
     },
 
     unsubscribe: function(spaceId, subId) {
-      /*return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/space/:sid', { sid: spaceId }, {
-        'delete': { method: 'delete' }
-      }).delete().$promise;*/
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/subscription/:subid', { sid: spaceId, subid: subId }, {
         'delete': { method: 'delete' }
       }).delete().$promise;
     },
 
-    getSubscriptions: function(spaceId, subId) {
+    getSubscriptions: function(spaceId) {
       return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/subscription', { sid: spaceId });
     },
 
-    subscriptionsBySpace(spaceId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/notification/subscription/space/:sid', { sid: spaceId });
+    subscriptionsBySpace(userId, spaceId, subType) {
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:id/space/:sid/subscription', { id: userId, sid: spaceId, type: subType });
     },
 
     /**
@@ -623,7 +620,7 @@ appCivistApp.factory('Notifications', function ($resource, localStorageService) 
      * @returns {$resource}
      */
     userStats(userId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/stats', { userId });
+      return $resource(getServerBaseUrl(localStorageService) + '/user/:userId/notifications/stats', { userId: userId});
     },
 
     /**

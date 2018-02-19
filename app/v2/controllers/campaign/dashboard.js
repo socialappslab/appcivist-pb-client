@@ -890,45 +890,88 @@
     }
 
     function subscribeNewsletter() {
+      // Subscribe to newsletter
       let sub = {
         spaceId: $scope.campaign.rsUUID,
         userId: $scope.user.userId,
         spaceType: "CAMPAIGN",
         subscriptionType: "NEWSLETTER"
       }
-      Notifications.subscribe().save(sub).$promise.then(
+      Notifications.subscribe($scope.campaign.rsID).save(sub).$promise.then(
         response => {
           $scope.subscribed = true;
-          /*$scope.subscriptionId = response.id;*/
-          Notify.show("Subscribed successfully. We'll be in touch", "success");
+          $scope.subscription = response;
+          Notify.show("Subscribed successfully! You will begin to receive newsletters every week.", "success");
         },
         error => {
           Notify.show("Error trying to subscribe. Please try again later.", "error")
         }
       );
-    }
-    
-    function unsubscribeNewsletter() {
-      let spaceId = $scope.campaign.rsID
-      Notifications.unsubscribe(spaceId, $scope.subscriptionId).then(
+
+      // Automatically create also a REGULAR subscription
+      let subReg = {
+        spaceId: $scope.campaign.rsUUID,
+        userId: $scope.user.userId,
+        spaceType: "CAMPAIGN",
+        subscriptionType: "REGULAR"
+      }
+      Notifications.subscribe($scope.campaign.rsID).save(subReg).$promise.then(
         response => {
-          $scope.subscribed = false;
-          Notify.show("Unsubscribed successfully.", "success");
+          $scope.subscriptionREG = response;
         },
         error => {
-          Notify.show("Error trying to unsubscribe. Please try again later.", "error")
+          Notify.show("Error trying to subscribe. Please try again later.", "error");
         }
       );
     }
 
+    function unsubscribeNewsletter() {
+      let spaceId = $scope.campaign.rsID
+      let subId = $scope.subscription ? $scope.subscription.id : null;
+      Notifications.unsubscribe(spaceId, subId).then(
+        response => {
+          $scope.subscribed = false;
+          $scope.subscription = null;
+
+          // Automatically unsubscribe from regular notifications too
+          let subId = $scope.subscriptionREG ? $scope.subscriptionREG.id : null;
+          Notifications.unsubscribe(spaceId, subId).then(
+            response => {
+              $scope.subscriptionREG = null;
+              Notify.show("Unsubscribed successfully.", "success");
+            },
+            error => {
+              Notify.show("Unsubscribed successfully from newsletters.");
+            });
+        },
+        error => {
+          Notify.show("Error trying to unsubscribe. Please try again later.", "error");
+        });
+
+    }
+
     function checkIfSubscribed(sid) {
-      let res = Notifications.getSubscriptions(sid).query();
+      // Check newsletter subscription
+      let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"NEWSLETTER").query();
       res.$promise.then(
         function (response) {
           let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
           if (substatus.length > 0) {
-            $scope.subscriptionId = substatus[0].id;
+            $scope.subscription = substatus[0];
             $scope.subscribed = true;
+          }
+        },
+        function (error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+
+      res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"REGULAR").query();
+      res.$promise.then(
+        function (response) {
+          let substatus = response.filter(sub => sub.userId == $scope.user.uuid);
+          if (substatus.length > 0) {
+            $scope.subscriptionREG = substatus[0];
           }
         },
         function (error) {

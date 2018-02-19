@@ -1313,5 +1313,11 @@
   "Select a format to export the proposal": "Select a format to export the proposal",
   "Include document (GDOC or Etherpad)": "Include document (GDOC or Etherpad)",
   "Select a format to export the document": "Select a format to export the document",
-  "Export proposals": "Export proposals"
+  "Export proposals": "Export proposals",
+  "export.email.notice": "For TXT, PDF, RTF and DOC formats, you will receive a link to download the exported files by email",
+  "Export contribution": "Export contribution",
+  "Export contributions": "Export contributions",
+  "Export idea": "Export idea",
+  "Export ideas": "Export ideas",
+  "export.extended.text.format.notice": "Check this to include the document (GDOC or Etherpad) attached to your contribution in {{format}} format"
 }

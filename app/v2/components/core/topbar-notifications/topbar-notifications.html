@@ -13,6 +13,7 @@
       <li ng-repeat-start="n in vm.notifications track by $index">
         <a ng-click="vm.readNotification(n, $event)">
           <div class="title" ng-class="{unseen: !n.read}">{{n.signal.data.eventName | translate}}</div>
+          <!-- ToDo: link the resource to its page if it is a Campaign, a Contribution or a WG-->
           <div class="preview" ng-class="{unseen: !n.read}">{{n.signal.data.resourceTitle}}</div>
           <div class="date">{{vm.formatDate(n.creation)}}</div>
         </a>

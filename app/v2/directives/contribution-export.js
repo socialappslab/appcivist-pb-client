@@ -103,13 +103,30 @@
         if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
           this.isAnonymous = true;
           this.campaignUUID = $stateParams.cuuid;
+          this.assemblyUUID = $stateParams.auuid;
+          this.contributionUUID = $stateParams.couuid;
+          if (!this.campaign) {
+            this.campaign = localStorageService.get('currentCampaign');
+            if (!this.campaign) {
+              this.loadCampaign();
+            }
+          }
         } else {
+          this.campaignID = $stateParams.cid;
+          this.assemblyID = $stateParams.aid;
+          this.contributionID = $stateParams.coid;
           this.assembly = localStorageService.get('currentAssembly');
+          if (!this.campaign) {
+            this.campaign = localStorageService.get('currentCampaign');
+            if (!this.campaign) {
+              this.loadCampaign();
+            }
+          }
           this.user = localStorageService.get('user');
           this.contribution.authors.push(this.user);
           this.recaptchaResponseOK = true;
+
         }
-        //this.loadCampaign(this.campaign.campaignId);
       }
 
       function exportContribution() {
@@ -162,9 +179,14 @@
        *
        * @param {number} cid - campaign ID.
        */
-      function loadCampaign(cid) {
+      function loadCampaign() {
         let vm = this;
-        let rsp = Campaigns.campaign(this.assembly.assemblyId, cid).get().$promise;
+        let rsp = null;
+        if (this.isAnonymous) {
+          rsp = Campaigns.campaignByUUID(this.campaignUUID).get().$promise;
+        } else {
+          rsp = Campaigns.campaign(this.assemblyID, this.campaignID).get().$promise;
+        }
         return rsp.then(
           campaign => {
             vm.campaign = campaign;

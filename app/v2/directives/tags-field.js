@@ -31,7 +31,7 @@
         selected: '=',
 
         /**
-         * Boolean value that tells the directive that when tags-field has focus it 
+         * Boolean value that tells the directive that when tags-field has focus it
          * should display the list of options. Default: false.
          */
         prefetch: '<',
@@ -90,7 +90,7 @@
 
     /**
      * Populates the options list
-     * 
+     *
      * @param {string} text - The query to filter the list of options.
      */
     function fetch(text) {
@@ -168,7 +168,7 @@
 
   function highlight($sce) {
     return function(text, phrase) {
-      if (phrase) {
+      if (phrase & text) {
         text = text.replace(new RegExp('(' + phrase + ')', 'gi'),
           '<span class="highlighted">$1</span>');
       }

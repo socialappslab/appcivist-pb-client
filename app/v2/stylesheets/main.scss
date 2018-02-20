@@ -401,7 +401,7 @@ $dropDown: false;
     vertical-align: middle;
     margin-top: -20px;
     &.landing-section {
-      padding-top: 15%;
+      padding-top: 10%;
     }
     &.invitation {
       padding-top: 10%;
@@ -1187,6 +1187,7 @@ custom-field {
 
 .instance__spotlight {
   display: flex;
+  padding-bottom: 5%;
 }
 
 .vex.vex-theme-plain .vex-content {

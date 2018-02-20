@@ -48,6 +48,7 @@
       </div>
     </div>
     <h2 class="main-title text-center">
+      <p>{{"landing.opensource_phrase"|translate}}</p>
       <a href="#section2" du-smooth-scroll class="main-title text-center">{{'landing.Learn more' | translate}}</a>
     </h2>
 
@@ -87,12 +88,6 @@
             <i class="fa fa-bar-chart"></i>
             <h5>{{'Visualizing' | translate}}</h5>
           </div>
-          <!--
-					<div class="col-md-1">
-                		<i class="icon-edit"></i>
-                		<h5>Drawing</h5>
-              		</div>
-     				-->
           <div class="col-md-1">
             <i class="fa fa-thumbs-o-up"></i>
             <h5>{{'Voting' | translate}}</h5>
@@ -105,12 +100,6 @@
             <i class="fa fa-map-marker"></i>
             <h5>{{'Mapping' | translate}}</h5>
           </div>
-          <!--
-					<div class="col-md-1">
-                		<i class="icon-attention"></i>
-                		<h5>Alerts</h5>
-              		</div>
-              		-->
           <div class="col-md-1">
             <i class="fa fa-desktop"></i>
             <h5>{{'Implementing' | translate}}</h5>
@@ -120,7 +109,7 @@
       </div>
     </div>
 
-    <div class="voffset5"></div>
+    <div class="voffset3"></div>
     <div class="row">
       <span class="col-md-1 col-sm-1 hidden-xs"></span>
       <span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-users fa-5x i1"></span>
@@ -134,7 +123,7 @@
 				<h3>{{'definition.assembly' | translate}}</h3>
 			</span>
     </div>
-    <div class="voffset3 hidden-sm hidden-xs"></div>
+    <div class="voffset2 hidden-sm hidden-xs"></div>
     <div class="row">
       <span class="col-md-1 col-sm-1 hidden-xs"></span>
       <span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-flag fa-5x i3"></span>
@@ -148,7 +137,6 @@
 				<h3>{{'definition.campaign' | translate}}</h3>
 			</span>
     </div>
-    <div class="voffset3"></div>
     <div class="row">
       <span class="col-md-1 col-sm-1 hidden-xs"></span>
       <span class="col-md-1 col-sm-1 col-xs-3 align-right fa fa-file-text fa-5x i4"></span>
@@ -162,14 +150,14 @@
 				<h3>{{'definition.proposal.development' | translate}}</h3>
 			</span>
     </div>
-    <div class="voffset6"></div>
+    <div class="voffset2"></div>
     <h6 class="text-center bottom-info"><a href="#section3" du-smooth-scroll class="btn btn-info btn-lg">{{'landing.section2.button' | translate}}</a></h6>
   </div>
 
   <!-- Landing Section 3 -->
   <div class="section third-section" id="section3">
     <h2 class="row main-title">{{'landing.section3.title' | translate}}</h2>
-    <div class="voffset4"></div>
+    <div class="voffset3"></div>
     <h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc1' | translate}}</h3>
     <h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc2' | translate}}</h3>
     <h3 class="row sub-title hidden-sm hidden-xs">{{'landing.section3.desc3' | translate}}</h3>
@@ -178,7 +166,7 @@
     <h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc2' | translate}}</h4>
     <h4 class="row sub-title hidden-lg hidden-md">{{'landing.section3.desc3' | translate}}</h4>
 
-    <div class="voffset6"></div>
+    <div class="voffset3"></div>
     <ul class="row hidden-xs">
       <li class="col-md-3 col-sm-3 col-xs-12">
         <h2 class="row">{{'landing.component.Proposal Making' | translate}}</h2>
@@ -301,9 +289,10 @@
     </ul>
 
     <div class="voffset5"></div>
-    <div class="text-center" ng-if="false">
-      <button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>
-      <a ng-href="#/v1/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>
+    <div class="text-center">
+      <h6 class="text-center bottom-info"><a data-toggle="modal" data-target="#aboutAppCivistModal" class="btn btn-primary btn-lg">{{'landing.participate.button' | translate}}</a></h6>
+      <!--<button type="button" class="btn btn-info btn-lg" role="button" ng-click="openNewUserModal()">{{'header.sign_up_individual' | translate}}</button>-->
+      <!--<a ng-href="#/v1/assembly/create?userIsNew=true"><button type="button" class="btn btn-info btn-lg">{{'header.sign_up_group' | translate}}</button></a>-->
     </div>
   </div>
 

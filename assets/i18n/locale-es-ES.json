@@ -534,7 +534,7 @@
   "Play Authenticate sample app": "Play Authenticate ejemplo de aplicación",
   "Plurality": "Pluralidad",
   "Popularity": "Popularidad",
-  "Powered by AppCivist": "Impulsado por <a data-toggle='modal' data-target='#aboutAppCivistModal'>AppCivist</a>",
+  "Powered by AppCivist": "<a data-toggle='modal' data-target='#aboutAppCivistModal'>Impulsado por AppCivist</a>",
   "Primary contact": "Contacto Primario",
   "Profile": "Perfil",
   "Promote to proposal": "Promover a propuesta",

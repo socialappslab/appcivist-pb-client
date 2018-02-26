@@ -35,7 +35,10 @@
         let contributingMessages = ['motivational.contributing.message1', 'motivational.contributing.message2', 'motivational.contributing.message3'];
         let attachmentsMessages = ['motivational.attachments.message1', 'motivational.attachments.message2', 'motivational.attachments.message3', 'motivational.attachments.message4'];
         let followMessages = ['motivational.follow.message1', 'motivational.follow.message2', 'motivational.follow.message3'];
-        
+        // campaign => 1. comentarios, 2. subscribe, 3. contributions (if editing enabled, current component es proposals o ideas)
+        // working group => igual que campaign + 4. invite members
+        // contribution => 1. comentarios, 2. attachments, 3. authors, 4. contributing, 5. follow, 6. si es proposal y no tiene doc, add doc
+
         this.$onInit = () => {
             setTimeout(() => {
                 switch (this.page) {
@@ -46,7 +49,7 @@
                     case 'contribution':
                         break;
                 }
-                $scope.message = commentBoxMessages[0];
+                $scope.message = _.sample(commentBoxMessages);
                 document.getElementsByTagName('motivational')[0].classList.add('show');
             }, 10000)
         }

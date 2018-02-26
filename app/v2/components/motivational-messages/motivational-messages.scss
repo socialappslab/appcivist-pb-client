@@ -5,15 +5,15 @@ motivational {
     .message {
         z-index: 99;
         position: fixed;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        top: 20%;
+        right: 2%;
         background-color: #efefef;
         border-radius: 0.2rem;
         box-shadow: 1px 1px 6px #999;
-        width: 30rem;
-        padding: 1.2rem 1rem 1rem;
-        text-align: center;
+        width: 20rem;
+        padding: 1.2rem 1rem 1rem 1.2rem;
+        text-align: right;
+        font-size: 0.9rem;
         font-weight: bold;
     }
     &.show {

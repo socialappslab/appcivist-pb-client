@@ -98,3 +98,4 @@ app/css/common.css.map
 app/css/common.css
 
 .vscode
+deploy.sh

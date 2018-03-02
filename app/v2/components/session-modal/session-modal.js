@@ -100,7 +100,7 @@
           $('.modal-backdrop').remove();
         }, function(error) {
             window.Pace.stop();
-            Notify.show(error.statusMessage, 'error');
+            Notify.show(error ? error.data ? error.data.statusMessage : error.statusMessage ? error.statusMessage : '' : '', 'error');
         });
       });
     }
@@ -113,7 +113,7 @@
       if (error && error.data && error.data.statusMessage) {
         msg = error.data.statusMessage;
       }
-      Notify.show(error.statusMessage, 'error');
+      Notify.show(error ? error.data ? error.data.statusMessage : error.statusMessage ? error.statusMessage : '' : '', 'error');
     }
 
     this.toggleShowLogin = () => {

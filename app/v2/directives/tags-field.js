@@ -45,7 +45,17 @@
          * true | false. Defines the posibility to add unlisted items to the list of items displayed. False by default.
          * New items are given a temporary ID that begins with "tmp-N".
          */
-        canAdd: '@'
+        canAdd: '@',
+
+        /**
+         * name for the input element
+         */
+        name: '=',
+
+        /**
+         * true | false. Defines if the tags field input is required in the container form
+         */
+        required: '='
       },
       templateUrl: '/app/v2/partials/directives/tags-field.html',
       link: function(scope, element, attrs) {

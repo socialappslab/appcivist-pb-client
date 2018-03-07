@@ -210,6 +210,13 @@
           self.disableAll();
         }
       });
+      $scope.$watchCollection('vm.contribution.officialThemes', function (data) {
+        if ($scope.vm.contribution.officialThemes && $scope.vm.contribution.officialThemes.length > 0) {
+          $scope.contributionForm.officialThemes.$setValidity("required", true);
+        } else {
+          $scope.contributionForm.officialThemes.$setValidity("required", false);
+        }
+      })
     }
 
     /**

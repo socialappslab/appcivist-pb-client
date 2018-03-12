@@ -1,0 +1,6 @@
+git pull
+npm install
+bower update appcivist-patterns
+grunt build
+sudo rm -rf APPCIVIST_PB_CLIENT_WWW_DIR/*
+sudo cp -rf dist/* APPCIVIST_PB_CLIENT_WWW_DIR

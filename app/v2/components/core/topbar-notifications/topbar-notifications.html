@@ -1,4 +1,32 @@
 <ul class="nav navbar-nav menu-elements">
+  <!-- Newsletter icon navbar -->
+  <li class="dropdown nav-menu-notification" id="newsletterMenu">
+    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+      <span ng-if="false" class="number">2</span> <!-- Add a ng-if to this span, this will be the newsletter counter -->
+      <i class="fa fa-lg fa-newspaper-o icon"></i>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="newsletterDropdown">
+      <h3>
+        {{'Newsletters'|translate}}
+        <span><a data-toggle="modal" data-target="#notificationsModal" ng-if="false">{{'View all'|translate}}</a></span>
+        <span><a ng-click="vm.readAll()">{{'Mark all as read' | translate}}</a></span>
+      </h3>
+      <li ng-repeat-start="n in vm.notifications | filter: { signal: {signalType: 'NEWSLETTER'}} as regularNotifications track by $index">
+        <a ng-click="vm.readNotification(n, $event)">
+          <div class="title" ng-class="{unseen: !n.read}">{{n.signal.data.eventName | translate}}</div>
+          <!-- ToDo: link the resource to its page if it is a Campaign, a Contribution or a WG-->
+          <div class="preview" ng-class="{unseen: !n.read}">{{n.signal.data.resourceTitle}}</div>
+          <div class="date">{{vm.formatDate(n.creation)}}</div>
+        </a>
+      </li>
+      <li ng-repeat-end role="separator" class="divider"></li>
+      <li ng-if="vm.notifications && vm.notifications.length === 0" style="text-align: center;">
+        <a>{{'All caught up!' | translate}}</a>
+      </li>
+    </ul>
+  </li>
+
+  <!-- Notifications icon navbar -->
   <li class="dropdown nav-menu-notification" id="notificationMenu">
     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
       <span ng-if="vm.stats.unread > 0" class="number">{{vm.stats.unread}}</span>
@@ -10,7 +38,7 @@
         <span><a data-toggle="modal" data-target="#notificationsModal" ng-if="false">{{'View all'|translate}}</a></span>
         <span><a ng-click="vm.readAll()">{{'Mark all as read' | translate}}</a></span>
       </h3>
-      <li ng-repeat-start="n in vm.notifications track by $index">
+      <li ng-repeat-start="n in vm.notifications | filter: { signal: {signalType: 'REGULAR'}} as regularNotifications track by $index">
         <a ng-click="vm.readNotification(n, $event)">
           <div class="title" ng-class="{unseen: !n.read}">{{n.signal.data.eventName | translate}}</div>
           <!-- ToDo: link the resource to its page if it is a Campaign, a Contribution or a WG-->

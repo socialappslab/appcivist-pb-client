@@ -55,7 +55,12 @@
         /**
          * true | false. Defines if the tags field input is required in the container form
          */
-        required: '='
+        required: '=',
+
+        /**
+         * 
+         */
+        field: '@'
       },
       templateUrl: '/app/v2/partials/directives/tags-field.html',
       link: function(scope, element, attrs) {
@@ -73,6 +78,8 @@
         scope.onFocus = onFocus.bind(scope);
         scope.onMouseLeave = onMouseLeave.bind(scope);
         scope.setupAddListener = setupAddListener.bind(scope);
+
+        scope.field = scope.field || 'item[this.options.textField]';
 
         if (scope.canAdd === 'true') {
           scope.setupAddListener(element);
@@ -166,7 +173,7 @@
      * @param {object} item
      */
     function getText(item) {
-      return item[this.options.textField];
+      return eval(this.field);
     }
   }
 

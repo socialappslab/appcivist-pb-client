@@ -58,7 +58,7 @@
         required: '=',
 
         /**
-         * 
+         * attribute of items that must be used to display in the tags
          */
         field: '@'
       },

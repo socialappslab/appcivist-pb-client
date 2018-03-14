@@ -44,7 +44,7 @@
           <p class="small">
             <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
-            <strong>{{'Source'|translate}}: </strong><span class="facebook-bookmark" ng-if="proposal.source === 'social_ideation_facebook'"><a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;Facebook</a></span>
+            <strong ng-if="proposal.source === 'social_ideation_facebook'">{{'Source'|translate}}: </strong><span class="facebook-bookmark" ng-if="proposal.source === 'social_ideation_facebook'"><a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;Facebook</a></span>
           </p>
         </div>
 

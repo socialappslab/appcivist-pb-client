@@ -179,7 +179,7 @@ form>fieldset {
     border-radius: 5px;
     border: 2px solid #11493b;
     padding: 1rem;
-    margin-bottom: 1rem; 
+    margin-bottom: 1rem;
     font-size: 0.9rem;
     .textual { margin-top: 2rem; }
     .labels {
@@ -201,4 +201,8 @@ form>fieldset {
       }
     }
   }
+}
+
+.contribution_description {
+  font-size: 1.2rem;
 }

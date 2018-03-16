@@ -170,6 +170,10 @@
         textField: 'title',
         idField: 'themeId'
       };
+      this.authorsOptions = {
+        textField: 'name',
+        idField: 'userId'
+      };
       this.isProposal = this.contribution.type === 'PROPOSAL';
       this.isIdea = this.contribution.type === 'IDEA';
 
@@ -180,6 +184,7 @@
       } else {
         this.assembly = localStorageService.get('currentAssembly');
         this.user = localStorageService.get('user');
+        this.user.disableItemRemoval = true;
         this.contribution.authors.push(this.user);
         this.recaptchaResponseOK = true;
       }
@@ -210,6 +215,13 @@
           self.disableAll();
         }
       });
+      $scope.$watchCollection('vm.contribution.officialThemes', function (data) {
+        if ($scope.vm.contribution.officialThemes && $scope.vm.contribution.officialThemes.length > 0) {
+          $scope.contributionForm.officialThemes.$setValidity("required", true);
+        } else {
+          $scope.contributionForm.officialThemes.$setValidity("required", false);
+        }
+      })
     }
 
     /**

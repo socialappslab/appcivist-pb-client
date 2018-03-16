@@ -2,9 +2,10 @@
   <div ng-disabled="disabled">
     <ul class="tags">
       <li ng-repeat="item in selected">
-        <a>{{getText(item)}}<i class="fa fa-close" ng-click="remove(item, $event)"></i></a>
+        <a>{{getText(item)}}<i class="fa fa-close" ng-click="remove(item, $event)" ng-if="!item.disableItemRemoval"></i></a>
       </li>
-      <input type="text" ng-model="vm.query" placeholder="{{options.placeholder}}" ng-focus="onFocus()" ng-disabled="disabled">
+      <input type="text" ng-model="vm.query" placeholder="{{options.placeholder}}" ng-focus="onFocus()"
+             ng-disabled="disabled" name="{{name}}" ng-required="{{required}}">
     </ul>
     <div class="autocomplete" ng-if="isSuggestionListVisible" ng-mouseleave="onMouseLeave()">
       <ul class="suggestion-list">

@@ -46,8 +46,8 @@
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
           scope.toggleSelection = toggleSelection.bind(scope);
 
-          if (scope.contribution.source !== undefined && scope.contribution.source == 'social_ideation_facebook') {
-            scope.source_url = scope.contribution.source_url;
+          if (scope.contribution.source !== undefined && scope.contribution.source === 'social_ideation_facebook') {
+            scope.source_url = scope.contribution.sourceUrl;
           }
 
           // Se contribution card header cover style

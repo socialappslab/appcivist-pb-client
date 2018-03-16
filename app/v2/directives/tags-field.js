@@ -45,7 +45,22 @@
          * true | false. Defines the posibility to add unlisted items to the list of items displayed. False by default.
          * New items are given a temporary ID that begins with "tmp-N".
          */
-        canAdd: '@'
+        canAdd: '@',
+
+        /**
+         * name for the input element
+         */
+        name: '=',
+
+        /**
+         * true | false. Defines if the tags field input is required in the container form
+         */
+        required: '=',
+
+        /**
+         * attribute of items that must be used to display in the tags
+         */
+        field: '@'
       },
       templateUrl: '/app/v2/partials/directives/tags-field.html',
       link: function(scope, element, attrs) {
@@ -63,6 +78,8 @@
         scope.onFocus = onFocus.bind(scope);
         scope.onMouseLeave = onMouseLeave.bind(scope);
         scope.setupAddListener = setupAddListener.bind(scope);
+
+        scope.field = scope.field || 'item[this.options.textField]';
 
         if (scope.canAdd === 'true') {
           scope.setupAddListener(element);
@@ -156,7 +173,7 @@
      * @param {object} item
      */
     function getText(item) {
-      return item[this.options.textField];
+      return eval(this.field);
     }
   }
 

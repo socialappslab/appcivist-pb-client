@@ -5,7 +5,7 @@
         <img ng-if="currentUser && currentUser.profilePic" ng-src="{{currentUser.profilePic.urlAsString}}" alt="Avatar" />
       </figure>
     </a>
-    <a class="avatar_link" href="{{currentUser.source_url}}" ng-if="currentUser.source == 'social_ideation_facebook'">
+    <a class="avatar_link" href="{{currentUser.sourceUrl}}" ng-if="currentUser.source == 'social_ideation_facebook'">
       <figure class="photo">
         <div id="fblogo"><i class="fa fa-lg fa-facebook"></i></div>
       </figure>

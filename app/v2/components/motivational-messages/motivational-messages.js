@@ -39,19 +39,28 @@
         // working group => igual que campaign + 4. invite members
         // contribution => 1. comentarios, 2. attachments, 3. authors, 4. contributing, 5. follow, 6. si es proposal y no tiene doc, add doc
 
+        let messages = [];
+
+        switch (this.page) {
+            case 'campaign':
+                messages = messages.concat(commentBoxMessages, contributingMessages, followMessages);
+                break;
+            case 'wg':
+                messages =messages.concat(commentBoxMessages, contributingMessages, followMessages);
+                break;
+            case 'contribution':
+                messages =messages.concat(commentBoxMessages, attachmentsMessages, contributingMessages, followMessages);
+                break;
+        }
+        $scope.message = _.sample(messages);
+
         this.$onInit = () => {
-            setTimeout(() => {
-                switch (this.page) {
-                    case 'campaign':
-                        break;
-                    case 'wg':
-                        break;
-                    case 'contribution':
-                        break;
-                }
-                $scope.message = _.sample(commentBoxMessages);
-                document.getElementsByTagName('motivational')[0].classList.add('show');
-            }, 10000)
+            let motivational = this.getCookie('hideMotivational');
+            if (motivational == null) {
+                setTimeout(() => {
+                    document.getElementsByTagName('motivational')[0].classList.add('show');
+                }, 10000)
+            }
         }
 
         this.hideMessage = () => {
@@ -61,11 +70,37 @@
         this.turnOff = () => {
             let turnoff = confirm('Are you sure you don\'t want to receive this suggestions anymore?');
             if (turnoff) {
-                // TODO: turn off in profile
+                this.setCookie('hideMotivational','1');
                 this.hideMessage();
                 Notify.show('You won\'t see more suggestions', 'success');
             }
         }
+
+
+        // standard cookie setting code start
+        this.setCookie = function(name,value,days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+        this.getCookie = function(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+        this.eraseCookie = function(name) {   
+            document.cookie = name+'=; Max-Age=-99999999;';  
+        }
+        // standard cookie setting code end
     }
   
   }());

@@ -48,6 +48,7 @@
     $scope.removeContributingIdea = removeContributingIdea.bind($scope);
     $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
     $scope.embedPadGdoc = embedPadGdoc.bind($scope);
+    $scope.embedPadPeerDoc = embedPadPeerDoc.bind($scope);
     $scope.loadCampaignResources = loadCampaignResources.bind($scope);
     $scope.filterCustomFields = filterCustomFields.bind($scope);
     $scope.follow = follow.bind($scope);
@@ -293,12 +294,16 @@
             console.log("Document is "+data.extendedTextPad.resourceType);
             $scope.extendedTextIsEtherpad = data.extendedTextPad.resourceType === 'PAD';
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
+            $scope.extendedTextIsPeerDoc = data.extendedTextPad.resourceType === 'PEERDOC';
             if ($scope.extendedTextIsEtherpad) {
               $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
               $scope.loadReadOnlyEtherpadHTML();
             } else if ($scope.extendedTextIsGdoc) {
               $scope.gdocUrl = data.extendedTextPad.url;
               $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
+            } else if ($scope.extendedTextIsPeerDoc) {
+              $scope.peerDocUrlMinimal = data.extendedTextPad.url;
+              // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {
             console.warn('Proposal with no PAD associated');
@@ -457,6 +462,9 @@
       } else if ($scope.userIsAuthor && $scope.extendedTextIsGdoc) {
         // TODO: load the write embed url for gdoc
         $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
+      } else if ($scope.userIsAuthor && $scope.extendedTextIsPeerDoc) {
+        // TODO: load the write embed url for gdoc
+        $scope.writePeerDocUrl = $scope.peerDocUrl//+"/edit?rm=full";
       }
     }
 
@@ -1038,6 +1046,29 @@
           url: url
         }
         Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'gdoc', payload).then(
+          response => {
+            console.log(response)
+          },
+          error => Notify.show(error.statusMessage, 'error')
+        )
+      } else {
+        Notify.show('Error while trying to embed the document', 'error')
+      }
+    }
+
+    function embedPadPeerDoc() {
+      $scope.newDocUrl = "http://localhost:3000/document/7AYxHx2c5K8ypaM3S?embed=true"
+      console.log("embedPadPeerDoc",$scope.newDocUrl,$scope.assemblyID, $scope.campaignID, $scope.proposalID)
+      if ($scope.newDocUrl != "") {
+        let url = $scope.newDocUrl;
+
+        let payload = {
+          url: url,
+          "gdocLink": url,
+          "etherpadServerUrl": url,
+          "etherpadServerApiKey": this.etherpadApiKey
+        }
+        Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
           response => {
             console.log(response)
           },

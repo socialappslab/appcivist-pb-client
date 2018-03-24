@@ -164,18 +164,14 @@
       .setNotify(true, true);
 
 
-    /*$stateProvider.state('app', {
-      url: '/',
-      controller: 'v2.HomeCtrl',
-      templateUrl: 'app/v2/partials/home.html'
-    });*/
     // V2 routes
-    $stateProvider.state('v2', {
-      url: '/v2',
-      abstract: true,
-      templateUrl: 'app/v2/partials/main.html',
-      controller: 'v2.MainCtrl'
-    })
+    $stateProvider
+      .state('v2', {
+        url: '/v2',
+        abstract: true,
+        templateUrl: 'app/v2/partials/main.html',
+        controller: 'v2.MainCtrl'
+      })
       .state('v2.homepage', {
         url: '/home',
         controller: 'v2.HomeCtrl',
@@ -184,30 +180,6 @@
           skip: true
         }
       })
-      // Uncomment the following to test the newsletter templates
-      // Adds a /newsletter-template URL to test
-      /*
-      .state('v2.newsletter-template', {
-        url: '/newsletter-template',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-no-activity.html'
-      })
-      .state('v2.newsletter-template-with-activity', {
-        url: '/newsletter-template-with-activity',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-with-activity.html'
-      })
-      .state('v2.newsletter-template-proposal-stage', {
-        url: '/newsletter-template-proposal-stage',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-proposal-stage.html'
-      })
-      .state('v2.newsletter-template-text-only', {
-        url: '/newsletter-template-text-only',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-text-only.html'
-      })
-      */
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,
@@ -963,6 +935,8 @@
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
     $timeout, $document, Authorization, $translate, LocaleService) {
+    resetStyles($rootScope, location);
+
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -988,6 +962,7 @@
     // set to true to log actions
     $rootScope.logActions = true;
     $rootScope.logService = logService;
+    resetStyles($rootScope, location);
 
     // devModeOn controls some functionalities that are useful for debugging and testing
     $rootScope.devModeOn = false;
@@ -1070,6 +1045,7 @@
 
     // authentication control
     $rootScope.$on('$stateChangeStart', function (event, next, nextParams) {
+      resetStyles($rootScope, location);
       var authorized;
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       var isAnonymous = true;
@@ -1106,8 +1082,33 @@
         $translate.use(LocaleService.getLocale());
       }
     });
+
   }
 
+  /**
+   * Special function to resetStyles on index.html
+   */
+  function resetStyles($rootScope, location) {
+    var v2 = false;
+    if (location.hash.includes('/v2/')) {
+      v2 = true;
+      $('head link[data-version=v1]').detach();
+      $('head link[href*=\'vendor.css\']').detach();
+      $('head link[href*=\'app.css\']').detach();
+    } else if (location.hash === '#/' || location.hash === '/' || location.hash === '') {
+      //v2 = true;
+      $('head link[data-version=v1]').detach();
+      $('head link[href*=\'vendor.css\']').detach();
+      $('head link[href*=\'app.css\']').detach();
+    } else {
+      $('head link[data-version=v2]').detach();
+      $('head link[href*=\'v2\']').detach();
+    }
+    $rootScope.ui = {
+      v2: v2
+    };
+    console.log("Version 2 loaded = "+v2);
+  }
   /**
    * Special function to configure a list of URLs inside the APP that will be available even without being
    * logged in our having an account.

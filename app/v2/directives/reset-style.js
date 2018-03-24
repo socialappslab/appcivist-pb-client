@@ -19,7 +19,7 @@
         $('head link[href*=\'vendor.css\']').detach();
         $('head link[href*=\'app.css\']').detach();
       } else if (location.hash === '#/' || location.hash === '/' || location.hash === '') {
-        v2 = true;
+        //v2 = true;
         $('head link[data-version=v1]').detach();
         $('head link[href*=\'vendor.css\']').detach();
         $('head link[href*=\'app.css\']').detach();

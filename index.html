@@ -59,7 +59,7 @@
 </head>
 
 <body>
-  <reset-style></reset-style>
+  <!--<reset-style></reset-style>-->
   <span us-spinner="{radius:30, widtpuh:8, length: 16}" spinner-key="spinner-1"></span>
   <div header ng-if="!ui.v2"></div>
   <div class="container-fluid no-padding" id="wrap" ng-if="!ui.v2">
@@ -68,7 +68,7 @@
     </div>
   </div>
   <div footer ng-if="!ui.v2"></div>
-  <div data-ui-view></div>
+  <div ui-view></div>
 </body>
 
 <!-- Javascript Libraries -->

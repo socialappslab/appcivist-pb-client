@@ -7,15 +7,21 @@
 
   HomeCtrl.$inject = [
     '$scope', 'localStorageService', 'Notify', 'AppCivistAuth',
-    '$state', '$filter', 'loginService', '$translate', 'Assemblies'
+    '$state', '$filter', 'loginService', '$translate', 'Assemblies', '$rootScope'
   ];
 
   function HomeCtrl($scope, localStorageService, Notify, AppCivistAuth,
-    $state, $filter, loginService, $translate, Assemblies) {
+    $state, $filter, loginService, $translate, Assemblies, $rootScope) {
 
     activate();
 
     function activate() {
+      // if (!$rootScope.ui || ($rootScope.ui && !$rootScope.ui.v2)) {
+      //   $rootScope.ui = {
+      //     v2: true
+      //   }
+      //   console.log("Forced version 2 in home controller");
+      // }
       $scope.user = {};
       $scope.login = login;
       $scope.isHomePage = true;

@@ -146,7 +146,11 @@
       '*://ctsfrance.appcivist.org/**',
       '*://pb.appcivist.org/**',
       '*://www.facebook.com/**',
-      '*://facebook.com/**'
+      '*://facebook.com/**',
+      '*://testpb.appcivist.org/**',
+      '*://testplatform.appcivist.org/**',
+      '*://appcivist.org/**',
+      '*://www.appcivist.org/**'
     ]);
 
     /**

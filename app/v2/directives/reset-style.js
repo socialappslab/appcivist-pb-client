@@ -19,6 +19,7 @@
         $('head link[href*=\'vendor.css\']').detach();
         $('head link[href*=\'app.css\']').detach();
       } else if (location.hash === '#/' || location.hash === '/' || location.hash === '') {
+        v2 = true;
         $('head link[data-version=v1]').detach();
         $('head link[href*=\'vendor.css\']').detach();
         $('head link[href*=\'app.css\']').detach();
@@ -29,6 +30,7 @@
       $rootScope.ui = {
         v2: v2
       };
+      console.log("Version 2 loaded = "+v2);
     }
 
     return {

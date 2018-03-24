@@ -1144,19 +1144,21 @@
     }
 
     function checkIfFollowing(sid) {
-      let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"REGULAR").query();
-      res.$promise.then(
-        function (response) {
-          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
-          if (substatus.length > 0) {
-            $scope.subscription = substatus[0];
-            $scope.subscribed = true;
+      if ($scope.user && $scope.user.userId) {
+        let res = Notifications.subscriptionsBySpace($scope.user.userId, sid, "REGULAR").query();
+        res.$promise.then(
+          function (response) {
+            let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
+            if (substatus.length > 0) {
+              $scope.subscription = substatus[0];
+              $scope.subscribed = true;
+            }
+          },
+          function (error) {
+            Notify.show(error.statusMessage, 'error');
           }
-        },
-        function (error) {
-          Notify.show(error.statusMessage, 'error');
-        }
-      );
+        );
+      }
     }
   }
 }());

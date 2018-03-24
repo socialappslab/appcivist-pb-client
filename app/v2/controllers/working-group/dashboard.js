@@ -671,7 +671,7 @@
 
     function checkIfSubscribed(sid) {
       // Check newsletter subscription
-      if ($scope.user) {
+      if ($scope.user && $scope.user.userId) {
         let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"NEWSLETTER").query();
         res.$promise.then(
           function (response) {

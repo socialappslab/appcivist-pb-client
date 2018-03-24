@@ -952,32 +952,33 @@
 
     function checkIfSubscribed(sid) {
       // Check newsletter subscription
-      let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"NEWSLETTER").query();
-      res.$promise.then(
-        function (response) {
-          let substatus = response.filter(sub => sub ? sub.userId == $scope.user.uuid : false)
-          if (substatus.length > 0) {
-            $scope.subscription = substatus[0];
-            $scope.subscribed = true;
+      if ($scope.user) {
+        let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"NEWSLETTER").query();
+        res.$promise.then(
+          function (response) {
+            let substatus = response.filter(sub => sub ? sub.userId == $scope.user.uuid : false)
+            if (substatus.length > 0) {
+              $scope.subscription = substatus[0];
+              $scope.subscribed = true;
+            }
+          },
+          function (error) {
+            Notify.show(error.statusMessage, 'error');
           }
-        },
-        function (error) {
-          Notify.show(error.statusMessage, 'error');
-        }
-      );
-
-      res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"REGULAR").query();
-      res.$promise.then(
-        function (response) {
-          let substatus = response.filter(sub => sub.userId == $scope.user.uuid);
-          if (substatus.length > 0) {
-            $scope.subscriptionREG = substatus[0];
+        );
+        res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"REGULAR").query();
+        res.$promise.then(
+          function (response) {
+            let substatus = response.filter(sub => sub.userId == $scope.user.uuid);
+            if (substatus.length > 0) {
+              $scope.subscriptionREG = substatus[0];
+            }
+          },
+          function (error) {
+            Notify.show(error.statusMessage, 'error');
           }
-        },
-        function (error) {
-          Notify.show(error.statusMessage, 'error');
-        }
-      );
+        );
+      }
     }
   }
 })();

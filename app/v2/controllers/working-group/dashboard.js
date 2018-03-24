@@ -674,7 +674,7 @@
       let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"NEWSLETTER").query();
       res.$promise.then(
         function (response) {
-          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
+          let substatus = response.filter(sub => sub ? sub.userId == $scope.user.uuid : false)
           if (substatus.length > 0) {
             $scope.subscription = substatus[0];
             $scope.subscribed = true;

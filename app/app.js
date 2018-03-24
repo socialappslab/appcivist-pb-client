@@ -28,7 +28,7 @@
       },
       core: {
         production: "https://platform.appcivist.org/api",
-        testing: "https://testplatform.appcivist.org/backend/api",
+        testing: "https://testplatform.appcivist.org/api",
         local: "http://localhost:9000/api",
         development: "https://devplatform.appcivist-dev.org/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api"
@@ -37,7 +37,7 @@
     ui: {
       forgotForms: {
         production: "https://pb.appcivist.org/#/v2/user/password/reset/",
-        testing: "https://testapp.appcivist.org/#/v2/user/password/reset/",
+        testing: "https://testpb.appcivist.org/#/v2/user/password/reset/",
         local: "http://localhost:8000/#/v2/user/password/reset/",
         development: "https://testapp.appcivist.org/#/v2/user/password/reset/"
       }

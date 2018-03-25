@@ -935,7 +935,6 @@
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
     $timeout, $document, Authorization, $translate, LocaleService) {
-    resetStyles($rootScope, location);
 
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
@@ -962,7 +961,6 @@
     // set to true to log actions
     $rootScope.logActions = true;
     $rootScope.logService = logService;
-    resetStyles($rootScope, location);
 
     // devModeOn controls some functionalities that are useful for debugging and testing
     $rootScope.devModeOn = false;
@@ -1045,7 +1043,6 @@
 
     // authentication control
     $rootScope.$on('$stateChangeStart', function (event, next, nextParams) {
-      resetStyles($rootScope, location);
       var authorized;
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       var isAnonymous = true;
@@ -1084,31 +1081,7 @@
     });
 
   }
-
-  /**
-   * Special function to resetStyles on index.html
-   */
-  function resetStyles($rootScope, location) {
-    var v2 = false;
-    if (location.hash.includes('/v2/')) {
-      v2 = true;
-      $('head link[data-version=v1]').detach();
-      $('head link[href*=\'vendor.css\']').detach();
-      $('head link[href*=\'app.css\']').detach();
-    } else if (location.hash === '#/' || location.hash === '/' || location.hash === '') {
-      //v2 = true;
-      $('head link[data-version=v1]').detach();
-      $('head link[href*=\'vendor.css\']').detach();
-      $('head link[href*=\'app.css\']').detach();
-    } else {
-      $('head link[data-version=v2]').detach();
-      $('head link[href*=\'v2\']').detach();
-    }
-    $rootScope.ui = {
-      v2: v2
-    };
-    console.log("Version 2 loaded = "+v2);
-  }
+  
   /**
    * Special function to configure a list of URLs inside the APP that will be available even without being
    * logged in our having an account.

@@ -29,6 +29,7 @@
       $rootScope.ui = {
         v2: v2
       };
+      console.log("Version 2 loaded = "+v2);
     }
 
     return {

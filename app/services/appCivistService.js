@@ -37,6 +37,17 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService, $in
     },
 
     /**
+     * Returns an $resource to interact with /assembly endpoint.
+     *
+     * @method services.Assemblies#id
+     *
+     * @returns {object} - [$resource]{@link https://code.angularjs.org/1.5.11/docs/api/ngResource/service/$resource}
+     */
+    id: function (aid, type, uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/id', {aid: aid, type: type, uuid: uuid});
+    },
+
+    /**
      * Returns an $resource to interact with /assembly/:aid endpoint.
      *
      * @method services.Assemblies#assembly

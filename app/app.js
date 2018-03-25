@@ -146,7 +146,11 @@
       '*://ctsfrance.appcivist.org/**',
       '*://pb.appcivist.org/**',
       '*://www.facebook.com/**',
-      '*://facebook.com/**'
+      '*://facebook.com/**',
+      '*://testpb.appcivist.org/**',
+      '*://testplatform.appcivist.org/**',
+      '*://appcivist.org/**',
+      '*://www.appcivist.org/**'
     ]);
 
     /**
@@ -160,18 +164,14 @@
       .setNotify(true, true);
 
 
-    /*$stateProvider.state('app', {
-      url: '/',
-      controller: 'v2.HomeCtrl',
-      templateUrl: 'app/v2/partials/home.html'
-    });*/
     // V2 routes
-    $stateProvider.state('v2', {
-      url: '/v2',
-      abstract: true,
-      templateUrl: 'app/v2/partials/main.html',
-      controller: 'v2.MainCtrl'
-    })
+    $stateProvider
+      .state('v2', {
+        url: '/v2',
+        abstract: true,
+        templateUrl: 'app/v2/partials/main.html',
+        controller: 'v2.MainCtrl'
+      })
       .state('v2.homepage', {
         url: '/home',
         controller: 'v2.HomeCtrl',
@@ -180,30 +180,6 @@
           skip: true
         }
       })
-      // Uncomment the following to test the newsletter templates
-      // Adds a /newsletter-template URL to test
-      /*
-      .state('v2.newsletter-template', {
-        url: '/newsletter-template',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-no-activity.html'
-      })
-      .state('v2.newsletter-template-with-activity', {
-        url: '/newsletter-template-with-activity',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-with-activity.html'
-      })
-      .state('v2.newsletter-template-proposal-stage', {
-        url: '/newsletter-template-proposal-stage',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-proposal-stage.html'
-      })
-      .state('v2.newsletter-template-text-only', {
-        url: '/newsletter-template-text-only',
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/mockups/newsletter-backend-template-text-only.html'
-      })
-      */
       .state('v2.assembly', {
         url: '/assembly',
         abstract: true,
@@ -959,6 +935,7 @@
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
     $timeout, $document, Authorization, $translate, LocaleService) {
+
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
     localStorageService.set("etherpadServer", etherpadServerURL);
@@ -1102,8 +1079,9 @@
         $translate.use(LocaleService.getLocale());
       }
     });
-  }
 
+  }
+  
   /**
    * Special function to configure a list of URLs inside the APP that will be available even without being
    * logged in our having an account.

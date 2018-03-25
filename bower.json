@@ -14,7 +14,7 @@
     "angular-moment": ">=0.10.3",
     "angular-resource": "=1.5.9",
     "angular-route": "=1.5.9",
-    "bootstrap": ">=3.x.x",
+    "bootstrap": "=3.3.7",
     "jquery": ">=2.1.1",
     "ng-file-upload": "~11.x.x",
     "spin.js": "2.0.1",

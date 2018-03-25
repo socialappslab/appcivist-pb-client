@@ -298,6 +298,9 @@
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
+          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
+          <span class="attachment-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
+
           <ul class="workingGroupList">
             <li ng-repeat="resource in resources | filter:resourceIsDocument as documents">
               <a class="workingGroupLink" target="_blank"

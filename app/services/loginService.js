@@ -1,5 +1,5 @@
 appCivistApp.service('loginService', function($resource, $http, $location, localStorageService, $uibModal, AppCivistAuth,
-  FlashService, $rootScope, $q, Memberships, Assemblies, $filter, $state, Notify, Campaigns) {
+  FlashService, $rootScope, $q, Memberships, Assemblies, $filter, $state, Notify, Campaigns, $stateParams) {
 
 
   this.getUser = function() {
@@ -183,8 +183,17 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
     var domain = localStorageService.get('domain');
     var currentAssembly;
     if (domain) {
-      var fa = _.filter(myAssemblies, function(a) {
+      var fa = _.filter(myAssemblies, function (a) {
         return a.uuid === domain.uuid;
+      });
+      if (fa) {
+        currentAssembly = fa[0];
+      } else {
+        currentAssembly = myAssemblies[0];
+      }
+    } else if ($stateParams.auuid) {
+      var fa = _.filter(myAssemblies, function (a) {
+        return a.uuid === $stateParams.auuid;
       });
       if (fa) {
         currentAssembly = fa[0];
@@ -209,16 +218,18 @@ appCivistApp.service('loginService', function($resource, $http, $location, local
   function singleAssemblySuccess(assembly) {
     var user = localStorageService.get('user');
     localStorageService.set('currentAssembly', assembly);
-    var rsp = Campaigns.campaignsInAssembly(assembly.assemblyId, 'ongoing').query().$promise;
+    var rsp = Campaigns.campaignsInAssembly(assembly.assemblyId).query().$promise;
 
     rsp.then(
       function(data) {
-        localStorageService.set('ongoingCampaigns', data);
-      },
-      function() {
-        Notify.show('Error while trying to get ongoing campaigns from server', 'error');
-      }
-    )
+        var ongoing = data.filter(c => {return c.active===true});
+        var upcoming = data.filter(c => {return c.upcoming===true});
+        var past = data.filter(c => {return c.past===true});
+
+        localStorageService.set('ongoingCampaigns', ongoing);
+        localStorageService.set('upcomingCampaigns', upcoming);
+        localStorageService.set('pastCampaigns', past);
+      });
     return rsp;
   }
 

@@ -1199,6 +1199,61 @@ custom-field {
   min-width: auto;
 }
 
+// main.html styles that ware under <style> tag
+
+footer .footer__content {
+  text-align: center;
+}
+
+button,
+.button {
+  background-color: #009877;
+  border-color: #009877;
+}
+
+a:hover {
+  color: #009877;
+}
+
+button:hover,
+.button:hover {
+  background-color: #009877;
+}
+
+input[type=submit] {
+  background: #009877;
+  border-color: #009877;
+}
+
+input[type=submit]:hover {
+  background-color: #009877;
+}
+
+.vote-button {
+  border-color: #009877;
+  color: #009877;
+}
+
+.vote-button:hover {
+  background-color: #009877;
+}
+
+.vote-button a {
+  color: #11493b;
+}
+
+.mce-tinymce button,
+.mce-tinymce button:hover,
+.mce-tinymce .button,
+.mce-tinymce .button:hover,
+.mce-container button,
+.mce-container button:hover,
+.mce-container .button,
+.mce-container .button:hover {
+  background-color: initial;
+  border-color: initial;
+}
+
 // In order to test new topbar mockup uncomment the following
 @import "buttons";
 //import "../mockups/navigation-bar";

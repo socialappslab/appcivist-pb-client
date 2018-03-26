@@ -303,6 +303,7 @@
               $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             } else if ($scope.extendedTextIsPeerDoc) {
               $scope.peerDocUrlMinimal = data.extendedTextPad.url;
+              $scope.peerDocUrl = data.extendedTextPad.url;
               // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {
@@ -1057,26 +1058,24 @@
     }
 
     function embedPadPeerDoc() {
-      $scope.newDocUrl = "http://localhost:3000/document/7AYxHx2c5K8ypaM3S?embed=true"
-      console.log("embedPadPeerDoc",$scope.newDocUrl,$scope.assemblyID, $scope.campaignID, $scope.proposalID)
-      if ($scope.newDocUrl != "") {
-        let url = $scope.newDocUrl;
 
-        let payload = {
-          url: url,
-          "gdocLink": url,
-          "etherpadServerUrl": url,
-          "etherpadServerApiKey": this.etherpadApiKey
-        }
-        Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
-          response => {
-            console.log(response)
-          },
-          error => Notify.show(error.statusMessage, 'error')
-        )
-      } else {
-        Notify.show('Error while trying to embed the document', 'error')
+      // TODO: delete harcoded url and payload 
+      let url = "http://localhost:3000/document/7AYxHx2c5K8ypaM3S?embed=true";
+      let payload = {
+        url: url,
+        "peerdocLink": url,
+        "etherpadServerUrl": url,
+        "etherpadServerApiKey": this.etherpadApiKey
       }
+      Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
+        response => {
+          // TODO: use response url instead
+          $scope.newDocUrl = url;
+          $scope.writePeerDocUrl = url;
+          $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
+        },
+        error => Notify.show(error.statusMessage, 'error')
+      )
     }
 
     function loadCampaignResources() {

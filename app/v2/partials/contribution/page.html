@@ -256,7 +256,8 @@
         <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
       </section>
 
-      <section class="comments__section">
+      <section class="comments__section"
+               ng-if="!campaignConfigs['appcivist.campaign.disable-proposal-discussions'] || campaignConfigs['appcivist.campaign.disable-proposal-discussions']==='false' || campaignConfigs['appcivist.campaign.disable-proposal-discussions']==='FALSE'">
         <div class="row comments-header">
           <div class="col-xs-4 text-left">
             <strong>Comments ({{commentType == 'members' ? proposal.commentCount : proposal.forumCommentCount}})</strong>

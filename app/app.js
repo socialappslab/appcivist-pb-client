@@ -64,11 +64,20 @@
     //mimove: "https://etherpad.appcivist.org/"
   };
 
+
+  var peerdoc = {
+    production: "https://peerdoc.org/",
+    testing: "https://peerdoc.appcivist.org/",
+    development: "https://peerdoc.appcivist.org/",
+    local: "http://localhost:3000/"
+  };
+
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
   var appCivistCoreBaseURL = selectProperURL(window.location.hostname, appcivist.api.core);
   var votingApiUrl = selectProperURL(window.location.hostname, appcivist.api.voting);
   var etherpadServerURL = selectProperURL(window.location.hostname, etherpad);
   var appCivistForgotFormURL= selectProperURL(window.location.hostname, appcivist.ui.forgotForms);
+  var peerdocServerURL = selectProperURL(window.location.hostname, peerdoc);
 
   var hideLogin = (window.location.hostname === "appcivist.org" ||
     window.location.hostname === "www.appcivist.org");
@@ -146,11 +155,12 @@
       '*://ctsfrance.appcivist.org/**',
       '*://pb.appcivist.org/**',
       '*://www.facebook.com/**',
-      '*://facebook.com/**',
+      '*://facebook.com/**'
       '*://testpb.appcivist.org/**',
       '*://testplatform.appcivist.org/**',
       '*://appcivist.org/**',
-      '*://www.appcivist.org/**'
+      '*://www.appcivist.org/**',
+      peerdocServerURL + '**'
     ]);
 
     /**

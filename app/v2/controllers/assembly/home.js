@@ -163,7 +163,7 @@
           });
 
           localStorageService.set("pastCampaigns", this.pastCampaigns);
-          
+
           this.upcomingCampaigns = campaigns.filter(c => {
             const startDate = Utils.parseDateToLocal(c.startDate);
 
@@ -177,6 +177,7 @@
 
           angular.forEach(this.ongoings, c => this.fetchWorkingGroups(this.assemblyId, c));
           angular.forEach(this.pastCampaigns, c => this.fetchWorkingGroups(this.assemblyId, c));
+          angular.forEach(this.upcomingCampaigns, c => this.fetchWorkingGroups(this.assemblyId, c));
         },
         error => {
           Notify.show(error.statusMessage, 'error');

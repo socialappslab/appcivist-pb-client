@@ -32,12 +32,38 @@
 
     var self = this;
 
-    $rootScope.$on('$stateChangeSuccess', fetchAnonymousAssembly.bind(this));
+    this.onStateChange = () => {
+      fetchAnonymousAssembly.bind(this);
+      this.auuid = $stateParams.auuid ? $stateParams.auuid : null;
+      this.cuuid = $stateParams.cuuid ? $stateParams.cuuid : null;
+      this.guuid = $stateParams.guuid ? $stateParams.guuid : null;
+      this.puuid = $stateParams.puuid ? $stateParams.puuid : null;
+      this.couuid = $stateParams.couuid ? $stateParams.couuid : null;
+    }
+    $rootScope.$on('$stateChangeSuccess', this.onStateChange);
 
     this.$onInit = () => {
-      this.user = {}
+      this.user = {};
+      this.assemblyID = null;
+      this.campaignID = null;
+      this.contributionID = null;
+      this.groupID = null;
+      this.proposalID = null;
       this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
-      this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
+      if (!this.assembly)
+        this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
+
+      this.auuid = $stateParams.auuid ? $stateParams.auuid : null;
+      this.cuuid = $stateParams.cuuid ? $stateParams.cuuid : null;
+      this.guuid = $stateParams.guuid ? $stateParams.guuid : null;
+      this.puuid = $stateParams.puuid ? $stateParams.puuid : null;
+      this.couuid = $stateParams.couuid ? $stateParams.couuid : null;
+
+      this.aid = null;
+      this.cid = null;
+      this.coid = null;
+      this.gid = null;
+      this.pid = null;
     }
 
     this.signup = () => {
@@ -78,30 +104,114 @@
         $translate.use(this.user.language);
       }
       user.assembly = this.assembly ? this.assembly : null;
-      loginService.loadAuthenticatedUserMemberships(user).then(function () {
-        var ongoingCampaigns = localStorageService.get('ongoingCampaigns');
-        var assembly = localStorageService.get('currentAssembly');
 
-        var rsp = Space.configs(assembly.resourcesResourceSpaceId).get();
-        rsp.$promise.then(function(data){
-          $scope.assemblyConfig = data;
-          window.Pace.stop();
-          if ($scope.assemblyConfig
-              && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage']
-              && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] === 'TRUE') {
-            $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
+      // load memberships and redirect to signed in page
+      loginService.loadAuthenticatedUserMemberships(user).then(this.redirectToPage);
+    }
+
+    this.redirectToPage = () => {
+      var campaigns = [];
+      var ongoing = localStorageService.get('ongoingCampaigns');
+      var upcoming = localStorageService.get('upcomingCampaigns');
+      var past = localStorageService.get('pastCampaigns');
+
+      campaigns = ongoing ? campaigns.concat(ongoing) : campaigns;
+      campaigns = upcoming ? campaigns.concat(upcoming) : campaigns;
+      campaigns = past ? campaigns.concat(past) : campaigns;
+
+      var assembly = localStorageService.get('currentAssembly');
+      this.assemblyID = assembly.assemblyId;
+      // Determine where to redirect
+      if (this.cuuid) {
+        let campaign = campaigns ? campaigns.filter(c => {return c.uuid === this.cuuid}) : null;
+        if (campaign && campaign.length > 0) {
+          campaign = campaign[0];
+          this.campaignID = campaign.campaignId;
+          if (this.couuid) {
+            let idres = Assemblies.id(this.assemblyID, "contribution", this.couuid).get().$promise;
+            idres.then(this.redirectToContribution, this.redirectToCampaign);
+          } else if (this.guuid) {
+            let idres = Assemblies.id(this.assemblyID, "group", this.guuid).get().$promise;
+            idres.then(this.redirectToGroupOrProposal, this.redirectToCampaign);
           } else {
-            let campaign = ongoingCampaigns ? ongoingCampaigns[0] : null
-            $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
+            this.redirectToCampaign();
           }
-          // $('#sessionModal').modal('hide');
-          $('#sessionModal').modal('hide');
-          $('body').removeClass('modal-open');
-          $('.modal-backdrop').remove();
-        }, function(error) {
-            window.Pace.stop();
-            Notify.show(error ? error.data ? error.data.statusMessage : error.statusMessage ? error.statusMessage : '' : '', 'error');
-        });
+        } else {
+          this.redirectToAssembly(assembly, campaigns);
+        }
+      } else {
+        this.redirectToAssembly(assembly, campaigns);
+      }
+      $('#sessionModal').modal('hide');
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+    }
+
+    this.redirectToContribution = (data) => {
+      // redirect to contribution page
+      this.coid = data.newResourceId;
+      $state.go('v2.assembly.aid.campaign.contribution.coid',
+        {
+          aid: this.assemblyID,
+          cid: this.campaignID,
+          coid: this.coid
+        }, {reload: true});
+    }
+
+    this.redirectToCampaign = (error) => {
+      $state.go('v2.assembly.aid.campaign.cid', { aid: this.assemblyID, cid: this.campaignID}, { reload: true });
+    }
+
+    this.redirectToGroupOrProposal = (data) => {
+      this.groupID = data.newResourceId;
+      if (this.puuid) {
+        let idres = Assemblies.id(this.assemblyID, "contribution", this.puuid).get().$promise;
+        idres.then(this.redirectToProposal,this.redirectToGroup);
+      } else {
+        this.redirectToGroup();
+      }
+    }
+
+    this.redirectToGroup = () => {
+      $state.go('v2.assembly.aid.campaign.workingGroup.gid', {
+        aid: this.assemblyID,
+        cid: this.campaignID,
+        gid: this.groupID
+      }, { reload: true });
+    }
+
+    this.redirectToProposal = (data) => {
+      this.contributionID = data.newResourceId;
+      $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
+        aid: this.assemblyID,
+        cid: this.campaignID,
+        gid: this.groupID,
+        pid: this.contributionID
+      }, { reload: true });
+    }
+
+    this.redirectToAssembly = (assembly, campaigns) => {
+      // if no campaign UUID in the URL, then try to redirect to assembly page if its homepage is enabled
+      // if the homepage is not enabled, try to redirect to the first campaign in the list
+      // if now campaign exists, redirect to the homepage anyways
+      var rsp = Space.configs(assembly.resourcesResourceSpaceId).get();
+      rsp.$promise.then(function(data){
+        $scope.assemblyConfig = data;
+        window.Pace.stop();
+        if ($scope.assemblyConfig
+          && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage']
+          && $scope.assemblyConfig['appcivist.assembly.instance.enable-homepage'] === 'TRUE') {
+          $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
+        } else {
+          let campaign = campaigns ? campaigns[0] : null
+          if (campaign)
+            $state.go('v2.assembly.aid.campaign.cid', { aid: assembly.assemblyId, cid: campaign.campaignId }, { reload: true });
+          else
+            $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
+        }
+      }, function(error) {
+        window.Pace.stop();
+        $state.go('v2.assembly.aid.home', { aid: assembly.assemblyId }, { reload: true });
       });
     }
 

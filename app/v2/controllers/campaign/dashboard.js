@@ -24,12 +24,13 @@
     'Voting',
     '$sce',
     'Notifications',
-    '$breadcrumb'
+    '$breadcrumb',
+    'FileUploader'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce, Notifications, $breadcrumb) {
+    $state, Voting, $sce, Notifications, $breadcrumb, FileUploader) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -157,6 +158,15 @@
       $scope.mediaCount = mediaCount.bind($scope);
       $scope.pictureCount = pictureCount.bind($scope);
       $scope.videoCount = videoCount.bind($scope);
+
+      // add attachment form
+      $scope.submitAttachment = submitAttachment.bind($scope);
+      $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
+      $scope.createAttachmentResource = createAttachmentResource.bind($scope);
+      $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
+      $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
+      $scope.sanitizeVideoResourceUrl = sanitizeVideoResourceUrl.bind($scope);
+
 
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
@@ -361,29 +371,6 @@
           brief => {
             $scope.campaignBriefDefault = $sce.trustAsHtml(brief);
           });
-    }
-
-    function toggleOpenAddAttachment () {
-      $scope.openAddAttachment = !$scope.openAddAttachment;
-      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachment");
-    }
-
-    function toggleOpenAddAttachmentByUrl () {
-      $scope.openAddAttachment = !$scope.openAddAttachment;
-      $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
-      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachmentByUrl");
-    }
-
-    function deleteResource(attachment) {
-      Space.deleteResource(this.spaceID, attachment.resourceId).then(
-        response => {
-          _.remove(this.resources, { resourceId: attachment.resourceId });
-          Notify.show('Attachment deleted successfully', 'success');
-        } ,
-        error => {
-          Notify.show(error.statusMessage, 'error');
-        }
-      );
     }
 
     function afterComponentsLoaded() {
@@ -952,29 +939,179 @@
 
     function checkIfSubscribed(sid) {
       // Check newsletter subscription
-      let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"NEWSLETTER").query();
-      res.$promise.then(
-        function (response) {
-          let substatus = response.filter(sub => sub.userId == $scope.user.uuid)
-          if (substatus.length > 0) {
-            $scope.subscription = substatus[0];
-            $scope.subscribed = true;
+      if ($scope.user && $scope.user.userId) {
+        let res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"NEWSLETTER").query();
+        res.$promise.then(
+          function (response) {
+            let substatus = response.filter(sub => sub ? sub.userId == $scope.user.uuid : false)
+            if (substatus.length > 0) {
+              $scope.subscription = substatus[0];
+              $scope.subscribed = true;
+            }
+          },
+          function (error) {
+            Notify.show(error.statusMessage, 'error');
           }
-        },
-        function (error) {
-          Notify.show(error.statusMessage, 'error');
-        }
-      );
+        );
+        res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"REGULAR").query();
+        res.$promise.then(
+          function (response) {
+            let substatus = response.filter(sub => sub.userId == $scope.user.uuid);
+            if (substatus.length > 0) {
+              $scope.subscriptionREG = substatus[0];
+            }
+          },
+          function (error) {
+            Notify.show(error.statusMessage, 'error');
+          }
+        );
+      }
+    }
 
-      res = Notifications.subscriptionsBySpace($scope.user.userId,sid,"REGULAR").query();
-      res.$promise.then(
-        function (response) {
-          let substatus = response.filter(sub => sub.userId == $scope.user.uuid);
-          if (substatus.length > 0) {
-            $scope.subscriptionREG = substatus[0];
-          }
+    /**
+     * Upload the given file to the server. Also, attachs it to
+     * the current contribution.
+     */
+    function submitAttachment() {
+      var vm = this;
+      this.startSpinner();
+      var fd = new FormData();
+      fd.append('file', this.newAttachment.file);
+      $http.post(FileUploader.uploadEndpoint(), fd, {
+        headers: {
+          'Content-Type': undefined
         },
-        function (error) {
+        transformRequest: angular.identity,
+      }).then(function (response) {
+        let resource = {
+          name: response.data.name,
+          url: response.data.url
+        }
+        vm.createAttachmentResource(resource, true);
+      }, function (error) {
+        Notify.show(error.statusMessage, 'error');
+      });
+    }
+
+
+    /**
+     * Upload the given file to the server. Also, attachs it to
+     * the current contribution.
+     */
+    function submitAttachmentByUrl() {
+      var vm = this;
+      this.startSpinner();
+      let resource = {
+        name: this.newAttachment.name,
+        url: this.newAttachment.url
+      };
+      vm.createAttachmentResource(resource, false);
+    }
+    function sanitizeVideoResourceUrl(url) {
+      let ytRegex = (/(http|https):\/\/(youtube\.com|www\.youtube\.com|youtu\.be)/);
+      let vimeoRegex = (/(http|https):\/\/(vimeo\.com|www\.vimeo\.com)/);
+      let vimeoEmbedRegex = (/(http|https):\/\/(player\.vimeo\.com)/);
+
+      if (ytRegex.test(url)) {
+        return url.replace('watch?v=', 'embed/');
+      } else if (vimeoRegex.test(url) && !vimeoEmbedRegex.test(url)) {
+        return url.replace('vimeo.com','player.vimeo.com/video');
+      } else {
+        return url;
+      }
+    }
+
+    /**
+     * After the file has been uploaded, we should relate it with the contribution.
+     *
+     * @param {string} url - The uploaded file's url.
+     */
+    function createAttachmentResource(resource, isNewUploadedFile) {
+      var vm = this;
+
+      let pictureRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
+      let videoRegex = (/(gif|jpg|jpeg|tiff|png)$/i);
+      let onlineVideoRegex = (/(http|https):\/\/(youtube\.com|www\.youtube\.com|youtu\.be|vimeo\.com|www\.vimeo\.com)/);
+
+      let fileTypeContainingString = resource.name; // If
+      let resourceName = resource.name;
+      let resourceUrl = resource.url;
+
+      let isPicture = false;
+      let isVideo = false;
+      let rType = "FILE";
+
+      if (isNewUploadedFile) {
+        fileTypeContainingString = this.newAttachment.file.type;
+        resourceName = this.newAttachment.name;
+        isPicture = pictureRegex.test(fileTypeContainingString);
+        if (!isPicture)
+          isVideo = videoRegex.test(fileTypeContainingString);
+      } else {
+        // If is not a new attachment and the resource is added by URL
+        // see if it is not a youtube or vimeo video
+        isVideo = onlineVideoRegex.test(resourceUrl);
+        if (!isVideo)
+          isPicture = pictureRegex.test(fileTypeContainingString);
+        if (!isPicture && !isVideo)
+          isVideo = videoRegex.test(fileTypeContainingString);
+      }
+
+      rType = isPicture ? "PICTURE" : isVideo ? "VIDEO" : "FILE";
+
+      // TODO: change for space resource posting
+      var attachment = Contributions.newAttachmentObject({ url: resourceUrl, name: resourceName, resourceType: rType});
+      var rsp = Space.resources(vm.spaceID).save(attachment).$promise;
+      //rsp = Contributions.contributionAttachment(this.assemblyID, this.proposalID).save(attachment).$promise;
+
+      rsp.then(function (response) {
+        var type = "Attachments";
+        if (!isPicture && !isVideo) {
+          if (!vm.resources)
+            vm.resources = [];
+          response.resourceIsDocument = true;
+          vm.resources.push(response);
+          vm.openAddAttachment = false;
+        } else {
+          if (!vm.resources)
+            vm.resources = [];
+          response.resourceIsMedia = true;
+          vm.resources.push(response);
+          type = "Media";
+        }
+
+        if (isNewUploadedFile) {
+          vm.openAddAttachment = false;
+        } else {
+          vm.openAddAttachmentByUrl = false;
+        }
+
+        Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
+        vm.stopSpinner();
+      }, function (error) {
+        Notify.show(error.statusMessage, 'error');
+        vm.stopSpinner();
+      });
+    }
+
+    function toggleOpenAddAttachment () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachment");
+    }
+
+    function toggleOpenAddAttachmentByUrl () {
+      $scope.openAddAttachment = !$scope.openAddAttachment;
+      $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
+      $scope.$broadcast("AddResourceForm:ToggleOpenAddAttachmentByUrl");
+    }
+
+    function deleteResource(attachment) {
+      Space.deleteResource(this.spaceID, attachment.resourceId).then(
+        response => {
+          _.remove(this.resources, { resourceId: attachment.resourceId });
+          Notify.show('Attachment deleted successfully', 'success');
+        } ,
+        error => {
           Notify.show(error.statusMessage, 'error');
         }
       );

@@ -43,10 +43,10 @@
 
         switch (this.page) {
             case 'campaign':
-                messages = messages.concat(commentBoxMessages, contributingMessages, followMessages);
+                messages = messages.concat(commentBoxMessages, followMessages);
                 break;
             case 'wg':
-                messages =messages.concat(commentBoxMessages, contributingMessages, followMessages);
+                messages =messages.concat(commentBoxMessages, followMessages);
                 break;
             case 'contribution':
                 messages =messages.concat(commentBoxMessages, attachmentsMessages, contributingMessages, followMessages);

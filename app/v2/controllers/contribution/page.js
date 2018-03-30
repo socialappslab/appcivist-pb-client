@@ -1060,19 +1060,11 @@
     }
 
     function embedPadPeerDoc() {
-      // TODO: delete harcoded url and payload
-      let url = "http://localhost:3000/document/7AYxHx2c5K8ypaM3S?embed=true";
-      let payload = {
-        url: url,
-        "peerdocLink": url,
-        "etherpadServerUrl": url,
-        "etherpadServerApiKey": this.etherpadApiKey
-      }
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           // TODO: use response url instead
-          $scope.newDocUrl = url;
-          $scope.writePeerDocUrl = url;
+          $scope.newDocUrl = response.path;
+          $scope.writePeerDocUrl = response.path;
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
         },
         error => Notify.show(error.statusMessage, 'error')

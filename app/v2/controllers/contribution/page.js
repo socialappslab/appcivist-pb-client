@@ -296,14 +296,16 @@
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
             $scope.extendedTextIsPeerDoc = data.extendedTextPad.resourceType === 'PEERDOC';
             if ($scope.extendedTextIsEtherpad) {
-              $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+              $scope.etherpadReadOnlyUrl = $sce.trustAsResourceUrl(
+                Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url)
+                  + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale);
               $scope.loadReadOnlyEtherpadHTML();
             } else if ($scope.extendedTextIsGdoc) {
-              $scope.gdocUrl = data.extendedTextPad.url;
-              $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
+              $scope.gdocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
+              $scope.gdocUrlMinimal = $sce.trustAsResourceUrl($scope.gdocUrl +"?rm=minimal");
             } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = data.extendedTextPad.url;
-              $scope.peerDocUrl = data.extendedTextPad.url;
+              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url);
+              $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
               // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {
@@ -1058,19 +1060,11 @@
     }
 
     function embedPadPeerDoc() {
-      // TODO: delete harcoded url and payload
-      let url = "http://localhost:3000/document/7AYxHx2c5K8ypaM3S?embed=true";
-      let payload = {
-        url: url,
-        "peerdocLink": url,
-        "etherpadServerUrl": url,
-        "etherpadServerApiKey": this.etherpadApiKey
-      }
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           // TODO: use response url instead
-          $scope.newDocUrl = url;
-          $scope.writePeerDocUrl = url;
+          $scope.newDocUrl = response.path;
+          $scope.writePeerDocUrl = response.path;
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
         },
         error => Notify.show(error.statusMessage, 'error')

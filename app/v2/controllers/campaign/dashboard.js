@@ -360,7 +360,13 @@
 
       res.$promise.then(
         data => {
-          $scope.campaignBrief = $sce.trustAsHtml(data.brief);
+          let briefContent = data.brief;
+          $scope.campaignBriefIsUrl = data.brief.startsWith("http");
+          if ($scope.campaignBriefIsUrl) {
+            $scope.campaignBrief = $sce.trustAsResourceUrl(briefContent);
+          } else {
+            $scope.campaignBrief = $sce.trustAsHtml(briefContent);
+          }
         }
       );
     }

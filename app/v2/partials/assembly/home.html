@@ -106,7 +106,7 @@
               <a ng-if="isAnonymous || readAssemblyByShortname"
                  ng-href="/#/v2/p/assembly/{{assemblyId}}/campaign/{{campaign.uuid}}" class="list-group-item">
                 <div>
-                  {{campaign.title}}
+                  {{campaign.title}} ({{'Click here' | translate | uppercase}})
                 </div>
 
                 <span class="list-group-item-btn" ng-click="showGroups(campaign, $event)">

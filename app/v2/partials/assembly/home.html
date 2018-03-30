@@ -196,9 +196,10 @@
         <h2>{{ 'Organizers' | translate }}</h2>
 
         <div class="row org-logos">
-          <a ng-repeat="org in organizations">
+          <a ng-repeat="org in organizations" ng-href="{{org.url}}" >
             <img width="" ng-src="{{org.logo.url}}" ng-if="org.logo">
-            <div class="orgbox" ng-if="!org.logo">{{org.title}}</div>
+            <div class="orgbox" ng-if="!org.logo">
+              {{org.title}}</div>
           </a>
         </div>
       </div>

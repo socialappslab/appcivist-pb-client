@@ -1058,8 +1058,7 @@
     }
 
     function embedPadPeerDoc() {
-
-      // TODO: delete harcoded url and payload 
+      // TODO: delete harcoded url and payload
       let url = "http://localhost:3000/document/7AYxHx2c5K8ypaM3S?embed=true";
       let payload = {
         url: url,

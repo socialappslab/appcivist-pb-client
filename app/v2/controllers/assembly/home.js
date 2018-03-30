@@ -143,34 +143,17 @@
       rsp.then(
         campaigns => {
           this.ongoings = campaigns.filter(c => {
-            const startDate = Utils.parseDateToLocal(c.startDate);
-            const endDate = Utils.parseDateToLocal(c.endDate);
-
-            if (!startDate || !endDate) {
-              return false;
-            }
-            return moment().isBetween(startDate, endDate);
+            return c.active;
           });
 
           localStorageService.set("ongoingCampaigns", this.ongoings);
           this.pastCampaigns = campaigns.filter(c => {
-            const endDate = Utils.parseDateToLocal(c.endDate);
-
-            if (!endDate) {
-              return false;
-            }
-            return moment().isAfter(endDate);
+            return c.past;
           });
 
           localStorageService.set("pastCampaigns", this.pastCampaigns);
-
           this.upcomingCampaigns = campaigns.filter(c => {
-            const startDate = Utils.parseDateToLocal(c.startDate);
-
-            if (!startDate) {
-              return false;
-            }
-            return moment().isBefore(startDate);
+            return c.upcoming;
           });
 
           localStorageService.set("upcomingCampaigns", this.upcomingCampaigns);

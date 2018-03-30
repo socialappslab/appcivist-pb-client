@@ -603,8 +603,9 @@
           <!--<button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
         <!--</div>-->
         <div class="modal-body about__modal no-padding">
-          <div ng-if="campaignBrief" ng-bind-html="campaignBrief"></div>
-          <div ng-if="!campaignBrief" ng-include="'/app/v2/partials/campaign/campaign-default-brief.html'"></div>
+          <iframe ng-if="campaignBriefIsUrl" ng-src="{{campaignBrief}}" width="100%" height="800px"></iframe>
+          <div ng-if="campaignBrief && !campaignBriefIsUrl" ng-bind-html="campaignBrief"></div>
+          <div ng-if="!campaignBrief && !campaignBriefIsUrl" ng-include="'/app/v2/partials/campaign/campaign-default-brief.html'"></div>
         </div>
         <div class="modal-footer">
           <button class="confirm-modal accept" data-dismiss="modal">{{'Explore the campaign'|translate}}</button>

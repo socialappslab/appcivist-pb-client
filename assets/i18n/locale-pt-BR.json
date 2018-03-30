@@ -361,7 +361,7 @@
   "Issue": "Problemas",
   "Join": "Participe",
   "Join Working Group": "Parcitipe do Grupo de Trabalho",
-  "Keywords": "Senhas não conferem.",
+  "Keywords": "Palavras-chave",
   "Landing Page Strings": "Caractéres de Página de Destino",
   "landing.component.Deliberation": "DELIBERAÇÃO",
   "landing.component.Deliberation.Open discussion": "Discussão e avaliação da assembleia",
@@ -1328,9 +1328,9 @@
   "motivational.commentbox.message4": "Comentários tornam melhores as propostas.",
   "motivational.commentbox.message5": "Não será um processo participativo, a menos que você participe!",
   "motivational.commentbox.message6": "Você pode ajudar a tomar melhores propostas, deixando um comentário",
-  "motivational.contributing.message1": "Vincule as ideias que inspiraram sua proposta.",
-  "motivational.contributing.message2": "Certifique-se de que os outros saibem que ideias inspiraram sua proposta.",
-  "motivational.contributing.message3": "Deixe outros saberem que ideias estão incorporadas em sua proposta.",
+  "motivational.contributing.message1": "Esta website é uma ferramenta inovadora para democracia direta. Participe para ajudar a inovação!",
+  "motivational.contributing.message2": "O processo participativo do PPI-Unifesp é uma avança para a democracia.",
+  "motivational.contributing.message3": "Participe no inédito -- o processo participativo do PPI-Unifesp é pioneira na democracia direta.",
   "motivational.attachments.message1": "Adicionar anexos aumenta a chance da sua proposta ser selecionada.",
   "motivational.attachments.message2": "Melhore sua proposta adicionando anexos (como mapas, imagens, vídeos, projeto, cartes e petições).",
   "motivational.attachments.message3": "Adicionar anexos ajuda as pessoas a entender melhor a sua proposta.",
@@ -1344,5 +1344,6 @@
   "Click here": "Clique aqui",
   "Upcoming campaigns": "Próximas campanhas",
   "Show comments": "Mostrar comentários",
-  "Turn off these messages": "Desligar estas mensagens"
+  "Turn off these messages": "Desligar estas mensagens",
+  "Hide comments": "Esconder comentários"
 }

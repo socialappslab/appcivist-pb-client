@@ -155,7 +155,7 @@
       '*://ctsfrance.appcivist.org/**',
       '*://pb.appcivist.org/**',
       '*://www.facebook.com/**',
-      '*://facebook.com/**'
+      '*://facebook.com/**',
       '*://testpb.appcivist.org/**',
       '*://testplatform.appcivist.org/**',
       '*://appcivist.org/**',
@@ -1091,7 +1091,7 @@
     });
 
   }
-  
+
   /**
    * Special function to configure a list of URLs inside the APP that will be available even without being
    * logged in our having an account.

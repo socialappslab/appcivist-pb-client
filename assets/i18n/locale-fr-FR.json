@@ -857,7 +857,7 @@
   "Implementing": "Mise en oeuvre",
   "Password for technical feedbacks": "Mot de passe pour les retours critiques techniques",
   "Contact information": "Contact pour toute information",
-  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques": "Avec le soutien de l’EIT Digital, TUB, Nexus, et Missions Publiques",
+  "Supported by": "Avec le soutien de l’EIT Digital, TUB, Nexus, et Missions Publiques",
   "Ups": "En haut",
   "Downs": "En bas",
   "Needs": "Besoins",
@@ -1342,5 +1342,7 @@
   "Unsubscribe from Newsletters and Notifications": "Désinscrire des bulletins et des notifications",
   "Source": "Origine",
   "Click here": "Cliquez ici",
-  "Upcoming campaigns": "Campagnes à venir"
+  "Upcoming campaigns": "Campagnes à venir",
+  "Show comments": "Afficher les commentaires",
+  "Turn off these messages": "Désactiver ces messages"
 }

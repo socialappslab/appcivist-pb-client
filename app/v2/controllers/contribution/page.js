@@ -296,14 +296,16 @@
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
             $scope.extendedTextIsPeerDoc = data.extendedTextPad.resourceType === 'PEERDOC';
             if ($scope.extendedTextIsEtherpad) {
-              $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
+              $scope.etherpadReadOnlyUrl = $sce.trustAsResourceUrl(
+                Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url)
+                  + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale);
               $scope.loadReadOnlyEtherpadHTML();
             } else if ($scope.extendedTextIsGdoc) {
-              $scope.gdocUrl = data.extendedTextPad.url;
-              $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
+              $scope.gdocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
+              $scope.gdocUrlMinimal = $sce.trustAsResourceUrl($scope.gdocUrl +"?rm=minimal");
             } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = data.extendedTextPad.url;
-              $scope.peerDocUrl = data.extendedTextPad.url;
+              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url);
+              $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
               // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {

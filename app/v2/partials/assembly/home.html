@@ -46,7 +46,7 @@
             <div class="list-group" ng-repeat="campaign in pastCampaigns">
               <a ng-if="!isAnonymous && !readAssemblyByShortname" ng-click="redirectCampaign(assembly, campaign)" class="list-group-item">
                 <div>
-                  {{campaign.title}} ({{'Click here' | translate | uppercase}})
+                  {{campaign.title}}
                 </div>
 
                 <span class="list-group-item-btn" ng-click="showGroups(campaign, $event)">

@@ -857,7 +857,7 @@
   "Implementing": "Implementing",
   "Password for technical feedbacks": "Password for technical feedbacks",
   "Contact information": "Contact information",
-  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques": "Supported by EIT Digital, TUB, Nexus, and Missions Publiques",
+  "Supported by": "Supported by EIT Digital, TUB, Nexus, and Missions Publiques",
   "Ups": "Ups",
   "Downs": "Downs",
   "Needs": "Needs",
@@ -1336,5 +1336,7 @@
   "Unsubscribe from Newsletters and Notifications": "Unsubscribe from Newsletters and Notifications",
   "Source": "Source",
   "Click here": "Click here",
-  "Upcoming campaigns": "Upcoming campaigns"
+  "Upcoming campaigns": "Upcoming campaigns",
+  "Show comments": "Show comments",
+  "Turn off these messages": "Turn off these messages"
 }

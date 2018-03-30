@@ -857,7 +857,7 @@
   "Implementing": "Implementação",
   "Password for technical feedbacks": "Senha para avaliaçãoes técnicas",
   "Contact information": "Informação de contato",
-  "Supported by EIT Digital, TUB, Nexus, and Missions Publiques": "Com apoio de EIT Digital, TUB, Nexus, e Missions Publiques",
+  "Supported by": "Com apoio de EIT Digital, TUB, Nexus, e Missions Publiques",
   "Ups": "Positivos",
   "Downs": "Negativos",
   "Needs": "Necessidades",
@@ -1181,7 +1181,7 @@
   "contribution.body.empty": "Expanda sua proposta adicionando um documento usando um dos seguintes serviços.",
   "Explore the campaign": "Explore a campanha.",
   "campaign.brief.default.svg-text": "<text id='Bem-vindo!' font-family='SourceSansPro-Bold, Source Sans Pro' font-size='40' font-weight='bold' fill='#FFFFFF'> <tspan x='197' y='75'>Bem-vindo!</tspan> </text> <text id='comunidade-e-contri' font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal' line-spacing='28' fill='#4A4A4A'> <tspan x='52' y='225'>Entre na comunidade e contribua com seu </tspan> </text> <g id='Grupo' transform='translate(81.000000, 152.000000)' line-spacing='28' fill='#4A4A4A'> <text id='of-the' font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal'> <tspan x='335' y='30'>de</tspan> </text> <text id='membro-ativo' font-family='SourceSansPro-Bold, Source Sans Pro' font-size='36' font-weight='bold'> <tspan x='84' y='35'>membro ativo</tspan> </text> <text id='Seja-um' font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal'> <tspan x='0' y='30'>Seja um</tspan> </text> </g> <text id=‘deste-processo-participativo’ font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal' line-spacing='28' fill='#4A4A4A'> <tspan x='108' y='317'>deste processo participativo</tspan> </text> <text id='para-tornar-sua-comuni' font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal' line-spacing='28' fill='#4A4A4A'> <tspan x='80' y='360'>para tornar sua comunidade melhor!</tspan> </text> <g id='Grupo-2' transform='translate(12.000000, 238.000000)' line-spacing='28'> <text id='Ideias,' font-family='SourceSansPro-Bold, Source Sans Pro' font-size='36' font-weight='bold' fill='#23547D'> <tspan x='0' y='35'>Ideias, </tspan> </text> <text id='Propostas,' font-family='SourceSansPro-Bold, Source Sans Pro' font-size='36' font-weight='bold'> <tspan x='109' y='35' fill='#5A6C21'>Propostas</tspan> <tspan x='265.996' y='35' fill='#4A4A4A'>,</tspan> <tspan x='279.628' y='42.2840271' font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal' fill='#4A4A4A'> </tspan> </text> <text id=‘e’ font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal' fill='#4A4A4A'> <tspan x='296' y='32'>and</tspan> </text> <text id='Comentários' font-family='SourceSansPro-Bold, Source Sans Pro' font-size='36' font-weight='bold'> <tspan x='362' y='35' fill='#878F0C'>Comentários</tspan> <tspan x='536.084' y='42.2840271' font-family='SourceSansPro-Regular, Source Sans Pro' font-size='30' font-weight='normal' fill='#4A4A4A'> </tspan> </text> </g>",
-  "Read more": "Introdução",
+  "Read more": "Saiba mais",
   "about.content.intro": "AppCivist é uma plataforma para <strong>assembleias democráticas</strong> e <strong>criação de decisões colaborativas</strong>. Ela ajuda pessoas a abordar problemas em suas comunidades, discutir e decidir ideias para soluções, transformar ideias em propostas, editar e votar propostas, e seguir suas implementações.",
   "about.content.award.p1": "<strong>Prêmio do Chancello da UC Berkeley para o Serviço Público 2015-16 </strong>",
   "about.content.award.p2": "por a colaboração Campus-Comunidade com a cidade de Vallejo",
@@ -1342,5 +1342,7 @@
   "Unsubscribe from Newsletters and Notifications": "Cancelar assinatura de Newsletters e Notificações",
   "Source": "Fonte",
   "Click here": "Clique aqui",
-  "Upcoming campaigns": "Próximas campanhas"
+  "Upcoming campaigns": "Próximas campanhas",
+  "Show comments": "Mostrar comentários",
+  "Turn off these messages": "Desligar estas mensagens"
 }

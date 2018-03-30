@@ -48,7 +48,6 @@
     $scope.removeContributingIdea = removeContributingIdea.bind($scope);
     $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
     $scope.embedPadGdoc = embedPadGdoc.bind($scope);
-    $scope.embedPadPeerDoc = embedPadPeerDoc.bind($scope);
     $scope.loadCampaignResources = loadCampaignResources.bind($scope);
     $scope.filterCustomFields = filterCustomFields.bind($scope);
     $scope.follow = follow.bind($scope);
@@ -294,17 +293,12 @@
             console.log("Document is "+data.extendedTextPad.resourceType);
             $scope.extendedTextIsEtherpad = data.extendedTextPad.resourceType === 'PAD';
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
-            $scope.extendedTextIsPeerDoc = data.extendedTextPad.resourceType === 'PEERDOC';
             if ($scope.extendedTextIsEtherpad) {
               $scope.etherpadReadOnlyUrl = Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url) + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale;
               $scope.loadReadOnlyEtherpadHTML();
             } else if ($scope.extendedTextIsGdoc) {
               $scope.gdocUrl = data.extendedTextPad.url;
               $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
-            } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = data.extendedTextPad.url;
-              $scope.peerDocUrl = data.extendedTextPad.url;
-              // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {
             console.warn('Proposal with no PAD associated');
@@ -463,9 +457,6 @@
       } else if ($scope.userIsAuthor && $scope.extendedTextIsGdoc) {
         // TODO: load the write embed url for gdoc
         $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
-      } else if ($scope.userIsAuthor && $scope.extendedTextIsPeerDoc) {
-        // TODO: load the write embed url for gdoc
-        $scope.writePeerDocUrl = $scope.peerDocUrl//+"/edit?rm=full";
       }
     }
 

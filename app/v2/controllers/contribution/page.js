@@ -1060,6 +1060,8 @@
     }
 
     function embedPadPeerDoc() {
+      // TODO include peerdoc base url and key if provided by user
+      let payload = {}
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           // TODO: use response url instead

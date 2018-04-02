@@ -192,7 +192,7 @@
       this.tinymceOptions = this.getEditorOptions();
       if (this.user) {
         this.verifyMembership();
-        $translate.use(this.user.lang);
+        $translate.use(this.user.language);
       }
       this.hiddenFieldsMap = {};
       let hiddenFields = typeof this.configs === "string" ? JSON.parse(this.configs) : this.configs || [];

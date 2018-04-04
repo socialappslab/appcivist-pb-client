@@ -30,7 +30,7 @@
     let user = localStorageService.get('user');
     $rootScope.$on("$translateChangeEnd",
       (evt, current, previous)=> {
-        console.log("Language changed to: "+current.language+ " from "+previous);
+        console.log("Language changed to: "+current.language);
         let currentLanguage = current.language;
         $scope.loadLangPickerFromLang(currentLanguage);      }
     );

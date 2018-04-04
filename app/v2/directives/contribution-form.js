@@ -358,7 +358,7 @@
       var campaignId;
 
       if (this.isCreate) {
-        campaignId = this.campaign.campaignId;
+        campaignId = this.campaign.campaignId ? this.campaign.campaignId : $stateParams.cid ? $stateParams.cid : $stateParams.cuuid;
       } else {
         campaignId = this.contribution.campaignIds[0];
       }

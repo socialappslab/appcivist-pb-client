@@ -179,39 +179,29 @@
 
     function loadCampaign() {
       $scope.campaign = localStorageService.get('currentCampaign');
-      if ($scope.campaign) {
+      let loggedInWithPublicCampaign = $stateParams.cid && $scope.campaign && (!$scope.campaign.campaignId || $scope.campaign.resourceSpaceId);
+      var rsp;
+      if (loggedInWithPublicCampaign || ($stateParams.cid && !$scope.campaign)) {
+        rsp = Campaigns.campaign($state.params.aid, $state.params.cid).get();
+      } else if ($scope.campaign) {
         $scope.campaignID = $scope.campaign.campaignId ? $scope.campaign.campaignId : $scope.campaign.uuid;
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
         $scope.onCampaignReady();
       } else {
-        var rsp;
-        if ($state.params.cid) {
-          rsp = Campaigns.campaign($state.params.aid, $state.params.cid).get();
-        } else {
-          rsp = Campaigns.campaignByUUID($state.params.cuuid).get();
-        }
-        rsp.$promise.then(
-          campaign => {
-            $scope.campaign = campaign;
-            $scope.campaignID = $scope.campaign.campaignId ? $scope.campaign.campaignId : $scope.campaign.uuid;
-            $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
-            $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
-            localStorageService.set("currentCampaign",$scope.campaign);
-            $scope.onCampaignReady();
-
-            // var res = Campaigns.components(null, null, true, $scope.campaignID, null);
-            // res.then(
-            //   data => {
-            //     var currentComponent = Campaigns.getCurrentComponent(data);
-            //     $scope.components = data;
-            //     localStorageService.set("currentCampaign.components",$scope.components);
-            //     localStorageService.set("currentCampaign.currentComponent",currentComponent);
-            //   }
-            // );
-          }
-        )
+        rsp = Campaigns.campaignByUUID($state.params.cuuid).get();
       }
+
+      rsp.$promise.then(
+        campaign => {
+          $scope.campaign = campaign;
+          $scope.campaignID = $scope.campaign.campaignId ? $scope.campaign.campaignId : $scope.campaign.uuid;
+          $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
+          $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
+          localStorageService.set("currentCampaign",$scope.campaign);
+          $scope.onCampaignReady();
+        }
+      )
     }
 
     function onCampaignReady () {

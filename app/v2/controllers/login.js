@@ -30,7 +30,7 @@
           $scope.assembly = data;
           localStorageService.set('domain', data);
           Space.configsByUUID(data.resourcesResourceSpaceUUID).get().$promise.then((spd) => {
-            $scope.ldapAvailable = spd['appcivist.authentication.ldap'] == 'true';
+            $scope.ldapAvailable = spd['appcivist.authentication.ldap'].toLowerCase() == 'true';
           })
         });
       }

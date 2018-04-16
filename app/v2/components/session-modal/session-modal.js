@@ -49,6 +49,9 @@
       this.contributionID = null;
       this.groupID = null;
       this.proposalID = null;
+      this.ldapAvailable = false;
+      this.ldapOn = false;
+      this.loginProvider = null;
       this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
       if (!this.assembly)
         this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
@@ -64,6 +67,13 @@
       this.coid = null;
       this.gid = null;
       this.pid = null;
+
+      if (this.assembly) {
+        Space.configsByUUID(this.assembly.resourcesResourceSpaceUUID).get().$promise.then((data) => {
+          this.ldapAvailable = data['appcivist.authentication.ldap'] == 'true';
+        })
+      }
+
     }
 
     this.signup = () => {
@@ -86,7 +96,11 @@
           return;
         }
         if (this.showLogin) {
-          var rsp = AppCivistAuth.signIn().save(this.user);
+          if (this.ldapOn) {
+            this.user.username = this.user.email;
+            this.loginProvider = 'ldap';
+          }
+          var rsp = AppCivistAuth.signIn(this.loginProvider, this.auuid).save(this.user);
           rsp.$promise.then(this.signupSuccess, this.signupError);
         } else {
           var rsp = AppCivistAuth.signUp().save(this.user);

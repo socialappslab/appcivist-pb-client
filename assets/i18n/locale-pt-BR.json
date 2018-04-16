@@ -1345,5 +1345,10 @@
   "Upcoming campaigns": "Próximas campanhas",
   "Show comments": "Mostrar comentários",
   "Turn off these messages": "Desligar estas mensagens",
-  "Hide comments": "Esconder comentários"
+  "Hide comments": "Esconder comentários",
+  "login.loginbutton": "Login",
+  "login.labelldap": "LDAP Username",
+  "login.placeldap": "Type your LDAP username",
+  "login.ldapcheck": "Sign in using LDAP",
+  "login.ldapbutton": "Sign in using LDAP"
 }

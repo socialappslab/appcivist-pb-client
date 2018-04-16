@@ -303,6 +303,7 @@
           $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUID : data.resourceSpaceId;
           $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
           $scope.showPagination = true;
+          console.log($scope.assembly);
           $scope.logo = $scope.campaign.logo ?
             $scope.campaign.logo.url : showAssemblyLogo() ?
               $scope.assembly.profile.icon : null;

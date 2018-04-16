@@ -7,6 +7,16 @@
       display: flex;
     }
 	}
+	.ldap {
+		text-align: center;
+		margin-bottom: 1rem;
+		input {
+			display: inline-block;
+			width: unset;
+			margin-bottom: 0;
+			vertical-align: middle;
+		}
+	}
 	.onboarding__assembly_title {
 		margin:auto;
 		width: 50%;

@@ -21,6 +21,7 @@
       $scope.isLoginPage = true;
       $scope.ldapAvailable = false;
       $scope.ldapOn = false;
+      $scope.loginProvider = null;
       $scope.assemblyConfig = [];
       if ($state.params.domain) {
         $scope.domain = $state.params.domain;
@@ -42,7 +43,9 @@
         return;
       }
       if ($scope.ldapOn){
-        // TODO: LDAP endpoint
+        $scope.user.username = $scope.user.email;
+        $scope.loginProvider = 'ldap';
+        var rsp = AppCivistAuth.signIn($scope.loginProvider, $scope.assembly.uuid).save($scope.user);
       } else {
         var rsp = AppCivistAuth.signIn().save($scope.user);
       }

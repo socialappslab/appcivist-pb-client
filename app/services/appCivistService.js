@@ -2702,10 +2702,14 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
 appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) {
   return {
     signIn: function (provider = null, assembly = null) {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/login?provider=:provider&assembly=:assembly', {
-        provider: provider,
-        assembly: assembly
-      });
+      if (provider == null && assembly == null) {
+        return $resource(getServerBaseUrl(localStorageService) + '/user/login');
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + '/user/login?provider=:provider&assembly=:assembly', {
+          provider: provider,
+          assembly: assembly
+        });
+      }
     },
     signOut: function () {
       return $resource(getServerBaseUrl(localStorageService) + '/user/logout');

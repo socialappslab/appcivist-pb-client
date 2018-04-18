@@ -99,8 +99,10 @@
           if (this.ldapOn) {
             this.user.username = this.user.email;
             this.loginProvider = 'ldap';
+            var rsp = AppCivistAuth.signIn(this.loginProvider, this.auuid).save(this.user);
+          } else {
+            var rsp = AppCivistAuth.signIn().save(this.user);
           }
-          var rsp = AppCivistAuth.signIn(this.loginProvider, this.auuid).save(this.user);
           rsp.$promise.then(this.signupSuccess, this.signupError);
         } else {
           var rsp = AppCivistAuth.signUp().save(this.user);

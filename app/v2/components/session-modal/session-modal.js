@@ -70,7 +70,7 @@
 
       if (this.assembly) {
         Space.configsByUUID(this.assembly.resourcesResourceSpaceUUID).get().$promise.then((data) => {
-          this.ldapAvailable = data['appcivist.authentication.ldap'].toLowerCase() == 'true';
+          this.ldapAvailable = data['appcivist.assembly.authentication.ldap'].toLowerCase() == 'true';
         })
       }
 

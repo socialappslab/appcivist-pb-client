@@ -19,7 +19,7 @@
 	}
 	.onboarding__assembly_title {
 		margin:auto;
-		width: 50%;
+		width: 90%;
 		font-size: 36px;
 		text-align: center;
 	}
@@ -57,6 +57,10 @@
 	    margin: auto;
 	    display: block;
 	    margin-bottom: 15px;
+	}
+	input[type=email] {
+		border-radius: 6px;
+		box-shadow: none;
 	}
 	.onboarding__form_submit_button {
 		background: #292929;

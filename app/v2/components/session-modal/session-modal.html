@@ -6,27 +6,26 @@
           <figure class="photo" style="text-align: center;" ng-if="vm.assembly.profile.icon">
             <img ng-src="{{vm.assembly.profile.icon}}" width="250px" height="250px" />
           </figure>
-          <div class="onboarding__assembly_title">{{vm.assembly.name}}</div>
-          <div class="onboarding__assembly_location" ng-if="vm.assembly.location" style="text-align:center">
+          <div class="onboarding__assembly_title">{{ vm.registrationTitle ? vm.registrationTitle : vm.assembly.name }}</div>
+          <!--<div class="onboarding__assembly_location" ng-if="vm.assembly.location" style="text-align:center">
               <i class="fa fa-lg fa-map-marker"></i> {{vm.assembly.location.placeName}}
-          </div>
+          </div>-->
         </div>
         <form class="onboarding__form" ng-submit="vm.signup()">
-          <input class="form-input" type="email" ng-model="vm.user.email" placeholder="{{ vm.ldapOn ? ('login.labelldap' | translate) : 'Email' }}"/>
-          <input class="form-input" type="password" ng-model="vm.user.password" placeholder="Password"/>
-          <input class="form-input" type="password" ng-model="vm.user.repeatPassword" placeholder="Repeat password" ng-if="!vm.showLogin"/>
+          <input class="form-input" type="email" ng-model="vm.user.email" placeholder="{{ vm.usernamePlaceholder ? vm.usernamePlaceholder : (vm.ldapOn ? ('login.labelldap' | translate) : 'Email') }}"/>
+          <input class="form-input" type="password" ng-model="vm.user.password" placeholder="{{ vm.passwordPlaceHolder ? vm.passwordPlaceholder : 'Password' }}"/>
+          <input class="form-input" type="password" ng-model="vm.user.repeatPassword" placeholder="{{ vm.passwordRepeatPlaceHolder ? vm.passwordRepeatPlaceholder : 'Repeat Password' }}" ng-if="!vm.showLogin"/>
           <!--TODO: add also a language picker to the signup -->
           <!--<langpicker class="form-input" ng-if="!vm.showLogin"></langpicker>-->
 
-          <label class="ldap" ng-if="vm.ldapAvailable"><input type="checkbox" name="ldapOn" id="ldapOn" ng-model="vm.ldapOn"> {{ 'login.ldapcheck' | translate }}</label>
           <input type="text" ng-model="vm.user.name" value="{{vm.assembly.name}}" style="display:none"/>
           <input type="text" ng-model="vm.user.lang" value="{{vm.assembly.lang}}" style="display:none"/>
           <button class="onboarding__form_submit_button" ng-if="vm.showLogin">{{ vm.ldapOn ? ('login.ldapbutton' | translate) : ('login.loginbutton' | translate) }}</button>
           <button href="#" class="onboarding__form_submit_button" ng-if="!vm.showLogin">{{'Sign up'|translate}}</button>
           <div class="onboarding__form_links">
-            <a ng-if="vm.showLogin && !vm.ldapOn" ng-click="vm.redirectToForgotPassword()">{{'Forgot your password?'|translate}}?</a>
+            <a ng-if="vm.showLogin" ng-click="vm.redirectToForgotPassword()">{{'Forgot your password?'|translate}}?</a>
             <a ng-if="!vm.showLogin" ng-click="vm.toggleShowLogin()">{{'I already have an account'|translate}}</a>
-            <a ng-if="vm.showLogin && !vm.ldapOn" ng-click="vm.toggleShowLogin()">{{'I dont have an account yet'|translate}}</a>
+            <a ng-if="vm.showLogin" ng-click="vm.toggleShowLogin()">{{ vm.signUpTitle ? vm.signUpTitle : ('I dont have an account yet'|translate) }}</a>
           </div>
           <!--<div class="onboarding__form_social">-->
             <!--<div class="onboarding__form_social_separator">-->

@@ -1,7 +1,17 @@
+.timeline .timeline-item.active .marker:after {
+  content: " ";
+  height: 45px;
+  border-left: 2px solid #11493b;
+  position: absolute;
+  top: 65px;
+  left: 50%;
+}
+
 .campaign__status {
   padding: 1.5em;
   padding-top: 1em;
   padding-bottom: 1em;
+  height: 300px;
   .heading--header {
     margin: 0px;
   }
@@ -27,4 +37,13 @@
 
 .campaign__status .page__header .contextual_menu .content::after {
   border-bottom: 12px solid #e5ebe6 !important;
+}
+
+.phase-description {
+  height: 90px;
+  margin-top: 1.5rem;
+  padding: 0.5rem 0.8rem;
+  font-size: 1.5rem;
+  overflow-y: auto;
+  background-color: #EEE;
 }

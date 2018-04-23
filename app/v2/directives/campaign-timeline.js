@@ -102,6 +102,7 @@
           }
           res.then(function(data) {
             var currentComponent = Campaigns.getCurrentComponent(data);
+            scope.currentDescription = currentComponent.description;
             angular.forEach(data, function(c) {
               c.cssClass = getComponentCssClass(currentComponent, c);
             });

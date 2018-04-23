@@ -25,10 +25,10 @@
     });
 
     SessionModalCtrl.$inject = [
-      '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies'
+      '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies', '$window'
   ];
 
-  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies) {
+  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies, $window) {
 
     var self = this;
 
@@ -49,6 +49,16 @@
       this.contributionID = null;
       this.groupID = null;
       this.proposalID = null;
+
+      this.ldapOn = false;
+      this.forgotPasswordUrl = null;
+      this.signUpUrl = null;
+      this.signUpTitle = null;
+      this.registrationTitle = null;
+      this.usernamePlaceholder = null;
+      this.passwordPlaceholder = null;
+
+      this.loginProvider = null;
       this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
       if (!this.assembly)
         this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
@@ -64,6 +74,22 @@
       this.coid = null;
       this.gid = null;
       this.pid = null;
+
+      this.readConfig();
+
+    }
+
+    this.readConfig = () => {
+      Space.configsByUUID(this.assembly.resourcesResourceSpaceUUID).get().$promise.then((data) => {
+        this.ldapOn = data['appcivist.assembly.authentication.ldap'].toLowerCase() == 'true';
+        this.forgotPasswordUrl = data['appcivist.assembly.authentication.forgot-url'];
+        this.signUpUrl = data['appcivist.assembly.authentication.signup-url'];
+        this.signUpTitle = data['appcivist.assembly.authentication.signup-title'];
+        this.registrationTitle = data['appcivist.assembly.authentication.registration-title'];
+        this.usernamePlaceholder = data['appcivist.assembly.authentication.username-placeholder'];
+        this.passwordPlaceholder = data['appcivist.assembly.authentication.password-placeholder'];
+        this.passwordRepeatPlaceholder = data['appcivist.assembly.authentication.password-repeat-placeholder'];
+      });
     }
 
     this.signup = () => {
@@ -86,7 +112,13 @@
           return;
         }
         if (this.showLogin) {
-          var rsp = AppCivistAuth.signIn().save(this.user);
+          if (this.ldapOn) {
+            this.user.username = this.user.email;
+            this.loginProvider = 'ldap';
+            var rsp = AppCivistAuth.signIn(this.loginProvider, this.auuid).save(this.user);
+          } else {
+            var rsp = AppCivistAuth.signIn().save(this.user);
+          }
           rsp.$promise.then(this.signupSuccess, this.signupError);
         } else {
           var rsp = AppCivistAuth.signUp().save(this.user);
@@ -230,15 +262,28 @@
       if (this.showLogin===undefined) {
         this.showLogin = false;
       }
-      this.showLogin = !this.showLogin;
+
+      if (this.showLogin == false) {
+        this.showLogin = true;
+      } else {
+        if (this.signUpUrl) {
+          $window.open(this.signUpUrl, '_blank');
+        } else {
+          this.showLogin = false;
+        }
+      }
     }
 
     this.redirectToForgotPassword = () => {
-      // #/v2/user/password/forgot
-      $('#sessionModal').modal('hide');
-      $('body').removeClass('modal-open');
-      $('.modal-backdrop').remove()
-      $state.go('v2.user.password.forgot', {}, { reload: true });
+      if (this.forgotPasswordUrl) {
+        $window.open(this.forgotPasswordUrl, '_blank');
+      } else {
+        // #/v2/user/password/forgot
+        $('#sessionModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove()
+        $state.go('v2.user.password.forgot', {}, { reload: true }); 
+      }
     }
 
     function fetchAnonymousAssembly() {

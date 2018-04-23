@@ -2,6 +2,24 @@ section.content {
   padding: 1rem 2rem;
 }
 
+.overlay_status {
+  position: absolute;
+  right: 1rem;
+  top: 16px;
+  span {
+    padding: 0.5rem 1rem;
+    margin-left: -3px;
+    &.status_label {
+      background-color: #465B64;
+      color: white;
+      font-weight: normal;
+    }
+    &.status {
+      background-color: #FF8C2C;
+    }
+  }
+}
+
 .contribution-select {
   display: none;
   &+label:before {

@@ -53,6 +53,7 @@
     $scope.filterCustomFields = filterCustomFields.bind($scope);
     $scope.follow = follow.bind($scope);
     $scope.unfollow = unfollow.bind($scope);
+    $scope.loadToolbarConfig = loadToolbarConfig.bind($scope);
 
     activate();
 
@@ -175,6 +176,16 @@
       $scope.resources = {};
       $scope.newDocUrl = "";
       $scope.following = false;
+
+      // Toolbar buttons visibility default
+      $scope.showContributingIdeas = true;
+      $scope.showHistory = true;
+      $scope.showCommentCount = true;
+      $scope.showAttachments = true;
+      $scope.showFeedback = true;
+      $scope.showMedia = true;
+      $scope.showUpVote = true;
+      $scope.showDownVote = true;
     }
 
     function toggleOpenAddAttachment () {
@@ -267,7 +278,6 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
-          console.log(data);
           localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
           var workingGroupAuthors = data.workingGroupAuthors;
@@ -770,10 +780,22 @@
       rsp.$promise.then(function (data) {
         $scope.campaignConfigs = data;
         loadBallotPaper();
+        loadToolbarConfig();
       }, function (error) {
         loadBallotPaper();
         Notify.show(error.statusMessage, 'error');
       });
+    }
+
+    function loadToolbarConfig () {
+      $scope.showContributingIdeas = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.contributing-ideas'] == 'false' ? false : true;
+      $scope.showHistory = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'] == 'false' ? false : true;
+      $scope.showCommentCount = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'] == 'false' ? false : true;
+      $scope.showAttachments = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.attachments'] == 'false' ? false : true;
+      $scope.showFeedback = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.feedback'] == 'false' ? false : true;
+      $scope.showMedia = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.media'] == 'false' ? false : true;
+      $scope.showUpVote = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'] == 'false' ? false : true;
+      $scope.showDownVote = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'] == 'false' ? false : true;
     }
 
     function seeHistory() {

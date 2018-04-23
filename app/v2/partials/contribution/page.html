@@ -1,27 +1,13 @@
   <main class="appmain" ng-class="{anonymous: isAnonymous}">
     <article class="proposal__single">
       <header class="page__header contributionHeader">
-        <div class="row">
+        <div class="row" style="margin-top: 60px">
           <breadcrumb label="proposal.title"></breadcrumb>
           <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#followModal" ng-if="contributionType && !following">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
           <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal" ng-if="contributionType && following">Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
         </div>
         <div class="row title_block">
           <h1 class="heading--title">{{proposal.title}}</h1>
-
-          <div class="heading_actions">
-            <ul class="actions">
-              <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
-                <a><i class="fa fa-cog"></i></a>
-              </li>
-            </ul>
-
-            <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
-              <div class="content">
-                <contribution-contextual-items contribution="proposal" is-proposal-idea-stage="isProposalIdeaStage" is-hover="cm.isHover"></contribution-contextual-items>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="row attribution">
@@ -120,7 +106,17 @@
 
         <div class="overlay new_overlay contribution_toolbar" style="display: inline-flex">
           <ul class="overlay_buttons">
-            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL' && (!campaignConfigs || campaignConfigs['appcivist.campaign.contribution-types'].includes('IDEA') )">
+            <div class="contextual_wrapper">
+              <li class="overlay_button action__contextual_menu" ng-mouseenter="cm.isHover = true">
+                <a><i class="fa fa-lg fa-cog"></i></a>
+              </li>
+              <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 3em; left: auto;">
+                <div class="content">
+                  <contribution-contextual-items contribution="proposal" is-proposal-idea-stage="isProposalIdeaStage" is-hover="cm.isHover"></contribution-contextual-items>
+                </div>
+              </div>
+            </div>
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL' && (!campaignConfigs || campaignConfigs['appcivist.campaign.contribution-types'].includes('IDEA') ) && showContributingIdeas">
               <a data-toggle="modal" data-target="#ideas">
                 <i class="fa fa-lightbulb-o fa-lg"></i>
                 <span>
@@ -129,7 +125,7 @@
                 </span>
               </a>
             </li>
-            <li class="overlay_button">
+            <li class="overlay_button" ng-if="showAttachments">
               <a data-toggle="modal" data-target="#documents">
                 <i class="fa fa-file-text-o fa-lg"></i>
                 <span>
@@ -138,7 +134,7 @@
                 </span>
               </a>
             </li>
-            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL' && showMedia">
               <a data-toggle="modal" data-target="#media">
                 <i class="fa fa-picture-o fa-lg"></i>
                 <span>
@@ -147,28 +143,28 @@
                 </span>
               </a>
             </li>
-            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL'">
+            <li class="overlay_button" ng-if="proposal.type == 'PROPOSAL' && showFeedback">
               <a data-toggle="modal" data-target="#feedback">
                 <i class="fa fa-star-half-o fa-lg"></i><span>{{'Feedback'|translate}}</span>
               </a>
             </li>
-            <li class="overlay_button">
+            <li class="overlay_button" ng-if="showHistory">
               <a ng-click="seeHistory()">
                 <i class="fa fa-history fa-lg"></i><span>{{'History'|translate}}</span>
               </a>
             </li>
           </ul>
           <ul class="votes">
-            <li class="downvote">
+            <li class="downvote" ng-if="showCommentCount">
                 <a class="commentcount"><i class="fa fa-comment"></i> {{ isAnonymous ? proposal.forumCommentCount : totalComments }}</a>
               </li>
-            <li class="upvote" ng-click="updateFeedback('up')">
+            <li class="upvote" ng-if="showUpVote" g-click="updateFeedback('up')">
               {{upSum}}
               <a class="thumbs-up">
                 <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
               </a>
             </li>
-            <li class="downvote" ng-click="updateFeedback('down')">
+            <li class="downvote" ng-if="showDownVote" ng-click="updateFeedback('down')">
                 {{downSum}}
               <a class="thumbs-down">
                 <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
@@ -179,6 +175,10 @@
               <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
             </li>
           </ul>
+          <div class="overlay_status">
+            <span class="status_label">Status</span>
+            <span class="status">{{ proposal.status }}</span>
+          </div>
         </div>
 
       </header>

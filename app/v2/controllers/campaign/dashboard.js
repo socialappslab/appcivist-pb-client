@@ -64,6 +64,8 @@
       $scope.commentType = 'public';
       $scope.selectedCards = [];
       $scope.subscribed = false;
+      
+      $scope.campaignFaq = null;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -415,6 +417,7 @@
 
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
+      this.campaignFaq = "http://www.google.com.py";
       this.afterLoadingCampaignConfigs();
     }
 

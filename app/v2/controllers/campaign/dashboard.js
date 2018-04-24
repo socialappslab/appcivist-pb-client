@@ -419,7 +419,7 @@
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
       let faqUrlConfig = data['appcivist.campaign.faq-url'];
-      this.campaignFaq = faqUrlConfig ? faqUrlConfig.value : null;
+      this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
       this.afterLoadingCampaignConfigs();
     }
 

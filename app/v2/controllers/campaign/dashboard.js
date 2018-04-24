@@ -418,7 +418,8 @@
 
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
-      this.campaignFaq = "http://www.google.com.py";
+      let faqUrlConfig = data['appcivist.campaign.faq-url'];
+      this.campaignFaq = faqUrlConfig ? faqUrlConfig.value : null;
       this.afterLoadingCampaignConfigs();
     }
 

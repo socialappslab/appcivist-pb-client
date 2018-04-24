@@ -225,14 +225,25 @@
           </div>
           <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad">
             <div class="etherpad__wrapper">
-
               <iframe ng-if="(!userIsAuthor && peerDocUrl)" name="embed_readonly"
-                ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML">
+                ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML"
+                      style="width: 100%; border: 0;" frameborder="0" scrolling="no">
               </iframe>
               <iframe ng-if="writePeerDocUrl" name="embed_readwrite"
                       ng-src="{{writePeerDocUrl}}"
-                      width="100%" height="600px">
+                      width="100%" height="600px" style="width: 100%; border: 0;" frameborder="0" scrolling="no">
               </iframe>
+              <script>
+                window.addEventListener('message', function (event) {
+                  if (event.data.size) {
+                    Array.prototype.forEach.call(document.getElementsByTagName('iframe'), function (element) {
+                      if (element.contentWindow === event.source) {
+                        element.style.height = `${event.data.size.height}px`;
+                      }
+                    });
+                  }
+                }, false);
+              </script>
             </div>
           </div>
         </div>

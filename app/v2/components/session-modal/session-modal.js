@@ -81,7 +81,7 @@
 
     this.readConfig = () => {
       Space.configsByUUID(this.assembly.resourcesResourceSpaceUUID).get().$promise.then((data) => {
-        this.ldapOn = data['appcivist.assembly.authentication.ldap'].toLowerCase() == 'true';
+        this.ldapOn = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
         this.forgotPasswordUrl = data['appcivist.assembly.authentication.forgot-url'];
         this.signUpUrl = data['appcivist.assembly.authentication.signup-url'];
         this.signUpTitle = data['appcivist.assembly.authentication.signup-title'];
@@ -282,7 +282,7 @@
         $('#sessionModal').modal('hide');
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove()
-        $state.go('v2.user.password.forgot', {}, { reload: true }); 
+        $state.go('v2.user.password.forgot', {}, { reload: true });
       }
     }
 

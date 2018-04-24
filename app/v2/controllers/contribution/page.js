@@ -467,7 +467,7 @@
         $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
       } else if ($scope.userIsAuthor && $scope.extendedTextIsPeerDoc) {
         // TODO: load the write embed url for gdoc
-        $scope.writePeerDocUrl = $scope.peerDocUrl+"?embed=true";//+"/edit?rm=full";
+        $scope.writePeerDocUrl = $scope.peerDocUrl;//+"/edit?rm=full";
       }
     }
 

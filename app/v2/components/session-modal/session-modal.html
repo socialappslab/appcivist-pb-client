@@ -13,7 +13,7 @@
         </div>
         <form class="onboarding__form" ng-submit="vm.signup()">
           <input class="form-input" type="email" ng-model="vm.user.email" placeholder="{{ vm.usernamePlaceholder ? vm.usernamePlaceholder : (vm.ldapOn ? ('login.labelldap' | translate) : 'Email') }}"/>
-          <input class="form-input" type="password" ng-model="vm.user.password" placeholder="{{ vm.passwordPlaceHolder ? vm.passwordPlaceholder : 'Password' }}"/>
+          <input class="form-input" type="password" ng-model="vm.user.password" placeholder="{{ vm.passwordPlaceholder ? vm.passwordPlaceholder : 'Password' }}"/>
           <input class="form-input" type="password" ng-model="vm.user.repeatPassword" placeholder="{{ vm.passwordRepeatPlaceHolder ? vm.passwordRepeatPlaceholder : 'Repeat Password' }}" ng-if="!vm.showLogin"/>
           <!--TODO: add also a language picker to the signup -->
           <!--<langpicker class="form-input" ng-if="!vm.showLogin"></langpicker>-->

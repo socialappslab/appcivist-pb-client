@@ -12,7 +12,8 @@
           </div>-->
         </div>
         <form class="onboarding__form" ng-submit="vm.signup()">
-          <input class="form-input" type="email" ng-model="vm.user.email" placeholder="{{ vm.usernamePlaceholder ? vm.usernamePlaceholder : (vm.ldapOn ? ('login.labelldap' | translate) : 'Email') }}"/>
+          <input ng-if="!vm.ldapOn" class="form-input" type="email" ng-model="vm.user.email" placeholder="{{ vm.usernamePlaceholder ? vm.usernamePlaceholder : 'Email' }}"/>
+          <input ng-if="vm.ldapOn" class="form-input" type="text" ng-model="vm.user.email" placeholder="{{ vm.usernamePlaceholder ? vm.usernamePlaceholder : ('login.labelldap' | translate) }}"/>
           <input class="form-input" type="password" ng-model="vm.user.password" placeholder="{{ vm.passwordPlaceholder ? vm.passwordPlaceholder : 'Password' }}"/>
           <input class="form-input" type="password" ng-model="vm.user.repeatPassword" placeholder="{{ vm.passwordRepeatPlaceholder ? vm.passwordRepeatPlaceholder : 'Repeat Password' }}" ng-if="!vm.showLogin"/>
           <!--TODO: add also a language picker to the signup -->
@@ -23,7 +24,7 @@
           <button class="onboarding__form_submit_button" ng-if="vm.showLogin">{{ vm.ldapOn ? ('login.ldapbutton' | translate) : ('login.loginbutton' | translate) }}</button>
           <button href="#" class="onboarding__form_submit_button" ng-if="!vm.showLogin">{{'Sign up'|translate}}</button>
           <div class="onboarding__form_links">
-            <a ng-if="vm.showLogin" ng-click="vm.redirectToForgotPassword()">{{'Forgot your password?'|translate}}?</a>
+            <a ng-if="vm.showLogin" ng-click="vm.redirectToForgotPassword()">{{'Forgot your password?'|translate}}</a>
             <a ng-if="!vm.showLogin" ng-click="vm.toggleShowLogin()">{{'I already have an account'|translate}}</a>
             <a ng-if="vm.showLogin" ng-click="vm.toggleShowLogin()">{{ vm.signUpTitle ? vm.signUpTitle : ('I dont have an account yet'|translate) }}</a>
           </div>

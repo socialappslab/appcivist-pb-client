@@ -1065,7 +1065,7 @@
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           $scope.newDocUrl = $sce.trustAsResourceUrl(response.path);
-          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"&embed=true");
+          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"?embed=true");
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
         },
         error => Notify.show(error.statusMessage, 'error')

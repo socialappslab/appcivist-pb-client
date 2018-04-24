@@ -255,7 +255,7 @@
       if (error && error.data && error.data.statusMessage) {
         msg = error.data.statusMessage;
       }
-      Notify.show(error ? error.data ? error.data.statusMessage : error.statusMessage ? error.statusMessage : '' : '', 'error');
+      Notify.show(error ? error.data ? error.data.statusMessage : error.statusMessage ? error.statusMessage : error.message ? error.message : '' : '', 'error');
     }
 
     this.toggleShowLogin = () => {

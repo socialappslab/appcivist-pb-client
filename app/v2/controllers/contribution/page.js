@@ -304,8 +304,8 @@
               $scope.gdocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
               $scope.gdocUrlMinimal = $sce.trustAsResourceUrl($scope.gdocUrl +"?rm=minimal");
             } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
-              $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
+              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
+              $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {
@@ -1065,7 +1065,7 @@
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           $scope.newDocUrl = $sce.trustAsResourceUrl(response.path);
-          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"?embed=true");
+          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"&embed=true");
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
         },
         error => Notify.show(error.statusMessage, 'error')

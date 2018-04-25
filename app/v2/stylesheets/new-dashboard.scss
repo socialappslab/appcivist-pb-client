@@ -34,9 +34,14 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 0;
+  bottom: 0;
   background: rgba(38, 85, 123, 0.5);
   z-index: 0;
+}
+
+.new_overlay_top {
+  bottom: unset;
+  top: 0;
   margin-top: 0 !important;
 }
 

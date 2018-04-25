@@ -64,6 +64,8 @@
       $scope.commentType = 'public';
       $scope.selectedCards = [];
       $scope.subscribed = false;
+      
+      $scope.campaignFaq = null;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -303,6 +305,7 @@
           $scope.spaceID = $scope.isAnonymous ? data.resourceSpaceUUID : data.resourceSpaceId;
           $scope.forumSpaceID = $scope.campaign.forumSpaceID ? $scope.campaign.forumSpaceID : $scope.campaign.frsUUID;
           $scope.showPagination = true;
+          console.log($scope.assembly);
           $scope.logo = $scope.campaign.logo ?
             $scope.campaign.logo.url : showAssemblyLogo() ?
               $scope.assembly.profile.icon : null;
@@ -415,6 +418,8 @@
 
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
+      let faqUrlConfig = data['appcivist.campaign.faq-url'];
+      this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
       this.afterLoadingCampaignConfigs();
     }
 

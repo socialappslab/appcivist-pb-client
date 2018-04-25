@@ -20,7 +20,7 @@
   "Add Idea": "Agregar Idea",
   "Add new": "Agregar nuevo",
   "Add New": "Agregar Nuevo",
-  "Add Proposal": "Agregar Propuesta",
+  "Add Proposal": "Crear Propuesta",
   "Add section": "Agregar Sección",
   "Add to list": "Agregar a la lista",
   "add.new.themes": "Añadir nuevos temas",
@@ -857,7 +857,7 @@
   "Implementing": "Implementación",
   "Password for technical feedbacks": "Contraseña para evaluaciones técnicas",
   "Contact information": "Informacin de contacto",
-  "Supported by": "Apoyado por <a href='https://www.eitdigital.eu'>EIT Digital</a>, <a href='http://www.conacyt.gov.py/'>Conacyt</a>, y la <a href='http://www.ci.vallejo.ca.us/'>Ciudad de Vallejo</a>",
+  "Supported by": "Apoyado por <a href='https://inria.fr/'>INRIA</a>, <a href='https://www.eitdigital.eu'>EIT Digital</a>, <a href='http://www.conacyt.gov.py/'>Conacyt</a>, y la <a href='http://www.ci.vallejo.ca.us/'>Ciudad de Vallejo</a>",
   "Ups": "Positivos",
   "Downs": "Negativos",
   "Needs": "Needs",
@@ -1345,5 +1345,10 @@
   "Upcoming campaigns": "Próximas iniciativas",
   "Show comments": "Mostrar comentáarios",
   "Turn off these messages": "Desactivar estos mensajes",
-  "Hide comments": "Esconder comentarios"
+  "Hide comments": "Esconder comentarios",
+  "login.loginbutton": "Login",
+  "login.labelldap": "LDAP Username",
+  "login.placeldap": "Type your LDAP username",
+  "login.ldapcheck": "Sign in using LDAP",
+  "login.ldapbutton": "Sign in using LDAP"
 }

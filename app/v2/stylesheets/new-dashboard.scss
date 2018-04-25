@@ -43,8 +43,14 @@
 .powered_logo {
   position: absolute;
   right: 2rem;
-  width: 220px;
+  width: 300px;
   margin-top: 1rem;
+}
+.powered_by {
+  float: right;
+}
+.logo__wrapper__light {
+  float: right !important;
 }
 
 .overlay_buttons {
@@ -173,6 +179,12 @@
   .powered_logo { display: none; }
   .page__header .subscribe-newsletter {
     position: relative;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .powered_by {
+    display: none;
   }
 }
 

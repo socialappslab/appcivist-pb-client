@@ -4,7 +4,7 @@
     <div class="markers">
       <div ng-repeat="component in components track by $index" class="timeline-item" ng-class="component.cssClass">
         <div>
-          <div class="marker" ng-mouseenter="toggleComponent(component, components)" ng-click="clickHandler(component)"></div>
+          <div class="marker" ng-class="{nodesc: !currentDescription}" ng-mouseenter="toggleComponent(component, components)" ng-click="clickHandler(component)"></div>
           <div class="label">{{ component.title }}</div>
         </div>
 
@@ -38,5 +38,5 @@
     </div>
   </div>
 
-  <div class="phase-description">{{ currentDescription }}</div>
+  <div class="phase-description" ng-if="currentDescription">{{ currentDescription }}</div>
 </section>

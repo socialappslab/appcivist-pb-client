@@ -1,4 +1,4 @@
-.timeline .timeline-item.active .marker:after {
+.timeline .timeline-item.active .marker:not(.nodesc):after {
   content: " ";
   height: 1.5em;
   border-left: 2px solid #11493b;
@@ -11,7 +11,7 @@
   padding: 1.5em;
   padding-top: 1em;
   padding-bottom: 1em;
-  height: 300px;
+  min-height: 200px;
   .heading--header {
     margin: 0px;
   }
@@ -40,15 +40,13 @@
 }
 
 .phase-description {
-  height: 90px;
   margin-top: 0.5rem;
   padding: 0.5rem 0.8rem;
   font-size: 1.5rem;
-  overflow-y: auto;
   background-color: #EEE;
   border-width: 2px;
   border-color: #12493b;
-  border-radius: 0.5em;
+  border-radius: 0.5rem;
   border-style: solid;
   text-align: center;
 }

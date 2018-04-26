@@ -88,16 +88,16 @@
             <!--</a>-->
           <!--</li>-->
           <div class="liveEdit smaller">
-            <input class="btn-sm" type="text" id="keywordSearch" name="authors" ng-model="$parent.currentAdd.query"
-              ng-click="$parent.currentAddQueryChangeOnClick()" ng-change="$parent.currentAddQueryChange()">
+            <input class="btn-sm" type="text" id="keywordSearch" name="keywords" ng-model="keywordsQuery"
+              ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()">
             <fieldset class="tags">
-              <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
+              <div class="autocomplete" ng-if="keywordsSuggestionsVisible">
                 <ul class="suggestion-list">
-                  <li ng-repeat="item in $parent.currentAdd.items track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                  <li ng-repeat="item in keywordsList track by $index" ng-click="$parent.currentAddOnSelect(item)"
                     class="suggestion-item" style="min-height: 50px;">
                     <span ng-bind-html="$parent.currentAddGetText(item)"></span>
                   </li>
-                  <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
+                  <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': keywordsQuery, 'type': 'EMERGENT'})"
                       class="suggestion-item" style="min-height: 50px;">
                     <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
                   </li>

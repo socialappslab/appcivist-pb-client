@@ -56,6 +56,7 @@
     $scope.loadToolbarConfig = loadToolbarConfig.bind($scope);
     $scope.showSearch = showSearch.bind($scope);
     $scope.themesChangeOnClick = themesChangeOnClick.bind($scope);
+    $scope.keywordsChangeOnClick = keywordsChangeOnClick.bind($scope);
 
     activate();
 
@@ -193,8 +194,9 @@
       $scope.themesList = [];
       $scope.themesSuggestionsVisible = false;
       $scope.themesLimit = null;
-      $scope.theme
       $scope.keywordQuery = "";
+      $scope.keywordsList = [];
+      $scope.keywordsSuggestionsVisible = false;
     }
 
     function toggleOpenAddAttachment () {
@@ -841,7 +843,6 @@
     function themesChangeOnClick() {
       this.setAddContext('THEMES');
       this.themesSuggestionsVisible = true;
-      console.log(this.themesSuggestionsVisible);
       let vm = this;
       let filters = {
         query: vm.themeQuery,
@@ -851,6 +852,25 @@
       rsp.then(
         themes => {
           vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery));
+        },
+        error => {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+    
+    function keywordsChangeOnClick() {
+      this.setAddContext('KEYWORDS');
+      this.keywordsSuggestionsVisible = true;
+      let vm = this;
+      let filters = {
+        query: vm.themeQuery,
+        themeType: 'EMERGENT'
+      }
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
+      rsp.then(
+        keywords => {
+          vm.keywordsList = $filter('filter')(keywords, queryThemes(vm.themeQuery));
         },
         error => {
           Notify.show(error.statusMessage, 'error');
@@ -879,6 +899,7 @@
      * @param {Object} item
      */
     function currentAddOnSelect(item) {
+      console.log(item);
       this.currentAdd.suggestionsVisible = false;
       this.currentAdd.query = '';
 
@@ -890,6 +911,8 @@
         $('#themeSearch').hide();
       } else {
         this.addThemeToProposal(item);
+        this.keywordsSuggestionsVisible = false;
+        $('#keywordSearch').hide();
       }
     }
 

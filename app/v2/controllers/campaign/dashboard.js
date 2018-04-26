@@ -160,6 +160,7 @@
       $scope.mediaCount = mediaCount.bind($scope);
       $scope.pictureCount = pictureCount.bind($scope);
       $scope.videoCount = videoCount.bind($scope);
+      $scope.createContribution = createContribution.bind($scope);
 
       // add attachment form
       $scope.submitAttachment = submitAttachment.bind($scope);
@@ -833,15 +834,22 @@
      * @param {Object} contribution
      */
     function redirectToProposal(contribution) {
-      this.closeModal();
+      // this.closeModal();
+      console.log(contribution);
       let group = contribution.workingGroupAuthors && contribution.workingGroupAuthors[0];
 
       if (group) {
-        $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
-          pid: contribution.contributionId,
-          aid: this.assemblyID,
-          cid: this.campaignID,
+        $state.go('v2.assembly.aid.campaign.workingGroup.contribution.coid', {
+          coid: contribution.contributionId,
+          aid: $scope.assemblyID,
+          cid: $scope.campaignID,
           gid: group.groupId,
+        });
+      } else {
+        $state.go('v2.assembly.aid.campaign.contribution.coid', {
+          coid: contribution.contributionId,
+          aid: $scope.assemblyID,
+          cid: $scope.campaignID
         });
       }
     }
@@ -1125,6 +1133,24 @@
         error => {
           Notify.show(error.statusMessage, 'error');
         }
+      );
+    }
+
+    function createContribution(contributionType = 'PROPOSAL') {
+      let payload = {};
+      payload.status = "DRAFT";
+      payload.title = contributionType + " - Sample";
+      payload.text = 'Sample text';
+      payload.type = contributionType;
+      Pace.restart();
+      let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
+        contribution => {
+          Pace.stop();
+          Notify.show('Contribution saved', 'success');
+          console.log(contribution);
+          redirectToProposal(contribution);
+        },
+        error => Notify.show(error.statusMessage, 'error')
       );
     }
   }

@@ -3,8 +3,6 @@
       <header class="page__header contributionHeader">
         <div class="row" style="margin-top: 60px">
           <breadcrumb label="proposal.title"></breadcrumb>
-          <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#followModal" ng-if="contributionType && !following">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
-          <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal" ng-if="contributionType && following">Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
         </div>
         <div class="row title_block">
           <h1 class="heading--title">{{proposal.title}}</h1>
@@ -175,9 +173,13 @@
               <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
             </li>
           </ul>
-          <div class="overlay_status">
-            <span class="status_label">Status</span>
-            <span class="status">{{ proposal.status }}</span>
+          <div class="float-wrapper">
+            <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#followModal" ng-if="contributionType && !following && !isAnonymous">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
+            <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal" ng-if="contributionType && following && !isAnonymous">Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
+            <div class="overlay_status" ng-if="contributionType">
+              <span class="status_label">Status</span>
+              <span class="status">{{ proposal.status }}</span>
+            </div>
           </div>
         </div>
 

@@ -19,6 +19,9 @@
             <member-card user="author"></member-card>
             <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
           </div>
+          <div class="liveEdit">
+            <button><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Author</button>
+          </div>
           <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
           <!--<div style="display: inline-block; margin-left: 10px;">-->
             <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'AUTHORS'">-->
@@ -26,8 +29,8 @@
             <!--</a>-->
           <!--</div>-->
           <p class="small">
-            <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
+            <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
             <strong ng-if="proposal.source === 'social_ideation_facebook'">{{'Source'|translate}}: </strong><span class="facebook-bookmark" ng-if="proposal.source === 'social_ideation_facebook'"><a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;Facebook</a></span>
           </p>
         </div>
@@ -47,7 +50,27 @@
               <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
             <!--</a>-->
           <!--</li>-->
+          <div class="liveEdit smaller">
+            <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery"
+              ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()">
+            <fieldset class="tags">
+              <div class="autocomplete" ng-if="themesSuggestionsVisible">
+                <ul class="suggestion-list">
+                  <li ng-repeat="item in themesList track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                    class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                  </li>
+                  <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
+                      class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
+                  </li>
+                </ul>
+              </div>
+            </fieldset>
+            <button ng-click="showSearch('themeSearch')"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Theme</button>
+          </div>
         </ul>
+        
 
         <ul class="row tags">
           <li class="title">{{'Keywords'|translate}}: </li>
@@ -64,9 +87,28 @@
               <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
             <!--</a>-->
           <!--</li>-->
+          <div class="liveEdit smaller">
+            <input class="btn-sm" type="text" id="keywordSearch" name="authors" ng-model="$parent.currentAdd.query"
+              ng-click="$parent.currentAddQueryChangeOnClick()" ng-change="$parent.currentAddQueryChange()">
+            <fieldset class="tags">
+              <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
+                <ul class="suggestion-list">
+                  <li ng-repeat="item in $parent.currentAdd.items track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                    class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                  </li>
+                  <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
+                      class="suggestion-item" style="min-height: 50px;">
+                    <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
+                  </li>
+                </ul>
+              </div>
+            </fieldset>
+            <button ng-click="showSearch('keywordSearch')"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Keyword</button>
+          </div>
         </ul>
 
-        <!-- Add Theme/Author/Keyword Form -->
+        <!-- Add Theme/Author/Keyword Form 
         <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">
           <ul class="tags">
             <li class="title" ng-if="proposal.type==='PROPOSAL'">{{'Add to proposal'|translate}}: </li>
@@ -100,7 +142,7 @@
               </ul>
             </div>
           </fieldset>
-        </div>
+        </div>-->
 
         <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex">
           <ul class="overlay_buttons">
@@ -178,7 +220,7 @@
             <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal" ng-if="contributionType && following && !isAnonymous">Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
             <div class="overlay_status" ng-if="contributionType">
               <span class="status_label">Status</span>
-              <span class="status">{{ proposal.status }}</span>
+              <span class="status">{{ proposal.status | translate }}</span>
             </div>
           </div>
         </div>

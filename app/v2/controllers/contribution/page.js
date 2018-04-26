@@ -54,6 +54,8 @@
     $scope.follow = follow.bind($scope);
     $scope.unfollow = unfollow.bind($scope);
     $scope.loadToolbarConfig = loadToolbarConfig.bind($scope);
+    $scope.showSearch = showSearch.bind($scope);
+    $scope.themesChangeOnClick = themesChangeOnClick.bind($scope);
 
     activate();
 
@@ -186,6 +188,13 @@
       $scope.showMedia = true;
       $scope.showUpVote = true;
       $scope.showDownVote = true;
+
+      $scope.themeQuery = "";
+      $scope.themesList = [];
+      $scope.themesSuggestionsVisible = false;
+      $scope.themesLimit = null;
+      $scope.theme
+      $scope.keywordQuery = "";
     }
 
     function toggleOpenAddAttachment () {
@@ -195,6 +204,10 @@
     function toggleOpenAddAttachmentByUrl () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
       $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
+    }
+
+    function showSearch(id) {
+      $('#'+id).show();
     }
 
     function startSpinner () {
@@ -278,6 +291,7 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
+          $scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
           localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
           var workingGroupAuthors = data.workingGroupAuthors;
@@ -779,6 +793,7 @@
       }
       rsp.$promise.then(function (data) {
         $scope.campaignConfigs = data;
+        $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'];
         loadBallotPaper();
         loadToolbarConfig();
       }, function (error) {
@@ -823,6 +838,26 @@
       this.loadThemesOrAuthor();
     }
 
+    function themesChangeOnClick() {
+      this.setAddContext('THEMES');
+      this.themesSuggestionsVisible = true;
+      console.log(this.themesSuggestionsVisible);
+      let vm = this;
+      let filters = {
+        query: vm.themeQuery,
+        themeType: 'OFFICIAL_PRE_DEFINED'
+      }
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
+      rsp.then(
+        themes => {
+          vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery));
+        },
+        error => {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
     /**
      * Returns the text to display in the suggestion list.
      *
@@ -851,6 +886,8 @@
         this.addAuthorToProposal(item);
       } else if (this.currentAdd.context === 'THEMES') {
         this.addThemeToProposal(item);
+        this.themesSuggestionsVisible = false;
+        $('#themeSearch').hide();
       } else {
         this.addThemeToProposal(item);
       }
@@ -938,8 +975,13 @@
 
     function addThemeToProposal(theme) {
       this.proposal.themes = this.proposal.themes || [];
-      this.proposal.themes.push(theme);
-
+      if (this.themesLimit) {
+        if (this.proposal.themes.length >= this.themesLimit) {
+          Notify.show("Can't add more themes", 'error');
+          return;
+        }
+      }
+      this.proposal.themes.push(theme); 
       Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => Notify.show('Theme added successfully', 'success'),
         error => {
@@ -950,10 +992,10 @@
     }
 
     function loadAuthors(query) {
-      let rsp = Assemblies.assemblyMembers(this.assemblyID).query().$promise;
+      let rsp = Assemblies.assemblyMembers(this.assemblyID).get().$promise;
       rsp.then(
         data => {
-          let items = data.filter(d => d.status === 'ACCEPTED').map(d => d.user);
+          let items = data.members.filter(d => d.status === 'ACCEPTED').map(d => d.user);
           items = $filter('filter')(items, { $: query });
           this.currentAdd.items = items;
         },

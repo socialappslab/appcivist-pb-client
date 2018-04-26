@@ -1,3 +1,29 @@
+.liveEdit {
+  display: inline-block;
+  margin-left: 2rem;
+  vertical-align: middle;
+  &.smaller {
+    margin-left: 0.3rem;
+  }
+  fieldset {
+    position: absolute;
+  }
+  button {
+    display: inline-block;
+    background-color: #B2B2B2;
+    color: #3c3c3c;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.8rem;
+    vertical-align: middle;
+    border: 0;
+  }
+  input {
+    display: none;
+    width: 200px;
+    margin-right: 5px;
+  }
+}
+
 .contextual_wrapper {
   display: inline-block;
   position: relative;

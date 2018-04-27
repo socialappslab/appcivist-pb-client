@@ -64,6 +64,7 @@
     $scope.deleteSelectedTheme = deleteSelectedTheme.bind($scope);
     $scope.loadAssemblyConfig = loadAssemblyConfig.bind($scope);
     $scope.getEditorOptions = getEditorOptions.bind($scope);
+    $scope.currentAddGetTextLdap = currentAddGetTextLdap.bind($scope);
 
     activate();
 

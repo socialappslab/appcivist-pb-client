@@ -1129,7 +1129,7 @@
     }
 
     function deleteNonMemberAuthor(author, local) {
-      _.remove(this.proposal.authors, { userId: author.id });
+      _.remove(this.proposal.nonMemberAuthors, { userId: author.id });
 
       if (local) {
         return;

@@ -1115,6 +1115,7 @@
      * @param {boolean} local - just delete in-memory author instance.
      */
     function deleteAuthor(author, local) {
+      console.log(this.proposal.authors);
       _.remove(this.proposal.authors, { userId: author.userId });
 
       if (local) {
@@ -1129,12 +1130,12 @@
     }
 
     function deleteNonMemberAuthor(author, local) {
-      _.remove(this.proposal.nonMemberAuthors, { userId: author.id });
+      _.remove(this.proposal.nonMemberAuthors, { uuid: author.uuid });
 
       if (local) {
         return;
       }
-      Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.id).then(
+      Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.uuid).then(
         response => Notify.show('Author deleted successfully', 'success'),
         error => {
           Notify.show(error.statusMessage, 'error');

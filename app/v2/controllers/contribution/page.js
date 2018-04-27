@@ -839,14 +839,14 @@
 
     function loadAssemblyConfig() {
       let vm = $scope;
-      console.log("ASSEMBLY ID: " + $scope.assemblyID);
+      alert("ASSEMBLY ID: " + $scope.assemblyID);
       let rsp = Assemblies.assembly($scope.assemblyID).get().$promise;
       rsp.then(
         assembly => {
-          console.log('ASSEMBLY 1!');
-          let ans = Space.configs(assembly.resourcesResourceSpaceUUID).get();
+          alert('ASSEMBLY 1!');
+          let ans = Space.configs(assembly.assemblyId).get();
           ans.$promise.then(function(data){
-            console.log('ASSEMBLY 2: CONFIG!');
+            alert('ASSEMBLY 2: CONFIG!');
             vm.assemblyConfig = data;
             vm.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
             alert('assemblyconfig data: ' + data['appcivist.assembly.authentication.ldap'].toLowerCase());

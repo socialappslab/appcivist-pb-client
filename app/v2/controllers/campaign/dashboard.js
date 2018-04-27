@@ -429,9 +429,11 @@
       this.allowedContributionTypes = data['appcivist.campaign.contribution-types'];
 
       if (this.allowedContributionTypes) {
+        this.enableProposals = this.allowedContributionTypes.toLowerCase().includes("proposal");
         this.enableIdeas = this.allowedContributionTypes.toLowerCase().includes("idea");
         this.enableComments = this.allowedContributionTypes.toLowerCase().includes("comment") || this.allowedContributionTypes.toLowerCase().includes("discussion");
       } else {
+        this.enableProposals = true;
         this.enableIdeas = true;
         this.enableComments = true;
       }
@@ -447,6 +449,7 @@
       this.proposalDefaultTitle = "Create your title"; // TODO translate
       this.proposalDefaultDescription = "Create a brief description"; // TODO translate
       this.allowedContributionTypes = "IDEAS, PROPOSALS, COMMENTS, DISCUSSIONS";
+      this.enableProposals = true;
       this.enableIdeas = true;
       this.enableComments = true;
       this.requireGroupAuthorship = true;

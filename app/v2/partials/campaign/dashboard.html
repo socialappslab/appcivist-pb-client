@@ -154,16 +154,16 @@
               <header class="proposals__header">
                 <!-- Statistics/Insights summary section-->
                 <div class="dash_insights">
-                  <span ng-if="!commentsSectionExpanded"><a ng-click="toggleCommentsSection()">{{'Show comments'|translate}}</a></span>
-                  <span ng-if="commentsSectionExpanded"><a ng-click="toggleCommentsSection()">{{'Hide comments'|translate}}</a></span>
-                  <span ng-if="currentComponentType!=='IDEAS'">
+                  <span ng-if="!commentsSectionExpanded && enableComments"><a ng-click="toggleCommentsSection()">{{'Show comments'|translate}}</a></span>
+                  <span ng-if="commentsSectionExpanded && enableComments"><a ng-click="toggleCommentsSection()">{{'Hide comments'|translate}}</a></span>
+                  <span ng-if="currentComponentType!=='IDEAS' && enableProposals">
                     <strong>{{'Proposals' | translate}}:</strong>
                     {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}}
                     <small>({{'Published' | translate}})</small>,
                     {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}}
                     <small>({{'Drafts' | translate}})</small>
-                    &nbsp;&ndash;&nbsp;
                   </span>
+                  <span ng-if="enableIdeas && enableProposals">&nbsp;&ndash;&nbsp;</span>
                   <span ng-if="enableIdeas">
                     <strong>{{'Ideas' | translate}}:</strong>
                     {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}}

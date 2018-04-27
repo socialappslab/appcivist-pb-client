@@ -839,18 +839,13 @@
 
     function loadAssemblyConfig() {
       let vm = $scope;
-      alert("ASSEMBLY ID: " + $scope.assemblyID);
       let rsp = Assemblies.assembly($scope.assemblyID).get().$promise;
       rsp.then(
         assembly => {
-          alert('ASSEMBLY 1!');
           let ans = Space.configsByUUID(assembly.resourcesResourceSpaceUUID).get();
           ans.$promise.then(function(data){
-            alert('ASSEMBLY 2: CONFIG!');
             vm.assemblyConfig = data;
             vm.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
-            alert('assemblyconfig data: ' + data['appcivist.assembly.authentication.ldap'].toLowerCase());
-            alert('assemblyconfig ldap?: ' + vm.ldap);
           }, function(error) {
             Notify.show(error.statusMessage, 'error');
           });
@@ -931,32 +926,23 @@
       this.setAddContext('AUTHORS');
       this.authorsSuggestionsVisible = true;
       let vm = this;
-      let rsp = Assemblies.assemblyMembers(this.assemblyID).get().$promise;
+      let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap).get().$promise;
       rsp.then(
         data => {
           let items = data.members.filter(d => d.status === 'ACCEPTED').map(d => d.user);
           items = $filter('filter')(items, { $: vm.authorQuery });
           vm.authorsList = items;
+          if (this.ldap) {
+            let items = data.ldap;
+            items = $filter('filter')(items, { $: vm.authorQuery });
+            vm.ldapList = items;
+            alert(vm.ldapList.length);
+          }
         },
         function (error) {
           Notify.show(error.statusMessage, 'error');
         }
       );
-      alert('this.ldap: ' + this.ldap);
-      alert('$scope.ldap:' + $scope.ldap);
-      if (this.ldap) {
-        let ans = Assemblies.assemblyMembersLdap(this.assemblyID).get().$promise;
-        ans.then(
-          data => {
-            let items = data.members;
-            items = $filter('filter')(items, { $: query });
-            vm.ldapList = items;
-          },
-          function (error) {
-            Notify.show(error.statusMessage, 'error');
-          }
-        );
-      }
     }
 
     function themesChangeOnClick() {

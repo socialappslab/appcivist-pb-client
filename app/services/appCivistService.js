@@ -78,11 +78,13 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService, $in
     assembliesByQuery: function (q) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly', { query: q });
     },
-    assemblyMembers: function (assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId });
-    },
-    assemblyMembersLdap: function (assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true', { aid: assemblyId });
+    assemblyMembers: function (assemblyId, ldap = false) {
+      var ldap = ldap || false;
+      if (ldap) {
+        return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true', { aid: assemblyId });
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId });
+      }
     },
     linkedAssemblies: function (assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/linked', { aid: assemblyId });

@@ -839,15 +839,21 @@
     }
 
     function loadAssemblyConfig() {
-      console.log($scope.assembly);
-      var rsp = Space.configs($scope.assembly.resourcesResourceSpaceId).get();
-      rsp.$promise.then(function(data){
-        $scope.assemblyConfig = data;
-        $scope.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
-        console.log($scope.ldap);
-      }, function(error) {
-        Notify.show(error.statusMessage, 'error');
-      });
+      let vm = this;
+      let rsp = Assemblies.assembly($scope.assemblyID).get().$promise;
+      rsp.then(
+        assembly => {
+          let ans = Space.configs(assembly.resourcesResourceSpaceUUID).get();
+          ans.$promise.then(function(data){
+            vm.assemblyConfig = data;
+            vm.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
+          }, function(error) {
+            Notify.show(error.statusMessage, 'error');
+          });
+        }, error => {
+          Notify.show(error.statusMessage, 'error');
+        }
+      )
     }
 
     function loadAllThemes() {

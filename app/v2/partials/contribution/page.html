@@ -28,7 +28,7 @@
               ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()"><i ng-if="userIsAuthor" id="authorSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
             <fieldset class="tags"  id="authorSearchTags">
               <div class="autocomplete authors" ng-class="{ smaller: ldap == false }" ng-if="authorsSuggestionsVisible">
-                <div class="col-sm-6" ng-class="{'col-sm-12': ldap == false }">
+                <div class="col-sm-5" ng-class="{'col-sm-12': ldap == false }">
                   <ul class="suggestion-list">
                     <li ng-repeat="item in authorsList track by $index" ng-click="$parent.currentAddOnSelect(item)"
                       class="suggestion-item" style="min-height: 50px;">
@@ -36,7 +36,7 @@
                     </li>
                   </ul>
                 </div>
-                <div class="col-sm-6" ng-if="ldap == true">
+                <div class="col-sm-7" ng-if="ldap == true">
                   <ul class="suggestion-list">
                     <li ng-repeat="item in ldapList track by $index" ng-click="$parent.currentAddOnSelect(item, true)"
                       class="suggestion-item" style="min-height: 50px;">

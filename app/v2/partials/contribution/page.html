@@ -21,15 +21,25 @@
           </div>
           <div class="liveEdit">
             <input class="btn-sm" type="text" id="authorSearch" name="authors" ng-model="authorQuery"
-              ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()">
-            <fieldset class="tags">
-              <div class="autocomplete" ng-if="authorsSuggestionsVisible">
-                <ul class="suggestion-list">
-                  <li ng-repeat="item in authorsList track by $index" ng-click="$parent.currentAddOnSelect(item)"
-                    class="suggestion-item" style="min-height: 50px;">
-                    <span ng-bind-html="$parent.currentAddGetText(item)"></span>
-                  </li>
-                </ul>
+              ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()"><i ng-if="userIsAuthor" id="authorSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
+            <fieldset class="tags"  id="authorSearchTags">
+              <div class="autocomplete authors" ng-class="{ smaller: ldap == false }" ng-if="authorsSuggestionsVisible">
+                <div class="col-sm-6" ng-class="{'col-sm-12': ldap == false }">
+                  <ul class="suggestion-list">
+                    <li ng-repeat="item in authorsList track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                      class="suggestion-item" style="min-height: 50px;">
+                      <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-sm-6" ng-if="ldap">
+                  <ul class="suggestion-list">
+                    <li ng-repeat="item in ldapList track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                      class="suggestion-item" style="min-height: 50px;">
+                      <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </fieldset>
             <button ng-click="showSearch('authorSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Author</button>
@@ -56,7 +66,13 @@
             </a>
             <!--<span ng-if="!$last">,</span>-->
           </li>
-          <li ng-if="themesLimit == 1">
+          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit == 1 && isAnonymous">
+              <a>
+                {{theme.title}}
+              </a>
+              <!--<span ng-if="!$last">,</span>-->
+            </li>
+          <li ng-if="themesLimit == 1 && !isAnonymous">
             <select class="theme_selector" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId" ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
             <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
           </li>
@@ -68,8 +84,8 @@
           <!--</li>-->
           <div class="liveEdit smaller" ng-if="themesLimit > 1 || themesLimit == -1">
             <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery"
-              ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()">
-            <fieldset class="tags">
+              ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()"><i ng-if="userIsAuthor" id="themeSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
+            <fieldset class="tags" id="themeSearchTags">
               <div class="autocomplete" ng-if="themesSuggestionsVisible">
                 <ul class="suggestion-list">
                   <li ng-repeat="item in themesList track by $index" ng-click="$parent.currentAddOnSelect(item)"
@@ -101,8 +117,8 @@
           <!--</li>-->
           <div class="liveEdit smaller">
             <input class="btn-sm" type="text" id="keywordSearch" name="keywords" ng-model="keywordsQuery"
-              ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()">
-            <fieldset class="tags">
+              ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()"><i ng-if="userIsAuthor" id="keywordSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('keywordSearch')"></i>
+            <fieldset class="tags" id="keywordSearchTags">
               <div class="autocomplete" ng-if="keywordsSuggestionsVisible">
                 <ul class="suggestion-list">
                   <li ng-repeat="item in keywordsList track by $index" ng-click="$parent.currentAddOnSelect(item)"

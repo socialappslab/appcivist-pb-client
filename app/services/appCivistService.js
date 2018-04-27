@@ -81,6 +81,9 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService, $in
     assemblyMembers: function (assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId });
     },
+    assemblyMembersLdap: function (assemblyId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true', { aid: assemblyId });
+    },
     linkedAssemblies: function (assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/linked', { aid: assemblyId });
     },

@@ -55,12 +55,14 @@
     $scope.unfollow = unfollow.bind($scope);
     $scope.loadToolbarConfig = loadToolbarConfig.bind($scope);
     $scope.showSearch = showSearch.bind($scope);
+    $scope.hideSearch = hideSearch.bind($scope);
     $scope.authorsChangeOnClick = authorsChangeOnClick.bind($scope);
     $scope.themesChangeOnClick = themesChangeOnClick.bind($scope);
     $scope.keywordsChangeOnClick = keywordsChangeOnClick.bind($scope);
     $scope.loadAllThemes = loadAllThemes.bind($scope);
     $scope.selectTheme = selectTheme.bind($scope);
     $scope.deleteSelectedTheme = deleteSelectedTheme.bind($scope);
+    $scope.loadAssemblyConfig = loadAssemblyConfig.bind($scope);
 
     activate();
 
@@ -207,6 +209,10 @@
 
       $scope.allThemes = [];
       $scope.selectedTheme = null;
+
+      $scope.assemblyConfig = []
+      $scope.ldap = false;
+      $scope.ldapList = [];
     }
 
     function toggleOpenAddAttachment () {
@@ -220,6 +226,14 @@
 
     function showSearch(id) {
       $('#'+id).show();
+      $('#'+id+'Close').show();
+    }
+    
+    function hideSearch(id) {
+      $('#'+id).hide();
+      $('#'+id+'Close').hide();
+      let ctx = id.replace('Search', '');
+      eval('this.'+ctx+'sSuggestionsVisible = false');
     }
 
     function startSpinner () {
@@ -303,6 +317,7 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
+          console.log($scope.proposal);
           $scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
           localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
@@ -733,6 +748,7 @@
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();
+        loadAssemblyConfig();
         loadCustomFields();
         checkIfFollowing($scope.campaign.rsID);
       } else {
@@ -806,7 +822,6 @@
       rsp.$promise.then(function (data) {
         $scope.campaignConfigs = data;
         $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] ? $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] : -1;
-        //$scope.themesLimit = 1;
         if ($scope.themesLimit == 1) {
           loadAllThemes();
           $scope.selectedTheme = $scope.proposal.themes ? $scope.proposal.themes[0] : null;
@@ -815,6 +830,16 @@
         loadToolbarConfig();
       }, function (error) {
         loadBallotPaper();
+        Notify.show(error.statusMessage, 'error');
+      });
+    }
+
+    function loadAssemblyConfig() {
+      var rsp = Space.configs($scope.assembly.resourcesResourceSpaceId).get();
+      rsp.$promise.then(function(data){
+        $scope.assemblyConfig = data;
+        $scope.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
+      }, function(error) {
         Notify.show(error.statusMessage, 'error');
       });
     }
@@ -837,7 +862,8 @@
 
     function deleteSelectedTheme() {
       let vm = this;
-      this.proposal.themes = [];
+      let keywords = this.proposal.themes.filter(v => v.type == 'EMERGENT');
+      this.proposal.themes = keywords;
       Contributions.deleteTheme(this.proposal.uuid, this.selectedTheme.themeId).then(
         response => {
           Notify.show('Theme deleted successfully', 'success')
@@ -900,6 +926,19 @@
           Notify.show(error.statusMessage, 'error');
         }
       );
+      if (this.ldap) {
+        let ans = Assemblies.assemblyMembersLdap(this.assemblyID).get().$promise;
+        ans.then(
+          data => {
+            let items = data.members;
+            items = $filter('filter')(items, { $: query });
+            vm.ldapList = items;
+          },
+          function (error) {
+            Notify.show(error.statusMessage, 'error');
+          }
+        );
+      }
     }
 
     function themesChangeOnClick() {
@@ -969,14 +1008,17 @@
         this.addAuthorToProposal(item);
         this.authorsSuggestionsVisible = false;
         $("#authorSearch").hide();
+        $('#authorSearchClose').hide();
       } else if (this.currentAdd.context === 'THEMES') {
         this.addThemeToProposal(item);
         this.themesSuggestionsVisible = false;
         $('#themeSearch').hide();
+        $('#themeSearchClose').hide();
       } else {
         this.addThemeToProposal(item);
         this.keywordsSuggestionsVisible = false;
         $('#keywordSearch').hide();
+        $('#keywordSearchClose').hide();
       }
     }
 
@@ -1079,8 +1121,10 @@
     }
 
     function selectTheme() {
-      this.proposal.themes = [];
-      this.proposal.themes.push(this.selectedTheme);
+      let keywords = this.proposal.themes.filter(v => v.type == 'EMERGENT');
+      let themes = [];
+      themes.push(this.selectedTheme);
+      this.proposal.themes = keywords.concat(themes);
       Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => Notify.show('Theme changed successfully', 'success'),
         error => {

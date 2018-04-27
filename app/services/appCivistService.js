@@ -1034,6 +1034,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     addAuthor(uuid, author) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors', { uuid: uuid }).save(author).$promise;
     },
+    
+    addNonMemberAuthor(uuid, author) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/nonmemberauthors', { uuid: uuid }).save(author).$promise;
+    },
 
     /**
      * Deletes the given author to the contribution.

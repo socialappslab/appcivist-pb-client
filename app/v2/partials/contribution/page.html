@@ -5,7 +5,7 @@
           <breadcrumb label="proposal.title"></breadcrumb>
         </div>
         <div class="row title_block">
-          <h1 class="heading--title" ng-if="!isTitleEdit">{{proposal.title}} <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()"></i></h1>
+          <h1 class="heading--title" ng-if="!isTitleEdit">{{proposal.title}} <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor"></i></h1>
           <div class="editableArea text-center" ng-if="isTitleEdit">
             <input ng-model="proposal.title" id="add_proposal__title" name="text" placeholder="{{'Title' | translate}}">
             <button class="btn btn-default btn-join" ng-click="saveTitle()">Save title</button>
@@ -261,7 +261,7 @@
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
         <div class="proposal-summary">
-          <h2>{{'contribution.summary'|translate}} <i class="fa fa-edit smalledit" id="descriptionEditToggle" ng-click="descriptionToggleEdit()"></i></h2>
+          <h2>{{'contribution.summary'|translate}} <i class="fa fa-edit smalledit" id="descriptionEditToggle" ng-click="descriptionToggleEdit()" ng-if="userIsAuthor"></i></h2>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit"></p>
           <div class="editableArea text-center" ng-if="isDescriptionEdit">
             <textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
@@ -357,7 +357,12 @@
               <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="picture in resources.pictures"></li>
             </ol>
           </div>
-        <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
+          <h2>{{'contribution.summary'|translate}} <i class="fa fa-edit smalledit" id="descriptionEditToggle" ng-click="descriptionToggleEdit()" ng-if="userIsAuthor"></i></h2>
+          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit"></p>
+          <div class="editableArea text-center" ng-if="isDescriptionEdit">
+            <textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
+            <button class="btn btn-default btn-join" ng-click="saveDescription()">Save description</button>
+          </div>
       </section>
 
       <section class="comments__section"

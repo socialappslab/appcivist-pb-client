@@ -259,6 +259,8 @@
         <div class="proposal-summary">
           <h2>{{'contribution.summary'|translate}}</h2>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
+          <!--<textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description"
+            name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>-->
         </div>
         <div class="proposal-text">
           <h2>{{contributionType|titlecase|translate}}</h2>

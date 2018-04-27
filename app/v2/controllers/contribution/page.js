@@ -69,6 +69,7 @@
     $scope.saveDescription = saveDescription.bind($scope);
     $scope.saveTitle = saveTitle.bind($scope);
     $scope.getEditorOptions = getEditorOptions.bind($scope);
+    $scope.addNonMemberAuthorToProposal = addNonMemberAuthorToProposal.bind($scope);
 
     activate();
 

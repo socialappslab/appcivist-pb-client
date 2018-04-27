@@ -844,7 +844,7 @@
       rsp.then(
         assembly => {
           alert('ASSEMBLY 1!');
-          let ans = Space.configs(assembly.assemblyId).get();
+          let ans = Space.configsByUUID(assembly.resourcesResourceSpaceUUID).get();
           ans.$promise.then(function(data){
             alert('ASSEMBLY 2: CONFIG!');
             vm.assemblyConfig = data;

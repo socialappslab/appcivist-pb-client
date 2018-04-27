@@ -244,7 +244,7 @@
       $('#'+id).show();
       $('#'+id+'Close').show();
     }
-    
+
     function hideSearch(id) {
       $('#'+id).hide();
       $('#'+id+'Close').hide();
@@ -900,14 +900,22 @@
     }
 
     function loadToolbarConfig () {
-      $scope.showContributingIdeas = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.contributing-ideas'] == 'false' ? false : true;
-      $scope.showHistory = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'] == 'false' ? false : true;
-      $scope.showCommentCount = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'] == 'false' ? false : true;
-      $scope.showAttachments = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.attachments'] == 'false' ? false : true;
-      $scope.showFeedback = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.feedback'] == 'false' ? false : true;
-      $scope.showMedia = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.media'] == 'false' ? false : true;
-      $scope.showUpVote = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'] == 'false' ? false : true;
-      $scope.showDownVote = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'] == 'false' ? false : true;
+      let showContributingIdeasConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.contributing-ideas'];
+      let showHistoryConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'];
+      let showCommentCountConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'];
+      let showAttachmentsConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.attachments'];
+      let showFeedbackConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.feedback'];
+      let showMediaConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.media'];
+      let showUpVoteConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'];
+      let showDownVoteConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'];
+      $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showAttachments = showAttachmentsConf ? showAttachmentsConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showFeedback = showFeedbackConf ? showFeedbackConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showMedia = showMediaConf ? showMediaConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showUpVote = showUpVoteConf ? showUpVoteConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showDownVote = showDownVoteConf ? showDownVoteConf.toLowerCase()  === 'false' ? false : true : true;
     }
 
     function seeHistory() {
@@ -975,7 +983,7 @@
         }
       );
     }
-    
+
     function keywordsChangeOnClick() {
       this.setAddContext('KEYWORDS');
       this.keywordsSuggestionsVisible = true;
@@ -1009,7 +1017,7 @@
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }
     }
-    
+
     function currentAddGetTextLdap(item) {
       if (this.currentAdd.context === 'AUTHORS') {
         return $sce.trustAsHtml(`
@@ -1151,7 +1159,7 @@
           return;
         }
       }
-      this.proposal.themes.push(theme); 
+      this.proposal.themes.push(theme);
       Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => Notify.show('Theme added successfully', 'success'),
         error => {
@@ -1204,7 +1212,7 @@
         }
       );
     }
-    
+
     function addNonMemberAuthorToProposal(author) {
       let payload = {
         name: author.cn,
@@ -1468,7 +1476,7 @@
         $("#descriptionEditToggle").removeClass('fa-times-circle');
       }
     }
-    
+
     function titleToggleEdit() {
       if (!this.isTitleEdit) {
         this.isTitleEdit = true;

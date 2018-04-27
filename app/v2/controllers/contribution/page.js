@@ -1129,6 +1129,11 @@
     }
 
     function deleteNonMemberAuthor(author, locale) {
+      _.remove(this.proposal.authors, { userId: author.id });
+
+      if (local) {
+        return;
+      }
       Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.id).then(
         response => Notify.show('Author deleted successfully', 'success'),
         error => {

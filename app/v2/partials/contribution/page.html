@@ -5,7 +5,11 @@
           <breadcrumb label="proposal.title"></breadcrumb>
         </div>
         <div class="row title_block">
-          <h1 class="heading--title">{{proposal.title}}</h1>
+          <h1 class="heading--title" ng-if="!isTitleEdit">{{proposal.title}} <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()"></i></h1>
+          <div class="editableArea text-center" ng-if="isTitleEdit">
+            <input ng-model="proposal.title" id="add_proposal__title" name="text" placeholder="{{'Title' | translate}}">
+            <button class="btn btn-default btn-join" ng-click="saveTitle()">Save title</button>
+          </div>
         </div>
 
         <div class="row attribution">
@@ -261,7 +265,7 @@
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit"></p>
           <div class="editableArea text-center" ng-if="isDescriptionEdit">
             <textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
-            <button class="btn btn-default" ng-click="saveDescription()">Save description</button>
+            <button class="btn btn-default btn-join" ng-click="saveDescription()">Save description</button>
           </div>
         </div>
         <div class="proposal-text">

@@ -51,8 +51,14 @@ select.theme_selector {
   cursor: pointer;
 }
 
-.editableArea textarea {
-  height: unset;
+.editableArea {
+  textarea {
+    height: unset;
+  }
+  button {
+    position: unset !important;
+    margin: 1rem 0;
+  }
 }
 
 .contextual_wrapper {

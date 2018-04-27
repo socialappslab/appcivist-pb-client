@@ -223,6 +223,8 @@
       $scope.isDescriptionEdit = false;
       $scope.isTitleEdit = false;
       $scope.isTitleEditable = true;
+      $scope.descriptionBackup = null;
+      $scope.titleBackup = null;
 
       $scope.tinymceOptions = $scope.getEditorOptions();
     }
@@ -935,7 +937,7 @@
       this.setAddContext('AUTHORS');
       this.authorsSuggestionsVisible = true;
       let vm = this;
-      let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap).get().$promise;
+      let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap, this.authorQuery).get().$promise;
       rsp.then(
         data => {
           let items = data.members.filter(d => d.status === 'ACCEPTED').map(d => d.user);
@@ -1415,15 +1417,29 @@
     function descriptionToggleEdit() {
       if (!this.isDescriptionEdit) {
         this.isDescriptionEdit = true;
-        $("#descriptionEditToggle").hide();
+        this.descriptionBackup = this.proposal.text;
+        $("#descriptionEditToggle").removeClass('fa-edit');
+        $("#descriptionEditToggle").addClass('fa-times-circle');
       } else {
         this.isDescriptionEdit = false;
-        $("#descriptionEditToggle").show();
+        this.proposal.text = this.descriptionBackup;
+        $("#descriptionEditToggle").addClass('fa-edit');
+        $("#descriptionEditToggle").removeClass('fa-times-circle');
       }
     }
     
     function titleToggleEdit() {
-      $scope.isTitleEdit = !$scope.isTitleEdit;
+      if (!this.isTitleEdit) {
+        this.isTitleEdit = true;
+        this.TitleBackup = this.proposal.text;
+        $("#titleEditToggle").removeClass('fa-edit');
+        $("#titleEditToggle").addClass('fa-times-circle');
+      } else {
+        this.isTitleEdit = false;
+        this.proposal.text = this.TitleBackup;
+        $("#titleEditToggle").addClass('fa-edit');
+        $("#titleEditToggle").removeClass('fa-times-circle');
+      }
     }
 
     function saveDescription() {
@@ -1436,6 +1452,8 @@
         data => {
           Notify.show('Contribution saved', 'success');
           vm.isDescriptionEdit = false;
+          $("#descriptionEditToggle").addClass('fa-edit');
+          $("#descriptionEditToggle").removeClass('fa-times-circle');
         },
         error => {
           Notify.show(error.statusMessage, 'error');
@@ -1445,7 +1463,23 @@
     }
 
     function saveTitle() {
+      let vm = this;
+      let payload = _.cloneDeep($scope.proposal);
+      payload.status = payload.status.toUpperCase();
+      let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
 
+      rsp.then(
+        data => {
+          Notify.show('Contribution saved', 'success');
+          vm.isTitleEdit = false;
+          $("#titleEditToggle").addClass('fa-edit');
+          $("#titleEditToggle").removeClass('fa-times-circle');
+        },
+        error => {
+          Notify.show(error.statusMessage, 'error');
+          vm.isTitleEdit = true;
+        }
+      );
     }
 
     function getEditorOptions() {

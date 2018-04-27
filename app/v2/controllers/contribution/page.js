@@ -55,6 +55,7 @@
     $scope.unfollow = unfollow.bind($scope);
     $scope.loadToolbarConfig = loadToolbarConfig.bind($scope);
     $scope.showSearch = showSearch.bind($scope);
+    $scope.authorsChangeOnClick = authorsChangeOnClick.bind($scope);
     $scope.themesChangeOnClick = themesChangeOnClick.bind($scope);
     $scope.keywordsChangeOnClick = keywordsChangeOnClick.bind($scope);
 
@@ -190,6 +191,9 @@
       $scope.showUpVote = true;
       $scope.showDownVote = true;
 
+      $scope.authorQuery = "";
+      $scope.authorsList = [];
+      $scope.authorsSuggestionsVisible = false;
       $scope.themeQuery = "";
       $scope.themesList = [];
       $scope.themesSuggestionsVisible = false;
@@ -840,6 +844,23 @@
       this.loadThemesOrAuthor();
     }
 
+    function authorsChangeOnClick() {
+      this.setAddContext('AUTHORS');
+      this.authorsSuggestionsVisible = true;
+      let vm = this;
+      let rsp = Assemblies.assemblyMembers(this.assemblyID).get().$promise;
+      rsp.then(
+        data => {
+          let items = data.members.filter(d => d.status === 'ACCEPTED').map(d => d.user);
+          items = $filter('filter')(items, { $: vm.authorQuery });
+          vm.authorsList = items;
+        },
+        function (error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
     function themesChangeOnClick() {
       this.setAddContext('THEMES');
       this.themesSuggestionsVisible = true;
@@ -887,7 +908,7 @@
       if (this.currentAdd.context === 'AUTHORS') {
         return $sce.trustAsHtml(`
           <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
-          <span style="margin-left: 15px;">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
+          <span style="margin-left: 15px;vertical-align:super">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
       } else {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }
@@ -905,6 +926,8 @@
 
       if (this.currentAdd.context === 'AUTHORS') {
         this.addAuthorToProposal(item);
+        this.authorsSuggestionsVisible = false;
+        $("#authorSearch").hide();
       } else if (this.currentAdd.context === 'THEMES') {
         this.addThemeToProposal(item);
         this.themesSuggestionsVisible = false;

@@ -66,6 +66,7 @@
       $scope.subscribed = false;
       
       $scope.campaignFaq = null;
+      $scope.requireGroupAuthorship = true;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -420,6 +421,8 @@
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
       let faqUrlConfig = data['appcivist.campaign.faq-url'];
+      this.requireGroupAuthorship = data['appcivist.campaign.require-group-authorship'] == 'true' ? true : false;
+      console.log(this.requireGroupAuthorship);
       this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
       this.afterLoadingCampaignConfigs();
     }

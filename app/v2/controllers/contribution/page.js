@@ -936,7 +936,6 @@
             let items = data.ldap;
             items = $filter('filter')(items, { $: vm.authorQuery });
             vm.ldapList = items;
-            alert(vm.ldapList.length);
           }
         },
         function (error) {
@@ -997,6 +996,16 @@
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }
     }
+    
+    function currentAddGetTextLdap(item) {
+      if (this.currentAdd.context === 'AUTHORS') {
+        return $sce.trustAsHtml(`
+          <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
+          <span style="margin-left: 15px;vertical-align:super">${(item.cn === null || item.cn === undefined || item.cn === "" || item.cn === " ") ? item.mail : item.cn}</span>`);
+      } else {
+        return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
+      }
+    }
 
     /**
      * on-select handler.
@@ -1004,7 +1013,6 @@
      * @param {Object} item
      */
     function currentAddOnSelect(item) {
-      console.log(item);
       this.currentAdd.suggestionsVisible = false;
       this.currentAdd.query = '';
 

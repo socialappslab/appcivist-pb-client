@@ -36,7 +36,7 @@
                   <ul class="suggestion-list">
                     <li ng-repeat="item in ldapList track by $index" ng-click="$parent.currentAddOnSelect(item)"
                       class="suggestion-item" style="min-height: 50px;">
-                      <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                      <span ng-bind-html="$parent.currentAddGetTextLdap(item)"></span>
                     </li>
                   </ul>
                 </div>

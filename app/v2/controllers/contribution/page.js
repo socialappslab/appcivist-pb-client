@@ -979,13 +979,13 @@
       this.keywordsSuggestionsVisible = true;
       let vm = this;
       let filters = {
-        query: vm.themeQuery,
+        query: vm.keywordsQuery,
         themeType: 'EMERGENT'
       }
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         keywords => {
-          vm.keywordsList = $filter('filter')(keywords, queryThemes(vm.themeQuery));
+          vm.keywordsList = $filter('filter')(keywords, queryThemes(vm.keywordsQuery));
         },
         error => {
           Notify.show(error.statusMessage, 'error');

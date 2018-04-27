@@ -63,8 +63,12 @@
     $scope.selectTheme = selectTheme.bind($scope);
     $scope.deleteSelectedTheme = deleteSelectedTheme.bind($scope);
     $scope.loadAssemblyConfig = loadAssemblyConfig.bind($scope);
-    $scope.getEditorOptions = getEditorOptions.bind($scope);
     $scope.currentAddGetTextLdap = currentAddGetTextLdap.bind($scope);
+    $scope.descriptionToggleEdit = descriptionToggleEdit.bind($scope);
+    $scope.titleToggleEdit = titleToggleEdit.bind($scope);
+    $scope.saveDescription = saveDescription.bind($scope);
+    $scope.saveTitle = saveTitle.bind($scope);
+    $scope.getEditorOptions = getEditorOptions.bind($scope);
 
     activate();
 
@@ -216,7 +220,11 @@
       $scope.ldap = false;
       $scope.ldapList = [];
 
-      $scope.tinymceOptions = getEditorOptions();
+      $scope.isDescriptionEdit = false;
+      $scope.isTitleEdit = false;
+      $scope.isTitleEditable = true;
+
+      $scope.tinymceOptions = $scope.getEditorOptions();
     }
 
     function toggleOpenAddAttachment () {
@@ -1402,6 +1410,42 @@
           }
         );
       }
+    }
+
+    function descriptionToggleEdit() {
+      if (!this.isDescriptionEdit) {
+        this.isDescriptionEdit = true;
+        $("#descriptionEditToggle").hide();
+      } else {
+        this.isDescriptionEdit = false;
+        $("#descriptionEditToggle").show();
+      }
+    }
+    
+    function titleToggleEdit() {
+      $scope.isTitleEdit = !$scope.isTitleEdit;
+    }
+
+    function saveDescription() {
+      let vm = this;
+      let payload = _.cloneDeep($scope.proposal);
+      payload.status = payload.status.toUpperCase();
+      let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
+
+      rsp.then(
+        data => {
+          Notify.show('Contribution saved', 'success');
+          vm.isDescriptionEdit = false;
+        },
+        error => {
+          Notify.show(error.statusMessage, 'error');
+          vm.isDescriptionEdit = true;
+        }
+      );
+    }
+
+    function saveTitle() {
+
     }
 
     function getEditorOptions() {

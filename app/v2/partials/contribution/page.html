@@ -257,10 +257,12 @@
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
         <div class="proposal-summary">
-          <h2>{{'contribution.summary'|translate}}</h2>
-          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"></p>
-          <!--<textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description"
-            name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>-->
+          <h2>{{'contribution.summary'|translate}} <i class="fa fa-edit smalledit" id="descriptionEditToggle" ng-click="descriptionToggleEdit()"></i></h2>
+          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit"></p>
+          <div class="editableArea text-center" ng-if="isDescriptionEdit">
+            <textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
+            <button class="btn btn-default" ng-click="saveDescription()">Save description</button>
+          </div>
         </div>
         <div class="proposal-text">
           <h2>{{contributionType|titlecase|translate}}</h2>

@@ -44,6 +44,17 @@ select.theme_selector {
   }
 }
 
+.smalledit {
+  font-size: 1rem;
+  color: #3c3c3c;
+  margin-left: 0.6rem;
+  cursor: pointer;
+}
+
+.editableArea textarea {
+  height: unset;
+}
+
 .contextual_wrapper {
   display: inline-block;
   position: relative;

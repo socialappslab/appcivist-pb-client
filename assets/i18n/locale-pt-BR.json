@@ -1099,8 +1099,8 @@
   "pagination.widget.empty.search.proposals": "Ops! Nenhuma proposta corresponde a sua pesquisa...",
   "Edit Cover Photo": "Editar Foto da Capa",
   "Not a valid email": "Email inválido",
-  "Draft": "Rascunho",
-  "DRAFT": "RASCUNHO",
+  "Draft": "Rascunho privado",
+  "DRAFT": "RASCUNHO PRIVADO",
   "Flag this contribution": "Marcar esta contribuição",
   "Upvote this contribution": "Dar voto de aprovação para esta contribuição",
   "Downvote this contribution": "Dar voto de desaprovação para esta contribuição",
@@ -1350,5 +1350,7 @@
   "login.labelldap": "LDAP Username",
   "login.placeldap": "Type your LDAP username",
   "login.ldapcheck": "Sign in using LDAP",
-  "login.ldapbutton": "Sign in using LDAP"
+  "login.ldapbutton": "Sign in using LDAP",
+  "Public draft": "Rascunho publico",
+  "PUBLIC DRAFT": "RASCUNHO PUBLICO"
 }

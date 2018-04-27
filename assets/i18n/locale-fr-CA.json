@@ -1099,8 +1099,8 @@
   "pagination.widget.empty.search.proposals": "Ups! No proposal matched your seearch...",
   "Edit Cover Photo": "Editer la photo de couverture",
   "Not a valid email": "Adresse email non valide",
-  "Draft": "Brouillon",
-  "DRAFT": "BROUILLON",
+  "Draft": "Brouillon priveé",
+  "DRAFT": "BROUILLON priveé",
   "Flag this contribution": "Dénoncer",
   "Upvote this contribution": "Voter pour cette contribution",
   "Downvote this contribution": "Voter contre cette contribution",
@@ -1350,5 +1350,7 @@
   "login.labelldap": "LDAP Username",
   "login.placeldap": "Type your LDAP username",
   "login.ldapcheck": "Sign in using LDAP",
-  "login.ldapbutton": "Sign in using LDAP"
+  "login.ldapbutton": "Sign in using LDAP",
+  "Public draft": "Brouillon publique",
+  "PUBLIC DRAFT": "BROUILLON PUBLIQUE"
 }

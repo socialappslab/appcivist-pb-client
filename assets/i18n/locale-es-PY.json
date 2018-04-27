@@ -1099,8 +1099,8 @@
   "pagination.widget.empty.search.proposals": "Ups! Ninguna propuesta coincide con su búsqueda...",
   "Edit Cover Photo": "Editar foto de portada",
   "Not a valid email": "Correo no válido",
-  "Draft": "Borrador",
-  "DRAFT": "BORRADOR",
+  "Draft": "Borrador privado",
+  "DRAFT": "BORRADOR PRIVADO",
   "Flag this contribution": "Reportar",
   "Upvote this contribution": "Dar un voto positvo a esta contribución",
   "Downvote this contribution": "Dar un voto negativo a esta contribución",
@@ -1350,5 +1350,7 @@
   "login.labelldap": "LDAP Username",
   "login.placeldap": "Type your LDAP username",
   "login.ldapcheck": "Sign in using LDAP",
-  "login.ldapbutton": "Sign in using LDAP"
+  "login.ldapbutton": "Sign in using LDAP",
+  "Public draft": "Borrador público",
+  "PUBLIC DRAFT": "BORRADOR PÚBLICO"
 }

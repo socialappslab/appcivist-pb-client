@@ -102,7 +102,7 @@
             <button ng-click="showSearch('themeSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Theme</button>
           </div>
         </ul>
-        
+
 
         <ul class="row tags">
           <li class="title">{{'Keywords'|translate}}: </li>
@@ -140,7 +140,7 @@
           </div>
         </ul>
 
-        <!-- Add Theme/Author/Keyword Form 
+        <!-- Add Theme/Author/Keyword Form
         <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">
           <ul class="tags">
             <li class="title" ng-if="proposal.type==='PROPOSAL'">{{'Add to proposal'|translate}}: </li>
@@ -255,7 +255,7 @@
               <span class="status">
                 <select name="currentStatus" id="currentStatus" ng-model="proposal.status" ng-change="changeStatus()">
                   <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
-                  <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">Public draft</option>
+                  <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">{{'Public draft'}}</option>
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
                 </select>
               </span>

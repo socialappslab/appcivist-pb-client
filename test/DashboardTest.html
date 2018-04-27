@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <!-- This is called from internet so you don't need to download and install the tools needed-->
+    <!-- Jasmine References -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
+
+    <!-- This are reference to Angular in the internet so you don't have to install in the computer-->
+    <!-- Angular and Angular Mock references -->
+    <script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular.min.js"></script>
+    <script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular-mocks.js"></script>
+
+    <!-- This is to add the project files for testing-->
+    <script type="text/javascript" src="../app/app.js"></script>
+    <script type="text/javascript" src="../app/v2/controllers/campaign/dashboard.js">
+    </script> 
+
+  </head>
+  <body></body>
+  <script type="text/javascript">
+    
+    //This var is a console reporter of every test to make the results more legible
+    var myReporter = {
+      jasmineStarted: function(suiteInfo) {
+        console.log('Running suite with ' + suiteInfo.totalSpecsDefined + " specs defined");
+      },
+
+      suiteStarted: function(result){
+        console.log('Suite started: ' + result.description + ' whose full description is: ' + result.fullName);
+      },
+
+      specStarted: function(result) {
+        console.log('Spec started: '+ result.description + ' whose full description is: ' + result.fullName);
+      },
+
+      specDone: function(result){
+        console.log('Spec: ' + result.description + ' was ' + result.status);
+        for (var i = 0; i < result.failedExpectations.length; i++) {
+          console.log('Failure: ' + result.failedExpectations[i].message);
+          console.log(result.failedExpectations[i].stack);
+        }
+        console.log(result.passedExpectations.length);
+      },
+
+      suiteDone: function(result) {
+        console.log('Suite: ' + result.description + ' was '+ result.status);
+        for(var i=0; i< result.failedExpectations.length; i++){
+          console.log('AfterAll '+ result.failedExpectations[i].message);
+          console.log(result.failedExpectations[i].stack);
+        }
+      },
+        jasmineDone: function() {
+          console.log('Finished suite');
+        }
+      };
+
+    //This is not necesary but is usefull if you want to see more detail information on the browser console
+    jasmine.getEnv().addReporter(myReporter);
+
+    describe('Testing Dashboard Test Suite', function() {
+      //You can use many describe nested to make the tests more legible 
+      //If you're testing the same module, yo can add beforeEach(); function
+      //this calls the module before each IT block happends
+      beforeEach( function () {
+        //This inject of the appCivistApp module isn't working,
+        //I try everything but can solve this problem,
+        module("appCivistApp");
+      });
+      describe('Testing Dashboard Controller', function() {
+        var scope, controller;
+         beforeEach(inject(function($controller, $rootScope) {
+          //console.log(appCivistApp);
+          scope = $rootScope.$new;
+          //console.log(scope);
+          controller = $controller('v2.CampaignDashboardCtrl', {$scope:scope});
+         }));
+
+
+        it('scope.* should be defined', function() {
+          //Check if everything is defined
+          expect(scope.currentComponent).toBeDefined();
+          expect(scope.type).toBeDefined();
+          expect(scope.currentComponentType).toBeDefined();          
+        });
+
+        it('currentComponent should be idea', function() {
+          expect(scope.currentType).toBe('idea');
+          expect(scope.currentComponentType).toBe('IDEAS');
+          expect(scope.type).toBe('idea');
+        });
+
+        //The xit is the same as the it block, but will not run automatically. 
+        xit('should behave...', function() {
+          expect('hello').not.ToBe('bye');
+        });
+
+      });
+
+    });
+  </script>
+</html>

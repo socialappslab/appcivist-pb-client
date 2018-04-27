@@ -256,7 +256,11 @@
         $scope.currentCampaignId = parseInt($state.params.cid);
         var ongoing = localStorageService.get('ongoingCampaigns');
         var current = ongoing.filter(c => { return c.campaignId == $scope.currentCampaignId });
-        $scope.currentCampaignUuid = current[0].uuid;
+        $scope.currentCampaignUuid = current && current[0] && current[0].uuid ? current[0].uuid : "";
+        if (!$scope.currentCampaignUuid) {
+          let currentCampaign = localStorageService.get('currentCampaign');
+          $scope.currentCampaignUuid = currentCampaign && currentCampaign.uuid ? currentCampaign.uuid : "";
+        }
       }
 
       // Check variables related to the current assembly

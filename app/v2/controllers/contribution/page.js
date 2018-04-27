@@ -768,6 +768,7 @@
           // update current campaign reference
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
+          loadAssemblyConfig();
           loadCustomFields();
           checkIfFollowing($scope.campaign.rsID);
         }, function (error) {
@@ -838,6 +839,7 @@
     }
 
     function loadAssemblyConfig() {
+      console.log($scope.assembly);
       var rsp = Space.configs($scope.assembly.resourcesResourceSpaceId).get();
       rsp.$promise.then(function(data){
         $scope.assemblyConfig = data;

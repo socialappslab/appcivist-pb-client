@@ -1161,7 +1161,15 @@
           console.log(contribution);
           redirectToProposal(contribution);
         },
-        error => Notify.show(error.statusMessage, 'error')
+        error => {
+          $translate('error.creation.contribution')
+            .then(
+              errorMsg => {
+                let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                Notify.show(fullErrorMsg, 'error')
+              });
+
+        }
       );
     }
   }

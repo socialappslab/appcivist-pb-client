@@ -1166,7 +1166,7 @@
             .then(
               errorMsg => {
                 let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
-                Notify.show(fullErrorMsg, 'error')
+                Notify.show(fullErrorMsg, 'error');
               });
 
         }

@@ -1128,7 +1128,7 @@
       );
     }
 
-    function deleteNonMemberAuthor(author, locale) {
+    function deleteNonMemberAuthor(author, local) {
       _.remove(this.proposal.authors, { userId: author.id });
 
       if (local) {

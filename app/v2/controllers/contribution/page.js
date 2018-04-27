@@ -847,7 +847,8 @@
           ans.$promise.then(function(data){
             vm.assemblyConfig = data;
             vm.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
-            alert(vm.ldap);
+            alert('assemblyconfig data: ' + data['appcivist.assembly.authentication.ldap'].toLowerCase());
+            alert('assemblyconfig ldap?: ' + vm.ldap);
           }, function(error) {
             Notify.show(error.statusMessage, 'error');
           });
@@ -939,8 +940,8 @@
           Notify.show(error.statusMessage, 'error');
         }
       );
-      alert(this.ldap);
-      alert($scope.ldap);
+      alert('this.ldap: ' + this.ldap);
+      alert('$scope.ldap:' + $scope.ldap);
       if (this.ldap) {
         let ans = Assemblies.assemblyMembersLdap(this.assemblyID).get().$promise;
         ans.then(

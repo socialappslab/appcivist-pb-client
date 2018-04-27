@@ -839,7 +839,7 @@
     }
 
     function loadAssemblyConfig() {
-      let vm = this;
+      let vm = $scope;
       let rsp = Assemblies.assembly($scope.assemblyID).get().$promise;
       rsp.then(
         assembly => {

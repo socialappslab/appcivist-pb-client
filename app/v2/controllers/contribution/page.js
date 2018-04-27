@@ -1023,12 +1023,13 @@
      *
      * @param {Object} item
      */
-    function currentAddOnSelect(item) {
+    function currentAddOnSelect(item, ldap = false) {
       this.currentAdd.suggestionsVisible = false;
       this.currentAdd.query = '';
 
       if (this.currentAdd.context === 'AUTHORS') {
-        this.addAuthorToProposal(item);
+        if (ldap) this.addAuthorToProposal(item);
+        else this.addNonMemberAuthorToProposal(item);
         this.authorsSuggestionsVisible = false;
         $("#authorSearch").hide();
         $('#authorSearchClose').hide();
@@ -1179,6 +1180,24 @@
       this.proposal.authors = this.proposal.authors || [];
       this.proposal.authors.push(author);
       Contributions.addAuthor(this.proposal.uuid, author).then(
+        response => Notify.show('Author added successfully', 'success'),
+        error => {
+          this.deleteAuthor(author, true);
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+    
+    function addNonMemberAuthorToProposal(author) {
+      let payload = {
+        name: author.cn,
+        email: author.mail,
+        source: 'ldap',
+        sourceUrl: author.user
+      }
+      this.proposal.nonMemberAuthors = this.proposal.nonMemberAuthors || [];
+      this.proposal.nonMemberAuthors.push(payload);
+      Contributions.addNonMemberAuthor(this.proposal.uuid, payload).then(
         response => Notify.show('Author added successfully', 'success'),
         error => {
           this.deleteAuthor(author, true);

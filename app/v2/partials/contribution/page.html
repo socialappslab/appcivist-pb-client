@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-sm-6" ng-if="ldap == true">
                   <ul class="suggestion-list">
-                    <li ng-repeat="item in ldapList track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                    <li ng-repeat="item in ldapList track by $index" ng-click="$parent.currentAddOnSelect(item, ldap)"
                       class="suggestion-item" style="min-height: 50px;">
                       <span ng-bind-html="$parent.currentAddGetTextLdap(item)"></span>
                     </li>

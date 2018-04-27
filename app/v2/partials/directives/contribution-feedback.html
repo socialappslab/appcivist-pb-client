@@ -22,7 +22,7 @@
       <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
          ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
     </li>
-    <li class="downvote">
+    <li class="downvote" ng-if="showCommentCount">
       {{contribution.totalComments}}<i class="fa fa-comments-o" uib-tooltip="{{'Total comments' | translate}}"></i>
     </li>
     <li class="downvote" ng-click="showModerationForm('flag')">

@@ -43,9 +43,13 @@
         if (user) {
           scope.assembly = localStorageService.get('currentAssembly');
           scope.campaign = localStorageService.get('currentCampaign');
+          scope.campaignConfigs = scope.campaign ? scope.campaign.configs : null;
           scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
           scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
           scope.isAnonymous = false;
+          scope.disableCommentConfig = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.disable-proposal-discussions'] : 'false';
+          scope.showCommentCount = scope.disableCommentConfig ? !scope.disableCommentConfig.toLowerCase() === 'true' : true;
+
           scope.loadUserFeedback(scope.assembly.assemblyId, scope.campaign.campaignId, scope.contribution.contributionId);
         }
         scope.contribution.totalComments = scope.contribution.commentCount + scope.contribution.forumCommentCount;

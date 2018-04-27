@@ -863,10 +863,14 @@
      * @param {Object[]} configs
      */
     function checkJoinWGButtonVisibility(configs) {
-      const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
-      if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
-        let myGroups = localStorageService.get('myWorkingGroups');
-        this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
+      if (!this.requireGroupAuthorship) {
+        this.displayJoinWorkingGroup = false;
+      } else {
+        const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
+        if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
+          let myGroups = localStorageService.get('myWorkingGroups');
+          this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
+        }
       }
       return this.displayJoinWorkingGroup;
     }

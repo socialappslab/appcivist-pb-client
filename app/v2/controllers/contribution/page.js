@@ -919,13 +919,21 @@
 
     function loadToolbarConfig () {
       let showContributingIdeasConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.contributing-ideas'];
-      let showHistoryConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'];
-      let showCommentCountConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'];
-      let showAttachmentsConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.attachments'];
-      let showFeedbackConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.feedback'];
-      let showMediaConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.media'];
-      let showUpVoteConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'];
-      let showDownVoteConf = !$scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'];
+      let showHistoryConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'];
+      let showCommentCountConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'];
+      let showAttachmentsConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.attachments'];
+      let showFeedbackConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.feedback'];
+      let showMediaConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.media'];
+      let showUpVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'];
+      let showDownVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'];
+      console.log('showContributingIdeasConf = ',showContributingIdeasConf);
+      console.log('showHistoryConf = ',showHistoryConf);
+      console.log('showCommentCountConf = ',showCommentCountConf);
+      console.log('showAttachmentsConf = ',showAttachmentsConf);
+      console.log('showFeedbackConf = ',showFeedbackConf);
+      console.log('showMediaConf = ',showMediaConf);
+      console.log('showUpVoteConf = ',showUpVoteConf);
+      console.log('showDownVoteConf = ',showDownVoteConf);
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;

@@ -414,12 +414,13 @@
           this.configsLoaded = true;
           rsp = Campaigns.getConfiguration(this.campaign.rsID).get();
         }
-        rsp.$promise.then( this.afterLoadingCampaignConfigsSuccess, this.afterLoadingCampaignConfigsError);
+        rsp.$promise.then(this.afterLoadingCampaignConfigsSuccess, this.afterLoadingCampaignConfigsError);
       }
     }
 
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
+      this.campaign.configs = this.campaignConfigs;
       let faqUrlConfig = data['appcivist.campaign.faq-url'];
       this.requireGroupAuthorship = data['appcivist.campaign.require-group-authorship'] === 'true' ? true : false;
       this.proposalDefaultTitle = data['appcivist.campaign.contribution.default-title'];

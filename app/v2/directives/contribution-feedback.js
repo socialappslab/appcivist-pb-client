@@ -21,7 +21,8 @@
         // true | false, indicates that we should display flag button.
         withFlag: '@',
         // the target view. Current options: card.
-        view: '@'
+        view: '@',
+        campaign: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-feedback.html',
       link: function (scope, element, attrs) {
@@ -31,7 +32,7 @@
         scope.isCardView = scope.view === 'card';
         scope.moderationSuccess = moderationSuccess.bind(scope);
         scope.showModerationForm = showModerationForm.bind(scope);
-
+        scope.checkCampaignConfigs = checkCampaignConfigs.bind(scope);
         scope.loadUserFeedback = function (aid, cid, coid) {
           let rsp = Contributions.authUserFeedback(aid,cid,coid).get().$promise;
           rsp.then(
@@ -40,19 +41,25 @@
           );
         }
 
-        if (user) {
-          scope.assembly = localStorageService.get('currentAssembly');
+        if (scope.campaign && scope.campaign.configs) {
+          scope.checkCampaignConfigs();
+        } else {
+          scope.$watchCollection('scope.campaign.configs', checkCampaignConfigs)
+        }
+
+        scope.assembly = localStorageService.get('currentAssembly');
+        if (scope.campaign) {
           scope.campaign = localStorageService.get('currentCampaign');
-          scope.campaignConfigs = scope.campaign ? scope.campaign.configs : null;
+        }
+
+        if (user) {
           scope.isAssemblyCoordinator = Memberships.isAssemblyCoordinator(scope.assembly.assemblyId);
           scope.isMemberOfAssembly = Memberships.isMember('assembly', scope.assembly.assemblyId);
           scope.isAnonymous = false;
-          scope.disableCommentConfig = scope.campaignConfigs ? scope.campaignConfigs['appcivist.campaign.disable-proposal-discussions'] : 'false';
-          scope.showCommentCount = scope.disableCommentConfig ? !scope.disableCommentConfig.toLowerCase() === 'true' : true;
-
           scope.loadUserFeedback(scope.assembly.assemblyId, scope.campaign.campaignId, scope.contribution.contributionId);
         }
         scope.contribution.totalComments = scope.contribution.commentCount + scope.contribution.forumCommentCount;
+
 
         // Feedback update
         scope.updateFeedback = function (value) {
@@ -111,6 +118,21 @@
         function moderationSuccess() {
           this.vexInstance.close();
           $rootScope.$emit('refreshList', 'refresh');
+        }
+
+        function checkCampaignConfigs() {
+          if (this) {
+            this.campaignConfigs = this.campaign.configs;
+            let showCommentCountConf = this.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'];
+            let showUpVoteConf = this.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'];
+            let showDownVoteConf = this.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'];
+            console.log('showCommentCountConf = ',showCommentCountConf);
+            console.log('showUpVoteConf = ',showUpVoteConf);
+            console.log('showDownVoteConf = ',showDownVoteConf);
+            this.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;
+            this.showUpVote = showUpVoteConf ? showUpVoteConf.toLowerCase()  === 'false' ? false : true : true;
+            this.showDownVote = showDownVoteConf ? showDownVoteConf.toLowerCase()  === 'false' ? false : true : true;
+          }
         }
       }
     };

@@ -7,17 +7,17 @@
 </style>
 <div class="temperature_check" ng-if="isCardView">
   <ul class="pull-right votes" ng-if="!isAnonymous" style="margin-right: 0.1em;">
-    <li class="downvote" ng-click="updateFeedback('up')">
+    <li class="downvote" ng-click="updateFeedback('up')" ng-if="showUpVote">
       {{contribution.stats.ups}}
       <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"
          uib-tooltip="{{'Upvote this contribution' | translate}}"></i>
     </li>
-    <li class="downvote" ng-click="updateFeedback('down')">
+    <li class="downvote" ng-click="updateFeedback('down')"  ng-if="showDownVote">
       {{contribution.stats.downs}}
       <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"
          uib-tooltip="{{'Downvote this contribution' | translate}}"></i>
     </li>
-    <li class="downvote">
+    <li class="downvote"  ng-if="showDownVote || showUpVote">
       {{contribution.informalScore}}
       <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
          ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
@@ -35,40 +35,40 @@
     </li>
   </ul>
   <ul class="pull-right votes" ng-if="isAnonymous" style="margin-right: 0.1em;">
-    <li class="downvote">
+    <li class="downvote" ng-if="showUpVote">
       {{contribution.stats.ups}}
       <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
     </li>
-    <li class="downvote">
+    <li class="downvote" ng-if="showDownVote">
       {{contribution.stats.downs}}
       <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
     </li>
     <li class="downvote" ng-if="contribution.informalScore != null && contribution.informalScore != undefined">
       {{contribution.informalScore}}<i class="fa" ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
     </li>
-    <li class="downvote">
+    <li class="downvote" ng-if="showCommentCount">
       {{contribution.totalComments}}<i class="fa fa-comments-o"></i>
     </li>
   </ul>
 </div>
 <div class="temperature_check" ng-if="!isCardView" style="padding-top: 10px;">
   <ul class="votes" style="margin-right: 0.1em;">
-    <li class="downvote" ng-click="updateFeedback('up')">
+    <li class="downvote" ng-click="updateFeedback('up')" ng-if="showUpVote">
       {{contribution.stats.ups}}
       <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
       <span class="screen-reader-only">{{ 'Upvote' | translate }}</span>
     </li>
-    <li class="downvote" ng-click="updateFeedback('down')">
+    <li class="downvote" ng-click="updateFeedback('down')" ng-if="showDownVote">
       {{contribution.stats.downs}}
       <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
       <span class="screen-reader-only">{{ 'Downvote' | translate }}</span>
     </li>
-    <li class="downvote">
+    <li class="downvote" ng-if="showUpVote || showDownVote">
       {{contribution.informalScore}}
       <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
          ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
     </li>
-    <li class="downvote">
+    <li class="downvote" ng-if="showCommentCount">
       {{contribution.totalComments}}
       <i class="fa fa-comments-o" uib-tooltip="{{'Total comments' | translate}}"></i>
     </li>

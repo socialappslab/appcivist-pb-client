@@ -398,6 +398,7 @@
           loadRelatedContributions();
           loadRelatedStats();
           loadCampaign();
+          loadAssemblyConfig();
           loadResources();
           $scope.loadCampaignResources();
         },
@@ -751,7 +752,6 @@
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();
-        loadAssemblyConfig();
         loadCustomFields();
         checkIfFollowing($scope.campaign.rsID);
       } else {
@@ -768,7 +768,6 @@
           // update current campaign reference
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
-          loadAssemblyConfig();
           loadCustomFields();
           checkIfFollowing($scope.campaign.rsID);
         }, function (error) {

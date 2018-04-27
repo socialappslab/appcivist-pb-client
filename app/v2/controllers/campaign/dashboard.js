@@ -64,7 +64,7 @@
       $scope.commentType = 'public';
       $scope.selectedCards = [];
       $scope.subscribed = false;
-      
+
       $scope.campaignFaq = null;
       $scope.requireGroupAuthorship = true;
 
@@ -421,8 +421,12 @@
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
       let faqUrlConfig = data['appcivist.campaign.faq-url'];
-      this.requireGroupAuthorship = data['appcivist.campaign.require-group-authorship'] == 'true' ? true : false;
-      console.log(this.requireGroupAuthorship);
+      this.requireGroupAuthorship = data['appcivist.campaign.require-group-authorship'] === 'true' ? true : false;
+      this.proposalDefaultTitle = data['appcivist.campaign.contribution.default-title'];
+      this.proposalDefaultDescription = data['appcivist.campaign.contribution.default-description'];
+      this.proposalDefaultTitle = this.proposalDefaultTitle ? this.proposalDefaultTitle : "Create your title"; // TODO translate
+      this.proposalDefaultDescription = this.proposalDefaultDescription ? this.proposalDefaultDescription : "Create a brief description"; // TODO translate
+        console.log(this.requireGroupAuthorship);
       this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
       this.afterLoadingCampaignConfigs();
     }
@@ -1146,8 +1150,8 @@
     function createContribution(contributionType = 'PROPOSAL') {
       let payload = {};
       payload.status = "DRAFT";
-      payload.title = contributionType + " - Sample";
-      payload.text = 'Sample text';
+      payload.title = this.proposalDefaultTitle;
+      payload.text = this.proposalDefaultDescription;
       payload.type = contributionType;
       Pace.restart();
       let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(

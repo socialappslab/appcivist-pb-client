@@ -29,7 +29,7 @@
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
           </a>
         </h1>
-        <div class="card__heading_actions">
+        <div class="card__heading_actions" style="z-index: 999">
           <ul class="actions">
             <li ng-if="isCoordinator" class="action__toggle_selection">
               <input type="checkbox" id="checkbox_{{contribution.uuid}}" value="{{contribution.uuid}}" class="contribution-select" ng-model="selected" ng-click="toggleSelection(contribution.uuid)"><label for="checkbox_{{contribution.uuid}}"></label>
@@ -119,7 +119,7 @@
 
       <!-- contextual -->
       <div class="title_block {{contribution.cover ? 'white-text' : ''}}">
-        <div class="card__heading_actions">
+        <div class="card__heading_actions" style="z-index:999">
           <ul class="actions">
             <li class="action__toggle_selection">
               <a><!--

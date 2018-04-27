@@ -1028,7 +1028,7 @@
       this.currentAdd.query = '';
 
       if (this.currentAdd.context === 'AUTHORS') {
-        if (ldap) this.addAuthorToProposal(item);
+        if (!ldap) this.addAuthorToProposal(item);
         else this.addNonMemberAuthorToProposal(item);
         this.authorsSuggestionsVisible = false;
         $("#authorSearch").hide();

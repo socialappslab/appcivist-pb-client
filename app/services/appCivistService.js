@@ -711,6 +711,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         'update': { method: 'PUT' }
       });
     },
+    updateStatus: function (assemblyId, contributionId, status) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: status }, {
+        'update': { method: 'PUT' }
+      });
+    },
     publishContribution: function (assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' }, {
         'update': { method: 'PUT' }

@@ -71,6 +71,7 @@
     $scope.getEditorOptions = getEditorOptions.bind($scope);
     $scope.addNonMemberAuthorToProposal = addNonMemberAuthorToProposal.bind($scope);
     $scope.deleteNonMemberAuthor = deleteNonMemberAuthor.bind($scope);
+    $scope.changeStatus = changeStatus.bind($scope);
 
     activate();
 
@@ -252,6 +253,23 @@
       eval('this.'+ctx+'sSuggestionsVisible = false');
     }
 
+    function changeStatus() {
+      console.log(this.proposal.status);
+      /*
+      console.log(this.proposal.contributionId);
+      console.log(this.assemblyID);
+      let rsp = Contributions.updateStatus(this.assemblyID, this.proposal.contributionId, this.proposal.status).update().$promise;
+      console.log(rsp);
+      rsp.then(
+        rs => {
+          console.log(rs);
+          Notify.show('Status updated successfully', 'success');
+        },
+        error => Notify.show(error.statusMessage, 'error')
+      )
+      */
+    }
+
     function startSpinner () {
       this.spinnerActive = true;
       usSpinnerService.spin('contributions-page');
@@ -334,7 +352,7 @@
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
           console.log($scope.proposal);
-          $scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
+          //$scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
           localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
           var workingGroupAuthors = data.workingGroupAuthors;

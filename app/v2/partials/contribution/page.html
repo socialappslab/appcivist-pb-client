@@ -252,7 +252,13 @@
             <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal" ng-if="contributionType && following && !isAnonymous">Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
             <div class="overlay_status" ng-if="contributionType">
               <span class="status_label">Status</span>
-              <span class="status">{{ proposal.status | translate }}</span>
+              <span class="status">
+                <select name="currentStatus" id="currentStatus" ng-model="proposal.status" ng-change="changeStatus()">
+                  <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
+                  <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">Public draft</option>
+                  <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
+                </select>
+              </span>
             </div>
           </div>
         </div>

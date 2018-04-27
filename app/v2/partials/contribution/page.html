@@ -49,12 +49,16 @@
 
         <ul class="row tags">
           <li class="title">{{'Themes'|translate}}: </li>
-          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index">
+          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit > 1 || themesLimit == -1">
             <a>
               {{theme.title}}
               <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
             </a>
             <!--<span ng-if="!$last">,</span>-->
+          </li>
+          <li ng-if="themesLimit == 1">
+            <select class="theme_selector" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId" ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
+            <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
           </li>
           <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
           <!--<li>-->
@@ -62,7 +66,7 @@
               <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
             <!--</a>-->
           <!--</li>-->
-          <div class="liveEdit smaller">
+          <div class="liveEdit smaller" ng-if="themesLimit > 1 || themesLimit == -1">
             <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery"
               ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()">
             <fieldset class="tags">

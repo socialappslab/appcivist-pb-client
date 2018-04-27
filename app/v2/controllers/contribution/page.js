@@ -58,6 +58,9 @@
     $scope.authorsChangeOnClick = authorsChangeOnClick.bind($scope);
     $scope.themesChangeOnClick = themesChangeOnClick.bind($scope);
     $scope.keywordsChangeOnClick = keywordsChangeOnClick.bind($scope);
+    $scope.loadAllThemes = loadAllThemes.bind($scope);
+    $scope.selectTheme = selectTheme.bind($scope);
+    $scope.deleteSelectedTheme = deleteSelectedTheme.bind($scope);
 
     activate();
 
@@ -201,6 +204,9 @@
       $scope.keywordQuery = "";
       $scope.keywordsList = [];
       $scope.keywordsSuggestionsVisible = false;
+
+      $scope.allThemes = [];
+      $scope.selectedTheme = null;
     }
 
     function toggleOpenAddAttachment () {
@@ -799,13 +805,48 @@
       }
       rsp.$promise.then(function (data) {
         $scope.campaignConfigs = data;
-        $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'];
+        $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] ? $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] : -1;
+        //$scope.themesLimit = 1;
+        if ($scope.themesLimit == 1) {
+          loadAllThemes();
+          $scope.selectedTheme = $scope.proposal.themes ? $scope.proposal.themes[0] : null;
+        }
         loadBallotPaper();
         loadToolbarConfig();
       }, function (error) {
         loadBallotPaper();
         Notify.show(error.statusMessage, 'error');
       });
+    }
+
+    function loadAllThemes() {
+      let filters = {
+        query: '',
+        themeType: 'OFFICIAL_PRE_DEFINED'
+      }
+      let rsp = Campaigns.themes($scope.assemblyID, $scope.campaign.campaignId, $scope.isAnonymous, $scope.campaign.uuid, filters);
+      rsp.then(
+        themes => {
+          $scope.allThemes = themes;
+        },
+        error => {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
+    function deleteSelectedTheme() {
+      let vm = this;
+      this.proposal.themes = [];
+      Contributions.deleteTheme(this.proposal.uuid, this.selectedTheme.themeId).then(
+        response => {
+          Notify.show('Theme deleted successfully', 'success')
+          vm.selectedTheme = null;
+        },
+        error => {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
     }
 
     function loadToolbarConfig () {
@@ -1021,7 +1062,7 @@
 
     function addThemeToProposal(theme) {
       this.proposal.themes = this.proposal.themes || [];
-      if (this.themesLimit) {
+      if (this.themesLimit > 1) {
         if (this.proposal.themes.length >= this.themesLimit) {
           Notify.show("Can't add more themes", 'error');
           return;
@@ -1032,6 +1073,17 @@
         response => Notify.show('Theme added successfully', 'success'),
         error => {
           this.deleteTheme(theme, true);
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
+    function selectTheme() {
+      this.proposal.themes = [];
+      this.proposal.themes.push(this.selectedTheme);
+      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
+        response => Notify.show('Theme changed successfully', 'success'),
+        error => {
           Notify.show(error.statusMessage, 'error');
         }
       );

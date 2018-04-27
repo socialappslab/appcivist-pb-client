@@ -1144,11 +1144,16 @@
     }
 
     function selectTheme() {
+     if (this.proposal.themes == undefined) {
+       this.proposal.themes = [];
+       this.proposal.themes.push(this.selectedTheme);
+     } else {
       let keywords = this.proposal.themes.filter(v => v.type == 'EMERGENT');
       let themes = [];
       themes.push(this.selectedTheme);
       this.proposal.themes = keywords.concat(themes);
-      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
+     }
+     Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => Notify.show('Theme changed successfully', 'success'),
         error => {
           Notify.show(error.statusMessage, 'error');

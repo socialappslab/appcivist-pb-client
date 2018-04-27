@@ -1054,6 +1054,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
      */
     deleteAuthor(uuid, auuid) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors/:auuid', { uuid, auuid }).delete().$promise;
+    },
+    
+    deleteNonMemberAuthor(uuid, nmaid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/nonmemberauthors/:nmaid', { uuid, nmaid }).delete().$promise;
     }
   };
 });

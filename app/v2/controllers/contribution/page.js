@@ -1127,6 +1127,15 @@
       );
     }
 
+    function deleteNonMemberAuthor(author, locale) {
+      Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.id).then(
+        response => Notify.show('Author deleted successfully', 'success'),
+        error => {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
     function addThemeToProposal(theme) {
       this.proposal.themes = this.proposal.themes || [];
       if (this.themesLimit > 1) {

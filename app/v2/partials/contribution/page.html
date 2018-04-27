@@ -21,7 +21,7 @@
           </div>
           <div ng-repeat="author in proposal.nonMemberAuthors" style="display: inline-block; margin-left: 10px;">
             <member-card user="author"></member-card>
-            <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+            <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteNonMemberAuthor(author)"></i>
           </div>
           <div class="liveEdit">
             <input class="btn-sm" type="text" id="authorSearch" name="authors" ng-model="authorQuery"

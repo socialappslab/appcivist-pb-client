@@ -426,12 +426,31 @@
       this.proposalDefaultDescription = data['appcivist.campaign.contribution.default-description'];
       this.proposalDefaultTitle = this.proposalDefaultTitle ? this.proposalDefaultTitle : "Create your title"; // TODO translate
       this.proposalDefaultDescription = this.proposalDefaultDescription ? this.proposalDefaultDescription : "Create a brief description"; // TODO translate
-        console.log(this.requireGroupAuthorship);
+      this.allowedContributionTypes = data['appcivist.campaign.contribution-types'];
+
+      if (this.allowedContributionTypes) {
+        this.enableIdeas = this.allowedContributionTypes.toLowerCase().includes("idea");
+        this.enableComments = this.allowedContributionTypes.toLowerCase().includes("comment") || this.allowedContributionTypes.toLowerCase().includes("discussion");
+      } else {
+        this.enableIdeas = true;
+        this.enableComments = true;
+      }
+
+      console.log(this.requireGroupAuthorship);
       this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
       this.afterLoadingCampaignConfigs();
     }
 
     function afterLoadingCampaignConfigsError(data) {
+      // some default configs
+      this.requireGroupAuthorship = false;
+      this.proposalDefaultTitle = "Create your title"; // TODO translate
+      this.proposalDefaultDescription = "Create a brief description"; // TODO translate
+      this.allowedContributionTypes = "IDEAS, PROPOSALS, COMMENTS, DISCUSSIONS";
+      this.enableIdeas = true;
+      this.enableComments = true;
+      this.requireGroupAuthorship = true;
+      this.campaignFaq = "#";
       Notify.show('Error while trying to fetch campaign config', 'error');
       this.afterLoadingCampaignConfigs();
     }

@@ -164,7 +164,7 @@
                     <small>({{'Drafts' | translate}})</small>
                     &nbsp;&ndash;&nbsp;
                   </span>
-                  <span>
+                  <span ng-if="enableIdeas">
                     <strong>{{'Ideas' | translate}}:</strong>
                     {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}}
                     <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}}

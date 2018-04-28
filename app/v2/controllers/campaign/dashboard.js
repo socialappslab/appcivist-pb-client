@@ -350,9 +350,9 @@
       );
     }
 
-    function loadThemeKeywordDescription(title, description) {
+    function loadThemeKeywordDescription(title, description, url) {
       let content = description === undefined ? 'No description available' : description;
-      angular.element('#themes-keywords #description').show().html("<p><strong>"+title+"</strong></p><p>"+content+"</p>");
+      angular.element('#themes-keywords #description').show().html("<p><strong><a href='"+url+"' target='_blank'>"+title+"</a></strong></p><p>"+content+"</p>");
     }
 
     function loadCampaignBrief() {
@@ -428,6 +428,7 @@
       this.proposalDefaultTitle = this.proposalDefaultTitle ? this.proposalDefaultTitle : "Create your title"; // TODO translate
       this.proposalDefaultDescription = this.proposalDefaultDescription ? this.proposalDefaultDescription : "Create a brief description"; // TODO translate
       this.allowedContributionTypes = data['appcivist.campaign.contribution-types'];
+      this.themesExtendedDescription = data['appcivist.campaign.themes.extended-description-url'];
 
       if (this.allowedContributionTypes) {
         this.enableProposals = this.allowedContributionTypes.toLowerCase().includes("proposal");

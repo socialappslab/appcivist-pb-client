@@ -640,8 +640,9 @@
         <div class="modal-body about__modal">
           <h4>{{'Themes' | translate}}</h4>
           <ul>
-              <li class="theme" ng-repeat="theme in themes" ng-click="loadThemeKeywordDescription(theme.title, theme.description)">{{theme.title}}</li>
+              <li class="theme" ng-repeat="theme in themes" ng-click="loadThemeKeywordDescription(theme.title, theme.description, theme.url)">{{theme.title}}</li>
           </ul>
+          <p ng-if="themesExtendedDescription"><a ng-href="{{themesExtendedDescription}}">{{'Read the extended description of themes here' | translate}}</a></p>
           <div id="description"></div>
           <h4 style="margin-top: 20px;">{{'Keywords' | translate}}</h4>
           <ul>

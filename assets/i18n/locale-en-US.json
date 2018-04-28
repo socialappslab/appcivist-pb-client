@@ -1354,6 +1354,6 @@
   "Public draft": "Public draft",
   "PUBLIC DRAFT": "PUBLIC DRAFT",
   "Read the extended description of themes here": "Read the extended description of themes here",
-  "Privacy Policy": "Privacy Policy",
-  "Terms of Use": "Terms of Use"
+  "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Privacy Policy</a>",
+  "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Terms of Use</a>"
 }

@@ -255,7 +255,6 @@
 
     function changeStatus() {
       console.log(this.proposal.status);
-      /*
       console.log(this.proposal.contributionId);
       console.log(this.assemblyID);
       let rsp = Contributions.updateStatus(this.assemblyID, this.proposal.contributionId, this.proposal.status).update().$promise;
@@ -266,8 +265,7 @@
           Notify.show('Status updated successfully', 'success');
         },
         error => Notify.show(error.statusMessage, 'error')
-      )
-      */
+      );
     }
 
     function startSpinner () {

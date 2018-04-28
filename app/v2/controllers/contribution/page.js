@@ -81,6 +81,7 @@
       $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
+      $scope.updateStatusService = updateStatusService.bind($scope);
       $scope.activeTab = 'Public';
       $scope.feedbackBar = false;
       $scope.currentAdd = {
@@ -253,10 +254,41 @@
       eval('this.'+ctx+'sSuggestionsVisible = false');
     }
 
-    function changeStatus() {
+    function changeStatus(newValue, oldValue) {
       console.log(this.proposal.status);
       console.log(this.proposal.contributionId);
       console.log(this.assemblyID);
+
+      // TODO 1: make a nice modal instead of the alert
+      // TODO 2: check if the campaign has a config with the same key as the translation for each alert message. If there is a config, use the text suggested by the config
+      if (this.proposal.status === "DRAFT") {
+        $translate("contribution.status.private-draft.description").then(
+          translation => {
+            let confirmation = window.confirm(translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = oldValue;
+          }
+        );
+      } else if (this.proposal.status === "PUBLIC_DRAFT") {
+        $translate("contribution.status.public-draft.description").then(
+          translation => {
+            let confirmation = window.confirm(translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = oldValue;
+          }
+        );
+      } else if (this.proposal.status === "PUBLISHED") {
+        $translate("contribution.status.published.description").then(
+          translation => {
+            let confirmation = window.confirm(translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = oldValue;
+          }
+        );
+      }
+    }
+
+    function updateStatusService() {
       let rsp = Contributions.updateStatus(this.assemblyID, this.proposal.contributionId, this.proposal.status).update().$promise;
       console.log(rsp);
       rsp.then(

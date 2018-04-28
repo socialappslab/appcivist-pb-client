@@ -1355,5 +1355,8 @@
   "PUBLIC DRAFT": "BROUILLON PUBLIQUE",
   "Read the extended description of themes here": "Lire la description détaillée des thèmes ici",
   "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Politique de confidentialité</a>",
-  "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Conditions d'utilisation</a>"
+  "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Conditions d'utilisation</a>",
+  "contribution.status.private-draft.description": "Projet privé signifie que seuls les auteurs peuvent éditer et commenter. Êtes-vous sûr de vouloir changer ce statut?",
+  "contribution.status.public-draft.description": "L'ébauche publique signifie que l'ensemble de l'assemblée peut voir et commenter mais seuls les auteurs peuvent éditer.",
+  "contribution.status.published.description": "Publié signifie que l'assemblée entière peut voir et commenter mais personne d'autre ne peut éditer."
 }

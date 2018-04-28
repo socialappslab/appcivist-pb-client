@@ -1355,5 +1355,8 @@
   "PUBLIC DRAFT": "BORRADOR PÚBLICO",
   "Read the extended description of themes here": "Lea la descripción detallada de los temas aqui",
   "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Política de Privacidad</a>",
-  "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Términos de Uso</a>"
+  "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Términos de Uso</a>",
+  "contribution.status.private-draft.description": "Borrador privado significa que sólo los autores pueden editar y comentar. ¿Está seguro de que desea cambiar este estado?",
+  "contribution.status.public-draft.description": "Borrador Público significa que toda la asamblea puede ver y comentar, pero sólo los autores pueden editar.",
+  "contribution.status.published.description": "Publicada significa que toda la asamblea puede ver y comentar pero nadie puede editar."
 }

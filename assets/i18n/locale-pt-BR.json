@@ -1355,5 +1355,8 @@
   "PUBLIC DRAFT": "RASCUNHO PUBLICO",
   "Read the extended description of themes here": "Leia a descrição detalhada dos temas aqui",
   "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Política de Privacidade</a>",
-  "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Termos de uso</a>"
+  "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Termos de uso</a>",
+  "contribution.status.private-draft.description": "Rascunho Privado significa que somente os autores podem editar e comentar. Tem certeza de que deseja alterar este status?",
+  "contribution.status.public-draft.description": "Rascunho Público significa que toda a assambleia pode ver e comentar mas somente os autores podem editar.",
+  "contribution.status.published.description": "Publicada significa que toda a assambleia pode ver e comentar mas ninguém pode mais editar."
 }

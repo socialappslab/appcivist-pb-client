@@ -408,58 +408,7 @@
         </div>
       </section>
     </article>
-    <!-- Nav tabs -->
-   <!--  <ul class="nav nav-tabs custom-ul">
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Members')}" ng-if="userIsMember"><a class="custom-a" href="" ng-click="changeActiveTab(1)" role="tab" data-toggle="tab">{{ 'Members' | translate }} ({{proposal.commentCount}})</a></li>
-      <li role="presentation" class="custom-li" ng-class="{'active': (activeTab === 'Public')}"><a class="custom-a" href="" ng-click="changeActiveTab(2)" role="tab" data-toggle="tab">{{ 'Public' | translate }} ({{proposal.forumCommentCount}})</a></li>
-      <li ng-show="(feedbacks && feedbacks.length) || userIsMember" role="presentation" class="custom-li hidden-lg" ng-class="{'active': (activeTab === 'Feedbacks')}">
-        <a class="custom-a" href="" ng-click="changeActiveTab(3)" role="tab" data-toggle="tab">{{ 'Textual feedbacks' | translate }}</a>
-      </li>
-    </ul> -->
-    <!-- Tab panes -->
-   <!--  <div class="tab-content">
-      <div class="tab-pane" ng-class="{'active': activeTab === 'Members'}" ng-if="userIsMember && activeTab === 'Members'">
-        <discussion-panel class="col-md-12" ng-if="userIsMember" space-id="proposal.rsID" endpoint-id="proposalID"
-          endpoint="contribution"></discussion-panel>
-      </div>
-      <div class="tab-pane" ng-class="{'active': activeTab === 'Public'}" ng-if="activeTab === 'Public'">
-        <discussion-panel ng-if="!isAnonymous" class="col-md-12" space-id="proposal.forumResourceSpaceId" endpoint-id="proposal.proposalId"
-          endpoint="contribution" public-board="true"></discussion-panel>
-        <discussion-panel ng-if="isAnonymous" class="col-md-12" space-id="proposal.frsUUID" endpoint-id="proposal.uuid"
-          endpoint="contribution" public-board="true"></discussion-panel>
-      </div>
-      <div class="tab-pane" ng-class="{'active': activeTab === 'Feedbacks'}" ng-if="activeTab === 'Feedbacks'">
-        <contribution-feedback-panel class="col-md-12" contribution="proposal" public-board="true"></contribution-feedback-panel>
-      </div>
-    </div> -->
-
     <modal open-if="modals.addAttachmentForm" close="closeModal('addAttachmentForm')" title="Edit Form" template-id="addAttachmentForm"></modal>
-
-
-    <!--<script id="addAttachmentForm" type="text/ng-template">-->
-      <!--<div class="modal_content__add_proposal">-->
-        <!--<header class="modal-header" style="padding: 2em;">{{'Add a new file' | translate}}</header>-->
-        <!--<div class="modal-body">-->
-          <!--<form>-->
-            <!--<fieldset>-->
-              <!--<label for="name">{{'Name' | translate}}</label>-->
-              <!--<div class="field-container col-lg-12">-->
-                <!--<input name="name" ng-model="newAttachment.name">-->
-              <!--</div>-->
-            <!--</fieldset>-->
-            <!--<fieldset>-->
-              <!--<label for="file">{{'File' | translate}}</label>-->
-              <!--<div class="field-container col-lg-12">-->
-                <!--<input type="file" name="file" fileread="newAttachment.file">-->
-              <!--</div>-->
-            <!--</fieldset>-->
-          <!--</form>-->
-          <!--<fieldset>-->
-            <!--<button class="button__modal_submit" ng-click="submitAttachment()">{{'Submit' | translate}}</button>-->
-          <!--</fieldset>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</script>-->
   </main>
 
 

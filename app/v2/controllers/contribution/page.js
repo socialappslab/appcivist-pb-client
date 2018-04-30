@@ -296,7 +296,7 @@
           console.log(rs);
           Notify.show('Status updated successfully', 'success');
         },
-        error => Notify.show(error.statusMessage, 'error')
+        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
       );
     }
 
@@ -342,7 +342,7 @@
           $scope.totalComments = $scope.proposal.commentCount + $scope.proposal.forumCommentCount;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     };
@@ -364,7 +364,7 @@
             iframedoc.body.innerHTML = $scope.padHTML.text;
           });
         },
-        error => Notify.show(error.statusMessage, 'error')
+        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
       )
     }
 
@@ -450,7 +450,7 @@
 
               scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
             }, function (error) {
-              Notify.show(error.statusMessage, 'error');
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
           } else {
@@ -464,7 +464,7 @@
           $scope.loadCampaignResources();
         },
         function (error) {
-          Notify.show('Error occured when trying to load contribution: ' + error.statusMessage, 'error');
+          Notify.show('Error occured when trying to load contribution: ' + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -624,7 +624,7 @@
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -678,7 +678,7 @@
         }
         vm.createAttachmentResource(resource, true);
       }, function (error) {
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
     }
 
@@ -783,7 +783,7 @@
         Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
         vm.stopSpinner();
       }, function (error) {
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         vm.stopSpinner();
       });
     }
@@ -832,7 +832,7 @@
           loadCustomFields();
           checkIfFollowing($scope.campaign.rsID);
         }, function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         });
       }
     }
@@ -850,7 +850,7 @@
         loadDocuments();
         loadMedia();
       }, function(error) {
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
     }
 
@@ -894,7 +894,7 @@
         loadToolbarConfig();
       }, function (error) {
         loadBallotPaper();
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
     }
 
@@ -908,10 +908,10 @@
             vm.assemblyConfig = data;
             vm.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
           }, function(error) {
-            Notify.show(error.statusMessage, 'error');
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
           });
         }, error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       )
     }
@@ -927,7 +927,7 @@
           $scope.allThemes = themes;
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -942,7 +942,7 @@
           vm.selectedTheme = null;
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1016,7 +1016,7 @@
           }
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1035,7 +1035,7 @@
           vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery));
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1054,7 +1054,7 @@
           vm.keywordsList = $filter('filter')(keywords, queryThemes(vm.keywordsQuery));
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1138,7 +1138,7 @@
           vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
       console.log(rsp);
@@ -1167,7 +1167,7 @@
       Contributions.deleteTheme(this.proposal.uuid, theme.themeId).then(
         response => Notify.show('Theme deleted successfully', 'success'),
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1187,7 +1187,7 @@
       Contributions.deleteAuthor(this.proposal.uuid, author.uuid).then(
         response => Notify.show('Author deleted successfully', 'success'),
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1201,7 +1201,7 @@
       Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.id).then(
         response => Notify.show('Author deleted successfully', 'success'),
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1219,7 +1219,7 @@
         response => Notify.show('Theme added successfully', 'success'),
         error => {
           this.deleteTheme(theme, true);
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1237,7 +1237,7 @@
      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => Notify.show('Theme changed successfully', 'success'),
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1251,7 +1251,7 @@
           this.currentAdd.items = items;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1263,7 +1263,7 @@
         response => Notify.show('Author added successfully', 'success'),
         error => {
           this.deleteAuthor(author, true);
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1281,7 +1281,7 @@
         response => Notify.show('Author added successfully', 'success'),
         error => {
           this.deleteAuthor(author, true);
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1311,7 +1311,7 @@
           // }
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1335,7 +1335,7 @@
           Notify.show('Attachment deleted successfully', 'success');
         } ,
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1348,7 +1348,7 @@
       let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
       rsp.then(
         feedbacks => this.userFeedbackArray = feedbacks,
-        error => Notify.show(error.statusMessage, 'error')
+        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
       );
     }
 
@@ -1385,7 +1385,7 @@
           response => {
             console.log(response)
           },
-          error => Notify.show(error.statusMessage, 'error')
+          error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
         )
       } else {
         Notify.show('Error while trying to embed the document', 'error')
@@ -1421,7 +1421,7 @@
           $rootScope.$broadcast("ToContributionEmbedModal:CampaignResourcesReady", {resources: resources});
         }
       }, function (error) {
-        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+        Notify.show('Error loading campaign resources from server: '+error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
     }
 
@@ -1436,7 +1436,7 @@
       return rsp.then(
         fields => fields,
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1515,7 +1515,7 @@
             }
           },
           function (error) {
-            Notify.show(error.statusMessage, 'error');
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
           }
         );
       }
@@ -1563,7 +1563,7 @@
           $("#descriptionEditToggle").removeClass('fa-times-circle');
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
           vm.isDescriptionEdit = true;
         }
       );
@@ -1583,7 +1583,7 @@
           $("#titleEditToggle").removeClass('fa-times-circle');
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
           vm.isTitleEdit = true;
         }
       );

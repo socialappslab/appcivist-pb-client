@@ -964,14 +964,7 @@
       let showMediaConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.media'];
       let showUpVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'];
       let showDownVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'];
-      console.log('showContributingIdeasConf = ',showContributingIdeasConf);
-      console.log('showHistoryConf = ',showHistoryConf);
-      console.log('showCommentCountConf = ',showCommentCountConf);
-      console.log('showAttachmentsConf = ',showAttachmentsConf);
-      console.log('showFeedbackConf = ',showFeedbackConf);
-      console.log('showMediaConf = ',showMediaConf);
-      console.log('showUpVoteConf = ',showUpVoteConf);
-      console.log('showDownVoteConf = ',showDownVoteConf);
+      let showProposalIntroInfoConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.proposal-info'];
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;
@@ -980,6 +973,7 @@
       $scope.showMedia = showMediaConf ? showMediaConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showUpVote = showUpVoteConf ? showUpVoteConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showDownVote = showDownVoteConf ? showDownVoteConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showProposalIntroInfo = showProposalIntroInfoConf ? showProposalIntroInfo.toLowerCase() === 'fase' ? false : true : true;
     }
 
     function seeHistory() {

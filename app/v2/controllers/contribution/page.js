@@ -1401,7 +1401,10 @@
           $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"?embed=true");
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
         },
-        error => Notify.show(error.statusMessage, 'error')
+        error => {
+          var e = error.data;
+          return Notify.show(e.statusMessage ? e.statusMessage : 'Server error while creating PeerDoc', 'error');
+        }
       )
     }
 

@@ -258,31 +258,36 @@
       console.log(this.proposal.status);
       console.log(this.proposal.contributionId);
       console.log(this.assemblyID);
+      this.statusBeforeUpdate = oldValue;
 
       // TODO 1: make a nice modal instead of the alert
       // TODO 2: check if the campaign has a config with the same key as the translation for each alert message. If there is a config, use the text suggested by the config
+
       if (this.proposal.status === "DRAFT") {
         $translate("contribution.status.private-draft.description").then(
           translation => {
-            let confirmation = window.confirm(translation);
+            let customTranslation = this.campaignConfigs['contribution.status.private-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
             if (confirmation) this.updateStatusService();
-            else this.proposal.status = oldValue;
+            else this.proposal.status = this.statusBeforeUpdate;
           }
         );
       } else if (this.proposal.status === "PUBLIC_DRAFT") {
         $translate("contribution.status.public-draft.description").then(
           translation => {
-            let confirmation = window.confirm(translation);
+            let customTranslation = this.campaignConfigs['contribution.status.public-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
             if (confirmation) this.updateStatusService();
-            else this.proposal.status = oldValue;
+            else this.proposal.status = this.statusBeforeUpdate;
           }
         );
       } else if (this.proposal.status === "PUBLISHED") {
         $translate("contribution.status.published.description").then(
           translation => {
-            let confirmation = window.confirm(translation);
+            let customTranslation = this.campaignConfigs['contribution.status.published.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
             if (confirmation) this.updateStatusService();
-            else this.proposal.status = oldValue;
+            else this.proposal.status = this.statusBeforeUpdate;
           }
         );
       }
@@ -296,7 +301,10 @@
           console.log(rs);
           Notify.show('Status updated successfully', 'success');
         },
-        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
+        error => {
+          this.proposal.status = this.statusBeforeUpdate;
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
+        }
       );
     }
 
@@ -419,7 +427,7 @@
               $scope.gdocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
               $scope.gdocUrlMinimal = $sce.trustAsResourceUrl($scope.gdocUrl +"?rm=minimal");
             } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
+              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }

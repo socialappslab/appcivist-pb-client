@@ -1250,7 +1250,7 @@
   "Join the Group to create proposals": "Únete al Grupo para crear propuestas",
   "Themes & Keywords": "Temas y palabras claves",
   "Drafts": "Drafts",
-  "contribution.body.replace": "You can replace your current <strong>Proposal Document</strong> using from the menu. If you do, the old document will be moved to the <strong>Attachments</strong> section of the proposal with the title 'Previous Proposal Document'.",
+  "contribution.body.replace": "You can replace your current <strong>Proposal Document</strong> from the menu. If you do, the old document will be moved to the <strong>Attachments</strong> section of the proposal with the title 'Previous Proposal Document'.",
   "New Etherpad PAD": "New Etherpad PAD",
   "New Google Doc": "New Google Doc",
   "Is this resource a proposal template?": "Is this resource a proposal template?",

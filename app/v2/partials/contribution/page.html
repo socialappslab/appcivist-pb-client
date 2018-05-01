@@ -115,7 +115,6 @@
           </div>
         </ul>
 
-
         <ul class="row tags">
           <li class="title">{{'Keywords'|translate}}: </li>
           <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
@@ -160,42 +159,6 @@
             </li>
           </ul>
         </div>
-
-        <!-- Add Theme/Author/Keyword Form
-        <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">
-          <ul class="tags">
-            <li class="title" ng-if="proposal.type==='PROPOSAL'">{{'Add to proposal'|translate}}: </li>
-            <li class="title" ng-if="proposal.type==='IDEA'">{{'Add to idea'|translate}}: </li>
-          </ul>
-          <ul class="search_modes">
-            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'THEMES'}">
-              <a ng-click="$parent.setAddContext('THEMES')" class="btn-sm">{{ 'Themes' | translate }}</a>
-            </li>
-            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'AUTHORS'}"
-                ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
-              <a ng-click="$parent.setAddContext('AUTHORS')" class="btn-sm">{{ 'Authors'| translate }}</a>
-            </li>
-            <li class="search_mode__full_text" ng-class="{active: $parent.currentAdd.context === 'KEYWORDS'}">
-              <a ng-click="$parent.setAddContext('KEYWORDS')" class="btn-sm">{{ 'Keywords'| translate }}</a>
-            </li>
-          </ul>
-          <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query"
-                 ng-click="$parent.currentAddQueryChangeOnClick()" ng-change="$parent.currentAddQueryChange()">
-          <fieldset class="tags">
-            <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
-              <ul class="suggestion-list">
-                <li ng-repeat="item in $parent.currentAdd.items track by $index" ng-click="$parent.currentAddOnSelect(item)"
-                  class="suggestion-item" style="min-height: 50px;">
-                  <span ng-bind-html="$parent.currentAddGetText(item)"></span>
-                </li>
-                <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
-                    class="suggestion-item" style="min-height: 50px;">
-                  <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
-                </li>
-              </ul>
-            </div>
-          </fieldset>
-        </div>-->
 
         <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex">
           <ul class="overlay_buttons">

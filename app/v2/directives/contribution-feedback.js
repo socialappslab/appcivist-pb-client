@@ -48,7 +48,7 @@
         }
 
         scope.assembly = localStorageService.get('currentAssembly');
-        if (scope.campaign) {
+        if (!scope.campaign) {
           scope.campaign = localStorageService.get('currentCampaign');
         }
 

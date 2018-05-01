@@ -11,21 +11,7 @@
         <div class="row" style="position: unset;">
           <div class="row no-margin">
             <div class="title_block">
-                <h1 class="heading--title">{{campaign.title}}</h1>
-                <!-- HEADER -> actions menu -->
-                <div class="heading_actions" ng-if="!isAnonymous">
-                  <ul>
-                    <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
-                      <a><i class="fa fa-cog "></i></a>
-                    </li>
-                  </ul>
-                  <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
-                    ng-if="cm.isHover">
-                    <div class="content">
-                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType" contributions="selectedCards" filters="filters"></campaign-contextual-items>
-                    </div>
-                  </div>
-                </div>
+              <h1 class="heading--title">{{campaign.title}}</h1>
             </div>
             <div>
               <p class="description" style="margin-top:0.2em"
@@ -50,8 +36,21 @@
 
           <!-- HEADER -> AppCivist Logo Attribution -->
           <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
-            <div class="overlay new_overlay" style="display: inline-flex">
+            <div class="overlay new_overlay" style="display: inline-flex; z-index:2;">
               <ul class="overlay_buttons">
+                <div class="contextual_wrapper" ng-if="!isAnonymous">
+                  <li class="overlay_button action__contextual_menu" ng-mouseenter="cm.isHover = true" style="border-right: 1px solid #efefef;">
+                    <a><i class="fa fa-lg fa-cog"></i></a>
+                  </li>
+                  <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false"
+                       style="top: 3em; left: auto;" ng-if="cm.isHover">
+                    <div class="content">
+                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType"
+                                                 contributions="selectedCards" filters="filters" is-hover="cm.isHover"></campaign-contextual-items>
+                    </div>
+                  </div>
+                </div>
+
                 <li class="overlay_button" ng-if="showWorkingGroups">
                   <a data-toggle="modal" data-target="#workingGroups" ng-if="showWorkingGroups">
                     <i class="fa fa-users fa-lg"></i><span>{{'Working groups'|translate}}</span>

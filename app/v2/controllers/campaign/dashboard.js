@@ -209,6 +209,9 @@
         $scope.openAddAttachmentByUrl = false;
         $scope.openAddAttachment = false;
       });
+      $scope.cm = {
+        isHover: false
+      };
     }
 
     function joinWg(groupId) {

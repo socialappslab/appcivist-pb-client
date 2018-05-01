@@ -72,6 +72,7 @@
     $scope.addNonMemberAuthorToProposal = addNonMemberAuthorToProposal.bind($scope);
     $scope.deleteNonMemberAuthor = deleteNonMemberAuthor.bind($scope);
     $scope.changeStatus = changeStatus.bind($scope);
+    $scope.checkCustomHeader = checkCustomHeader.bind($scope);
 
     activate();
 
@@ -229,6 +230,9 @@
       $scope.isTitleEditable = true;
       $scope.descriptionBackup = null;
       $scope.titleBackup = null;
+
+      $scope.customHeaderFields = [];
+      $scope.customHeaderValues = {};
 
       $scope.tinymceOptions = $scope.getEditorOptions();
       $scope.editIconHTML = "<i class='fa fa-edit smalledit'></i>";
@@ -1326,10 +1330,10 @@
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
           // if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
-          //   $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
-          //     map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
-          //     return map;
-          //   }, {});
+          //  $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
+          //    map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
+          //    return map;
+          //  }, {});
           // }
         },
         error => {
@@ -1464,7 +1468,11 @@
     }
 
     function filterCustomFields(fields) {
-      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type);
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type && f.entityPart !== 'HEADER');
+    }
+
+    function checkCustomHeader() {
+      console.log($scope.customHeaderValues);
     }
 
     function loadCustomFields() {
@@ -1481,6 +1489,9 @@
       if ($scope.campaignResourceSpaceId) {
         loadFields($scope.campaignResourceSpaceId).then(fields => {
           $scope.campaignFields = $scope.filterCustomFields(fields);
+          $scope.customHeaderFields = fields.filter(f => f.entityPart == 'HEADER');
+          console.log($scope.campaignFields);
+          console.log($scope.customHeaderFields);
         });
       }
       if ($scope.componentResourceSpaceId) {

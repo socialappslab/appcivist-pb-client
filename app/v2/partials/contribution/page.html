@@ -88,8 +88,8 @@
               </a>
               <!--<span ng-if="!$last">,</span>-->
             </li>
-          <li ng-if="themesLimit == 1 && !isAnonymous">
-            <select class="theme_selector" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId" ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
+          <li ng-if="themesLimit == 1 && !isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)">
+            <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId" ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
             <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
           </li>
           <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
@@ -151,6 +151,15 @@
             <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Keyword</button>
           </div>
         </ul>
+        
+        <div class="custom-header-fields">
+          <ul class="row tags" ng-repeat="field in customHeaderFields">
+            <li class="title">{{ field.name }}:</li>
+            <li>
+              <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}" ng-options="option as option.value for option in field.customFieldValueOptions track by option.customFieldValueOptionId" ng-model="customHeaderValues[field.customFieldDefinitionId]" ng-change="checkCustomHeader()" />
+            </li>
+          </ul>
+        </div>
 
         <!-- Add Theme/Author/Keyword Form
         <div ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="row attribution campaign__filters">

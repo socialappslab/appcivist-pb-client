@@ -5,7 +5,13 @@
           <breadcrumb label="proposal.title"></breadcrumb>
         </div>
         <div class="row title_block">
-          <h1 class="heading--title" ng-if="!isTitleEdit">{{proposal.title}} <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor"></i></h1>
+          <h1 class="heading--title" ng-if="!isTitleEdit && userIsAuthor" ng-click="titleToggleEdit()">
+            {{proposal.title}}
+            <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor"></i>
+          </h1>
+          <h1 class="heading--title" ng-if="!isTitleEdit && !userIsAuthor">{{proposal.title}}
+            <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor"></i>
+          </h1>
           <div class="editableArea text-center" ng-if="isTitleEdit">
             <input ng-model="proposal.title" id="add_proposal__title" name="text" placeholder="{{'Title' | translate}}">
             <button class="btn btn-default btn-join" ng-click="titleToggleEdit()">{{'Cancel' | translate}}</button>
@@ -47,7 +53,9 @@
                 </div>
               </div>
             </fieldset>
-            <button ng-click="showSearch('authorSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Author</button>
+            <button ng-click="showSearch('authorSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
+              <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add Author' | translate}}
+            </button>
           </div>
           <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
           <!--<div style="display: inline-block; margin-left: 10px;">-->
@@ -58,7 +66,10 @@
           <p class="small">
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
             <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
-            <strong ng-if="proposal.source === 'social_ideation_facebook'">{{'Source'|translate}}: </strong><span class="facebook-bookmark" ng-if="proposal.source === 'social_ideation_facebook'"><a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;Facebook</a></span>
+            <strong ng-if="proposal.source === 'social_ideation_facebook'">{{'Source'|translate}}: </strong>
+            <span class="facebook-bookmark" ng-if="proposal.source === 'social_ideation_facebook'">
+              <a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;Facebook</a>
+            </span>
           </p>
         </div>
 
@@ -274,11 +285,19 @@
                ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
             </i>
           </h2>
-          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit && showBodyDescription"></p>
+          <p class="contribution_description" ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML: '') + '&nbsp;&nbsp;&nbsp;' + proposal.text)"
+             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor" ng-click="descriptionToggleEdit()">
+          </p>
+          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"
+             ng-if="!isDescriptionEdit && showBodyDescription && !userIsAuthor"></p>
           <div class="editableArea text-center" ng-if="isDescriptionEdit && showBodyDescription">
-            <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
-            <textarea ng-if="!showDescriptionRichTextEdit" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
-            <button class="btn btn-default btn-join" ng-click="titleToggleEdit()">{{'Cancel' | translate}}</button>
+            <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text"
+                      id="add_proposal__description" name="text" rows="8" cols="48"
+                      placeholder="{{'Description' | translate}}"></textarea>
+            <textarea ng-if="!showDescriptionRichTextEdit"  ng-model="proposal.text"
+                      id="add_proposal__description" name="text" rows="8" cols="48"
+                      placeholder="{{'Description' | translate}}"></textarea>
+            <button class="btn btn-default btn-join" ng-click="descriptionToggleEdit()">{{'Cancel' | translate}}</button>
             <button class="btn btn-default btn-join" ng-click="saveDescription()">{{'Save description'|translate}}</button>
           </div>
         </div>

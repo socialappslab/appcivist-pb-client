@@ -231,6 +231,7 @@
       $scope.titleBackup = null;
 
       $scope.tinymceOptions = $scope.getEditorOptions();
+      $scope.editIconHTML = "<i class='fa fa-edit smalledit'></i>";
     }
 
     function toggleOpenAddAttachment () {

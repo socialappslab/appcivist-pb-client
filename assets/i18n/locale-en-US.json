@@ -1176,7 +1176,7 @@
   "voting.modal.finalize.done.p2": "Come back when the voting period is over to see the results!.",
   "INBALLOT": "In Voting Ballot",
   "Participate": "Participate",
-  "contribution.summary": "Brief description",
+  "contribution.summary": "Summary",
   "contribution.body": "<strong>Proposals</strong> differ from ideas in that they provide a more detailed blueprint of the project in the form of a document that is collaboratively constructed and provides information about key features such as purpose, benefit, location, budget, and implementation.",
   "contribution.body.empty": "Develop your proposal by adding this document using one of the following services:",
   "Explore the campaign": "Explore the campaign",

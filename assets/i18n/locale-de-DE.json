@@ -1175,7 +1175,7 @@
   "voting.modal.finalize.done.p2": "Come back when the voting period is over to see the results!.",
   "INBALLOT": "In Voting Ballot",
   "Participate": "Participate",
-  "contribution.summary": "Brief description",
+  "contribution.summary": "Summary",
   "contribution.body": "<strong>Proposals</strong> differ from <strong>ideas</strong> in that they provide a more detailed description in the form of a document that is collaboratively constructed, incorporating one or more ideas into one big project proposal.",
   "contribution.body.empty": "Expand your proposal by adding a document using one of the following services.",
   "Explore the campaign": "Explore the campaign",
@@ -1352,5 +1352,7 @@
   "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Terms of Use</a>",
   "contribution.status.private-draft.description": "Private Draft means that only authors can edit and comment. Are you sure you want to change this status?",
   "contribution.status.public-draft.description": "Public Draft means that the entire assembly can see and comment but only authors can edit.",
-  "contribution.status.published.description": "Published means that the entire assembly can see and comment but no one else can edit."
+  "contribution.status.published.description": "Published means that the entire assembly can see and comment but no one else can edit.",
+  "Save description": "Save description",
+  "Save title": "Save title"
 }

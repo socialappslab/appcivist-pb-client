@@ -151,7 +151,7 @@
           </div>
         </ul>
 
-        <div class="custom-header-fields">
+        <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
           <ul class="row tags" ng-repeat="field in customHeaderFields">
             <li class="title">{{ field.name }}:</li>
             <li>

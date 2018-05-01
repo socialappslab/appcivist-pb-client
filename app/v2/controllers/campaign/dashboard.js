@@ -300,7 +300,7 @@
       res.$promise.then(
         function (data) {
           $scope.campaign = data;
-
+          console.log($scope.campaign);
           if($scope.isAnonymous) {
             $translate.use($scope.campaign.lang);
             moment.locale($scope.campaign.lang);
@@ -427,6 +427,7 @@
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
       this.campaign.configs = this.campaignConfigs;
+      console.log(this.campaign.configs);
       let faqUrlConfig = data['appcivist.campaign.faq-url'];
       this.requireGroupAuthorship = data['appcivist.campaign.require-group-authorship'] === 'true' ? true : false;
       this.proposalDefaultTitle = data['appcivist.campaign.contribution.default-title'];

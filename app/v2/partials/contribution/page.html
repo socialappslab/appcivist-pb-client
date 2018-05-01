@@ -214,7 +214,7 @@
             <li class="downvote" ng-if="showCommentCount">
                 <a class="commentcount"><i class="fa fa-comment"></i> {{ isAnonymous ? proposal.forumCommentCount : totalComments }}</a>
               </li>
-            <li class="upvote" ng-if="showUpVote" g-click="updateFeedback('up')">
+            <li class="upvote" ng-if="showUpVote" ng-click="updateFeedback('up')">
               {{upSum}}
               <a class="thumbs-up">
                 <i class="fa" ng-class="{'fa-thumbs-o-up': !userFeedback.up, 'fa-thumbs-up': userFeedback.up}"></i>
@@ -353,7 +353,7 @@
 
       <!-- Pictures carousel before idea content -->
       <section class="content" ng-if="contributionType == 'IDEA'">
-        <div ng-if="showMediaCarousel" id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0">
+        <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0 && showMediaCarousel">
             <div class="carousel-inner" role="listbox">
               <div class="item" ng-class="{active:$first}" ng-repeat="picture in resources.pictures">
                 <img src="{{picture.url}}">

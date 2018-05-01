@@ -1176,7 +1176,7 @@
   "voting.modal.finalize.done.p2": "Volte quando o período de votação estiver encerrado para conferir os resultados!",
   "INBALLOT": "Em Votação",
   "Participate": "Participar",
-  "contribution.summary": "Breve descrição",
+  "contribution.summary": "Resumo",
   "contribution.body": "<strong>Propostas</strong> são diferentes de <strong>ideias</strong> porque elas fornecem uma descrição mais detalhada na forma de um documento que é construído colaborativamente, incorporando uma ou mais ideias em um grande projeto de proposta.",
   "contribution.body.empty": "Expanda sua proposta adicionando um documento usando um dos seguintes serviços.",
   "Explore the campaign": "Explore a campanha.",
@@ -1360,5 +1360,7 @@
   "contribution.status.public-draft.description": "Rascunho Público significa que toda a assambleia pode ver e comentar mas somente os autores podem editar.",
   "contribution.status.published.description": "Publicada significa que toda a assambleia pode ver e comentar mas ninguém pode mais editar.",
   "Save description": "Salvar resumo",
-  "Save title": "Salvar título"
+  "Save title": "Salvar título",
+  "Add Author": "Adicionar Autor",
+  "Add Keyword": "Adicionar Palavra-chave"
 }

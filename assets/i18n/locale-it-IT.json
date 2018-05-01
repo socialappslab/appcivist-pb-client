@@ -1358,5 +1358,7 @@
   "contribution.status.public-draft.description": "Rascunho Público significa que toda a assambleia pode ver e comentar mas somente os autores podem editar.",
   "contribution.status.published.description": "Publicada significa que toda a assambleia pode ver e comentar mas ninguém pode mais editar.",
   "Save description": "Enregister",
-  "Save title": "Enregister"
+  "Save title": "Enregister",
+  "Add Author": "Adicionar Autor",
+  "Add Keyword": "Ajouter un mot clé"
 }

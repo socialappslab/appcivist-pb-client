@@ -148,10 +148,10 @@
                 </ul>
               </div>
             </fieldset>
-            <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Keyword</button>
+            <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add Keyword' | translate}}</button>
           </div>
         </ul>
-        
+
         <div class="custom-header-fields">
           <ul class="row tags" ng-repeat="field in customHeaderFields">
             <li class="title">{{ field.name }}:</li>
@@ -274,7 +274,7 @@
             <div class="overlay_status" ng-if="contributionType">
               <span class="status_label">Status</span>
               <span class="status">
-                <select name="currentStatus" id="currentStatus" ng-model="proposal.status" ng-change="changeStatus(proposal.status, '{{proposal.status}}')">
+                <select name="currentStatus" id="currentStatus" ng-model="proposal.status" ng-change="changeStatus(proposal.status, '{{proposal.status}}')" ng-disabled="!allowChangeStatus">
                   <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
                   <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</option>
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>

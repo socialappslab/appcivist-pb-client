@@ -1360,5 +1360,7 @@
   "contribution.status.public-draft.description": "L'ébauche publique signifie que l'ensemble de l'assemblée peut voir et commenter mais seuls les auteurs peuvent éditer.",
   "contribution.status.published.description": "Publié signifie que l'assemblée entière peut voir et commenter mais personne d'autre ne peut éditer.",
   "Save description": "Enregister",
-  "Save title": "Enregister"
+  "Save title": "Enregister",
+  "Add Author": "Ajouter un auteur",
+  "Add Keyword": "Ajouter un mot clé"
 }

@@ -1360,5 +1360,7 @@
   "contribution.status.public-draft.description": "Borrador Público significa que toda la asamblea puede ver y comentar, pero sólo los autores pueden editar.",
   "contribution.status.published.description": "Publicada significa que toda la asamblea puede ver y comentar pero nadie puede editar.",
   "Save description": "Guardar resumen",
-  "Save title": "Guardar título"
+  "Save title": "Guardar título",
+  "Add Author": "Agregar autor",
+  "Add Keyword": "Agregar Palabra Clave"
 }

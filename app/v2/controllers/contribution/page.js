@@ -979,6 +979,7 @@
       let showCustomFieldsHeaderConf = $scope.campaignConfigs['appcivist.campaign.contribution.custom-fields.header'];
       let showMediaCarouselConf = $scope.campaignConfigs['appcivist.campaign.contribution.media-carousel'];
       let showDescriptionRichTextEditConf = $scope.campaignConfigs['appcivist.campaign.contribution.description.richtext-editor'];
+      let allowChangeStatusConf = $scope.campaignConfigs['appcivist.campaign.contribution.status.change-enabled'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -998,6 +999,7 @@
       $scope.showCustomFieldsHeader = showCustomFieldsHeaderConf ? showCustomFieldsHeaderConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showMediaCarousel = showMediaCarouselConf ? showMediaCarouselConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.allowChangeStatus = allowChangeStatusConf ? allowChangeStatusConf.toLowerCase() === 'false' ? false : true : true;
     }
 
     function seeHistory() {

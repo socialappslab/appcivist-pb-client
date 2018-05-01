@@ -1362,5 +1362,7 @@
   "Save description": "Enregister",
   "Save title": "Enregister",
   "Add Author": "Ajouter un auteur",
-  "Add Keyword": "Ajouter un mot clé"
+  "Add Keyword": "Ajouter un mot clé",
+  "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one. The limit is 125 words.",
+  "contribution.summary.empty.non-author": "This proposal does not have a summary yet."
 }

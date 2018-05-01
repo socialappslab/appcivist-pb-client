@@ -1362,5 +1362,7 @@
   "Save description": "Salvar resumo",
   "Save title": "Salvar título",
   "Add Author": "Adicionar Autor",
-  "Add Keyword": "Adicionar Palavra-chave"
+  "Add Keyword": "Adicionar Palavra-chave",
+  "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one. The limit is 125 words.",
+  "contribution.summary.empty.non-author": "This proposal does not have a summary yet."
 }

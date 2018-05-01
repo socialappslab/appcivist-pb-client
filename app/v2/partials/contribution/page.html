@@ -294,6 +294,12 @@
                ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
             </i>
           </h2>
+          <p class="contribution_description" translate="contribution.summary.empty"
+             ng-if="(!proposal.text || proposal.text == '') && userIsAuthor">
+          </p>
+          <p class="contribution_description" translate="contribution.summary.empty.non-author"
+             ng-if="(!proposal.text || proposal.text == '') && !userIsAuthor">
+          </p>
           <p class="contribution_description" ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML: '') + '&nbsp;&nbsp;&nbsp;' + proposal.text)"
              ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor" ng-click="descriptionToggleEdit()">
           </p>

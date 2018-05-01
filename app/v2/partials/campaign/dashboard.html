@@ -52,25 +52,25 @@
           <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
             <div class="overlay new_overlay" style="display: inline-flex">
               <ul class="overlay_buttons">
-                <li class="overlay_button">
-                  <a data-toggle="modal" data-target="#workingGroups">
+                <li class="overlay_button" ng-if="showWorkingGroups">
+                  <a data-toggle="modal" data-target="#workingGroups" ng-if="showWorkingGroups">
                     <i class="fa fa-users fa-lg"></i><span>{{'Working groups'|translate}}</span>
                     <span class="number" ng-if="myWorkingGroups.length > 0 || otherWorkingGroups.length > 0">({{myWorkingGroups.length+otherWorkingGroups.length}})</span>
                   </a>
                 </li>
-                <li class="overlay_button">
-                  <a data-toggle="modal" data-target="#documents">
+                <li class="overlay_button" ng-if="showDocuments">
+                  <a data-toggle="modal" data-target="#documents" >
                     <i class="fa fa-file-text-o fa-lg"></i><span>{{'Documents'|translate}}</span>
                     <span class="number" ng-if="documents.length > 0">({{documents.length}})</span>
                   </a>
                 </li>
-                <li class="overlay_button">
+                <li class="overlay_button" ng-if="showMedia">
                   <a data-toggle="modal" data-target="#media">
                     <i class="fa fa-film fa-lg"></i><span>{{'Media'|translate}}</span><span class="number"></span>
                     <span class="number" ng-if="media.length > 0">({{media.length}})</span>
                   </a>
                 </li>
-                <li class="overlay_button">
+                <li class="overlay_button" ng-if="showAnalytics">
                   <a data-toggle="modal" data-target="#analytics">
                     <i class="fa fa-bar-chart fa-lg"></i><span>{{'Analytics'|translate}}</span><span class="number"></span>
                   </a>

@@ -433,6 +433,17 @@
       this.allowedContributionTypes = data['appcivist.campaign.contribution-types'];
       this.themesExtendedDescription = data['appcivist.campaign.themes.extended-description-url'];
 
+      let showAnalyticsConf = data['appcivist.campaign.toolbar.analytics'];
+      let showMediaConf = data['appcivist.campaign.toolbar.media'];
+      let showDocumentsConf = data['appcivist.campaign.toolbar.documents'];
+      let showWorkingGroupsConf = data['appcivist.campaign.toolbar.working-groups'];
+
+      this.showAnalytics = showAnalyticsConf ? showAnalyticsConf.toLowerCase() === 'false' ? false : true : true;
+      this.showMedia = showMediaConf ? showMediaConf.toLowerCase() === 'false' ? false : true : true;
+      this.showDocuments = showDocumentsConf ? showDocumentsConf.toLowerCase() === 'false' ? false : true : true;
+      this.showWorkingGroups = showWorkingGroupsConf ? showWorkingGroupsConf.toLowerCase() === 'false' ? false : true : true;
+
+
       if (this.allowedContributionTypes) {
         this.enableProposals = this.allowedContributionTypes.toLowerCase().includes("proposal");
         this.enableIdeas = this.allowedContributionTypes.toLowerCase().includes("idea");

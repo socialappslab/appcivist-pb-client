@@ -8,7 +8,8 @@
           <h1 class="heading--title" ng-if="!isTitleEdit">{{proposal.title}} <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor"></i></h1>
           <div class="editableArea text-center" ng-if="isTitleEdit">
             <input ng-model="proposal.title" id="add_proposal__title" name="text" placeholder="{{'Title' | translate}}">
-            <button class="btn btn-default btn-join" ng-click="saveTitle()">Save title</button>
+            <button class="btn btn-default btn-join" ng-click="titleToggleEdit()">{{'Cancel' | translate}}</button>
+            <button class="btn btn-default btn-join" ng-click="saveTitle()">{{'Save title' | translate}}</button>
           </div>
         </div>
 
@@ -62,15 +63,15 @@
         </div>
 
         <ul class="row tags">
-          <li class="title">{{'Themes'|translate}}: </li>
-          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit > 1 || themesLimit == -1">
+          <li class="title">{{(themesLimit == 1 ? 'Theme': 'Themes') | translate}}: </li>
+          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit > 1 || themesLimit === -1">
             <a>
               {{theme.title}}
               <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
             </a>
             <!--<span ng-if="!$last">,</span>-->
           </li>
-          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit == 1 && isAnonymous">
+          <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit === 1 && isAnonymous">
               <a>
                 {{theme.title}}
               </a>
@@ -267,27 +268,34 @@
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
         <div class="proposal-summary">
-          <h2>{{'contribution.summary'|translate}} <i class="fa fa-edit smalledit" id="descriptionEditToggle" ng-click="descriptionToggleEdit()" ng-if="userIsAuthor"></i></h2>
-          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit"></p>
-          <div class="editableArea text-center" ng-if="isDescriptionEdit">
-            <textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
-            <button class="btn btn-default btn-join" ng-click="saveDescription()">Save description</button>
+          <h2 ng-if="showBodyDescriptionTitle">
+            {{'contribution.summary' | translate}}
+            <i class="fa fa-edit smalledit" id="descriptionEditToggle"
+               ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
+            </i>
+          </h2>
+          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit && showBodyDescription"></p>
+          <div class="editableArea text-center" ng-if="isDescriptionEdit && showBodyDescription">
+            <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
+            <textarea ng-if="!showDescriptionRichTextEdit" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
+            <button class="btn btn-default btn-join" ng-click="titleToggleEdit()">{{'Cancel' | translate}}</button>
+            <button class="btn btn-default btn-join" ng-click="saveDescription()">{{'Save description'|translate}}</button>
           </div>
         </div>
         <div class="proposal-text">
-          <h2>{{contributionType|titlecase|translate}}</h2>
+          <h2 ng-if="showBodyProposalTitle">{{contributionType | titlecase | translate}}</h2>
           <p translate="contribution.body" ng-if="showProposalIntroInfo"></p>
-          <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)"></p>
+          <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator) && showBodyProposal"></p>
           <p translate="contribution.body.replace" ng-if="proposal.extendedTextPad && (userIsAuthor || userIsCoordinator) && showProposalIntroInfo"></p>
           <!-- Add document buttons -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator)">
+          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator) && showBodyProposal">
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
               <button class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
               <!--<button class="btn btn-default proposal-btn">Default</button>-->
           </div>
           <!-- ETHERPAD -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PAD' && proposal.extendedTextPad">
+          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PAD' && proposal.extendedTextPad && showBodyProposal">
             <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'"
                  class="etherpad__wrapper">
               <div class="pad-html">
@@ -300,7 +308,7 @@
             </div>
           </div>
           <!-- GOOGLE DOCS -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='GDOC' && proposal.extendedTextPad">
+          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='GDOC' && proposal.extendedTextPad && showBodyProposal">
             <div class="etherpad__wrapper">
               <!-- TODO: load only HTML of etherpad as obtained from backend, do not embed read only version-->
               <iframe ng-if="(!userIsAuthor && gdocUrl)" name="embed_readonly"
@@ -312,7 +320,7 @@
             </div>
           </div>
           <!-- PEERDOC -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad">
+          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad && showBodyProposal">
             <div class="etherpad__wrapper">
               <iframe ng-if="(!userIsAuthor && peerDocUrl)" name="embed_readonly"
                 ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML"
@@ -339,16 +347,16 @@
         <div class="proposal-summary" id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
           <!-- Custom Fields -->
           <div class="field__container">
-            <h2 class="intro bold">{{'Additional info' | translate}}</h2>
+            <h2 ng-if="showCustomFieldsTitle" class="intro bold">{{'Additional info' | translate}}</h2>
             <custom-field ng-repeat="value in fieldsValues | orderBy:'position'" definition="value.customFieldDefinition"
-                          value="value" renderer="readonly"></custom-field>
+                          value="value" renderer="readonly" ng-if="showCustomFields"></custom-field>
           </div>
         </div>
       </section>
 
       <!-- Pictures carousel before idea content -->
       <section class="content" ng-if="contributionType == 'IDEA'">
-          <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0">
+        <div ng-if="showMediaCarousel" id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0">
             <div class="carousel-inner" role="listbox">
               <div class="item" ng-class="{active:$first}" ng-repeat="picture in resources.pictures">
                 <img src="{{picture.url}}">
@@ -356,22 +364,34 @@
             </div>
             <a class="left carousel-control" role="button" data-target="#media-carousel" data-slide="prev">
               <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
+              <span class="sr-only">{{'Previous' | translate}}</span>
             </a>
             <a class="right carousel-control" role="button" data-target="#media-carousel" data-slide="next">
               <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
+              <span class="sr-only">{{'Next' | translate}}</span>
             </a>
             <ol class="carousel-indicators">
               <li data-target="#media-carousel" data-slide-to="{{$index}}" ng-class="{active:$first}" ng-repeat="picture in resources.pictures"></li>
             </ol>
           </div>
-          <h2>{{'contribution.summary'|translate}} <i class="fa fa-edit smalledit" id="descriptionEditToggle" ng-click="descriptionToggleEdit()" ng-if="userIsAuthor"></i></h2>
-          <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit"></p>
-          <div class="editableArea text-center" ng-if="isDescriptionEdit">
-            <textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
-            <button class="btn btn-default btn-join" ng-click="saveDescription()">Save description</button>
+        <h2 ng-if="showBodyDescriptionTitle">
+          {{'contribution.summary'|translate}}
+          <i class="fa fa-edit smalledit" id="descriptionEditToggle" ng-click="descriptionToggleEdit()" ng-if="userIsAuthor"></i>
+        </h2>
+        <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)" ng-if="!isDescriptionEdit && showBodyDescription"></p>
+        <div class="editableArea text-center" ng-if="isDescriptionEdit && showBodyDescription">
+          <textarea ui-tinymce="tinymceOptions" ng-model="proposal.text" id="add_proposal__description" name="text" rows="8" cols="48" placeholder="{{'Description' | translate}}"></textarea>
+          <button class="btn btn-default btn-join" ng-click="saveDescription()">Save description</button>
+        </div>
+
+        <div class="proposal-summary" id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
+          <!-- Custom Fields -->
+          <div class="field__container">
+            <h2 ng-if="showCustomFieldsTitle" class="intro bold">{{'Additional info' | translate}}</h2>
+            <custom-field ng-repeat="value in fieldsValues | orderBy:'position'" definition="value.customFieldDefinition"
+                          value="value" renderer="readonly" ng-if="showCustomFields"></custom-field>
           </div>
+        </div>
       </section>
 
       <section class="comments__section"

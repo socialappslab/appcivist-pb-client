@@ -53,7 +53,7 @@
     $scope.filterCustomFields = filterCustomFields.bind($scope);
     $scope.follow = follow.bind($scope);
     $scope.unfollow = unfollow.bind($scope);
-    $scope.loadToolbarConfig = loadToolbarConfig.bind($scope);
+    $scope.loadViewsConfig = loadViewsConfig.bind($scope);
     $scope.showSearch = showSearch.bind($scope);
     $scope.hideSearch = hideSearch.bind($scope);
     $scope.authorsChangeOnClick = authorsChangeOnClick.bind($scope);
@@ -899,7 +899,7 @@
           $scope.selectedTheme = $scope.proposal.themes ? $scope.proposal.themes[0] : null;
         }
         loadBallotPaper();
-        loadToolbarConfig();
+        loadViewsConfig();
       }, function (error) {
         loadBallotPaper();
         Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -955,7 +955,7 @@
       );
     }
 
-    function loadToolbarConfig () {
+    function loadViewsConfig() {
       let showContributingIdeasConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.contributing-ideas'];
       let showHistoryConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'];
       let showCommentCountConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'];
@@ -965,6 +965,16 @@
       let showUpVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'];
       let showDownVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'];
       let showProposalIntroInfoConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.proposal-info'];
+      let showBodyDescriptionConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.description'];
+      let showBodyDescriptionTitleConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.description.title'];
+      let showBodyProposalConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.proposal'];
+      let showBodyProposalTitleConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.proposal.title'];
+      let showCustomFieldsConf = $scope.campaignConfigs['appcivist.campaign.contribution.custom-fields'];
+      let showCustomFieldsTitleConf = $scope.campaignConfigs['appcivist.campaign.contribution.custom-fields.title'];
+      let showCustomFieldsHeaderConf = $scope.campaignConfigs['appcivist.campaign.contribution.custom-fields.header'];
+      let showMediaCarouselConf = $scope.campaignConfigs['appcivist.campaign.contribution.media-carousel'];
+      let showDescriptionRichTextEditConf = $scope.campaignConfigs['appcivist.campaign.contribution.description.richtext-editor'];
+
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;
@@ -973,7 +983,16 @@
       $scope.showMedia = showMediaConf ? showMediaConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showUpVote = showUpVoteConf ? showUpVoteConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showDownVote = showDownVoteConf ? showDownVoteConf.toLowerCase()  === 'false' ? false : true : true;
-      $scope.showProposalIntroInfo = showProposalIntroInfoConf ? showProposalIntroInfo.toLowerCase() === 'fase' ? false : true : true;
+      $scope.showProposalIntroInfo = showProposalIntroInfoConf ? showProposalIntroInfoConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyDescription = showBodyDescriptionConf ? showBodyDescriptionConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyDescriptionTitle = showBodyDescriptionTitleConf ? showBodyDescriptionTitleConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyProposal = showBodyProposalConf ? showBodyProposalConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyProposalTitle = showBodyProposalTitleConf ? showBodyProposalTitleConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showCustomFields = showCustomFieldsConf ? showCustomFieldsConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showCustomFieldsTitle = showCustomFieldsTitleConf ? showCustomFieldsTitleConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showCustomFieldsHeader = showCustomFieldsHeaderConf ? showCustomFieldsHeaderConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showMediaCarousel = showMediaCarouselConf ? showMediaCarouselConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : true;
     }
 
     function seeHistory() {

@@ -1,0 +1,17 @@
+.btn {
+    &.consent-button {
+        background-color: #424242;
+        border: none;
+        color: white;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-shadow: none;
+        padding: 0.6rem 1rem;
+        min-width: 8rem;
+        vertical-align: middle;
+        &:active {
+            background-color: #1f1f1f;
+            color: #efefef;
+        }
+    }
+}

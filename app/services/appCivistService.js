@@ -469,6 +469,16 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
     },
     getPublicBriefByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/brief', { uuid: campaignUUID });
+    },
+    consent: function(assemblyId, campaignId, userId = null, answer = null) {
+      let baseUrl = '/assembly/:aid/campaign/:cid/consent';
+      if (userId == null && answer == null) {
+        return $resource(getServerBaseUrl(localStorageService) + baseUrl, { aid: assemblyId, cid: campaignId })
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + baseUrl + '/user/:uid/:answer', { aid: assemblyId, cid: campaignId, uid: userId, answer: answer }, {
+          'update': { method: 'PUT' }
+        })
+      }
     }
   };
 

@@ -1364,5 +1364,9 @@
   "Add Author": "Adicionar Autor",
   "Add Keyword": "Adicionar Palavra-chave",
   "contribution.summary.empty": "Uma breve descrição da sua proposta é OPCIONAL para Rascunho Privado mas OBRIGATÓRIO para Rascunho Público e Proposta Publicada. Máximo de 125 palavras.",
-  "contribution.summary.empty.non-author": "This proposal does not have a summary yet."
+  "contribution.summary.empty.non-author": "This proposal does not have a summary yet.",
+  "campaign.research-consent-approve": "Agree",
+  "campaign.research-consent-reject": "Disgree",
+  "campaign.research-consent-notification": "Your preferences for this research have been saved. You can change it anytime from the options.",
+  "campaign.research-consent-menu": "Review consent form"
 }

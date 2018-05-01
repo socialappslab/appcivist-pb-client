@@ -5,10 +5,11 @@
           &nbsp;
         </div>
         <div class="modal-body">
-          <h1>Consent modal</h1>
+          {{ vm.consentText }}
         </div>
-        <div class="modal-footer text-right" ng-if="vm.startVoting">
-          
+        <div class="modal-footer text-right" >
+            <button class="btn btn-default consent-button" ng-click="vm.updateConsent('true')">{{ vm.agreeText }}</button>
+            <button class="btn btn-default consent-button" ng-click="vm.updateConsent('false')">{{ vm.disagreeText }}</button>
         </div>
       </div>
     </div>

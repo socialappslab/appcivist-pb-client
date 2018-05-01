@@ -1178,7 +1178,7 @@
       let payload = {};
       payload.status = "DRAFT";
       payload.title = this.proposalDefaultTitle;
-      payload.text = this.proposalDefaultDescription;
+      payload.text = "";
       payload.type = contributionType;
       Pace.restart();
       let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(

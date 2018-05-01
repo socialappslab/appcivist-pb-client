@@ -25,12 +25,13 @@
     '$sce',
     'Notifications',
     '$breadcrumb',
-    'FileUploader'
+    'FileUploader',
+    'LocaleService'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce, Notifications, $breadcrumb, FileUploader) {
+    $state, Voting, $sce, Notifications, $breadcrumb, FileUploader, LocaleService) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -298,7 +299,9 @@
           $scope.campaign = data;
 
           if($scope.isAnonymous) {
-             $translate.use($scope.campaign.lang);
+            $translate.use($scope.campaign.lang);
+            moment.locale($scope.campaign.lang);
+            LocaleService.setLocale($scope.campaign.lang);
           }
           $scope.campaign.rsID = data.resourceSpaceId; // must be always id
           $scope.campaign.rsUUID = data.resourceSpaceUUID;

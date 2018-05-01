@@ -8,12 +8,12 @@
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
     '$rootScope', 'loginService', '$translate', '$state', '$stateParams',
-    'WorkingGroups', 'Assemblies', 'AppCivistAuth', 'Space'
+    'WorkingGroups', 'Assemblies', 'AppCivistAuth', 'Space', 'LocaleService'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
     $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies,
-                    AppCivistAuth, Space) {
+                    AppCivistAuth, Space, LocaleService) {
 
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
@@ -33,6 +33,8 @@
 
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
+        moment.locale($scope.user.language);
+        LocaleService.setLocale($scope.user.language);
       }
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
       $scope.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');

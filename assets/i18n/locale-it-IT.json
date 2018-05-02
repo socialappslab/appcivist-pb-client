@@ -1367,5 +1367,17 @@
   "campaign.research-consent-reject": "Pas d'accord",
   "campaign.research-consent-notification": "Vos préférences pour cette recherche ont été enregistrées. Vous pouvez les modifier quand vous le voulez dans le menu d'campagne (Voir Menu => 'Revoir le consentement').",
   "campaign.research-consent-menu": "Revoir le consentement",
-  "Your current answer is": "Votre réponse actuelle est"
+  "Your current answer is": "Votre réponse actuelle est",
+  "Follow Proposal": "Suivre la proposition",
+  "Unfollow Proposal": "Arrête de suivre la proposition",
+  "Follow Idea": "Suivre l'idée",
+  "Unfollow Idea": "Arrête de suivre l'idée",
+  "Would you like to follow this proposal?": "Voulez-vous suivre cette proposition ?",
+  "Would you like to follow this idea?": "Aimeriez-vous ne plus suivre cette proposition ?",
+  "Would you like to unfollow this proposal?": "Voulez-vous suivre cette idée ?",
+  "Would you like to unfollow this idea?": "Aimeriez-vous ne plus suivre cette idée ?",
+  "Follow": "Suivre",
+  "Unfollow": "Arrête de suivre",
+  "Contribution saved": "Contribution enregistrée",
+  "Contribution updated": "Contribution mise à jour"
 }

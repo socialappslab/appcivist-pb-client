@@ -1363,5 +1363,17 @@
   "campaign.research-consent-reject": "Disagree",
   "campaign.research-consent-notification": "Your preferences for this research have been saved. You can change it anytime from the options.",
   "campaign.research-consent-menu": "Review consent form",
-  "Your current answer is": "Your current answer is"
+  "Your current answer is": "Your current answer is",
+  "Follow Proposal": "Follow Proposal",
+  "Unfollow Proposal": "Unfollow Proposal",
+  "Follow Idea": "Follow Idea",
+  "Unfollow Idea": "Unfollow Idea",
+  "Would you like to follow this proposal?": "Would you like to follow this proposal?",
+  "Would you like to follow this idea?": "Would you like to follow this idea?",
+  "Would you like to unfollow this proposal?": "Would you like to follow this proposal?",
+  "Would you like to unfollow this idea?": "Would you like to follow this idea?",
+  "Follow": "Follow",
+  "Unfollow": "Unfollow",
+  "Contribution saved": "Contribution saved",
+  "Contribution updated": "Contribution updated"
 }

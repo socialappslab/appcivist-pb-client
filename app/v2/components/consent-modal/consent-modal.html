@@ -6,7 +6,7 @@
         </div>
         <div class="modal-body" ng-bind-html="vm.consentText"></div>
         <div class="modal-footer text-right" >
-          {{ 'Your current answer is' | translate}}:&nbsp;
+          <span ng-if="vm.userParticipation.userProvidedConsent"> {{ 'Your current answer is' | translate}}:&nbsp;</span>
           <button ng-if="vm.userParticipation.userProvidedConsent && vm.userParticipation.userConsent" class="btn btn-success consent-button" disabled>{{vm.agreeText}}</button>
           <button ng-if="vm.userParticipation.userProvidedConsent && !vm.userParticipation.userConsent" class="btn btn-danger consent-button" disabled>{{vm.disagreeText}}</button>
           <button class="btn btn-success consent-button" ng-click="vm.updateConsent('true')">{{ vm.agreeText }}</button>

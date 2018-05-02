@@ -10,8 +10,18 @@ angular.module('ErrorCatcher', [])
         if (rejection.data && rejection.data.responseStatus === 'SERVERERROR') {
           var $resource = $injector.get('$resource');
           var logError = {};
-          logError.user = localStorageService.get('user').username;
-          logError.path = rejection.config.url;
+          let u = localStorageService.get('user')
+          logError.user = u ?
+            u.username ?
+              u.username : u.email ?
+                u.email : rejection.config ?
+                  rejection.config.data ?
+                    rejection.config.data.email ?
+                      rejection.config.data.email : "ANONYMOUS"
+                  : "ANONYMOUS"
+                : "ANONYMOUS"
+            : "ANONYMOUS";
+          logError.path = rejection.config ? rejection.config.url : '';
           logError.message = rejection.data.statusMessage;
           $resource(serverBaseUrl + '/log/front').save(logError);
         }

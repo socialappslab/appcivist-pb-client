@@ -255,6 +255,7 @@
       }
       rsp.$promise.then(function (data) {
         $scope.campaignConfigs = data;
+        $scope.campaign.configs = $scope.campaignConfigs;
 
         if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
           $scope.showComments = false;

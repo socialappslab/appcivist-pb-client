@@ -57,6 +57,7 @@
     this.openModal = openModal.bind(this);
     this.closeModal = closeModal.bind(this);
     this.onEditContributionSuccess = onEditContributionSuccess.bind(this);
+    this.showConsentModal = showConsentModal.bind(this);
 
 
     this.$onInit = () => {
@@ -268,6 +269,10 @@
     function onEditContributionSuccess() {
       this.closeModal('contributionEditModal');
       $window.location.reload();
+    }
+
+    function showConsentModal() {
+      angular.element('#consentModal').modal({show:true, keyboard:false, backdrop:'static'});
     }
   }
 }());

@@ -1,3 +1,17 @@
+.footlogo {
+  width: 90%;
+  height: 35px;
+  margin: 1.5rem auto 2rem;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  &.dark {
+    background-image: url('/assets/images/socialappslab-dark.png');
+  }
+  &.light {
+    background-image: url('/assets/images/socialappslab-light.png');
+  }
+}
 .about__title {
   background: #144236;
   border: 0px solid #979797;

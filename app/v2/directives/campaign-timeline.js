@@ -28,9 +28,9 @@
 
   appCivistApp.directive('campaignTimeline', CampaignTimeline);
 
-  CampaignTimeline.$inject = ['Campaigns', 'localStorageService'];
+  CampaignTimeline.$inject = ['Campaigns', 'localStorageService', '$translate', 'LocaleService'];
 
-  function CampaignTimeline(Campaigns, localStorageService) {
+  function CampaignTimeline(Campaigns, localStorageService, $translate, LocaleService) {
 
     return {
       restrict: 'E',
@@ -58,10 +58,11 @@
         }
 
         scope.formatDate = function(date) {
+          moment.locale(LocaleService.getLocale());
           if (angular.isDate(date)) {
-            return moment(date).local().format('L');
+            return moment(date).format('L');
           }
-          return moment(date, 'YYYY-MM-DD HH:mm').local().format('L');
+          return moment(date, 'YYYY-MM-DD HH:mm').format('L');
         };
 
         scope.toggleMilestoneDescription = function(milestone, milestones) {
@@ -97,11 +98,13 @@
           var res;
           if (scope.user) {
             res = Campaigns.components(aid, cid, false, null, null);
+            moment.locale(scope.user.language);
           } else {
             res = Campaigns.components(null, null, true, cid, null);
           }
           res.then(function(data) {
             var currentComponent = Campaigns.getCurrentComponent(data);
+            scope.currentDescription = currentComponent.description;
             angular.forEach(data, function(c) {
               c.cssClass = getComponentCssClass(currentComponent, c);
             });

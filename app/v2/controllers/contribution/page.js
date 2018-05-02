@@ -1475,9 +1475,11 @@
       let rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId).get().$promise;
       rsp.then(
         contribution => {
-          $scope.proposal.title = contribution.title;
-          $scope.proposal.text = contribution.text;
-          $scope.proposal.lastUpdate = $filter('date')(contribution.lastUpdate.split(' ')[0], 'mediumDate');
+          if (!$scope.isTitleEdit)
+            $scope.proposal.title = contribution.title;
+          if (!$scope.isDescriptionEdit)
+            $scope.proposal.text = contribution.text;
+          $scope.proposal.lastUpdate = moment($filter('date')(contribution.lastUpdate.split(' ')[0], 'mediumDate')).local().format('L');
         },
         error => Notify.show(error.statusMessage, 'error')
       )
@@ -1671,6 +1673,7 @@
     function saveDescription() {
       let vm = this;
       let payload = _.cloneDeep($scope.proposal);
+      delete payload.lastUpdate;
       payload.status = payload.status.toUpperCase();
       let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
 

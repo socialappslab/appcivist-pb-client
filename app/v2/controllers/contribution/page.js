@@ -473,6 +473,26 @@
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
           } else {
+            var rsp = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
+
+            rsp.then(function (components) {
+              var currentComponent = Campaigns.getCurrentComponent(components);
+              currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-
+              localStorageService.set('currentCampaign.currentComponent', currentComponent);
+              // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
+              if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
+                scope.isProposalIdeaStage = true;
+              } else {
+                scope.isProposalIdeaStage = false;
+                if (currentComponent.type == 'VOTING') {
+                  scope.isVotingStage = true;
+                }
+              }
+
+              scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
+            }, function (error) {
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+            });
             vm.loadValues(vm.proposal.resourceSpaceUUID, true);
           }
           loadRelatedContributions();
@@ -1611,7 +1631,6 @@
     }
 
     function descriptionToggleEdit() {
-      if ($scope.extendedTextIsPeerDoc) return;
       if (!this.isDescriptionEdit) {
         this.isDescriptionEdit = true;
         this.descriptionBackup = this.proposal.text;

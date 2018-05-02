@@ -50,7 +50,7 @@
 
         $timeout(() => {
           this.getCampaignParticipation();
-        }, 5000);
+        }, 7000);
       }
 
       this.getConsentText = () => {

@@ -10,12 +10,12 @@
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications', '$timeout', '$interval'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
-    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications, $timeout, $interval) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -73,6 +73,7 @@
     $scope.deleteNonMemberAuthor = deleteNonMemberAuthor.bind($scope);
     $scope.changeStatus = changeStatus.bind($scope);
     $scope.checkCustomHeader = checkCustomHeader.bind($scope);
+    $scope.syncProposalWithPeerdoc = syncProposalWithPeerdoc.bind($scope);
 
     activate();
 
@@ -434,6 +435,11 @@
             } else if ($scope.extendedTextIsPeerDoc) {
               $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
+              $timeout(() => {
+                $interval(() => {
+                  $scope.syncProposalWithPeerdoc();
+                }, 10000);
+              }, 6000);
               // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {
@@ -1441,6 +1447,18 @@
       )
     }
 
+    function syncProposalWithPeerdoc() {
+      let rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId).get().$promise;
+      rsp.then(
+        contribution => {
+          $scope.proposal.title = contribution.title;
+          $scope.proposal.text = contribution.text;
+          $scope.proposal.lastUpdate = $filter('date')(contribution.lastUpdate.split(' ')[0], 'mediumDate');
+        },
+        error => Notify.show(error.statusMessage, 'error')
+      )
+    }
+
     function loadCampaignResources() {
       if ($scope.isAnonymous) {
         var rsp = Campaigns.publicResources($scope.campaignID).query();
@@ -1603,6 +1621,7 @@
     }
 
     function descriptionToggleEdit() {
+      if ($scope.extendedTextIsPeerDoc) return;
       if (!this.isDescriptionEdit) {
         this.isDescriptionEdit = true;
         this.descriptionBackup = this.proposal.text;
@@ -1617,6 +1636,7 @@
     }
 
     function titleToggleEdit() {
+      if ($scope.extendedTextIsPeerDoc) return;
       if (!this.isTitleEdit) {
         this.isTitleEdit = true;
         this.TitleBackup = this.proposal.text;

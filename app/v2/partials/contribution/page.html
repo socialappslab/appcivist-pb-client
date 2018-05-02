@@ -7,10 +7,10 @@
         <div class="row title_block">
           <h1 class="heading--title" ng-if="!isTitleEdit && userIsAuthor" ng-click="titleToggleEdit()">
             {{proposal.title}}
-            <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor"></i>
+            <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor && !extendedTextIsPeerDoc"></i>
           </h1>
           <h1 class="heading--title" ng-if="!isTitleEdit && !userIsAuthor">{{proposal.title}}
-            <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor"></i>
+            <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor && !extendedTextIsPeerDoc"></i>
           </h1>
           <div class="editableArea text-center" ng-if="isTitleEdit">
             <input ng-model="proposal.title" id="add_proposal__title" name="text" placeholder="{{'Title' | translate}}">
@@ -74,7 +74,7 @@
         </div>
         <div class="instruction-wrapper" ng-if="showInstructions">
           <div class="instruction" ng-bind-html="trustedHtml(currentComponent.instructions)" />
-          <p class="read-more"><button class="btn btn-default">{{ 'Read More' | translate}}</button></p>
+          <p class="read-more"><button class="btn btn-default" data-toggle="modal" data-target="#instructionsModal">{{ 'Read more' | translate}}</button></p>
         </div>
         <div ng-class="{ 'half-length': showInstructions }">
           <ul class="row tags">
@@ -322,7 +322,7 @@
           <h2 ng-if="showBodyDescriptionTitle">
             {{'contribution.summary' | translate}}
             <i class="fa fa-edit smalledit" id="descriptionEditToggle"
-               ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
+               ng-click="descriptionToggleEdit()" ng-if="userIsAuthor && !extendedTextIsPeerDoc">
             </i>
           </h2>
           <p class="contribution_description" translate="contribution.summary.empty"
@@ -813,6 +813,24 @@
               </div>
             </fieldset>
           </div>
+        </div>
+        <div class="modal-footer text-left">
+          <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instructions modal -->
+  <div class="modal fade dashboardModal" id="instructionsModal"
+       tabindex="-1" role="dialog" ng-if="showInstructions">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div ng-bind-html="trustedHtml(currentComponent.instructions)" />
         </div>
         <div class="modal-footer text-left">
           <a data-dismiss="modal"><i class="fa fa-arrow-left fa-lg"></i>{{ 'Return to' | translate }} {{proposal.title}}</a>

@@ -30,10 +30,10 @@
         <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
-        <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate}}</a>
+        <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
-        <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate}}</a>
+        <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate | titlecase}}</a>
       </li>
     </ul>
   </div>

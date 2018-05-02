@@ -25,12 +25,13 @@
     '$sce',
     'Notifications',
     '$breadcrumb',
-    'FileUploader'
+    'FileUploader',
+    'LocaleService'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce, Notifications, $breadcrumb, FileUploader) {
+    $state, Voting, $sce, Notifications, $breadcrumb, FileUploader, LocaleService) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -64,8 +65,9 @@
       $scope.commentType = 'public';
       $scope.selectedCards = [];
       $scope.subscribed = false;
-      
+
       $scope.campaignFaq = null;
+      $scope.requireGroupAuthorship = true;
 
       // TODO: read the following from configurations in the campaign/component
       $scope.newProposalsEnabled = false;
@@ -160,6 +162,7 @@
       $scope.mediaCount = mediaCount.bind($scope);
       $scope.pictureCount = pictureCount.bind($scope);
       $scope.videoCount = videoCount.bind($scope);
+      $scope.createContribution = createContribution.bind($scope);
 
       // add attachment form
       $scope.submitAttachment = submitAttachment.bind($scope);
@@ -206,6 +209,9 @@
         $scope.openAddAttachmentByUrl = false;
         $scope.openAddAttachment = false;
       });
+      $scope.cm = {
+        isHover: false
+      };
     }
 
     function joinWg(groupId) {
@@ -294,9 +300,11 @@
       res.$promise.then(
         function (data) {
           $scope.campaign = data;
-
+          console.log($scope.campaign);
           if($scope.isAnonymous) {
-             $translate.use($scope.campaign.lang);
+            $translate.use($scope.campaign.lang);
+            moment.locale($scope.campaign.lang);
+            LocaleService.setLocale($scope.campaign.lang);
           }
           $scope.campaign.rsID = data.resourceSpaceId; // must be always id
           $scope.campaign.rsUUID = data.resourceSpaceUUID;
@@ -348,9 +356,9 @@
       );
     }
 
-    function loadThemeKeywordDescription(title, description) {
+    function loadThemeKeywordDescription(title, description, url) {
       let content = description === undefined ? 'No description available' : description;
-      angular.element('#themes-keywords #description').show().html("<p><strong>"+title+"</strong></p><p>"+content+"</p>");
+      angular.element('#themes-keywords #description').show().html("<p><strong><a href='"+url+"' target='_blank'>"+title+"</a></strong></p><p>"+content+"</p>");
     }
 
     function loadCampaignBrief() {
@@ -412,18 +420,59 @@
           this.configsLoaded = true;
           rsp = Campaigns.getConfiguration(this.campaign.rsID).get();
         }
-        rsp.$promise.then( this.afterLoadingCampaignConfigsSuccess, this.afterLoadingCampaignConfigsError);
+        rsp.$promise.then(this.afterLoadingCampaignConfigsSuccess, this.afterLoadingCampaignConfigsError);
       }
     }
 
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
+      this.campaign.configs = this.campaignConfigs;
       let faqUrlConfig = data['appcivist.campaign.faq-url'];
+      this.requireGroupAuthorship = data['appcivist.campaign.require-group-authorship'] === 'true' ? true : false;
+      this.proposalDefaultTitle = data['appcivist.campaign.contribution.default-title'];
+      this.proposalDefaultDescription = data['appcivist.campaign.contribution.default-description'];
+      this.proposalDefaultTitle = this.proposalDefaultTitle ? this.proposalDefaultTitle : "Create your title"; // TODO translate
+      this.proposalDefaultDescription = this.proposalDefaultDescription ? this.proposalDefaultDescription : "Create a brief description"; // TODO translate
+      this.allowedContributionTypes = data['appcivist.campaign.contribution-types'];
+      this.themesExtendedDescription = data['appcivist.campaign.themes.extended-description-url'];
+
+      let showAnalyticsConf = data['appcivist.campaign.toolbar.analytics'];
+      let showMediaConf = data['appcivist.campaign.toolbar.media'];
+      let showDocumentsConf = data['appcivist.campaign.toolbar.documents'];
+      let showWorkingGroupsConf = data['appcivist.campaign.toolbar.working-groups'];
+
+      this.showAnalytics = showAnalyticsConf ? showAnalyticsConf.toLowerCase() === 'false' ? false : true : true;
+      this.showMedia = showMediaConf ? showMediaConf.toLowerCase() === 'false' ? false : true : true;
+      this.showDocuments = showDocumentsConf ? showDocumentsConf.toLowerCase() === 'false' ? false : true : true;
+      this.showWorkingGroups = showWorkingGroupsConf ? showWorkingGroupsConf.toLowerCase() === 'false' ? false : true : true;
+
+
+      if (this.allowedContributionTypes) {
+        this.enableProposals = this.allowedContributionTypes.toLowerCase().includes("proposal");
+        this.enableIdeas = this.allowedContributionTypes.toLowerCase().includes("idea");
+        this.enableComments = this.allowedContributionTypes.toLowerCase().includes("comment") || this.allowedContributionTypes.toLowerCase().includes("discussion");
+      } else {
+        this.enableProposals = true;
+        this.enableIdeas = true;
+        this.enableComments = true;
+      }
+
+      console.log(this.requireGroupAuthorship);
       this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
       this.afterLoadingCampaignConfigs();
     }
 
     function afterLoadingCampaignConfigsError(data) {
+      // some default configs
+      this.requireGroupAuthorship = false;
+      this.proposalDefaultTitle = "Create your title"; // TODO translate
+      this.proposalDefaultDescription = "Create a brief description"; // TODO translate
+      this.allowedContributionTypes = "IDEAS, PROPOSALS, COMMENTS, DISCUSSIONS";
+      this.enableProposals = true;
+      this.enableIdeas = true;
+      this.enableComments = true;
+      this.requireGroupAuthorship = true;
+      this.campaignFaq = "#";
       Notify.show('Error while trying to fetch campaign config', 'error');
       this.afterLoadingCampaignConfigs();
     }
@@ -833,15 +882,22 @@
      * @param {Object} contribution
      */
     function redirectToProposal(contribution) {
-      this.closeModal();
+      // this.closeModal();
+      console.log(contribution);
       let group = contribution.workingGroupAuthors && contribution.workingGroupAuthors[0];
 
       if (group) {
-        $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
-          pid: contribution.contributionId,
-          aid: this.assemblyID,
-          cid: this.campaignID,
+        $state.go('v2.assembly.aid.campaign.workingGroup.contribution.coid', {
+          coid: contribution.contributionId,
+          aid: $scope.assemblyID,
+          cid: $scope.campaignID,
           gid: group.groupId,
+        });
+      } else {
+        $state.go('v2.assembly.aid.campaign.contribution.coid', {
+          coid: contribution.contributionId,
+          aid: $scope.assemblyID,
+          cid: $scope.campaignID
         });
       }
     }
@@ -852,10 +908,14 @@
      * @param {Object[]} configs
      */
     function checkJoinWGButtonVisibility(configs) {
-      const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
-      if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
-        let myGroups = localStorageService.get('myWorkingGroups');
-        this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
+      if (!this.requireGroupAuthorship) {
+        this.displayJoinWorkingGroup = false;
+      } else {
+        const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
+        if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
+          let myGroups = localStorageService.get('myWorkingGroups');
+          this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
+        }
       }
       return this.displayJoinWorkingGroup;
     }
@@ -1124,6 +1184,32 @@
         } ,
         error => {
           Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
+    function createContribution(contributionType = 'PROPOSAL') {
+      let payload = {};
+      payload.status = "DRAFT";
+      payload.title = this.proposalDefaultTitle;
+      payload.text = "";
+      payload.type = contributionType;
+      Pace.restart();
+      let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
+        contribution => {
+          Pace.stop();
+          Notify.show('Contribution saved', 'success');
+          console.log(contribution);
+          redirectToProposal(contribution);
+        },
+        error => {
+          $translate('error.creation.contribution')
+            .then(
+              errorMsg => {
+                let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                Notify.show(fullErrorMsg, 'error');
+              });
+
         }
       );
     }

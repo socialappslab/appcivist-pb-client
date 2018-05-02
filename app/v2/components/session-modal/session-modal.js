@@ -25,10 +25,10 @@
     });
 
     SessionModalCtrl.$inject = [
-      '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies', '$window', 'Utils'
+      '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies', '$window', 'Utils', 'Memberships'
   ];
 
-  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies, $window, Utils) {
+  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies, $window, Utils, Memberships) {
 
     var self = this;
 

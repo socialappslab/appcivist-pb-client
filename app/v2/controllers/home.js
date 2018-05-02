@@ -47,6 +47,7 @@
           $scope.assembly = data;
           if($scope.assembly && $scope.assembly.lang && !$scope.user) {
             $translate.use($scope.assembly.lang);
+            moment.locale($scope.assembly.lang);
           }
           localStorageService.set('domain', data);
         });

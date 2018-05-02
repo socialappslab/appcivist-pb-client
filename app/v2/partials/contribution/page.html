@@ -143,8 +143,8 @@
               <li>
                 <!-- Todo support other types of custom field headers, not only those that are represented with a select-->
                 <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
-                        ng-options="option as option.value for option in field.customFieldValueOptions track by option.customFieldValueOptionId"
-                        ng-model="fieldsValuesDict[field.customFieldDefinitionId]"
+                        ng-options="option.value as option.value for option in field.customFieldValueOptions track by option.value"
+                        ng-model="fieldsValuesDict[field.customFieldDefinitionId].value"
                         ng-change="checkCustomHeader(field.customFieldDefinitionId)" />
               </li>
             </ul>

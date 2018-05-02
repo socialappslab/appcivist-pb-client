@@ -1499,11 +1499,12 @@
     function checkCustomHeader(definitionId) {
 
       let value = this.fieldsValuesDict[definitionId];
+      let selectedOption = value.value;
       let newFieldValue = {
         entityTargetType: this.contributionType,
         entityTargetUuid: this.proposal.uuid,
         customFieldDefinition: {customFieldDefinitionId: definitionId},
-        value: value.value
+        value: selectedOption
       };
 
       if (value && value.customFieldValueId) {
@@ -1521,7 +1522,7 @@
         let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
         return rsp.then(
           newValue => {
-            $scope.fieldsValuesDict[definitionId].customFieldValueId = newValue.customFieldValueId;
+            $scope.fieldsValuesDict[definitionId] = newValue;
           },
           error => {
             Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');

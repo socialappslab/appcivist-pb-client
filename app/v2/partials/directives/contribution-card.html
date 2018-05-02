@@ -22,16 +22,6 @@
           <a ng-href="{{contributionUrl}}" style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
           </a>
-
-          <!--<a ng-if="isAnonymous"-->
-             <!--ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/group/{{guuid}}/contribution/{{contribution.uuid}}"-->
-             <!--style="display: block; width: 280px;word-wrap: break-word;">-->
-            <!--{{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}-->
-          <!--</a>-->
-          <!--<a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}/contribution/{{contribution.contributionId}}"-->
-            <!--style="display: block; width: 280px; word-wrap: break-word;">-->
-            <!--{{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}-->
-          <!--</a>-->
         </h1>
         <div class="card__heading_actions" style="z-index: 999">
           <ul class="actions">
@@ -75,8 +65,8 @@
 
     <div class="card__body" style="word-wrap:break-word;">
       <div class="excerpt" style="height: auto;">
-        {{contribution.plainText | limitTo:152 }}{{contribution.plainText.length > 152 ? "..." : ""}}
-      </div>
+        {{contribution.plainText ? contribution.plainText : ('contribution.summary.empty.non-author' | translate : contribution) | limitTo:152 }}
+        {{(contribution.plainText.length) > 152 ? '...' : '.' }}      </div>
       <!-- Control types: distributed, plurality, range, ranked -->
       <contribution-card-voting-control
         type="distributed" ng-if="showVotingButtons && ballotPaper"
@@ -172,7 +162,8 @@
     </header>
     <div class="card__body">
       <div class="excerpt" ng-style="ideaExcerptStyle" ng-bind-html-unsafe="html">
-        {{contribution.plainText|limitTo:152}}{{(contribution.plainText.length) > 152 ? '...' : '.' }}
+        {{contribution.plainText ? contribution.plainText : 'contribution.summary.empty.non-author' | translate : contribution | limitTo:152 }}
+        {{(contribution.plainText.length) > 152 ? '...' : '.' }}
       </div>
     </div>
     <contribution-card-themes themes="mergedThemes"></contribution-card-themes>

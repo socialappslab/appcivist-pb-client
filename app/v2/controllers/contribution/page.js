@@ -1341,7 +1341,7 @@
           $scope.fieldsValues = fieldsValues;
           if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
            $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
-             map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
+             map[obj.customFieldDefinition.customFieldDefinitionId] = obj;
              return map;
            }, {});
            console.log($scope.fieldsValuesDict);
@@ -1499,46 +1499,35 @@
     function checkCustomHeader(definitionId) {
 
       let value = this.fieldsValuesDict[definitionId];
+      let newFieldValue = {
+        entityTargetType: this.contributionType,
+        entityTargetUuid: this.proposal.uuid,
+        customFieldDefinition: {customFieldDefinitionId: definitionId},
+        value: value.value
+      };
 
       if (value && value.customFieldValueId) {
-        // PUT instead thant POST
+        newFieldValue.customFieldValueId = value.customFieldValueId;
+        let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, value.customFieldValueId).update(newFieldValue).$promise;
+        return rsp.then(
+          newValue => {
+            $scope.fieldsValuesDict[definitionId].value = newValue.value;
+          },
+          error => {
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          }
+        );
       } else {
-        // POST new value
-        let newFieldValue = {
-          entityTargetType: this.contributionType,
-          entityTargetUuid: this.proposal.uuid,
-          customFieldDefinition: {customFieldDefinitionId: definitionId},
-          value: value.value
-        };
-
-        // let rsp = Space.fieldsValues(this.spaceID).save(value).$promise;
-        // return rsp.then(
-        //   fieldsValues => {
-        //     $scope.fieldsValues = fieldsValues;
-        //     if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
-        //       $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
-        //         map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
-        //         return map;
-        //       }, {});
-        //       console.log($scope.fieldsValuesDict);
-        //     } else {
-        //       $scope.fieldsValuesDict = {};
-        //     }
-        //   },
-        //   error => {
-        //     Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
-        //   }
-        // );
-
-
-
+        let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
+        return rsp.then(
+          newValue => {
+            $scope.fieldsValuesDict[definitionId].customFieldValueId = newValue.customFieldValueId;
+          },
+          error => {
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          }
+        );
       }
-
-      $scope.fieldsValuesDict[definitionId] = option;
-
-      // POST or PUT
-      console.log($scope.fieldsValuesDict);
-
     }
 
     function loadCustomFields() {

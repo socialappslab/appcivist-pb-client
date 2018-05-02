@@ -1364,7 +1364,7 @@
   "Add Author": "Adicionar Autor",
   "Add Keyword": "Adicionar Palavra-chave",
   "contribution.summary.empty": "Enquanto sua proposta for um Rascunho Privado, o Resumo é OPCIONAL. Ele é OBRIGATÓRIO para tornar sua proposta pública (Rascunho Público ou Proposta Publicada). Clicar no botão Editar para adicionar um Resumo. Máximo de 125 palavras.",
-  "contribution.summary.empty.non-author": "Esta proposta ainda não tem um resumo."
+  "contribution.summary.empty.non-author": "Esta proposta ainda não tem um resumo.",
   "campaign.research-consent-approve": "Agree",
   "campaign.research-consent-reject": "Disgree",
   "campaign.research-consent-notification": "Your preferences for this research have been saved. You can change it anytime from the options.",

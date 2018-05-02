@@ -1057,7 +1057,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     addAuthor(uuid, author) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors', { uuid: uuid }).save(author).$promise;
     },
-    
+
     addNonMemberAuthor(uuid, author) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/nonmemberauthors', { uuid: uuid }).save(author).$promise;
     },
@@ -1073,7 +1073,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     deleteAuthor(uuid, auuid) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors/:auuid', { uuid, auuid }).delete().$promise;
     },
-    
+
     deleteNonMemberAuthor(uuid, nmaid) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/nonmemberauthors/:nmaid', { uuid, nmaid }).delete().$promise;
     }
@@ -1549,7 +1549,25 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id
        */
       fieldValue(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue', { sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue', { sid }, {
+          save: {
+            method: 'POST'
+          }
+        });
+      },
+
+      /**
+       * Returns a $resource to interact with the custom fields values endpoint.
+       *
+       * @method services.Space#fieldValue
+       * @param {number} sid - The space id
+       */
+      fieldValueResource(sid, cfid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue/:cfid', { sid: sid, cfid: cfid }, {
+          update: {
+            method: 'PUT'
+          }
+        });
       },
 
       /**

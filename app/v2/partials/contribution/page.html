@@ -20,8 +20,6 @@
         </div>
 
         <div class="row attribution">
-
-          <!--<member-card ng-if="!proposal.authors" user="group"></member-card>-->
           <div ng-repeat="author in proposal.authors" style="display: inline-block; margin-left: 10px;">
             <member-card user="author"></member-card>
             <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
@@ -57,12 +55,6 @@
               <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add Author' | translate}}
             </button>
           </div>
-          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
-          <!--<div style="display: inline-block; margin-left: 10px;">-->
-            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'AUTHORS'">-->
-              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
-            <!--</a>-->
-          <!--</div>-->
           <p class="small">
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
             <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
@@ -93,15 +85,11 @@
                 <!--<span ng-if="!$last">,</span>-->
               </li>
             <li ng-if="themesLimit == 1 && !isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)">
-              <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId" ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
-              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
+              <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId"
+                      ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
+              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;"
+                 ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
             </li>
-            <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
-            <!--<li>-->
-              <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'THEMES'">-->
-                <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
-              <!--</a>-->
-            <!--</li>-->
             <div class="liveEdit smaller" ng-if="themesLimit > 1 || themesLimit == -1">
               <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery"
                 ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()"><i ng-if="userIsAuthor" id="themeSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
@@ -118,8 +106,6 @@
               <button ng-click="showSearch('themeSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Theme</button>
             </div>
           </ul>
-
-
           <ul class="row tags">
             <li class="title">{{'Keywords'|translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
@@ -129,12 +115,6 @@
               </a>
               <!--<span ng-if="!$last">,</span>-->
             </li>
-            <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
-            <!--<li>-->
-              <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'KEYWORDS'">-->
-                <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
-              <!--</a>-->
-            <!--</li>-->
             <div class="liveEdit smaller">
               <input class="btn-sm" type="text" id="keywordSearch" name="keywords" ng-model="keywordsQuery"
                 ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()"><i ng-if="userIsAuthor" id="keywordSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('keywordSearch')"></i>
@@ -157,71 +137,18 @@
           </ul>
 
           <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
-            <ul class="row tags" ng-repeat="field in customHeaderFields">
+            <!-- TODO: CURRENT implementation only works for customFields of type MULTIPLE_CHOICE and limit 1-->
+            <ul class="row tags" ng-repeat="field in customHeaderFields | filter: {fieldType:'MULTIPLE_CHOICE'}">
               <li class="title">{{ field.name }}:</li>
               <li>
-                <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}" ng-options="option as option.value for option in field.customFieldValueOptions track by option.customFieldValueOptionId" ng-model="customHeaderValues[field.customFieldDefinitionId]" ng-change="checkCustomHeader()" />
+                <!-- Todo support other types of custom field headers, not only those that are represented with a select-->
+                <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
+                        ng-options="option as option.value for option in field.customFieldValueOptions track by option.customFieldValueOptionId"
+                        ng-model="fieldsValuesDict[field.customFieldDefinitionId]"
+                        ng-change="checkCustomHeader(field.customFieldDefinitionId)" />
               </li>
             </ul>
           </div>
-
-        <ul class="row tags">
-          <li class="title">{{'Keywords'|translate}}: </li>
-          <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
-            <a>
-              {{theme.title}}
-              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
-            </a>
-            <!--<span ng-if="!$last">,</span>-->
-          </li>
-          <!-- TODO: replace current add author/theme/keyword form with a more clear button to add these things that opens up modal or shows the text field below the relevant section -->
-          <!--<li>-->
-            <!--<a data-toggle="modal" data-target="#addToContributionModal" ng-click="$parent.currentAdd.context = 'KEYWORDS'">-->
-              <!--<i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-plus-square" style="margin-left: 5px;"></i>-->
-            <!--</a>-->
-          <!--</li>-->
-          <div class="liveEdit smaller">
-            <input class="btn-sm" type="text" id="keywordSearch" name="keywords" ng-model="keywordsQuery"
-              ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()"><i ng-if="userIsAuthor" id="keywordSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('keywordSearch')"></i>
-            <fieldset class="tags" id="keywordSearchTags">
-              <div class="autocomplete" ng-if="keywordsSuggestionsVisible">
-                <ul class="suggestion-list">
-                  <li ng-repeat="item in $parent.currentAdd.items track by $index" ng-click="$parent.currentAddOnSelect(item)"
-                    class="suggestion-item" style="min-height: 50px;">
-                    <span ng-bind-html="$parent.currentAddGetText(item)"></span>
-                  </li>
-                  <li ng-if="$parent.currentAdd.context === 'KEYWORDS'" ng-click="$parent.currentAddOnSelect({'title': $parent.currentAdd.query, 'type': 'EMERGENT'})"
-                      class="suggestion-item" style="min-height: 50px;">
-                    <span ng-bind-html="'<strong>Add New Keyword</strong>'"></span>
-                  </li>
-                </ul>
-              </div>
-            </fieldset>
-            <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add Keyword' | translate}}</button>
-          </div>
-        </ul>
-
-        <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
-          <!-- Custom Fields -->
-          <!-- TODO: for consistency, adapt and reuse the custom-field component below, adding a way of integrating and update function for values-->
-          <!--<div class="row tags field__container" ng-if="(customHeaderFields && customHeaderFields.length)">-->
-            <!--<fieldset>-->
-              <!--<custom-field ng-repeat="field in customHeaderFields | orderBy:'position'"-->
-                            <!--definition="field" value="vm.values[field.customFieldDefinitionId]"-->
-                            <!--use-select-for-single="true"></custom-field>-->
-            <!--</fieldset>-->
-          <!--</div>-->
-          <!-- CURRENT implementation only works for customFields of type MULTIPLE_CHOICE and limit 1-->
-          <ul class="row tags" ng-repeat="field in customHeaderFields | filter: {fieldType:'MULTIPLE_CHOICE'}">
-            <li class="title">{{ field.name }}:</li>
-            <li>
-              <!-- Todo support other types of custom field headers, not only those that are represented with a select-->
-              <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
-                      ng-options="option as option.value for option in field.customFieldValueOptions track by option.customFieldValueOptionId"
-                      ng-model="fieldsValuesDict[field.customFieldDefinitionId]"
-                      ng-change="checkCustomHeader(field.customFieldDefinitionId)" />
-            </li>
-          </ul>
         </div>
 
         <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex">

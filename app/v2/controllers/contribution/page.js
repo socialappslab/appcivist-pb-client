@@ -1591,12 +1591,12 @@
 
     function follow() {
       let sub = {
-        spaceId: $scope.proposal.rsID,
+        spaceId: $scope.proposal.rsUUID,
         userId: $scope.user.userId,
         spaceType: "CONTRIBUTION",
         subscriptionType: "REGULAR"
       }
-      Notifications.subscribe(sub.spaceId).save(sub).$promise.then(
+      Notifications.subscribe($scope.proposal.rsID).save(sub).$promise.then(
         response => {
           $scope.following = true;
           $scope.subscription = response;

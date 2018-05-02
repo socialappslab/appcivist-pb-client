@@ -1333,12 +1333,15 @@
       return rsp.then(
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
-          // if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
-          //  $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
-          //    map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
-          //    return map;
-          //  }, {});
-          // }
+          if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
+           $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
+             map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
+             return map;
+           }, {});
+           console.log($scope.fieldsValuesDict);
+          } else {
+            $scope.fieldsValuesDict = {};
+          }
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1475,8 +1478,49 @@
       return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type && f.entityPart !== 'HEADER');
     }
 
-    function checkCustomHeader() {
-      console.log($scope.customHeaderValues);
+    function checkCustomHeader(definitionId) {
+
+      let value = this.fieldsValuesDict[definitionId];
+
+      if (value && value.customFieldValueId) {
+        // PUT instead thant POST
+      } else {
+        // POST new value
+        let newFieldValue = {
+          entityTargetType: this.contributionType,
+          entityTargetUuid: this.proposal.uuid,
+          customFieldDefinition: {customFieldDefinitionId: definitionId},
+          value: value.value
+        };
+
+        // let rsp = Space.fieldsValues(this.spaceID).save(value).$promise;
+        // return rsp.then(
+        //   fieldsValues => {
+        //     $scope.fieldsValues = fieldsValues;
+        //     if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
+        //       $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
+        //         map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
+        //         return map;
+        //       }, {});
+        //       console.log($scope.fieldsValuesDict);
+        //     } else {
+        //       $scope.fieldsValuesDict = {};
+        //     }
+        //   },
+        //   error => {
+        //     Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        //   }
+        // );
+
+
+
+      }
+
+      $scope.fieldsValuesDict[definitionId] = option;
+
+      // POST or PUT
+      console.log($scope.fieldsValuesDict);
+
     }
 
     function loadCustomFields() {

@@ -34,7 +34,12 @@
         /**
          * determines if it renders for header part. Default: false
          */
-        isHeader: '<'
+        isHeader: '<',
+
+        /**
+         * use select element for single choice
+         */
+        useSelectForSingle: '='
       },
       controller: CustomFieldCtrl,
       controllerAs: 'vm',

@@ -197,7 +197,31 @@
                 </ul>
               </div>
             </fieldset>
-          </div>-->
+            <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add Keyword' | translate}}</button>
+          </div>
+        </ul>
+
+        <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
+          <!-- Custom Fields -->
+          <!-- TODO: for consistency, adapt and reuse the custom-field component below, adding a way of integrating and update function for values-->
+          <!--<div class="row tags field__container" ng-if="(customHeaderFields && customHeaderFields.length)">-->
+            <!--<fieldset>-->
+              <!--<custom-field ng-repeat="field in customHeaderFields | orderBy:'position'"-->
+                            <!--definition="field" value="vm.values[field.customFieldDefinitionId]"-->
+                            <!--use-select-for-single="true"></custom-field>-->
+            <!--</fieldset>-->
+          <!--</div>-->
+          <!-- CURRENT implementation only works for customFields of type MULTIPLE_CHOICE and limit 1-->
+          <ul class="row tags" ng-repeat="field in customHeaderFields | filter: {fieldType:'MULTIPLE_CHOICE'}">
+            <li class="title">{{ field.name }}:</li>
+            <li>
+              <!-- Todo support other types of custom field headers, not only those that are represented with a select-->
+              <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
+                      ng-options="option as option.value for option in field.customFieldValueOptions track by option.customFieldValueOptionId"
+                      ng-model="fieldsValuesDict[field.customFieldDefinitionId]"
+                      ng-change="checkCustomHeader(field.customFieldDefinitionId)" />
+            </li>
+          </ul>
         </div>
 
         <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex">
@@ -275,14 +299,18 @@
             <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#followModal" ng-if="contributionType && !following && !isAnonymous">Follow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
             <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal" ng-if="contributionType && following && !isAnonymous">Unollow {{contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea'}}</button>
             <div class="overlay_status" ng-if="contributionType">
-              <span class="status_label">Status</span>
-              <span class="status">
-                <select name="currentStatus" id="currentStatus" ng-model="proposal.status" ng-change="changeStatus(proposal.status, '{{proposal.status}}')" ng-disabled="!allowChangeStatus">
+              <span class="status_label">{{'Status' | translate}}</span>
+              <span class="status" ng-if="allowChangeStatus && userIsAuthor">
+                <select name="currentStatus" id="currentStatus" ng-model="proposal.status"
+                        ng-change="changeStatus(proposal.status, '{{proposal.status}}')">
                   <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
                   <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</option>
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
                 </select>
               </span>
+              <span class="status" ng-if="(!allowChangeStatus || !userIsAuthor) && proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</span>
+              <span class="status" ng-if="(!allowChangeStatus || !userIsAuthor) && proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</span>
+              <span class="status" ng-if="(!allowChangeStatus || !userIsAuthor) && proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
             </div>
           </div>
         </div>
@@ -303,7 +331,7 @@
           <p class="contribution_description" translate="contribution.summary.empty.non-author"
              ng-if="(!proposal.text || proposal.text == '') && !userIsAuthor">
           </p>
-          <p class="contribution_description" ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML: '') + '&nbsp;&nbsp;&nbsp;' + proposal.text)"
+          <p class="contribution_description" ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
              ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor" ng-click="descriptionToggleEdit()">
           </p>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"

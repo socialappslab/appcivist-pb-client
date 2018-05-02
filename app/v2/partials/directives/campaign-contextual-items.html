@@ -1,15 +1,15 @@
 <div>
-  <ul ng-if="vm.userIsAssemblyCoordinator">
-    <li class="li-action-menu">
+  <ul>
+    <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator">
       <a ng-click="vm.openModal('contributionExport')">
         {{vm.filters.mode === 'idea' || vm.filters.mode === 'myideas' ? 'Export ideas'
               : vm.filters.mode === 'proposal' || vm.filters.mode === 'myproposals' ? 'Export proposals' : 'Export contributions' | translate}}
       </a>
     </li>
-    <li class="li-action-menu"><a href="" ng-click="vm.edit()">{{'Edit' | translate}}</a></li>
-    <li class="li-action-menu" ng-if="vm.showIdeasImport"><a ng-click="vm.openModal('ideasImportForm')">{{'Import ideas' | translate}}</a></li>
-    <li class="li-action-menu" ng-if="vm.showProposalImport"><a ng-click="vm.openModal('proposalsImportForm')">{{'Import proposals' | translate}}</a></li>
-    <li class="li-action-menu"><a ng-click="vm.downloadAuthorInfo()">{{'Download Author Information' | translate}}</a></li>
+    <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator"><a href="" ng-click="vm.edit()">{{'Edit' | translate}}</a></li>
+    <li class="li-action-menu" ng-if="vm.showIdeasImport && vm.userIsAssemblyCoordinator"><a ng-click="vm.openModal('ideasImportForm')">{{'Import ideas' | translate}}</a></li>
+    <li class="li-action-menu" ng-if="vm.showProposalImport && vm.userIsAssemblyCoordinator"><a ng-click="vm.openModal('proposalsImportForm')">{{'Import proposals' | translate}}</a></li>
+    <li class="li-action-menu"><a ng-click="vm.downloadAuthorInfo() && vm.userIsAssemblyCoordinator">{{'Download Author Information' | translate}}</a></li>
     <li class="li-action-menu"><a ng-click="vm.showConsentModal()">{{'campaign.research-consent-menu' | translate}}</a></li>
     <!--<li class="li-action-menu"><a ng-click="vm.subscribe()">{{'Subscribe' | translate}}</a></li>-->
   </ul>

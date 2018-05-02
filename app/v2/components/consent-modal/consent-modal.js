@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-  
+
     /**
      * @name consent-modal
      * @memberof components
@@ -25,11 +25,11 @@
           user: '<'
         }
       });
-  
+
       ConsentModalCtrl.$inject = [
         '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies', '$window', 'Utils', 'Memberships', '$timeout', 'Campaigns', '$sce', '$translate'
     ];
-  
+
     function ConsentModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies, $window, Utils, Memberships, $timeout, Campaigns, $sce, $translate) {
 
       let self = this;
@@ -101,6 +101,8 @@
       }
 
       this.updateConsent = (consentText) => {
+        this.userParticipation.userConsent = consentText == 'true' ? true : consentText  == true ? true : false;
+        this.userParticipation.userProvidedConsent = true;
         let rsp = Campaigns.consent(this.assembly, this.campaign.campaignId, this.user.userId, consentText).update().$promise;
         rsp.then (
           consent => {
@@ -114,4 +116,3 @@
       }
     }
   }());
-  

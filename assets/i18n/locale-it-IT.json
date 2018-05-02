@@ -1362,9 +1362,10 @@
   "Add Author": "Adicionar Autor",
   "Add Keyword": "Ajouter un mot clé",
   "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one. The limit is 125 words.",
-  "contribution.summary.empty.non-author": "This proposal does not have a summary yet.",
-  "campaign.research-consent-approve": "Agree",
-  "campaign.research-consent-reject": "Disgree",
-  "campaign.research-consent-notification": "Your preferences for this research have been saved. You can change it anytime from the options.",
-  "campaign.research-consent-menu": "Review consent form"
+  "contribution.summary.empty.non-author": "Cette proposition n'a pas encore de résumé.",
+  "campaign.research-consent-approve": "D'accord",
+  "campaign.research-consent-reject": "Pas d'accord",
+  "campaign.research-consent-notification": "Vos préférences pour cette recherche ont été enregistrées. Vous pouvez les modifier quand vous le voulez dans le menu d'campagne (Voir Menu => 'Revoir le consentement').",
+  "campaign.research-consent-menu": "Revoir le consentement",
+  "Your current answer is": "Votre réponse actuelle est"
 }

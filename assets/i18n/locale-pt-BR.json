@@ -1365,8 +1365,8 @@
   "Add Keyword": "Adicionar Palavra-chave",
   "contribution.summary.empty": "Enquanto sua proposta for um Rascunho Privado, o Resumo é OPCIONAL. Ele é OBRIGATÓRIO para tornar sua proposta pública (Rascunho Público ou Proposta Publicada). Clicar no botão Editar para adicionar um Resumo. Máximo de 125 palavras.",
   "contribution.summary.empty.non-author": "Esta proposta ainda não tem um resumo.",
-  "campaign.research-consent-approve": "Agree",
-  "campaign.research-consent-reject": "Disgree",
-  "campaign.research-consent-notification": "Your preferences for this research have been saved. You can change it anytime from the options.",
-  "campaign.research-consent-menu": "Review consent form"
+  "campaign.research-consent-approve": "De acordo",
+  "campaign.research-consent-reject": "Discordo",
+  "campaign.research-consent-notification": "Suas preferências para esta pesquisa foram salvas. Você pode alterá-los quando quiser no menu de iniciativa (consulte Menu => 'Revisar o consentimento').",
+  "campaign.research-consent-menu": "Revisar o consentimento"
 }

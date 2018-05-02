@@ -1360,13 +1360,17 @@
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
           if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
-           $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
-             map[obj.customFieldDefinition.customFieldDefinitionId] = obj;
-             return map;
-           }, {});
-           console.log($scope.fieldsValuesDict);
+            $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function (map, obj) {
+              map[obj.customFieldDefinition.customFieldDefinitionId] = obj;
+              return map;
+            }, {});
+            $scope.fieldsValuesIdsDict = $scope.fieldsValues.reduce(function (map, obj) {
+              map[obj.customFieldDefinition.customFieldDefinitionId] = obj.customFieldValueId;
+              return map;
+            }, {});
           } else {
             $scope.fieldsValuesDict = {};
+            $scope.fieldsValuesIdsDict = {};
           }
         },
         error => {
@@ -1519,6 +1523,7 @@
     function checkCustomHeader(definitionId) {
 
       let value = this.fieldsValuesDict[definitionId];
+      let cfid = this.fieldsValuesIdsDict[definitionId];
       let selectedOption = value.value;
       let newFieldValue = {
         entityTargetType: this.contributionType,
@@ -1527,12 +1532,14 @@
         value: selectedOption
       };
 
-      if (value && value.customFieldValueId) {
-        newFieldValue.customFieldValueId = value.customFieldValueId;
-        let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, value.customFieldValueId).update(newFieldValue).$promise;
+      // The custom field value already exists
+      if (cfid) {
+        newFieldValue.customFieldValueId = cfid;
+        let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, cfid).update(newFieldValue).$promise;
         return rsp.then(
           newValue => {
             $scope.fieldsValuesDict[definitionId].value = newValue.value;
+            Notify.show('Updated custom field', 'success');
           },
           error => {
             Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1543,6 +1550,8 @@
         return rsp.then(
           newValue => {
             $scope.fieldsValuesDict[definitionId] = newValue;
+            $scope.fieldsValuesIdsDict[definitionId] = newValue.customFieldValueId;
+            Notify.show('Updated custom field', 'success');
           },
           error => {
             Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');

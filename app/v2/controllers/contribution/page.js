@@ -1479,7 +1479,7 @@
             $scope.proposal.title = contribution.title;
           if (!$scope.isDescriptionEdit)
             $scope.proposal.text = contribution.text;
-          $scope.proposal.lastUpdate = moment($filter('date')(contribution.lastUpdate.split(' ')[0], 'mediumDate')).local().format('L');
+          $scope.proposal.lastUpdate = $filter('date')(contribution.lastUpdate.split(' ')[0], 'mediumDate');
         },
         error => Notify.show(error.statusMessage, 'error')
       )

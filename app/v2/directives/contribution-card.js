@@ -46,11 +46,13 @@
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
           scope.toggleSelection = toggleSelection.bind(scope);
 
-          if (scope.contribution.source !== undefined && scope.contribution.source === 'social_ideation_facebook') {
+          if (scope.contribution.source !== undefined && (scope.contribution.source.toLowerCase().includes('facebook'))) {
+            scope.sourceIsFacebook = true;
             scope.source_url = scope.contribution.sourceUrl;
+          } else if (scope.contribution.sourceUrl) {
+            scope.source_url = scope.contribution.sourceUrl;
+            scope.sourceIsFacebook = false;
           }
-
-          // Se contribution card header cover style
 
           // Prepare first WG's cover and color
           let wgCover = null;
@@ -120,6 +122,11 @@
           if (!scope.isAnonymous) {
             scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
             scope.contributionId = scope.contribution.contributionId;
+            scope.contributionUrl =
+              "#/v2/assembly/" + scope.assemblyId
+              + "/campaign/" + scope.campaignId
+              + (scope.notAssigned ? "" : "/group/" + scope.groupId)
+              + "/contribution/" + scope.contributionId;
           } else {
             scope.auuid = $stateParams.auuid;
             scope.cuuid = $stateParams.cuuid;
@@ -127,6 +134,11 @@
               $stateParams.guuid : workingGroupAuthorsLength ?
               scope.contribution.workingGroupAuthors[0].uuid : "";
             scope.contributionId = scope.contribution.uuid;
+            scope.contributionUrl =
+              "#/v2/p/assembly/" + scope.auuid
+              + "/campaign/" + scope.cuuid
+              + (scope.notAssigned ? "" : "/group/"+scope.guuid)
+              + "/contribution/" + scope.contribution.uuid;
           }
         }
 

@@ -22,7 +22,8 @@
       // Optional object to use as source. Also, values will be updated in this object, making
       // onChange callback unnecessary.
       author: '=?',
-      isMember: '='
+      isMember: '=',
+      creatorIsCoordinator: '='
     },
     controller: Form,
     controllerAs: 'vm',

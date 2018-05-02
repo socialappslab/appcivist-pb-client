@@ -5,8 +5,11 @@
             style="height: 192px;" ng-mouseenter="cm.isHover = false"
             ng-style="coverPhotoStyle"
             ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
-      <div class="card__heading_bookmark facebook-bookmark" ng-if="source_url">
-        <a href="{{source_url}}" target="_blank"><i class="fa fa-lg fa-bookmark"></i></a>
+      <div class="card__heading_bookmark facebook-bookmark ideas" ng-if="source_url">
+        <a href="{{source_url}}" target="_blank">
+          <i class="fa fa-lg fa-facebook-square" ng-if="sourceIsFacebook"></i>
+          <i class="fa fa-lg fa-external-link-square" ng-if="!sourceIsFacebook"></i>
+        </a>
       </div>
       <div class="card__heading_bookmark" ng-if="contribution.pinned">
         <i class="fa fa-bookmark"></i>
@@ -19,17 +22,11 @@
       </p>
       <div class="title_block">
         <h1 class="heading--headline">
-          <a ng-if="isAnonymous"
-             ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/group/{{guuid}}/contribution/{{contribution.uuid}}"
-             style="display: block; width: 280px;word-wrap: break-word;">
-            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
-          </a>
-          <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}/contribution/{{contribution.contributionId}}"
-            style="display: block; width: 280px; word-wrap: break-word;">
+          <a ng-href="{{contributionUrl}}" style="display: block; width: 280px;word-wrap: break-word;">
             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
           </a>
         </h1>
-        <div class="card__heading_actions">
+        <div class="card__heading_actions" style="z-index: 999">
           <ul class="actions">
             <li ng-if="isCoordinator" class="action__toggle_selection">
               <input type="checkbox" id="checkbox_{{contribution.uuid}}" value="{{contribution.uuid}}" class="contribution-select" ng-model="selected" ng-click="toggleSelection(contribution.uuid)"><label for="checkbox_{{contribution.uuid}}"></label>
@@ -66,21 +63,21 @@
           </div>
         </a>
       </div>
-      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons"></contribution-feedback>
+      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons" campaign="campaign"></contribution-feedback>
     </header>
 
     <div class="card__body" style="word-wrap:break-word;">
       <div class="excerpt" style="height: auto;">
-        {{contribution.plainText | limitTo:152 }}{{contribution.plainText.length > 152 ? "..." : ""}}
-      </div>
+        {{contribution.plainText ? contribution.plainText : ('contribution.summary.empty.non-author' | translate : contribution) | limitTo:152 }}
+        {{(contribution.plainText.length) > 152 ? '...' : '.' }}      </div>
       <!-- Control types: distributed, plurality, range, ranked -->
       <contribution-card-voting-control
         type="distributed" ng-if="showVotingButtons && ballotPaper"
         ballot-paper="ballotPaper" contribution="contribution" ballot-tokens="ballotTokens"></contribution-card-voting-control>
     </div>
-    
+
     <div class="ribbon-wrapper">
-      <div class="ribbon" ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">{{contribution.status}}</div>
+      <div class="ribbon" ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">{{contribution.status | titlecase | translate}}</div>
     </div>
   </div>
 </div>
@@ -92,7 +89,10 @@
     <header class="card__header {{contribution.cover ? 'card__header__with_background' : ''}}"
             ng-style="coverPhotoStyle" ng-mouseenter="cm.isHover = false">
       <div class="card__heading_bookmark facebook-bookmark ideas" ng-if="source_url">
-        <a href="{{source_url}}" target="_blank"><i class="fa fa-lg fa-bookmark"></i></a>
+        <a href="{{source_url}}" target="_blank">
+          <i class="fa fa-lg fa-facebook-square" ng-if="sourceIsFacebook"></i>
+          <i class="fa fa-lg fa-external-link-square" ng-if="!sourceIsFacebook"></i>
+        </a>
       </div>
       <div class="col-lg-9">
         <h3 class="{{contribution.cover ? 'white-text' : ''}}">
@@ -115,11 +115,11 @@
         <p class="{{contribution.cover ? 'white-text' : ''}}">{{'Created on' | translate}} {{formatDate(contribution.creation)}}</p>
       </div>
 
-      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons"></contribution-feedback>
+      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons" campaign="campaign"></contribution-feedback>
 
       <!-- contextual -->
       <div class="title_block {{contribution.cover ? 'white-text' : ''}}">
-        <div class="card__heading_actions">
+        <div class="card__heading_actions" style="z-index:999">
           <ul class="actions">
             <li class="action__toggle_selection">
               <a><!--
@@ -168,7 +168,8 @@
     </header>
     <div class="card__body">
       <div class="excerpt" ng-style="ideaExcerptStyle" ng-bind-html-unsafe="html">
-        {{contribution.plainText|limitTo:152}}{{(contribution.plainText.length) > 152 ? '...' : '.' }}
+        {{contribution.plainText ? contribution.plainText : ('contribution.summary.empty.non-author' | translate : contribution) | limitTo:152 }}
+        {{(contribution.plainText.length) > 152 ? '...' : '.' }}
       </div>
     </div>
     <contribution-card-themes themes="mergedThemes"></contribution-card-themes>

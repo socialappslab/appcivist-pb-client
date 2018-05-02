@@ -25,10 +25,10 @@
     });
 
     SessionModalCtrl.$inject = [
-      '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies'
+      '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', '$translate', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies', '$window', 'Utils', 'Memberships'
   ];
 
-  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies) {
+  function SessionModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, $translate, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies, $window, Utils, Memberships) {
 
     var self = this;
 
@@ -49,10 +49,20 @@
       this.contributionID = null;
       this.groupID = null;
       this.proposalID = null;
+
+      this.ldapOn = false;
+      this.forgotPasswordUrl = null;
+      this.signUpUrl = null;
+      this.signUpTitle = null;
+      this.registrationTitle = null;
+      this.usernamePlaceholder = null;
+      this.passwordPlaceholder = null;
+/*
+      this.loginProvider = null;
       this.assembly = this.assembly ? this.assembly : localStorageService.get('currentAssembly');
       if (!this.assembly)
         this.assembly = this.assembly ? this.assembly : localStorageService.get('anonymousAssembly');
-
+*/
       this.auuid = $stateParams.auuid ? $stateParams.auuid : null;
       this.cuuid = $stateParams.cuuid ? $stateParams.cuuid : null;
       this.guuid = $stateParams.guuid ? $stateParams.guuid : null;
@@ -64,6 +74,87 @@
       this.coid = null;
       this.gid = null;
       this.pid = null;
+
+      this.user = localStorageService.get('user');
+      this.userIsAuthenticated = loginService.userIsAuthenticated();
+
+      if (!this.userIsAuthenticated || Utils.isUUID($stateParams.aid)) {
+        this.isAnonymous = true;
+        if (!$stateParams.auuid) {
+          this.assemblyId = $stateParams.aid;
+        } else {
+          this.assemblyId = $stateParams.auuid;
+        }
+      } else {
+        if (this.user && this.user.language) {
+          $translate.use(this.user.language);
+        }
+        this.assemblyId = parseInt($stateParams.aid);
+        this.userIsMember = Memberships.isMember("assembly",this.assemblyId);
+      }
+
+      this.fetchAssembly(this.assemblyId);
+
+    }
+
+    this.readConfig = () => {
+      Space.configsByUUID(this.assembly.resourcesResourceSpaceUUID).get().$promise.then((data) => {
+        this.ldapOn = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
+        this.forgotPasswordUrl = data['appcivist.assembly.authentication.forgot-url'];
+        this.signUpUrl = data['appcivist.assembly.authentication.signup-url'];
+        this.signUpTitle = data['appcivist.assembly.authentication.signup-title'];
+        this.registrationTitle = data['appcivist.assembly.authentication.registration-title'];
+        this.usernamePlaceholder = data['appcivist.assembly.authentication.username-placeholder'];
+        this.passwordPlaceholder = data['appcivist.assembly.authentication.password-placeholder'];
+        this.passwordRepeatPlaceholder = data['appcivist.assembly.authentication.password-repeat-placeholder'];
+      });
+    }
+
+    this.fetchAssembly = (aid) => {
+      let rsp;
+
+      if (this.isAnonymous) {
+        if (Utils.isUUID(aid)) {
+          rsp = Assemblies.assemblyByUUID(aid).get().$promise;
+        } else if (isNaN(aid)) {
+          rsp = Assemblies.assemblyByShortName(aid).get().$promise;
+        } else {
+          this.unauthorizedAccess = true;
+        }
+      } else {
+        if (isNaN($stateParams.aid)) {
+          rsp = Assemblies.assemblyByShortName($stateParams.aid).get().$promise;
+          this.shortname = $stateParams.aid;
+        } else {
+          rsp = Assemblies.assembly(aid).get().$promise;
+        }
+      }
+
+      if (!this.unauthorizedAccess) {
+        rsp.then(
+          assembly => {
+            self.assembly = assembly;
+            if (self.isAnonymous) {
+              if (self.assembly && self.assembly.lang) {
+                $translate.use(self.assembly.lang);
+                localStorageService.set('anonymousAssembly',self.assembly);
+              }
+              self.assemblyId = self.assembly.uuid;
+            } else {
+              localStorageService.set('currentAssembly',self.assembly);
+              self.assemblyId = self.assembly.assemblyId ? self.assembly.assemblyId : self.assembly.uuid;
+              self.readAssemblyByShortname = self.assembly.assemblyId ? false : true;
+            }
+            self.shortname = self.assembly.shortname;
+
+            self.readConfig();
+          },
+
+          error => {
+            Notify.show(error.statusMessage, 'error');
+          }
+        )
+      }
     }
 
     this.signup = () => {
@@ -86,7 +177,16 @@
           return;
         }
         if (this.showLogin) {
-          var rsp = AppCivistAuth.signIn().save(this.user);
+          if (this.ldapOn) {
+            this.user.username = this.user.email;
+            this.loginProvider = 'ldap';
+            console.log(this.loginProvider);
+            console.log(this.auuid);
+            console.log(this.assembly);
+            var rsp = AppCivistAuth.signIn(this.loginProvider, this.assembly.uuid).save(this.user);
+          } else {
+            var rsp = AppCivistAuth.signIn().save(this.user);
+          }
           rsp.$promise.then(this.signupSuccess, this.signupError);
         } else {
           var rsp = AppCivistAuth.signUp().save(this.user);
@@ -223,22 +323,35 @@
       if (error && error.data && error.data.statusMessage) {
         msg = error.data.statusMessage;
       }
-      Notify.show(error ? error.data ? error.data.statusMessage : error.statusMessage ? error.statusMessage : '' : '', 'error');
+      Notify.show(error ? error.data ? error.data.statusMessage : error.statusMessage ? error.statusMessage : error.message ? error.message : '' : '', 'error');
     }
 
     this.toggleShowLogin = () => {
       if (this.showLogin===undefined) {
         this.showLogin = false;
       }
-      this.showLogin = !this.showLogin;
+
+      if (this.showLogin == false) {
+        this.showLogin = true;
+      } else {
+        if (this.signUpUrl) {
+          $window.open(this.signUpUrl, '_blank');
+        } else {
+          this.showLogin = false;
+        }
+      }
     }
 
     this.redirectToForgotPassword = () => {
-      // #/v2/user/password/forgot
-      $('#sessionModal').modal('hide');
-      $('body').removeClass('modal-open');
-      $('.modal-backdrop').remove()
-      $state.go('v2.user.password.forgot', {}, { reload: true });
+      if (this.forgotPasswordUrl) {
+        $window.open(this.forgotPasswordUrl, '_blank');
+      } else {
+        // #/v2/user/password/forgot
+        $('#sessionModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove()
+        $state.go('v2.user.password.forgot', {}, { reload: true });
+      }
     }
 
     function fetchAnonymousAssembly() {

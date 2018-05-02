@@ -30,7 +30,16 @@
          * determines if custom field should be render in readonly mode or edition mode.
          * Values: readonly | edition. Defaults: edition.
          */
-        renderer: '@'
+        renderer: '@',
+        /**
+         * determines if it renders for header part. Default: false
+         */
+        isHeader: '<',
+
+        /**
+         * use select element for single choice
+         */
+        useSelectForSingle: '='
       },
       controller: CustomFieldCtrl,
       controllerAs: 'vm',

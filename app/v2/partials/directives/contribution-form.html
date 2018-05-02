@@ -95,6 +95,25 @@
           </fieldset>
         </div>
 
+        <!-- Source -->
+        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['source'] && vm.userIsAssemblyCoordinator">
+          <fieldset class="add_proposal__availble_themes">
+            <p class="intro bold" for="source">{{'Source' | translate}}</p>
+            <input id="source" name="source" ng-model="vm.contribution.source" placeholder="{{'e.g., Facebook' | translate}}"
+                   ng-disabled="vm.disabled">
+          </fieldset>
+        </div>
+
+
+        <!-- Source URL -->
+        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['sourceUrl'] && vm.userIsAssemblyCoordinator">
+          <fieldset class="add_proposal__availble_themes">
+            <p class="intro bold" for="source_url">{{'Source URL' | translate}}</p>
+            <input id="source_url" name="source_url" ng-model="vm.contribution.sourceUrl" placeholder="'e.g., https://www.facebook.com/groups/RenovaElParqueCaballero/permalink/429621217499228/'"
+                   ng-disabled="vm.disabled">
+          </fieldset>
+        </div>
+
         <!-- Status -->
         <div class="field__container assign_proposal_to_wg" ng-if="vm.isProposal && !vm.hiddenFieldsMap['status']">
           <p class="intro bold" for="status">{{'Status' | translate}}</p>
@@ -118,7 +137,7 @@
               {{'contribution.form.add-authors.disclaimer' | translate }}
             </span>
             <tags-field id="authors" load-items="vm.loadAuthors(query)" options="vm.authorsOptions" selected="vm.contribution.authors"
-                        prefetch="true" disabled="vm.isAuthorsDisabled" can-add="vm.isIdea" field="item.name"></tags-field>
+                        prefetch="true" disabled="vm.isAuthorsDisabled" can-add="true" field="item.name"></tags-field>
           </fieldset>
         </div>
 
@@ -136,6 +155,7 @@
         <span ng-if="vm.isIdea && vm.isCreate">
           {{'idea.form.author.disclaimer' | translate : vm.campaign}}
         </span>
+
         <div class="field__container assign_proposal_to_users nonmember_author" ng-if="vm.isIdea && vm.isCreate && !vm.hiddenFieldsMap['non-member-authors']">
           <fieldset class="user__assignment">
             <uib-accordion close-others="true">
@@ -145,7 +165,10 @@
                   <h5 ng-if="!author.name">{{'Author Information' | translate}}</h5>
                   <h5 ng-if="author.name">{{author.name}}<span ng-if="!author.email" style="color: darkred;">&nbsp;&nbsp;({{'Email is required'|translate}})</span></h5>
                 </uib-accordion-heading>
-                <nonmember-author-form id="non-member-authors" author="author" ng-disabled="vm.disabled" form="contributionForm" is-member="!author.userId.includes('tmp')"></nonmember-author-form>
+                <nonmember-author-form id="non-member-authors" author="author" form="contributionForm"
+                                       is-member="!author.userId.includes('tmp')" creator-is-coordinator="vm.userIsAssemblyCoordinator">
+
+                </nonmember-author-form>
               </div>
             </uib-accordion>
           </fieldset>

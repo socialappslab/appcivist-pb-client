@@ -33,7 +33,7 @@
       <em>{{'File max size is:' | translate}} {{vm.definition.limit}} MB.</em>
     </div>
 
-    <div ng-if="vm.isSingleChoice">
+    <div ng-if="vm.isSingleChoice && !vm.useSelectForSingle">
       <div class="radio" ng-repeat="option in vm.definition.customFieldValueOptions track by $index">
         <label>
           <input type="radio" ng-model="vm.model"
@@ -48,6 +48,12 @@
                  placeholder="{{'Enter value' | translate}}...">
         </label>
       </div>
+    </div>
+
+    <div ng-if="vm.isSingleChoice && vm.useSelectForSingle">
+      <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
+              ng-options="option as option.value for option in field.customFieldValueOptions track by option.customFieldValueOptionId"
+              ng-model="vm.model"/>
     </div>
 
     <div ng-if="vm.isMultipleChoice">

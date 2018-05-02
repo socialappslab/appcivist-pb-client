@@ -110,6 +110,8 @@
 
     function initEdit() {
       var vm = this;
+      this.isCoordinator = !this.isAnonymous || Memberships.isAssemblyCoordinator(this.assembly.assemblyId);
+      this.isModerator = !this.isAnonymous || Memberships.rolIn('assembly', this.assembly.assemblyId, 'MODERATOR');
 
       if (!this.contribution) {
         $scope.$watch('vm.contribution', function (newVal) {

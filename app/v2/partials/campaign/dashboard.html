@@ -11,31 +11,21 @@
         <div class="row" style="position: unset;">
           <div class="row no-margin">
             <div class="title_block">
-                <h1 class="heading--title">{{campaign.title}}</h1>
-                <!-- HEADER -> actions menu -->
-                <div class="heading_actions" ng-if="!isAnonymous">
-                  <ul>
-                    <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
-                      <a><i class="fa fa-cog "></i></a>
-                    </li>
-                  </ul>
-                  <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;"
-                    ng-if="cm.isHover">
-                    <div class="content">
-                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType" contributions="selectedCards" filters="filters"></campaign-contextual-items>
-                    </div>
-                  </div>
-                </div>
+              <h1 class="heading--title">{{campaign.title}}</h1>
             </div>
             <div>
               <p class="description" style="margin-top:0.2em"
                  ng-bind-html="((campaign.goal | limitTo:240)+((campaign.goal.length) > 240 ? '...' : '' )) | linky"></p>
               <p><a data-toggle></a>
-                <i class="fa fa-info"></i>&nbsp;&nbsp;
-                <a data-toggle="modal" data-target="#learnMoreModal"><span>{{'Read more'|translate}}</span></a>
+                <a data-toggle="modal" data-target="#learnMoreModal"><i class="fa fa-info"></i>&nbsp;&nbsp;<span>{{'Read more'|translate}}</span></a>
                 &nbsp;&nbsp;<a data-toggle="modal" data-target="#themes-keywords">
-                  <i class="fa fa-tags"></i><span>{{'Themes & Keywords'|translate}}</span>
+                  <i class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{'Themes & Keywords'|translate}}</span>
                 </a>
+                <span ng-if="campaignFaq">
+                &nbsp;&nbsp;<a href="{{campaignFaq}}" target="_blank">
+                  <i class="fa fa-question-circle"></i>&nbsp;&nbsp;<span>FAQ</span>
+                </a>
+                </span>
               </p>
             </div>
 
@@ -46,53 +36,66 @@
 
           <!-- HEADER -> AppCivist Logo Attribution -->
           <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
-            <div class="overlay new_overlay" style="display: inline-flex">
+            <div class="overlay new_overlay" style="display: inline-flex; z-index:2;">
               <ul class="overlay_buttons">
-                <li class="overlay_button">
-                  <a data-toggle="modal" data-target="#workingGroups">
+                <div class="contextual_wrapper" ng-if="!isAnonymous">
+                  <li class="overlay_button action__contextual_menu" ng-mouseenter="cm.isHover = true" style="border-right: 1px solid #efefef;">
+                    <a><i class="fa fa-lg fa-cog"></i></a>
+                  </li>
+                  <div class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false"
+                       style="top: 3em; left: auto;" ng-if="cm.isHover">
+                    <div class="content">
+                      <campaign-contextual-items campaign="campaign" current-component-type="currentComponentType"
+                                                 contributions="selectedCards" filters="filters" is-hover="cm.isHover"></campaign-contextual-items>
+                    </div>
+                  </div>
+                </div>
+
+                <li class="overlay_button" ng-if="showWorkingGroups">
+                  <a data-toggle="modal" data-target="#workingGroups" ng-if="showWorkingGroups">
                     <i class="fa fa-users fa-lg"></i><span>{{'Working groups'|translate}}</span>
                     <span class="number" ng-if="myWorkingGroups.length > 0 || otherWorkingGroups.length > 0">({{myWorkingGroups.length+otherWorkingGroups.length}})</span>
                   </a>
                 </li>
-                <li class="overlay_button">
-                  <a data-toggle="modal" data-target="#documents">
+                <li class="overlay_button" ng-if="showDocuments">
+                  <a data-toggle="modal" data-target="#documents" >
                     <i class="fa fa-file-text-o fa-lg"></i><span>{{'Documents'|translate}}</span>
                     <span class="number" ng-if="documents.length > 0">({{documents.length}})</span>
                   </a>
                 </li>
-                <li class="overlay_button">
+                <li class="overlay_button" ng-if="showMedia">
                   <a data-toggle="modal" data-target="#media">
                     <i class="fa fa-film fa-lg"></i><span>{{'Media'|translate}}</span><span class="number"></span>
                     <span class="number" ng-if="media.length > 0">({{media.length}})</span>
                   </a>
                 </li>
-                <li class="overlay_button">
+                <li class="overlay_button" ng-if="showAnalytics">
                   <a data-toggle="modal" data-target="#analytics">
                     <i class="fa fa-bar-chart fa-lg"></i><span>{{'Analytics'|translate}}</span><span class="number"></span>
                   </a>
                 </li>
               </ul>
               <div class="powered_logo">
-                  <div class="logo__wrapper__light">
-                    <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
-                        <path class="svg__shape" d="M26.357,14.928l-1.809-1.999c-0.5-0.548-1.334-0.595-1.882-0.096l-1.643,1.5
-                          c-0.644,0.571-1.286,1.31-2.142,0.381l-0.93-1.023c-0.358-0.382-0.952-0.404-1.333-0.071l-1.382,1.262
-                          c-0.381,0.357-0.404,0.952-0.071,1.333l0.977,1.095c0.523,0.573,0.595,1.024-0.119,1.668l-0.643,0.595
-                          c-0.786,0.713-1.452,0.452-2.144-0.31l-1-1.119c-1-1.096-0.643-1.667,0.167-2.381l2.31-2.071c0.476-0.429,0.523-1.214,0.096-1.69
-                          l-2.548-2.833c-0.429-0.477-1.215-0.524-1.691-0.096l-2.762,2.5C7.334,12,7.286,12.786,7.715,13.262l2.048,2.263
-                          c0.809,0.904,0.904,1.498-0.144,2.452l-1.428,1.285c-0.5,0.451-0.548,1.262-0.096,1.762l1.69,1.881
-                          c0.452,0.5,1.262,0.548,1.762,0.096l1.31-1.191c0.881-0.785,1.548-0.976,2.357-0.071l0.857,0.952
-                          c0.356,0.381,0.929,0.43,1.332,0.072l1.43-1.285c0.381-0.358,0.429-0.93,0.071-1.334l-0.929-1.024
-                          c-0.714-0.785-0.453-1.332,0.216-1.928l0.522-0.477c0.904-0.81,1.452-0.548,2.119,0.19l1.5,1.643c0.5,0.548,1.333,0.595,1.882,0.096
-                          l1.999-1.81C26.81,16.31,26.835,15.477,26.357,14.928z M16.001,31C7.739,31,1,24.262,1,16S7.739,1,16.001,1S31,7.738,31,16
-                          S24.263,31,16.001,31z M16.001,4.786C9.81,4.786,4.786,9.833,4.786,16c0,6.166,5.048,11.19,11.215,11.19
-                          c6.166,0,11.215-5.001,11.215-11.19C27.216,9.81,22.191,4.786,16.001,4.786z" />
-                      </svg>
-                  </div>
-                    <div class="powered_by" translate="Powered by AppCivist"></div>
-                  </div>
+                <div class="powered_by" translate="Powered by AppCivist"></div>
+                <div class="logo__wrapper__light">
+                  <svg class="logo__svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                      x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" xml:space="preserve">
+                      <path class="svg__shape" d="M26.357,14.928l-1.809-1.999c-0.5-0.548-1.334-0.595-1.882-0.096l-1.643,1.5
+                        c-0.644,0.571-1.286,1.31-2.142,0.381l-0.93-1.023c-0.358-0.382-0.952-0.404-1.333-0.071l-1.382,1.262
+                        c-0.381,0.357-0.404,0.952-0.071,1.333l0.977,1.095c0.523,0.573,0.595,1.024-0.119,1.668l-0.643,0.595
+                        c-0.786,0.713-1.452,0.452-2.144-0.31l-1-1.119c-1-1.096-0.643-1.667,0.167-2.381l2.31-2.071c0.476-0.429,0.523-1.214,0.096-1.69
+                        l-2.548-2.833c-0.429-0.477-1.215-0.524-1.691-0.096l-2.762,2.5C7.334,12,7.286,12.786,7.715,13.262l2.048,2.263
+                        c0.809,0.904,0.904,1.498-0.144,2.452l-1.428,1.285c-0.5,0.451-0.548,1.262-0.096,1.762l1.69,1.881
+                        c0.452,0.5,1.262,0.548,1.762,0.096l1.31-1.191c0.881-0.785,1.548-0.976,2.357-0.071l0.857,0.952
+                        c0.356,0.381,0.929,0.43,1.332,0.072l1.43-1.285c0.381-0.358,0.429-0.93,0.071-1.334l-0.929-1.024
+                        c-0.714-0.785-0.453-1.332,0.216-1.928l0.522-0.477c0.904-0.81,1.452-0.548,2.119,0.19l1.5,1.643c0.5,0.548,1.333,0.595,1.882,0.096
+                        l1.999-1.81C26.81,16.31,26.835,15.477,26.357,14.928z M16.001,31C7.739,31,1,24.262,1,16S7.739,1,16.001,1S31,7.738,31,16
+                        S24.263,31,16.001,31z M16.001,4.786C9.81,4.786,4.786,9.833,4.786,16c0,6.166,5.048,11.19,11.215,11.19
+                        c6.166,0,11.215-5.001,11.215-11.19C27.216,9.81,22.191,4.786,16.001,4.786z" />
+                    </svg>
+                </div>
               </div>
+            </div>
           </div>
         </div>
       </header>
@@ -116,9 +119,16 @@
              ng-click="openModal('ideaFormModal')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Idea' | translate}}
           </a>
+          <!--
           <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
              ng-if="newProposalsEnabled && !displayJoinWorkingGroup"
              ng-click="openModal('proposalFormModal')">
+            <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
+          </a>
+          -->
+          <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
+             ng-if="newProposalsEnabled && !displayJoinWorkingGroup"
+             ng-click="requireGroupAuthorship ? openModal('proposalFormModal') : createContribution('PROPOSAL')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
           </a>
           <a class="primary__button right join__working_group"
@@ -143,17 +153,17 @@
               <header class="proposals__header">
                 <!-- Statistics/Insights summary section-->
                 <div class="dash_insights">
-                  <span ng-if="!commentsSectionExpanded"><a ng-click="toggleCommentsSection()">{{'Show comments'|translate}}</a></span>
-                  <span ng-if="commentsSectionExpanded"><a ng-click="toggleCommentsSection()">{{'Hide comments'|translate}}</a></span>
-                  <span ng-if="currentComponentType!=='IDEAS'">
+                  <span ng-if="!commentsSectionExpanded && enableComments"><a ng-click="toggleCommentsSection()">{{'Show comments'|translate}}</a></span>
+                  <span ng-if="commentsSectionExpanded && enableComments"><a ng-click="toggleCommentsSection()">{{'Hide comments'|translate}}</a></span>
+                  <span ng-if="currentComponentType!=='IDEAS' && enableProposals">
                     <strong>{{'Proposals' | translate}}:</strong>
                     {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}}
                     <small>({{'Published' | translate}})</small>,
                     {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}}
                     <small>({{'Drafts' | translate}})</small>
-                    &nbsp;&ndash;&nbsp;
                   </span>
-                  <span>
+                  <span ng-if="enableIdeas && enableProposals">&nbsp;&ndash;&nbsp;</span>
+                  <span ng-if="enableIdeas">
                     <strong>{{'Ideas' | translate}}:</strong>
                     {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}}
                     <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}}
@@ -163,9 +173,10 @@
               </header>
               <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">
                 <pagination-widget page-size="pageSize" space="spaceID" resource="contribution"
-                                    is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
-                                    components="components" show-voting-buttons="showVotingButtons" filters="filters"
-                                    ballot-paper="ballotPaper" ballot-tokens="ballotTokens" selected="selectedCards" ng-if="showPagination">
+                                   is-anonymous="isAnonymous" is-coordinator="isCoordinator" campaign="campaign"
+                                   components="components" show-voting-buttons="showVotingButtons" filters="filters"
+                                   ballot-paper="ballotPaper" ballot-tokens="ballotTokens" selected="selectedCards"
+                                   ng-if="showPagination">
                 </pagination-widget>
               </div>
             </section>
@@ -628,8 +639,9 @@
         <div class="modal-body about__modal">
           <h4>{{'Themes' | translate}}</h4>
           <ul>
-              <li class="theme" ng-repeat="theme in themes" ng-click="loadThemeKeywordDescription(theme.title, theme.description)">{{theme.title}}</li>
+              <li class="theme" ng-repeat="theme in themes" ng-click="loadThemeKeywordDescription(theme.title, theme.description, theme.url)">{{theme.title}}</li>
           </ul>
+          <p ng-if="themesExtendedDescription"><a ng-href="{{themesExtendedDescription}}" target="_blank">{{'Read the extended description of themes here' | translate}}</a></p>
           <div id="description"></div>
           <h4 style="margin-top: 20px;">{{'Keywords' | translate}}</h4>
           <ul>
@@ -645,3 +657,6 @@
 
   <!-- MOTIVATIONAL MESSAGES -->
   <motivational page="campaign" resource="campaign"></motivational>
+
+  <!-- CONSENT MODAL -->
+  <consent-modal campaign="campaign" config="campaign.configs" assembly="assemblyID" user="user"></consent-modal>

@@ -29,7 +29,8 @@
       core: {
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/api",
-        local: "http://localhost:9000/api",
+        local: "https://testplatform.appcivist.org/api",
+        // local: "http://localhost:9000/api",
         development: "https://devplatform.appcivist-dev.org/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api"
       }
@@ -97,7 +98,10 @@
         'de-DE': 'Deutsch',
         'es-ES': 'Español',
         'fr-FR': 'Français',
-        'it-IT': 'Italiano'
+        'fr-CA': 'Français (CA)',
+        'it-IT': 'Italiano',
+        'es-PY': 'Español (PY)',
+        'pt-BR': 'Portugués (BR)'
       },
       'preferredLocale': 'en-US'
     })
@@ -905,7 +909,7 @@
     $translateProvider
       .preferredLanguage('en-US')
       .fallbackLanguage('en-US')
-      .registerAvailableLanguageKeys(["en-US", "es-ES", "fr-FR", "de-DE", "pt-BR", "fr-CA"], {
+      .registerAvailableLanguageKeys(["en-US", "es-ES", "fr-FR", "de-DE", "pt-BR", "fr-CA", "es-PY"], {
         'en': 'en-US',
         'es': 'es-ES',
         'it': 'it-IT',
@@ -919,7 +923,8 @@
         'de_DE': 'de-DE',
         'pt_BR': 'pt-BR',
         'fr_CA': 'fr-CA',
-        'ca': 'fr-CA'
+        'ca': 'fr-CA',
+        'es_PY': 'es-PY'
       })
       .useSanitizeValueStrategy(null);
 

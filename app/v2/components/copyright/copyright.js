@@ -16,6 +16,7 @@
     .component('copyright', {
       selector: 'copyright',
       bindings: {
+        mode: '@'
       },
       controller: CopyrightCtrl,
       controllerAs: 'vm',
@@ -27,5 +28,5 @@
   ];
 
   function CopyrightCtrl() {
-    }
+  }
 }());

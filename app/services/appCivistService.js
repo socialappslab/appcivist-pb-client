@@ -78,8 +78,18 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService, $in
     assembliesByQuery: function (q) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly', { query: q });
     },
-    assemblyMembers: function (assemblyId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId });
+    assemblyMembers: function (assemblyId, ldap = false, query = '') {
+      var ldap = ldap || false;
+      var query = query || '';
+      if (ldap) {
+        if (query == '') {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true', { aid: assemblyId });
+        } else {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true&ldapsearch=:query', { aid: assemblyId, query: query });
+        }
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId });
+      }
     },
     linkedAssemblies: function (assemblyId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/linked', { aid: assemblyId });
@@ -459,6 +469,16 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
     },
     getPublicBriefByCampaignUUID: function(campaignUUID) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/campaign/:uuid/brief', { uuid: campaignUUID });
+    },
+    consent: function(assemblyId, campaignId, userId = null, answer = null) {
+      let baseUrl = '/assembly/:aid/campaign/:cid/consent';
+      if (userId == null && answer == null) {
+        return $resource(getServerBaseUrl(localStorageService) + baseUrl, { aid: assemblyId, cid: campaignId })
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + baseUrl + '/user/:uid/:answer', { aid: assemblyId, cid: campaignId, uid: userId, answer: answer }, {
+          'update': { method: 'PUT' }
+        })
+      }
     }
   };
 
@@ -701,6 +721,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         'update': { method: 'PUT' }
       });
     },
+    updateStatus: function (assemblyId, contributionId, status) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: status }, {
+        'update': { method: 'PUT' }
+      });
+    },
     publishContribution: function (assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'PUBLISHED' }, {
         'update': { method: 'PUT' }
@@ -770,6 +795,9 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       } else {
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution', { sid: spaceId });
       }
+    },
+    flatContributionInResourceSpace: function (spaceId, contributionId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/:cid?flat=true', { sid: spaceId, cid: contributionId });
     },
     contributionInResourceSpaceByUUID: function (spaceUUId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {
@@ -1030,6 +1058,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors', { uuid: uuid }).save(author).$promise;
     },
 
+    addNonMemberAuthor(uuid, author) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/nonmemberauthors', { uuid: uuid }).save(author).$promise;
+    },
+
     /**
      * Deletes the given author to the contribution.
      *
@@ -1040,6 +1072,10 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
      */
     deleteAuthor(uuid, auuid) {
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/authors/:auuid', { uuid, auuid }).delete().$promise;
+    },
+
+    deleteNonMemberAuthor(uuid, nmaid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/nonmemberauthors/:nmaid', { uuid, nmaid }).delete().$promise;
     }
   };
 });
@@ -1513,7 +1549,25 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @param {number} sid - The space id
        */
       fieldValue(sid) {
-        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue', { sid });
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue', { sid }, {
+          save: {
+            method: 'POST'
+          }
+        });
+      },
+
+      /**
+       * Returns a $resource to interact with the custom fields values endpoint.
+       *
+       * @method services.Space#fieldValue
+       * @param {number} sid - The space id
+       */
+      fieldValueResource(sid, cfid) {
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue/:cfid', { sid: sid, cfid: cfid }, {
+          update: {
+            method: 'PUT'
+          }
+        });
       },
 
       /**
@@ -2701,8 +2755,15 @@ appCivistApp.factory('Components', function ($resource, $sce, localStorageServic
  */
 appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) {
   return {
-    signIn: function () {
-      return $resource(getServerBaseUrl(localStorageService) + '/user/login');
+    signIn: function (provider = null, assembly = null) {
+      if (provider == null && assembly == null) {
+        return $resource(getServerBaseUrl(localStorageService) + '/user/login');
+      } else {
+        return $resource(getServerBaseUrl(localStorageService) + '/user/login?provider=:provider&assembly=:assembly', {
+          provider: provider,
+          assembly: assembly
+        });
+      }
     },
     signOut: function () {
       return $resource(getServerBaseUrl(localStorageService) + '/user/logout');

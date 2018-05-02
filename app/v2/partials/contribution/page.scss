@@ -1,3 +1,146 @@
+.liveEdit {
+  display: inline-block;
+  margin-left: 2rem;
+  vertical-align: middle;
+  &.smaller {
+    margin-left: 0.3rem;
+  }
+  fieldset {
+    position: absolute;
+  }
+  button {
+    display: inline-block;
+    background-color: #B2B2B2;
+    color: #3c3c3c;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.8rem;
+    vertical-align: middle;
+    border: 0;
+  }
+  input {
+    display: none;
+    width: 200px;
+    margin-right: 5px;
+  }
+  .fa.fa-times {
+    display: none;
+  }
+}
+
+.instruction-wrapper {
+  float: right;
+  width: 49%;
+  background-color: #DBDBDB;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  .instruction {
+    padding: 0.5rem 1rem;
+    height: 8rem;
+  }
+  .read-more {
+    position: absolute; 
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    text-align: center; 
+    margin: 0; padding: 30px 0; 
+    background-image: linear-gradient(to bottom, transparent, #DBDBDB);
+    max-width: unset;
+  }
+}
+.half-length {
+  float: left;
+  width: 50%;
+}
+
+b {
+  font-weight: bold;
+}
+
+select.header_select {
+  min-width: 150px;
+  font-size: 0.8rem;
+  padding: 0.46875em;
+}
+
+.autocomplete.authors {
+  width: 650px !important;
+  [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+  }
+  &.smaller {
+    width: 280px !important;
+  }
+}
+
+.smalledit {
+  font-size: 1.7rem;
+  margin-left: 0.6rem;
+  cursor: pointer;
+}
+
+.editableArea {
+  textarea {
+    height: unset;
+  }
+  button.btn-join {
+    position: unset !important;
+    margin: 1rem 0;
+  }
+}
+
+.contextual_wrapper {
+  display: inline-block;
+  position: relative;
+  .contextual_menu {
+    position: absolute;
+    &.active .content:after {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 1em;
+      z-index: 1;
+      width: 0;
+      height: 0;
+      border-left: 0.5em solid transparent;
+      border-right: 0.5em solid transparent;
+      border-bottom: 12px solid #fff;
+      transition-property: opacity, border-color, top, border-top;
+      transition-duration: 0.25s;
+      right: 80%;
+      transform: translateX(-20%);
+    }
+    .content {
+      opacity: 1;
+      min-width: 12em !important;
+      overflow: visible;
+      width: auto;
+      height: auto;
+      clip: none;
+      position: relative;
+      background-color: #fff;
+      color: #11493b;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.35);
+      ul li {
+        border-bottom: 1px #e5ebe6 solid;
+      }
+      a {
+        padding: 1em 1.25em;
+        display: block;
+        cursor: pointer;
+        color: #11493b;
+        text-decoration: none;
+        &:hover {
+          background-color: #11493b;
+          color: #e5ebe6;
+        }
+      }
+    }
+  }
+}
+
 .page__header a {
   text-decoration: none;
 }

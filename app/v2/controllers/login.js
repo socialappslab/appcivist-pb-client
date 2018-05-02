@@ -19,6 +19,9 @@
       $scope.user = {};
       $scope.login = login;
       $scope.isLoginPage = true;
+      $scope.ldapAvailable = false;
+      $scope.ldapOn = false;
+      $scope.loginProvider = null;
       $scope.assemblyConfig = [];
       if ($state.params.domain) {
         $scope.domain = $state.params.domain;
@@ -26,6 +29,9 @@
         rsp.$promise.then(function(data) {
           $scope.assembly = data;
           localStorageService.set('domain', data);
+          Space.configsByUUID(data.resourcesResourceSpaceUUID).get().$promise.then((spd) => {
+            $scope.ldapAvailable = spd['appcivist.assembly.authentication.ldap'].toLowerCase() == 'true';
+          })
         });
       }
     }
@@ -36,7 +42,13 @@
         Notify.show('Email and password are required', 'error');
         return;
       }
-      var rsp = AppCivistAuth.signIn().save($scope.user);
+      if ($scope.ldapOn){
+        $scope.user.username = $scope.user.email;
+        $scope.loginProvider = 'ldap';
+        var rsp = AppCivistAuth.signIn($scope.loginProvider, $scope.assembly.uuid).save($scope.user);
+      } else {
+        var rsp = AppCivistAuth.signIn().save($scope.user);
+      }
       rsp.$promise.then(loginSuccess, loginError);
     }
 

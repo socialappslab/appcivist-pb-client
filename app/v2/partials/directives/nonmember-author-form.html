@@ -47,6 +47,20 @@
       <input type="text" ng-model="vm.author.phone" placeholder="{{'Your phone number' | translate}}" ng-disabled="disabled || vm.isMember">
     </div>
 
+
+    <!-- source -->
+    <div class="field__container col-lg-12" ng-if="vm.creatorIsCoordinator">
+      <label>{{'Source' | translate}}</label>
+      <input type="text" ng-model="vm.source" placeholder="{{'(Optional) If user not in AppCivist, but is in another social network, mention it (e.g., facebook)' | translate}}" ng-disabled="disabled || vm.isMember">
+    </div>
+
+
+    <!-- source url -->
+    <div class="field__container col-lg-12" ng-if="vm.creatorIsCoordinator">
+      <label>{{'Source URL' | translate}}</label>
+      <input type="text" ng-model="vm.sourceUrl" placeholder="{{'(Optional) If you have an URL to his profile you can add it here' | translate}}" ng-disabled="disabled || vm.isMember">
+    </div>
+
     <!-- subscribed -->
     <div class="field__container col-lg-12">
       <label>{{'Would you like to receive updates about your idea by email?' | translate}}</label>

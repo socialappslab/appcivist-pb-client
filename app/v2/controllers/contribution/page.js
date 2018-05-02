@@ -10,12 +10,12 @@
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications', '$timeout', '$interval'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
-    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications, $timeout, $interval) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -53,6 +53,27 @@
     $scope.filterCustomFields = filterCustomFields.bind($scope);
     $scope.follow = follow.bind($scope);
     $scope.unfollow = unfollow.bind($scope);
+    $scope.loadViewsConfig = loadViewsConfig.bind($scope);
+    $scope.showSearch = showSearch.bind($scope);
+    $scope.hideSearch = hideSearch.bind($scope);
+    $scope.authorsChangeOnClick = authorsChangeOnClick.bind($scope);
+    $scope.themesChangeOnClick = themesChangeOnClick.bind($scope);
+    $scope.keywordsChangeOnClick = keywordsChangeOnClick.bind($scope);
+    $scope.loadAllThemes = loadAllThemes.bind($scope);
+    $scope.selectTheme = selectTheme.bind($scope);
+    $scope.deleteSelectedTheme = deleteSelectedTheme.bind($scope);
+    $scope.loadAssemblyConfig = loadAssemblyConfig.bind($scope);
+    $scope.currentAddGetTextLdap = currentAddGetTextLdap.bind($scope);
+    $scope.descriptionToggleEdit = descriptionToggleEdit.bind($scope);
+    $scope.titleToggleEdit = titleToggleEdit.bind($scope);
+    $scope.saveDescription = saveDescription.bind($scope);
+    $scope.saveTitle = saveTitle.bind($scope);
+    $scope.getEditorOptions = getEditorOptions.bind($scope);
+    $scope.addNonMemberAuthorToProposal = addNonMemberAuthorToProposal.bind($scope);
+    $scope.deleteNonMemberAuthor = deleteNonMemberAuthor.bind($scope);
+    $scope.changeStatus = changeStatus.bind($scope);
+    $scope.checkCustomHeader = checkCustomHeader.bind($scope);
+    $scope.syncProposalWithPeerdoc = syncProposalWithPeerdoc.bind($scope);
 
     activate();
 
@@ -62,6 +83,7 @@
       $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
       $scope.createAttachmentResource = createAttachmentResource.bind($scope);
+      $scope.updateStatusService = updateStatusService.bind($scope);
       $scope.activeTab = 'Public';
       $scope.feedbackBar = false;
       $scope.currentAdd = {
@@ -175,6 +197,46 @@
       $scope.resources = {};
       $scope.newDocUrl = "";
       $scope.following = false;
+
+      // Toolbar buttons visibility default
+      $scope.showContributingIdeas = true;
+      $scope.showHistory = true;
+      $scope.showCommentCount = true;
+      $scope.showAttachments = true;
+      $scope.showFeedback = true;
+      $scope.showMedia = true;
+      $scope.showUpVote = true;
+      $scope.showDownVote = true;
+
+      $scope.authorQuery = "";
+      $scope.authorsList = [];
+      $scope.authorsSuggestionsVisible = false;
+      $scope.themeQuery = "";
+      $scope.themesList = [];
+      $scope.themesSuggestionsVisible = false;
+      $scope.themesLimit = null;
+      $scope.keywordQuery = "";
+      $scope.keywordsList = [];
+      $scope.keywordsSuggestionsVisible = false;
+
+      $scope.allThemes = [];
+      $scope.selectedTheme = null;
+
+      $scope.assemblyConfig = []
+      $scope.ldap = false;
+      $scope.ldapList = [];
+
+      $scope.isDescriptionEdit = false;
+      $scope.isTitleEdit = false;
+      $scope.isTitleEditable = true;
+      $scope.descriptionBackup = null;
+      $scope.titleBackup = null;
+
+      $scope.customHeaderFields = [];
+      $scope.customHeaderValues = {};
+
+      $scope.tinymceOptions = $scope.getEditorOptions();
+      $scope.editIconHTML = "<i class='fa fa-edit smalledit'></i>";
     }
 
     function toggleOpenAddAttachment () {
@@ -184,6 +246,72 @@
     function toggleOpenAddAttachmentByUrl () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
       $scope.openAddAttachmentByUrl = !$scope.openAddAttachmentByUrl;
+    }
+
+    function showSearch(id) {
+      $('#'+id).show();
+      $('#'+id+'Close').show();
+    }
+
+    function hideSearch(id) {
+      $('#'+id).hide();
+      $('#'+id+'Close').hide();
+      let ctx = id.replace('Search', '');
+      eval('this.'+ctx+'sSuggestionsVisible = false');
+    }
+
+    function changeStatus(newValue, oldValue) {
+      console.log(this.proposal.status);
+      console.log(this.proposal.contributionId);
+      console.log(this.assemblyID);
+      this.statusBeforeUpdate = oldValue;
+
+      // TODO 1: make a nice modal instead of the alert
+      // TODO 2: check if the campaign has a config with the same key as the translation for each alert message. If there is a config, use the text suggested by the config
+
+      if (this.proposal.status === "DRAFT") {
+        $translate("contribution.status.private-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.private-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "PUBLIC_DRAFT") {
+        $translate("contribution.status.public-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.public-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "PUBLISHED") {
+        $translate("contribution.status.published.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.published.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      }
+    }
+
+    function updateStatusService() {
+      let rsp = Contributions.updateStatus(this.assemblyID, this.proposal.contributionId, this.proposal.status).update().$promise;
+      console.log(rsp);
+      rsp.then(
+        rs => {
+          console.log(rs);
+          Notify.show('Status updated successfully', 'success');
+        },
+        error => {
+          this.proposal.status = this.statusBeforeUpdate;
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
+        }
+      );
     }
 
     function startSpinner () {
@@ -228,7 +356,7 @@
           $scope.totalComments = $scope.proposal.commentCount + $scope.proposal.forumCommentCount;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     };
@@ -250,7 +378,7 @@
             iframedoc.body.innerHTML = $scope.padHTML.text;
           });
         },
-        error => Notify.show(error.statusMessage, 'error')
+        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
       )
     }
 
@@ -267,7 +395,8 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
-          console.log(data);
+          console.log($scope.proposal);
+          //$scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
           localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
           var workingGroupAuthors = data.workingGroupAuthors;
@@ -304,8 +433,13 @@
               $scope.gdocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
               $scope.gdocUrlMinimal = $sce.trustAsResourceUrl($scope.gdocUrl +"?rm=minimal");
             } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url);
-              $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
+              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
+              $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
+              $timeout(() => {
+                $interval(() => {
+                  $scope.syncProposalWithPeerdoc();
+                }, 10000);
+              }, 6000);
               // $scope.gdocUrlMinimal = $scope.gdocUrl +"?rm=minimal";
             }
           } else {
@@ -316,7 +450,7 @@
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
             rsp.then(function (components) {
               var currentComponent = Campaigns.getCurrentComponent(components);
-              currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
+              currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
@@ -335,20 +469,41 @@
 
               scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
             }, function (error) {
-              Notify.show(error.statusMessage, 'error');
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
             vm.loadValues(vm.proposal.resourceSpaceId);
           } else {
+            var rsp = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
+
+            rsp.then(function (components) {
+              var currentComponent = Campaigns.getCurrentComponent(components);
+              currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-
+              localStorageService.set('currentCampaign.currentComponent', currentComponent);
+              // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
+              if (currentComponent.type == 'PROPOSALS' || currentComponent.type == 'IDEAS') {
+                scope.isProposalIdeaStage = true;
+              } else {
+                scope.isProposalIdeaStage = false;
+                if (currentComponent.type == 'VOTING') {
+                  scope.isVotingStage = true;
+                }
+              }
+
+              scope.$broadcast("ContributionPage:CurrentComponentReady", scope.isProposalIdeaStage);
+            }, function (error) {
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+            });
             vm.loadValues(vm.proposal.resourceSpaceUUID, true);
           }
           loadRelatedContributions();
           loadRelatedStats();
           loadCampaign();
+          loadAssemblyConfig();
           loadResources();
           $scope.loadCampaignResources();
         },
         function (error) {
-          Notify.show('Error occured when trying to load contribution: ' + error.statusMessage, 'error');
+          Notify.show('Error occured when trying to load contribution: ' + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -467,7 +622,7 @@
         $scope.writegDocUrl = $scope.gdocUrl+"/edit?rm=full";
       } else if ($scope.userIsAuthor && $scope.extendedTextIsPeerDoc) {
         // TODO: load the write embed url for gdoc
-        $scope.writePeerDocUrl = $scope.peerDocUrl//+"/edit?rm=full";
+        $scope.writePeerDocUrl = $scope.peerDocUrl;//+"/edit?rm=full";
       }
     }
 
@@ -508,7 +663,7 @@
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -562,7 +717,7 @@
         }
         vm.createAttachmentResource(resource, true);
       }, function (error) {
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
     }
 
@@ -667,7 +822,7 @@
         Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
         vm.stopSpinner();
       }, function (error) {
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         vm.stopSpinner();
       });
     }
@@ -716,7 +871,7 @@
           loadCustomFields();
           checkIfFollowing($scope.campaign.rsID);
         }, function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         });
       }
     }
@@ -734,7 +889,7 @@
         loadDocuments();
         loadMedia();
       }, function(error) {
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
     }
 
@@ -769,11 +924,110 @@
       }
       rsp.$promise.then(function (data) {
         $scope.campaignConfigs = data;
+        $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] ? $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] : -1;
+        if ($scope.themesLimit == 1) {
+          loadAllThemes();
+          $scope.selectedTheme = $scope.proposal.themes ? $scope.proposal.themes[0] : null;
+        }
         loadBallotPaper();
+        loadViewsConfig();
       }, function (error) {
         loadBallotPaper();
-        Notify.show(error.statusMessage, 'error');
+        Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
+    }
+
+    function loadAssemblyConfig() {
+      let vm = $scope;
+      let rsp = Assemblies.assembly($scope.assemblyID).get().$promise;
+      rsp.then(
+        assembly => {
+          let ans = Space.configsByUUID(assembly.resourcesResourceSpaceUUID).get();
+          ans.$promise.then(function(data){
+            vm.assemblyConfig = data;
+            vm.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;
+          }, function(error) {
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          });
+        }, error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      )
+    }
+
+    function loadAllThemes() {
+      let filters = {
+        query: '',
+        themeType: 'OFFICIAL_PRE_DEFINED'
+      }
+      let rsp = Campaigns.themes($scope.assemblyID, $scope.campaign.campaignId, $scope.isAnonymous, $scope.campaign.uuid, filters);
+      rsp.then(
+        themes => {
+          $scope.allThemes = themes;
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
+    function deleteSelectedTheme() {
+      let vm = this;
+      let keywords = this.proposal.themes.filter(v => v.type == 'EMERGENT');
+      this.proposal.themes = keywords;
+      Contributions.deleteTheme(this.proposal.uuid, this.selectedTheme.themeId).then(
+        response => {
+          Notify.show('Theme deleted successfully', 'success')
+          vm.selectedTheme = null;
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
+    function loadViewsConfig() {
+      let showContributingIdeasConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.contributing-ideas'];
+      let showHistoryConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'];
+      let showCommentCountConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.comment-count'];
+      let showAttachmentsConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.attachments'];
+      let showFeedbackConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.feedback'];
+      let showMediaConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.media'];
+      let showUpVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.up-vote'];
+      let showDownVoteConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.down-vote'];
+      let showProposalIntroInfoConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.proposal-info'];
+      let showBodyDescriptionConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.description'];
+      let showBodyDescriptionTitleConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.description.title'];
+      let showBodyProposalConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.proposal'];
+      let showBodyProposalTitleConf = $scope.campaignConfigs['appcivist.campaign.contribution.body.proposal.title'];
+      let showCustomFieldsConf = $scope.campaignConfigs['appcivist.campaign.contribution.custom-fields'];
+      let showCustomFieldsTitleConf = $scope.campaignConfigs['appcivist.campaign.contribution.custom-fields.title'];
+      let showCustomFieldsHeaderConf = $scope.campaignConfigs['appcivist.campaign.contribution.custom-fields.header'];
+      let showMediaCarouselConf = $scope.campaignConfigs['appcivist.campaign.contribution.media-carousel'];
+      let showDescriptionRichTextEditConf = $scope.campaignConfigs['appcivist.campaign.contribution.description.richtext-editor'];
+      let allowChangeStatusConf = $scope.campaignConfigs['appcivist.campaign.contribution.status.change-enabled'];
+      let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
+
+      $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showAttachments = showAttachmentsConf ? showAttachmentsConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showFeedback = showFeedbackConf ? showFeedbackConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showMedia = showMediaConf ? showMediaConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showUpVote = showUpVoteConf ? showUpVoteConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showDownVote = showDownVoteConf ? showDownVoteConf.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showProposalIntroInfo = showProposalIntroInfoConf ? showProposalIntroInfoConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyDescription = showBodyDescriptionConf ? showBodyDescriptionConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyDescriptionTitle = showBodyDescriptionTitleConf ? showBodyDescriptionTitleConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyProposal = showBodyProposalConf ? showBodyProposalConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showBodyProposalTitle = showBodyProposalTitleConf ? showBodyProposalTitleConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showCustomFields = showCustomFieldsConf ? showCustomFieldsConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showCustomFieldsTitle = showCustomFieldsTitleConf ? showCustomFieldsTitleConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showCustomFieldsHeader = showCustomFieldsHeaderConf ? showCustomFieldsHeaderConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showMediaCarousel = showMediaCarouselConf ? showMediaCarouselConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.allowChangeStatus = allowChangeStatusConf ? allowChangeStatusConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
     }
 
     function seeHistory() {
@@ -801,6 +1055,66 @@
       this.loadThemesOrAuthor();
     }
 
+    function authorsChangeOnClick() {
+      this.setAddContext('AUTHORS');
+      this.authorsSuggestionsVisible = true;
+      let vm = this;
+      let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap, this.authorQuery).get().$promise;
+      rsp.then(
+        data => {
+          let items = data.members.filter(d => d.status === 'ACCEPTED').map(d => d.user);
+          items = $filter('filter')(items, { $: vm.authorQuery });
+          vm.authorsList = items;
+          if (this.ldap) {
+            let items = data.ldap;
+            items = $filter('filter')(items, { $: vm.authorQuery });
+            vm.ldapList = items;
+          }
+        },
+        function (error) {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
+    function themesChangeOnClick() {
+      this.setAddContext('THEMES');
+      this.themesSuggestionsVisible = true;
+      let vm = this;
+      let filters = {
+        query: vm.themeQuery,
+        themeType: 'OFFICIAL_PRE_DEFINED'
+      }
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
+      rsp.then(
+        themes => {
+          vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery));
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
+    function keywordsChangeOnClick() {
+      this.setAddContext('KEYWORDS');
+      this.keywordsSuggestionsVisible = true;
+      let vm = this;
+      let filters = {
+        query: vm.keywordsQuery,
+        themeType: 'EMERGENT'
+      }
+      let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
+      rsp.then(
+        keywords => {
+          vm.keywordsList = $filter('filter')(keywords, queryThemes(vm.keywordsQuery));
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
     /**
      * Returns the text to display in the suggestion list.
      *
@@ -810,7 +1124,17 @@
       if (this.currentAdd.context === 'AUTHORS') {
         return $sce.trustAsHtml(`
           <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
-          <span style="margin-left: 15px;">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
+          <span style="margin-left: 15px;vertical-align:super">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
+      } else {
+        return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
+      }
+    }
+
+    function currentAddGetTextLdap(item) {
+      if (this.currentAdd.context === 'AUTHORS') {
+        return $sce.trustAsHtml(`
+          <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
+          <span style="margin-left: 15px;vertical-align:super">${(item.cn === null || item.cn === undefined || item.cn === "" || item.cn === " ") ? item.mail : item.cn}</span>`);
       } else {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }
@@ -821,16 +1145,26 @@
      *
      * @param {Object} item
      */
-    function currentAddOnSelect(item) {
+    function currentAddOnSelect(item, ldap = false) {
       this.currentAdd.suggestionsVisible = false;
       this.currentAdd.query = '';
 
       if (this.currentAdd.context === 'AUTHORS') {
-        this.addAuthorToProposal(item);
+        if (!ldap) this.addAuthorToProposal(item);
+        else this.addNonMemberAuthorToProposal(item);
+        this.authorsSuggestionsVisible = false;
+        $("#authorSearch").hide();
+        $('#authorSearchClose').hide();
       } else if (this.currentAdd.context === 'THEMES') {
         this.addThemeToProposal(item);
+        this.themesSuggestionsVisible = false;
+        $('#themeSearch').hide();
+        $('#themeSearchClose').hide();
       } else {
         this.addThemeToProposal(item);
+        this.keywordsSuggestionsVisible = false;
+        $('#keywordSearch').hide();
+        $('#keywordSearchClose').hide();
       }
     }
 
@@ -860,7 +1194,7 @@
           vm.currentAdd.items = $filter('filter')(themes, queryThemes(query));
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
       console.log(rsp);
@@ -889,7 +1223,7 @@
       Contributions.deleteTheme(this.proposal.uuid, theme.themeId).then(
         response => Notify.show('Theme deleted successfully', 'success'),
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -909,34 +1243,71 @@
       Contributions.deleteAuthor(this.proposal.uuid, author.uuid).then(
         response => Notify.show('Author deleted successfully', 'success'),
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
+    function deleteNonMemberAuthor(author, local) {
+      _.remove(this.proposal.nonMemberAuthors, { id: author.id });
+
+      if (local) {
+        return;
+      }
+      Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.id).then(
+        response => Notify.show('Author deleted successfully', 'success'),
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
 
     function addThemeToProposal(theme) {
       this.proposal.themes = this.proposal.themes || [];
+      if (this.themesLimit > 1) {
+        if (this.proposal.themes.length >= this.themesLimit) {
+          Notify.show("Can't add more themes", 'error');
+          return;
+        }
+      }
       this.proposal.themes.push(theme);
-
       Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => Notify.show('Theme added successfully', 'success'),
         error => {
           this.deleteTheme(theme, true);
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
+    function selectTheme() {
+     if (this.proposal.themes == undefined) {
+       this.proposal.themes = [];
+       this.proposal.themes.push(this.selectedTheme);
+     } else {
+      let keywords = this.proposal.themes.filter(v => v.type == 'EMERGENT');
+      let themes = [];
+      themes.push(this.selectedTheme);
+      this.proposal.themes = keywords.concat(themes);
+     }
+     Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
+        response => Notify.show('Theme changed successfully', 'success'),
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
 
     function loadAuthors(query) {
-      let rsp = Assemblies.assemblyMembers(this.assemblyID).query().$promise;
+      let rsp = Assemblies.assemblyMembers(this.assemblyID).get().$promise;
       rsp.then(
         data => {
-          let items = data.filter(d => d.status === 'ACCEPTED').map(d => d.user);
+          let items = data.members.filter(d => d.status === 'ACCEPTED').map(d => d.user);
           items = $filter('filter')(items, { $: query });
           this.currentAdd.items = items;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -948,7 +1319,25 @@
         response => Notify.show('Author added successfully', 'success'),
         error => {
           this.deleteAuthor(author, true);
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
+
+    function addNonMemberAuthorToProposal(author) {
+      let payload = {
+        name: author.cn,
+        email: author.mail,
+        source: 'ldap',
+        sourceUrl: author.user
+      }
+      this.proposal.nonMemberAuthors = this.proposal.nonMemberAuthors || [];
+      this.proposal.nonMemberAuthors.push(payload);
+      Contributions.addNonMemberAuthor(this.proposal.uuid, payload).then(
+        response => Notify.show('Author added successfully', 'success'),
+        error => {
+          this.deleteAuthor(author, true);
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -970,15 +1359,22 @@
       return rsp.then(
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
-          // if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
-          //   $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function(map, obj) {
-          //     map[obj.customFieldDefinition.customFieldDefinitionId] = obj.value;
-          //     return map;
-          //   }, {});
-          // }
+          if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
+            $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function (map, obj) {
+              map[obj.customFieldDefinition.customFieldDefinitionId] = obj;
+              return map;
+            }, {});
+            $scope.fieldsValuesIdsDict = $scope.fieldsValues.reduce(function (map, obj) {
+              map[obj.customFieldDefinition.customFieldDefinitionId] = obj.customFieldValueId;
+              return map;
+            }, {});
+          } else {
+            $scope.fieldsValuesDict = {};
+            $scope.fieldsValuesIdsDict = {};
+          }
         },
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1002,7 +1398,7 @@
           Notify.show('Attachment deleted successfully', 'success');
         } ,
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
@@ -1015,7 +1411,7 @@
       let rsp = Contributions.publicFeedbacks(uuid).query().$promise;
       rsp.then(
         feedbacks => this.userFeedbackArray = feedbacks,
-        error => Notify.show(error.statusMessage, 'error')
+        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
       );
     }
 
@@ -1052,7 +1448,7 @@
           response => {
             console.log(response)
           },
-          error => Notify.show(error.statusMessage, 'error')
+          error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
         )
       } else {
         Notify.show('Error while trying to embed the document', 'error')
@@ -1065,8 +1461,25 @@
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           $scope.newDocUrl = $sce.trustAsResourceUrl(response.path);
-          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path);
+          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"?embed=true");
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
+        },
+        error => {
+          var e = error.data;
+          return Notify.show(e.statusMessage ? e.statusMessage : 'Server error while creating PeerDoc', 'error');
+        }
+      )
+    }
+
+    function syncProposalWithPeerdoc() {
+      let rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId).get().$promise;
+      rsp.then(
+        contribution => {
+          if (!$scope.isTitleEdit)
+            $scope.proposal.title = contribution.title;
+          if (!$scope.isDescriptionEdit)
+            $scope.proposal.text = contribution.text;
+          $scope.proposal.lastUpdate = $filter('date')(contribution.lastUpdate.split(' ')[0], 'mediumDate');
         },
         error => Notify.show(error.statusMessage, 'error')
       )
@@ -1085,7 +1498,7 @@
           $rootScope.$broadcast("ToContributionEmbedModal:CampaignResourcesReady", {resources: resources});
         }
       }, function (error) {
-        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+        Notify.show('Error loading campaign resources from server: '+error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
     }
 
@@ -1100,13 +1513,53 @@
       return rsp.then(
         fields => fields,
         error => {
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
     }
 
     function filterCustomFields(fields) {
-      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type);
+      return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type && f.entityPart !== 'HEADER');
+    }
+
+    function checkCustomHeader(definitionId) {
+
+      let value = this.fieldsValuesDict[definitionId];
+      let cfid = this.fieldsValuesIdsDict[definitionId];
+      let selectedOption = value.value;
+      let newFieldValue = {
+        entityTargetType: this.contributionType,
+        entityTargetUuid: this.proposal.uuid,
+        customFieldDefinition: {customFieldDefinitionId: definitionId},
+        value: selectedOption
+      };
+
+      // The custom field value already exists
+      if (cfid) {
+        newFieldValue.customFieldValueId = cfid;
+        let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, cfid).update(newFieldValue).$promise;
+        return rsp.then(
+          newValue => {
+            $scope.fieldsValuesDict[definitionId].value = newValue.value;
+            Notify.show('Updated custom field', 'success');
+          },
+          error => {
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          }
+        );
+      } else {
+        let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
+        return rsp.then(
+          newValue => {
+            $scope.fieldsValuesDict[definitionId] = newValue;
+            $scope.fieldsValuesIdsDict[definitionId] = newValue.customFieldValueId;
+            Notify.show('Updated custom field', 'success');
+          },
+          error => {
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          }
+        );
+      }
     }
 
     function loadCustomFields() {
@@ -1123,6 +1576,9 @@
       if ($scope.campaignResourceSpaceId) {
         loadFields($scope.campaignResourceSpaceId).then(fields => {
           $scope.campaignFields = $scope.filterCustomFields(fields);
+          $scope.customHeaderFields = fields.filter(f => f.entityPart == 'HEADER');
+          console.log($scope.campaignFields);
+          console.log($scope.customHeaderFields);
         });
       }
       if ($scope.componentResourceSpaceId) {
@@ -1135,12 +1591,12 @@
 
     function follow() {
       let sub = {
-        spaceId: $scope.proposal.rsID,
+        spaceId: $scope.proposal.rsUUID,
         userId: $scope.user.userId,
         spaceType: "CONTRIBUTION",
         subscriptionType: "REGULAR"
       }
-      Notifications.subscribe(sub.spaceId).save(sub).$promise.then(
+      Notifications.subscribe($scope.proposal.rsID).save(sub).$promise.then(
         response => {
           $scope.following = true;
           $scope.subscription = response;
@@ -1179,10 +1635,142 @@
             }
           },
           function (error) {
-            Notify.show(error.statusMessage, 'error');
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
           }
         );
       }
+    }
+
+    function descriptionToggleEdit() {
+      if (!this.isDescriptionEdit) {
+        this.isDescriptionEdit = true;
+        this.descriptionBackup = this.proposal.text;
+        $("#descriptionEditToggle").removeClass('fa-edit');
+        $("#descriptionEditToggle").addClass('fa-times-circle');
+      } else {
+        this.isDescriptionEdit = false;
+        this.proposal.text = this.descriptionBackup;
+        $("#descriptionEditToggle").addClass('fa-edit');
+        $("#descriptionEditToggle").removeClass('fa-times-circle');
+      }
+    }
+
+    function titleToggleEdit() {
+      if ($scope.extendedTextIsPeerDoc) return;
+      if (!this.isTitleEdit) {
+        this.isTitleEdit = true;
+        this.TitleBackup = this.proposal.text;
+        $("#titleEditToggle").removeClass('fa-edit');
+        $("#titleEditToggle").addClass('fa-times-circle');
+      } else {
+        this.isTitleEdit = false;
+        this.proposal.text = this.TitleBackup;
+        $("#titleEditToggle").addClass('fa-edit');
+        $("#titleEditToggle").removeClass('fa-times-circle');
+      }
+    }
+
+    function saveDescription() {
+      let vm = this;
+      let payload = _.cloneDeep($scope.proposal);
+      delete payload.lastUpdate;
+      payload.status = payload.status.toUpperCase();
+      let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
+
+      rsp.then(
+        data => {
+          Notify.show('Contribution saved', 'success');
+          vm.isDescriptionEdit = false;
+          $("#descriptionEditToggle").addClass('fa-edit');
+          $("#descriptionEditToggle").removeClass('fa-times-circle');
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          vm.isDescriptionEdit = true;
+        }
+      );
+    }
+
+    function saveTitle() {
+      let vm = this;
+      let payload = _.cloneDeep($scope.proposal);
+      payload.status = payload.status.toUpperCase();
+      let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
+
+      rsp.then(
+        data => {
+          Notify.show('Contribution saved', 'success');
+          vm.isTitleEdit = false;
+          $("#titleEditToggle").addClass('fa-edit');
+          $("#titleEditToggle").removeClass('fa-times-circle');
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          vm.isTitleEdit = true;
+        }
+      );
+    }
+
+    function getEditorOptions() {
+      var vm = this;
+      return {
+        height: 400,
+        max_chars: 200,
+        plugins: [
+          'advlist autolink lists link charmap preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime table contextmenu paste'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        images_upload_credentials: true,
+        image_advtab: true,
+        image_title: true,
+        statusbar: false,
+        automatic_uploads: true,
+        file_picker_types: 'image',
+        imagetools_cors_hosts: ['s3-us-west-1.amazonaws.com'],
+        images_upload_handler: function (blobInfo, success, failure) {
+          var xhr, formData;
+          xhr = new XMLHttpRequest();
+          xhr.withCredentials = true;
+          xhr.open('POST', FileUploader.uploadEndpoint());
+          xhr.onload = function () {
+            var json;
+
+            if (xhr.status != 200) {
+              failure('HTTP Error: ' + xhr.status);
+              return;
+            }
+            json = JSON.parse(xhr.responseText);
+
+            if (!json || typeof json.url != 'string') {
+              failure('Invalid JSON: ' + xhr.responseText);
+              return;
+            }
+            success(json.url);
+          };
+          formData = new FormData();
+          formData.append('file', blobInfo.blob());
+          xhr.send(formData);
+        },
+        file_picker_callback: function (cb, value, meta) {
+          var input = document.createElement('input');
+          input.setAttribute('type', 'file');
+          input.setAttribute('accept', 'image/*');
+          $(input).bind('change', function () {
+            var file = this.files[0];
+            var id = 'blobid' + (new Date()).getTime();
+            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+            var blobInfo = blobCache.create(id, file);
+            blobCache.add(blobInfo);
+            cb(blobInfo.blobUri(), { title: file.name });
+          });
+          input.click();
+          vm.$on('$destroy', function () {
+            $(input).unbind('change');
+          });
+        }
+      };
     }
   }
 }());

@@ -8,12 +8,12 @@
   MainCtrl.$inject = [
     '$scope', 'localStorageService', 'Memberships', 'Campaigns', 'Notify',
     '$rootScope', 'loginService', '$translate', '$state', '$stateParams',
-    'WorkingGroups', 'Assemblies', 'AppCivistAuth', 'Space'
+    'WorkingGroups', 'Assemblies', 'AppCivistAuth', 'Space', 'LocaleService'
   ];
 
   function MainCtrl($scope, localStorageService, Memberships, Campaigns, Notify,
     $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies,
-                    AppCivistAuth, Space) {
+                    AppCivistAuth, Space, LocaleService) {
 
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
@@ -33,6 +33,8 @@
 
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);
+        moment.locale($scope.user.language);
+        LocaleService.setLocale($scope.user.language);
       }
       $scope.userIsAuthenticated = loginService.userIsAuthenticated();
       $scope.isLoginPage = $state.is('v2.login') || $state.is('v2.login2');
@@ -256,7 +258,11 @@
         $scope.currentCampaignId = parseInt($state.params.cid);
         var ongoing = localStorageService.get('ongoingCampaigns');
         var current = ongoing.filter(c => { return c.campaignId == $scope.currentCampaignId });
-        $scope.currentCampaignUuid = current[0].uuid;
+        $scope.currentCampaignUuid = current && current[0] && current[0].uuid ? current[0].uuid : "";
+        if (!$scope.currentCampaignUuid) {
+          let currentCampaign = localStorageService.get('currentCampaign');
+          $scope.currentCampaignUuid = currentCampaign && currentCampaign.uuid ? currentCampaign.uuid : "";
+        }
       }
 
       // Check variables related to the current assembly

@@ -58,13 +58,13 @@
           <p class="small">
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
             <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
-            <strong ng-if="proposal.source === 'social_ideation_facebook'">{{'Source'|translate}}: </strong>
-            <span class="facebook-bookmark" ng-if="proposal.source === 'social_ideation_facebook'">
-              <a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;Facebook</a>
+            <strong ng-if="proposal.source.toLowerCase().includes('facebook')">{{'Source'|translate}}: </strong>
+            <span class="facebook-bookmark" ng-if="proposal.source.toLowerCase().includes('facebook')">
+              <a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;{{proposal.source === 'social_ideation_facebook' ? 'Facebook' : proposal.source}}</a>
             </span>
           </p>
         </div>
-        <div class="instruction-wrapper" ng-if="showInstructions">
+        <div class="instruction-wrapper" ng-if="showInstructions && currentComponent.instructions">
           <div class="instruction" ng-bind-html="trustedHtml(currentComponent.instructions)" />
           <p class="read-more"><button class="btn btn-default" data-toggle="modal" data-target="#instructionsModal">{{ 'Read more' | translate}}</button></p>
         </div>
@@ -760,7 +760,7 @@
 
   <!-- Instructions modal -->
   <div class="modal fade dashboardModal" id="instructionsModal"
-       tabindex="-1" role="dialog" ng-if="showInstructions">
+       tabindex="-1" role="dialog" ng-if="showInstructions && currentComponent.instructions">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">

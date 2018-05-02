@@ -46,11 +46,13 @@
           scope.verifyCampaignComponent = verifyCampaignComponent.bind(scope);
           scope.toggleSelection = toggleSelection.bind(scope);
 
-          if (scope.contribution.source !== undefined && scope.contribution.source === 'social_ideation_facebook') {
+          if (scope.contribution.source !== undefined && (scope.contribution.source.toLowerCase().includes('facebook'))) {
+            scope.sourceIsFacebook = true;
             scope.source_url = scope.contribution.sourceUrl;
+          } else if (scope.contribution.sourceUrl) {
+            scope.source_url = scope.contribution.sourceUrl;
+            scope.sourceIsFacebook = false;
           }
-
-          // Se contribution card header cover style
 
           // Prepare first WG's cover and color
           let wgCover = null;

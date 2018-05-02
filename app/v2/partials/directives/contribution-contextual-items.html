@@ -23,6 +23,7 @@
   <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage">
     <a data-toggle="modal" data-target="#gdocEmbedModal">{{'New Google Doc' | translate}}</a>
   </li>
+  <li class="li-action-menu"><a ng-click="vm.showConsentModal()">{{'campaign.research-consent-menu' | translate}}</a></li>
 </ul>
 
 <ul ng-if="vm.isIdea && vm.isHover">
@@ -32,6 +33,7 @@
   <li class="action__history"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
   <li class="action__history"><a ng-click="vm.showModerationForm('flag')">{{'Flag this contribution' | translate}}</a></li>
   <li class="action__history" ng-if="vm.userIsAssemblyCoordinator" ng-click="vm.showModerationForm('delete')"><a>{{'Delete this contribution' | translate}}</a></li>
+  <li class="action__history"><a ng-click="vm.showConsentModal()">{{'campaign.research-consent-menu' | translate}}</a></li>
 </ul>
 
 <div class="history-modal" style="display: none;">

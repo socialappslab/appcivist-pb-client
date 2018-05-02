@@ -43,6 +43,7 @@
     this.subscribe = subscribe.bind(this);
     this.downloadAuthorInfo = downloadAuthorInfo.bind(this);
     this.edit = edit.bind(this);
+    this.showConsentModal = showConsentModal.bind(this);
 
     ModalMixin.init(this);
 
@@ -112,6 +113,10 @@
         },
         error => Notify.show(error.statusMessage, 'error')
       );
+    }
+
+    function showConsentModal() {
+      angular.element('#consentModal').modal({show:true, keyboard:false, backdrop:'static'});
     }
   }
 }());

@@ -27,6 +27,37 @@
   }
 }
 
+.instruction-wrapper {
+  float: right;
+  width: 49%;
+  background-color: #DBDBDB;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  .instruction {
+    padding: 0.5rem 1rem;
+    height: 8rem;
+  }
+  .read-more {
+    position: absolute; 
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    text-align: center; 
+    margin: 0; padding: 30px 0; 
+    background-image: linear-gradient(to bottom, transparent, #DBDBDB);
+    max-width: unset;
+  }
+}
+.half-length {
+  float: left;
+  width: 50%;
+}
+
+b {
+  font-weight: bold;
+}
+
 select.header_select {
   min-width: 150px;
   font-size: 0.8rem;

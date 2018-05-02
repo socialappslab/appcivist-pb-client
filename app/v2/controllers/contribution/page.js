@@ -444,7 +444,7 @@
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
             rsp.then(function (components) {
               var currentComponent = Campaigns.getCurrentComponent(components);
-              currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-safe
+              currentComponent = currentComponent ? currentComponent : {}; // make sure currentComponent var is null-
               localStorageService.set('currentCampaign.currentComponent', currentComponent);
               // we always show readonly etherpad url if current component type is not IDEAS nor PROPOSALS
               if (currentComponent.type === 'IDEAS' || currentComponent.type === 'PROPOSALS') {
@@ -980,6 +980,7 @@
       let showMediaCarouselConf = $scope.campaignConfigs['appcivist.campaign.contribution.media-carousel'];
       let showDescriptionRichTextEditConf = $scope.campaignConfigs['appcivist.campaign.contribution.description.richtext-editor'];
       let allowChangeStatusConf = $scope.campaignConfigs['appcivist.campaign.contribution.status.change-enabled'];
+      let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1000,6 +1001,7 @@
       $scope.showMediaCarousel = showMediaCarouselConf ? showMediaCarouselConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : true;
       $scope.allowChangeStatus = allowChangeStatusConf ? allowChangeStatusConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
     }
 
     function seeHistory() {

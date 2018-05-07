@@ -4,25 +4,25 @@
   <li class="li-action-menu">
     <a ng-click="vm.openModal('contributionExport')">{{'Export proposal' | translate}}</a>
   </li>
-  <li class="li-action-menu"
-      ng-if="vm.userIsAuthor ||
-                ((vm.userIsAuthor || vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator)
-                  && (vm.contributionStatus === 'EXCLUDED' || vm.contributionStatus === 'NEW' || vm.contributionStatus === 'DRAFT'))">
-     <a ng-click="vm.publish()">{{'Publish' | translate}}</a>
-  </li>
+  <!--<li class="li-action-menu"-->
+      <!--ng-if="vm.userIsAuthor ||-->
+                <!--((vm.userIsAuthor || vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator)-->
+                  <!--&& (vm.contributionStatus === 'EXCLUDED' || vm.contributionStatus === 'NEW' || vm.contributionStatus === 'DRAFT'))">-->
+     <!--<a ng-click="vm.publish()">{{'Publish' | translate}}</a>-->
+  <!--</li>-->
   <li class="li-action-menu"><a ng-click="vm.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="vm.userIsWorkingGroupCoordinator && vm.isProposalIdeaStage"><a ng-click="vm.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
-  <li class="li-action-menu"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
   <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator && vm.notAssigned"><a href="" ng-click="vm.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
   <li class="li-action-menu" ng-if="(vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator) && vm.isProposalIdeaStage"><a ng-click="vm.softRemoval()">{{'Delete' | translate}}</a></li>
   <!--<li class="li-action-menu"><a ng-click="vm.subscribe()">{{'Subscribe' | translate}}</a></li>-->
-  <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage">
+  <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage && !vm.contribution.extendedTextPad.resourceType === 'PEERDOC'">
     <a data-toggle="modal" data-target="#etherpadEmbedModal">{{'New Etherpad PAD' | translate}}</a>
   </li>
-  <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage">
+  <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage && !vm.contribution.extendedTextPad.resourceType === 'PEERDOC'">
     <a data-toggle="modal" data-target="#gdocEmbedModal">{{'New Google Doc' | translate}}</a>
   </li>
+  <li class="li-action-menu"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
   <li class="li-action-menu" ng-if="!vm.isAnonymous"><a ng-click="vm.showConsentModal()">{{'campaign.research-consent-menu' | translate}}</a></li>
 </ul>
 
@@ -30,9 +30,9 @@
   <!-- TODO: replace the default FALSE by a scope variable that is false only if the current campaign component is not of type PROPOSALS or IDEAS -->
   <li class="action__assign" ng-if="vm.userIsAssemblyCoordinator"><a>{{'Assign to Working Group' | translate}}</a></li>
   <li class="action__promote" ng-if="vm.userIsWorkingGroupCoordinator"><a>{{'Promote to proposal' | translate}}</a></li>
-  <li class="action__history"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
   <li class="action__history"><a ng-click="vm.showModerationForm('flag')">{{'Flag this contribution' | translate}}</a></li>
   <li class="action__history" ng-if="vm.userIsAssemblyCoordinator" ng-click="vm.showModerationForm('delete')"><a>{{'Delete this contribution' | translate}}</a></li>
+  <li class="action__history"><a ng-click="vm.seeHistory()">{{'See history' | translate}}</a></li>
   <li class="action__history"><a ng-click="vm.showConsentModal()">{{'campaign.research-consent-menu' | translate}}</a></li>
 </ul>
 

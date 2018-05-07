@@ -2790,6 +2790,16 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
      */
     reset(payload) {
       return $resource(getServerBaseUrl(localStorageService) + '/user/password/forgot/change').save(payload).$promise;
+    },
+    /**
+     * Converts IDs to UUIDs
+     * 
+     * @method services.AppCivistAuth#getUUID
+     * @param {string} type
+     * @param {string} id
+     */
+    getUUID(type, id) {
+      return $resource(getServerBaseUrl(localStorageService) + '/uuid?type=:type&id=:id', { type: type, id: id });
     }
   };
 });

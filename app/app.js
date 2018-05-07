@@ -174,7 +174,7 @@
     delete $httpProvider.defaults.headers.common["X-Requested-With"];
     localStorageServiceProvider
       .setPrefix('appcivist')
-      .setStorageType('sessionStorage')
+      .setStorageType('localStorage')
       .setNotify(true, true);
 
 

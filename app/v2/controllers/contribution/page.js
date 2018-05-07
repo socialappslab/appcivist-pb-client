@@ -237,6 +237,14 @@
 
       $scope.tinymceOptions = $scope.getEditorOptions();
       $scope.editIconHTML = "<i class='fa fa-edit smalledit'></i>";
+
+      $scope.interval = null;
+
+      $scope.$on('$destroy', function() {
+        if ($scope.interval) {
+          $interval.cancel($scope.interval);
+        }
+      })
     }
 
     function toggleOpenAddAttachment () {
@@ -436,7 +444,7 @@
               $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $timeout(() => {
-                $interval(() => {
+                $scope.interval = $interval(() => {
                   $scope.syncProposalWithPeerdoc();
                 }, 10000);
               }, 6000);
@@ -1479,7 +1487,7 @@
             $scope.proposal.title = contribution.title;
           if (!$scope.isDescriptionEdit)
             $scope.proposal.text = contribution.text;
-          $scope.proposal.lastUpdate = $filter('date')(contribution.lastUpdate.split(' ')[0], 'mediumDate');
+          $scope.proposal.lastUpdate = contribution.lastUpdate;
         },
         error => Notify.show(error.statusMessage, 'error')
       )

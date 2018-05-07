@@ -1342,7 +1342,10 @@
       this.proposal.nonMemberAuthors = this.proposal.nonMemberAuthors || [];
       this.proposal.nonMemberAuthors.push(payload);
       Contributions.addNonMemberAuthor(this.proposal.uuid, payload).then(
-        response => Notify.show('Author added successfully', 'success'),
+        response => {
+          payload.id = response.id;
+          Notify.show('Author added successfully', 'success')
+        },
         error => {
           this.deleteAuthor(author, true);
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');

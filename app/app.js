@@ -938,7 +938,7 @@
    */
   run.$inject = [
     '$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal',
-    'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService'
+    'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService', 'AppCivistAuth'
   ];
 
   /**
@@ -949,7 +949,7 @@
    * @param localStorageService
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
-    $timeout, $document, Authorization, $translate, LocaleService) {
+    $timeout, $document, Authorization, $translate, LocaleService, AppCivistAuth) {
 
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
@@ -1076,7 +1076,40 @@
         authorized = Authorization.authorize(next.access.requiresLogin);
 
         if (authorized === Authorization.enums.LOGIN_REQUIRED) {
-          $location.path('/v2/login');
+          if (nextParams.aid) {
+            AppCivistAuth.getUUID('assembly', nextParams.aid).get().$promise.then(rsp => {
+              let auuid = rsp.uuid;
+              if (nextParams.cid) {
+                AppCivistAuth.getUUID('campaign', nextParams.cid).get().$promise.then(rsp => {
+                  let cuuid = rsp.uuid;
+                  if (nextParams.gid || nextParams.pid) {
+                    if (nextParams.gid) {
+                      AppCivistAuth.getUUID('group', nextParams.gid).get().$promise.then(rsp => {
+                        let guuid = rsp.uuid;
+                        if (nextParams.pid) {
+                          AppCivistAuth.getUUID('contribution', nextParams.pid).get().$promise.then(rsp => {
+                            let puuid = rsp.uuid;
+                            $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/group/' + guuid + '/contribution/' + puuid);
+                          });
+                        } else {
+                          $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/group/' + guuid);
+                        }
+                      });
+                    } else if (nextParams.pid) {
+                      AppCivistAuth.getUUID('contribution', nextParams.pid).get().$promise.then(rsp => {
+                        let puuid = rsp.uuid;
+                        $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/contribution/' + puuid);
+                      });
+                    }
+                  } else {
+                    $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid);
+                  }
+                });
+              } else {
+                $location.path('/v2/p/assembly/' + auuid);
+              }
+            });
+          }
         } else if (authorized === Authorization.enums.NOT_AUTHORIZED) {
           $location.path('/').replace();
         }
@@ -1096,6 +1129,7 @@
     });
 
   }
+
 
   /**
    * Special function to configure a list of URLs inside the APP that will be available even without being

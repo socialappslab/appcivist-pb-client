@@ -1,6 +1,6 @@
 
   <div class="comments__reply col-*-12">
-    
+
       <div ng-if="isAnonymous" class="row recaptcha" vc-recaptcha ng-model="vm.recaptchaResponse" style="margin-bottom: 10px;"></div>
       <form ng-submit="createNewDiscussion()" class="row comments__section__form">
         <fieldset class="col-*-12">
@@ -25,7 +25,7 @@
           </div>
         </fieldset>
       </form>
-    
+
   </div>
 
   <div class="comments__listing">
@@ -107,7 +107,7 @@
                 <br />
                 <div class="comment-form">
                   <div class="comment-meta">
-                    <input class="button" type="submit" value="Publish" style="margin-top: 4.5rem; margin-bottom: 10px;" />
+                    <input class="button" type="submit" value="{{'Publish' | translate}}" style="margin-top: 4.5rem; margin-bottom: 10px;" />
                   </div>
                 </div>
               </fieldset>

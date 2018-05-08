@@ -126,6 +126,7 @@
       $scope.checkJoinWGButtonVisibility = checkJoinWGButtonVisibility.bind($scope);
       $scope.checkConfigAllowAnonIdeas = checkConfigAllowAnonIdeas.bind($scope);
       $scope.checkConfigDisableComments = checkConfigDisableComments.bind($scope);
+      $scope.checkConfigDisablePublicComments = checkConfigDisablePublicComments.bind($scope);
       $scope.afterComponentsLoaded = afterComponentsLoaded.bind($scope);
       $scope.loadCampaignConfigs = loadCampaignConfigs.bind($scope);
       $scope.afterLoadingCampaignConfigsSuccess = afterLoadingCampaignConfigsSuccess.bind($scope);
@@ -733,7 +734,10 @@
       $scope.isIdeasSectionVisible = key === 'PROPOSAL MAKING' || key === 'IDEAS';
       if ($scope.campaignConfigs) {
         let configs = $scope.campaignConfigs
-        $scope.showComments = $scope.checkConfigDisableComments(configs);
+        $scope.enableComments = $scope.checkConfigDisableComments(configs);
+        if ($scope.isAnonymous) {
+          $scope.enableComments = $scope.checkConfigDisablePublicComments(configs);
+        }
         // New Ideas are allowed if:
         // 1. current stage is of type IDEAS
         // 2. user is not logged in but campaign is configred to accept new ideas from anonymous users
@@ -744,7 +748,6 @@
           key === 'IDEAS' && allowAnonIdeas
           || (key === 'PROPOSALS' && allowIdeaProposals && allowAnonIdeas);
       } else {
-        $scope.showComments = true; // by default, comments are enabled
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
       $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous);
@@ -912,7 +915,7 @@
         this.displayJoinWorkingGroup = false;
       } else {
         const ENABLE_INDIVIDUAL_PROPOSALS = configs ? configs['appcivist.campaign.enable-individual-proposals'] : null;
-        if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS === 'FALSE') {
+        if (!ENABLE_INDIVIDUAL_PROPOSALS || ENABLE_INDIVIDUAL_PROPOSALS.toUpperCase() === 'FALSE') {
           let myGroups = localStorageService.get('myWorkingGroups');
           this.displayJoinWorkingGroup = !myGroups || myGroups.length === 0;
         }
@@ -923,7 +926,16 @@
     function checkConfigDisableComments(configs) {
       const DISABLE_CAMPAIGN_COMMENTS = 'appcivist.campaign.disable-campaign-comments';
       let showComments = true;
-      if (configs && configs[DISABLE_CAMPAIGN_COMMENTS] && configs[DISABLE_CAMPAIGN_COMMENTS] === 'TRUE') {
+      if (configs && configs[DISABLE_CAMPAIGN_COMMENTS] && configs[DISABLE_CAMPAIGN_COMMENTS].toUpperCase() === 'TRUE') {
+        showComments = false;
+      }
+      return showComments;
+    }
+
+    function checkConfigDisablePublicComments(configs) {
+      const DISABLE_CAMPAIGN_COMMENTS = 'appcivist.campaign.disable-public-discussions';
+      let showComments = true;
+      if (configs && configs[DISABLE_CAMPAIGN_COMMENTS] && configs[DISABLE_CAMPAIGN_COMMENTS].toUpperCase() === 'TRUE') {
         showComments = false;
       }
       return showComments;
@@ -932,7 +944,7 @@
     function checkConfigAllowAnonIdeas(configs) {
       const ALLOW_ANON_IDEA = 'appcivist.campaign.allow-anonymous-ideas';
       let newIdeasEnabled = false;
-      if ($scope.isAnonymous && configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA] === 'TRUE') {
+      if ($scope.isAnonymous && configs && configs[ALLOW_ANON_IDEA] && configs[ALLOW_ANON_IDEA].toUpperCase() === 'TRUE') {
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;
@@ -941,7 +953,7 @@
     function checkConfigAllowIdeasDuringProposals(configs) {
       const ALLOW_NEW_IDEAS_PROPOSALS = 'appcivist.campaign.enable-ideas-during-proposals';
       let newIdeasEnabled = false;
-      if (configs && configs[ALLOW_NEW_IDEAS_PROPOSALS] && configs[ALLOW_NEW_IDEAS_PROPOSALS] === 'TRUE') {
+      if (configs && configs[ALLOW_NEW_IDEAS_PROPOSALS] && configs[ALLOW_NEW_IDEAS_PROPOSALS].toUpperCase() === 'TRUE') {
         newIdeasEnabled = true;
       }
       return newIdeasEnabled;

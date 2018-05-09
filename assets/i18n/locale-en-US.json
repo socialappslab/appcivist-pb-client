@@ -1383,5 +1383,6 @@
   "Contribution saved": "Contribution saved",
   "Contribution updated": "Contribution updated",
   "Updated custom field": "Updated custom field",
-  "Changed was saved": "Change was saved"
+  "Changed was saved": "Change was saved",
+  "You cannot see the text of this proposal because you are not an author": "You cannot see the text of this proposal because you are not an author and it has not been published yet"
 }

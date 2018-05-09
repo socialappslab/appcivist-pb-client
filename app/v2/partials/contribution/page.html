@@ -56,8 +56,8 @@
             </button>
           </div>
           <p class="small">
-            <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'mediumDate'}}
-            <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'mediumDate'}}
+            <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'yyyy-MM-dd HH:mm:ss'}}
+            <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.split(' ')[0] | date : 'yyyy-MM-dd HH:mm:ss'}}
             <strong ng-if="proposal.source.toLowerCase().includes('facebook')">{{'Source'|translate}}: </strong>
             <span class="facebook-bookmark" ng-if="proposal.source.toLowerCase().includes('facebook')">
               <a href="{{proposal.sourceUrl}}" target="_blank"><i class="fa fa-lg fa-facebook-square"></i>&nbsp;{{proposal.source === 'social_ideation_facebook' ? 'Facebook' : proposal.source}}</a>

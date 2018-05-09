@@ -322,7 +322,7 @@
             </div>
           </div>
           <!-- PEERDOC -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad && showBodyProposal">
+          <div class="text-center" style="margin-top: 2rem" ng-if="((proposal.status == 'DRAFT' && userIsAuthor) || proposal.status == 'PUBLIC_DRAFT' || proposal.status == 'PUBLISHED') && proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad && showBodyProposal">
             <div class="etherpad__wrapper">
               <iframe ng-if="(!userIsAuthor && peerDocUrl)" name="embed_readonly"
                 ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML"
@@ -345,6 +345,10 @@
               </script>
             </div>
           </div>
+          <div ng-if="(proposal.status == 'DRAFT' && !userIsAuthor) ">
+            <p class="card card__message">{{'You cannot see the text of this proposal because you are not an author' | translate}}</p>
+          </div>
+
         </div>
         <div class="proposal-summary" id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">
           <!-- Custom Fields -->

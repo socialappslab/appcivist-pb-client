@@ -1383,5 +1383,6 @@
   "Contribution saved": "Contribución guardada",
   "Contribution updated": "Contribución actualizada",
   "Updated custom field": "Cambio guardado",
-  "Changed was saved": "Cambio guardado"
+  "Changed was saved": "Cambio guardado",
+  "You cannot see the text of this proposal because you are not an author": "No puedes ver el texto de esta propuesta porque no eres autor de la misma y aún no ha sido publicada"
 }

@@ -938,7 +938,8 @@
    */
   run.$inject = [
     '$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal',
-    'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService', 'AppCivistAuth'
+    'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService', 'AppCivistAuth',
+    '$state'
   ];
 
   /**
@@ -949,7 +950,7 @@
    * @param localStorageService
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
-    $timeout, $document, Authorization, $translate, LocaleService, AppCivistAuth) {
+    $timeout, $document, Authorization, $translate, LocaleService, AppCivistAuth, $state) {
 
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
@@ -1082,31 +1083,66 @@
               if (nextParams.cid) {
                 AppCivistAuth.getUUID('campaign', nextParams.cid).get().$promise.then(rsp => {
                   let cuuid = rsp.uuid;
-                  if (nextParams.gid || nextParams.pid) {
+                  if (nextParams.gid || nextParams.pid || nextParams.coid) {
                     if (nextParams.gid) {
                       AppCivistAuth.getUUID('group', nextParams.gid).get().$promise.then(rsp => {
                         let guuid = rsp.uuid;
                         if (nextParams.pid) {
                           AppCivistAuth.getUUID('contribution', nextParams.pid).get().$promise.then(rsp => {
                             let puuid = rsp.uuid;
-                            $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/group/' + guuid + '/contribution/' + puuid);
+                            // $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/group/' + guuid + '/contribution/' + puuid);
+                            $state.go('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.contribution.puuid',
+                              {
+                                auuid: auuid, cuuid: cuuid, guuid: guuid, puuid: puuid
+                              },
+                              {
+                                reload: true
+                              });
                           });
                         } else {
-                          $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/group/' + guuid);
+                          // $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/group/' + guuid);
+                          $state.go('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard',
+                            {
+                              auuid: auuid, cuuid: cuuid, guuid: guuid
+                            },
+                            {
+                              reload: true
+                            });
                         }
                       });
-                    } else if (nextParams.pid) {
-                      AppCivistAuth.getUUID('contribution', nextParams.pid).get().$promise.then(rsp => {
+                    } else if (nextParams.pid || nextParams.coid) {
+                      AppCivistAuth.getUUID('contribution', nextParams.pid ? nextParams.pid : nextParams.coid).get().$promise.then(rsp => {
                         let puuid = rsp.uuid;
-                        $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/contribution/' + puuid);
+                        //$location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid + '/contribution/' + puuid);
+                        $state.go('v2.public.assembly.auuid.campaign.contribution.couuid',
+                          {
+                            auuid: auuid, cuuid: cuuid, couuid: puuid
+                          },
+                          {
+                            reload: true
+                          });
                       });
                     }
                   } else {
-                    $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid);
+                    // $location.path('/v2/p/assembly/' + auuid + '/campaign/' + cuuid);
+                    $state.go('v2.public.assembly.auuid.campaign.cuuid.dashboard',
+                      {
+                        auuid: auuid, cuuid: cuuid
+                      },
+                      {
+                        reload: true
+                      });
                   }
                 });
               } else {
-                $location.path('/v2/p/assembly/' + auuid);
+                // $location.path('/v2/p/assembly/' + auuid);
+                $state.go('v2.public.assembly.auuid.home',
+                  {
+                    auuid: auuid
+                  },
+                  {
+                    reload: true
+                  });
               }
             });
           }

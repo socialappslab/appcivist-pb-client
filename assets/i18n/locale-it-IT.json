@@ -1381,5 +1381,6 @@
   "Contribution saved": "Contribution enregistrée",
   "Contribution updated": "Contribution mise à jour",
   "Updated custom field": "Mise à jour",
-  "Changed was saved": "Mise à jour"
+  "Changed was saved": "Mise à jour",
+  "You cannot see the text of this proposal because you are not an author": "Vous ne pouvez pas voir le texte de cette proposition parce que vous n'êtes pas un auteur et qu'il n'a pas encore été publié"
 }

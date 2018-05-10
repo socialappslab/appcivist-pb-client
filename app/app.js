@@ -199,7 +199,7 @@
         abstract: true,
         template: '<div ui-view></div>',
         ncyBreadcrumb: {
-          label: "Assemblies"
+          label: "{{ 'Assemblies' | translate}}"
         }
       })
       //assembly: new routes
@@ -233,7 +233,7 @@
         abstract: true,
         template: '<div ui-view></div>',
         ncyBreadcrumb: {
-          label: "{{assemblyLabel || 'Assembly'}}"
+          label: "{{assemblyLabel || ('Assembly' | translate) }}"
         }
       })
       //assembly: no princial assembly routes
@@ -242,7 +242,7 @@
         templateUrl: 'app/v2/partials/assembly/home.html',
         controller: 'v2.AssemblyHomeCtrl',
         ncyBreadcrumb: {
-          label: "{{assemblyLabel || 'Assembly'}}"
+          label: "{{ assemblyLabel || ('Assembly' | translate) }}"
         }
       })
       // the new URL for assembly home is /assembly/:id /assembly/:uuid. We left /assembly/:id/home for compatibility.
@@ -251,7 +251,7 @@
         templateUrl: 'app/v2/partials/assembly/home.html',
         controller: 'v2.AssemblyHomeCtrl',
         ncyBreadcrumb: {
-          label: "{{assemblyLabel || 'Assembly'}}"
+          label: "{{ assemblyLabel || ('Assembly' | translate) }}"
         }
       })
       .state('v2.assembly.aid.assembly', {
@@ -325,7 +325,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.home',
-          label: 'New Campaign'
+          label: "{{'New Campaign' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.new.description', {
@@ -337,7 +337,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.home',
-          label: 'New Campaign description'
+          label: "{{'New Campaign Description' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.new.milestones', {
@@ -349,7 +349,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.home',
-          label: 'New Campaign Milestones'
+          label: "{{'New Campaign Milestones' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.new.stages', {
@@ -361,7 +361,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.home',
-          label: 'New Campaign Stages'
+          label: "{{'New Campaign Stages' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.cid', {
@@ -373,7 +373,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.home",
-          label: "{{campaignLabel || 'Campaign'}}"
+          label: "{{ campaignLabel || ('Campaign' | translate) }}"
         }
       })
       .state('v2.assembly.aid.campaign.edit', {
@@ -385,7 +385,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
-          label: 'New Campaign Edit'
+          label: "{{ 'Campaign Edit' | translate }}"
         }
       })
       .state('v2.assembly.aid.campaign.edit.description', {
@@ -397,7 +397,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
-          label: 'New Campaign Edit Description'
+          label: "{{'Campaign Edit Description' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.edit.milestones', {
@@ -409,7 +409,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
-          label: 'New Campaign Edit Milestones'
+          label: "{{'Campaign Edit Milestones' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.edit.stages', {
@@ -421,7 +421,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
-          label: 'New Campaign Edit Stages'
+          label: "{{'Campaign Edit Stages' | translate}}"
         }
       })
       //working group routes
@@ -439,7 +439,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
-          label: 'New Working Group'
+          label: "{{'New Working Group' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.new.description', {
@@ -451,7 +451,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
-          label: 'New Working Group Description'
+          label: "{{'New Working Group Description' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.new.configuration', {
@@ -463,7 +463,7 @@
         },
         ncyBreadcrumb: {
           parent: 'v2.assembly.aid.campaign.cid',
-          label: 'New Working Group configuration'
+          label: "{{'New Working Group configuration' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.gid', {
@@ -475,7 +475,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.cid",
-          label: "{{ workingGroupLabel || 'Working Group' }}"
+          label: "{{ workingGroupLabel || ('Working Group' | translate) }}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.edit', {
@@ -487,7 +487,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "Working Group Edit"
+          label: "{{'Working Group Edit' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.edit.description', {
@@ -499,7 +499,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "Working Group Edit Description"
+          label: "{{ 'Working Group Edit Description' | translate}}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.edit.configuration', {
@@ -511,7 +511,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "Working Group Edit Configuration"
+          label: "{{ 'Working Group Edit Configuration' | translate }}"
         }
       })
       // deprecated. Now is /contribution. Soon to be removed.
@@ -529,7 +529,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
       .state('v2.assembly.aid.campaign.workingGroup.contribution', {
@@ -546,7 +546,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.workingGroup.gid",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.workingGroup.guuid.contribution.puuid', {
@@ -558,7 +558,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.workingGroup.guuid",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
       .state('v2.assembly.aid.campaign.contribution', {
@@ -580,7 +580,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.assembly.aid.campaign.cid",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.contribution.couuid', {
@@ -589,7 +589,7 @@
         controller: 'v2.ContributionPageCtrl',
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.dashboard",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
       .state('v2.space', {
@@ -608,7 +608,7 @@
         controller: 'v2.ProposalsCtrl',
         ncyBreadcrumb: {
           parent: "v2.home",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
 
@@ -623,7 +623,7 @@
         abstract: true,
         template: '<div ui-view></div>',
         ncyBreadcrumb: {
-          label: "Assemblies"
+          label: "{{ 'Assemblies' | translate }}"
         }
       })
       .state('v2.public.assembly.auuid', {
@@ -631,7 +631,7 @@
         abstract: true,
         template: '<div ui-view></div>',
         ncyBreadcrumb: {
-          label: "{{assemblyLabel || 'Assembly'}}"
+          label: "{{ assemblyLabel || ('Assembly' | translate) }}"
         }
       })
       .state('v2.public.assembly.auuid.home', {
@@ -639,7 +639,7 @@
         templateUrl: 'app/v2/partials/assembly/home.html',
         controller: 'v2.AssemblyHomeCtrl',
         ncyBreadcrumb: {
-          label: "{{assemblyLabel || 'Assembly'}}"
+          label: "{{ assemblyLabel || ('Assembly' | translate) }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign', {
@@ -658,7 +658,7 @@
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
         ncyBreadcrumb: {
           parent: 'v2.public.assembly.auuid.home',
-          label: '{{campaignLabel || "Campaign"}}'
+          label: '{{ campaignLabel || "Campaign" | translate }}'
         }
       })
       .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup', {
@@ -680,7 +680,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.dashboard",
-          label: "{{ workingGroupLabel || 'Working Group' }}"
+          label: "{{ workingGroupLabel || ('Working Group' | translate) }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal', {
@@ -697,7 +697,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.contribution', {
@@ -714,7 +714,7 @@
         },
         ncyBreadcrumb: {
           parent: "v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
-          label: "{{ contributionLabel || 'Contribution' }}"
+          label: "{{ contributionLabel || ('Contribution' | translate) }}"
         }
       })
       // TODO: for the general login, let's add a step after signing in to ask which assembly to connect if the user

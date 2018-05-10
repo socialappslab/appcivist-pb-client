@@ -1384,5 +1384,5 @@
   "Contribution updated": "Contribution mise à jour",
   "Updated custom field": "Mise à jour",
   "Changed was saved": "Mise à jour",
-  "You cannot see the text of this proposal because you are not an author": "Vous ne pouvez pas voir le texte de cette proposition parce que vous n'êtes pas un auteur et qu'il n'a pas encore été publié"
+  "contribution.notice.non-author-or-anonymous": "Si vous êtes un auteur de ce {{type}}, connectez-vous pour y accéder ('Se connecter', ci-dessus). Si vous n'êtes pas un auteur, demandez à ses auteurs de vous ajouter, puis de vous connecter."
 }

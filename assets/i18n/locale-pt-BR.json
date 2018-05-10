@@ -1384,5 +1384,5 @@
   "Contribution updated": "Mudança salva",
   "Updated custom field": "Mudança salva",
   "Changed was saved": "Mudança salva",
-  "You cannot see the text of this proposal because you are not an author": "Você não pode ver o texto desta proposta porque você não é autor e a proposta ainda não foi publicada"
+  "contribution.notice.non-author-or-anonymous": "Se você é um autor desta {{type}}, entre no site para acessá-la ('Iniciar Sessão', acima). Se você não é um autor, peça aos autores para adicionar você e depois entre no site."
 }

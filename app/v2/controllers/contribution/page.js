@@ -403,6 +403,10 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
+          $scope.contributionLabel = $scope.proposal.title;
+          $scope.$watch('$scope.proposal.title', function () {
+            $scope.contributionLabel = $scope.proposal.title;
+          });
           console.log($scope.proposal);
           //$scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
           localStorageService.set('currentContribution',$scope.proposal);
@@ -418,6 +422,7 @@
             $scope.group.profilePic = {
               urlAsString: $scope.group.profile.icon
             }
+            $scope.workingGroupLabel = $scope.group.name;
           }
 
           if (scope.isAnonymous) {
@@ -925,7 +930,9 @@
 
     function loadCampaignConfig() {
       let rsp;
+
       if ($scope.campaign && $scope.campaign.rsID) {
+        $scope.campaignLabel = $scope.campaign.title;
         rsp = Campaigns.getConfiguration($scope.campaign.rsID).get();
       } else {
         rsp = Campaigns.getConfigurationPublic($scope.campaign.resourceSpaceUUID).get();
@@ -951,6 +958,7 @@
       rsp.then(
         assembly => {
           let ans = Space.configsByUUID(assembly.resourcesResourceSpaceUUID).get();
+          vm.assemblyLabel = assembly.name;
           ans.$promise.then(function(data){
             vm.assemblyConfig = data;
             vm.ldap = data['appcivist.assembly.authentication.ldap'] ? data['appcivist.assembly.authentication.ldap'].toLowerCase() === 'true' : false;

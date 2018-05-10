@@ -26,7 +26,7 @@
         {{contribution.title}}
       </h2>
     </div>
-    <contribution-feedback contribution="contribution"></contribution-feedback>
+    <contribution-feedback contribution="contribution" campaign="campaign"></contribution-feedback>
     <div class="attribution">
       <!--<member-card ng-repeat="author in mergedAuthors" user="author"></member-card>-->
       <span ng-repeat="author in mergedAuthors track by $index" >{{author.name}}{{!$last ? ', ' : ''}}</span>

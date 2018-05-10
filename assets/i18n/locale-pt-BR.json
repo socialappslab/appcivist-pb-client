@@ -513,7 +513,7 @@
   "Our Brainstorming Contributions": "Nossa contribuição de ideias",
   "Our Proposals": "Nossas Propostas",
   "pagination.widget.description": "nesse espaço ainda",
-  "pagination.widget.no": "Não",
+  "pagination.widget.no": "Não existem",
   "Part of": "Parte de",
   "partials.directives.wGroupForum.wGroupForum.text1": "O Grupo de Trabalho que foi solicitado não está listado como público. Se você conhece pessoas que são membros, peça para que te enviem um convite para entrar.",
   "partials.directives.wGroupForum.wGroupForum.text2": "Você não é membro deste Grupo de Trabalho, mas o seu perfil é público e você pode enviar uma solicitação de entrada. Aperte \"Entrar no Grupo de Trabalho\" para fazê-lo.",
@@ -1384,5 +1384,16 @@
   "Contribution updated": "Mudança salva",
   "Updated custom field": "Mudança salva",
   "Changed was saved": "Mudança salva",
-  "You cannot see the text of this proposal because you are not an author": "Você não pode ver o texto desta proposta porque você não é autor e a proposta ainda não foi publicada"
+  "contribution.notice.non-author-or-anonymous": "Se você é um autor desta {{type}}, entre no site para acessá-la ('Iniciar Sessão', acima). Se você não é um autor, peça aos autores para adicionar você e depois entre no site.",
+  "New Campaign Description": "New Campaign Description",
+  "New Campaign Milestones": "New Campaign Milestones",
+  "Campaign Edit": "New Campaign Edit",
+  "Campaign Edit Description": "New Campaign Edit Description",
+  "Campaign Edit Milestones": "Campaign Edit Milestones",
+  "Campaign Edit Stages": "Campaign Edit Stages",
+  "New Working Group Description": "New Working Group Description",
+  "New Working Group configuration": "New Working Group configuration",
+  "Working Group Edit": "Working Group Edit",
+  "Working Group Edit Description": "Working Group Edit Description",
+  "Working Group Edit Configuration": "Working Group Edit Configuration"
 }

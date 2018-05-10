@@ -658,7 +658,7 @@
         templateUrl: 'app/v2/partials/campaign/dashboard.html',
         ncyBreadcrumb: {
           parent: 'v2.public.assembly.auuid.home',
-          label: '{{ campaignLabel || "Campaign" | translate }}'
+          label: "{{ campaignLabel || ('Campaign' | translate) }}"
         }
       })
       .state('v2.public.assembly.auuid.campaign.cuuid.workingGroup', {

@@ -27,10 +27,14 @@
       });
 
       ConsentModalCtrl.$inject = [
-        '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', 'Space', '$state', '$stateParams', 'LocaleService', '$rootScope', 'Assemblies', '$window', 'Utils', 'Memberships', '$timeout', 'Campaigns', '$sce', '$translate'
+        '$scope', 'loginService', 'AppCivistAuth', 'Notify', 'localStorageService', 'Space', '$state', '$stateParams',
+        'LocaleService', '$rootScope', 'Assemblies', '$window', 'Utils', 'Memberships', '$timeout', 'Campaigns', '$sce',
+        '$translate'
     ];
 
-    function ConsentModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, Space, $state, $stateParams, LocaleService, $rootScope, Assemblies, $window, Utils, Memberships, $timeout, Campaigns, $sce, $translate) {
+    function ConsentModalCtrl($scope, loginService, AppCivistAuth, Notify, localStorageService, Space, $state,
+                              $stateParams, LocaleService, $rootScope, Assemblies, $window, Utils, Memberships,
+                              $timeout, Campaigns, $sce, $translate) {
 
       let self = this;
 
@@ -85,19 +89,23 @@
         this.getDisagreeText();
         this.getNotificationText();
         this.consentText = this.getConsentText();
-        let rsp = Campaigns.consent(this.assembly, this.campaign.campaignId).get().$promise;
-        rsp.then(
-          consent => {
-            self.userParticipation = consent;
-            self.showModal = self.config && self.config['appcivist.campaign.research-consent-text'] && (self.userParticipation.userProvidedConsent == null || self.userParticipation.userProvidedConsent == false) ? true : false;
-            if (self.showModal) {
-              angular.element('#consentModal').modal({show:true, keyboard:false, backdrop:'static'});
+        let assembly = this.assembly;
+        let campaignId = this.campaign ? this.campaign.campaignId : $stateParams.cid;
+        if (assembly && campaignId) {
+          let rsp = Campaigns.consent(assembly, campaignId).get().$promise;
+          rsp.then(
+            consent => {
+              self.userParticipation = consent;
+              self.showModal = self.config && self.config['appcivist.campaign.research-consent-text'] && (self.userParticipation.userProvidedConsent == null || self.userParticipation.userProvidedConsent == false) ? true : false;
+              if (self.showModal) {
+                angular.element('#consentModal').modal({show: true, keyboard: false, backdrop: 'static'});
+              }
+            },
+            error => {
+              Notify.show(error.statusMessage, 'error');
             }
-          },
-          error => {
-            Notify.show(error.statusMessage, 'error');
-          }
-        )
+          );
+        }
       }
 
       this.updateConsent = (consentText) => {

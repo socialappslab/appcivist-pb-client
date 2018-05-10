@@ -1384,5 +1384,16 @@
   "Contribution updated": "Contribution mise à jour",
   "Updated custom field": "Mise à jour",
   "Changed was saved": "Mise à jour",
-  "You cannot see the text of this proposal because you are not an author": "Vous ne pouvez pas voir le texte de cette proposition parce que vous n'êtes pas un auteur et qu'il n'a pas encore été publié"
+  "contribution.notice.non-author-or-anonymous": "Si vous êtes un auteur de ce {{type}}, connectez-vous pour y accéder ('Se connecter', ci-dessus). Si vous n'êtes pas un auteur, demandez à ses auteurs de vous ajouter, puis de vous connecter.",
+  "New Campaign Description": "New Campaign Description",
+  "New Campaign Milestones": "New Campaign Milestones",
+  "Campaign Edit": "New Campaign Edit",
+  "Campaign Edit Description": "New Campaign Edit Description",
+  "Campaign Edit Milestones": "Campaign Edit Milestones",
+  "Campaign Edit Stages": "Campaign Edit Stages",
+  "New Working Group Description": "New Working Group Description",
+  "New Working Group configuration": "New Working Group configuration",
+  "Working Group Edit": "Working Group Edit",
+  "Working Group Edit Description": "Working Group Edit Description",
+  "Working Group Edit Configuration": "Working Group Edit Configuration"
 }

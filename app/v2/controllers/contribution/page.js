@@ -74,6 +74,8 @@
     $scope.changeStatus = changeStatus.bind($scope);
     $scope.checkCustomHeader = checkCustomHeader.bind($scope);
     $scope.syncProposalWithPeerdoc = syncProposalWithPeerdoc.bind($scope);
+    $scope.customChangeOnClick = customChangeOnClick.bind($scope);
+    $scope.addCustomValue = addCustomValue.bind($scope);
 
     activate();
 
@@ -218,6 +220,9 @@
       $scope.keywordQuery = "";
       $scope.keywordsList = [];
       $scope.keywordsSuggestionsVisible = false;
+      $scope.customList = [];
+      $scope.customQuery = "";
+      $scope.customsSuggestionsVisible = [];
 
       $scope.allThemes = [];
       $scope.selectedTheme = null;
@@ -264,8 +269,13 @@
     function hideSearch(id) {
       $('#'+id).hide();
       $('#'+id+'Close').hide();
-      let ctx = id.replace('Search', '');
-      eval('this.'+ctx+'sSuggestionsVisible = false');
+      if (this.currentAdd.context === 'CUSTOM') {
+        let cid = id.split('_')[1];
+        this.customsSuggestionsVisible[cid] = false;
+      } else {
+        let ctx = id.replace('Search', '');
+        eval('this.'+ctx+'sSuggestionsVisible = false');
+      }
     }
 
     function changeStatus(newValue, oldValue) {
@@ -1111,6 +1121,12 @@
         }
       );
     }
+    
+    function customChangeOnClick(customid) {
+      this.setAddContext('CUSTOM');
+      this.customsSuggestionsVisible[customid] = true;
+      this.customList = this.fieldsValuesDict[customid].customFieldDefinition.customFieldValueOptions;
+    }
 
     function keywordsChangeOnClick() {
       this.setAddContext('KEYWORDS');
@@ -1141,6 +1157,8 @@
         return $sce.trustAsHtml(`
           <img src="${item.profilePic ? item.profilePic.url ? item.profilePic.url : '../assets/images/avatar.png' : '../assets/images/avatar.png'}" style="height: 30px; width: 30px; border-radius: 50px;">
           <span style="margin-left: 15px;vertical-align:super">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
+      } else if (this.currentAdd.context === 'CUSTOM') {
+        return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.value}</span>`);
       } else {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }
@@ -1176,6 +1194,10 @@
         this.themesSuggestionsVisible = false;
         $('#themeSearch').hide();
         $('#themeSearchClose').hide();
+      } else if (this.currentAdd.context === 'CUSTOM') {
+        this.addCustomValue(item);
+        $('#customSearch').hide();
+        $('#customSearchClose').hide();
       } else {
         this.addThemeToProposal(item);
         this.keywordsSuggestionsVisible = false;
@@ -1296,6 +1318,10 @@
       );
     }
 
+    function addCustomValue(item) {
+      
+    }
+
     function selectTheme() {
      if (this.proposal.themes == undefined) {
        this.proposal.themes = [];
@@ -1383,6 +1409,7 @@
               map[obj.customFieldDefinition.customFieldDefinitionId] = obj;
               return map;
             }, {});
+            console.log($scope.fieldsValuesDict);
             $scope.fieldsValuesIdsDict = $scope.fieldsValues.reduce(function (map, obj) {
               map[obj.customFieldDefinition.customFieldDefinitionId] = obj.customFieldValueId;
               return map;

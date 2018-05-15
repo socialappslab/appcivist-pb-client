@@ -1179,7 +1179,7 @@
      *
      * @param {Object} item
      */
-    function currentAddOnSelect(item, ldap = false) {
+    function currentAddOnSelect(item, ldap = false, fieldDefinitionId = null) {
       this.currentAdd.suggestionsVisible = false;
       this.currentAdd.query = '';
 
@@ -1195,7 +1195,7 @@
         $('#themeSearch').hide();
         $('#themeSearchClose').hide();
       } else if (this.currentAdd.context === 'CUSTOM') {
-        this.addCustomValue(item);
+        this.addCustomValue(item, fieldDefinitionId);
         $('#customSearch').hide();
         $('#customSearchClose').hide();
       } else {
@@ -1327,8 +1327,56 @@
       );
     }
 
-    function addCustomValue(item) {
+    function addCustomValue(item, definitionId) {
+      let value = item.value;
+      let cfid = definitionId;
+      let cfvid = item.customFieldValueId;
+      let newFieldValue = {
+        entityTargetType: this.contributionType,
+        entityTargetUuid: this.proposal.uuid,
+        customFieldDefinition: {customFieldDefinitionId: cfid},
+        value: value
+      };
 
+        // The custom field value already exists
+      if (cfvid) {
+        newFieldValue.customFieldValueId = cfvid;
+        let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, cfid).update(newFieldValue).$promise;
+        return rsp.then(
+          newValue => {
+            if (Array.isArray($scope.fieldsValuesDict[cfid])) {
+              _.remove($scope.fieldsValuesDict[cfid], { customFieldValueId: cfvid });
+              $scope.fieldsValuesDict[cfid].push(newValue);
+            } else {
+              $scope.fieldsValuesDict[cfid].value = newValue.value;
+            }
+            _.remove($scope.fieldsValues, { customFieldValueId: cfvid });
+            $scope.fieldsValues.push(newValue);
+            Notify.show('Updated custom field', 'success');
+          },
+          error => {
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          }
+          );
+        } else {
+          let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
+          return rsp.then(
+            newValue => {
+              if (Array.isArray($scope.fieldsValuesDict[cfid])) {
+                $scope.fieldsValuesDict[cfid].push(newValue);
+                $scope.fieldsValuesIdsDict[cfid].push(newValue.customFieldValueId)
+              } else {
+                $scope.fieldsValuesDict[cfid] = newValue;
+                $scope.fieldsValuesIdsDict[cfid] = newValue.customFieldValueId;
+              }
+              $scope.fieldsValues.push(newValue);
+              Notify.show('Updated custom field', 'success');
+            },
+            error => {
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+            }
+          );
+        }
     }
 
     function selectTheme() {
@@ -1454,6 +1502,8 @@
           }
         },
         error => {
+          $scope.fieldsValuesDict = {};
+          $scope.fieldsValuesIdsDict = {};
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );

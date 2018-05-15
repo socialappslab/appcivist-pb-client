@@ -21,8 +21,9 @@
       $scope.alreadyLoggedInFb = false;
       // $scope.assemblyUuid = "";
       $scope.userAssemblies = [];
-      if ($scope.user && $scope.user.language) {
-        $translate.use($scope.user.language);
+      let lang = $scope.user.lang || $scope.user.language;
+      if ($scope.user && lang) {
+        $translate.use(lang);
       }
       if ($scope.user != undefined) {
         $scope.profile = {
@@ -32,7 +33,9 @@
           username: $scope.user ? $scope.user.username : '',
           facebookUserId: $scope.user ? $scope.user.facebookUserId : '',
           userAccessToken: $scope.user ? $scope.user.userAccessToken : '',
-          tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : ''
+          tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : '',
+          lang: $scope.user ? $scope.user.lang : 'en-US',
+          language: $scope.user ? $scope.user.language : 'en-US'
         };
         $scope.userFromServer = {
           firstname: $scope.profile.firstname,
@@ -41,16 +44,22 @@
           username: $scope.profile.username,
           facebookUserId: $scope.profile.facebookUserId,
           userAccessToken: $scope.profile.userAccessToken,
-          tokenExpiresIn: $scope.profile.tokenExpiresIn
+          tokenExpiresIn: $scope.profile.tokenExpiresIn,
+          lang: $scope.profile.lang,
+          language: $scope.profile.language
         };
       }
       $scope.blurReset = blurReset;
       $scope.updateProfile = updateProfile;
       $scope.toggleChangePassword = toggleChangePassword;
       $scope.getImageFromFile = getImageFromFile.bind($scope);
+      $scope.goBack = goBack.bind($scope);
       $scope.$watch('profile.profile_pic', $scope.getImageFromFile);
 
+      $scope.langlist = [];
+
       verifyMembershipConfigs();
+      getLocales();
     }
 
     function blurReset() {
@@ -68,6 +77,10 @@
       }
     }
 
+    function getLocales() {
+      $scope.langlist = $translate.getAvailableLanguageKeys().slice().sort();
+    }
+
     function updateProfile() {
       var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId;
       var fd = new FormData();
@@ -76,6 +89,8 @@
       fd.append('email', $scope.profile.email);
       fd.append('username', $scope.profile.username);
       fd.append('facebookUserId', $scope.profile.facebookUserId);
+      fd.append('lang', $scope.profile.lang);
+      fd.append('language', $scope.profile.language);
 
       if (userInfoChanged()) {
         $http.put(url, fd, {
@@ -141,7 +156,7 @@
     }
 
     function userInfoChanged() {
-      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId'];
+      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId', 'lang', 'language'];
 
       for (var i = 0; i < props.length; i++) {
         var prop = props[i];
@@ -224,6 +239,10 @@
         }
       );
 
+    }
+
+    function goBack() {
+      window.history.back();
     }
 
     $scope.login = function (assemblyUuid) {

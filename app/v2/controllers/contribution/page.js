@@ -1199,10 +1199,12 @@
         $('#customSearch').hide();
         $('#customSearchClose').hide();
       } else {
-        this.addThemeToProposal(item);
-        this.keywordsSuggestionsVisible = false;
-        $('#keywordSearch').hide();
-        $('#keywordSearchClose').hide();
+        if (item != null && item.title != null && item.title != "") {
+          this.addThemeToProposal(item);
+          this.keywordsSuggestionsVisible = false;
+          $('#keywordSearch').hide();
+          $('#keywordSearchClose').hide();
+        }
       }
     }
 

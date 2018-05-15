@@ -1201,10 +1201,15 @@
       } else {
         if (item != null && item.title != null && item.title != "") {
           this.addThemeToProposal(item);
-          this.keywordsSuggestionsVisible = false;
-          $('#keywordSearch').hide();
-          $('#keywordSearchClose').hide();
+        } else {
+          $translate("Keyword cannot be empty").then(function(translated) {
+            Notify.show(translated, 'error');
+          });
         }
+
+        this.keywordsSuggestionsVisible = false;
+        $('#keywordSearch').hide();
+        $('#keywordSearchClose').hide();
       }
     }
 
@@ -1242,9 +1247,11 @@
 
     function queryThemes(query) {
       return function (value, index, array) {
-        var lowerTitle = value.title.toLowerCase();
-        var lowerQuery = query.toLowerCase();
-        return lowerTitle.indexOf(lowerQuery) >= 0 && (value.type == 'EMERGENT' || value.type == 'OFFICIAL_PRE_DEFINED');
+        if (value.title != null && value.title != "" && query != null && query != "") {
+          var lowerTitle = value.title.toLowerCase();
+          var lowerQuery = query.toLowerCase();
+          return lowerTitle.indexOf(lowerQuery) >= 0 && (value.type == 'EMERGENT' || value.type == 'OFFICIAL_PRE_DEFINED');
+        }
       }
     }
 

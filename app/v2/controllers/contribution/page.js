@@ -1121,11 +1121,11 @@
         }
       );
     }
-    
+
     function customChangeOnClick(customid) {
       this.setAddContext('CUSTOM');
       this.customsSuggestionsVisible[customid] = true;
-      this.customList = this.fieldsValuesDict[customid].customFieldDefinition.customFieldValueOptions;
+      this.customList = this.fieldsDict ? this.fieldsDict[customid].customFieldValueOptions : [];
     }
 
     function keywordsChangeOnClick() {
@@ -1321,7 +1321,7 @@
     }
 
     function addCustomValue(item) {
-      
+
     }
 
     function selectTheme() {
@@ -1407,14 +1407,39 @@
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
           if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
-            $scope.fieldsValuesDict = $scope.fieldsValues.reduce(function (map, obj) {
-              map[obj.customFieldDefinition.customFieldDefinitionId] = obj;
-              return map;
+            $scope.fieldsValuesDict = {};
+            $scope.fieldsValuesIdsDict = {};
+            $scope.fieldsValues.reduce(function (map, obj) {
+              let dictEntry = $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId];
+              if (dictEntry == null) {
+                // first time we find a value for this custom field definition
+                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId] = obj;
+              } else if (dictEntry != null && !Array.isArray(dictEntry)) {
+                // if we have already found a value for this definition, but it was the first, so is not an array yet
+                // it means it is multiple choice with multiple values
+                let firstValue = map[obj.customFieldDefinition.customFieldDefinitionId];
+                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId] = [];
+                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId].push(firstValue);
+                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj);
+              } else if (dictEntry != null && Array.isArray(dictEntry)) {
+                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj);
+              }
             }, {});
-            console.log($scope.fieldsValuesDict);
-            $scope.fieldsValuesIdsDict = $scope.fieldsValues.reduce(function (map, obj) {
-              map[obj.customFieldDefinition.customFieldDefinitionId] = obj.customFieldValueId;
-              return map;
+            $scope.fieldsValues.reduce(function (map, obj) {
+              let dictIdsEntry = $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId];
+              if (dictIdsEntry == null) {
+                // first time we find a value for this custom field definition
+                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId] = obj.customFieldValueId;
+              } else if (dictEntry != null && !Array.isArray(dictEntry)) {
+                // if we have already found a value for this definition, but it was the first, so is not an array yet
+                // it means it is multiple choice with multiple values
+                let firstValue = map[obj.customFieldDefinition.customFieldDefinitionId];
+                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId] = [];
+                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId].push(firstValue);
+                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj.customFieldValueId);
+              } else if (dictEntry != null && Array.isArray(dictEntry)) {
+                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj.customFieldValueId);
+              }
             }, {});
           } else {
             $scope.fieldsValuesDict = {};
@@ -1571,7 +1596,6 @@
     }
 
     function checkCustomHeader(definitionId) {
-
       let value = this.fieldsValuesDict[definitionId];
       let cfid = this.fieldsValuesIdsDict[definitionId];
       let selectedOption = value.value;
@@ -1585,6 +1609,7 @@
       // The custom field value already exists
       if (cfid) {
         newFieldValue.customFieldValueId = cfid;
+        // TODO => make also array for MULTIPLE CHOICE
         let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, cfid).update(newFieldValue).$promise;
         return rsp.then(
           newValue => {
@@ -1621,17 +1646,27 @@
         $scope.componentResourceSpaceId = currentComponent ? currentComponent.resourceSpaceId : null;
       }
 
+      $scope.fieldsDict = {};
       if ($scope.campaignResourceSpaceId) {
         loadFields($scope.campaignResourceSpaceId).then(fields => {
           $scope.campaignFields = $scope.filterCustomFields(fields);
           $scope.customHeaderFields = fields.filter(f => f.entityPart == 'HEADER');
-          console.log($scope.campaignFields);
-          console.log($scope.customHeaderFields);
+
+          if (fields && fields.length>0) {
+            fields.reduce(function (map, obj) {
+              $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
+            }, {});
+          }
         });
       }
       if ($scope.componentResourceSpaceId) {
         loadFields($scope.componentResourceSpaceId).then(fields => {
           $scope.componentFields = $scope.filterCustomFields(fields);
+          if (fields && fields.length>0) {
+            fields.reduce(function (map, obj) {
+              $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
+            }, {});
+          }
         });
       }
       loadValues($scope.proposal.resourceSpaceId);

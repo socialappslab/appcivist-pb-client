@@ -21,8 +21,9 @@
       $scope.alreadyLoggedInFb = false;
       // $scope.assemblyUuid = "";
       $scope.userAssemblies = [];
-      if ($scope.user && $scope.user.language) {
-        $translate.use($scope.user.language);
+      let lang = $scope.user.lang || $scope.user.language;
+      if ($scope.user && lang) {
+        $translate.use(lang);
       }
       if ($scope.user != undefined) {
         $scope.profile = {
@@ -32,7 +33,9 @@
           username: $scope.user ? $scope.user.username : '',
           facebookUserId: $scope.user ? $scope.user.facebookUserId : '',
           userAccessToken: $scope.user ? $scope.user.userAccessToken : '',
-          tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : ''
+          tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : '',
+          lang: $scope.user ? $scope.user.lang : 'en-US',
+          language: $scope.user ? $scope.user.language : 'en-US'
         };
         $scope.userFromServer = {
           firstname: $scope.profile.firstname,
@@ -41,16 +44,22 @@
           username: $scope.profile.username,
           facebookUserId: $scope.profile.facebookUserId,
           userAccessToken: $scope.profile.userAccessToken,
-          tokenExpiresIn: $scope.profile.tokenExpiresIn
+          tokenExpiresIn: $scope.profile.tokenExpiresIn,
+          lang: $scope.profile.lang,
+          language: $scope.profile.language
         };
       }
       $scope.blurReset = blurReset;
       $scope.updateProfile = updateProfile;
       $scope.toggleChangePassword = toggleChangePassword;
       $scope.getImageFromFile = getImageFromFile.bind($scope);
+      $scope.goBack = goBack.bind($scope);
       $scope.$watch('profile.profile_pic', $scope.getImageFromFile);
 
+      $scope.langlist = [];
+
       verifyMembershipConfigs();
+      getLocales();
     }
 
     function blurReset() {
@@ -68,39 +77,70 @@
       }
     }
 
-    function updateProfile() {
+    function getLocales() {
+      $scope.langlist = $translate.getAvailableLanguageKeys().slice().sort();
+    }
+
+    function updateUserData(checkPic = false) {
+      var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId;
+      if (checkPic && picChanged()) {
+        updatePic(false);
+      }
+      $http.put(url, {
+        name: $scope.profile.firstname + ' ' + $scope.profile.lastname,
+        email: $scope.profile.email,
+        username: $scope.profile.username,
+        facebookUserId: $scope.profile.facebookUserId,
+        lang: $scope.profile.lang,
+        language: $scope.profile.language
+      }
+      ).then(function(response) {
+        var rsp = loginService.getUser().get({ id: $scope.user.userId });
+        rsp.$promise.then(
+          function(data) {
+            localStorageService.set('user', data);
+            if (passwordChanged()) {
+              updatePassword();
+            } else {
+              Notify.show('Data saved correctly');
+              window.location.reload();
+            }
+          },
+          function(error) {
+            Notify.show(error.statusMessage, 'error');
+          }
+        );
+      });
+    }
+
+    function updatePic(checkData = false) {
       var url = localStorageService.get('serverBaseUrl') + '/user/' + $scope.user.userId;
       var fd = new FormData();
       fd.append('profile_pic', $scope.profile.profile_pic);
-      fd.append('name', $scope.profile.firstname + ' ' + $scope.profile.lastname);
-      fd.append('email', $scope.profile.email);
-      fd.append('username', $scope.profile.username);
-      fd.append('facebookUserId', $scope.profile.facebookUserId);
+      $http.put(url, fd, {
+        headers: {
+          'Content-Type': undefined
+        },
+        transformRequest: angular.identity,
+        params: {}
+      }).then(function(response) {
+        if (checkData && userInfoChanged()) {
+          updateUserData();
+        } else {
+          Notify.show('Data saved correctly');
+          window.location.reload();
+        }
+      }, function(error) {
+        Notify.show(error.statusMessage, 'error');
+      });
+    }
 
+    function updateProfile() {
       if (userInfoChanged()) {
-        $http.put(url, fd, {
-          headers: {
-            'Content-Type': undefined
-          },
-          transformRequest: angular.identity,
-          params: {}
-        }).then(function(response) {
-          var rsp = loginService.getUser().get({ id: $scope.user.userId });
-          rsp.$promise.then(
-            function(data) {
-              localStorageService.set('user', data);
-              if (passwordChanged()) {
-                updatePassword();
-              } else {
-                Notify.show('Data saved correctly');
-                window.location.reload();
-              }
-            },
-            function(error) {
-              Notify.show(error.statusMessage, 'error');
-            }
-          );
-        });
+        updateUserData(true);
+      }
+      else if (picChanged()) {
+        updatePic(true);
       } else if (passwordChanged()) {
         updatePassword();
       }
@@ -141,13 +181,20 @@
     }
 
     function userInfoChanged() {
-      var props = ['firstname', 'lastname', 'email', 'username', 'profile_pic', 'facebookUserId'];
+      var props = ['firstname', 'lastname', 'email', 'username', 'facebookUserId', 'lang', 'language'];
 
       for (var i = 0; i < props.length; i++) {
         var prop = props[i];
         if ($scope.profile[prop] !== $scope.userFromServer[prop]) {
           return true;
         }
+      }
+      return false;
+    }
+
+    function picChanged() {
+      if ($scope.profile.profile_pic !== $scope.userFromServer.profile_pic) {
+        return true;
       }
       return false;
     }
@@ -224,6 +271,10 @@
         }
       );
 
+    }
+
+    function goBack() {
+      window.history.back();
     }
 
     $scope.login = function (assemblyUuid) {

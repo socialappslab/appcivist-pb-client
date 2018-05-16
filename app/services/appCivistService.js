@@ -1566,6 +1566,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/fieldvalue/:cfid', { sid: sid, cfid: cfid }, {
           update: {
             method: 'PUT'
+          },
+          delete: {
+            method: 'DELETE',
+            isArray: true
           }
         });
       },
@@ -2793,7 +2797,7 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
     },
     /**
      * Converts IDs to UUIDs
-     * 
+     *
      * @method services.AppCivistAuth#getUUID
      * @param {string} type
      * @param {string} id

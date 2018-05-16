@@ -862,6 +862,7 @@
   "Downs": "Negativos",
   "Needs": "Necessidades",
   "Published": "Publicado",
+  "Publisheds": "Publicadas",
   "Excluded": "Excluído",
   "Start Voting": "Iniciar Votação",
   "Configure Voting": "Configurar Votação",
@@ -1395,5 +1396,16 @@
   "New Working Group configuration": "New Working Group configuration",
   "Working Group Edit": "Working Group Edit",
   "Working Group Edit Description": "Working Group Edit Description",
-  "Working Group Edit Configuration": "Working Group Edit Configuration"
+  "Working Group Edit Configuration": "Working Group Edit Configuration",
+  "Keyword cannot be empty": "As palavras-chave não podem estar vazias",
+  "Duplicated entry": "Entrada duplicada",
+  "Deleted": "Eliminação bem sucedida",
+  "Return to previous page": "Return to previous page",
+  "de-DE": "German",
+  "en-US": "English (US)",
+  "es-ES": "Spanish (Spain)",
+  "es-PY": "Spanish (Paraguay)",
+  "fr-CA": "French (Canadian)",
+  "fr-FR": "French (France)",
+  "pt-BR": "Portuguese (Brazil)"
 }

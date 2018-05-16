@@ -1396,5 +1396,7 @@
   "Working Group Edit": "Working Group Edit",
   "Working Group Edit Description": "Working Group Edit Description",
   "Working Group Edit Configuration": "Working Group Edit Configuration",
-  "Keyword cannot be empty": "As palavras-chave não podem estar vazias"
+  "Keyword cannot be empty": "As palavras-chave não podem estar vazias",
+  "Duplicated entry": "Entrada duplicada",
+  "Deleted": "Eliminação bem sucedida"
 }

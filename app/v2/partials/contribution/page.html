@@ -145,26 +145,19 @@
                   <!-- Todo support other types of custom field headers, not only those that are represented with a select-->
                   <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
                           ng-options="option as option.value for option in field.customFieldValueOptions track by option.value"
-                          ng-model="fieldsValuesDict[field.customFieldDefinitionId]"
-                          ng-change="checkCustomHeader(field.customFieldDefinitionId, fieldsValuesDict[field.customFieldDefinitionId].customFieldValueId)" ng-if="userIsAuthor"/>
+                          ng-model="custom.valuesDict[field.customFieldDefinitionId][0]"
+                          ng-change="checkCustomHeader(field.customFieldDefinitionId, custom.valuesDict[field.customFieldDefinitionId][0].customFieldValueId)" ng-if="userIsAuthor"/>
 
 
                   <!-- Todo support other types of custom field headers, not only those that are represented with a select-->
-                  <span class="header_select" ng-if="!userIsAuthor">{{fieldsValuesDict[field.customFieldDefinitionId].value}}</span>
+                  <span class="header_select" ng-if="!userIsAuthor">{{custom.valuesDict[field.customFieldDefinitionId].value}}</span>
                 </li>
               </div>
               <div class="liveEdit smaller" style="display: inline-block" ng-if="field.limit > 1">
-                <li ng-repeat="val in fieldsValuesDict[field.customFieldDefinitionId] track by $index" ng-if="Array.isArray(fieldsValuesDict[field.customFieldDefinitionId])">
+                <li ng-repeat="val in custom.valuesDict[field.customFieldDefinitionId] track by $index">
                   <a>
                     {{val.value}}
-                    <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteCustomValue(fieldsValuesDict[field.customFieldDefinitionId])"></i>
-                  </a>
-                  <!--<span ng-if="!$last">,</span>-->
-                </li>
-                <li ng-if="!Array.isArray(fieldsValuesDict[field.customFieldDefinitionId])">
-                  <a>
-                    {{fieldsValuesDict[field.customFieldDefinitionId].value}}
-                    <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteCustomValue(fieldsValuesDict[field.customFieldDefinitionId])"></i>
+                    <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteCustomValue(val, field.customFieldDefinitionId)"></i>
                   </a>
                   <!--<span ng-if="!$last">,</span>-->
                 </li>

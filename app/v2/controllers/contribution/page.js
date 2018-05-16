@@ -76,6 +76,7 @@
     $scope.syncProposalWithPeerdoc = syncProposalWithPeerdoc.bind($scope);
     $scope.customChangeOnClick = customChangeOnClick.bind($scope);
     $scope.addCustomValue = addCustomValue.bind($scope);
+    $scope.deleteCustomValue = deleteCustomValue.bind($scope);
 
     activate();
 
@@ -220,9 +221,14 @@
       $scope.keywordQuery = "";
       $scope.keywordsList = [];
       $scope.keywordsSuggestionsVisible = false;
+
       $scope.customList = [];
       $scope.customQuery = "";
       $scope.customsSuggestionsVisible = [];
+      $scope.custom = {
+        valuesDict: {},
+        valuesIdsDict: {}
+      }
 
       $scope.allThemes = [];
       $scope.selectedTheme = null;
@@ -244,6 +250,7 @@
       $scope.editIconHTML = "<i class='fa fa-edit smalledit'></i>";
 
       $scope.interval = null;
+
 
       $scope.$on('$destroy', function() {
         if ($scope.interval) {
@@ -1196,8 +1203,9 @@
         $('#themeSearchClose').hide();
       } else if (this.currentAdd.context === 'CUSTOM') {
         this.addCustomValue(item, fieldDefinitionId);
-        $('#customSearch').hide();
-        $('#customSearchClose').hide();
+        $('#customSearch'+'_'+fieldDefinitionId).hide();
+        $('#customSearch'+'_'+fieldDefinitionId+'Close').hide();
+        this.customsSuggestionsVisible[fieldDefinitionId]=false;
       } else {
         if (item != null && item.title != null && item.title != "") {
           this.addThemeToProposal(item);
@@ -1344,39 +1352,60 @@
         let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, cfid).update(newFieldValue).$promise;
         return rsp.then(
           newValue => {
-            if (Array.isArray($scope.fieldsValuesDict[cfid])) {
-              _.remove($scope.fieldsValuesDict[cfid], { customFieldValueId: cfvid });
-              $scope.fieldsValuesDict[cfid].push(newValue);
-            } else {
-              $scope.fieldsValuesDict[cfid].value = newValue.value;
+            if (Array.isArray($scope.custom.valuesDict[cfid])) {
+              _.remove($scope.custom.valuesDict[cfid], { customFieldValueId: cfvid });
+              $scope.custom.valuesDict[cfid].push(newValue);
             }
             _.remove($scope.fieldsValues, { customFieldValueId: cfvid });
             $scope.fieldsValues.push(newValue);
-            Notify.show('Updated custom field', 'success');
+            $translate("Changed was saved").then(function(translation) {
+              Notify.show(translation, 'success');
+            });
           },
           error => {
             Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
           }
           );
         } else {
-          let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
-          return rsp.then(
-            newValue => {
-              if (Array.isArray($scope.fieldsValuesDict[cfid])) {
-                $scope.fieldsValuesDict[cfid].push(newValue);
-                $scope.fieldsValuesIdsDict[cfid].push(newValue.customFieldValueId)
-              } else {
-                $scope.fieldsValuesDict[cfid] = newValue;
-                $scope.fieldsValuesIdsDict[cfid] = newValue.customFieldValueId;
+          let existingValue = _.find($scope.custom.valuesDict[cfid], { value: newFieldValue.value });
+          if (existingValue != null) {
+            $translate("Duplicated entry").then(function(translation) {
+              Notify.show(translation, 'warn');
+            });
+          } else {
+            let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
+            return rsp.then(
+              newValue => {
+                $scope.custom.valuesDict[cfid].push(newValue);
+                $scope.custom.valuesIdsDict[cfid].push(newValue.customFieldValueId);
+                $scope.fieldsValues.push(newValue);
+                $translate("Changed was saved").then(function (translation) {
+                  Notify.show(translation, 'success');
+                });
+              },
+              error => {
+                Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
               }
-              $scope.fieldsValues.push(newValue);
-              Notify.show('Updated custom field', 'success');
-            },
-            error => {
-              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
-            }
-          );
+            );
+          }
         }
+    }
+
+    function deleteCustomValue(item, cfid) {
+      let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, item.customFieldValueId).delete().$promise;
+      return rsp.then(
+        response => {
+          _.remove($scope.fieldsValues, { customFieldValueId: item.customFieldValueId});
+          _.remove($scope.custom.valuesDict[cfid], { customFieldValueId: item.customFieldValueId});
+          $scope.custom.valuesIdsDict[cfid] = $scope.custom.valuesIdsDict[cfid].filter(e => e !== item.customFieldValueId);
+          $translate("Deleted").then(function(translation) {
+            Notify.show(translation,'success');
+          });
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
     }
 
     function selectTheme() {
@@ -1462,48 +1491,25 @@
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
           if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
-            $scope.fieldsValuesDict = {};
-            $scope.fieldsValuesIdsDict = {};
             $scope.fieldsValues.reduce(function (map, obj) {
-              let dictEntry = $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId];
+              let dictEntry = $scope.custom.valuesDict[obj.customFieldDefinition.customFieldDefinitionId];
               if (dictEntry == null) {
                 // first time we find a value for this custom field definition
-                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId] = obj;
-              } else if (dictEntry != null && !Array.isArray(dictEntry)) {
-                // if we have already found a value for this definition, but it was the first, so is not an array yet
-                // it means it is multiple choice with multiple values
-                let firstValue = map[obj.customFieldDefinition.customFieldDefinitionId];
-                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId] = [];
-                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId].push(firstValue);
-                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj);
-              } else if (dictEntry != null && Array.isArray(dictEntry)) {
-                $scope.fieldsValuesDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj);
+                $scope.custom.valuesDict[obj.customFieldDefinition.customFieldDefinitionId] = [];
               }
+              $scope.custom.valuesDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj);
             }, {});
             $scope.fieldsValues.reduce(function (map, obj) {
-              let dictIdsEntry = $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId];
+              let dictIdsEntry = $scope.custom.valuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId];
               if (dictIdsEntry == null) {
                 // first time we find a value for this custom field definition
-                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId] = obj.customFieldValueId;
-              } else if (dictEntry != null && !Array.isArray(dictEntry)) {
-                // if we have already found a value for this definition, but it was the first, so is not an array yet
-                // it means it is multiple choice with multiple values
-                let firstValue = map[obj.customFieldDefinition.customFieldDefinitionId];
-                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId] = [];
-                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId].push(firstValue);
-                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj.customFieldValueId);
-              } else if (dictEntry != null && Array.isArray(dictEntry)) {
-                $scope.fieldsValuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj.customFieldValueId);
+                $scope.custom.valuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId] = [];
               }
+              $scope.custom.valuesIdsDict[obj.customFieldDefinition.customFieldDefinitionId].push(obj.customFieldValueId);
             }, {});
-          } else {
-            $scope.fieldsValuesDict = {};
-            $scope.fieldsValuesIdsDict = {};
           }
         },
         error => {
-          $scope.fieldsValuesDict = {};
-          $scope.fieldsValuesIdsDict = {};
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
@@ -1653,42 +1659,45 @@
     }
 
     function checkCustomHeader(definitionId) {
-      let value = this.fieldsValuesDict[definitionId];
-      let cfid = this.fieldsValuesIdsDict[definitionId];
-      let selectedOption = value.value;
-      let newFieldValue = {
-        entityTargetType: this.contributionType,
-        entityTargetUuid: this.proposal.uuid,
-        customFieldDefinition: {customFieldDefinitionId: definitionId},
-        value: selectedOption
-      };
+      let value = this.custom.valuesDict[definitionId] ? this.custom.valuesDict[definitionId].length > 0 ? this.custom.valuesDict[definitionId][0] : null : null;
+      let cfid = this.custom.valuesIdsDict[definitionId] ? this.custom.valuesIdsDict[definitionId].length > 0 ? this.custom.valuesIdsDict[definitionId][0] : null : null;
+      let selectedOption = value ? value.value : null;
 
-      // The custom field value already exists
-      if (cfid) {
-        newFieldValue.customFieldValueId = cfid;
-        // TODO => make also array for MULTIPLE CHOICE
-        let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, cfid).update(newFieldValue).$promise;
-        return rsp.then(
-          newValue => {
-            $scope.fieldsValuesDict[definitionId].value = newValue.value;
-            Notify.show('Updated custom field', 'success');
-          },
-          error => {
-            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
-          }
-        );
-      } else {
-        let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
-        return rsp.then(
-          newValue => {
-            $scope.fieldsValuesDict[definitionId] = newValue;
-            $scope.fieldsValuesIdsDict[definitionId] = newValue.customFieldValueId;
-            Notify.show('Updated custom field', 'success');
-          },
-          error => {
-            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
-          }
-        );
+      if (selectedOption != null) {
+        let newFieldValue = {
+          entityTargetType: this.contributionType,
+          entityTargetUuid: this.proposal.uuid,
+          customFieldDefinition: {customFieldDefinitionId: definitionId},
+          value: selectedOption
+        };
+
+        // The custom field value already exists
+        if (cfid) {
+          newFieldValue.customFieldValueId = cfid;
+          // TODO => make also array for MULTIPLE CHOICE
+          let rsp = Space.fieldValueResource(this.proposal.resourceSpaceId, cfid).update(newFieldValue).$promise;
+          return rsp.then(
+            newValue => {
+              $scope.custom.valuesDict[definitionId][0].value = newValue.value;
+              Notify.show('Updated custom field', 'success');
+            },
+            error => {
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+            }
+          );
+        } else {
+          let rsp = Space.fieldValue(this.proposal.resourceSpaceId).save(newFieldValue).$promise;
+          return rsp.then(
+            newValue => {
+              $scope.custom.valuesDict[definitionId][0] = newValue;
+              $scope.custom.valuesIdsDict[definitionId][0] = newValue.customFieldValueId;
+              Notify.show('Updated custom field', 'success');
+            },
+            error => {
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+            }
+          );
+        }
       }
     }
 
@@ -1726,7 +1735,6 @@
           }
         });
       }
-      loadValues($scope.proposal.resourceSpaceId);
     }
 
     function follow() {

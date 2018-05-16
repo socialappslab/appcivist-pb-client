@@ -1390,5 +1390,7 @@
   "Working Group Edit": "Working Group Edit",
   "Working Group Edit Description": "Working Group Edit Description",
   "Working Group Edit Configuration": "Working Group Edit Configuration",
-  "Keyword cannot be empty": "Keyword cannot be empty"
+  "Keyword cannot be empty": "Keyword cannot be empty",
+  "Duplicated entry": "Duplicated entry",
+  "Deleted": "Deleted"
 }

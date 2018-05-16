@@ -51,7 +51,43 @@
               </div>
             </div>
             <br />
-
+            <div class="row">
+              <div class="col-xs-12">
+                <label for="profileLanguage">{{'directives.language-select.Language'|translate}}</label>
+                <select class="form-control" name="profileLanguage" id="profileLanguage" ng-model="profile.lang" ng-change="profile.language=profile.lang">
+                  <option ng-repeat="key in langlist" value="{{ key }}">{{ key | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-lg-8">
+                <input type="checkbox" ng-click="toggleChangePassword()">
+                <span>{{ 'Update password' | translate }}</span>
+              </div>
+            </div>
+            <br />
+            <div ng-if="showChangePassword">
+              <div class="row">
+                <div class="col-lg-8">
+                  <label>{{'Old Password' | translate}}</label>
+                  <input type="password" placeholder="{{'Old Password' | translate}}" ng-model="profile.oldPassword" ng-blur="blurReset()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-8">
+                  <label>{{'Password' | translate}}</label>
+                  <input type="password" placeholder="{{'Password' | translate}}" ng-model="profile.password" ng-blur="blurReset()">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-8">
+                  <label>{{'Repeat password' | translate}}</label>
+                  <input type="password" placeholder="{{'Repeat password' | translate}}" ng-model="profile.repeatPassword"
+                    ng-blur="blurReset()">
+                </div>
+              </div>
+            </div>
             <!-- Social Ideation connect to Facebook Button -->
             <!--<div class="row" ng-if="showFbSocialIdeationButton">-->
               <div class="row" ng-repeat="a in userAssemblies">
@@ -82,34 +118,7 @@
           </div>
         </div>
         <br />
-        <div class="row">
-          <div class="col-lg-8">
-            <input type="checkbox" ng-click="toggleChangePassword()">
-            <span>{{ 'Update password' | translate }}</span>
-          </div>
-        </div>
-        <br />
-        <div ng-if="showChangePassword">
-          <div class="row">
-            <div class="col-lg-8">
-              <label>{{'Old Password' | translate}}</label>
-              <input type="password" placeholder="{{'Old Password' | translate}}" ng-model="profile.oldPassword" ng-blur="blurReset()">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-8">
-              <label>{{'Password' | translate}}</label>
-              <input type="password" placeholder="{{'Password' | translate}}" ng-model="profile.password" ng-blur="blurReset()">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-8">
-              <label>{{'Repeat password' | translate}}</label>
-              <input type="password" placeholder="{{'Repeat password' | translate}}" ng-model="profile.repeatPassword"
-                ng-blur="blurReset()">
-            </div>
-          </div>
-        </div>
+        <a ng-click="goBack()"><i class="fa fa-arrow-left fa-lg" style="margin-right: 0.5rem"></i>{{ 'Return to previous page' | translate }}</a>
         <button type="submit" class="pull-right" ng-click="updateProfile()">{{'Update Profile' | translate}}</button>
       </form>
     </section>

@@ -862,6 +862,7 @@
   "Downs": "En bas",
   "Needs": "Besoins",
   "Published": "Publié",
+  "Publisheds": "Publié",
   "Excluded": "Exclus",
   "Start Voting": "Début de la priorisation",
   "Configure Voting": "Configurer la priorisation",
@@ -1398,5 +1399,13 @@
   "Working Group Edit Configuration": "Working Group Edit Configuration",
   "Keyword cannot be empty": "Le mot-clé ne peut pas être vide",
   "Duplicated entry": "Entrée dupliquée",
-  "Deleted": "Suppression réussie"
+  "Deleted": "Suppression réussie",
+  "Return to previous page": "Return to previous page",
+  "de-DE": "German",
+  "en-US": "English (US)",
+  "es-ES": "Spanish (Spain)",
+  "es-PY": "Spanish (Paraguay)",
+  "fr-CA": "French (Canadian)",
+  "fr-FR": "French (France)",
+  "pt-BR": "Portuguese (Brazil)"
 }

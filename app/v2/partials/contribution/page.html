@@ -146,7 +146,7 @@
                   <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
                           ng-options="option as option.value for option in field.customFieldValueOptions track by option.value"
                           ng-model="custom.valuesDict[field.customFieldDefinitionId][0]"
-                          ng-change="checkCustomHeader(field.customFieldDefinitionId, custom.valuesDict[field.customFieldDefinitionId][0].customFieldValueId)" ng-if="userIsAuthor"/>
+                          ng-change="checkCustomHeader(field.customFieldDefinitionId, custom.valuesDict[field.customFieldDefinitionId][0].customFieldValueId, option)" ng-if="userIsAuthor"/>
 
 
                   <!-- Todo support other types of custom field headers, not only those that are represented with a select-->

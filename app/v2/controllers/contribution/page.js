@@ -1666,10 +1666,15 @@
       return fields.filter(f => f.entityType === 'CONTRIBUTION' && f.entityFilterAttributeName === 'type' && f.entityFilter === $scope.proposal.type && f.entityPart !== 'HEADER');
     }
 
-    function checkCustomHeader(definitionId) {
+    function checkCustomHeader(definitionId, customValuedId, option) {
       let value = this.custom.valuesDict[definitionId] ? this.custom.valuesDict[definitionId].length > 0 ? this.custom.valuesDict[definitionId][0] : null : null;
       let cfid = this.custom.valuesIdsDict[definitionId] ? this.custom.valuesIdsDict[definitionId].length > 0 ? this.custom.valuesIdsDict[definitionId][0] : null : null;
-      let selectedOption = value ? value.value : null;
+      let selectedOption = value ? value.value : option ? option.value : null;
+
+      if (value == null) {
+        this.custom.valuesDict[definitionId] = [];
+        this.custom.valuesIdsDict[definitionId] = [];
+      }
 
       if (selectedOption != null) {
         let newFieldValue = {
@@ -1729,6 +1734,8 @@
           if (fields && fields.length>0) {
             fields.reduce(function (map, obj) {
               $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
+              $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
+              $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
             }, {});
           }
         });
@@ -1739,6 +1746,8 @@
           if (fields && fields.length>0) {
             fields.reduce(function (map, obj) {
               $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
+              $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
+              $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
             }, {});
           }
         });

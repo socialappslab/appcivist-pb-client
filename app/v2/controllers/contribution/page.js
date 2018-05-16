@@ -1346,6 +1346,10 @@
         value: value
       };
 
+      if ($scope.custom.valuesDict[cfid] == null) {
+        $scope.custom.valuesDict[cfid] = [];
+      }
+
         // The custom field value already exists
       if (cfvid) {
         newFieldValue.customFieldValueId = cfvid;

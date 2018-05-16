@@ -62,9 +62,9 @@
                 <div class="col-xs-6">
                   <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
                   <member-card ng-if="comment.authors[0]" user="comment.authors[0]" comments-section="true"></member-card>
-                  <member-card ng-if="!comment.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor"
+                  <member-card ng-if="!comment.authors[0] && comment.nonMemberAuthor" user="discussion.nonMemberAuthor"
                     comments-section="true"></member-card>
-                  <member-card ng-if="!comment.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}"
+                  <member-card ng-if="!comment.authors[0] && !comment.nonMemberAuthor" user="{'name':'None','email':'None'}"
                     comments-section="true"></member-card>
                 </div>
                 <!--<div class="col-*-8">

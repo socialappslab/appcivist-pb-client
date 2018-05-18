@@ -1092,14 +1092,16 @@
       this.setAddContext('AUTHORS');
       this.authorsSuggestionsVisible = true;
       let vm = this;
+      let currentAuthorsIds = $scope.proposal.authors ? $scope.proposal.authors.map(a => a.userId) : [];
+      let currentNonMemberAuthorsEmails = $scope.proposal.nonMemberAuthors ? $scope.proposal.nonMemberAuthors.map(na => na.email) : [];
       let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap, this.authorQuery).get().$promise;
       rsp.then(
         data => {
-          let items = data.members.filter(d => d.status === 'ACCEPTED').map(d => d.user);
+          let items = data.members.filter(d => d.status === 'ACCEPTED' && currentAuthorsIds.indexOf(d.user.userId) == -1).map(d => d.user);
           items = $filter('filter')(items, { $: vm.authorQuery });
           vm.authorsList = items;
           if (this.ldap) {
-            let items = data.ldap;
+            let items = data.ldap.filter(d => currentNonMemberAuthorsEmails.indexOf(d.mail) == -1);
             items = $filter('filter')(items, { $: vm.authorQuery });
             vm.ldapList = items;
           }
@@ -1454,7 +1456,7 @@
       Contributions.addAuthor(this.proposal.uuid, author).then(
         response => Notify.show('Author added successfully', 'success'),
         error => {
-          this.deleteAuthor(author, true);
+          //this.deleteAuthor(author, true);
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );

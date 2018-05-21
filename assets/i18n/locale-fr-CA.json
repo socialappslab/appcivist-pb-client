@@ -1407,5 +1407,6 @@
   "es-PY": "Spanish (Paraguay)",
   "fr-CA": "French (Canadian)",
   "fr-FR": "French (France)",
-  "pt-BR": "Portuguese (Brazil)"
+  "pt-BR": "Portuguese (Brazil)",
+  "contribution.delete-confirm": "Are you sure you want to delete this contribution?"
 }

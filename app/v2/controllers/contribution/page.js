@@ -116,6 +116,8 @@
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       $scope.startSpinner = startSpinner.bind($scope);
       $scope.stopSpinner = stopSpinner.bind($scope);
+      $scope.startAuthorsSpinner = startAuthorsSpinner.bind($scope);
+      $scope.stopAuthorsSpinner = stopAuthorsSpinner.bind($scope);
       $scope.spinnerOptions = {
         radius:10,
         width:4,
@@ -123,6 +125,15 @@
         top: '75%',
         left: '50%',
         zIndex: 1
+      };
+      $scope.spinnerSmallOptions = {
+        radius:5,
+        width:2,
+        length: 5,
+        top: '-3px',
+        left: '30%',
+        zIndex: 1,
+        scale: 0.1
       };
 
       if (pattern.test($stateParams.couuid) === true) {
@@ -346,6 +357,16 @@
 
     function stopSpinner () {
       usSpinnerService.stop('contributions-page');
+      this.spinnerActive = false;
+    }
+    
+    function startAuthorsSpinner () {
+      this.spinnerActive = true;
+      usSpinnerService.spin('authors-list');
+    }
+
+    function stopAuthorsSpinner () {
+      usSpinnerService.stop('authors-list');
       this.spinnerActive = false;
     }
     // Feedback update
@@ -1089,14 +1110,15 @@
     }
 
     function authorsChangeOnClick() {
+      this.startAuthorsSpinner();
       this.setAddContext('AUTHORS');
-      this.authorsSuggestionsVisible = true;
       let vm = this;
       let currentAuthorsIds = $scope.proposal.authors ? $scope.proposal.authors.map(a => a.userId) : [];
       let currentNonMemberAuthorsEmails = $scope.proposal.nonMemberAuthors ? $scope.proposal.nonMemberAuthors.map(na => na.email) : [];
       let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap, this.authorQuery).get().$promise;
       rsp.then(
         data => {
+          this.authorsSuggestionsVisible = true;
           let items = data.members.filter(d => d.status === 'ACCEPTED' && currentAuthorsIds.indexOf(d.user.userId) == -1).map(d => d.user);
           items = $filter('filter')(items, { $: vm.authorQuery });
           vm.authorsList = items;
@@ -1105,6 +1127,7 @@
             items = $filter('filter')(items, { $: vm.authorQuery });
             vm.ldapList = items;
           }
+          vm.stopAuthorsSpinner();
         },
         function (error) {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1500,6 +1523,8 @@
       return rsp.then(
         fieldsValues => {
           $scope.fieldsValues = fieldsValues;
+          console.log(fieldsValues);
+          console.log($scope.fieldsValues);
           if ($scope.fieldsValues && $scope.fieldsValues.length > 0) {
             $scope.fieldsValues.reduce(function (map, obj) {
               let dictEntry = $scope.custom.valuesDict[obj.customFieldDefinition.customFieldDefinitionId];

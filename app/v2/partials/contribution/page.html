@@ -30,7 +30,7 @@
           </div>
           <div class="liveEdit">
             <input class="btn-sm" type="text" id="authorSearch" name="authors" ng-model="authorQuery"
-              ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()"><i ng-if="userIsAuthor" id="authorSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
+              ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()" ng-model-options="{debounce:750}"><i ng-if="userIsAuthor" id="authorSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
             <fieldset class="tags"  id="authorSearchTags">
               <div class="autocomplete authors" ng-class="{ smaller: ldap == false }" ng-if="authorsSuggestionsVisible">
                 <div class="col-sm-5" ng-class="{'col-sm-12': ldap == false }">
@@ -54,6 +54,7 @@
             <button ng-click="showSearch('authorSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
               <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add Author' | translate}}
             </button>
+            <div style="display:inline-block;position:relative;width:100px;"><span class="attachment-spinner" us-spinner="spinnerSmallOptions" spinner-key="authors-list"></span></div>
           </div>
           <p class="small">
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.split(' ')[0] | date : 'medium'}}

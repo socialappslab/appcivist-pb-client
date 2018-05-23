@@ -32,11 +32,11 @@
 
   FormCtrl.$inject = [
     'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notify',
-    '$compile', 'Notifications', '$scope'
+    '$compile', 'Notifications', '$scope', '$translate'
   ];
 
   function FormCtrl(Contributions, Campaigns, localStorageService, Memberships, $window, Notify,
-    $compile, Notifications, $scope) {
+    $compile, Notifications, $scope, $translate) {
 
     this.setupMembershipInfo = setupMembershipInfo.bind(this);
     this.setContributionType = setContributionType.bind(this);
@@ -150,10 +150,17 @@
 
     //change redirection
     function softRemoval() {
-      let res = Contributions.contributionSoftRemoval(this.assemblyId, this.contribution.contributionId).update(this.contribution);
-      res.$promise.then(
-        data => $window.location.reload(),
-        error => Notify.show(error.statusMessage, 'error')
+      $translate("contribution.delete-confirm").then(
+        translation => {
+          let confirmation = window.confirm(translation);
+          if (confirmation) {
+            let res = Contributions.contributionSoftRemoval(this.assemblyId, this.contribution.contributionId).update(this.contribution);
+            res.$promise.then(
+              data => $window.location.reload(),
+              error => Notify.show(error.statusMessage, 'error')
+            );
+          };
+        }
       );
     }
 

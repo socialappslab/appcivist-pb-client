@@ -1408,5 +1408,6 @@
   "fr-CA": "French (Canadian)",
   "fr-FR": "French (France)",
   "pt-BR": "Portuguese (Brazil)",
-  "Accessibility": "Accesibilidad"
+  "Accessibility": "Accesibilidad",
+  "contribution.delete-confirm": "¿Está seguro de querer eliminar esta contribución?"
 }

@@ -21,6 +21,11 @@
                 &nbsp;&nbsp;<a data-toggle="modal" data-target="#themes-keywords">
                   <i class="fa fa-tags"></i>&nbsp;&nbsp;<span>{{'Themes & Keywords'|translate}}</span>
                 </a>
+                <span ng-if="accessibilityUrl">
+                &nbsp;&nbsp;<a href="{{accessibilityUrl}}" target="_blank">
+                  <i class="fa fa-wheelchair"></i>&nbsp;&nbsp;<span>{{ 'Accessibility' | translate }}</span>
+                </a>
+                </span>
                 <span ng-if="campaignFaq">
                 &nbsp;&nbsp;<a href="{{campaignFaq}}" target="_blank">
                   <i class="fa fa-question-circle"></i>&nbsp;&nbsp;<span>FAQ</span>

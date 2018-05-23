@@ -67,6 +67,7 @@
       $scope.subscribed = false;
 
       $scope.campaignFaq = null;
+      $scope.accessibilityUrl = null;
       $scope.requireGroupAuthorship = true;
 
       // TODO: read the following from configurations in the campaign/component
@@ -164,6 +165,7 @@
       $scope.pictureCount = pictureCount.bind($scope);
       $scope.videoCount = videoCount.bind($scope);
       $scope.createContribution = createContribution.bind($scope);
+      $scope.validUrl = validUrl.bind($scope);
 
       // add attachment form
       $scope.submitAttachment = submitAttachment.bind($scope);
@@ -460,7 +462,23 @@
 
       console.log(this.requireGroupAuthorship);
       this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
+      this.accessibilityUrl = validUrl(data['appcivist.campaign.accessibility.url']);
       this.afterLoadingCampaignConfigs();
+    }
+
+    function validUrl(url) {
+      var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name and extension
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        '(\\:\\d+)?'+ // port
+        '(\\/[-a-z\\d%@_.~+&:]*)*'+ // path
+        '(\\?[;&a-z\\d%@_.,~+&:=-]*)?'+ // query string
+        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+      if(!pattern.test(url)) {
+        return null;
+      } else {
+        return url;
+      }
     }
 
     function afterLoadingCampaignConfigsError(data) {

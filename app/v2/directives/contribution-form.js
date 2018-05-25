@@ -403,7 +403,7 @@
       var self = this;
       var rsp;
 
-      if (!self.assemblyMembers) {
+      if (!self.assemblyMembers && self.assembly && self.assembly.assemblyId && self.assembly.assemblyId) {
         rsp = Assemblies.assemblyMembers(self.assembly.assemblyId).query().$promise;
         return rsp.then(
           function (data) {

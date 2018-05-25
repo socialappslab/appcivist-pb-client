@@ -359,7 +359,7 @@
       usSpinnerService.stop('contributions-page');
       this.spinnerActive = false;
     }
-    
+
     function startAuthorsSpinner () {
       this.spinnerActive = true;
       usSpinnerService.spin('authors-list');
@@ -419,9 +419,13 @@
         data => {
           $scope.padHTML = data;
           angular.element(document).ready(function () {
-            let iframe = document.getElementById('etherpadHTML');
-            let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframedoc.body.innerHTML = $scope.padHTML.text;
+            $timeout(() => {
+              $scope.interval = $interval(() => {
+                let iframe = document.getElementById('etherpadHTML');
+                let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
+                iframedoc.body.innerHTML = $scope.padHTML.text;
+                }, 2000);
+            }, 2000);
           });
         },
         error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')

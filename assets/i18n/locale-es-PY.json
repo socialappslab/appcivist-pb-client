@@ -1409,5 +1409,7 @@
   "fr-FR": "French (France)",
   "pt-BR": "Portuguese (Brazil)",
   "Accessibility": "Accesibilidad",
-  "contribution.delete-confirm": "¿Está seguro de querer eliminar esta contribución?"
+  "contribution.delete-confirm": "¿Está seguro de querer eliminar esta contribución?",
+  "Published Proposals": "Propuestas publicadas",
+  "Published Ideas": "Ideas publicadas"
 }

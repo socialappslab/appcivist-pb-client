@@ -235,7 +235,7 @@
       } else if (this.isSingleChoice) {
         let selectedOption = _.find(this.definition.customFieldValueOptions, { customFieldValueOptionId: parseInt(this.model) });
         // if is STRING_OPEN we store the value that the user typed in, else the customFieldValueOption.
-        this.value.value = selectedOption.isStringOpen ? this.stringOpenSingleValue : selectedOption;
+        this.value.value = selectedOption ? selectedOption.isStringOpen ? this.stringOpenSingleValue : selectedOption : this.definition.customFieldValueOptions ? this.definition.customFieldValueOptions[0] : "";
       } else if (this.isMultipleChoice) {
         // if is STRING_OPEN we store the value that the user typed in, else the customFieldValueOption.
         this.value.value = _.filter(this.definition.customFieldValueOptions, option => {

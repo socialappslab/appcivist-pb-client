@@ -1409,5 +1409,7 @@
   "Accessibility": "Accessibility",
   "contribution.delete-confirm": "Are you sure you want to delete this contribution?",
   "Published Proposals": "Published proposals",
-  "Published Ideas": "Published ideas"
+  "Published Ideas": "Published ideas",
+  "Registered users": "Registered users",
+  "Not yet registered": "Not yet registered"
 }

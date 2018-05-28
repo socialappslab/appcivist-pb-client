@@ -34,6 +34,9 @@
             <fieldset class="tags"  id="authorSearchTags">
               <div class="autocomplete authors" ng-class="{ smaller: ldap == false }" ng-if="authorsSuggestionsVisible">
                 <div class="col-sm-5" ng-class="{'col-sm-12': ldap == false }">
+                  <div class="text-center" style="padding-top:0" ng-if="ldap == true">
+                    <strong style="font-weight:bold">{{ 'Registered users' | translate }}</strong>
+                  </div>
                   <ul class="suggestion-list">
                     <li ng-repeat="item in authorsList track by $index" ng-click="$parent.currentAddOnSelect(item)"
                       class="suggestion-item" style="min-height: 50px;">
@@ -42,6 +45,9 @@
                   </ul>
                 </div>
                 <div class="col-sm-7" ng-if="ldap == true">
+                  <div class="text-center" style="padding-top:0">
+                    <strong style="font-weight:bold">{{ 'Not yet registered' | translate }}</strong>
+                  </div>
                   <ul class="suggestion-list">
                     <li ng-repeat="item in ldapList track by $index" ng-click="$parent.currentAddOnSelect(item, true)"
                       class="suggestion-item" style="min-height: 50px;">

@@ -77,6 +77,8 @@
     $scope.customChangeOnClick = customChangeOnClick.bind($scope);
     $scope.addCustomValue = addCustomValue.bind($scope);
     $scope.deleteCustomValue = deleteCustomValue.bind($scope);
+    $scope.getAuthorsHeadless = getAuthorsHeadless.bind($scope);
+    $scope.getNonMemberAuthorsHeadless = getNonMemberAuthorsHeadless.bind($scope);
 
     activate();
 
@@ -443,6 +445,7 @@
       }
       rsp.$promise.then(
         function (data) {
+          console.log(data);
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
           $scope.contributionLabel = $scope.proposal.title;
@@ -1344,6 +1347,13 @@
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
+    }
+
+    function getAuthorsHeadless() {
+      return this.proposal.authors.slice(1);
+    }
+    function getNonMemberAuthorsHeadless() {
+      return this.proposal.nonMemberAuthors.slice(1);
     }
 
     function addThemeToProposal(theme) {

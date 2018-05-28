@@ -140,8 +140,8 @@
   "Create": "Criaar",
   "Create contribution": "Criar contribuição",
   "Create Working Group": "Criar Grupo de Trabalho",
-  "created": "criado",
-  "Created by": "criado por",
+  "created": "Criado",
+  "Created by": "Criado por",
   "Created by the": "Criado por",
   "creation.components.campaignPartFive.text1": "Configure Sua Campanha",
   "creation.components.campaignPartFive.text10": "Configuração de votação plural",
@@ -1411,5 +1411,7 @@
   "Accessibility": "Acessibilidade",
   "contribution.delete-confirm": "Tem certeza de que deseja deletar esta proposta?",
   "Published Proposals": "Propostas publicadas",
-  "Published Ideas": "Ideias publicadas"
+  "Published Ideas": "Ideias publicadas",
+  "Share": "Compartilhar",
+  "Shared with": "Compartilhado com"
 }

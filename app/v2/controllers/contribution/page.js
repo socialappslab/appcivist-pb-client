@@ -1350,10 +1350,16 @@
     }
 
     function getAuthorsHeadless() {
-      return this.proposal.authors.slice(1);
+      if (this.proposal && this.proposal.authors)
+        return this.proposal.authors.slice(1);
+      else
+        return [];
     }
     function getNonMemberAuthorsHeadless() {
-      return this.proposal.nonMemberAuthors.slice(1);
+      if (this.proposal && this.proposal.nonMemberAuthors)
+        return this.proposal.nonMemberAuthors.slice(1);
+      else
+        return [];
     }
 
     function addThemeToProposal(theme) {

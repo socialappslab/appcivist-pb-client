@@ -445,7 +445,6 @@
       }
       rsp.$promise.then(
         function (data) {
-          console.log(data);
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
           $scope.contributionLabel = $scope.proposal.title;
@@ -1120,13 +1119,14 @@
       this.startAuthorsSpinner();
       this.setAddContext('AUTHORS');
       let vm = this;
+      let creatorId = $scope.proposal.creator.userId;
       let currentAuthorsIds = $scope.proposal.authors ? $scope.proposal.authors.map(a => a.userId) : [];
       let currentNonMemberAuthorsEmails = $scope.proposal.nonMemberAuthors ? $scope.proposal.nonMemberAuthors.map(na => na.email) : [];
       let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap, this.authorQuery).get().$promise;
       rsp.then(
         data => {
           this.authorsSuggestionsVisible = true;
-          let items = data.members.filter(d => d.status === 'ACCEPTED' && currentAuthorsIds.indexOf(d.user.userId) == -1).map(d => d.user);
+          let items = data.members.filter(d => d.status === 'ACCEPTED' && currentAuthorsIds.indexOf(d.user.userId) == -1 && d.user.userId != creatorId).map(d => d.user);
           items = $filter('filter')(items, { $: vm.authorQuery });
           vm.authorsList = items;
           if (this.ldap) {

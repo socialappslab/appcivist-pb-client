@@ -1445,6 +1445,14 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           params.by_author=filters.by_author;
         } else if (type==='idea' || type==='proposal') {
           delete params.by_author;
+        } else if (type === 'sharedProposals') {
+          type = 'proposal';
+          params.by_author = filters.by_author;
+          params.excludeCreatedByUser = filters.excludeCreated;
+        } else if (type === 'sharedIdeas') {
+          type = 'idea';
+          params.by_author = filters.by_author;
+          params.excludeCreatedByUser = filters.excludeCreated;
         }
         return this.getContributions(target, type, isAnonymous, params);
       },

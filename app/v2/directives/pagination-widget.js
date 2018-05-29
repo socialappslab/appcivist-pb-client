@@ -121,6 +121,12 @@
             filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
           }
 
+          if (filters.mode === 'sharedProposals' || filters.mode === 'sharedIdeas') {
+            filters.excludeCreated = localStorageService.get('user').userId;
+            filters.by_author = localStorageService.get('user').userId;
+            filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
+          }
+
           if (filters) {
             Space.doSearch(target, scope.isAnonymous, filters).then(
               data => {

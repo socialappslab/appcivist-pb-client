@@ -1385,7 +1385,7 @@
   "Contribution updated": "Mudança salva",
   "Updated custom field": "Mudança salva",
   "Changed was saved": "Mudança salva",
-  "contribution.notice.non-author-or-anonymous": "Se você é um autor desta {{type}}, entre no site para acessá-la ('Iniciar Sessão', acima). Se você não é um autor, peça aos autores para adicionar você e depois entre no site.",
+  "contribution.notice.non-author-or-anonymous": "Se esta {{type}} está compartilhada com você, faça login para acessá-la ('Iniciar Sessão', acima). Se ela não está, peça a alguém listado para compartilhá-la com você e depois faça login.",
   "New Campaign Description": "New Campaign Description",
   "New Campaign Milestones": "New Campaign Milestones",
   "Campaign Edit": "New Campaign Edit",

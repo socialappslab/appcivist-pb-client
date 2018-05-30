@@ -1224,6 +1224,7 @@
       payload.title = this.proposalDefaultTitle;
       payload.text = "";
       payload.type = contributionType;
+      console.log(payload);
       Pace.restart();
       let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
         contribution => {

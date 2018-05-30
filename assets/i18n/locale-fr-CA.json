@@ -1385,7 +1385,7 @@
   "Contribution updated": "Contribution mise à jour",
   "Updated custom field": "Mise à jour",
   "Changed was saved": "Mise à jour",
-  "contribution.notice.non-author-or-anonymous": "Si vous êtes un auteur de ce {{type}}, connectez-vous pour y accéder ('Se connecter', ci-dessus). Si vous n'êtes pas un auteur, demandez à ses auteurs de vous ajouter, puis de vous connecter.",
+  "contribution.notice.non-author-or-anonymous": "Si ce {{type}} est partagé avec vous, connectez-vous pour y accéder ('Se connecter', ci-dessus). Si ce n'est pas le cas, demandez à une personne inscrite de le partager avec vous, puis connectez-vous.",
   "New Campaign Description": "New Campaign Description",
   "New Campaign Milestones": "New Campaign Milestones",
   "Campaign Edit": "New Campaign Edit",

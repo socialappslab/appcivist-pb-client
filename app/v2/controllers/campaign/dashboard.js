@@ -375,7 +375,7 @@
       res.$promise.then(
         data => {
           let briefContent = data.brief;
-          $scope.campaignBriefIsUrl = data.brief.startsWith("http");
+          $scope.campaignBriefIsUrl = data.brief.startsWith("http") || data.brief.startsWith("https");
           if ($scope.campaignBriefIsUrl) {
             $scope.campaignBrief = $sce.trustAsResourceUrl(briefContent);
           } else {

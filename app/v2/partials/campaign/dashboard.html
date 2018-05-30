@@ -186,7 +186,7 @@
             <section class="comments__section">
               <div class="row comments-header">
                 <div class="col-xs-4 text-left">
-                  <strong>Comments ({{commentType == 'members' ? membersCommentCounter.value : publicCommentCounter.value}})</strong>
+                  <strong>Comments ({{insights['contributions_total']['contributions_per_type']['COMMENT']['TOTAL']+insights['contributions_total']['contributions_per_type']['DISCUSSION']['TOTAL']}})</strong>
                 </div>
                 <div class="col-xs-8 text-right">
                   {{'View comments by'|translate}}:

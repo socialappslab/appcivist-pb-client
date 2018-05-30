@@ -1119,7 +1119,7 @@
       this.startAuthorsSpinner();
       this.setAddContext('AUTHORS');
       let vm = this;
-      let creatorId = $scope.proposal.creator.userId;
+      let creatorId = $scope.proposal.creator ? $scope.proposal.creator.userId : null;
       let currentAuthorsIds = $scope.proposal.authors ? $scope.proposal.authors.map(a => a.userId) : [];
       let currentNonMemberAuthorsEmails = $scope.proposal.nonMemberAuthors ? $scope.proposal.nonMemberAuthors.map(na => na.email) : [];
       let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap, this.authorQuery).get().$promise;

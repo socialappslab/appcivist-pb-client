@@ -2812,7 +2812,17 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
      */
     getUUID(type, id) {
       return $resource(getServerBaseUrl(localStorageService) + '/uuid?type=:type&id=:id', { type: type, id: id });
-    }
+    },
+    /**
+     * Converts UUIDs to IDs
+     *
+     * @method services.AppCivistAuth#getID
+     * @param {string} type
+     * @param {string} uuid
+     */
+    getID(type, uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/id?type=:type&uuid=:id', { type: type, uuid: uuid });
+    },
   };
 });
 

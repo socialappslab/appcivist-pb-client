@@ -79,6 +79,7 @@
     $scope.deleteCustomValue = deleteCustomValue.bind($scope);
     $scope.getAuthorsHeadless = getAuthorsHeadless.bind($scope);
     $scope.getNonMemberAuthorsHeadless = getNonMemberAuthorsHeadless.bind($scope);
+    $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
 
     activate();
 
@@ -1660,6 +1661,12 @@
           return Notify.show(e.statusMessage ? e.statusMessage : 'Server error while creating PeerDoc', 'error');
         }
       )
+    }
+
+    function filterCreatorFromAuthors(creatorid) {
+      return function(item) {
+        return item.userId != creatorid;
+      }
     }
 
     function syncProposalWithPeerdoc() {

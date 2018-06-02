@@ -1454,6 +1454,9 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           params.by_author = filters.by_author;
           params.excludeCreatedByUser = filters.excludeCreated;
         }
+        if (filters.createdByOnly != null && filters.createdByOnly != undefined) {
+          params.createdByOnly=filters.createdByOnly;
+        }
         return this.getContributions(target, type, isAnonymous, params);
       },
 

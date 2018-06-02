@@ -240,6 +240,7 @@
         this.vm.canFilterByGroup = this.loadGroups;
         var user = localStorageService.get('user');
         filters.by_author = user.userId;
+        filters.createdByOnly = true;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
       }
 

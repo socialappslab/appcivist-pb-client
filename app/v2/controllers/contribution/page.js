@@ -1792,8 +1792,12 @@
           if (fields && fields.length>0) {
             fields.reduce(function (map, obj) {
               $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
-              $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
-              $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
+              let valuesDictArray = $scope.custom.valuesDict[obj.customFieldDefinitionId];
+              let valuesIdsArray = $scope.custom.valuesIdsDict[obj.customFieldDefinitionId];
+              if (valuesDictArray == null || valuesDictArray == undefined)
+                $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
+              if (valuesIdsArray == null || valuesIdsArray == undefined)
+                $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
             }, {});
           }
         });
@@ -1804,8 +1808,12 @@
           if (fields && fields.length>0) {
             fields.reduce(function (map, obj) {
               $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
-              $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
-              $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
+              let valuesDictArray = $scope.custom.valuesDict[obj.customFieldDefinitionId];
+              let valuesIdsArray = $scope.custom.valuesIdsDict[obj.customFieldDefinitionId];
+              if (valuesDictArray == null || valuesDictArray == undefined)
+                $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
+              if (valuesIdsArray == null || valuesIdsArray == undefined)
+                $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
             }, {});
           }
         });

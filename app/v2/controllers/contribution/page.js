@@ -1663,9 +1663,9 @@
       )
     }
 
-    function filterCreatorFromAuthors(creatorid) {
+    function filterCreatorFromAuthors(uuid) {
       return function(item) {
-        return item.userId != creatorid;
+        return item.uuid != uuid;
       }
     }
 

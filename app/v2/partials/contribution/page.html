@@ -169,7 +169,7 @@
                   <span class="header_select" ng-if="!userIsAuthor">{{custom.valuesDict[field.customFieldDefinitionId].value}}</span>
                 </li>
               </div>
-              <div class="liveEdit smaller" style="display: inline-block" ng-if="field.limit > 1">
+              <div class="liveEdit smaller" style="display: inline-block" ng-if="field.limit != 1">
                 <li ng-repeat="val in custom.valuesDict[field.customFieldDefinitionId] track by $index">
                   <a>
                     {{val.value}}

@@ -344,7 +344,11 @@
       rsp.then(
         rs => {
           console.log(rs);
-          Notify.show('Status updated successfully', 'success');
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
         },
         error => {
           this.proposal.status = this.statusBeforeUpdate;
@@ -1898,7 +1902,11 @@
 
       rsp.then(
         data => {
-          Notify.show('Contribution saved', 'success');
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
           vm.isDescriptionEdit = false;
           $("#descriptionEditToggle").addClass('fa-edit');
           $("#descriptionEditToggle").removeClass('fa-times-circle');
@@ -1918,7 +1926,11 @@
 
       rsp.then(
         data => {
-          Notify.show('Contribution saved', 'success');
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
           vm.isTitleEdit = false;
           $("#titleEditToggle").addClass('fa-edit');
           $("#titleEditToggle").removeClass('fa-times-circle');

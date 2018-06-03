@@ -94,7 +94,7 @@
               </a>
               <!--<span ng-if="!$last">,</span>-->
             </li>
-            <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit === 1 && isAnonymous">
+            <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit == 1 && isAnonymous">
                 <a>
                   {{theme.title}}
                 </a>

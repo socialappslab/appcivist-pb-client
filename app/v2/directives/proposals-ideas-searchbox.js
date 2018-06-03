@@ -81,7 +81,7 @@
     /**
      * Set the current searchmode of the search textbox.
      *
-     * @param {string} mode - proposal | idea | myProposals | myIdeas
+     * @param {string} mode - proposal | idea | myProposals | myIdeas | sharedProposals | sharedIdeas
      */
     function searchMode(mode, event) {
       if (event) {
@@ -240,6 +240,7 @@
         this.vm.canFilterByGroup = this.loadGroups;
         var user = localStorageService.get('user');
         filters.by_author = user.userId;
+        filters.createdByOnly = true;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
       }
 
@@ -248,6 +249,14 @@
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
         var _user = localStorageService.get('user');
         filters.by_author = _user.userId;
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
+      }
+
+      if (filters.mode === 'sharedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        var user = localStorageService.get('user');
+        filters.shared_with = user.userId;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
       }
       // if (this.dryRun === 'true') {

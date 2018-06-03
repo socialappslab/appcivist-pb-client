@@ -21,19 +21,25 @@
     </div>
     <ul class="search_modes">
       <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="currentComponent.type === 'IDEAS'">
-        <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate}}</a>
+        <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: filters.mode === 'proposal'}" ng-if="currentComponent.type !== 'IDEAS'">
-        <a ng-click="searchMode('proposal', $event)">{{'Published Proposals' | translate}}</a>
+        <a ng-click="searchMode('proposal', $event)">{{'Published Proposals' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA') && currentComponent.type !== 'IDEAS'">
-        <a ng-click="searchMode('idea', $event)">{{'Published Ideas' | translate}}</a>
+        <a ng-click="searchMode('idea', $event)">{{'Published Ideas' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('sharedProposals', $event)">{{'Shared proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('sharedIdeas', $event)">{{ 'Shared ideas' | translate | titlecase}}</a>
       </li>
     </ul>
   </div>

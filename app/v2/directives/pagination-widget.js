@@ -118,6 +118,13 @@
 
           if (filters.mode === 'myProposals' || filters.mode === 'myIdeas') {
             filters.by_author = localStorageService.get('user').userId;
+            filters.createdByOnly = true;
+            filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
+          }
+
+          if (filters.mode === 'sharedProposals' || filters.mode === 'sharedIdeas') {
+            filters.excludeCreated = localStorageService.get('user').userId;
+            filters.by_author = localStorageService.get('user').userId;
             filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
           }
 

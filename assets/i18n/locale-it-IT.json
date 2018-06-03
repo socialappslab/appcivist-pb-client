@@ -1383,7 +1383,7 @@
   "Contribution updated": "Contribution mise à jour",
   "Updated custom field": "Mise à jour",
   "Changed was saved": "Mise à jour",
-  "contribution.notice.non-author-or-anonymous": "Si vous êtes un auteur de ce {{type}}, connectez-vous pour y accéder ('Se connecter', ci-dessus). Si vous n'êtes pas un auteur, demandez à ses auteurs de vous ajouter, puis de vous connecter.",
+  "contribution.notice.non-author-or-anonymous": "If this {{type}} is shared with you, sign in to access it ('Sign in', above). If it is not, ask someone listed to share it with you and then sign in.",
   "New Campaign Description": "New Campaign Description",
   "New Campaign Milestones": "New Campaign Milestones",
   "Campaign Edit": "New Campaign Edit",
@@ -1409,5 +1409,11 @@
   "Accessibility": "Accessibility",
   "contribution.delete-confirm": "Are you sure you want to delete this contribution?",
   "Published Proposals": "Published proposals",
-  "Published Ideas": "Published ideas"
+  "Published Ideas": "Published ideas",
+  "Share": "Share",
+  "Shared with": "Shared with",
+  "Registered users": "Registered users",
+  "Not yet registered": "Not yet registered",
+  "Shared proposals": "Shared with me",
+  "Shared ideas": "Shared with me"
 }

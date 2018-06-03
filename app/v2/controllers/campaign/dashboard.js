@@ -375,7 +375,7 @@
       res.$promise.then(
         data => {
           let briefContent = data.brief;
-          $scope.campaignBriefIsUrl = data.brief.startsWith("http");
+          $scope.campaignBriefIsUrl = data.brief.startsWith("http") || data.brief.startsWith("https");
           if ($scope.campaignBriefIsUrl) {
             $scope.campaignBrief = $sce.trustAsResourceUrl(briefContent);
           } else {
@@ -1224,6 +1224,7 @@
       payload.title = this.proposalDefaultTitle;
       payload.text = "";
       payload.type = contributionType;
+      console.log(payload);
       Pace.restart();
       let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
         contribution => {

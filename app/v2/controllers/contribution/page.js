@@ -77,6 +77,9 @@
     $scope.customChangeOnClick = customChangeOnClick.bind($scope);
     $scope.addCustomValue = addCustomValue.bind($scope);
     $scope.deleteCustomValue = deleteCustomValue.bind($scope);
+    $scope.getAuthorsHeadless = getAuthorsHeadless.bind($scope);
+    $scope.getNonMemberAuthorsHeadless = getNonMemberAuthorsHeadless.bind($scope);
+    $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
 
     activate();
 
@@ -341,7 +344,11 @@
       rsp.then(
         rs => {
           console.log(rs);
-          Notify.show('Status updated successfully', 'success');
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
         },
         error => {
           this.proposal.status = this.statusBeforeUpdate;
@@ -1117,13 +1124,14 @@
       this.startAuthorsSpinner();
       this.setAddContext('AUTHORS');
       let vm = this;
+      let creatorId = $scope.proposal.creator ? $scope.proposal.creator.userId : null;
       let currentAuthorsIds = $scope.proposal.authors ? $scope.proposal.authors.map(a => a.userId) : [];
       let currentNonMemberAuthorsEmails = $scope.proposal.nonMemberAuthors ? $scope.proposal.nonMemberAuthors.map(na => na.email) : [];
       let rsp = Assemblies.assemblyMembers(this.assemblyID, this.ldap, this.authorQuery).get().$promise;
       rsp.then(
         data => {
           this.authorsSuggestionsVisible = true;
-          let items = data.members.filter(d => d.status === 'ACCEPTED' && currentAuthorsIds.indexOf(d.user.userId) == -1).map(d => d.user);
+          let items = data.members.filter(d => d.status === 'ACCEPTED' && currentAuthorsIds.indexOf(d.user.userId) == -1 && d.user.userId != creatorId).map(d => d.user);
           items = $filter('filter')(items, { $: vm.authorQuery });
           vm.authorsList = items;
           if (this.ldap) {
@@ -1344,6 +1352,19 @@
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
+    }
+
+    function getAuthorsHeadless() {
+      if (this.proposal && this.proposal.authors)
+        return this.proposal.authors.slice(1);
+      else
+        return [];
+    }
+    function getNonMemberAuthorsHeadless() {
+      if (this.proposal && this.proposal.nonMemberAuthors)
+        return this.proposal.nonMemberAuthors.slice(1);
+      else
+        return [];
     }
 
     function addThemeToProposal(theme) {
@@ -1646,6 +1667,12 @@
       )
     }
 
+    function filterCreatorFromAuthors(uuid) {
+      return function(item) {
+        return item.uuid != uuid;
+      }
+    }
+
     function syncProposalWithPeerdoc() {
       let rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId).get().$promise;
       rsp.then(
@@ -1765,8 +1792,12 @@
           if (fields && fields.length>0) {
             fields.reduce(function (map, obj) {
               $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
-              $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
-              $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
+              let valuesDictArray = $scope.custom.valuesDict[obj.customFieldDefinitionId];
+              let valuesIdsArray = $scope.custom.valuesIdsDict[obj.customFieldDefinitionId];
+              if (valuesDictArray == null || valuesDictArray == undefined)
+                $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
+              if (valuesIdsArray == null || valuesIdsArray == undefined)
+                $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
             }, {});
           }
         });
@@ -1777,8 +1808,12 @@
           if (fields && fields.length>0) {
             fields.reduce(function (map, obj) {
               $scope.fieldsDict[obj.customFieldDefinitionId] = obj;
-              $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
-              $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
+              let valuesDictArray = $scope.custom.valuesDict[obj.customFieldDefinitionId];
+              let valuesIdsArray = $scope.custom.valuesIdsDict[obj.customFieldDefinitionId];
+              if (valuesDictArray == null || valuesDictArray == undefined)
+                $scope.custom.valuesDict[obj.customFieldDefinitionId] = [];
+              if (valuesIdsArray == null || valuesIdsArray == undefined)
+                $scope.custom.valuesIdsDict[obj.customFieldDefinitionId] = [];
             }, {});
           }
         });
@@ -1875,7 +1910,11 @@
 
       rsp.then(
         data => {
-          Notify.show('Contribution saved', 'success');
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
           vm.isDescriptionEdit = false;
           $("#descriptionEditToggle").addClass('fa-edit');
           $("#descriptionEditToggle").removeClass('fa-times-circle');
@@ -1895,7 +1934,11 @@
 
       rsp.then(
         data => {
-          Notify.show('Contribution saved', 'success');
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
           vm.isTitleEdit = false;
           $("#titleEditToggle").addClass('fa-edit');
           $("#titleEditToggle").removeClass('fa-times-circle');

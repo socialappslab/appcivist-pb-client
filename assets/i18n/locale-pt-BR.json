@@ -242,6 +242,7 @@
   "Error description": "Descrição do erro",
   "Error loading campaign contributions from server": "Erro no carregamento das contribuições da campanha",
   "error.creation.contribution": "Contribuição não criada. O seguinte erro ocorreu:",
+  "error.validation.captchaResponse": "O servidor recaptcha retornou um erro: ",
   "errorModalText": "Se essa descrição for suficiente para que você resolva o problema, feche esta janela e tente novamente. Lamentamos o inconveniente e iremos trabalhar para solucionar o problema tão rapidamente quanto possível. Se a mensagem de erro não for esclarecedora o suficiente, por gentileza, entre em contato",
   "ESPECIAL PHRASES FROM BACKEND": "FRASES ESPECIAIS DO BACKEND",
   "Estimated Cost": "Custo estimado",

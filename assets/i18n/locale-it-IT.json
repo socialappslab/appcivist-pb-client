@@ -242,6 +242,7 @@
   "Error description": "Error description",
   "Error loading campaign contributions from server": "Error loading campaign contributions from server",
   "error.creation.contribution": "Contribution not created. The following error have occurred: ",
+  "error.validation.captchaResponse": "Il server recaptcha ha restituito un errore: ",
   "errorModalText": "If this description is sufficient for you to take care of the problem, close this modal window and try again. We are sorry for the inconvenience and we will work hard to fix this issue as soon as possible. If the error message is not descriptive enough, please contact",
   "ESPECIAL PHRASES FROM BACKEND": "ESPECIAL PHRASES FROM BACKEND",
   "Estimated Cost": "Estimated Cost",

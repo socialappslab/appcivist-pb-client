@@ -148,7 +148,7 @@
                   </ul>
                 </div>
               </fieldset>
-              <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
+              <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin) && !keywordsLimitReached"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
             </div>
           </ul>
 

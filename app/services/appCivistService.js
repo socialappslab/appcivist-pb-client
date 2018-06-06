@@ -2821,7 +2821,7 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
      * @param {string} uuid
      */
     getID(type, uuid) {
-      return $resource(getServerBaseUrl(localStorageService) + '/id?type=:type&uuid=:id', { type: type, uuid: uuid });
+      return $resource(getServerBaseUrl(localStorageService) + '/id?type=:type&uuid=:uuid', { type: type, uuid: uuid });
     },
   };
 });

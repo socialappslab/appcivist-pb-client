@@ -1145,7 +1145,40 @@
         }
       } else {
         if (user) {
-          
+          if (nextParams.auuid) {
+            AppCivistAuth.getID('assembly', nextParams.auuid).get().$promise.then(rsp => {
+              let aid = rsp.id;
+              if (nextParams.cuuid) {
+                AppCivistAuth.getID('campaign', nextParams.cuuid).get().$promise.then(rsp => {
+                  let cid = rsp.id;
+                  if (nextParams.guuid || nextParams.puuid || nextParams.couuid) {
+                    if (nextParams.guiid) {
+                      AppCivistAuth.getID('group', nextParams.guuid).get().$promise.then(rsp => {
+                        let gid = rsp.id;
+                        if (nextParams.puuid || nextParams.couuid) {
+                          AppCivistAuth.getID('contribution', nextParams.puuid ? nextParams.puuid : nextParams.couuid).get().$promise.then(rsp => {
+                            let pid = rsp.id;
+                            $state.go('v2.assembly.aid.campaign.workingGroup.contribution.coid', {aid:aid, cid:cid, gid:gid, coid:pid}, {reload:true});
+                          });
+                        } else {
+                          $state.go('v2.assembly.aid.campaign.workingGroup.gid', {aid:aid, cid:cid, gid:gid}, {reload:true});
+                        }
+                      });
+                    } else if (nextParams.puuid || nextParams.couuid) {
+                      AppCivistAuth.getID('contribution', nextParams.puuid ? nextParams.puuid : nextParams.couuid).get().$promise.then(rsp => {
+                        let pid = rsp.id;
+                        $state.go('v2.assembly.aid.campaign.contribution.coid', {aid:aid, cid:cid, gid:gid, coid:pid}, {reload:true});
+                      });
+                    }
+                  } else {
+                    $state.go('v2.assembly.aid.campaign.cid', {aid: aid, cid: cid}, {reload:true});    
+                  }
+                });
+              } else {
+                $state.go('v2.assembly.aid.home', {aid: aid}, {reload:true});
+              }
+            });
+          }
         }
       }
     });

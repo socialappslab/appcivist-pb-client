@@ -235,6 +235,7 @@
       $scope.keywordQuery = "";
       $scope.keywordsList = [];
       $scope.keywordsSuggestionsVisible = false;
+      $scope.keywordsLimitReached = false;
 
       $scope.customList = [];
       $scope.customQuery = "";
@@ -557,6 +558,7 @@
             });
             vm.loadValues(vm.proposal.resourceSpaceUUID, true);
           }
+
           loadRelatedContributions();
           loadRelatedStats();
           loadCampaign();
@@ -1072,6 +1074,7 @@
       let showDescriptionRichTextEditConf = $scope.campaignConfigs['appcivist.campaign.contribution.description.richtext-editor'];
       let allowChangeStatusConf = $scope.campaignConfigs['appcivist.campaign.contribution.status.change-enabled'];
       let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
+      let hasKeywordsLimit = $scope.campaignConfigs['appcivist.campaign.keywords.limit'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1093,6 +1096,14 @@
       $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : true;
       $scope.allowChangeStatus = allowChangeStatusConf ? allowChangeStatusConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.keywordsLimit = hasKeywordsLimit ? hasKeywordsLimit : false;
+
+      if ($scope.keywordsLimit) {
+        if ($scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == $scope.keywordsLimit) {
+          $scope.keywordsLimitReached = true;
+        }
+      }
+      
     }
 
     function seeHistory() {
@@ -1255,6 +1266,13 @@
         this.keywordsSuggestionsVisible = false;
         $('#keywordSearch').hide();
         $('#keywordSearchClose').hide();
+        if (this.keywordsLimit) {
+          if (this.proposal.themes.filter(t => t.type == 'EMERGENT').length == this.keywordsLimit) {
+            $scope.keywordsLimitReached = true;
+          } else {
+            $scope.keywordsLimitReached = false;
+          }
+        }
       }
     }
 
@@ -1308,12 +1326,22 @@
      */
     function deleteTheme(theme, local) {
       _.remove(this.proposal.themes, { themeId: theme.themeId });
+      let vm = this;
 
       if (local) {
         return;
       }
       Contributions.deleteTheme(this.proposal.uuid, theme.themeId).then(
-        response => Notify.show('Theme deleted successfully', 'success'),
+        response => {
+          if (vm.keywordsLimit) {
+            if (vm.proposal.themes.filter(t => t.type == 'EMERGENT').length == vm.keywordsLimit) {
+              vm.keywordsLimitReached = true;
+            } else {
+              vm.keywordsLimitReached = false;
+            }
+          }
+          Notify.show('Theme deleted successfully', 'success');
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }

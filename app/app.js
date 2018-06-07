@@ -1061,15 +1061,9 @@
     $rootScope.$on('$stateChangeStart', function (event, next, nextParams) {
       var authorized;
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      var isAnonymous = true;
+      let user = localStorageService.get('user');
 
-      angular.forEach(_.keys(nextParams), function (key) {
-        if (!pattern.test(nextParams[key])) {
-          isAnonymous = false;
-        }
-      });
-
-      if (isAnonymous) {
+      if (!user) {
         return;
       }
 
@@ -1148,6 +1142,43 @@
           }
         } else if (authorized === Authorization.enums.NOT_AUTHORIZED) {
           $location.path('/').replace();
+        }
+      } else {
+        if (user) {
+          if (nextParams.auuid) {
+            AppCivistAuth.getID('assembly', nextParams.auuid).get().$promise.then(rsp => {
+              let aid = rsp.id;
+              if (nextParams.cuuid) {
+                AppCivistAuth.getID('campaign', nextParams.cuuid).get().$promise.then(rsp => {
+                  let cid = rsp.id;
+                  if (nextParams.guuid || nextParams.puuid || nextParams.couuid) {
+                    if (nextParams.guiid) {
+                      AppCivistAuth.getID('group', nextParams.guuid).get().$promise.then(rsp => {
+                        let gid = rsp.id;
+                        if (nextParams.puuid || nextParams.couuid) {
+                          AppCivistAuth.getID('contribution', nextParams.puuid ? nextParams.puuid : nextParams.couuid).get().$promise.then(rsp => {
+                            let pid = rsp.id;
+                            $state.go('v2.assembly.aid.campaign.workingGroup.contribution.coid', {aid:aid, cid:cid, gid:gid, coid:pid}, {reload:true});
+                          });
+                        } else {
+                          $state.go('v2.assembly.aid.campaign.workingGroup.gid', {aid:aid, cid:cid, gid:gid}, {reload:true});
+                        }
+                      });
+                    } else if (nextParams.puuid || nextParams.couuid) {
+                      AppCivistAuth.getID('contribution', nextParams.puuid ? nextParams.puuid : nextParams.couuid).get().$promise.then(rsp => {
+                        let pid = rsp.id;
+                        $state.go('v2.assembly.aid.campaign.contribution.coid', {aid:aid, cid:cid, gid:gid, coid:pid}, {reload:true});
+                      });
+                    }
+                  } else {
+                    $state.go('v2.assembly.aid.campaign.cid', {aid: aid, cid: cid}, {reload:true});    
+                  }
+                });
+              } else {
+                $state.go('v2.assembly.aid.home', {aid: aid}, {reload:true});
+              }
+            });
+          }
         }
       }
     });

@@ -80,6 +80,7 @@
     $scope.getAuthorsHeadless = getAuthorsHeadless.bind($scope);
     $scope.getNonMemberAuthorsHeadless = getNonMemberAuthorsHeadless.bind($scope);
     $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
+    $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
 
     activate();
 
@@ -457,7 +458,6 @@
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
           });
-          console.log($scope.proposal);
           //$scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
           localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
@@ -688,6 +688,10 @@
         // TODO: load the write embed url for gdoc
         $scope.writePeerDocUrl = $scope.peerDocUrl;//+"/edit?rm=full";
       }
+    }
+
+    function isCurrentAuthor(author) {
+      return $scope.user.userId == author.userId;
     }
 
     function loadEtherpadWriteUrl(proposal) {

@@ -197,18 +197,15 @@
     function validateCaptchaResponse(target) {
       Captcha.verify(target.recaptchaResponse).then(
         function(response) {
-          if(response.success == true){
+          if(response.success == true) {
             target.recaptchaResponseOK = response && response.success;
-          }
-          else{
+          } else {
             target.recaptchaResponseOK = false;
-            function (error) {
-              $translate('error.validation.captchaResponse').then(function (errorMsg) {
-              var fullErrorMsg = errorMsg + response.error-codes;
-              Notify.show(fullErrorMsg, 'error');
-              }),
-            }
-          };
+            $translate('error.validation.captchaResponse').then(function (errorMsg) {
+                var fullErrorMsg = errorMsg + response.error-codes;
+                Notify.show(fullErrorMsg, 'error');
+            });
+          }
         }
       );
     }

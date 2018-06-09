@@ -1107,7 +1107,7 @@
           $scope.keywordsLimitReached = true;
         }
       }
-      
+
     }
 
     function seeHistory() {
@@ -1409,7 +1409,10 @@
       }
       this.proposal.themes.push(theme);
       Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
-        response => Notify.show('Theme added successfully', 'success'),
+        response => {
+          this.proposal.themes = response;
+          Notify.show('Theme added successfully', 'success')
+        },
         error => {
           this.deleteTheme(theme, true);
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');

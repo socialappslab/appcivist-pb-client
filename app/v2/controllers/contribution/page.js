@@ -1408,9 +1408,20 @@
         }
       }
       this.proposal.themes.push(theme);
+      let updateThemeId = false;
+      if (!theme.themeId) {
+        updateThemeId = true;
+      }
       Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
         response => {
-          this.proposal.themes = response;
+          if (updateThemeId) {
+            console.log("Added theme didn't have ID. Updating...")
+            const result = response.filter(t => t.title === theme.title);
+            if (result && result.length > 0) {
+              theme.themeId = result[0].themeId;
+              theme.uuid = result[0].uuid;
+            }
+          }
           Notify.show('Theme added successfully', 'success')
         },
         error => {

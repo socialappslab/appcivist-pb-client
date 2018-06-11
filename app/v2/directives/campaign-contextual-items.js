@@ -23,7 +23,8 @@
         // {string} proposal | idea
         currentComponentType: '=',
         contributions: '=',
-        filters: '='
+        filters: '=',
+        configs: '='
       },
       controller: FormCtrl,
       controllerAs: 'vm',
@@ -44,6 +45,7 @@
     this.downloadAuthorInfo = downloadAuthorInfo.bind(this);
     this.edit = edit.bind(this);
     this.showConsentModal = showConsentModal.bind(this);
+    this.consentIsEnabled = consentIsEnabled.bind(this);
 
     ModalMixin.init(this);
 
@@ -66,6 +68,7 @@
         // If prosposals can be imported, so to ideas as they can be used to create proposals
         this.showIdeasImport = this.showProposalImport || (this.currentComponentType && this.currentComponentType.toLowerCase() === 'idea'
           || this.currentComponentType && this.currentComponentType.toLowerCase() === 'ideas');
+        this.showConsentButton = this.consentIsEnabled();
       }
     }
 
@@ -117,6 +120,11 @@
 
     function showConsentModal() {
       angular.element('#consentModal').modal({show:true, keyboard:false, backdrop:'static'});
+    }
+
+    function consentIsEnabled() {
+      let disableConsent = this.configs['appcivist.campaign.disable-consent']; // default to false
+      return !(disableConsent && (disableConsent == "TRUE" || disableConsent == "true"));
     }
   }
 }());

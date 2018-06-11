@@ -408,7 +408,7 @@
         q = query.query;
       }
       if ( q && q != '' && q.length > 2) {
-        if ((!self.assemblyMembers || self.assemblyMembers.length == 0) && self.assembly && self.assembly.assemblyId) {
+        if (self.assembly && self.assembly.assemblyId) {
           rsp = Assemblies.assemblyMembers(self.assembly.assemblyId, false, q).query().$promise;
           return rsp.then(
             function (data) {

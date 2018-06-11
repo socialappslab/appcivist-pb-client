@@ -427,7 +427,11 @@
           return $filter('filter')(self.assemblyMembers, { name: q });
         }
       } else {
-        return $filter('filter')(self.assemblyMembers, { name: q });
+        if (!self.assemblyMembers || self.assemblyMembers.length == 0) {
+          return $filter('filter')([], { name: q });
+        } else {
+          return $filter('filter')(self.assemblyMembers, { name: q });
+        }
       }
     }
 

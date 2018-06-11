@@ -412,7 +412,7 @@
           rsp = Assemblies.assemblyMembers(self.assembly.assemblyId, false, q).query().$promise;
           return rsp.then(
             function (data) {
-              self.assemblyMembers = _.filter(data, function (d) {
+              self.assemblyMembers = _.filter(data.members, function (d) {
                 return d.status === 'ACCEPTED';
               }).map(function (d) {
                 return d.user;

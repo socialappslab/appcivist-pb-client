@@ -421,6 +421,7 @@
             },
             function (error) {
               Notify.show(error.statusMessage, 'error');
+              return $filter('filter')([], { name: q });
             }
           );
         } else {

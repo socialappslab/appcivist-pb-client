@@ -33,7 +33,7 @@
               <member-card user="author"></member-card>
               <i ng-if="isCurrentAuthor(author) || userIsCoordinator || userIsAdmin" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
             </div>
-            <div ng-repeat="author in proposal.nonmemberauthors" style="display: inline-block; margin-left: 10px;">
+            <div ng-repeat="author in proposal.nonMemberAuthors" style="display: inline-block; margin-left: 10px;">
               <member-card user="author"></member-card>
               <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteNonMemberAuthor(author)"></i>
             </div>
@@ -107,7 +107,7 @@
                  ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
             </li>
             <div class="liveEdit smaller" ng-if="themesLimit > 1 || themesLimit == -1">
-              <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery"
+              <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery.query"
                 ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()"><i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="themeSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
               <fieldset class="tags" id="themeSearchTags">
                 <div class="autocomplete" ng-if="themesSuggestionsVisible">

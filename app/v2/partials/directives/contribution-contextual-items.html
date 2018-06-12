@@ -14,7 +14,7 @@
   <li class="li-action-menu" ng-if="vm.userIsWorkingGroupCoordinator && vm.isProposalIdeaStage"><a ng-click="vm.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
   <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator && vm.notAssigned"><a href="" ng-click="vm.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
-  <li class="li-action-menu" ng-if="(vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator || vm.userIsAuthor)"><a ng-click="vm.softRemoval()">{{'Delete' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="(vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator)"><a ng-click="vm.softRemoval()">{{'Delete' | translate}}</a></li>
   <!--<li class="li-action-menu"><a ng-click="vm.subscribe()">{{'Subscribe' | translate}}</a></li>-->
   <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage && !vm.contribution.extendedTextPad.resourceType === 'PEERDOC'">
     <a data-toggle="modal" data-target="#etherpadEmbedModal">{{'New Etherpad PAD' | translate}}</a>

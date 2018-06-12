@@ -228,6 +228,8 @@
       this.userIsWorkingGroupCoordinator = groupRoles != undefined ? hasRol(groupRoles, "COORDINATOR") : false;
       var assemblyRoles = assemblyMembershipsHash[this.assemblyId];
       this.userIsAssemblyCoordinator = assemblyRoles != undefined ? hasRol(assemblyRoles, "COORDINATOR") : false;
+      console.log(this.userIsAssemblyCoordinator);
+      console.log(this.userIsWorkingGroupCoordinator);
 
       if (this.contribution.type === 'PROPOSAL') {
         this.userIsAuthor = this.verifyAuthorshipUser(this.contribution, this.user);

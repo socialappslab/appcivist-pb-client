@@ -284,9 +284,9 @@
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
                 </select>
               </span>
-              <span class="status" ng-if="(!allowChangeStatus || !userIsCreator || !userIsCoordinator) && proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</span>
-              <span class="status" ng-if="(!allowChangeStatus || !userIsCreator || !userIsCoordinator) && proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</span>
-              <span class="status" ng-if="(!allowChangeStatus || !userIsCreator || !userIsCoordinator) && proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
+              <span class="status" ng-if="!allowChangeStatus && (!userIsCreator || !userIsCoordinator) && proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</span>
+              <span class="status" ng-if="!allowChangeStatus && (!userIsCreator || !userIsCoordinator) && proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</span>
+              <span class="status" ng-if="!allowChangeStatus && (!userIsCreator || !userIsCoordinator) && proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
             </div>
           </div>
         </div>

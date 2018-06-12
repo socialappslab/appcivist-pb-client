@@ -1167,7 +1167,7 @@
                     } else if (nextParams.puuid || nextParams.couuid) {
                       AppCivistAuth.getID('contribution', nextParams.puuid ? nextParams.puuid : nextParams.couuid).get().$promise.then(rsp => {
                         let pid = rsp.id;
-                        $state.go('v2.assembly.aid.campaign.contribution.coid', {aid:aid, cid:cid, gid:gid, coid:pid}, {reload:true});
+                        $state.go('v2.assembly.aid.campaign.contribution.coid', {aid:aid, cid:cid, coid:pid}, {reload:true});
                       });
                     }
                   } else {

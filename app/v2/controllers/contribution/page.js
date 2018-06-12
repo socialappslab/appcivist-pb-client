@@ -454,9 +454,7 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
-          $scope.userIsCreator = $scope.user.userId == data.creator.userId;
-          console.log($scope.userIsCreator);
-          console.log($scope.userIsCoordinator);
+          $scope.userIsCreator = $scope.user ? $scope.user.userId == data.creator.userId : false;
           $scope.contributionLabel = $scope.proposal.title;
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
@@ -694,7 +692,11 @@
     }
 
     function isCurrentAuthor(author) {
-      return $scope.user.userId == author.userId;
+      if ($scope.user && author) {
+        return $scope.user.userId == author.userId;
+      } else {
+        return false;
+      }
     }
 
     function loadEtherpadWriteUrl(proposal) {

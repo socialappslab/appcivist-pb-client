@@ -85,10 +85,20 @@ appCivistApp.factory('Assemblies', function ($resource, localStorageService, $in
         if (query == '') {
           return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true', { aid: assemblyId });
         } else {
-          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true&ldapsearch=:query', { aid: assemblyId, query: query });
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL?ldap=true&ldapsearch=:query&query=:query', { aid: assemblyId, query: query });
         }
       } else {
-        return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId });
+        if (query == '') {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId},
+            {
+              query: {isArray: false}
+            });
+        } else {
+          return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/membership/ALL', { aid: assemblyId, query: query },
+            {
+              query: {isArray: false}
+            });
+        }
       }
     },
     linkedAssemblies: function (assemblyId) {
@@ -2815,7 +2825,17 @@ appCivistApp.factory('AppCivistAuth', function ($resource, localStorageService) 
      */
     getUUID(type, id) {
       return $resource(getServerBaseUrl(localStorageService) + '/uuid?type=:type&id=:id', { type: type, id: id });
-    }
+    },
+    /**
+     * Converts UUIDs to IDs
+     *
+     * @method services.AppCivistAuth#getID
+     * @param {string} type
+     * @param {string} uuid
+     */
+    getID(type, uuid) {
+      return $resource(getServerBaseUrl(localStorageService) + '/id?type=:type&uuid=:uuid', { type: type, uuid: uuid });
+    },
   };
 });
 

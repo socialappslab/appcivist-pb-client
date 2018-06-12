@@ -402,24 +402,37 @@
     function loadAuthors(query) {
       var self = this;
       var rsp;
+      let q = '';
 
-      if (!self.assemblyMembers && self.assembly && self.assembly.assemblyId && self.assembly.assemblyId) {
-        rsp = Assemblies.assemblyMembers(self.assembly.assemblyId).query().$promise;
-        return rsp.then(
-          function (data) {
-            self.assemblyMembers = _.filter(data, function (d) {
-              return d.status === 'ACCEPTED';
-            }).map(function (d) {
-              return d.user;
-            });
-            return $filter('filter')(self.assemblyMembers, { name: query });
-          },
-          function (error) {
-            Notify.show(error.statusMessage, 'error');
-          }
-        );
+      if (query && query.query && query.query !== "") {
+        q = query.query;
+      }
+      if ( q && q != '' && q.length > 2) {
+        if (self.assembly && self.assembly.assemblyId) {
+          rsp = Assemblies.assemblyMembers(self.assembly.assemblyId, false, q).query().$promise;
+          return rsp.then(
+            function (data) {
+              self.assemblyMembers = _.filter(data.members, function (d) {
+                return d.status === 'ACCEPTED';
+              }).map(function (d) {
+                return d.user;
+              });
+              return $filter('filter')(self.assemblyMembers, { name: q });
+            },
+            function (error) {
+              Notify.show(error.statusMessage, 'error');
+              return $filter('filter')([], { name: q });
+            }
+          );
+        } else {
+          return $filter('filter')(self.assemblyMembers, { name: q });
+        }
       } else {
-        return $filter('filter')(self.assemblyMembers, { name: query });
+        if (!self.assemblyMembers || self.assemblyMembers.length == 0) {
+          return $filter('filter')([], { name: q });
+        } else {
+          return $filter('filter')(self.assemblyMembers, { name: q });
+        }
       }
     }
 

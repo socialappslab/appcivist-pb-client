@@ -80,6 +80,7 @@
     $scope.getAuthorsHeadless = getAuthorsHeadless.bind($scope);
     $scope.getNonMemberAuthorsHeadless = getNonMemberAuthorsHeadless.bind($scope);
     $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
+    $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
 
     activate();
 
@@ -228,13 +229,14 @@
       $scope.authorQuery = "";
       $scope.authorsList = [];
       $scope.authorsSuggestionsVisible = false;
-      $scope.themeQuery = "";
+      $scope.themeQuery = {query:""};
       $scope.themesList = [];
       $scope.themesSuggestionsVisible = false;
       $scope.themesLimit = null;
       $scope.keywordQuery = "";
       $scope.keywordsList = [];
       $scope.keywordsSuggestionsVisible = false;
+      $scope.keywordsLimitReached = false;
 
       $scope.customList = [];
       $scope.customQuery = "";
@@ -452,11 +454,11 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
+          $scope.userIsCreator = $scope.user.userId == data.creator.userId;
           $scope.contributionLabel = $scope.proposal.title;
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
           });
-          console.log($scope.proposal);
           //$scope.proposal.status = $scope.proposal.status.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
           localStorageService.set('currentContribution',$scope.proposal);
           $scope.proposal.frsUUID = data.forumResourceSpaceUUID;
@@ -557,6 +559,7 @@
             });
             vm.loadValues(vm.proposal.resourceSpaceUUID, true);
           }
+
           loadRelatedContributions();
           loadRelatedStats();
           loadCampaign();
@@ -686,6 +689,10 @@
         // TODO: load the write embed url for gdoc
         $scope.writePeerDocUrl = $scope.peerDocUrl;//+"/edit?rm=full";
       }
+    }
+
+    function isCurrentAuthor(author) {
+      return $scope.user.userId == author.userId;
     }
 
     function loadEtherpadWriteUrl(proposal) {
@@ -1072,6 +1079,7 @@
       let showDescriptionRichTextEditConf = $scope.campaignConfigs['appcivist.campaign.contribution.description.richtext-editor'];
       let allowChangeStatusConf = $scope.campaignConfigs['appcivist.campaign.contribution.status.change-enabled'];
       let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
+      let hasKeywordsLimit = $scope.campaignConfigs['appcivist.campaign.keywords.limit'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1093,6 +1101,14 @@
       $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : true;
       $scope.allowChangeStatus = allowChangeStatusConf ? allowChangeStatusConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.keywordsLimit = hasKeywordsLimit ? hasKeywordsLimit : false;
+
+      if ($scope.keywordsLimit) {
+        if ($scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == $scope.keywordsLimit) {
+          $scope.keywordsLimitReached = true;
+        }
+      }
+
     }
 
     function seeHistory() {
@@ -1152,13 +1168,13 @@
       this.themesSuggestionsVisible = true;
       let vm = this;
       let filters = {
-        query: vm.themeQuery,
+        query: vm.themeQuery.query,
         themeType: 'OFFICIAL_PRE_DEFINED'
       }
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         themes => {
-          vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery));
+          vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery.query));
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1255,6 +1271,13 @@
         this.keywordsSuggestionsVisible = false;
         $('#keywordSearch').hide();
         $('#keywordSearchClose').hide();
+        if (this.keywordsLimit) {
+          if (this.proposal.themes.filter(t => t.type == 'EMERGENT').length == this.keywordsLimit) {
+            $scope.keywordsLimitReached = true;
+          } else {
+            $scope.keywordsLimitReached = false;
+          }
+        }
       }
     }
 
@@ -1308,12 +1331,22 @@
      */
     function deleteTheme(theme, local) {
       _.remove(this.proposal.themes, { themeId: theme.themeId });
+      let vm = this;
 
       if (local) {
         return;
       }
       Contributions.deleteTheme(this.proposal.uuid, theme.themeId).then(
-        response => Notify.show('Theme deleted successfully', 'success'),
+        response => {
+          if (vm.keywordsLimit) {
+            if (vm.proposal.themes.filter(t => t.type == 'EMERGENT').length == vm.keywordsLimit) {
+              vm.keywordsLimitReached = true;
+            } else {
+              vm.keywordsLimitReached = false;
+            }
+          }
+          Notify.show('Theme deleted successfully', 'success');
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
@@ -1376,8 +1409,22 @@
         }
       }
       this.proposal.themes.push(theme);
+      let updateThemeId = false;
+      if (!theme.themeId) {
+        updateThemeId = true;
+      }
       Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
-        response => Notify.show('Theme added successfully', 'success'),
+        response => {
+          if (updateThemeId) {
+            console.log("Added theme didn't have ID. Updating...")
+            const result = response.filter(t => t.title === theme.title);
+            if (result && result.length > 0) {
+              theme.themeId = result[0].themeId;
+              theme.uuid = result[0].uuid;
+            }
+          }
+          Notify.show('Theme added successfully', 'success')
+        },
         error => {
           this.deleteTheme(theme, true);
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');

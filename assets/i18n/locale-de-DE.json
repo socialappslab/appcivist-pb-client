@@ -242,6 +242,7 @@
   "Error description": "Fehlerbeschreibung",
   "Error loading campaign contributions from server": "Fehler beim Laden der Kampagnenbeiträge vom Server",
   "error.creation.contribution": "Beitrag wurde nicht erstellt. Folgender Fehler ist aufgetreten",
+  "error.validation.captchaResponse": "Der Recaptcha-Server hat einen Fehler zurückgegeben: ",
   "errorModalText": "Falls diese Beschreibung ausreichend für die Problembehebung ist, schließe dieses Modul und versuche es erneut. Wir entschuldigen uns für diese Unannehmlichkeit und werden daran arbeiten, dieses Probelm so schnell wie möglich zu lösen. Falls die Fehlermeldung nicht aufschlussreich ist, kontaktiere uns.",
   "ESPECIAL PHRASES FROM BACKEND": "SPEZIELLE PHRASEN VOM BACKEND",
   "Estimated Cost": "Geschätzte Kosten",

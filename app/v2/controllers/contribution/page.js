@@ -454,6 +454,7 @@
         function (data) {
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
+          $scope.userIsCreator = $scope.user.userId == data.creator.userId;
           $scope.contributionLabel = $scope.proposal.title;
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;

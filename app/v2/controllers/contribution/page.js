@@ -1956,6 +1956,7 @@
       let vm = this;
       let payload = _.cloneDeep($scope.proposal);
       delete payload.lastUpdate;
+      delete payload.attachments;
       payload.status = payload.status.toUpperCase();
       let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
 

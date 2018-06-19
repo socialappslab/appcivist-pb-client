@@ -316,7 +316,7 @@
             <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text"
                       id="add_proposal__description" name="text" rows="8" cols="48"
                       placeholder="{{'Description' | translate}}"></textarea>
-            <textarea ng-if="!showDescriptionRichTextEdit"  ng-model="proposal.text"
+            <textarea ng-if="!showDescriptionRichTextEdit"  ng-model="proposal.text" ng-change="enforceLimit()"
                       id="add_proposal__description" name="text" rows="8" cols="48"
                       placeholder="{{'Description' | translate}}"></textarea>
             <button class="btn btn-default btn-join" ng-click="descriptionToggleEdit()">{{'Cancel' | translate}}</button>

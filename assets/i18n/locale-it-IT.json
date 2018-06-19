@@ -1416,5 +1416,6 @@
   "Registered users": "Registered users",
   "Not yet registered": "Not yet registered",
   "Shared proposals": "Shared with me",
-  "Shared ideas": "Shared with me"
+  "Shared ideas": "Shared with me",
+  "Description limit": "Description can't be longer than {{limit}} characters"
 }

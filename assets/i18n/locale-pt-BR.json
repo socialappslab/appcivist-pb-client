@@ -1418,5 +1418,6 @@
   "Registered users": "Registrado no site",
   "Not yet registered": "Ainda não registrado",
   "Shared proposals": "Compartilhadas comigo",
-  "Shared ideas": "Compartilhadas comigo"
+  "Shared ideas": "Compartilhadas comigo",
+  "Description limit": "Resumo não pode ter mais que {{limit}} caracteres"
 }

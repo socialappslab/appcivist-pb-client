@@ -81,6 +81,7 @@
     $scope.getNonMemberAuthorsHeadless = getNonMemberAuthorsHeadless.bind($scope);
     $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
     $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
+    $scope.enforceLimit = enforceLimit.bind($scope);
 
     activate();
 
@@ -1084,6 +1085,7 @@
       let allowChangeStatusConf = $scope.campaignConfigs['appcivist.campaign.contribution.status.change-enabled'];
       let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
       let hasKeywordsLimit = $scope.campaignConfigs['appcivist.campaign.keywords.limit'];
+      let hasDescriptionLimit = $.scope.campaignConfigs['appcivist.campaign.contribution-summary-word-limit'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1106,6 +1108,7 @@
       $scope.allowChangeStatus = allowChangeStatusConf ? allowChangeStatusConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
       $scope.keywordsLimit = hasKeywordsLimit ? hasKeywordsLimit : false;
+      $scope.descriptionLimit = hasDescriptionLimit ? parseInt(hasDescriptionLimit) : false;
 
       if ($scope.keywordsLimit) {
         if ($scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == $scope.keywordsLimit) {
@@ -1953,29 +1956,44 @@
     }
 
     function saveDescription() {
-      let vm = this;
-      let payload = _.cloneDeep($scope.proposal);
-      delete payload.lastUpdate;
-      delete payload.attachments;
-      payload.status = payload.status.toUpperCase();
-      let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
+      if (!this.showDescriptionRichTextEdit && this.descriptionLimit && this.proposal.text > this.descriptionLimit) {
+        $translate('Description limit', { limit: this.descriptionLimit })
+          .then(
+            msg => {
+              Notify.show(msg, 'error');
+            });
+      } else {
+        let vm = this;
+        let payload = _.cloneDeep($scope.proposal);
+        delete payload.lastUpdate;
+        delete payload.attachments;
+        payload.status = payload.status.toUpperCase();
+        let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
 
-      rsp.then(
-        data => {
-          $translate('Changed was saved')
-            .then(
-              msg => {
-                Notify.show(msg, 'success');
-              });
-          vm.isDescriptionEdit = false;
-          $("#descriptionEditToggle").addClass('fa-edit');
-          $("#descriptionEditToggle").removeClass('fa-times-circle');
-        },
-        error => {
-          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
-          vm.isDescriptionEdit = true;
-        }
-      );
+        rsp.then(
+          data => {
+            $translate('Changed was saved')
+              .then(
+                msg => {
+                  Notify.show(msg, 'success');
+                });
+            vm.isDescriptionEdit = false;
+            $("#descriptionEditToggle").addClass('fa-edit');
+            $("#descriptionEditToggle").removeClass('fa-times-circle');
+          },
+          error => {
+            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+            vm.isDescriptionEdit = true;
+          }
+        );
+      }
+    }
+
+    function enforceLimit() {
+      if (this.descriptionLimit) {
+        if (this.proposal.text.length > this.descriptionLimit)
+          this.proposal.text = this.proposal.text.substring(0, this.descriptionLimit);
+      }
     }
 
     function saveTitle() {

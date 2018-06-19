@@ -1419,6 +1419,7 @@
   "Not yet registered": "Ainda não registrado",
   "Shared proposals": "Compartilhadas comigo",
   "Shared ideas": "Compartilhadas comigo",
+  "Description limit": "Resumo não pode ter mais que {{limit}} caracteres",
   "Changed saved": "Mudança salva",
   "Document embedded successfully": "Documento incorporado com sucesso",
   "Subscribed successfully": "Inscrito com sucesso",

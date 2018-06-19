@@ -72,7 +72,12 @@
             if (turnoff) {
                 this.setCookie('hideMotivational','1');
                 this.hideMessage();
-                Notify.show('You won\'t see more suggestions', 'success');
+                $translate('Changed saved').then(
+                    successMsg => {
+                      Notify.show(successMsg, 'success');
+                    }
+                );
+                //Notify.show('You won\'t see more suggestions', 'success');
             }
         }
 

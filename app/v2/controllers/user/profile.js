@@ -102,7 +102,12 @@
             if (passwordChanged()) {
               updatePassword();
             } else {
-              Notify.show('Data saved correctly');
+              $translate('Changed saved').then(
+                successMsg => {
+                  Notify.show(successMsg, 'success');
+                }
+              );
+              //Notify.show('Data saved correctly');
               window.location.reload();
             }
           },
@@ -127,7 +132,12 @@
         if (checkData && userInfoChanged()) {
           updateUserData();
         } else {
-          Notify.show('Data saved correctly');
+          $translate('Changed saved').then(
+            successMsg => {
+            Notify.show(successMsg, 'success');
+            }
+          );
+          //Notify.show('Data saved correctly');
           window.location.reload();
         }
       }, function(error) {
@@ -168,7 +178,12 @@
         var rsp = new ChangePasswordService(data);
         rsp.$save().then(
           function(response) {
-            Notify.show('Data saved correctly');
+            $translate('Changed saved').then(
+              successMsg => {
+                Notify.show(successMsg, 'success');
+              }
+            );
+            //Notify.show('Data saved correctly');
           },
           function(error) {
             console.log(error);

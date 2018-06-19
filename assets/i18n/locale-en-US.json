@@ -1419,5 +1419,17 @@
   "Not yet registered": "Not yet registered",
   "Shared proposals": "Shared with me",
   "Shared ideas": "Shared with me",
-  "Description limit": "Description can't be longer than {{limit}} characters"
+  "Description limit": "Description can't be longer than {{limit}} characters",
+  "Changed saved": "Change saved",
+  "Document embedded successfully": "Document embedded successfully",
+  "Subscribed successfully": "Subscribed successfully",
+  "JoinWg successfully": "Request completed successfully. We'll get in contact soon.",
+  "Member accepted": "Member accepted successfully.",
+  "Member reject": "Member rejected successfully.",
+  "resendInvitation": "The invitation has been sent",
+  "Members invited": "Members invited successfully",
+  "Subscribed newsletters successfully": "Subscribed successfully! You will begin to receive newsletters every week.",
+  "Unsubscribed successfully": "Unsubscribed successfully",
+  "Contribution created": "Contribution created",
+  "Voting ballot created successfully": "Voting ballot created successfully"
 }

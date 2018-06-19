@@ -1419,5 +1419,17 @@
   "Not yet registered": "Ainda não registrado",
   "Shared proposals": "Compartilhadas comigo",
   "Shared ideas": "Compartilhadas comigo",
-  "Description limit": "Resumo não pode ter mais que {{limit}} caracteres"
+  "Description limit": "Resumo não pode ter mais que {{limit}} caracteres",
+  "Changed saved": "Mudança salva",
+  "Document embedded successfully": "Documento incorporado com sucesso",
+  "Subscribed successfully": "Inscrito com sucesso",
+  "JoinWg successfully": "Pedido concluído com sucesso. Entraremos em contato em breve.",
+  "Member accepted": "Membro aceito com sucesso.",
+  "Member reject": "Membro rejeitado com sucesso.",
+  "resendInvitation": "O convite foi enviado",
+  "Members invited": "Membros convidados com sucesso",
+  "Subscribed newsletters successfully": "Inscrito com sucesso! Você começará a receber boletins informativos toda semana.",
+  "Unsubscribed successfully": "Não subscrito com sucesso",
+  "Contribution created": "Contribuição criado",
+  "Voting ballot created successfully": "Cédula de votação criada com sucesso"
 }

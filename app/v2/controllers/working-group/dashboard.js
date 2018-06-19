@@ -152,7 +152,11 @@
       let rsp = Memberships.membershipRequest('group', groupId).save(member);
       rsp.$promise.then(
         response => {
-          Notify.show("Request completed successfully. We'll get in contact soon.", "success");
+          $translate('JoinWg successfully').then(function (successMsg) {
+            Notify.show(successMsg, 'success');
+            }
+          );
+          //Notify.show("Request completed successfully. We'll get in contact soon.", "success");
         },
         error => Notify.show(error.statusMessage, "error")
       )
@@ -420,9 +424,17 @@
         response => {
           switch (status) {
             case "accepted":
-              Notify.show("Member accepted successfully.", "success"); break;
+              $translate('Member accepted').then(function (successMsg) {
+                Notify.show(successMsg, 'success');
+              });
+              break;
+              //Notify.show("Member accepted successfully.", "success"); break;
             case "rejected":
-              Notify.show("Member rejected successfully.", "success"); break;
+              $translate('Member rejected').then(function (successMsg) {
+                Notify.show(successMsg, 'success');
+              });
+              break;
+              //Notify.show("Member rejected successfully.", "success"); break;
           }
         },
         error => Notify.show(error.statusMessage, "error")
@@ -433,7 +445,10 @@
       let rsp = Invitations.resendInvitation(member.id);
       rsp.then(
         response => {
-          Notify.show("The invitation has been sent", "success");
+          $translate('resendInvitation').then(function (successMsg) {
+            Notify.show(successMsg, 'success');
+          });
+          //Notify.show("The invitation has been sent", "success");
         },
         error => {
           Notify.show(error.statusMessage, "error");
@@ -456,7 +471,10 @@
         }
       }).then(
         response => {
-          Notify.show("Members invited successfully", "success");
+          $translate('Members invited').then(function (successMsg) {
+            Notify.show(successMsg, 'success');
+          });
+          //Notify.show("Members invited successfully", "success");
           loadMembers($scope.wg);
           angular.element('#addMembers button.close').trigger('click');
         },
@@ -611,7 +629,10 @@
         response => {
           $scope.subscribed = true;
           $scope.subscription = response;
-          Notify.show("Subscribed successfully! You will begin to receive newsletters every week.", "success");
+          $translate('Subscribed newsletters successfully').then(function (successMsg) {
+            Notify.show(successMsg, 'success');
+          });
+          //Notify.show("Subscribed successfully! You will begin to receive newsletters every week.", "success");
         },
         error => {
           Notify.show("Error trying to subscribe. Please try again later.", "error")
@@ -648,7 +669,10 @@
           Notifications.unsubscribe(spaceId, subId).then(
             response => {
               $scope.subscriptionREG = null;
-              Notify.show("Unsubscribed successfully.", "success");
+              $translate('Unsubscribed successfully').then(function (successMsg) {
+                Notify.show(successMsg, 'success');
+              });
+              //Notify.show("Unsubscribed successfully.", "success");
             },
             error => {
               Notify.show("Unsubscribed successfully from newsletters.");

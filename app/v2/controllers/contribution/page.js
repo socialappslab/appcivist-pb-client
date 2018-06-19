@@ -891,8 +891,12 @@
         } else {
           vm.openAddAttachmentByUrl = false;
         }
-
-        Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
+        $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+          }
+        );
+        //Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
         vm.stopSpinner();
       }, function (error) {
         Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1053,7 +1057,11 @@
       this.proposal.themes = keywords;
       Contributions.deleteTheme(this.proposal.uuid, this.selectedTheme.themeId).then(
         response => {
-          Notify.show('Theme deleted successfully', 'success')
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme deleted successfully', 'success')
           vm.selectedTheme = null;
         },
         error => {
@@ -1349,7 +1357,11 @@
               vm.keywordsLimitReached = false;
             }
           }
-          Notify.show('Theme deleted successfully', 'success');
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme deleted successfully', 'success');
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1370,7 +1382,13 @@
         return;
       }
       Contributions.deleteAuthor(this.proposal.uuid, author.uuid).then(
-        response => Notify.show('Author deleted successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Author deleted successfully', 'success') 
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
@@ -1384,7 +1402,13 @@
         return;
       }
       Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.id).then(
-        response => Notify.show('Author deleted successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+           //Notify.show('Author deleted successfully', 'success'),
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
@@ -1427,7 +1451,11 @@
               theme.uuid = result[0].uuid;
             }
           }
-          Notify.show('Theme added successfully', 'success')
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme added successfully', 'success')
         },
         error => {
           this.deleteTheme(theme, true);
@@ -1467,7 +1495,7 @@
             }
             _.remove($scope.fieldsValues, { customFieldValueId: cfvid });
             $scope.fieldsValues.push(newValue);
-            $translate("Changed was saved").then(function(translation) {
+            $translate("Changed saved").then(function(translation) {
               Notify.show(translation, 'success');
             });
           },
@@ -1488,7 +1516,7 @@
                 $scope.custom.valuesDict[cfid].push(newValue);
                 $scope.custom.valuesIdsDict[cfid].push(newValue.customFieldValueId);
                 $scope.fieldsValues.push(newValue);
-                $translate("Changed was saved").then(function (translation) {
+                $translate("Changed saved").then(function (translation) {
                   Notify.show(translation, 'success');
                 });
               },
@@ -1528,7 +1556,13 @@
       this.proposal.themes = keywords.concat(themes);
      }
      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
-        response => Notify.show('Theme changed successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme changed successfully', 'success'),
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
@@ -1553,7 +1587,13 @@
       this.proposal.authors = this.proposal.authors || [];
       this.proposal.authors.push(author);
       Contributions.addAuthor(this.proposal.uuid, author).then(
-        response => Notify.show('Author added successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Author added successfully', 'success'),
+        },
         error => {
           //this.deleteAuthor(author, true);
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1573,7 +1613,11 @@
       Contributions.addNonMemberAuthor(this.proposal.uuid, payload).then(
         response => {
           payload.id = response.id;
-          Notify.show('Author added successfully', 'success')
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Author added successfully', 'success')
         },
         error => {
           this.deleteAuthor(author, true);
@@ -1642,7 +1686,11 @@
           } else {
             _.remove(this.resources.documents, { resourceId: attachment.resourceId });
           }
-          Notify.show('Attachment deleted successfully', 'success');
+          $translate('Changed saved').then(
+            successMsg => {
+            Notify.show(successMsg, 'success');
+            });
+          //Notify.show('Attachment deleted successfully', 'success');
         } ,
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1801,7 +1849,12 @@
           return rsp.then(
             newValue => {
               $scope.custom.valuesDict[definitionId][0].value = newValue.value;
-              Notify.show('Updated custom field', 'success');
+              $translate('Changed saved').then(
+                successMsg => {
+                Notify.show(successMsg, 'success');
+                }
+              );
+              //Notify.show('Updated custom field', 'success');
             },
             error => {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1813,7 +1866,12 @@
             newValue => {
               $scope.custom.valuesDict[definitionId][0] = newValue;
               $scope.custom.valuesIdsDict[definitionId][0] = newValue.customFieldValueId;
-              Notify.show('Updated custom field', 'success');
+              $translate('Changed saved').then(
+                successMsg => {
+                Notify.show(successMsg, 'success');
+                }
+              );
+              //Notify.show('Updated custom field', 'success');
             },
             error => {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1882,7 +1940,11 @@
         response => {
           $scope.following = true;
           $scope.subscription = response;
-          Notify.show("Subscribed successfully! You will begin to receive notifications about this from now on.", "success");
+          $translate('Subscribed successfully').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show("Subscribed successfully! You will begin to receive notifications about this from now on.", "success");
         },
         error => {
           Notify.show("Error trying to subscribe. Please try again later.", "error")
@@ -1897,7 +1959,12 @@
         response => {
           $scope.following = false;
           $scope.subscription = null;
-          Notify.show("Unsubscribed successfully.", "success");
+          $translate('Unsubscribed successfully').then(
+            successMsg => {
+            Notify.show(successMsg, 'success');
+            }
+          );
+          //Notify.show("Unsubscribed successfully.", "success");
         },
         error => {
           Notify.show("Error trying to unsubscribe. Please try again later.", "error")
@@ -1962,7 +2029,7 @@
 
       rsp.then(
         data => {
-          $translate('Changed was saved')
+          $translate('Changed saved')
             .then(
               msg => {
                 Notify.show(msg, 'success');
@@ -1986,7 +2053,7 @@
 
       rsp.then(
         data => {
-          $translate('Changed was saved')
+          $translate('Changed saved')
             .then(
               msg => {
                 Notify.show(msg, 'success');

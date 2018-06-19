@@ -503,7 +503,12 @@
      * @param {Object} response
      */
     function onSuccess(response) {
-      Notify.show('Working group saved');
+      $translate('Changed saved').then(
+        successMsg => {
+          Notify.show(successMsg, 'success');
+        }
+      );
+      //Notify.show('Working group saved');
       localStorageService.remove('temporaryNewWGroup');
       this.updateMyGroups(response);
       loginService.loadAuthenticatedUserMemberships().then(function() {

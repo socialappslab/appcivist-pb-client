@@ -472,7 +472,12 @@
       }).then(
         response => {
           Pace.stop();
-          Notify.show('Contribution created', 'success');
+          $translate('Contribution created').then(
+              successMsg => {
+              Notify.show(successMsg, 'success');
+              }
+          );
+          //Notify.show('Contribution created', 'success');
 
           if (angular.isFunction(self.onImportSuccess)) {
             self.onImportSuccess();
@@ -603,7 +608,12 @@
       rsp.then(
         data => {
           Pace.stop();
-          Notify.show('Contribution saved', 'success');
+          $translate('Contribution saved').then(
+             successMsg => {
+              Notify.show(successMsg, 'success');
+             }
+          );
+          //Notify.show('Contribution saved', 'success');
 
           if (angular.isFunction(vm.onSuccess)) {
             vm.onSuccess({ contribution: data });

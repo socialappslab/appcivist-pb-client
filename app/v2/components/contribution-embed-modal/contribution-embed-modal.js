@@ -60,7 +60,12 @@
         else payload = { etherpadServerUrl: url };*/
         Etherpad.embedDocument(this.assemblyId, this.campaignId, this.contributionId, this.format, payload).then(
           response => {
-            Notify.show('Document embedded successfully', 'success');
+            $translate('Document embedded successfully').then(
+              successMsg => {
+              Notify.show(successMsg, 'success');
+              }
+            );
+            //Notify.show('Document embedded successfully', 'success');
             angular.element("#"+this.format+"EmbedModal").modal("hide");
             $window.location.reload();
             //$scope.stopSpinner();

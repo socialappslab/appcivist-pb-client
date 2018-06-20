@@ -322,11 +322,27 @@
           <p class="contribution_description" translate="contribution.summary.empty.non-author"
              ng-if="(!proposal.text || proposal.text == '') && !userIsAuthor">
           </p>
-          <p class="contribution_description" ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor" ng-click="descriptionToggleEdit()">
+          <p class="contribution_description"
+             ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
+             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor && showDescriptionRichTextEdit"
+             ng-click="descriptionToggleEdit()">
+          </p>
+          <p class="contribution_description"
+             ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': ''))"
+             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor && !showDescriptionRichTextEdit"
+             ng-click="descriptionToggleEdit()">
+          </p>
+          <p class="contribution_description"
+             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor && !showDescriptionRichTextEdit"
+             ng-click="descriptionToggleEdit()">
+             {{proposal.text}}
           </p>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription && !userIsAuthor"></p>
+             ng-if="!isDescriptionEdit && showBodyDescription && !userIsAuthor && showDescriptionRichTextEdit"></p>
+          <p class="contribution_description"
+             ng-if="!isDescriptionEdit && showBodyDescription && !userIsAuthor && !showDescriptionRichTextEdit">
+            {{proposal.text}}
+          </p>
           <div class="editableArea text-center" ng-if="isDescriptionEdit && showBodyDescription">
             <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text"
                       id="add_proposal__description" name="text" rows="8" cols="48"

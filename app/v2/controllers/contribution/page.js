@@ -2023,47 +2023,75 @@
     }
 
     function saveDescription() {
-      let s = this.proposal.text.length ? this.proposal.text.length.split(/\s+/) : 0; // it splits the text on space/tab/enter
-      if (s && s.length > this.descriptionLimit)
-
+      let s = this.proposal.text.length > 0 ? this.proposal.text.split(/\s+/) : 0; // it splits the text on space/tab/enter
+      if (s && s.length > 0) {
         if (!this.showDescriptionRichTextEdit && this.descriptionLimit && s.length > this.descriptionLimit) {
-        $translate('Description limit', { limit: this.descriptionLimit })
+          $translate('Description limit', {limit: this.descriptionLimit})
+            .then(
+              msg => {
+                Notify.show(msg, 'error');
+              }
+            );
+        } else {
+          let vm = this;
+          let payload = _.cloneDeep($scope.proposal);
+          delete payload.lastUpdate;
+          delete payload.attachments;
+          payload.status = payload.status.toUpperCase();
+          let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
+
+          rsp.then(
+            data => {
+              $translate('Changed was saved')
+                .then(
+                  msg => {
+                    Notify.show(msg, 'success');
+                  });
+              vm.isDescriptionEdit = false;
+              $("#descriptionEditToggle").addClass('fa-edit');
+              $("#descriptionEditToggle").removeClass('fa-times-circle');
+            },
+            error => {
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+              vm.isDescriptionEdit = true;
+            }
+          );
+        }
+      } else {
+        $translate('Text cannot be emtpy')
           .then(
             msg => {
-              Notify.show(msg, 'error');
+              Notify.show(msg, 'warn');
             });
-      } else {
-        let vm = this;
-        let payload = _.cloneDeep($scope.proposal);
-        delete payload.lastUpdate;
-        delete payload.attachments;
-        payload.status = payload.status.toUpperCase();
-        let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
-
-        rsp.then(
-          data => {
-            $translate('Changed was saved')
-              .then(
-                msg => {
-                  Notify.show(msg, 'success');
-                });
-            vm.isDescriptionEdit = false;
-            $("#descriptionEditToggle").addClass('fa-edit');
-            $("#descriptionEditToggle").removeClass('fa-times-circle');
-          },
-          error => {
-            Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
-            vm.isDescriptionEdit = true;
-          }
-        );
       }
     }
 
+    // TODO: optimize this function. Currently, it is the brute-force version. Let's find a better way.
+    // Probably, better just to use TinyMCE Editor and its stats.
+    // TODO: also, we are now adding the total number of spaces to produce the substring and should be only the total
+    // up to the 125th word
     function enforceLimit() {
       if (this.descriptionLimit) {
-        let s = this.proposal.text.length ? this.proposal.text.length.split(/\s+/) : 0; // it splits the text on space/tab/enter
-        if (s && s.length > this.descriptionLimit)
-          this.proposal.text = this.proposal.text.substring(0, this.descriptionLimit);
+        let s = this.proposal.text.length ? this.proposal.text.split(/\s+/) : 0; // it splits the text on space/tab/enter
+        let spaceCount = this.proposal.text.length ?
+          (this.proposal.text.match(/\s+/g)||[]).length : 0; // it counts the space/tab/enter
+
+        if (s && s.length > this.descriptionLimit) {
+          var currentIndex = 0;
+          var remainingText = this.proposal.text;
+          for(var wordCount = 0; wordCount < this.descriptionLimit; wordCount++) {
+            let word = s[wordCount];
+            let remainingTextLength = remainingText.length;
+            let wordLength = word.length;
+            remainingText = remainingTextLength > 0 ? remainingText.substring(wordLength,remainingTextLength) : ""; // extract the word from the beginning
+            let localSpaceCount = remainingTextLength > 0 ?
+              (remainingText.match(/^\s+/)||[]).length : 0; // count the space/tab/enter at the beginning of the remaining
+            currentIndex += wordLength+localSpaceCount;
+            remainingText = remainingTextLength > 0 ?
+              remainingText.substring(localSpaceCount,remainingTextLength) : ""; // extract the spaces from the beginning
+          }
+          this.proposal.text = this.proposal.text.substring(0,currentIndex);
+        }
       }
     }
 

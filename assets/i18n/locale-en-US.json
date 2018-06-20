@@ -1431,5 +1431,6 @@
   "Subscribed newsletters successfully": "Subscribed successfully! You will begin to receive newsletters every week.",
   "Unsubscribed successfully": "Unsubscribed successfully",
   "Contribution created": "Contribution created",
-  "Voting ballot created successfully": "Voting ballot created successfully"
+  "Voting ballot created successfully": "Voting ballot created successfully",
+  "Text cannot be emtpy":  "Text cannot be emtpy"
 }

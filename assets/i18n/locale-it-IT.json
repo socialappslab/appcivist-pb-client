@@ -1417,5 +1417,18 @@
   "Not yet registered": "Not yet registered",
   "Shared proposals": "Shared with me",
   "Shared ideas": "Shared with me",
-  "Description limit": "Description can't be longer than {{limit}} characters"
+  "Description limit": "Description can't be longer than {{limit}} characters",
+  "Changed saved": "Cambio guardado",
+  "Document embedded successfully": "Documento incorporado exitosamente",
+  "Subscribed successfully": "Suscrito con éxito",
+  "JoinWg successfully": "Solicitud completada con éxito. Nos pondremos en contacto pronto.",
+  "Member accepted": "Miembro aceptado con éxito.",
+  "Member reject": "Miembro rechazado con éxito.",
+  "resendInvitation": "La invitación ha sido enviada",
+  "Members invited": "Miembros invitados con éxito",
+  "Subscribed newsletters successfully": "¡Suscrito con éxito! Comenzarás a recibir boletines todas las semanas.",
+  "Unsubscribed successfully": "Desuscripción exitosa",
+  "Contribution created": "Contribución creada",
+  "Voting ballot created successfully": "Boleta de votación creada con éxito",
+  "Text cannot be emtpy":  "Texto no puede ser vacío"
 }

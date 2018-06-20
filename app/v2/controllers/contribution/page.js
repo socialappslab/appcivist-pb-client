@@ -1390,7 +1390,7 @@
            successMsg => {
            Notify.show(successMsg, 'success');
            });
-          //Notify.show('Author deleted successfully', 'success') 
+          //Notify.show('Author deleted successfully', 'success')
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -2023,7 +2023,10 @@
     }
 
     function saveDescription() {
-      if (!this.showDescriptionRichTextEdit && this.descriptionLimit && this.proposal.text > this.descriptionLimit) {
+      let s = this.proposal.text.length ? this.proposal.text.length.split(/\s+/) : 0; // it splits the text on space/tab/enter
+      if (s && s.length > this.descriptionLimit)
+
+        if (!this.showDescriptionRichTextEdit && this.descriptionLimit && s.length > this.descriptionLimit) {
         $translate('Description limit', { limit: this.descriptionLimit })
           .then(
             msg => {
@@ -2058,7 +2061,8 @@
 
     function enforceLimit() {
       if (this.descriptionLimit) {
-        if (this.proposal.text.length > this.descriptionLimit)
+        let s = this.proposal.text.length ? this.proposal.text.length.split(/\s+/) : 0; // it splits the text on space/tab/enter
+        if (s && s.length > this.descriptionLimit)
           this.proposal.text = this.proposal.text.substring(0, this.descriptionLimit);
       }
     }

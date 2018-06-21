@@ -25,7 +25,8 @@
         // the current component of the campaign
         currentComponent: '=',
         // currentComponent.type was not working in the watcher, so I added this variable to make sure it works
-        filters: '='
+        filters: '=',
+        isCoordinator: '='
 
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',

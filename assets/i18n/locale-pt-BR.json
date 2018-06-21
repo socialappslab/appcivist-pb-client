@@ -1432,5 +1432,7 @@
   "Unsubscribed successfully": "Não subscrito com sucesso",
   "Contribution created": "Contribuição criado",
   "Voting ballot created successfully": "Cédula de votação criada com sucesso",
-  "Text cannot be emtpy":  "O texto não pode estar vazio"
+  "Text cannot be emtpy":  "O texto não pode estar vazio",
+  "Draft Proposals": "Rascunhos de Proposta",
+  "Draft Ideas": "Rascunhos de Idea"
 }

@@ -1432,5 +1432,7 @@
   "Unsubscribed successfully": "Unsubscribed successfully",
   "Contribution created": "Contribution created",
   "Voting ballot created successfully": "Voting ballot created successfully",
-  "Text cannot be emtpy":  "Text cannot be emtpy"
+  "Text cannot be emtpy":  "Text cannot be emtpy",
+  "Draft Proposals": "Draft Proposals",
+  "Draft Ideas": "Draft Ideas"
 }

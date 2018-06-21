@@ -1365,7 +1365,7 @@
   "Save title": "Guardar título",
   "Add Author": "Agregar autor",
   "Add Keyword": "Agregar Palabra Clave",
-  "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one. The limit is 125 words.",
+  "contribution.summary.empty": "Mientras la propuesta sea un Borrador Privado, el resumen es opcional. Es un requrimiento para publicar la propuesta. Usa el botón de edición para editar el resumen.",
   "contribution.summary.empty.non-author": "Esta propuesta todavía no tiene un resumen.",
   "campaign.research-consent-approve": "Aceptar",
   "campaign.research-consent-reject": "No aceptar",
@@ -1432,5 +1432,6 @@
   "Unsubscribed successfully": "Desuscripción exitosa",
   "Contribution created": "Contribución creada",
   "Voting ballot created successfully": "Boleta de votación creada con éxito",
-  "Text cannot be emtpy":  "Texto no puede ser vacío"
+  "Text cannot be emtpy":  "Texto no puede ser vacío",
+  "contribution.summary.word-limit": "El límite es {{wordLimit}} palabras."
 }

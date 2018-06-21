@@ -1365,7 +1365,7 @@
   "Save title": "Save title",
   "Add Author": "Add Author",
   "Add Keyword": "Add Keyword",
-  "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one. The limit is 125 words.",
+  "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one.",
   "contribution.summary.empty.non-author": "This {{type}} does not have a summary yet.",
   "campaign.research-consent-approve": "Agree",
   "campaign.research-consent-reject": "Disagree",
@@ -1433,5 +1433,6 @@
   "Contribution created": "Contribution created",
   "Voting ballot created successfully": "Voting ballot created successfully",
   "Display Name": "Display name",
-  "Text cannot be emtpy":  "Text cannot be emtpy"
+  "Text cannot be emtpy":  "Text cannot be emtpy",
+  "contribution.summary.word-limit": "The limit is {{wordLimit}} words."
 }

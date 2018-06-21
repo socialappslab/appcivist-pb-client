@@ -30,10 +30,10 @@
     });
 
   FormCtrl.$inject = [
-    '$scope', 'Contributions', 'localStorageService', 'Notify', '$rootScope'
+    '$scope', 'Contributions', 'localStorageService', 'Notify', '$rootScope', '$translate('
   ];
 
-  function FormCtrl($scope, Contributions, localStorageService, Notify, $rootScope) {
+  function FormCtrl($scope, Contributions, localStorageService, Notify, $rootScope, $translate) {
     this.submitDelete = submitDelete.bind(this);
     this.submitFlag = submitFlag.bind(this);
     this.submitModerationForm = submitModerationForm.bind(this);

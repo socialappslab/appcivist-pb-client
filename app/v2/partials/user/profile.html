@@ -31,6 +31,12 @@
             </div>
             <br />
             <div class="row">
+                <div class="col-lg-12">
+                  <label for="profileDisplayName">{{'Display Name'|translate}}</label>
+                  <input type="text" class="form-control" id="profileDisplayName" placeholder="{{'First Name' | translate}}"
+                    ng-blur="blurReset()" ng-blur="blurReset()" ng-model="profile.name">
+                </div>
+              <!--
               <div class="col-xs-6">
                 <label for="profileFirstName">{{'First Name'|translate}}</label>
                 <input type="text" class="form-control" id="profileFirstName" placeholder="{{'First Name' | translate}}"
@@ -41,6 +47,7 @@
                 <input type="text" class="form-control" id="profileLastName" placeholder="{{'Last Name' | translate}}"
                   ng-blur="blurReset()" ng-model="profile.lastname">
               </div>
+              -->
             </div>
             <br />
             <div class="row">

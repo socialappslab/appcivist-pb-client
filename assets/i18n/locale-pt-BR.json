@@ -1432,5 +1432,6 @@
   "Unsubscribed successfully": "Não subscrito com sucesso",
   "Contribution created": "Contribuição criado",
   "Voting ballot created successfully": "Cédula de votação criada com sucesso",
-  "Display Name": "Nome de exibição"
+  "Display Name": "Nome de exibição",
+  "Text cannot be emtpy":  "O texto não pode estar vazio"
 }

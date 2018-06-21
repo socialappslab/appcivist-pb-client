@@ -1432,5 +1432,6 @@
   "Unsubscribed successfully": "Unsubscribed successfully",
   "Contribution created": "Contribution created",
   "Voting ballot created successfully": "Voting ballot created successfully",
-  "Display Name": "Display name"
+  "Display Name": "Display name",
+  "Text cannot be emtpy":  "Text cannot be emtpy"
 }

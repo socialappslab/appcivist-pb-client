@@ -316,8 +316,9 @@
                ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
             </i>
           </h2>
-          <p class="contribution_description" translate="contribution.summary.empty"
-             ng-if="(!proposal.text || proposal.text == '') && userIsAuthor">
+          <p class="contribution_description" ng-if="isDescriptionEdit && userIsAuthor">
+            {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
+            {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
           <p class="contribution_description" translate="contribution.summary.empty.non-author"
              ng-if="(!proposal.text || proposal.text == '') && !userIsAuthor">

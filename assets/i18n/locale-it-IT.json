@@ -1363,7 +1363,7 @@
   "Save title": "Enregister",
   "Add Author": "Adicionar Autor",
   "Add Keyword": "Ajouter un mot clé",
-  "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one. The limit is 125 words.",
+  "contribution.summary.empty": "While your proposal is a Private Draft, a summary is optional. It becomes required before you make your proposal public. Click in the edit button to provide one.",
   "contribution.summary.empty.non-author": "Cette proposition n'a pas encore de résumé.",
   "campaign.research-consent-approve": "D'accord",
   "campaign.research-consent-reject": "Pas d'accord",
@@ -1418,6 +1418,7 @@
   "Shared proposals": "Shared with me",
   "Shared ideas": "Shared with me",
   "Description limit": "Description can't be longer than {{limit}} characters",
+  "Display Name": "Display name",
   "Changed saved": "Cambio guardado",
   "Document embedded successfully": "Documento incorporado exitosamente",
   "Subscribed successfully": "Suscrito con éxito",
@@ -1432,5 +1433,6 @@
   "Voting ballot created successfully": "Boleta de votación creada con éxito",
   "Text cannot be emtpy":  "Texto no puede ser vacío",
   "Draft Proposals": "Rascunhos de Proposta",
-  "Draft Ideas": "Rascunhos de Idea"
+  "Draft Ideas": "Rascunhos de Idea",
+  "contribution.summary.word-limit": "The limit is {{wordLimit}} words."
 }

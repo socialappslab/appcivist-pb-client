@@ -1117,6 +1117,7 @@
       $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
       $scope.keywordsLimit = hasKeywordsLimit ? hasKeywordsLimit : false;
       $scope.descriptionLimit = hasDescriptionLimit ? parseInt(hasDescriptionLimit) : false;
+      $scope.translateWordLimit = {wordLimit : $scope.descriptionLimit}
 
       if ($scope.keywordsLimit) {
         if ($scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == $scope.keywordsLimit) {

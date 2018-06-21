@@ -1365,7 +1365,7 @@
   "Save title": "Salvar título",
   "Add Author": "Adicionar Autor",
   "Add Keyword": "Adicionar Palavra-chave",
-  "contribution.summary.empty": "Enquanto sua proposta for um Rascunho Privado, o Resumo é OPCIONAL. Ele é OBRIGATÓRIO para tornar sua proposta pública (Rascunho Público ou Proposta Publicada). Clicar no botão Editar para adicionar um Resumo. Máximo de 125 palavras.",
+  "contribution.summary.empty": "Enquanto sua proposta for um Rascunho Privado, o Resumo é OPCIONAL. Ele é OBRIGATÓRIO para tornar sua proposta pública (Rascunho Público ou Proposta Publicada). Clicar no botão Editar para adicionar um Resumo.",
   "contribution.summary.empty.non-author": "Esta proposta ainda não tem um resumo.",
   "campaign.research-consent-approve": "De acordo",
   "campaign.research-consent-reject": "Discordo",
@@ -1432,5 +1432,6 @@
   "Unsubscribed successfully": "Não subscrito com sucesso",
   "Contribution created": "Contribuição criado",
   "Voting ballot created successfully": "Cédula de votação criada com sucesso",
-  "Text cannot be emtpy":  "O texto não pode estar vazio"
+  "Text cannot be emtpy":  "O texto não pode estar vazio",
+  "contribution.summary.word-limit": "Máximo de {{wordLimit}} palavras."
 }

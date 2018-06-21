@@ -1434,5 +1434,7 @@
   "Contribution created": "Contribución creada",
   "Voting ballot created successfully": "Boleta de votación creada con éxito",
   "Text cannot be emtpy":  "Texto no puede ser vacío",
+  "Draft Proposals": "Draft Proposals",
+  "Draft Ideas": "Draft Ideas",
   "contribution.summary.word-limit": "The limit is {{wordLimit}} words."
 }

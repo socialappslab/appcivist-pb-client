@@ -25,7 +25,8 @@
         // the current component of the campaign
         currentComponent: '=',
         // currentComponent.type was not working in the watcher, so I added this variable to make sure it works
-        filters: '='
+        filters: '=',
+        isCoordinator: '='
 
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
@@ -250,6 +251,18 @@
         var _user = localStorageService.get('user');
         filters.by_author = _user.userId;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
+      }
+      
+      if (filters.mode === 'draftProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "DRAFT, PUBLIC_DRAFT";
+      }
+
+      if (filters.mode === 'draftIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
+        filters.status = "DRAFT, PUBLIC_DRAFT";
       }
 
       if (filters.mode === 'sharedProposals') {

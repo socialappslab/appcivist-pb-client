@@ -121,6 +121,10 @@
             filters.createdByOnly = true;
             filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
           }
+          
+          if (filters.mode === 'draftProposals' || filters.mode === 'draftIdeas') {
+            filters.status = "DRAFT, PUBLIC_DRAFT";
+          }
 
           if (filters.mode === 'sharedProposals' || filters.mode === 'sharedIdeas') {
             filters.excludeCreated = localStorageService.get('user').userId;

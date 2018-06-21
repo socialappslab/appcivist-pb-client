@@ -78,7 +78,12 @@
     function submitDelete() {
       Contributions.moderate(this.assembly.assemblyId, this.contribution).then(
         () => {
-          Notify.show('Operation succeeded', 'success');
+          $translate('Changed saved').then(
+             successMsg => {
+                Notify.show(successMsg, 'success');
+             }
+          );
+          //Notify.show('Operation succeeded', 'success');
 
           if (angular.isFunction(this.onSuccess)) {
             this.onSuccess();
@@ -112,7 +117,12 @@
           if (angular.isFunction(this.onSuccess)) {
             this.onSuccess();
           }
-          Notify.show('Operation succeeded', 'success');
+          $translate('Changed saved').then(
+             successMsg => {
+                Notify.show(successMsg, 'success');
+             }
+          );
+          //Notify.show('Operation succeeded', 'success');
         },
         () => {
           Notify.show('Error when updating user feedback', 'error');

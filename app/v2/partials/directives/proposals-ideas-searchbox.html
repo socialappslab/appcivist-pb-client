@@ -35,6 +35,12 @@
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate | titlecase}}</a>
       </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS' && isCoordinator">
+        <a ng-click="searchMode('draftProposals', $event)">{{'Draft Proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA')) && isCoordinator">
+        <a ng-click="searchMode('draftIdeas', $event)">{{ 'Draft Ideas' | translate | titlecase}}</a>
+      </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('sharedProposals', $event)">{{'Shared proposals' | translate | titlecase}}</a>
       </li>

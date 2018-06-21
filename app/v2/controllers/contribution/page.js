@@ -81,6 +81,7 @@
     $scope.getNonMemberAuthorsHeadless = getNonMemberAuthorsHeadless.bind($scope);
     $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
     $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
+    $scope.enforceLimit = enforceLimit.bind($scope);
 
     activate();
 
@@ -891,8 +892,12 @@
         } else {
           vm.openAddAttachmentByUrl = false;
         }
-
-        Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
+        $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+          }
+        );
+        //Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
         vm.stopSpinner();
       }, function (error) {
         Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1053,7 +1058,11 @@
       this.proposal.themes = keywords;
       Contributions.deleteTheme(this.proposal.uuid, this.selectedTheme.themeId).then(
         response => {
-          Notify.show('Theme deleted successfully', 'success')
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme deleted successfully', 'success')
           vm.selectedTheme = null;
         },
         error => {
@@ -1084,6 +1093,7 @@
       let allowChangeStatusConf = $scope.campaignConfigs['appcivist.campaign.contribution.status.change-enabled'];
       let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
       let hasKeywordsLimit = $scope.campaignConfigs['appcivist.campaign.keywords.limit'];
+      let hasDescriptionLimit = $scope.campaignConfigs['appcivist.campaign.contribution-summary-word-limit'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1102,10 +1112,12 @@
       $scope.showCustomFieldsTitle = showCustomFieldsTitleConf ? showCustomFieldsTitleConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showCustomFieldsHeader = showCustomFieldsHeaderConf ? showCustomFieldsHeaderConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showMediaCarousel = showMediaCarouselConf ? showMediaCarouselConf.toLowerCase() === 'false' ? false : true : true;
-      $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : true;
+      $scope.showDescriptionRichTextEdit = showDescriptionRichTextEditConf ? showDescriptionRichTextEditConf.toLowerCase() === 'false' ? false : true : false;
       $scope.allowChangeStatus = allowChangeStatusConf ? allowChangeStatusConf.toLowerCase() === 'false' ? false : true : true;
       $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
       $scope.keywordsLimit = hasKeywordsLimit ? hasKeywordsLimit : false;
+      $scope.descriptionLimit = hasDescriptionLimit ? parseInt(hasDescriptionLimit) : false;
+      $scope.translateWordLimit = {wordLimit : $scope.descriptionLimit}
 
       if ($scope.keywordsLimit) {
         if ($scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == $scope.keywordsLimit) {
@@ -1349,7 +1361,11 @@
               vm.keywordsLimitReached = false;
             }
           }
-          Notify.show('Theme deleted successfully', 'success');
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme deleted successfully', 'success');
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1370,7 +1386,13 @@
         return;
       }
       Contributions.deleteAuthor(this.proposal.uuid, author.uuid).then(
-        response => Notify.show('Author deleted successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Author deleted successfully', 'success')
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
@@ -1384,7 +1406,13 @@
         return;
       }
       Contributions.deleteNonMemberAuthor(this.proposal.uuid, author.id).then(
-        response => Notify.show('Author deleted successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+           //Notify.show('Author deleted successfully', 'success'),
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
@@ -1427,7 +1455,11 @@
               theme.uuid = result[0].uuid;
             }
           }
-          Notify.show('Theme added successfully', 'success')
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme added successfully', 'success')
         },
         error => {
           this.deleteTheme(theme, true);
@@ -1467,7 +1499,7 @@
             }
             _.remove($scope.fieldsValues, { customFieldValueId: cfvid });
             $scope.fieldsValues.push(newValue);
-            $translate("Changed was saved").then(function(translation) {
+            $translate("Changed saved").then(function(translation) {
               Notify.show(translation, 'success');
             });
           },
@@ -1488,7 +1520,7 @@
                 $scope.custom.valuesDict[cfid].push(newValue);
                 $scope.custom.valuesIdsDict[cfid].push(newValue.customFieldValueId);
                 $scope.fieldsValues.push(newValue);
-                $translate("Changed was saved").then(function (translation) {
+                $translate("Changed saved").then(function (translation) {
                   Notify.show(translation, 'success');
                 });
               },
@@ -1528,7 +1560,13 @@
       this.proposal.themes = keywords.concat(themes);
      }
      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
-        response => Notify.show('Theme changed successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme changed successfully', 'success'),
+        },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
@@ -1553,7 +1591,13 @@
       this.proposal.authors = this.proposal.authors || [];
       this.proposal.authors.push(author);
       Contributions.addAuthor(this.proposal.uuid, author).then(
-        response => Notify.show('Author added successfully', 'success'),
+        response => {
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Author added successfully', 'success'),
+        },
         error => {
           //this.deleteAuthor(author, true);
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1573,7 +1617,11 @@
       Contributions.addNonMemberAuthor(this.proposal.uuid, payload).then(
         response => {
           payload.id = response.id;
-          Notify.show('Author added successfully', 'success')
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Author added successfully', 'success')
         },
         error => {
           this.deleteAuthor(author, true);
@@ -1642,7 +1690,11 @@
           } else {
             _.remove(this.resources.documents, { resourceId: attachment.resourceId });
           }
-          Notify.show('Attachment deleted successfully', 'success');
+          $translate('Changed saved').then(
+            successMsg => {
+            Notify.show(successMsg, 'success');
+            });
+          //Notify.show('Attachment deleted successfully', 'success');
         } ,
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1801,7 +1853,12 @@
           return rsp.then(
             newValue => {
               $scope.custom.valuesDict[definitionId][0].value = newValue.value;
-              Notify.show('Updated custom field', 'success');
+              $translate('Changed saved').then(
+                successMsg => {
+                Notify.show(successMsg, 'success');
+                }
+              );
+              //Notify.show('Updated custom field', 'success');
             },
             error => {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1813,7 +1870,12 @@
             newValue => {
               $scope.custom.valuesDict[definitionId][0] = newValue;
               $scope.custom.valuesIdsDict[definitionId][0] = newValue.customFieldValueId;
-              Notify.show('Updated custom field', 'success');
+              $translate('Changed saved').then(
+                successMsg => {
+                Notify.show(successMsg, 'success');
+                }
+              );
+              //Notify.show('Updated custom field', 'success');
             },
             error => {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1882,7 +1944,11 @@
         response => {
           $scope.following = true;
           $scope.subscription = response;
-          Notify.show("Subscribed successfully! You will begin to receive notifications about this from now on.", "success");
+          $translate('Subscribed successfully').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show("Subscribed successfully! You will begin to receive notifications about this from now on.", "success");
         },
         error => {
           Notify.show("Error trying to subscribe. Please try again later.", "error")
@@ -1897,7 +1963,12 @@
         response => {
           $scope.following = false;
           $scope.subscription = null;
-          Notify.show("Unsubscribed successfully.", "success");
+          $translate('Unsubscribed successfully').then(
+            successMsg => {
+            Notify.show(successMsg, 'success');
+            }
+          );
+          //Notify.show("Unsubscribed successfully.", "success");
         },
         error => {
           Notify.show("Error trying to unsubscribe. Please try again later.", "error")
@@ -1953,28 +2024,76 @@
     }
 
     function saveDescription() {
-      let vm = this;
-      let payload = _.cloneDeep($scope.proposal);
-      delete payload.lastUpdate;
-      payload.status = payload.status.toUpperCase();
-      let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
-
-      rsp.then(
-        data => {
-          $translate('Changed was saved')
+      let s = this.proposal.text.length > 0 ? this.proposal.text.split(/\s+/) : 0; // it splits the text on space/tab/enter
+      if (s && s.length > 0) {
+        if (!this.showDescriptionRichTextEdit && this.descriptionLimit && s.length > this.descriptionLimit) {
+          $translate('Description limit', {limit: this.descriptionLimit})
             .then(
               msg => {
-                Notify.show(msg, 'success');
-              });
-          vm.isDescriptionEdit = false;
-          $("#descriptionEditToggle").addClass('fa-edit');
-          $("#descriptionEditToggle").removeClass('fa-times-circle');
-        },
-        error => {
-          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
-          vm.isDescriptionEdit = true;
+                Notify.show(msg, 'error');
+              }
+            );
+        } else {
+          let vm = this;
+          let payload = _.cloneDeep($scope.proposal);
+          delete payload.lastUpdate;
+          delete payload.attachments;
+          payload.status = payload.status.toUpperCase();
+          let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
+
+          rsp.then(
+            data => {
+              $translate('Changed was saved')
+                .then(
+                  msg => {
+                    Notify.show(msg, 'success');
+                  });
+              vm.isDescriptionEdit = false;
+              $("#descriptionEditToggle").addClass('fa-edit');
+              $("#descriptionEditToggle").removeClass('fa-times-circle');
+            },
+            error => {
+              Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+              vm.isDescriptionEdit = true;
+            }
+          );
         }
-      );
+      } else {
+        $translate('Text cannot be emtpy')
+          .then(
+            msg => {
+              Notify.show(msg, 'warn');
+            });
+      }
+    }
+
+    // TODO: optimize this function. Currently, it is the brute-force version. Let's find a better way.
+    // Probably, better just to use TinyMCE Editor and its stats.
+    // TODO: also, we are now adding the total number of spaces to produce the substring and should be only the total
+    // up to the 125th word
+    function enforceLimit() {
+      if (this.descriptionLimit) {
+        let s = this.proposal.text.length ? this.proposal.text.split(/\s+/) : 0; // it splits the text on space/tab/enter
+        let spaceCount = this.proposal.text.length ?
+          (this.proposal.text.match(/\s+/g)||[]).length : 0; // it counts the space/tab/enter
+
+        if (s && s.length > this.descriptionLimit) {
+          var currentIndex = 0;
+          var remainingText = this.proposal.text;
+          for(var wordCount = 0; wordCount < this.descriptionLimit; wordCount++) {
+            let word = s[wordCount];
+            let remainingTextLength = remainingText.length;
+            let wordLength = word.length;
+            remainingText = remainingTextLength > 0 ? remainingText.substring(wordLength,remainingTextLength) : ""; // extract the word from the beginning
+            let localSpaceCount = remainingTextLength > 0 ?
+              (remainingText.match(/^\s+/)||[]).length : 0; // count the space/tab/enter at the beginning of the remaining
+            currentIndex += wordLength+localSpaceCount;
+            remainingText = remainingTextLength > 0 ?
+              remainingText.substring(localSpaceCount,remainingTextLength) : ""; // extract the spaces from the beginning
+          }
+          this.proposal.text = this.proposal.text.substring(0,currentIndex);
+        }
+      }
     }
 
     function saveTitle() {
@@ -1985,7 +2104,7 @@
 
       rsp.then(
         data => {
-          $translate('Changed was saved')
+          $translate('Changed saved')
             .then(
               msg => {
                 Notify.show(msg, 'success');

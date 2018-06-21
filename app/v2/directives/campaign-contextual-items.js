@@ -80,7 +80,12 @@
       var query = { 'origin': this.campaign.uuid, 'eventName': 'NEW_CAMPAIGN', 'endPointType': 'email' };
       var subscription = Notifications.subscribe().save(query).$promise.then(
         function () {
-          Notify.show('Subscribed successfully', 'success');
+           $translate('Subscribed successfully').then(
+            successMsg => {
+              Notify.show(successMsg, 'success');
+            }
+          );
+          //Notify.show('Subscribed successfully', 'success');
         },
         function () {
           Notify.show(error.statusMessage, 'error');

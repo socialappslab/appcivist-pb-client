@@ -26,9 +26,11 @@
         $translate.use(lang);
       }
       if ($scope.user != undefined) {
+        console.log($scope.user);
         $scope.profile = {
-          firstname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[0] : '' :  '',
-          lastname: $scope.user ? $scope.user.name ? $scope.user.name.split(' ')[1] : '' :  '',
+          name: $scope.user.name,
+          firstname: $scope.user.firstname,
+          lastname: $scope.user.lastname,
           email: $scope.user ? $scope.user.email : '',
           username: $scope.user ? $scope.user.username : '',
           facebookUserId: $scope.user ? $scope.user.facebookUserId : '',
@@ -38,6 +40,7 @@
           language: $scope.user ? $scope.user.language : 'en-US'
         };
         $scope.userFromServer = {
+          name: $scope.profile.name,
           firstname: $scope.profile.firstname,
           lastname: $scope.profile.lastname,
           email: $scope.profile.email,
@@ -87,7 +90,9 @@
         updatePic(false);
       }
       $http.put(url, {
-        name: $scope.profile.firstname + ' ' + $scope.profile.lastname,
+        name: $scope.profile.name,
+        firstname: $scope.profile.firstname,
+        lastname: $scope.profile.lastname,
         email: $scope.profile.email,
         username: $scope.profile.username,
         facebookUserId: $scope.profile.facebookUserId,
@@ -102,7 +107,12 @@
             if (passwordChanged()) {
               updatePassword();
             } else {
-              Notify.show('Data saved correctly');
+              $translate('Changed saved').then(
+                successMsg => {
+                  Notify.show(successMsg, 'success');
+                }
+              );
+              //Notify.show('Data saved correctly');
               window.location.reload();
             }
           },
@@ -127,7 +137,12 @@
         if (checkData && userInfoChanged()) {
           updateUserData();
         } else {
-          Notify.show('Data saved correctly');
+          $translate('Changed saved').then(
+            successMsg => {
+            Notify.show(successMsg, 'success');
+            }
+          );
+          //Notify.show('Data saved correctly');
           window.location.reload();
         }
       }, function(error) {
@@ -168,7 +183,12 @@
         var rsp = new ChangePasswordService(data);
         rsp.$save().then(
           function(response) {
-            Notify.show('Data saved correctly');
+            $translate('Changed saved').then(
+              successMsg => {
+                Notify.show(successMsg, 'success');
+              }
+            );
+            //Notify.show('Data saved correctly');
           },
           function(error) {
             console.log(error);

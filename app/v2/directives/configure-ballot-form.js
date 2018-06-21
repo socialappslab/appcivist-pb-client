@@ -97,7 +97,12 @@
     var rsp = this.Ballot.create(data).$promise;
     rsp.then(
       function(response) {
-        vm.Notify.show('Voting ballot created successfully', 'success');
+        $translate('Voting ballot created successfully').then(
+          successMsg => {
+            vm.Notify.show(successMsg, 'success');
+          }
+        );
+        //vm.Notify.show('Voting ballot created successfully', 'success');
 
         if (angular.isFunction(vm.close)) {
           vm.close();

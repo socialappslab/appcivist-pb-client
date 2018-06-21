@@ -221,7 +221,12 @@
       function successCallback(newStats) {
         vm.contribution.stats = newStats;
         vm.onSuccess();
-        Notify.show('Operation succeeded', 'success');
+        $translate('Changed saved').then(
+          successMsg => {
+             Notify.show(successMsg, 'success');
+          }
+        );
+        //Notify.show('Operation succeeded', 'success');
       }
     }
 

@@ -30,15 +30,18 @@
             <strong style="font-weight:bold;vertical-align:middle">{{'Shared with' | translate}}</strong>
             <div ng-repeat="author in proposal.authors | filter: filterCreatorFromAuthors(proposal.creator.uuid)" style="display: inline-block; margin-left: 10px;">
               <member-card user="author"></member-card>
-              <i ng-if="isCurrentAuthor(author) || userIsCoordinator || userIsAdmin" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteAuthor(author)"></i>
+              <i ng-if="isCurrentAuthor(author) || userIsCoordinator || userIsAdmin" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteAuthor(author)"></i>
             </div>
             <div ng-repeat="author in proposal.nonMemberAuthors" style="display: inline-block; margin-left: 10px;">
               <member-card user="author"></member-card>
-              <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteNonMemberAuthor(author)"></i>
+              <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteNonMemberAuthor(author)"></i>
             </div>
             <div class="liveEdit">
               <input class="btn-sm" type="text" id="authorSearch" name="authors" ng-model="authorQuery"
-                ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()" ng-model-options="{debounce:750}"><i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="authorSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
+                     ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()"
+                     ng-model-options="{debounce:750}" autocomplete="off">
+              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="authorSearchClose" class="fa fa-times"
+                 style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
               <fieldset class="tags"  id="authorSearchTags">
                 <div class="autocomplete authors" ng-class="{ smaller: ldap == false }" ng-if="authorsSuggestionsVisible">
                   <div class="col-sm-5" ng-class="{'col-sm-12': ldap == false }">
@@ -63,11 +66,14 @@
                       </li>
                     </ul>
                   </div>
-                </fieldset>
-                <button ng-click="showSearch('authorSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
-                  <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Share' | translate}}
-                </button>
-                <div style="display:inline-block;position:relative;width:100px;"><span class="attachment-spinner" us-spinner="spinnerSmallOptions" spinner-key="authors-list"></span></div>
+                </div>
+
+              </fieldset>
+
+              <button ng-click="showSearch('authorSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
+                <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Share' | translate}}
+              </button>
+              <div style="display:inline-block;position:relative;width:100px;"><span class="attachment-spinner" us-spinner="spinnerSmallOptions" spinner-key="authors-list"></span></div>
             </div>
           </div>
           <p class="small">
@@ -87,14 +93,14 @@
           <ul class="row tags">
             <li class="title">{{(themesLimit == 1 ? 'Theme': 'Themes') | translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit > 1 || themesLimit === -1">
-              <a>
+              <a style="cursor:default">
                 {{theme.title}}
-                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>
               </a>
               <!--<span ng-if="!$last">,</span>-->
             </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit == 1 && isAnonymous">
-                <a>
+                <a style="cursor:default">
                   {{theme.title}}
                 </a>
                 <!--<span ng-if="!$last">,</span>-->
@@ -102,12 +108,14 @@
             <li ng-if="themesLimit == 1 && !isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)">
               <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId"
                       ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
-              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;"
+              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"
                  ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
             </li>
             <div class="liveEdit smaller" ng-if="themesLimit > 1 || themesLimit == -1">
               <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery.query"
-                ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()"><i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="themeSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
+                ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()" autocomplete="off">
+              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="themeSearchClose" class="fa fa-times"
+                 style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
               <fieldset class="tags" id="themeSearchTags">
                 <div class="autocomplete" ng-if="themesSuggestionsVisible">
                   <ul class="suggestion-list">
@@ -124,15 +132,16 @@
           <ul class="row tags">
             <li class="title">{{'Keywords'|translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
-              <a>
+              <a style="cursor:default">
                 {{theme.title}}
-                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteTheme(theme)"></i>
+                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor:pointer" ng-click="$parent.deleteTheme(theme)"></i>
               </a>
               <!--<span ng-if="!$last">,</span>-->
             </li>
             <div class="liveEdit smaller">
               <input class="btn-sm" type="text" id="keywordSearch" name="keywords" ng-model="keywordsQuery"
-                ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()"><i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="keywordSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('keywordSearch')"></i>
+                ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()" autocomplete="off">
+              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="keywordSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('keywordSearch')"></i>
               <fieldset class="tags" id="keywordSearchTags">
                 <div class="autocomplete" ng-if="keywordsSuggestionsVisible">
                   <ul class="suggestion-list">
@@ -170,14 +179,20 @@
               </div>
               <div class="liveEdit smaller" style="display: inline-block" ng-if="field.limit != 1">
                 <li ng-repeat="val in custom.valuesDict[field.customFieldDefinitionId] track by $index">
-                  <a>
+                  <a style="cursor:default">
                     {{val.value}}
-                    <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px;" ng-click="$parent.deleteCustomValue(val, field.customFieldDefinitionId)"></i>
+                    <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor:pointer;" ng-click="$parent.deleteCustomValue(val, field.customFieldDefinitionId)"></i>
                   </a>
                   <!--<span ng-if="!$last">,</span>-->
                 </li>
-                <input class="btn-sm" type="text" id="{{'customSearch_'+field.customFieldDefinitionId}}" name="{{'customfield_'+field.customFieldDefinitionId}}" ng-model="customQuery"
-                  ng-click="customChangeOnClick(field.customFieldDefinitionId)" ng-change="customChangeOnClick(field.customFieldDefinitionId)"><i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="{{'customSearch_'+field.customFieldDefinitionId+'Close'}}" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('customSearch_'+field.customFieldDefinitionId)"></i>
+                <input class="btn-sm" type="text" id="{{'customSearch_'+field.customFieldDefinitionId}}"
+                       name="{{'customfield_'+field.customFieldDefinitionId}}" ng-model="customQuery"
+                       ng-click="customChangeOnClick(field.customFieldDefinitionId)"
+                       ng-change="customChangeOnClick(field.customFieldDefinitionId)" autocomplete="off">
+                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"
+                   id="{{'customSearch_'+field.customFieldDefinitionId+'Close'}}"
+                   class="fa fa-times" style="margin-right: 5px;"
+                     ng-click="hideSearch('customSearch_'+field.customFieldDefinitionId)"></i>
                 <fieldset class="tags" id="customCloseTags">
                   <div class="autocomplete" ng-if="customsSuggestionsVisible[field.customFieldDefinitionId]">
                     <ul class="suggestion-list">
@@ -301,22 +316,26 @@
                ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
             </i>
           </h2>
-          <p class="contribution_description" translate="contribution.summary.empty"
-             ng-if="(!proposal.text || proposal.text == '') && userIsAuthor">
+          <p class="contribution_description" ng-if="isDescriptionEdit && userIsAuthor">
+            {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
+            {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
           <p class="contribution_description" translate="contribution.summary.empty.non-author"
              ng-if="(!proposal.text || proposal.text == '') && !userIsAuthor">
           </p>
-          <p class="contribution_description" ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor" ng-click="descriptionToggleEdit()">
+          <p class="contribution_description"
+             ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
+             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor"
+             ng-click="descriptionToggleEdit()">
           </p>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"
              ng-if="!isDescriptionEdit && showBodyDescription && !userIsAuthor"></p>
+          </p>
           <div class="editableArea text-center" ng-if="isDescriptionEdit && showBodyDescription">
             <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text"
                       id="add_proposal__description" name="text" rows="8" cols="48"
                       placeholder="{{'Description' | translate}}"></textarea>
-            <textarea ng-if="!showDescriptionRichTextEdit"  ng-model="proposal.text"
+            <textarea ng-if="!showDescriptionRichTextEdit"  ng-model="proposal.text" ng-change="enforceLimit()"
                       id="add_proposal__description" name="text" rows="8" cols="48"
                       placeholder="{{'Description' | translate}}"></textarea>
             <button class="btn btn-default btn-join" ng-click="descriptionToggleEdit()">{{'Cancel' | translate}}</button>
@@ -783,7 +802,8 @@
             </ul>
             <br>
             <input class="btn-sm" type="text" name="authors" ng-model="$parent.currentAdd.query"
-                   ng-click="$parent.currentAddQueryChangeOnClick()" ng-change="$parent.currentAddQueryChange()">
+                   ng-click="$parent.currentAddQueryChangeOnClick()"
+                   ng-change="$parent.currentAddQueryChange()" autocomplete="off">
             <fieldset class="tags">
               <div class="autocomplete" ng-if="$parent.currentAdd.suggestionsVisible">
                 <ul class="suggestion-list">

@@ -3,7 +3,7 @@
     <dir-pagination-controls on-page-change="pageChanged(newPageNumber, oldPageNumber)"></dir-pagination-controls>
   </section>
   <span class="pagination-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
-  <section ng-if="filters.mode==='proposal'||filters.mode==='myProposals'||filters.mode==='sharedProposals'">
+  <section ng-if="filters.mode==='proposal'||filters.mode==='myProposals'||filters.mode==='sharedProposals'||filters.mode==='draftProposals'">
     <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
       <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
                          total-items="totalContributions" current-page="pagination.current" contribution="proposal"
@@ -14,12 +14,12 @@
       </contribution-card>
       <!-- TODO: it is always problematic to break strings in translation, let's replace this by a single translation string -->
       <p ng-if="contributions.length === 0" class="card card__message">
-        {{ 'pagination.widget.no' | translate }} {{ (filters.mode == 'myProposals'||filters.mode == 'sharedProposals' ? 'Proposals' : filters.mode == 'myIdeas'||filters.mode == 'sharedIdeas' ? 'Ideas' : filters.mode) | titlecase | translate }} {{ 'pagination.widget.description' |
+        {{ 'pagination.widget.no' | translate }} {{ (filters.mode == 'myProposals'||filters.mode == 'sharedProposals'||filters.mode == 'draftProposals' ? 'Proposals' : filters.mode == 'myIdeas'||filters.mode == 'sharedIdeas'||filters.mode == 'draftIdeas' ? 'Ideas' : filters.mode) | titlecase | translate }} {{ 'pagination.widget.description' |
         translate}}
       </p>
     </div>
   </section>
-  <section ng-if="filters.mode==='idea'||filters.mode==='myIdeas'||filters.mode==='sharedIdeas'">
+  <section ng-if="filters.mode==='idea'||filters.mode==='myIdeas'||filters.mode==='sharedIdeas'||filters.mode==='draftIdeas'">
     <!--<div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">-->
     <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
       <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"
@@ -30,7 +30,7 @@
                          ballot-tokens="ballotTokens" campaign-configs="campaignConfigs">
       </contribution-card>
       <p ng-if="contributions.length === 0" class="card card__message">
-        {{ 'pagination.widget.no' | translate }} {{ (filters.mode == 'myProposals'||filters.mode == 'sharedProposals' ? 'Proposals' : filters.mode == 'myIdeas'||filters.mode == 'sharedIdeas' ? 'Ideas' : filters.mode) | titlecase | translate }} {{ 'pagination.widget.description' | translate}}
+        {{ 'pagination.widget.no' | translate }} {{ (filters.mode == 'myProposals'||filters.mode == 'sharedProposals'||filters.mode == 'draftProposals' ? 'Proposals' : filters.mode == 'myIdeas'||filters.mode == 'sharedIdeas'||filters.mode == 'draftIdeas' ? 'Ideas' : filters.mode) | titlecase | translate }} {{ 'pagination.widget.description' | translate}}
       </p>
     </div>
   </section>

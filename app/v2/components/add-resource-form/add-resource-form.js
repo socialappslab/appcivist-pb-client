@@ -238,8 +238,12 @@
       } else {
         this.openAddAttachmentByUrl = false;
       }
-
-      Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
+      $translate('Changed saved').then(
+        successMsg => {
+          Notify.show(successMsg, 'success');
+        }
+      );
+      //Notify.show('Attachment saved!. You can see it under "'+type+'"', 'success');
       this.stopSpinner();
       $scope.$emit('FromAddResourceForm:AddedResourceSuccess');
     }

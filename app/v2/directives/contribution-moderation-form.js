@@ -30,7 +30,7 @@
     });
 
   FormCtrl.$inject = [
-    '$scope', 'Contributions', 'localStorageService', 'Notify', '$rootScope', '$translate('
+    '$scope', 'Contributions', 'localStorageService', 'Notify', '$rootScope', '$translate'
   ];
 
   function FormCtrl($scope, Contributions, localStorageService, Notify, $rootScope, $translate) {

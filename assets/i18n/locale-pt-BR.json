@@ -1420,6 +1420,7 @@
   "Shared proposals": "Compartilhadas comigo",
   "Shared ideas": "Compartilhadas comigo",
   "Description limit": "Resumo não pode ter mais que {{limit}} caracteres",
+  "Display Name": "Nome completo",
   "Changed saved": "Mudança salva",
   "Document embedded successfully": "Documento incorporado com sucesso",
   "Subscribed successfully": "Inscrito com sucesso",
@@ -1432,7 +1433,6 @@
   "Unsubscribed successfully": "Não subscrito com sucesso",
   "Contribution created": "Contribuição criado",
   "Voting ballot created successfully": "Cédula de votação criada com sucesso",
-  "Display Name": "Nome de exibição",
   "Text cannot be emtpy":  "O texto não pode estar vazio",
   "contribution.summary.word-limit": "Máximo de {{wordLimit}} palavras."
 }

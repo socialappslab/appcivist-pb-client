@@ -251,6 +251,18 @@
         filters.by_author = _user.userId;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
       }
+      
+      if (filters.mode === 'draftProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "DRAFT, PUBLIC_DRAFT";
+      }
+
+      if (filters.mode === 'draftIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
+        filters.status = "DRAFT, PUBLIC_DRAFT";
+      }
 
       if (filters.mode === 'sharedProposals') {
         filters.mode = 'proposal';

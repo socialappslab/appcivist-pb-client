@@ -1463,6 +1463,10 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           type = 'idea';
           params.by_author = filters.by_author;
           params.excludeCreatedByUser = filters.excludeCreated;
+        } else if (type === 'draftProposals') {
+          type='proposal';
+        } else if (type === 'draftIdeas') {
+          type='idea';
         }
         if (filters.createdByOnly != null && filters.createdByOnly != undefined) {
           params.createdByOnly=filters.createdByOnly;

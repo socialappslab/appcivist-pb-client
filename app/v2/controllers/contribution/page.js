@@ -2127,10 +2127,10 @@
         max_chars: 200,
         plugins: [
           'advlist autolink lists link charmap preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime table contextmenu paste'
+          'searchreplace visualblocks fullscreen',
+          'insertdatetime paste'
         ],
-        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link',
         images_upload_credentials: true,
         image_advtab: true,
         image_title: true,

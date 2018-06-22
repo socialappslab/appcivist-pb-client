@@ -762,6 +762,14 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     },
     verifyAuthorship: function (user, c) {
       if (user != null && user != undefined && c != null && c != undefined) {
+        let creator = c.creator;
+        // ask first if the user is the creator, then it is automatically an author
+        if (creator != null && c != undefined) {
+          if (user.userId == creator.userId) {
+            return true;
+          }
+        }
+
         var authorList = c.authors;
         // Check if author is in authorList (if author list is defined)
         if (authorList != null && authorList != undefined && authorList.length > 0) {

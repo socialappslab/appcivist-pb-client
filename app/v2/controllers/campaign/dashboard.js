@@ -439,6 +439,7 @@
       this.allowedContributionTypes = data['appcivist.campaign.contribution-types'];
       this.themesExtendedDescription = data['appcivist.campaign.themes.extended-description-url'];
 
+      let disableNewContributionsConf = data['appcivist.campaign.disable-new-contributions'];
       let showAnalyticsConf = data['appcivist.campaign.toolbar.analytics'];
       let showMediaConf = data['appcivist.campaign.toolbar.media'];
       let showDocumentsConf = data['appcivist.campaign.toolbar.documents'];
@@ -448,7 +449,7 @@
       this.showMedia = showMediaConf ? showMediaConf.toLowerCase() === 'false' ? false : true : true;
       this.showDocuments = showDocumentsConf ? showDocumentsConf.toLowerCase() === 'false' ? false : true : true;
       this.showWorkingGroups = showWorkingGroupsConf ? showWorkingGroupsConf.toLowerCase() === 'false' ? false : true : true;
-
+      this.disableNewContributions = disableNewContributionsConf ? disableNewContributionsConf.toLowerCase() === 'false' ? false : true : false;
 
       if (this.allowedContributionTypes) {
         this.enableProposals = this.allowedContributionTypes.toLowerCase().includes("proposal");
@@ -768,7 +769,7 @@
       } else {
         $scope.newIdeasEnabled = false; // by default, ideas are not enabled
       }
-      $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous);
+      $scope.newProposalsEnabled = (key === 'PROPOSALS' && !$scope.isAnonymous) && !$scope.disableNewContributions;
     }
 
     function loadCampaignResources() {

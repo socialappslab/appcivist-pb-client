@@ -102,6 +102,10 @@
               let bkg_url = wgColor;
               scope.coverPhotoStyle = { 'background-color': bkg_url };
               scope.showOverlay = true;
+            } else if (cCover) {
+              let bkg_url = 'url(\"'+cCover+'\")';
+              scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+              scope.showOverlay = true;
             }
           }
 
@@ -114,6 +118,19 @@
           scope.group = workingGroupAuthorsLength ? workingGroupAuthors[0] : 0;
           scope.notAssigned = true;
           scope.conids = [];
+
+          scope.authorList = []
+
+          if (scope.contribution.authors && scope.contribution.authors.length > 0)
+            scope.authorList = scope.contribution.authors;
+
+
+          if (scope.contribution.nonMemberAuthors && scope.contribution.nonMemberAuthors.length > 0) {
+            if (scope.authorList && scope.authorList.length > 0)
+              scope.authorList.concat(scope.contribution.nonMemberAuthors);
+            else
+              scope.authorList = scope.contribution.nonMemberAuthors;
+          }
 
           if (scope.group) {
             scope.notAssigned = false;

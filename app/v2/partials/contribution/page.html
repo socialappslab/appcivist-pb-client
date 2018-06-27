@@ -323,6 +323,10 @@
             {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
             {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
+          <p class="contribution_description" ng-if="!isDescriptionEdit && userIsAuthor && (!proposal.text.length || proposal.text.length === 0)">
+            {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
+            {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
+          </p>
           <p class="contribution_description" translate="contribution.summary.empty.non-author"
              ng-if="(!proposal.text || proposal.text == '') && !userIsAuthor">
           </p>

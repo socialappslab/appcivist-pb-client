@@ -1,0 +1,19 @@
+<div class="modal fade dashboardModal emailUpdateModal" id="emailUpdateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        &nbsp;
+      </div>
+      <div class="modal-body text-center" style="min-height:50px">
+        <p ng-if="vm.emailIsForbidden()">{{'Your current email needs updating' | translate}}</p>
+        <p ng-if="!vm.emailIsForbidden()">{{'Is this your current email? Please update it if it is not' | translate}}</p>
+        <h4>{{ vm.user.email }}</h4>
+      </div>
+      <div class="modal-footer text-center" >
+        <button class="btn btn-success consent-button" ng-if="!vm.emailIsForbidden()" ng-click="vm.confirmEmail()">{{'Yes, this is my current email' | translate}}</button>
+        <button class="btn btn-success consent-button" ng-if="!vm.emailIsForbidden()" ng-click="vm.redirectToProfile()">{{'No, take me to the profile to update it' | translate}}</button>
+        <button class="btn btn-success consent-button" ng-if="vm.emailIsForbidden()" ng-click="vm.redirectToProfile()">{{'Take me to the profile to update it' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

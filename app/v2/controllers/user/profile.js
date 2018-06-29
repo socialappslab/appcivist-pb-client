@@ -57,6 +57,7 @@
       $scope.toggleChangePassword = toggleChangePassword;
       $scope.getImageFromFile = getImageFromFile.bind($scope);
       $scope.goBack = goBack.bind($scope);
+      $scope.emailIsForbidden = emailIsForbidden.bind($scope);
       $scope.$watch('profile.profile_pic', $scope.getImageFromFile);
 
       $scope.langlist = [];
@@ -200,8 +201,16 @@
       }
     }
 
+    function emailIsForbidden() {
+      return ($scope.profile['email'].includes('@example.com') || $scope.profile['email'].includes('@appcivist.com') || $scope.profile['email'].includes('@ldap.com'));
+    }
+
     function userInfoChanged() {
       var props = ['firstname', 'lastname', 'email', 'username', 'facebookUserId', 'lang', 'language'];
+
+      if (emailIsForbidden()) {
+        return false;
+      }
 
       for (var i = 0; i < props.length; i++) {
         var prop = props[i];

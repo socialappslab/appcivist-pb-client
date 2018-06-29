@@ -27,6 +27,7 @@
                 <label for="profileEmail">{{'Email address' | translate}}</label>
                 <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()"
                   ng-model="profile.email">
+                <p ng-if="emailIsForbidden()" style="color:maroon;font-weight:bold;font-size:13px">{{ 'If this is not your email, please update it now' | translate }}</p>
               </div>
             </div>
             <br />

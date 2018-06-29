@@ -81,6 +81,7 @@
               $translate("Thank you for confirming your email").then(
                 translation => {
                   Notify.show(translation, 'success');
+                  angular.element('#emailUpdateModal').modal('hide');
                 }
               );
             },

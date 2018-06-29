@@ -199,6 +199,7 @@
       localStorageService.set('sessionKey', user.sessionKey);
       localStorageService.set('authenticated', true);
       localStorageService.set('user', user);
+      console.log(user);
       this.user = user;
       if (this.user && this.user.language) {
         $translate.use(this.user.language);

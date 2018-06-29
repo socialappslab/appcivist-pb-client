@@ -411,7 +411,7 @@
             </div>
           </div>
           <!-- Notice for non authors or non logged in visitors -->
-          <div ng-if="(proposal.status == 'DRAFT' || proposal.status == 'PUBLIC_DRAFT') && (!userIsAuthor || !userIsCoordinator)) ">
+          <div ng-if="(proposal.status == 'DRAFT' || proposal.status == 'PUBLIC_DRAFT') && (!userIsAuthor || !userIsCoordinator)">
             <p class="card card__message" translate="contribution.notice.non-author-or-anonymous"
                translate-value-type="{{proposal.type | lowercase | translate}}"></p>
           </div>

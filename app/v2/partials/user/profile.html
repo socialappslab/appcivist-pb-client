@@ -3,11 +3,11 @@
     background: #11493b;
     border-color: #11493b;
   }
-  
+
   button[type=submit]:hover {
     background-color: #009877;
   }
-  
+
   label {
     font-size: 1.5em;
   }
@@ -27,7 +27,8 @@
                 <label for="profileEmail">{{'Email address' | translate}}</label>
                 <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()"
                   ng-model="profile.email">
-                <p ng-if="emailIsForbidden()" style="color:maroon;font-weight:bold;font-size:13px">{{ 'If this is not your email, please update it now' | translate }}</p>
+                <p ng-if="emailIsForbidden() || !profile.emailUpdated" style="color:maroon;font-weight:bold;font-size:13px">{{ 'If this is not your email, please update it now' | translate }}</p>
+                <p ng-if="profile.emailUpdated && !profile.emailVerified">{{'Your email has been updated. Check your email inbox when possible to verify its validity.' f | translate}}</p>
               </div>
             </div>
             <br />

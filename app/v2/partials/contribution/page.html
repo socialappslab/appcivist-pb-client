@@ -323,6 +323,10 @@
             {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
             {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
+          <p class="contribution_description" ng-if="!isDescriptionEdit && userIsAuthor && (!proposal.text.length || proposal.text.length === 0)">
+            {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
+            {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
+          </p>
           <p class="contribution_description" translate="contribution.summary.empty.non-author"
              ng-if="(!proposal.text || proposal.text == '') && !userIsAuthor">
           </p>
@@ -383,7 +387,7 @@
             </div>
           </div>
           <!-- PEERDOC -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="((proposal.status == 'DRAFT' && userIsAuthor) || proposal.status == 'PUBLIC_DRAFT' || proposal.status == 'PUBLISHED') && proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad && showBodyProposal">
+          <div class="text-center" style="margin-top: 2rem" ng-if="((proposal.status == 'DRAFT' && userIsAuthor || userIsCoordinator) || proposal.status == 'PUBLIC_DRAFT' || proposal.status == 'PUBLISHED') && proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad && showBodyProposal">
             <div class="etherpad__wrapper">
               <iframe ng-if="(!userIsAuthor && peerDocUrl)" name="embed_readonly"
                 ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML"
@@ -407,7 +411,7 @@
             </div>
           </div>
           <!-- Notice for non authors or non logged in visitors -->
-          <div ng-if="(proposal.status == 'DRAFT' && !userIsAuthor) ">
+          <div ng-if="(proposal.status == 'DRAFT' || proposal.status == 'PUBLIC_DRAFT') && (!userIsAuthor || !userIsCoordinator)">
             <p class="card card__message" translate="contribution.notice.non-author-or-anonymous"
                translate-value-type="{{proposal.type | lowercase | translate}}"></p>
           </div>
@@ -864,3 +868,6 @@
 
 <!-- CONSENT MODAL -->
 <consent-modal campaign="campaign" config="campaignConfigs" assembly="assemblyID" user="user"></consent-modal>
+
+<!-- EMAIL UPDATE MODAL -->
+<email-update-modal campaign="campaign" config="campaignConfigs" assembly="assemblyID" user="user"></email-update-modal>

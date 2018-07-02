@@ -76,7 +76,7 @@
 
       $scope.pageSize = 12;
       $scope.showPagination = false;
-      $scope.sorting = "popularity_desc";
+      $scope.sorting = "random";
       $scope.filters = {
         searchText: '',
         themes: [],

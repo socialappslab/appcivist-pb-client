@@ -37,7 +37,7 @@
             themes: [],
             groups: [],
             // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
-            sorting: 'date_desc',
+            sorting: 'random',
             pageSize: 12
           };
         }
@@ -252,7 +252,7 @@
         filters.by_author = _user.userId;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
       }
-      
+
       if (filters.mode === 'draftProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;

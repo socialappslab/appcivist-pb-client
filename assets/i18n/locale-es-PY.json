@@ -1436,5 +1436,13 @@
   "Text cannot be emtpy":  "Texto no puede ser vacío",
   "Draft Proposals": "Borradores de Propuesta",
   "Draft Ideas": "Borradores de Idea",
-  "contribution.summary.word-limit": "El límite es {{wordLimit}} palabras."
+  "contribution.summary.word-limit": "El límite es {{wordLimit}} palabras.",
+  "Your current email needs updating": "Su email necesita ser actualizado",
+  "Is this your current email? Please update it if it is not": "¿Es éste su email actual? Por favor, actualícelo si no lo es",
+  "Yes, this is my current email": "Sí, es mi email actual",
+  "No, take me to the profile to update it": "No, dirígeme a mi perfil para actualizarlo",
+  "Take me to the profile to update it": "Dirígeme a mi perfil para actualizarlo",
+  "If this is not your email, please update it now": "Si no es su email, actualícelo ahora por favor",
+  "Your email has been updated. Check your email inbox when possible to verify its validity.": "Your email has been updated. Check your email inbox when possible to verify its validity.",
+  "Thank you for confirming your email": "Gracias por confirmar su email"
 }

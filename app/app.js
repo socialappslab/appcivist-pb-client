@@ -939,7 +939,7 @@
   run.$inject = [
     '$rootScope', '$location', '$http', 'localStorageService', 'logService', '$uibModal',
     'usSpinnerService', '$timeout', '$document', 'Authorization', '$translate', 'LocaleService', 'AppCivistAuth',
-    '$state'
+    '$state', '$window', '$anchorScroll'
   ];
 
   /**
@@ -950,7 +950,7 @@
    * @param localStorageService
    */
   function run($rootScope, $location, $http, localStorageService, logService, $uibModal, usSpinnerService,
-    $timeout, $document, Authorization, $translate, LocaleService, AppCivistAuth, $state) {
+    $timeout, $document, Authorization, $translate, LocaleService, AppCivistAuth, $state, $window, $anchorScroll) {
 
     localStorageService.set("serverBaseUrl", appCivistCoreBaseURL);
     localStorageService.set("votingApiUrl", votingApiUrl);
@@ -1194,6 +1194,10 @@
         $translate.use(LocaleService.getLocale());
       }
     });
+
+    $rootScope.$on("$stateChangeSuccess", function (event, currentState, previousState) {
+      $window.scrollTo(0, 0);
+    });  
 
   }
 

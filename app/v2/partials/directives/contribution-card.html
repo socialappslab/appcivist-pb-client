@@ -17,7 +17,7 @@
       <p class="heading--category row">
         <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index" class="badge"
               ng-class="{'badge-dark': theme.type==='OFFICIAL_PRE_DEFINED', 'badge-light': theme.type==='EMERGENT'}">
-          {{theme.title}}
+          {{theme.title | limitTo: 57}}{{theme.title.length > 57 ? '...' : ''}}
         </span>&nbsp;&nbsp;
       </p>
       <div class="title_block">

@@ -54,7 +54,7 @@
 
         $timeout(() => {
           this.getCampaignParticipation();
-        }, 7000);
+        }, 6000);
       }
 
       this.getConsentText = () => {
@@ -99,6 +99,8 @@
               self.showModal = self.config && self.config['appcivist.campaign.research-consent-text'] && (self.userParticipation.userProvidedConsent == null || self.userParticipation.userProvidedConsent == false) ? true : false;
               if (self.showModal) {
                 angular.element('#consentModal').modal({show: true, keyboard: false, backdrop: 'static'});
+              } else {
+                $rootScope.$broadcast('emailUpdate:check');
               }
             },
             error => {
@@ -116,6 +118,7 @@
           consent => {
             Notify.show(self.notificationText, 'success')
             angular.element('#consentModal').modal('hide');
+            $rootScope.broadcast('emailUpdate:check');
           },
           error => {
             Notify.show(error.statusMessage, 'error');

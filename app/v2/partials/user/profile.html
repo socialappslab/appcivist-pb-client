@@ -28,7 +28,7 @@
                 <input type="email" class="form-control" name="profileEmail" placeholder="{{'Email' | translate}}" ng-blur="blurReset()"
                   ng-model="profile.email">
                 <p ng-if="emailIsForbidden() || !profile.emailUpdated" style="color:maroon;font-weight:bold;font-size:13px">{{ 'If this is not your email, please update it now' | translate }}</p>
-                <p ng-if="profile.emailUpdated && !profile.emailVerified">{{'Your email has been updated. Check your email inbox when possible to verify its validity.' | translate}}</p>
+                <p ng-if="profile.emailUpdated && !profile.emailVerified" style="color:forestgreen;font-weight:bold;font-size:13px">{{'Your email has been updated. Check your email inbox when possible to verify its validity.' | translate}}</p>
               </div>
             </div>
             <br />

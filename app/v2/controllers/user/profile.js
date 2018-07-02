@@ -37,7 +37,9 @@
           userAccessToken: $scope.user ? $scope.user.userAccessToken : '',
           tokenExpiresIn: $scope.user ? $scope.user.tokenExpiresIn : '',
           lang: $scope.user ? $scope.user.lang : 'en-US',
-          language: $scope.user ? $scope.user.language : 'en-US'
+          language: $scope.user ? $scope.user.language : 'en-US',
+          emailVerified: $scope.user ? $scope.user.emailVerified : false,
+          emailUpdated: $scope.user ? $scope.user.emailUpdated : false
         };
         $scope.userFromServer = {
           name: $scope.profile.name,
@@ -49,7 +51,9 @@
           userAccessToken: $scope.profile.userAccessToken,
           tokenExpiresIn: $scope.profile.tokenExpiresIn,
           lang: $scope.profile.lang,
-          language: $scope.profile.language
+          language: $scope.profile.language,
+          emailVerified: $scope.profile.emailVerified,
+          emailUpdated: $scope.profile.emailUpdated
         };
       }
       $scope.blurReset = blurReset;
@@ -58,6 +62,7 @@
       $scope.getImageFromFile = getImageFromFile.bind($scope);
       $scope.goBack = goBack.bind($scope);
       $scope.emailIsForbidden = emailIsForbidden.bind($scope);
+      $scope.userEmailIsChanged = userEmailIsChanged.bind($scope);
       $scope.$watch('profile.profile_pic', $scope.getImageFromFile);
 
       $scope.langlist = [];
@@ -90,6 +95,11 @@
       if (checkPic && picChanged()) {
         updatePic(false);
       }
+
+      if (userEmailIsChanged()) {
+        $scope.profile.emailUpdated = true;
+      }
+
       $http.put(url, {
         name: $scope.profile.name,
         firstname: $scope.profile.firstname,
@@ -98,7 +108,8 @@
         username: $scope.profile.username,
         facebookUserId: $scope.profile.facebookUserId,
         lang: $scope.profile.lang,
-        language: $scope.profile.language
+        language: $scope.profile.language,
+        emailUpdated: $scope.profile.emailUpdated
       }
       ).then(function(response) {
         var rsp = loginService.getUser().get({ id: $scope.user.userId });
@@ -202,16 +213,23 @@
     }
 
     function emailIsForbidden() {
-      return ($scope.profile['email'].includes('@example.com') || $scope.profile['email'].includes('@appcivist.com') || $scope.profile['email'].includes('@ldap.com'));
+      return ($scope.profile['email'].includes('@example.com') || $scope.profile['email'].includes('@appcivist.org') || $scope.profile['email'].includes('@ldap.com'));
+    }
+
+    function userEmailIsChanged() {
+      var props = ['email'];
+      return someUserInfoChanged(props);
     }
 
     function userInfoChanged() {
       var props = ['firstname', 'lastname', 'email', 'username', 'facebookUserId', 'lang', 'language'];
+      return someUserInfoChanged(props);
+    }
 
+    function someUserInfoChanged(props) {
       if (emailIsForbidden()) {
         return false;
       }
-
       for (var i = 0; i < props.length; i++) {
         var prop = props[i];
         if ($scope.profile[prop] !== $scope.userFromServer[prop]) {

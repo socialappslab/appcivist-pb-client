@@ -64,7 +64,7 @@
       }
 
       this.redirectToProfile = () => {
-        $state.go('v2.user.uid.profile', {}, { reload: true });
+        $state.go('v2.user.uid.profile', {uid: this.user.userId}, { reload: true });
       }
 
       this.confirmEmail = () => {

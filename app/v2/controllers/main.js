@@ -110,6 +110,7 @@
           localStorageService.clearAll();
           $state.go("v2.public.assembly.auuid.campaign.contribution.couuid",
             {auuid: auuid, cuuid: cuuid, couuid: couuid});
+          
         } else if ($state.params.gid) {
           let currentGroup = localStorageService.get('currentWorkingGroup');
           let guuid = null;
@@ -125,23 +126,26 @@
             $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.proposal.puuid",
               {auuid: auuid, cuuid: cuuid, guuid: guuid, puuid: puuid},
               {reload: true});
+              
           } else {
             localStorageService.clearAll();
             $state.go("v2.public.assembly.auuid.campaign.cuuid.workingGroup.guuid.dashboard",
             {auuid: auuid, cuuid: cuuid, guuid: guuid},
             {reload: true});
+            
           }
         } else {
           localStorageService.clearAll();
           $state.go("v2.public.assembly.auuid.campaign.cuuid.dashboard",
             {auuid: auuid, cuuid: cuuid},
             {reload: true});
+          
         }
       } else  {
         localStorageService.clearAll();
         $state.go("v2.public.assembly.auuid.home", {auuid: auuid}, {reload: true});
+        
       }
-      location.reload();
     }
 
     function signout () {

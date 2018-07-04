@@ -1063,12 +1063,18 @@
       var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       let user = localStorageService.get('user');
 
+      console.log(user);
+/*
       if (!user) {
         return;
       }
+*/
+      console.log(next.access);
 
       if (next.access !== undefined) {
         authorized = Authorization.authorize(next.access.requiresLogin);
+        console.log(authorized);
+        console.log(nextParams);
 
         if (authorized === Authorization.enums.LOGIN_REQUIRED) {
           if (nextParams.aid) {

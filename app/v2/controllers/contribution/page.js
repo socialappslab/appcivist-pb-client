@@ -10,12 +10,14 @@
   ContributionPageCtrl.$inject = [
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
-    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications', '$timeout', '$interval'
+    'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications',
+    '$timeout', '$interval', 'LocaleService'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
-    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications, $timeout, $interval) {
+    $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications,
+                                $timeout, $interval, LocaleService) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);

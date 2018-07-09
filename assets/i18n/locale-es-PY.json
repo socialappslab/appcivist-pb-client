@@ -1387,6 +1387,7 @@
   "Updated custom field": "Cambio guardado",
   "Changed was saved": "Cambio guardado",
   "contribution.notice.non-author-or-anonymous": "Si esta {{type}} fue compartida contigo, inicia sesión para acceder ('Iniciar Sesión', arriba). Si no es así, pídele a uno de sus autores que te agreguen a la lista y luego inicia sesión.",
+  "contribution.notice.public-draft": "Esta {{type}} tiene el estado de Borrador Público. Toda la comunidad puede ver y comentar un Borrador Público, pero solo aquellos a los que se le ha compartido pueden editar.",
   "New Campaign Description": "New Campaign Description",
   "New Campaign Milestones": "New Campaign Milestones",
   "Campaign Edit": "New Campaign Edit",

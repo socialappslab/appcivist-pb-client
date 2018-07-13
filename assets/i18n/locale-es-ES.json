@@ -1447,7 +1447,7 @@
   "If this is not your email, please update it now": "Si no es su email, actualícelo ahora por favor",
   "Your email has been updated. Check your email inbox when possible to verify its validity.": "Your email has been updated. Check your email inbox when possible to verify its validity.",
   "Thank you for confirming your email": "Gracias por confirmar su email",
-  "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
+  "contribution.error.missing-required-fields": "Para alterar el estado a {{status}}, complete todos los campos obligatorios, marcados en rojo.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Email duplicado"
 }

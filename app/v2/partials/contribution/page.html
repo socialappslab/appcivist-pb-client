@@ -361,6 +361,16 @@
               <button class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
               <!--<button class="btn btn-default proposal-btn">Default</button>-->
           </div>
+          <!-- Notice for non authors or non logged in visitors -->
+          <div ng-if="(proposal.status == 'DRAFT') && (!userIsAuthor || !userIsCoordinator)">
+            <p class="card card__message" translate="contribution.notice.non-author-or-anonymous"
+               translate-value-type="{{proposal.type | lowercase | translate}}"></p>
+          </div>
+          <!-- Public Draft notice for non authors or non logged in visitors -->
+          <div ng-if="(proposal.status == 'PUBLIC_DRAFT' && isAnonymous) && (!userIsAuthor || !userIsCoordinator)">
+            <p class="card card__message" translate="contribution.notice.public-draft"
+               translate-value-type="{{proposal.type | lowercase | translate}}"></p>
+          </div>
           <!-- ETHERPAD -->
           <div class="text-center" style="margin-top: 2rem" ng-if="proposal.extendedTextPad.resourceType==='PAD' && proposal.extendedTextPad && showBodyProposal">
             <div ng-if="!campaignConfigs['appcivist.campaign.disable-etherpad'] || campaignConfigs['appcivist.campaign.disable-etherpad']==='FALSE'"
@@ -387,7 +397,8 @@
             </div>
           </div>
           <!-- PEERDOC -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="((proposal.status == 'DRAFT' && userIsAuthor || userIsCoordinator) || proposal.status == 'PUBLIC_DRAFT' || proposal.status == 'PUBLISHED') && proposal.extendedTextPad.resourceType==='PEERDOC' && proposal.extendedTextPad && showBodyProposal">
+          <div class="text-center" style="margin-top: 2rem"
+               ng-if="proposal.extendedTextPad && proposal.extendedTextPad.resourceType==='PEERDOC' && ((proposal.status == 'DRAFT' && userIsAuthor || userIsCoordinator) || (proposal.status == 'PUBLIC_DRAFT' && !isAnonymous) || proposal.status == 'PUBLISHED') && showBodyProposal">
             <div class="etherpad__wrapper">
               <iframe ng-if="(!userIsAuthor && peerDocUrl)" name="embed_readonly"
                 ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML"
@@ -409,16 +420,6 @@
                 }, false);
               </script>
             </div>
-          </div>
-          <!-- Notice for non authors or non logged in visitors -->
-          <div ng-if="(proposal.status == 'DRAFT') && (!userIsAuthor || !userIsCoordinator)">
-            <p class="card card__message" translate="contribution.notice.non-author-or-anonymous"
-               translate-value-type="{{proposal.type | lowercase | translate}}"></p>
-          </div>
-          <!-- Public Draft notice for non authors or non logged in visitors -->
-          <div ng-if="(proposal.status == 'PUBLIC_DRAFT') && (!userIsAuthor || !userIsCoordinator)">
-            <p class="card card__message" translate="contribution.notice.public-draft"
-               translate-value-type="{{proposal.type | lowercase | translate}}"></p>
           </div>
         </div>
         <div class="proposal-summary" id="custom-fields" ng-if="(campaignFields && campaignFields.length) || (componentFields && componentFields.length)">

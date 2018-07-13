@@ -98,6 +98,7 @@
 
       if (userEmailIsChanged()) {
         $scope.profile.emailUpdated = true;
+        $scope.emailChangedInThisSession = true;
       }
 
       $http.put(url, {
@@ -116,6 +117,23 @@
         rsp.$promise.then(
           function(data) {
             localStorageService.set('user', data);
+            $rootScope.$broadcast('Main::UserWasUpdated');
+            $rootScope.$broadcast('$translateChangeEnd', {language: data.language });
+            $translate.use(data.language);
+            $scope.userFromServer = {
+              name: data.name,
+              firstname: data.firstname,
+              lastname: data.lastname,
+              email: data.email,
+              username: data.username,
+              facebookUserId: data.facebookUserId,
+              userAccessToken: data.userAccessToken,
+              tokenExpiresIn: data.tokenExpiresIn,
+              lang: data.lang,
+              language: data.language,
+              emailVerified: data.emailVerified,
+              emailUpdated: data.emailUpdated
+            };
             if (passwordChanged()) {
               updatePassword();
             } else {
@@ -125,7 +143,7 @@
                 }
               );
               //Notify.show('Data saved correctly');
-              window.location.reload();
+              //window.location.reload();
             }
           },
           function(error) {
@@ -213,7 +231,12 @@
     }
 
     function emailIsForbidden() {
-      return ($scope.profile['email'].includes('@example.com') || $scope.profile['email'].includes('@appcivist.org') || $scope.profile['email'].includes('@ldap.com'));
+      let email = $scope.profile['email'];
+      if (email) {
+        return (email.includes('@example.com') || $scope.profile['email'].includes('@appcivist.org') || $scope.profile['email'].includes('@ldap.com'));
+      } else {
+        true;
+      }
     }
 
     function userEmailIsChanged() {

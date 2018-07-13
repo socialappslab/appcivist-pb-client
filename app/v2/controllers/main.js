@@ -30,6 +30,9 @@
 
     function activate() {
       $scope.user = localStorageService.get('user');
+      $rootScope.$on('Main::UserWasUpdated', event => {
+        $scope.user = localStorageService.get('user');
+      })
 
       if ($scope.user && $scope.user.language) {
         $translate.use($scope.user.language);

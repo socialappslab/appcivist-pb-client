@@ -59,6 +59,7 @@
       $scope.blurReset = blurReset;
       $scope.updateProfile = updateProfile.bind($scope);
       $scope.readUserFromServer = readUserFromServer.bind($scope);
+      $scope.refreshAppCivistUser = refreshAppCivistUser.bind($scope);
       $scope.toggleChangePassword = toggleChangePassword.bind($scope);
       $scope.getImageFromFile = getImageFromFile.bind($scope);
       $scope.goBack = goBack.bind($scope);
@@ -114,7 +115,10 @@
         emailUpdated: $scope.profile.emailUpdated
       }
       ).then(function(response) {
-        readUserFromServer();
+        if (response.data && response.data.sessionKey) {
+          localStorageService.set("sessionKey",response.data.sessionKey);
+          refreshAppCivistUser(response.data);
+        }
       });
     }
 
@@ -128,11 +132,11 @@
         },
         transformRequest: angular.identity,
         params: {}
-      }).then(function(data) {
+      }).then(function(response) {
         if (checkData && userInfoChanged()) {
           updateUserData();
         } else {
-          readUserFromServer();
+          refreshAppCivistUser(response.data);
         }
       }, function(error) {
         Notify.show(error.statusMessage, 'error');
@@ -154,38 +158,42 @@
       var rsp = loginService.getUser().get({ id: $scope.user.userId });
       rsp.$promise.then(
         function(data) {
-          localStorageService.set('user', data);
-          $rootScope.$broadcast('Main::UserWasUpdated');
-          $rootScope.$broadcast('$translateChangeEnd', {language: data.language });
-          $translate.use(data.language);
-          $scope.userFromServer = {
-            name: data.name,
-            firstname: data.firstname,
-            lastname: data.lastname,
-            email: data.email,
-            username: data.username,
-            facebookUserId: data.facebookUserId,
-            userAccessToken: data.userAccessToken,
-            tokenExpiresIn: data.tokenExpiresIn,
-            lang: data.lang,
-            language: data.language,
-            emailVerified: data.emailVerified,
-            emailUpdated: data.emailUpdated
-          };
-          if (passwordChanged()) {
-            updatePassword();
-          } else {
-            $translate('Changed saved').then(
-              successMsg => {
-                Notify.show(successMsg, 'success');
-              }
-            );
-          }
+          refreshAppCivistUser(data);
         },
         function(error) {
           Notify.show(error.statusMessage, 'error');
         }
       );
+    }
+
+    function refreshAppCivistUser(data) {
+      localStorageService.set('user', data);
+      $rootScope.$broadcast('Main::UserWasUpdated');
+      $rootScope.$broadcast('$translateChangeEnd', {language: data.language });
+      $translate.use(data.language);
+      $scope.userFromServer = {
+        name: data.name,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        username: data.username,
+        facebookUserId: data.facebookUserId,
+        userAccessToken: data.userAccessToken,
+        tokenExpiresIn: data.tokenExpiresIn,
+        lang: data.lang,
+        language: data.language,
+        emailVerified: data.emailVerified,
+        emailUpdated: data.emailUpdated
+      };
+      if (passwordChanged()) {
+        updatePassword();
+      } else {
+        $translate('Changed saved').then(
+          successMsg => {
+            Notify.show(successMsg, 'success');
+          }
+        );
+      }
     }
 
     function toggleChangePassword() {

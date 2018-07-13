@@ -115,9 +115,10 @@
         emailUpdated: $scope.profile.emailUpdated
       }
       ).then(function(response) {
-        if (response.data && response.data.sessionKey) {
-          localStorageService.set("sessionKey",response.data.sessionKey);
+        if (response.data) {
           refreshAppCivistUser(response.data);
+          if (response.data.sessionKey)
+            localStorageService.set("sessionKey",response.data.sessionKey);
         }
       });
     }

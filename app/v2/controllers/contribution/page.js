@@ -344,6 +344,7 @@
     }
 
     function updateStatusService() {
+      angular.element('.required-field').removeClass('required-field');
       let rsp = Contributions.updateStatus(this.assemblyID, this.proposal.contributionId, this.proposal.status).update().$promise;
       console.log(rsp);
       rsp.then(
@@ -356,8 +357,34 @@
               });
         },
         error => {
+          let attemptedStatus = this.proposal.status;
+          let undefinedEmail = localStorageService.get('currentAssembly').profile.primaryContactEmail;
+          let errorMessage = "";
+          let match = error.data.statusMessage.match(/\[.*\]/i);
+
           this.proposal.status = this.statusBeforeUpdate;
-          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
+          
+          if (match) {
+            let fields = match[0].replace(/\[/, '').replace(/\]/, '').split(',');
+            for (let i in fields) {
+              let field = fields[i].trim().replace(/ /, '_');
+              console.log(field);
+              angular.element('#field-'+field).addClass('required-field');
+            }
+            $translate("contribution.error.missing-required-fields", { status: attemptedStatus }).then(
+              translation => {
+                errorMessage = translation;
+                Notify.show(errorMessage, 'error');
+              }
+            );
+          } else {
+            $translate("contribution.error.undefined-error", { email: undefinedEmail }).then(
+              translation => {
+                errorMessage = translation;
+                Notify.show(errorMessage, 'error');
+              }
+            )
+          }
         }
       );
     }

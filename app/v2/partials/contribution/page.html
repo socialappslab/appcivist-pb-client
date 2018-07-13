@@ -90,7 +90,7 @@
           <p class="read-more"><button class="btn btn-default" data-toggle="modal" data-target="#instructionsModal">{{ 'Read more' | translate}}</button></p>
         </div>
         <div ng-class="{ 'half-length': showInstructions }">
-          <ul class="row tags">
+          <ul class="row tags" id="field-theme">
             <li class="title">{{(themesLimit == 1 ? 'Theme': 'Themes') | translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit > 1 || themesLimit === -1">
               <a style="cursor:default">
@@ -129,7 +129,7 @@
               <button ng-click="showSearch('themeSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Theme</button>
             </div>
           </ul>
-          <ul class="row tags">
+          <ul class="row tags"  id="field-keyword">
             <li class="title">{{'Keywords'|translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
               <a style="cursor:default">
@@ -162,7 +162,7 @@
 
           <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
             <!-- TODO: CURRENT implementation only works for customFields of type MULTIPLE_CHOICE and limit 1-->
-            <ul class="row tags" ng-repeat="field in customHeaderFields | filter: {fieldType:'MULTIPLE_CHOICE'}">
+            <ul class="row tags" id="field-{{field.name.split(' ').join('_')}}" ng-repeat="field in customHeaderFields | filter: {fieldType:'MULTIPLE_CHOICE'}">
               <li class="title">{{ field.name }}:</li>
               <div style="display: inline-block" ng-if="field.limit == 1">
                 <li>

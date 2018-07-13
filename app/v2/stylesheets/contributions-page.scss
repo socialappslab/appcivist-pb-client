@@ -1,3 +1,10 @@
+.required-field {
+  background-color: #f94040;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  li.title, li>i.fa-trash { color: white }
+}
+
 section.content {
   padding: 1rem 2rem;
 }

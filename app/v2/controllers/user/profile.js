@@ -57,8 +57,9 @@
         };
       }
       $scope.blurReset = blurReset;
-      $scope.updateProfile = updateProfile;
-      $scope.toggleChangePassword = toggleChangePassword;
+      $scope.updateProfile = updateProfile.bind($scope);
+      $scope.readUserFromServer = readUserFromServer.bind($scope);
+      $scope.toggleChangePassword = toggleChangePassword.bind($scope);
       $scope.getImageFromFile = getImageFromFile.bind($scope);
       $scope.goBack = goBack.bind($scope);
       $scope.emailIsForbidden = emailIsForbidden.bind($scope);
@@ -113,43 +114,7 @@
         emailUpdated: $scope.profile.emailUpdated
       }
       ).then(function(response) {
-        var rsp = loginService.getUser().get({ id: $scope.user.userId });
-        rsp.$promise.then(
-          function(data) {
-            localStorageService.set('user', data);
-            $rootScope.$broadcast('Main::UserWasUpdated');
-            $rootScope.$broadcast('$translateChangeEnd', {language: data.language });
-            $translate.use(data.language);
-            $scope.userFromServer = {
-              name: data.name,
-              firstname: data.firstname,
-              lastname: data.lastname,
-              email: data.email,
-              username: data.username,
-              facebookUserId: data.facebookUserId,
-              userAccessToken: data.userAccessToken,
-              tokenExpiresIn: data.tokenExpiresIn,
-              lang: data.lang,
-              language: data.language,
-              emailVerified: data.emailVerified,
-              emailUpdated: data.emailUpdated
-            };
-            if (passwordChanged()) {
-              updatePassword();
-            } else {
-              $translate('Changed saved').then(
-                successMsg => {
-                  Notify.show(successMsg, 'success');
-                }
-              );
-              //Notify.show('Data saved correctly');
-              //window.location.reload();
-            }
-          },
-          function(error) {
-            Notify.show(error.statusMessage, 'error');
-          }
-        );
+        readUserFromServer();
       });
     }
 
@@ -163,17 +128,11 @@
         },
         transformRequest: angular.identity,
         params: {}
-      }).then(function(response) {
+      }).then(function(data) {
         if (checkData && userInfoChanged()) {
           updateUserData();
         } else {
-          $translate('Changed saved').then(
-            successMsg => {
-            Notify.show(successMsg, 'success');
-            }
-          );
-          //Notify.show('Data saved correctly');
-          window.location.reload();
+          readUserFromServer();
         }
       }, function(error) {
         Notify.show(error.statusMessage, 'error');
@@ -189,6 +148,44 @@
       } else if (passwordChanged()) {
         updatePassword();
       }
+    }
+
+    function readUserFromServer() {
+      var rsp = loginService.getUser().get({ id: $scope.user.userId });
+      rsp.$promise.then(
+        function(data) {
+          localStorageService.set('user', data);
+          $rootScope.$broadcast('Main::UserWasUpdated');
+          $rootScope.$broadcast('$translateChangeEnd', {language: data.language });
+          $translate.use(data.language);
+          $scope.userFromServer = {
+            name: data.name,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            email: data.email,
+            username: data.username,
+            facebookUserId: data.facebookUserId,
+            userAccessToken: data.userAccessToken,
+            tokenExpiresIn: data.tokenExpiresIn,
+            lang: data.lang,
+            language: data.language,
+            emailVerified: data.emailVerified,
+            emailUpdated: data.emailUpdated
+          };
+          if (passwordChanged()) {
+            updatePassword();
+          } else {
+            $translate('Changed saved').then(
+              successMsg => {
+                Notify.show(successMsg, 'success');
+              }
+            );
+          }
+        },
+        function(error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
     }
 
     function toggleChangePassword() {

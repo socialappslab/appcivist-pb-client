@@ -1448,5 +1448,6 @@
   "Your email has been updated. Check your email inbox when possible to verify its validity.": "Seu e-mail foi atualizado. Você receberá uma mensagem neste e-mail para confirmar.",
   "Thank you for confirming your email": "Obrigado por confirmar seu email",
   "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
-  "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}"
+  "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
+  "Duplicated email": "Email duplicado"
 }

@@ -114,13 +114,23 @@
         language: $scope.profile.language,
         emailUpdated: $scope.profile.emailUpdated
       }
-      ).then(function(response) {
-        if (response.data) {
-          refreshAppCivistUser(response.data);
-          if (response.data.sessionKey)
-            localStorageService.set("sessionKey",response.data.sessionKey);
-        }
-      });
+      ).then(
+        function(response) {
+          if (response.data) {
+            refreshAppCivistUser(response.data);
+            if (response.data.sessionKey)
+              localStorageService.set("sessionKey",response.data.sessionKey);
+          }
+        },
+        function (error) {
+          $scope.profile.emailUpdated = false;
+          $scope.emailChangedInThisSession = false;
+          $translate(error.data.statusMessage).then(
+            translation => {
+              Notify.show(translation,'error')
+            }
+          );
+        });
     }
 
     function updatePic(checkData = false) {
@@ -133,15 +143,22 @@
         },
         transformRequest: angular.identity,
         params: {}
-      }).then(function(response) {
-        if (checkData && userInfoChanged()) {
-          updateUserData();
-        } else {
-          refreshAppCivistUser(response.data);
+      }).then(
+        function(response) {
+          if (checkData && userInfoChanged()) {
+            updateUserData();
+          } else {
+            refreshAppCivistUser(response.data);
+          }
+        },
+        function (error) {
+          $translate(error.data.statusMessage).then(
+            translation => {
+              Notify.show(translation,'error')
+            }
+          );
         }
-      }, function(error) {
-        Notify.show(error.statusMessage, 'error');
-      });
+      );
     }
 
     function updateProfile() {

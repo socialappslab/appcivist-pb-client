@@ -1449,5 +1449,6 @@
   "Thank you for confirming your email": "Thank you for confirming your email",
   "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
-  "Duplicated email": "Duplicated email"
+  "Duplicated email": "Duplicated email",
+  "dashboard.random-sorting-message": "Tant que le filtre aléatoire est activé, les pages ne sont pas prises en compte. Le système retournera toujours une liste d'éléments aléatoires. Appuyez à nouveau sur le filtre aléatoire pour obtenir une nouvelle liste de {{type}}. <br> Pour réactiver la pagination, sélectionnez l'un des autres filtres (popularité, date, commentaires) et vous pourrez explorer la page des éléments par page."
 }

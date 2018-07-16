@@ -1349,6 +1349,7 @@
   "login.ldapbutton": "Sign in",
   "Public draft": "Public draft",
   "PUBLIC DRAFT": "PUBLIC DRAFT",
+  "Public_draft": "Public draft",
   "Read the extended description of themes here": "Read the extended description of themes here",
   "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Privacy Policy</a>",
   "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Terms of Use</a>",
@@ -1381,6 +1382,7 @@
   "Updated custom field": "Updated custom field",
   "Changed was saved": "Change was saved",
   "contribution.notice.non-author-or-anonymous": "If this {{type}} is shared with you, sign in to access it ('Sign in', above). If it is not, ask someone listed to share it with you and then sign in.",
+  "contribution.notice.public-draft": "This {{type}} has the status of Public Draft. The entire community can view and comment on a Public Draft, but only those who are shared can edit.",
   "New Campaign Description": "New Campaign Description",
   "New Campaign Milestones": "New Campaign Milestones",
   "Campaign Edit": "New Campaign Edit",
@@ -1424,5 +1426,8 @@
   "Take me to the profile to update it": "Take me to the profile to update it",
   "If this is not your email, please update it now": "If this is not your email, please update it now",
   "Your email has been updated. Check your email inbox when possible to verify its validity.": "Your email has been updated. Check your email inbox when possible to verify its validity.",
-  "Thank you for confirming your email": "Thank you for confirming your email"
+  "Thank you for confirming your email": "Thank you for confirming your email",
+  "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
+  "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
+  "Duplicated email": "Duplicated email"
 }

@@ -1355,6 +1355,7 @@
   "login.ldapbutton": "Entrar",
   "Public draft": "Borrador público",
   "PUBLIC DRAFT": "BORRADOR PÚBLICO",
+  "Public_draft": "Borrador público",
   "Read the extended description of themes here": "Lea la descripción completa de los temas aqui",
   "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Política de Privacidad</a>",
   "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Términos de Uso</a>",
@@ -1387,6 +1388,7 @@
   "Updated custom field": "Cambio guardado",
   "Changed was saved": "Cambio guardado",
   "contribution.notice.non-author-or-anonymous": "Si esta {{type}} fue compartida contigo, inicia sesión para acceder ('Iniciar Sesión', arriba). Si no es así, pídele a uno de sus autores que te agreguen a la lista y luego inicia sesión.",
+  "contribution.notice.public-draft": "Esta {{type}} tiene el estado de Borrador Público. Toda la comunidad puede ver y comentar un Borrador Público, pero solo aquellos a los que se le ha compartido pueden editar.",
   "New Campaign Description": "New Campaign Description",
   "New Campaign Milestones": "New Campaign Milestones",
   "Campaign Edit": "New Campaign Edit",
@@ -1444,5 +1446,8 @@
   "Take me to the profile to update it": "Dirígeme a mi perfil para actualizarlo",
   "If this is not your email, please update it now": "Si no es su email, actualícelo ahora por favor",
   "Your email has been updated. Check your email inbox when possible to verify its validity.": "Your email has been updated. Check your email inbox when possible to verify its validity.",
-  "Thank you for confirming your email": "Gracias por confirmar su email"
+  "Thank you for confirming your email": "Gracias por confirmar su email",
+  "contribution.error.missing-required-fields": "Para alterar el estado a {{status}}, complete todos los campos obligatorios, marcados en rojo.",
+  "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
+  "Duplicated email": "Email duplicado"
 }

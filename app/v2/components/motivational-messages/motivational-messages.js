@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-  
+
     /**
      * @name motivationalMessages
      * @memberof components
@@ -24,11 +24,11 @@
         controllerAs: 'vm',
         templateUrl: '/app/v2/components/motivational-messages/motivational-messages.html'
       });
-  
+
       MotivationalCtrl.$inject = [
         '$scope', '$translate', 'localStorageService', 'LocaleService', 'Notify'
     ];
-  
+
     function MotivationalCtrl($scope, $translate, localStorageService, LocaleService, Notify) {
 
         let commentBoxMessages = ['motivational.commentbox.message1', 'motivational.commentbox.message2', 'motivational.commentbox.message3', 'motivational.commentbox.message4', 'motivational.commentbox.message5', 'motivational.commentbox.message6'];
@@ -58,7 +58,8 @@
             let motivational = this.getCookie('hideMotivational');
             if (motivational == null) {
                 setTimeout(() => {
-                    document.getElementsByTagName('motivational')[0].classList.add('show');
+                    var element = document.getElementsByTagName('motivational')[0];
+                    if (element) element.classList.add('show');
                 }, 10000)
             }
         }
@@ -102,11 +103,10 @@
             }
             return null;
         }
-        this.eraseCookie = function(name) {   
-            document.cookie = name+'=; Max-Age=-99999999;';  
+        this.eraseCookie = function(name) {
+            document.cookie = name+'=; Max-Age=-99999999;';
         }
         // standard cookie setting code end
     }
-  
+
   }());
-  

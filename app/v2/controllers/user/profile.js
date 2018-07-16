@@ -57,8 +57,10 @@
         };
       }
       $scope.blurReset = blurReset;
-      $scope.updateProfile = updateProfile;
-      $scope.toggleChangePassword = toggleChangePassword;
+      $scope.updateProfile = updateProfile.bind($scope);
+      $scope.readUserFromServer = readUserFromServer.bind($scope);
+      $scope.refreshAppCivistUser = refreshAppCivistUser.bind($scope);
+      $scope.toggleChangePassword = toggleChangePassword.bind($scope);
       $scope.getImageFromFile = getImageFromFile.bind($scope);
       $scope.goBack = goBack.bind($scope);
       $scope.emailIsForbidden = emailIsForbidden.bind($scope);
@@ -98,6 +100,7 @@
 
       if (userEmailIsChanged()) {
         $scope.profile.emailUpdated = true;
+        $scope.emailChangedInThisSession = true;
       }
 
       $http.put(url, {
@@ -111,28 +114,23 @@
         language: $scope.profile.language,
         emailUpdated: $scope.profile.emailUpdated
       }
-      ).then(function(response) {
-        var rsp = loginService.getUser().get({ id: $scope.user.userId });
-        rsp.$promise.then(
-          function(data) {
-            localStorageService.set('user', data);
-            if (passwordChanged()) {
-              updatePassword();
-            } else {
-              $translate('Changed saved').then(
-                successMsg => {
-                  Notify.show(successMsg, 'success');
-                }
-              );
-              //Notify.show('Data saved correctly');
-              window.location.reload();
-            }
-          },
-          function(error) {
-            Notify.show(error.statusMessage, 'error');
+      ).then(
+        function(response) {
+          if (response.data) {
+            refreshAppCivistUser(response.data);
+            if (response.data.sessionKey)
+              localStorageService.set("sessionKey",response.data.sessionKey);
           }
-        );
-      });
+        },
+        function (error) {
+          $scope.profile.emailUpdated = false;
+          $scope.emailChangedInThisSession = false;
+          $translate(error.data.statusMessage).then(
+            translation => {
+              Notify.show(translation,'error')
+            }
+          );
+        });
     }
 
     function updatePic(checkData = false) {
@@ -145,21 +143,22 @@
         },
         transformRequest: angular.identity,
         params: {}
-      }).then(function(response) {
-        if (checkData && userInfoChanged()) {
-          updateUserData();
-        } else {
-          $translate('Changed saved').then(
-            successMsg => {
-            Notify.show(successMsg, 'success');
+      }).then(
+        function(response) {
+          if (checkData && userInfoChanged()) {
+            updateUserData();
+          } else {
+            refreshAppCivistUser(response.data);
+          }
+        },
+        function (error) {
+          $translate(error.data.statusMessage).then(
+            translation => {
+              Notify.show(translation,'error')
             }
           );
-          //Notify.show('Data saved correctly');
-          window.location.reload();
         }
-      }, function(error) {
-        Notify.show(error.statusMessage, 'error');
-      });
+      );
     }
 
     function updateProfile() {
@@ -170,6 +169,48 @@
         updatePic(true);
       } else if (passwordChanged()) {
         updatePassword();
+      }
+    }
+
+    function readUserFromServer() {
+      var rsp = loginService.getUser().get({ id: $scope.user.userId });
+      rsp.$promise.then(
+        function(data) {
+          refreshAppCivistUser(data);
+        },
+        function(error) {
+          Notify.show(error.statusMessage, 'error');
+        }
+      );
+    }
+
+    function refreshAppCivistUser(data) {
+      localStorageService.set('user', data);
+      $rootScope.$broadcast('Main::UserWasUpdated');
+      $rootScope.$broadcast('$translateChangeEnd', {language: data.language });
+      $translate.use(data.language);
+      $scope.userFromServer = {
+        name: data.name,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        username: data.username,
+        facebookUserId: data.facebookUserId,
+        userAccessToken: data.userAccessToken,
+        tokenExpiresIn: data.tokenExpiresIn,
+        lang: data.lang,
+        language: data.language,
+        emailVerified: data.emailVerified,
+        emailUpdated: data.emailUpdated
+      };
+      if (passwordChanged()) {
+        updatePassword();
+      } else {
+        $translate('Changed saved').then(
+          successMsg => {
+            Notify.show(successMsg, 'success');
+          }
+        );
       }
     }
 
@@ -213,7 +254,12 @@
     }
 
     function emailIsForbidden() {
-      return ($scope.profile['email'].includes('@example.com') || $scope.profile['email'].includes('@appcivist.org') || $scope.profile['email'].includes('@ldap.com'));
+      let email = $scope.profile['email'];
+      if (email) {
+        return (email.includes('@example.com') || $scope.profile['email'].includes('@appcivist.org') || $scope.profile['email'].includes('@ldap.com'));
+      } else {
+        true;
+      }
     }
 
     function userEmailIsChanged() {

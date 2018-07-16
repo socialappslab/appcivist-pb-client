@@ -1355,6 +1355,7 @@
   "login.ldapbutton": "Iniciar Sessão",
   "Public draft": "Rascunho público",
   "PUBLIC DRAFT": "RASCUNHO PÚBLICO",
+  "Public_draft": "Rascunho público",
   "Read the extended description of themes here": "Leia a descrição completa dos temas aqui",
   "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Política de Privacidade</a>",
   "Terms of Use": "<a href='https://docs.google.com/document/d/1PWvERqRTg2lDSZEnHgVGCkv7-UYMlSse56frDa_tsqE/edit?usp=sharing' target='_blank'>Termos de uso</a>",
@@ -1387,6 +1388,7 @@
   "Updated custom field": "Mudança salva",
   "Changed was saved": "Mudança salva",
   "contribution.notice.non-author-or-anonymous": "Se esta {{type}} está compartilhada com você, faça login para acessá-la ('Iniciar Sessão', acima). Se ela não está, peça a alguém listado para compartilhá-la com você e depois faça login.",
+  "contribution.notice.public-draft": "Esta {{type}} tem o status de Rascunho Público. Toda a comunidade pode ver e comentar sobre um Rascunho Público, mas só quem está compartilhado pode editar.",
   "New Campaign Description": "New Campaign Description",
   "New Campaign Milestones": "New Campaign Milestones",
   "Campaign Edit": "New Campaign Edit",
@@ -1443,6 +1445,9 @@
   "No, take me to the profile to update it": "Não, leve-me ao perfil para atualizá-lo",
   "Take me to the profile to update it": "Leve-me ao perfil para atualizá-lo",
   "If this is not your email, please update it now": "Se este não é seu e-mail, atualize-o agora",
-  "Your email has been updated. Check your email inbox when possible to verify its validity.": "Seu email foi atualizado. Verifique sua caixa de entrada de e-mail quando possível para verificar sua validade.",
-  "Thank you for confirming your email": "Obrigado por confirmar seu email"
+  "Your email has been updated. Check your email inbox when possible to verify its validity.": "Seu e-mail foi atualizado. Você receberá uma mensagem neste e-mail para confirmar.",
+  "Thank you for confirming your email": "Obrigado por confirmar seu email",
+  "contribution.error.missing-required-fields": "Para alterar o status para {{status}}, preencha todos os campos obrigatórios, marcados em vermelho.",
+  "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
+  "Duplicated email": "Email duplicado"
 }

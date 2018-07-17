@@ -92,19 +92,14 @@
         <div ng-class="{ 'half-length': showInstructions }">
           <ul class="row tags" id="field-theme">
             <li class="title">{{(themesLimit == 1 ? 'Theme': 'Themes') | translate}}: </li>
-            <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit > 1 || themesLimit === -1">
+            <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index"
+                ng-if="themesLimit > 1 || themesLimit === -1 || (themesLimit == 1 && (isAnonymous || (!userIsAuthor && !userIsCoordinator && !userIsAdmin)))">
               <a style="cursor:default">
                 {{theme.title}}
                 <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>
               </a>
               <!--<span ng-if="!$last">,</span>-->
             </li>
-            <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index" ng-if="themesLimit == 1 && isAnonymous">
-                <a style="cursor:default">
-                  {{theme.title}}
-                </a>
-                <!--<span ng-if="!$last">,</span>-->
-              </li>
             <li ng-if="themesLimit == 1 && !isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)">
               <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId"
                       ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
@@ -312,18 +307,18 @@
       </header>
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
-        <div class="proposal-summary">
+        <div class="proposal-summary" id="field-text">
           <h2 ng-if="showBodyDescriptionTitle">
             {{'contribution.summary' | translate}}
             <i class="fa fa-edit smalledit" id="descriptionEditToggle"
-               ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
+               ng-click="descriptionToggleEdit()" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
             </i>
           </h2>
-          <p class="contribution_description" ng-if="isDescriptionEdit && userIsAuthor">
+          <p class="contribution_description" ng-if="isDescriptionEdit && (userIsAuthor || userIsCoordinator || userIsAdmin)">
             {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
             {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
-          <p class="contribution_description" ng-if="!isDescriptionEdit && userIsAuthor && (!proposal.text.length || proposal.text.length === 0)">
+          <p class="contribution_description" ng-if="!isDescriptionEdit && (userIsAuthor || userIsCoordinator || userIsAdmin) && (!proposal.text.length || proposal.text.length === 0)">
             {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
             {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
@@ -332,11 +327,11 @@
           </p>
           <p class="contribution_description"
              ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor"
+             ng-if="!isDescriptionEdit && showBodyDescription &&  (userIsAuthor || userIsCoordinator || userIsAdmin)"
              ng-click="descriptionToggleEdit()">
           </p>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription && !userIsAuthor"></p>
+             ng-if="!isDescriptionEdit && showBodyDescription && (!userIsAuthor && !userIsCoordinator && !userIsAdmin)"></p>
           </p>
           <div class="editableArea text-center" ng-if="isDescriptionEdit && showBodyDescription">
             <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text"

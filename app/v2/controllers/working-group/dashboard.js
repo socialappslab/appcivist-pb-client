@@ -235,6 +235,14 @@
             $scope.currentComponent = currentComponent;
             localStorageService.set('currentCampaign.components', data);
             localStorageService.set('currentCampaign.currentComponent', currentComponent);
+            switch ($scope.currentComponent.type) {
+              case "IMPLEMENTATION": $scope.filters.sorting = 'popularity_desc'; break;
+              case "VOTING": $scope.filters.sorting = 'random'; break;
+              case "DELIBERATION": $scope.filters.sorting = 'random'; break;
+              case "IDEAS": $scope.filters.sorting = 'date_desc'; break;
+              case "PROPOSALS": $scope.filters.sorting = 'date_desc'; break;
+              default: $scope.filters.sorting = 'date_desc'; break;
+            }
           },
           function (error) {
             Notify.show(error.statusMessage, 'error');
@@ -250,6 +258,14 @@
             currentComponent.type === 'VOTING' ?
               getCurrentBallotEntityType() : 'proposal';
         $scope.currentComponent = currentComponent;
+        switch ($scope.currentComponent.type) {
+          case "IMPLEMENTATION": $scope.filters.sorting = 'popularity_desc'; break;
+          case "VOTING": $scope.filters.sorting = 'random'; break;
+          case "DELIBERATION": $scope.filters.sorting = 'random'; break;
+          case "IDEAS": $scope.filters.sorting = 'date_desc'; break;
+          case "PROPOSALS": $scope.filters.sorting = 'date_desc'; break;
+          default: $scope.filters.sorting = 'date_desc'; break;
+        }
       }
 
       if($scope.isAnonymous || !$scope.userIsMember) {

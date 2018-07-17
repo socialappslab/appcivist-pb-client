@@ -307,18 +307,18 @@
       </header>
 
       <section class="content" ng-if="contributionType == 'PROPOSAL'">
-        <div class="proposal-summary">
+        <div class="proposal-summary" id="field-text">
           <h2 ng-if="showBodyDescriptionTitle">
             {{'contribution.summary' | translate}}
             <i class="fa fa-edit smalledit" id="descriptionEditToggle"
-               ng-click="descriptionToggleEdit()" ng-if="userIsAuthor">
+               ng-click="descriptionToggleEdit()" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
             </i>
           </h2>
-          <p class="contribution_description" ng-if="isDescriptionEdit && userIsAuthor">
+          <p class="contribution_description" ng-if="isDescriptionEdit && (userIsAuthor || userIsCoordinator || userIsAdmin)">
             {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
             {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
-          <p class="contribution_description" ng-if="!isDescriptionEdit && userIsAuthor && (!proposal.text.length || proposal.text.length === 0)">
+          <p class="contribution_description" ng-if="!isDescriptionEdit && (userIsAuthor || userIsCoordinator || userIsAdmin) && (!proposal.text.length || proposal.text.length === 0)">
             {{"contribution.summary.empty" | translate}}&nbsp;&nbsp;
             {{ descriptionLimit ? ("contribution.summary.word-limit" | translate:translateWordLimit) : "" }}
           </p>
@@ -327,11 +327,11 @@
           </p>
           <p class="contribution_description"
              ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription && userIsAuthor"
+             ng-if="!isDescriptionEdit && showBodyDescription &&  (userIsAuthor || userIsCoordinator || userIsAdmin)"
              ng-click="descriptionToggleEdit()">
           </p>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription && !userIsAuthor"></p>
+             ng-if="!isDescriptionEdit && showBodyDescription && (!userIsAuthor && !userIsCoordinator && !userIsAdmin)"></p>
           </p>
           <div class="editableArea text-center" ng-if="isDescriptionEdit && showBodyDescription">
             <textarea ng-if="showDescriptionRichTextEdit" ui-tinymce="tinymceOptions" ng-model="proposal.text"

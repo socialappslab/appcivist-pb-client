@@ -1448,5 +1448,5 @@
   "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Email duplicato",
-  "dashboard.random-sorting-message": "Mentre il filtro casuale è abilitato, le pagine non vengono prese in considerazione. Il sistema restituirà sempre un elenco di elementi casuali. Premi nuovamente sul filtro casuale per ottenere un nuovo elenco di {{tipo}}. <br> Per riattivare l'impaginazione, seleziona uno qualsiasi degli altri filtri (popolarità, data, commenti) e sarai in grado di esplorare la pagina degli oggetti per pagina."
+  "dashboard.random-sorting-message": "Si le filtre aléatoire a été sélectionné, la pagination sera désactivée et le système présentera toujours une liste aléatoire de contributions chaque fois que le filtre aléatoire est appuyé ou cliqué. Pour réactiver la pagination, sélectionnez l'un des autres filtres."
 }

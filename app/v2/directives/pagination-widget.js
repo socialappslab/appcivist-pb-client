@@ -53,6 +53,7 @@
         scope.paginationVisible = paginationVisible.bind(scope);
         scope.startSpinner = startSpinner.bind(scope);
         scope.stopSpinner = stopSpinner.bind(scope);
+        scope.inferrType = inferrType.bind(scope);
         scope.spinnerActive = true;
         scope.spinnerOptions = {
           radius:10,
@@ -83,6 +84,10 @@
 
         $rootScope.$broadcast('dashboard:paginationWidgetListenersAreReady');
         console.log('Pagination-Widget:Link => BROADCASTED => dashboard:paginationWidgetListenersAreReady');
+
+        function inferrType () {
+          return this.components[0].type;
+        }
 
         function startSpinner () {
           this.spinnerActive = true;

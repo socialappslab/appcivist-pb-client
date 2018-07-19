@@ -508,6 +508,14 @@
       if (currentComponent.type === 'VOTING') {
         this.filters.status = "INBALLOT";
       }
+      switch (currentComponent.type) {
+        case "IMPLEMENTATION": this.filters.sorting = 'popularity_desc'; break;
+        case "VOTING": this.filters.sorting = 'random'; break;
+        case "DELIBERATION": this.filters.sorting = 'random'; break;
+        case "IDEAS": this.filters.sorting = 'date_desc'; break;
+        case "PROPOSALS": this.filters.sorting = 'date_desc'; break;
+        default: this.filters.sorting = 'date_desc'; break;
+      }
       setSectionsButtonsVisibility(currentComponent);
       this.loadGroupsAfterConfigs();
       // TODO: check current component has not finished

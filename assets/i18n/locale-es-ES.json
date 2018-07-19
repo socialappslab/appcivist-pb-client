@@ -1449,5 +1449,6 @@
   "Thank you for confirming your email": "Gracias por confirmar su email",
   "contribution.error.missing-required-fields": "Para alterar el estado a {{status}}, complete todos los campos obligatorios, marcados en rojo.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
-  "Duplicated email": "Email duplicado"
+  "Duplicated email": "Email duplicado",
+  "dashboard.random-sorting-message": "Si el filtro aleatorio fue seleccionado, la paginación será desactivada y el sistema presentará siempre un lista aleatoria de contribuciones cada vez que se presione o clique el filtro aleatorio. Para volver a habilitar la paginación, seleccione cualquiera de los otros filtros."
 }

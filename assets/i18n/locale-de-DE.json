@@ -1429,5 +1429,6 @@
   "Thank you for confirming your email": "Thank you for confirming your email",
   "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
-  "Duplicated email": "Duplicated email"
+  "Duplicated email": "Duplicated email",
+  "dashboard.random-sorting-message": "If the random filter is selected, pagination is not used and the system will return a list of random items everytime you press or click on the random filter. Select any of the other filters to enable pagination again."
 }

@@ -1,6 +1,9 @@
 <div class="list__cards container__proposals">
   <section class="panel text-left pagination__widget__controls__padding" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style" style="min-height:75px">
-    <dir-pagination-controls on-page-change="pageChanged(newPageNumber, oldPageNumber)"></dir-pagination-controls>
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber, oldPageNumber)" ng-if="this.filters.sorting !== 'random'"></dir-pagination-controls>
+    <div class="random-pagination-message" ng-if="this.filters.sorting === 'random'">
+      <p class="alert alert-success" translate="dashboard.random-sorting-message" translate-values="{ type: (this.inferrType() | capitalize) }"></p>
+    </div>
   </section>
   <span class="pagination-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
   <section ng-if="filters.mode==='proposal'||filters.mode==='myProposals'||filters.mode==='sharedProposals'||filters.mode==='draftProposals'">
@@ -35,6 +38,6 @@
     </div>
   </section>
   <section class="panel text-center" in-view="paginationVisible(paginationTop, $inview)" ng-style="paginationTop.style">
-    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)" ng-if="this.filters.sorting !== 'random'"></dir-pagination-controls>
   </section>
 </div>

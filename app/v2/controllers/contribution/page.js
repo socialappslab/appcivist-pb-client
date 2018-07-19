@@ -363,7 +363,7 @@
           let match = error.data.statusMessage.match(/\[.*\]/i);
 
           this.proposal.status = this.statusBeforeUpdate;
-          
+
           if (match) {
             let fields = match[0].replace(/\[/, '').replace(/\]/, '').split(',');
             for (let i in fields) {
@@ -371,10 +371,14 @@
               console.log(field);
               angular.element('#field-'+field).addClass('required-field');
             }
-            $translate("contribution.error.missing-required-fields", { status: attemptedStatus }).then(
-              translation => {
-                errorMessage = translation;
-                Notify.show(errorMessage, 'error');
+            $translate(attemptedStatus).then(
+              translatedStatus => {
+                $translate("contribution.error.missing-required-fields", { status: translatedStatus }).then(
+                  translation => {
+                    errorMessage = translation;
+                    Notify.show(errorMessage, 'error');
+                  }
+                );
               }
             );
           } else {

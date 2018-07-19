@@ -1430,5 +1430,5 @@
   "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Duplicated email",
-  "dashboard.random-sorting-message": "Während der Zufallsfilter aktiviert ist, werden Seiten nicht berücksichtigt. Das System gibt immer eine Liste von zufälligen Elementen zurück. Drücken Sie erneut auf den Zufallsfilter, um eine neue Liste von {{type}} zu erhalten. <br> Um die Paginierung erneut zu aktivieren, wählen Sie einen der anderen Filter (Beliebtheit, Datum, Kommentare) und Sie können die Seite mit den Elementen durchsuchen Seite."
+  "dashboard.random-sorting-message": "If the random filter is selected, pagination is not used and the system will return a list of random items everytime you press or click on the random filter. Select any of the other filters to enable pagination again."
 }

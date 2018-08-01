@@ -26,12 +26,13 @@
     'Notifications',
     '$breadcrumb',
     'FileUploader',
-    'LocaleService'
+    'LocaleService',
+    'AppCivistAuth'
   ];
 
   function CampaignDashboardCtrl($scope, Campaigns, $stateParams, Assemblies, Contributions, $filter,
     localStorageService, Notify, Memberships, Space, $translate, $rootScope, WorkingGroups, $compile,
-    $state, Voting, $sce, Notifications, $breadcrumb, FileUploader, LocaleService) {
+    $state, Voting, $sce, Notifications, $breadcrumb, FileUploader, LocaleService, AppCivistAuth) {
     $scope.activeTab = "Public";
     $scope.changeActiveTab = function (tab) {
       if (tab == 1) $scope.activeTab = "Members";
@@ -96,6 +97,40 @@
         ideasCommentsCount: 0
       };
 
+      $scope.user = localStorageService.get('user');
+      let root = $scope;
+
+      if (!$scope.user) {
+        if ($stateParams.auuid)
+          $scope.assemblyID = $stateParams.auuid;
+        $scope.campaignID = $stateParams.cuuid;
+        $scope.isAnonymous = true;
+        $scope.fromURL = 'v2/campaign/' + $scope.campaignID;
+      } else {
+        if ($stateParams.aid) {
+          $scope.assemblyID = parseInt($stateParams.aid);
+        } else {
+          AppCivistAuth.getID('assembly', $stateParams.cuiid).get().$promise.then(rsp => {
+            root.assemblyID = rsp.id;
+          });
+        }
+        if ($stateParams.cid) {
+          $scope.assemblyID = parseInt($stateParams.aid);
+        } else {
+          AppCivistAuth.getID('campaign', $stateParams.cuiid).get().$promise.then(rsp => {
+            root.assemblyID = rsp.id;
+          });
+        }
+        $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
+        $scope.user = localStorageService.get('user');
+        $scope.fromURL = 'v2/assembly/' + $scope.assemblyID + '/campaign/' + $scope.campaignID;
+
+        if ($scope.user && $scope.user.language) {
+          $scope.commentType = 'members';
+          $translate.use($scope.user.language);
+        }
+      }
+/*
       if ($stateParams.cuuid && pattern.test($stateParams.cuuid)) {
         if ($stateParams.auuid && pattern.test($stateParams.auuid)) {
           $scope.assemblyID = $stateParams.auuid;
@@ -115,7 +150,7 @@
           $translate.use($scope.user.language);
         }
       }
-
+*/
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.toggleHideCommentsSection = toggleHideCommentsSection.bind($scope);
       $scope.loadThemes = loadThemes.bind($scope);
@@ -238,12 +273,12 @@
       $scope.assembly = localStorageService.get('currentAssembly');
       // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
       // get the assembly from backend
-      if (($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) || !$scope.assembly ){
+      if (!$scope.assembly ){
         if ($scope.isAnonymous) {
-          $scope.assemblyID = $stateParams.auuid;
+          //$scope.assemblyID = $stateParams.auuid;
           var assemblyRes = Assemblies.assemblyByUUID($scope.assemblyID).get();
         } else {
-          $scope.assemblyID = $stateParams.aid;
+          //$scope.assemblyID = $stateParams.aid;
           var assemblyRes = Assemblies.assembly($scope.assemblyID).get();
         }
 
@@ -417,9 +452,11 @@
       if(this.campaign && (this.campaign.rsID || this.campaign.rsUUID) && !this.campaignConfigs && !this.configsLoaded) {
         let rsp = null;
         if (this.isAnonymous && this.campaign && this.campaign.rsUUID && !this.campaign.rsID) {
+          console.log('CONFIG PUBLIC');
           this.configsLoaded = true;
           rsp = Campaigns.getConfigurationPublic(this.campaign.rsUUID).get()
         } else {
+          console.log('CONFIG PRIVATE');
           this.configsLoaded = true;
           rsp = Campaigns.getConfiguration(this.campaign.rsID).get();
         }

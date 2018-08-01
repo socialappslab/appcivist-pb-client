@@ -78,7 +78,7 @@
       this.user = localStorageService.get('user');
       this.userIsAuthenticated = loginService.userIsAuthenticated();
 
-      if (!this.userIsAuthenticated || Utils.isUUID($stateParams.aid)) {
+      if (!this.userIsAuthenticated) {
         this.isAnonymous = true;
         if (!$stateParams.auuid) {
           this.assemblyId = $stateParams.aid;
@@ -89,7 +89,11 @@
         if (this.user && this.user.language) {
           $translate.use(this.user.language);
         }
-        this.assemblyId = parseInt($stateParams.aid);
+        if (!$stateParams.auuid) {
+          this.assemblyId = ($stateParams.aid);
+        } else {
+          this.assemblyId = $stateParams.auuid;
+        }
         this.userIsMember = Memberships.isMember("assembly",this.assemblyId);
       }
 
@@ -122,8 +126,10 @@
           this.unauthorizedAccess = true;
         }
       } else {
-        if (isNaN($stateParams.aid)) {
-          rsp = Assemblies.assemblyByShortName($stateParams.aid).get().$promise;
+        if (Utils.isUUID(aid)) {
+          rsp = Assemblies.assemblyByUUID(aid).get().$promise;
+        } else if (isNaN(aid)) {
+          rsp = Assemblies.assemblyByShortName(aid).get().$promise;
           this.shortname = $stateParams.aid;
         } else {
           rsp = Assemblies.assembly(aid).get().$promise;

@@ -67,6 +67,9 @@
       $scope.selectedCards = [];
       $scope.subscribed = false;
 
+      $scope.assemblyID = null;
+      $scope.campaignID = null;
+
       $scope.campaignFaq = null;
       $scope.accessibilityUrl = null;
       $scope.requireGroupAuthorship = true;
@@ -110,15 +113,15 @@
         if ($stateParams.aid) {
           $scope.assemblyID = parseInt($stateParams.aid);
         } else {
-          AppCivistAuth.getID('assembly', $stateParams.cuiid).get().$promise.then(rsp => {
+          AppCivistAuth.getID('assembly', $stateParams.auuid).get().$promise.then(rsp => {
             root.assemblyID = rsp.id;
           });
         }
         if ($stateParams.cid) {
-          $scope.assemblyID = parseInt($stateParams.aid);
+          $scope.campaignID = parseInt($stateParams.cid);
         } else {
-          AppCivistAuth.getID('campaign', $stateParams.cuiid).get().$promise.then(rsp => {
-            root.assemblyID = rsp.id;
+          AppCivistAuth.getID('campaign', $stateParams.cuuid).get().$promise.then(rsp => {
+            root.campaignID = rsp.id;
           });
         }
         $scope.isCoordinator = Memberships.isAssemblyCoordinator($scope.assemblyID);
@@ -214,9 +217,10 @@
       if (!$scope.isAnonymous) {
         $scope.activeTab = "Members";
       }
-      loadAssembly();
-      loadCampaignResources();
-      loadCampaigns();
+
+      $scope.$watch('assemblyID', loadAssembly);
+      $scope.$watch('campaignID', loadCampaignResources);
+      $scope.$watch('campaignID', loadCampaigns);
 
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function () {
@@ -328,6 +332,7 @@
     }
 
     function loadCampaigns() {
+      if (!$scope.assemblyID || !$scope.campaignID) return;
       var res;
       if ($scope.isAnonymous) {
         res = Campaigns.campaignByUUID($scope.campaignID).get();
@@ -818,9 +823,12 @@
     }
 
     function loadCampaignResources() {
+      if (!$scope.assemblyID || !$scope.campaignID) return;
       if ($scope.isAnonymous) {
         var rsp = Campaigns.publicResources($scope.campaignID).query();
       } else {
+        console.log($scope.assemblyID);
+        console.log($scope.campaignID);
         var rsp = Campaigns.resources($scope.assemblyID, $scope.campaignID).query();
       }
       rsp.$promise.then(function (resources) {

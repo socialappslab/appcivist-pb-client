@@ -50,17 +50,18 @@
 
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
-        var rsp = Space.configsByUUID($scope.currentAssembly.resourcesResourceSpaceId).get();
+        var rsp = Space.configsByUUID($scope.currentAssembly.resourcesResourceSpaceUUID).get();
         rsp.$promise.then(
           configs => {
             $scope.assemblyConfigs = configs;
             $scope.signupsEnabled = configs["appcivist.assembly.disable-new-memberships"] === "false";
           }
         );
-
-
         if ($state.params && $state.params.cid) {
           $scope.currentCampaignId = parseInt($state.params.cid);
+        }
+        if ($state.params && $state.params.cuuid) {
+          $scope.currentCampaignId = $state.params.cuiid;
         }
         loadUserData($scope);
       } else if ($state.params && $state.params.cuuid) {
@@ -169,6 +170,8 @@
     function loadUserData(scope) {
       let myWorkingGroups = localStorageService.get('myWorkingGroups');
       let topicsWorkingGroups = localStorageService.get('topicsWorkingGroups');
+
+      console.log(scope.needToRefresh(myWorkingGroups));
 
       if (scope.needToRefresh(myWorkingGroups)) {
         Assemblies.setCurrentAssembly(parseInt($state.params.aid)).then(response => {
@@ -325,7 +328,13 @@
       let vm = this;
       let assembly = localStorageService.get('currentAssembly');
       let membershipsInGroups = localStorageService.get('membershipsInGroups');
-      let rsp = WorkingGroups.workingGroupsInCampaign(assembly.assemblyId, this.currentCampaignId).query().$promise;
+      let rsp;
+      console.log('FETCH GROUPS');
+      if ($state.params && $state.params.cuuid) {
+        rsp = WorkingGroups.workingGroupsInCampaignByUUID($state.params.cuuid).query().$promise;
+      } else {
+        rsp = WorkingGroups.workingGroupsInCampaign(assembly.assemblyId, this.currentCampaignId).query().$promise;
+      }
       return rsp.then(
         groups => {
           vm.myWorkingGroups = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));

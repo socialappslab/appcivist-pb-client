@@ -48,13 +48,12 @@
       templateUrl: '/app/v2/partials/directives/campaign-timeline.html',
       link: function postLink(scope, element, attrs) {
         if (!scope.components) {
-          if (!scope.campaignId) {
-            scope.$watch('campaignId', function(cid) {
-              loadCampaignComponents(scope.assemblyId, cid);
-            });
-          } else {
-            loadCampaignComponents(scope.assemblyId, scope.campaignId);
-          }
+          scope.$watch('campaignId', function(cid) {
+            scope.$watch('assemblyId', function(aid) {
+              console.log(`CAMPAIGN TIMELINE - aid: ${aid} - cid: ${cid}`);
+              loadCampaignComponents(aid, cid);
+            })
+          });
         }
 
         scope.formatDate = function(date) {
@@ -94,6 +93,8 @@
 
 
         function loadCampaignComponents(aid, cid) {
+          if (aid == null || cid == null) return;
+          
           scope.user = localStorageService.get('user');
           var res;
           if (scope.user) {

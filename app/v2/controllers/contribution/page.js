@@ -11,13 +11,13 @@
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications',
-    '$timeout', '$interval', 'LocaleService'
+    '$timeout', '$interval', 'LocaleService', 'AppCivistAuth'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications,
-                                $timeout, $interval, LocaleService) {
+                                $timeout, $interval, LocaleService, AppCivistAuth) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -143,32 +143,66 @@
         scale: 0.1
       };
 
-      if (pattern.test($stateParams.couuid) === true) {
-        $scope.proposalID = $stateParams.couuid;
-        $scope.campaignID = $stateParams.cuuid;
-        $scope.assemblyID = $stateParams.auuid;
-        $scope.groupID = $stateParams.guuid;
-        $scope.isAnonymous = true;
-        $scope.loadFeedback($scope.proposalID);
-      } else if (pattern.test($stateParams.puuid) === true) {
-        $scope.proposalID = $stateParams.puuid;
-        $scope.campaignID = $stateParams.cuuid;
-        $scope.assemblyID = $stateParams.auuid;
-        $scope.groupID = $stateParams.guuid;
-        $scope.isAnonymous = true;
-        $scope.loadFeedback($scope.proposalID);
+      $scope.user = localStorageService.get('user');
+      let root = $scope;
+
+      if (!$scope.user) {
+        if (pattern.test($stateParams.couuid) === true) {
+          $scope.proposalID = $stateParams.couuid;
+          $scope.campaignID = $stateParams.cuuid;
+          $scope.assemblyID = $stateParams.auuid;
+          $scope.groupID = $stateParams.guuid;
+          $scope.isAnonymous = true;
+          $scope.loadFeedback($scope.proposalID);
+        } else if (pattern.test($stateParams.puuid) === true) {
+          $scope.proposalID = $stateParams.puuid;
+          $scope.campaignID = $stateParams.cuuid;
+          $scope.assemblyID = $stateParams.auuid;
+          $scope.groupID = $stateParams.guuid;
+          $scope.isAnonymous = true;
+          $scope.loadFeedback($scope.proposalID);
+        }
       } else {
-        $scope.assemblyID = ($stateParams.aid) ? parseInt($stateParams.aid) : localStorageService.get('currentAssembly').assemblyId;
-        $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
+        if ($stateParams.aid) {
+          $scope.assemblyID = parseInt($stateParams.aid);
+        } else {
+          AppCivistAuth.getID('assembly', $stateParams.auuid).get().$promise.then(rsp => {
+            root.assemblyID = rsp.id;
+          });
+        }
+        if ($stateParams.cid) {
+          $scope.campaignID = parseInt($stateParams.cid);
+        } else {
+          AppCivistAuth.getID('campaign', $stateParams.cuuid).get().$promise.then(rsp => {
+            root.campaignID = rsp.id;
+          });
+        }
+        if ($stateParams.gid) {
+          $scope.groupID = ($stateParams.gid) ? parseInt($stateParams.gid) : 0;
+        } else {
+          if ($stateParams.guuid) {
+            AppCivistAuth.getID('group', $stateParams.guuid).get().$promise.then(rsp => {
+              root.groupID = rsp.id;
+            });
+          } else {
+            $scope.groupID = 0;
+          }
+        }
         if ($stateParams.coid) {
           $scope.proposalID = parseInt($stateParams.coid);
         } else if ($stateParams.pid) {
           $scope.proposalID = parseInt($stateParams.pid);
+        } else if ($stateParams.couuid) {
+          AppCivistAuth.getID('contribution', $stateParams.couuid).get().$promise.then(rsp => {
+            root.proposalID = rsp.id;
+          });
+        } else if ($stateParams.puuid) {
+          AppCivistAuth.getID('contribution', $stateParams.puuid).get().$promise.then(rsp => {
+            root.proposalID = rsp.id;
+          });
         } else {
           $scope.proposalID = 0;
         }
-        $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
-        $scope.user = localStorageService.get('user');
 
         if ($scope.user && $scope.user.language) {
           $translate.use($scope.user.language);
@@ -187,15 +221,27 @@
           $scope.commentType = 'members';
         }
       }
+
       $scope.etherpadLocale = Etherpad.getLocale();
-      $scope.loadProposal($scope);
+      //$scope.loadProposal($scope);
+      $scope.$watch('proposalID', loadProposal.bind(null, $scope));
+      $scope.$watch('assemblyID', loadProposal.bind(null, $scope));
+      $scope.$watch('assemblyID', function(n,o) {
+        $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
+      });
+      $scope.$watch('campaignID', function(n,o,) {
+        $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
+      });
+      $scope.$watch('proposalID', function(n,o) {
+        $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
+      });
       $scope.showActionMenu = true;
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function () {
         scope.showActionMenu = !scope.showActionMenu;
       };
       // Read user contribution feedback
-      $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
+      //$scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
       $scope.cm = {
@@ -476,6 +522,7 @@
     }
 
     function loadProposal(scope) {
+      if (!scope.proposalID || !scope.assemblyID) return;
       let vm = this;
       var rsp;
 
@@ -569,7 +616,7 @@
             }, function (error) {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
-            vm.loadValues(vm.proposal.resourceSpaceId);
+            scope.loadValues(scope.proposal.resourceSpaceId);
           } else {
             var rsp = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
 
@@ -591,7 +638,7 @@
             }, function (error) {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
-            vm.loadValues(vm.proposal.resourceSpaceUUID, true);
+            scope.loadValues(scope.proposal.resourceSpaceUUID, true);
           }
 
           loadRelatedContributions();
@@ -1748,6 +1795,10 @@
     }
 
     function loadUserFeedback(aid, cid, coid) {
+      console.log(aid);
+      console.log(cid);
+      console.log(coid);
+      if (!aid || !cid || !coid) return;
       let rsp = Contributions.authUserFeedback(aid,cid,coid).get().$promise;
       rsp.then(
         data => this.userFeedback = data,

@@ -137,13 +137,27 @@
           }
 
           if (!scope.isAnonymous) {
-            scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
-            scope.contributionId = scope.contribution.contributionId;
-            scope.contributionUrl =
-              "#/v2/assembly/" + scope.assemblyId
-              + "/campaign/" + scope.campaignId
-              + (scope.notAssigned ? "" : "/group/" + scope.groupId)
-              + "/contribution/" + scope.contributionId;
+            if ($stateParams.cuuid) {
+              scope.auuid = $stateParams.auuid;
+              scope.cuuid = $stateParams.cuuid;
+              scope.groupId = scope.guuid = $stateParams.guuid ?
+                $stateParams.guuid : workingGroupAuthorsLength ?
+                scope.contribution.workingGroupAuthors[0].uuid : "";
+              scope.contributionId = scope.contribution.uuid;
+              scope.contributionUrl =
+                "#/v2/p/assembly/" + scope.auuid
+                + "/campaign/" + scope.cuuid
+                + (scope.notAssigned ? "" : "/group/"+scope.guuid)
+                + "/contribution/" + scope.contribution.uuid;
+            } else {
+              scope.groupId = workingGroupAuthorsLength ? scope.contribution.workingGroupAuthors[0].groupId : 0;
+              scope.contributionId = scope.contribution.contributionId;
+              scope.contributionUrl =
+                "#/v2/assembly/" + scope.assemblyId
+                + "/campaign/" + scope.campaignId
+                + (scope.notAssigned ? "" : "/group/" + scope.groupId)
+                + "/contribution/" + scope.contributionId;
+            }
           } else {
             scope.auuid = $stateParams.auuid;
             scope.cuuid = $stateParams.cuuid;

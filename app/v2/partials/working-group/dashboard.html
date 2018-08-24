@@ -267,7 +267,7 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Email Address</th>
+                  <th ng-if="userIsMember">Email Address</th>
                   <th ng-if="isCoordinator">Role</th>
                   <th ng-if="isCoordinator"></th>
                 </tr>
@@ -275,7 +275,7 @@
               <tbody>
                 <tr ng-repeat="member in members">
                   <td style="text-align:left"><member-card user="member.user"></member-card></td>
-                  <td>{{member.user.email}}</td>
+                  <td ng-if="userIsMember">{{member.user.email}}</td>
                   <td ng-if="isCoordinator">
                     <select>
                       <option ng-selected="member.roles[0].name == 'COORDINATOR'">Coordinator</option>

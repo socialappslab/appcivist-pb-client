@@ -85,8 +85,13 @@
         </a>
 
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
-           ng-if="user === null || !userIsMember" disabled>
+           ng-if="user != null && !userIsMember" disabled>
           {{'Join the Group to create proposals' | translate}}
+        </a>
+
+        <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
+           ng-if="user === null" disabled>
+          {{'Login to join' | translate}}
         </a>
 
         <!--<a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"-->
@@ -267,7 +272,7 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Email Address</th>
+                  <th ng-if="userIsMember">Email Address</th>
                   <th ng-if="isCoordinator">Role</th>
                   <th ng-if="isCoordinator"></th>
                 </tr>
@@ -275,7 +280,7 @@
               <tbody>
                 <tr ng-repeat="member in members">
                   <td style="text-align:left"><member-card user="member.user"></member-card></td>
-                  <td>{{member.user.email}}</td>
+                  <td ng-if="userIsMember">{{member.user.email}}</td>
                   <td ng-if="isCoordinator">
                     <select>
                       <option ng-selected="member.roles[0].name == 'COORDINATOR'">Coordinator</option>

@@ -1756,9 +1756,14 @@
       let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
       rsp2.then(
         data => {
-          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback.length > 0))
+          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0))
           if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
-            this.userFeedbackArray = data.filter(f => ((f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT') && f.textualFeedback.length > 0))
+            this.userFeedbackArray = data.filter(
+              f => (
+                (f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT')
+                  && (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0)
+              )
+            )
           }
         },
         error => this.userFeedbackArray = []

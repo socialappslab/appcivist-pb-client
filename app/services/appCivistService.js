@@ -814,8 +814,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution', { sid: spaceId });
       }
     },
-    flatContributionInResourceSpace: function (spaceId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/:cid?flat=true', { sid: spaceId, cid: contributionId });
+    flatContributionInResourceSpace: function (spaceId, contributionId, fromPublicAPI) {
+      if (fromPublicAPI)
+        return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:cid?flat=true', { cid: contributionId });
+      else
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/:cid?flat=true', { sid: spaceId, cid: contributionId });
     },
     contributionInResourceSpaceByUUID: function (spaceUUId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {

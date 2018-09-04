@@ -1810,7 +1810,12 @@
     }
 
     function syncProposalWithPeerdoc() {
-      let rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId).get().$promise;
+      let rsp;
+      if ($scope.isAnonymous) {
+        rsp = Contributions.flatContributionInResourceSpace(null, $scope.proposal.uuid, true).get().$promise;
+      } else {
+        rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId, false).get().$promise;
+      }
       rsp.then(
         contribution => {
           if (!$scope.isTitleEdit)

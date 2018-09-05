@@ -50,7 +50,7 @@
 
       if ($scope.userIsAuthenticated) {
         $scope.currentAssembly = localStorageService.get('currentAssembly');
-        var rsp = Space.configsByUUID($scope.currentAssembly.resourcesResourceSpaceId).get();
+        var rsp = Space.configsByUUID($scope.currentAssembly.resourcesResourceSpaceUUID).get();
         rsp.$promise.then(
           configs => {
             $scope.assemblyConfigs = configs;

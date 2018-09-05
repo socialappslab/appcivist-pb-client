@@ -1366,7 +1366,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @return {object} promise
        **/
 
-      getContributions: function (target, type, isAnonymous, filters) {
+      getContributions: function (target, type, isAnonymous, filters, notifyError = true) {
         // Get list of contributions from server
         var rsp;
         var query = filters || {};
@@ -1384,7 +1384,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         }
         return rsp.$promise.then(
           data => data,
-          error => Notify.show('Error loading contributions from server', 'error')
+          error => {
+            if (notifyError)
+              Notify.show('Error loading contributions from server', 'error');
+            console.log('Try to load contributions in space from server returned error: ' + error);
+          }
         );
       },
 

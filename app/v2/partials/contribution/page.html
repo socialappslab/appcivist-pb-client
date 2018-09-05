@@ -432,7 +432,7 @@
         <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0 && showMediaCarousel">
             <div class="carousel-inner" role="listbox">
               <div class="item" ng-class="{active:$first}" ng-repeat="picture in resources.pictures">
-                <img src="{{picture.url}}">
+                <img ng-src="{{picture.url}}">
               </div>
             </div>
             <a class="left carousel-control" role="button" data-target="#media-carousel" data-slide="prev">

@@ -761,16 +761,18 @@
       rsp.then(
         function (data) {
           var related = [];
-          angular.forEach(data.list, function (r) {
-            if (r.contributionId === $scope.proposalID) {
-              return;
-            }
-            related.push(r);
-          });
+          if (data && data.list) {
+            angular.forEach(data.list, function (r) {
+              if (r.contributionId === $scope.proposalID) {
+                return;
+              }
+              related.push(r);
+            });
+          }
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          console.log("Error while trying to load: " + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '');
         }
       );
     }

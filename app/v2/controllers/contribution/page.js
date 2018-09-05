@@ -757,7 +757,7 @@
     function loadRelatedContributions() {
       $scope.proposal.rsUUID = $scope.proposal.resourceSpaceUUID;
       $scope.proposal.rsID = $scope.proposal.resourceSpaceId;
-      var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous);
+      var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous, null, false);
       rsp.then(
         function (data) {
           var related = [];

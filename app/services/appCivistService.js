@@ -1366,7 +1366,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @return {object} promise
        **/
 
-      getContributions: function (target, type, isAnonymous, filters, notifyError = true) {
+      getContributions: function (target, type, isAnonymous, filters, notifyError = false) {
         // Get list of contributions from server
         var rsp;
         var query = filters || {};

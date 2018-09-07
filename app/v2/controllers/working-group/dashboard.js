@@ -505,11 +505,13 @@
       rsp.then(
         function (data) {
           var related = [];
-          angular.forEach(data.list, function (r) {
-            angular.forEach(r.workingGroupAuthors, function(w) {
-              if (w.groupId === $scope.groupID) related.push(r);
+          if (data && data.list) {
+            angular.forEach(data.list, function (r) {
+              angular.forEach(r.workingGroupAuthors, function(w) {
+                if (w.groupId === $scope.groupID) related.push(r);
+              });
             });
-          });
+          }
           $scope.resources.relatedContributions = related;
         },
         function (error) {

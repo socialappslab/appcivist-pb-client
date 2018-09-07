@@ -1455,5 +1455,10 @@
   "dashboard.random-sorting-message": "Si le filtre aléatoire a été sélectionné, la pagination sera désactivée et le système présentera toujours une liste aléatoire de contributions chaque fois que le filtre aléatoire est appuyé ou cliqué. Pour réactiver la pagination, sélectionnez l'un des autres filtres.",
   "e.g., Facebook": "e.g., Facebook",
   "Source URL": "Source URL",
-  "e.g., the link to a facebook post where this contribution was first posted": "e.g., the link to a facebook post where this contribution was first posted"
+  "e.g., the link to a facebook post where this contribution was first posted": "e.g., the link to a facebook post where this contribution was first posted",
+  "Approved": "Aprobado",
+  "Pending approval": "Pendiente de aprobación",
+  "Role": "Rol",
+  "Invitation Status": "Estado de Invitación",
+  "Approval Status": "Estado de Aprobación"
 }

@@ -278,7 +278,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="member in members">
+                <tr ng-repeat="member in members.members">
                   <td style="text-align:left"><member-card user="member.user"></member-card></td>
                   <td ng-if="userIsMember">{{member.user.email}}</td>
                   <td ng-if="isCoordinator">

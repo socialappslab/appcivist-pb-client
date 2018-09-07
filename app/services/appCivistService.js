@@ -1146,7 +1146,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
         aid: assemblyId,
         gid: groupId,
         status: stat
-      });
+      }, {'query': {method: 'GET', isArray: false }});
     },
     workingGroupProposals: function (assemblyId, groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals', {

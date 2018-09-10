@@ -95,7 +95,7 @@
           <ul class="row tags" id="field-theme">
             <li class="title">{{(themesLimit == 1 ? 'Theme': 'Themes') | translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index"
-                ng-if="themesLimit > 1 || themesLimit === -1 || (themesLimit == 1 && (isAnonymous || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))) && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')">
+                ng-if="themesLimit > 1 || themesLimit === -1 || (themesLimit == 1 && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status === 'PUBLISHED')))">
               <a style="cursor:default">
                 {{theme.title}}
                 <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>

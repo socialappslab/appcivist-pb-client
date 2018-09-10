@@ -465,8 +465,8 @@
             $timeout(() => {
               $scope.interval = $interval(() => {
                 let iframe = document.getElementById('etherpadHTML');
-                let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
-                iframedoc.body.innerHTML = $scope.padHTML.text;
+                let iframedoc = iframe || iframe.contentDocument || iframe.contentWindow.document;
+                if (iframedoc) iframedoc.body.innerHTML = $scope.padHTML.text;
                 }, 2000);
             }, 2000);
           });

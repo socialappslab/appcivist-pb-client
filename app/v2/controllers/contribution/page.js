@@ -490,6 +490,7 @@
       }
       rsp.$promise.then(
         function (data) {
+          loadCustomFields();
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
           $scope.userIsCreator = $scope.user ? $scope.user.userId == data.creator.userId : false;
@@ -550,6 +551,8 @@
             console.warn('Proposal with no PAD associated');
           }
 
+          scope.selectedTheme = scope.proposal.themes ? scope.proposal.themes[0] : null;
+
           if (!scope.isAnonymous) {
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
             rsp.then(function (components) {
@@ -598,6 +601,12 @@
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
             scope.loadValues(scope.proposal.resourceSpaceUUID, true);
+          }
+
+          if (scope.keywordsLimit) {
+            if (scope.proposal.themes && scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == scope.keywordsLimit) {
+              scope.keywordsLimitReached = true;
+            }
           }
 
           loadRelatedContributions();
@@ -968,7 +977,6 @@
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();
-        loadCustomFields();
         checkIfFollowing($scope.campaign.rsID);
       } else {
         var res;
@@ -984,8 +992,6 @@
           // update current campaign reference
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
-          loadCustomFields();
-          loadProposal($scope);
           checkIfFollowing($scope.campaign.rsID);
         }, function (error) {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1046,11 +1052,12 @@
         $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] ? $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] : -1;
         if ($scope.themesLimit == 1) {
           loadAllThemes();
-          $scope.selectedTheme = $scope.proposal.themes ? $scope.proposal.themes[0] : null;
         }
+        loadProposal($scope);
         loadBallotPaper();
         loadViewsConfig();
       }, function (error) {
+        loadProposal($scope);
         loadBallotPaper();
         Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
@@ -1159,13 +1166,6 @@
       $scope.descriptionLimit = hasDescriptionLimit ? parseInt(hasDescriptionLimit) : false;
       $scope.loadReadOnlyEtherpadByRevision = loadReadOnlyEtherpadByRevision ? loadReadOnlyEtherpadByRevision : false;
       $scope.translateWordLimit = {wordLimit : $scope.descriptionLimit}
-
-      if ($scope.keywordsLimit) {
-        if ($scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == $scope.keywordsLimit) {
-          $scope.keywordsLimitReached = true;
-        }
-      }
-
     }
 
     function seeHistory() {

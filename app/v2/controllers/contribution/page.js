@@ -188,7 +188,11 @@
         }
       }
       $scope.etherpadLocale = Etherpad.getLocale();
-      $scope.loadProposal($scope);
+      //$scope.loadProposal($scope);
+      loadCampaign();
+      loadAssemblyConfig();
+      $scope.loadCampaignResources();
+
       $scope.showActionMenu = true;
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function () {
@@ -451,28 +455,28 @@
     };
 
     function loadReadOnlyEtherpadHTML() {
-      let rsp;
-      if ($scope.isAnonymous) {
-        rsp = Etherpad.getReadOnlyHtmlPublic(this.proposalID).get();
-      } else {
-        rsp = Etherpad.getReadOnlyHtml(this.assemblyID, this.campaignID, this.proposalID).get();
-      }
+      // let rsp;
+      // if ($scope.isAnonymous) {
+      //   rsp = Etherpad.getReadOnlyHtmlPublic(this.proposalID).get();
+      // } else {
+      //   rsp = Etherpad.getReadOnlyHtml(this.assemblyID, this.campaignID, this.proposalID).get();
+      // }
 
-      rsp.$promise.then(
-        data => {
-          $scope.padHTML = data;
-          angular.element(document).ready(function () {
-            $timeout(() => {
-              $scope.interval = $interval(() => {
-                let iframe = document.getElementById('etherpadHTML');
-                let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
-                iframedoc.body.innerHTML = $scope.padHTML.text;
-                }, 2000);
-            }, 2000);
-          });
-        },
-        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
-      )
+      // rsp.$promise.then(
+      //   data => {
+      //     $scope.padHTML = data;
+      //     angular.element(document).ready(function () {
+      //       $timeout(() => {
+      //         $scope.interval = $interval(() => {
+      //           let iframe = document.getElementById('etherpadHTML');
+      //           let iframedoc = iframe || iframe.contentDocument || iframe.contentWindow.document;
+      //           if (iframedoc) iframedoc.body.innerHTML = $scope.padHTML.text;
+      //           }, 2000);
+      //       }, 2000);
+      //     });
+      //   },
+      //   error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
+      // )
     }
 
     function loadProposal(scope) {
@@ -523,15 +527,17 @@
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
             $scope.extendedTextIsPeerDoc = data.extendedTextPad.resourceType === 'PEERDOC';
             if ($scope.extendedTextIsEtherpad) {
+              // show controls of etherpad if proposal is DRAFT or PUBLIC_DRAFT
+              let showControlsQParam = "&showControls=" + ($scope.proposal.status === 'DRAFT' || $scope.proposal.status === 'PUBLIC_DRAFT');
               $scope.etherpadReadOnlyUrl = $sce.trustAsResourceUrl(
-                Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url)
-                  + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale);
+                Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url, $scope.loadReadOnlyEtherpadByRevision)
+                  + "&userName=" + $scope.userName + showControlsQParam + '&lang=' + $scope.etherpadLocale);
               $scope.loadReadOnlyEtherpadHTML();
             } else if ($scope.extendedTextIsGdoc) {
               $scope.gdocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
               $scope.gdocUrlMinimal = $sce.trustAsResourceUrl($scope.gdocUrl +"?rm=minimal");
             } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
+              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $timeout(() => {
                 $scope.interval = $interval(() => {
@@ -569,7 +575,7 @@
             }, function (error) {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
-            vm.loadValues(vm.proposal.resourceSpaceId);
+            scope.loadValues(scope.proposal.resourceSpaceId);
           } else {
             var rsp = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
 
@@ -591,15 +597,12 @@
             }, function (error) {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
-            vm.loadValues(vm.proposal.resourceSpaceUUID, true);
+            scope.loadValues(scope.proposal.resourceSpaceUUID, true);
           }
 
           loadRelatedContributions();
           loadRelatedStats();
-          loadCampaign();
-          loadAssemblyConfig();
           loadResources();
-          $scope.loadCampaignResources();
         },
         function (error) {
           Notify.show('Error occured when trying to load contribution: ' + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -757,20 +760,22 @@
     function loadRelatedContributions() {
       $scope.proposal.rsUUID = $scope.proposal.resourceSpaceUUID;
       $scope.proposal.rsID = $scope.proposal.resourceSpaceId;
-      var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous);
+      var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous, null, false);
       rsp.then(
         function (data) {
           var related = [];
-          angular.forEach(data.list, function (r) {
-            if (r.contributionId === $scope.proposalID) {
-              return;
-            }
-            related.push(r);
-          });
+          if (data && data.list) {
+            angular.forEach(data.list, function (r) {
+              if (r.contributionId === $scope.proposalID) {
+                return;
+              }
+              related.push(r);
+            });
+          }
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          console.log("Error while trying to load: " + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '');
         }
       );
     }
@@ -980,6 +985,7 @@
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
           loadCustomFields();
+          loadProposal($scope);
           checkIfFollowing($scope.campaign.rsID);
         }, function (error) {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1127,6 +1133,7 @@
       let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
       let hasKeywordsLimit = $scope.campaignConfigs['appcivist.campaign.keywords.limit'];
       let hasDescriptionLimit = $scope.campaignConfigs['appcivist.campaign.contribution-summary-word-limit'];
+      let loadReadOnlyEtherpadByRevision = $scope.campaignConfigs['appcivist.campaign.etherpad-readonly-mode-last-published-edition'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1150,6 +1157,7 @@
       $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
       $scope.keywordsLimit = hasKeywordsLimit ? hasKeywordsLimit : false;
       $scope.descriptionLimit = hasDescriptionLimit ? parseInt(hasDescriptionLimit) : false;
+      $scope.loadReadOnlyEtherpadByRevision = loadReadOnlyEtherpadByRevision ? loadReadOnlyEtherpadByRevision : false;
       $scope.translateWordLimit = {wordLimit : $scope.descriptionLimit}
 
       if ($scope.keywordsLimit) {
@@ -1223,7 +1231,11 @@
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         themes => {
-          vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery.query));
+          if (vm.themeQuery && vm.themeQuery.query === "") {
+            vm.themesList = themes;
+          } else {
+            vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery.query));
+          }
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1756,9 +1768,14 @@
       let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
       rsp2.then(
         data => {
-          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback.length > 0))
+          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0))
           if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
-            this.userFeedbackArray = data.filter(f => ((f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT') && f.textualFeedback.length > 0))
+            this.userFeedbackArray = data.filter(
+              f => (
+                (f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT')
+                  && (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0)
+              )
+            )
           }
         },
         error => this.userFeedbackArray = []
@@ -1793,7 +1810,7 @@
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           $scope.newDocUrl = $sce.trustAsResourceUrl(response.path);
-          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"?embed=true");
+          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"&embed=true");
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
         },
         error => {
@@ -1810,7 +1827,12 @@
     }
 
     function syncProposalWithPeerdoc() {
-      let rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId).get().$promise;
+      let rsp;
+      if ($scope.isAnonymous) {
+        rsp = Contributions.flatContributionInResourceSpace(null, $scope.proposal.uuid, true).get().$promise;
+      } else {
+        rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId, false).get().$promise;
+      }
       rsp.then(
         contribution => {
           if (!$scope.isTitleEdit)

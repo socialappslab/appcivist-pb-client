@@ -66,7 +66,7 @@
           </ul>
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription" ng-if="!isAnonymous && !subscribed">Subscribe to Newsletter</button>
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterUnsubscribe" ng-if="!isAnonymous && subscribed">Unsubscribe to Newsletter</button>
-          
+
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember">Subscribe to Newsletter</button>
         </div>
       </div>
@@ -263,8 +263,8 @@
       </div>
       <div class="modal-body">
         <ul class="nav nav-pills" ng-if="isCoordinator">
-          <li class="active"><a data-toggle="tab" data-target="#approved">Approved</a></li>
-          <li><a data-toggle="tab" data-target="#pending">Pending approval</a></li>
+          <li class="active"><a data-toggle="tab" data-target="#approved">{{'Approved'|translate}}</a></li>
+          <li><a data-toggle="tab" data-target="#pending">{{'Pending approval'|translate}}</a></li>
         </ul>
         <div class="tab-content">
           <div id="approved" class="tab-pane fade in active">
@@ -272,20 +272,20 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th ng-if="userIsMember">Email Address</th>
-                  <th ng-if="isCoordinator">Role</th>
+                  <th ng-if="userIsMember">{{'Email Address'|translate}}</th>
+                  <th ng-if="isCoordinator">{{'Role'|translate}}</th>
                   <th ng-if="isCoordinator"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="member in members">
+                <tr ng-repeat="member in members.members">
                   <td style="text-align:left"><member-card user="member.user"></member-card></td>
                   <td ng-if="userIsMember">{{member.user.email}}</td>
                   <td ng-if="isCoordinator">
                     <select>
-                      <option ng-selected="member.roles[0].name == 'COORDINATOR'">Coordinator</option>
-                      <option ng-selected="member.roles[0].name == 'MODERATOR'">Moderator</option>
-                      <option ng-selected="member.roles[0].name == 'MEMBER'">Member</option>
+                      <option ng-selected="member.roles[0].name == 'COORDINATOR'">{{'Coordinator'|translate}}</option>
+                      <option ng-selected="member.roles[0].name == 'MODERATOR'">{{'Moderator'|translate}}</option>
+                      <option ng-selected="member.roles[0].name == 'MEMBER'">{{'Member'|translate}}</option>
                     </select>
                   </td>
                   <td ng-if="isCoordinator"><i class="fa fa-envelope-o fa-lg"></i> <i class="fa fa-trash-o fa-lg"></i></td>
@@ -297,10 +297,10 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Email Address</th>
-                  <th>Invitation Status</th>
-                  <th>Approval Status</th>
+                  <th>{{'Name'|translate}}</th>
+                  <th>{{'Email Address'|translate}}</th>
+                  <th>{{'Invitation Status'|translate}}</th>
+                  <th>{{'Approval Status'|translate}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -357,7 +357,7 @@
     </div>
   </div>
 
-  
+
   <!-- Subscribe when logged in -->
   <div class="modal fade dashboardModal" id="newsletterSubscription" tabindex="-1"
        role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
@@ -377,7 +377,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Unubscribe when logged in -->
   <div class="modal fade dashboardModal" id="newsletterUnsubscribe" tabindex="-1"
        role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">

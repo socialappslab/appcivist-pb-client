@@ -739,7 +739,7 @@
     }
 
     function loadDiscussions(campaign, isAnonymous) {
-      var res = Space.getContributions(campaign, 'DISCUSSION', isAnonymous);
+      var res = Space.getContributions(campaign, 'DISCUSSION', isAnonymous, null, false);
 
       res.then(
         function (response) {

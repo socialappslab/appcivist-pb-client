@@ -501,19 +501,21 @@
     }
 
     function loadRelatedContributions() {
-      var rsp = Space.getContributions($scope.wg, 'IDEA', ($scope.isAnonymous || !$scope.userIsMember));
+      var rsp = Space.getContributions($scope.wg, 'IDEA', ($scope.isAnonymous || !$scope.userIsMember), null, false);
       rsp.then(
         function (data) {
           var related = [];
-          angular.forEach(data.list, function (r) {
-            angular.forEach(r.workingGroupAuthors, function(w) {
-              if (w.groupId === $scope.groupID) related.push(r);
+          if (data && data.list) {
+            angular.forEach(data.list, function (r) {
+              angular.forEach(r.workingGroupAuthors, function(w) {
+                if (w.groupId === $scope.groupID) related.push(r);
+              });
             });
-          });
+          }
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          console.log("Error loading PROPOSALS: " + error.statusMessage);
         }
       );
     }
@@ -547,13 +549,13 @@
     // TODO: just show the latest contributions until notifications API is ready
     function loadLatestActivities(group) {
       console.log("loadLatestActivities: " + ($scope.isAnonymous || !$scope.userIsMember));
-      var rsp = Space.getContributions(group, 'PROPOSAL', ($scope.isAnonymous || !$scope.userIsMember));
+      var rsp = Space.getContributions(group, 'PROPOSAL', ($scope.isAnonymous || !$scope.userIsMember), null, false);
       rsp.then(
         function (data) {
-          $scope.activities = data.list;
+          $scope.activities = data && data.list ? data.list : [];
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          console.log("Error loading PROPOSALS: " + error.statusMessage);
         }
       );
     }
@@ -625,7 +627,7 @@
     function redirectToProposal(contribution) {
       this.closeModal('proposalFormModal');
 
-      $state.go('v2.assembly.aid.campaign.workingGroup.gid.proposal.pid', {
+      $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
         pid: contribution.contributionId,
         aid: this.assemblyID,
         cid: this.campaignID,

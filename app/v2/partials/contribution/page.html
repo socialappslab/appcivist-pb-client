@@ -91,28 +91,38 @@
           <div class="instruction" ng-bind-html="trustedHtml(currentComponent.instructions)" />
           <p class="read-more"><button class="btn btn-default" data-toggle="modal" data-target="#instructionsModal">{{ 'Read more' | translate}}</button></p>
         </div>
+
         <div ng-class="{ 'half-length': showInstructions }">
+          <!-- THEME/s -->
           <ul class="row tags" id="field-theme">
             <li class="title">{{(themesLimit == 1 ? 'Theme': 'Themes') | translate}}: </li>
+
+            <!-- DISPLAY THEMES AS ELEMENTS WHEN MORE THAN ONE IS ALLOWED -->
             <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index"
-                ng-if="themesLimit > 1 || themesLimit === -1 || (themesLimit == 1 && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status === 'PUBLISHED')))">
+                ng-if="themesLimit > 1 || themesLimit == -1
+                     || (themesLimit == 1 && !userIsCoordinator && !userIsAdmin && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status === 'PUBLISHED')))">
               <a style="cursor:default">
                 {{theme.title}}
                 <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>
               </a>
-              <!--<span ng-if="!$last">,</span>-->
             </li>
-            <li ng-if="themesLimit == 1 && !isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin) && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')">
+
+            <!-- EDIT THEME IN DROPDOWN WHEN ONLY ONE IS ALLOWED -->
+            <li ng-if="themesLimit == 1 && !isAnonymous
+                        && (userIsCoordinator || userIsAdmin
+                            || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
               <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId"
-                      ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
-              <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)"
+                      ng-model="$parent.selectedTheme" ng-change="selectTheme()" ></select>
+              <i ng-if="userIsCoordinator || userIsAdmin || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT'))"
                  class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"
                  ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
             </li>
+
+            <!-- EDIT THEME THROUGH BUTTON ADD WHEN MORE THANAN ONE IS ALLOWED -->
             <div class="liveEdit smaller" ng-if="themesLimit > 1 || themesLimit == -1">
               <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery.query"
                 ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()" autocomplete="off">
-              <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)"
+              <i ng-if="(userIsCoordinator || userIsAdmin || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))"
                  id="themeSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
               <fieldset class="tags" id="themeSearchTags">
                 <div class="autocomplete" ng-if="themesSuggestionsVisible">
@@ -129,6 +139,8 @@
                 <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
             </div>
           </ul>
+
+          <!-- KEYWORDS -->
           <ul class="row tags"  id="field-keyword">
             <li class="title">{{'Keywords'|translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
@@ -163,6 +175,7 @@
             </div>
           </ul>
 
+          <!--HEADER CUSTOM FIELDS-->
           <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
             <!-- TODO: CURRENT implementation only works for customFields of type MULTIPLE_CHOICE and limit 1-->
             <ul class="row tags" id="field-{{field.name.split(' ').join('_')}}" ng-repeat="field in customHeaderFields | filter: {fieldType:'MULTIPLE_CHOICE'}">

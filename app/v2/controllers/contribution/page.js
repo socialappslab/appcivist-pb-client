@@ -1225,7 +1225,11 @@
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         themes => {
-          vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery.query));
+          if (vm.themeQuery && vm.themeQuery.query === "") {
+            vm.themesList = themes;
+          } else {
+            vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery.query));
+          }
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');

@@ -1255,7 +1255,7 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
   };
 
   return {
-    embedUrl(id, revision, resourceUrl, writeEmbed) {
+    embedUrl(id, revision, resourceUrl, writeEmbed, includeRevision) {
       var url = etherpadServer + "p/" + id;
       if (/p\/r\./.test(resourceUrl)) {
         if (/etherpad\.appcivist\.org/.test(resourceUrl)) {
@@ -1266,7 +1266,7 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
         }
         url = resourceUrl;
       }
-      if (revision !== undefined && revision !== null) {
+      if (includeRevision && revision !== undefined && revision !== null) {
         url += '/timeslider#' + revision;
       }
       url += '?showChat=true&showLineNumbers=true&useMonospaceFont=false';

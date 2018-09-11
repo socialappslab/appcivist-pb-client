@@ -377,7 +377,9 @@
           <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && ((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator) && showBodyProposal"></p>
           <p translate="contribution.body.replace" ng-if="proposal.extendedTextPad && ((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator) && showProposalIntroInfo"></p>
           <!-- Add document buttons -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && ((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator) && showBodyProposal">
+          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && showBodyProposal
+                                                          && (userIsCoordinator || userIsAdmin
+                                                            || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
               <button class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
@@ -550,7 +552,7 @@
           <p>{{ 'Contributing ideas' | translate }}</p>
         </div>
         <div class="modal-body">
-          <associated-contributions-form ng-if="!isAnonymous && ((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator)"
+          <associated-contributions-form ng-if="!isAnonymous && (userIsCoordinator || userIsAdmin || userIsAuthor)"
                                          contribution-type="associatedContributionsType"
                                          space-id="proposal.resourceSpaceId"
                                          space="resources"
@@ -587,10 +589,12 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
           <p>{{ 'Attachments' | translate }}</p>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
                   ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
 
-          <button class="btn btn-default follow-contribution modal-button" ng-if="((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
                   ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
@@ -631,12 +635,21 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="mediaLabel">{{proposal.title}}</h3>
           <p>{{ 'Media' | translate }}</p>
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
           <!--
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
+          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
+          <span class="attachment-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
           <div class="noContent" ng-if="!resources.media || resources.media.length === 0">
             <h4>{{ 'There are no multimedia resources in this proposal' | translate }}</h4>
           </div>

@@ -575,7 +575,7 @@
             }, function (error) {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
-            vm.loadValues(vm.proposal.resourceSpaceId);
+            scope.loadValues(scope.proposal.resourceSpaceId);
           } else {
             var rsp = Campaigns.componentsByCampaignUUID($scope.campaignID).query().$promise;
 
@@ -597,7 +597,7 @@
             }, function (error) {
               Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
             });
-            vm.loadValues(vm.proposal.resourceSpaceUUID, true);
+            scope.loadValues(scope.proposal.resourceSpaceUUID, true);
           }
 
           loadRelatedContributions();

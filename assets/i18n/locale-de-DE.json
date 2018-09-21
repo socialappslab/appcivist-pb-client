@@ -1243,7 +1243,8 @@
   "gdocs.link": "Open Google Docs",
   "etherpad.disclaimer": "Etherpad is an open source real-time collaborative editor, maintained by the Etherpad Community. AppCivist has its own etherpad server, so you don't need to provide a link for this, but if you have your own etherpad server, make sure you add its base URL below and API key below.",
   "Add new members": "Add new members",
-  "Join the Group to create proposals": "Join the Group to create proposals",
+  "Login to join": "Login to join",
+  "Join the Group to create proposals": "Login to join",
   "Themes & Keywords": "Themes & Keywords",
   "Drafts": "Drafts",
   "contribution.body.replace": "You can replace your current <strong>Proposal Document</strong> from the menu. If you do, the old document will be moved to the <strong>Attachments</strong> section of the proposal with the title 'Previous Proposal Document'.",
@@ -1431,5 +1432,13 @@
   "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Duplicated email",
-  "dashboard.random-sorting-message": "If the random filter is selected, pagination is not used and the system will return a list of random items everytime you press or click on the random filter. Select any of the other filters to enable pagination again."
+  "dashboard.random-sorting-message": "If the random filter is selected, pagination is not used and the system will return a list of random items everytime you press or click on the random filter. Select any of the other filters to enable pagination again.",
+  "e.g., Facebook": "e.g., Facebook",
+  "Source URL": "Source URL",
+  "e.g., the link to a facebook post where this contribution was first posted": "e.g., the link to a facebook post where this contribution was first posted",
+  "Approved": "Approved",
+  "Pending approval": "Pending approval",
+  "Role": "Role",
+  "Invitation Status": "Invitation Status",
+  "Approval Status": "Approval Status"
 }

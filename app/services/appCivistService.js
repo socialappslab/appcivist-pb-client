@@ -814,8 +814,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution', { sid: spaceId });
       }
     },
-    flatContributionInResourceSpace: function (spaceId, contributionId) {
-      return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/:cid?flat=true', { sid: spaceId, cid: contributionId });
+    flatContributionInResourceSpace: function (spaceId, contributionId, fromPublicAPI) {
+      if (fromPublicAPI)
+        return $resource(getServerBaseUrl(localStorageService) + '/public/contribution/:cid?flat=true', { cid: contributionId });
+      else
+        return $resource(getServerBaseUrl(localStorageService) + '/space/:sid/contribution/:cid?flat=true', { sid: spaceId, cid: contributionId });
     },
     contributionInResourceSpaceByUUID: function (spaceUUId, pageC, pageSizeC) {
       if (pageC && pageSizeC) {
@@ -830,7 +833,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
-    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub) {
+    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub, all=false) {
       if (contributionId) {
           return $resource(
             getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid',
@@ -845,19 +848,35 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             }
           )
       } else {
-        return $resource(
-          getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
-          {
-            sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
-            customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-            includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
-          },
-          {
-            'getText': {
-              transformResponse: function(data, headersGetter, status) { return { content: data } }
+        if (all) {
+          return $resource(
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
+            {
+              sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
+              customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all
+            },
+            {
+              'getText': {
+                transformResponse: function(data, headersGetter, status) { return { content: data } }
+              }
             }
-          }
-        )
+          );
+        } else {
+          return $resource(
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
+            {
+              sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
+              customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
+            },
+            {
+              'getText': {
+                transformResponse: function(data, headersGetter, status) { return { content: data } }
+              }
+            }
+          );
+        }
       }
     },
     /**
@@ -1143,7 +1162,7 @@ appCivistApp.factory('WorkingGroups', function ($resource, $translate, localStor
         aid: assemblyId,
         gid: groupId,
         status: stat
-      });
+      }, {'query': {method: 'GET', isArray: false }});
     },
     workingGroupProposals: function (assemblyId, groupId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals', {
@@ -1252,7 +1271,7 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
   };
 
   return {
-    embedUrl(id, revision, resourceUrl, writeEmbed) {
+    embedUrl(id, revision, resourceUrl, writeEmbed, includeRevision) {
       var url = etherpadServer + "p/" + id;
       if (/p\/r\./.test(resourceUrl)) {
         if (/etherpad\.appcivist\.org/.test(resourceUrl)) {
@@ -1263,7 +1282,7 @@ appCivistApp.factory('Etherpad', function ($resource, localStorageService, Local
         }
         url = resourceUrl;
       }
-      if (revision !== undefined && revision !== null) {
+      if (includeRevision && revision !== undefined && revision !== null) {
         url += '/timeslider#' + revision;
       }
       url += '?showChat=true&showLineNumbers=true&useMonospaceFont=false';
@@ -1363,7 +1382,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @return {object} promise
        **/
 
-      getContributions: function (target, type, isAnonymous, filters) {
+      getContributions: function (target, type, isAnonymous, filters, notifyError = false) {
         // Get list of contributions from server
         var rsp;
         var query = filters || {};
@@ -1381,7 +1400,11 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         }
         return rsp.$promise.then(
           data => data,
-          error => Notify.show('Error loading contributions from server', 'error')
+          error => {
+            if (notifyError)
+              Notify.show('Error loading contributions from server', 'error');
+            console.log('Try to load contributions in space from server returned error: ' + error);
+          }
         );
       },
 

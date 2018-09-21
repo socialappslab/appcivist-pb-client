@@ -148,7 +148,7 @@
       angular.forEach(discussions, function(d) {
         d.rsUUID = d.resourceSpaceUUID;
         d.rsID = d.resourceSpaceId;
-        Space.getContributions(d, 'comment', (scope.isAnonymous), {}).then(
+        Space.getContributions(d, 'comment', (scope.isAnonymous), {}, false).then(
           function(comments) {
             d.comments = comments.list;
           }

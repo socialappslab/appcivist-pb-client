@@ -30,10 +30,10 @@
     });
 
   ContributionEmbedModal.$inject = [
-    '$scope', 'Notify', 'Etherpad', '$window'
+    '$scope', 'Notify', 'Etherpad', '$window', '$translate'
   ];
 
-  function ContributionEmbedModal($scope, Notify, Etherpad, $window) {
+  function ContributionEmbedModal($scope, Notify, Etherpad, $window, $translate) {
 
     this.$onInit = () => {
       this.newDocUrl = "";

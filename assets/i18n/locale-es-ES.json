@@ -1249,6 +1249,7 @@
   "gdocs.link": "Open Google Docs",
   "etherpad.disclaimer": "Etherpad is an open source real-time collaborative editor, maintained by the Etherpad Community. AppCivist has its own etherpad server, so you don't need to provide a link for this, but if you have your own etherpad server, make sure you add its base URL below and API key below.",
   "Add new members": "Agregar nuevos miembros",
+  "Login to join": "Inicia sesión para unirte",
   "Join the Group to create proposals": "Únete al Grupo para crear propuestas",
   "Themes & Keywords": "Temas y palabras claves",
   "Drafts": "Drafts",
@@ -1355,6 +1356,7 @@
   "login.ldapbutton": "Entrar",
   "Public draft": "Borrador público",
   "PUBLIC DRAFT": "BORRADOR PÚBLICO",
+  "PUBLIC_DRAFT": "BORRADOR PÚBLICO",
   "Public_draft": "Borrador público",
   "Read the extended description of themes here": "Lea la descripción completa de los temas aqui",
   "Privacy Policy": "<a href='https://docs.google.com/document/d/1xXY9ZH8Xhch43Bp6nzY-r-0kKlBmuKt80wjnk1P8Ick/edit?usp=sharing' target='_blank'>Política de Privacidad</a>",
@@ -1450,5 +1452,13 @@
   "contribution.error.missing-required-fields": "Para alterar el estado a {{status}}, complete todos los campos obligatorios, marcados en rojo.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Email duplicado",
-  "dashboard.random-sorting-message": "Mientras el filtro aleatorio está habilitado, las páginas no se tienen en cuenta. El sistema siempre devolverá una lista de elementos aleatorios. Presione de nuevo en el filtro aleatorio para obtener una nueva lista de {{tipo}}. <br> Para volver a habilitar la paginación, seleccione cualquiera de los otros filtros (popularidad, fecha, comentarios) y podrá explorar la página de elementos por página."
+  "dashboard.random-sorting-message": "Si el filtro aleatorio fue seleccionado, la paginación será desactivada y el sistema presentará siempre un lista aleatoria de contribuciones cada vez que se presione o clique el filtro aleatorio. Para volver a habilitar la paginación, seleccione cualquiera de los otros filtros.",
+  "e.g., Facebook": "'p.ejem., Facebook'",
+  "Source URL": "URL de Origen",
+  "e.g., the link to a facebook post where this contribution was first posted": "p.ejem., el enlace al post en otra página donde se publicó la contribución por primera vez",
+  "Approved": "Aprobado",
+  "Pending approval": "Pendiente de aprobación",
+  "Role": "Rol",
+  "Invitation Status": "Estado de Invitación",
+  "Approval Status": "Estado de Aprobación"
 }

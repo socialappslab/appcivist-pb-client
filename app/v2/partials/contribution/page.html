@@ -30,18 +30,20 @@
             <strong style="font-weight:bold;vertical-align:middle">{{'Shared with' | translate}}</strong>
             <div ng-repeat="author in proposal.authors | filter: filterCreatorFromAuthors(proposal.creator.uuid)" style="display: inline-block; margin-left: 10px;">
               <member-card user="author"></member-card>
-              <i ng-if="isCurrentAuthor(author) || userIsCoordinator || userIsAdmin" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteAuthor(author)"></i>
+              <i ng-if="(isCurrentAuthor(author) && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin"
+                 class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteAuthor(author)"></i>
             </div>
             <div ng-repeat="author in proposal.nonMemberAuthors" style="display: inline-block; margin-left: 10px;">
               <member-card user="author"></member-card>
-              <i ng-if="userIsAuthor" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteNonMemberAuthor(author)"></i>
+              <i ng-if="(userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin"
+                 class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteNonMemberAuthor(author)"></i>
             </div>
             <div class="liveEdit">
               <input class="btn-sm" type="text" id="authorSearch" name="authors" ng-model="authorQuery"
                      ng-click="authorsChangeOnClick()" ng-change="authorsChangeOnClick()"
                      ng-model-options="{debounce:750}" autocomplete="off">
-              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="authorSearchClose" class="fa fa-times"
-                 style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
+              <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)"
+                 id="authorSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('authorSearch')"></i>
               <fieldset class="tags"  id="authorSearchTags">
                 <div class="autocomplete authors" ng-class="{ smaller: ldap == false }" ng-if="authorsSuggestionsVisible">
                   <div class="col-sm-5" ng-class="{'col-sm-12': ldap == false }">
@@ -67,10 +69,10 @@
                     </ul>
                   </div>
                 </div>
-
               </fieldset>
 
-              <button ng-click="showSearch('authorSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
+              <button ng-click="showSearch('authorSearch')"
+                      ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)">
                 <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Share' | translate}}
               </button>
               <div style="display:inline-block;position:relative;width:100px;"><span class="attachment-spinner" us-spinner="spinnerSmallOptions" spinner-key="authors-list"></span></div>
@@ -89,28 +91,39 @@
           <div class="instruction" ng-bind-html="trustedHtml(currentComponent.instructions)" />
           <p class="read-more"><button class="btn btn-default" data-toggle="modal" data-target="#instructionsModal">{{ 'Read more' | translate}}</button></p>
         </div>
+
         <div ng-class="{ 'half-length': showInstructions }">
+          <!-- THEME/s -->
           <ul class="row tags" id="field-theme">
             <li class="title">{{(themesLimit == 1 ? 'Theme': 'Themes') | translate}}: </li>
+
+            <!-- DISPLAY THEMES AS ELEMENTS WHEN MORE THAN ONE IS ALLOWED -->
             <li ng-repeat="theme in proposal.themes | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index"
-                ng-if="themesLimit > 1 || themesLimit === -1 || (themesLimit == 1 && (isAnonymous || (!userIsAuthor && !userIsCoordinator && !userIsAdmin)))">
+                ng-if="themesLimit > 1 || themesLimit == -1
+                     || (themesLimit == 1 && !userIsCoordinator && !userIsAdmin && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status === 'PUBLISHED')))">
               <a style="cursor:default">
                 {{theme.title}}
-                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>
+                <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>
               </a>
-              <!--<span ng-if="!$last">,</span>-->
             </li>
-            <li ng-if="themesLimit == 1 && !isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)">
+
+            <!-- EDIT THEME IN DROPDOWN WHEN ONLY ONE IS ALLOWED -->
+            <li ng-if="themesLimit == 1 && !isAnonymous
+                        && (userIsCoordinator || userIsAdmin
+                            || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
               <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId"
-                      ng-model="$parent.selectedTheme" ng-change="selectTheme()" />
-              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"
+                      ng-model="$parent.selectedTheme" ng-change="selectTheme()" ></select>
+              <i ng-if="userIsCoordinator || userIsAdmin || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT'))"
+                 class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"
                  ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
             </li>
+
+            <!-- EDIT THEME THROUGH BUTTON ADD WHEN MORE THANAN ONE IS ALLOWED -->
             <div class="liveEdit smaller" ng-if="themesLimit > 1 || themesLimit == -1">
               <input class="btn-sm" type="text" id="themeSearch" name="themes" ng-model="themeQuery.query"
                 ng-click="themesChangeOnClick()" ng-change="themesChangeOnClick()" autocomplete="off">
-              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="themeSearchClose" class="fa fa-times"
-                 style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
+              <i ng-if="(userIsCoordinator || userIsAdmin || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))"
+                 id="themeSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('themeSearch')"></i>
               <fieldset class="tags" id="themeSearchTags">
                 <div class="autocomplete" ng-if="themesSuggestionsVisible">
                   <ul class="suggestion-list">
@@ -121,22 +134,28 @@
                   </ul>
                 </div>
               </fieldset>
-              <button ng-click="showSearch('themeSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Add Theme</button>
+              <button ng-click="showSearch('themeSearch')"
+                      ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)">
+                <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
             </div>
           </ul>
+
+          <!-- KEYWORDS -->
           <ul class="row tags"  id="field-keyword">
             <li class="title">{{'Keywords'|translate}}: </li>
             <li ng-repeat="theme in proposal.themes | filter:{type:'EMERGENT'}  track by $index">
               <a style="cursor:default">
                 {{theme.title}}
-                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor:pointer" ng-click="$parent.deleteTheme(theme)"></i>
+                <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)"
+                   class="fa fa-trash" style="margin-left: 5px; cursor:pointer" ng-click="$parent.deleteTheme(theme)"></i>
               </a>
               <!--<span ng-if="!$last">,</span>-->
             </li>
             <div class="liveEdit smaller">
               <input class="btn-sm" type="text" id="keywordSearch" name="keywords" ng-model="keywordsQuery"
                 ng-click="keywordsChangeOnClick()" ng-change="keywordsChangeOnClick()" autocomplete="off">
-              <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" id="keywordSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('keywordSearch')"></i>
+              <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)"
+                 id="keywordSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('keywordSearch')"></i>
               <fieldset class="tags" id="keywordSearchTags">
                 <div class="autocomplete" ng-if="keywordsSuggestionsVisible">
                   <ul class="suggestion-list">
@@ -151,10 +170,12 @@
                   </ul>
                 </div>
               </fieldset>
-              <button ng-click="showSearch('keywordSearch')" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin) && !keywordsLimitReached"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
+              <button ng-click="showSearch('keywordSearch')"
+                      ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !keywordsLimitReached"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
             </div>
           </ul>
 
+          <!--HEADER CUSTOM FIELDS-->
           <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
             <!-- TODO: CURRENT implementation only works for customFields of type MULTIPLE_CHOICE and limit 1-->
             <ul class="row tags" id="field-{{field.name.split(' ').join('_')}}" ng-repeat="field in customHeaderFields | filter: {fieldType:'MULTIPLE_CHOICE'}">
@@ -165,8 +186,8 @@
                   <select class="header_select" name="{{ field.name + '-' + field.customFieldDefinitionId }}"
                           ng-options="option as option.value for option in field.customFieldValueOptions track by option.value"
                           ng-model="custom.valuesDict[field.customFieldDefinitionId][0]"
-                          ng-change="checkCustomHeader(field.customFieldDefinitionId, custom.valuesDict[field.customFieldDefinitionId][0].customFieldValueId, option)" ng-if="userIsAuthor"/>
-
+                          ng-change="checkCustomHeader(field.customFieldDefinitionId, custom.valuesDict[field.customFieldDefinitionId][0].customFieldValueId, option)"
+                          ng-if="(userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin"/>
 
                   <!-- Todo support other types of custom field headers, not only those that are represented with a select-->
                   <span class="header_select" ng-if="!userIsAuthor">{{custom.valuesDict[field.customFieldDefinitionId].value}}</span>
@@ -176,7 +197,7 @@
                 <li ng-repeat="val in custom.valuesDict[field.customFieldDefinitionId] track by $index">
                   <a style="cursor:default">
                     {{val.value}}
-                    <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor:pointer;" ng-click="$parent.deleteCustomValue(val, field.customFieldDefinitionId)"></i>
+                    <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor:pointer;" ng-click="$parent.deleteCustomValue(val, field.customFieldDefinitionId)"></i>
                   </a>
                   <!--<span ng-if="!$last">,</span>-->
                 </li>
@@ -184,7 +205,7 @@
                        name="{{'customfield_'+field.customFieldDefinitionId}}" ng-model="customQuery"
                        ng-click="customChangeOnClick(field.customFieldDefinitionId)"
                        ng-change="customChangeOnClick(field.customFieldDefinitionId)" autocomplete="off">
-                <i ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"
+                <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT'))  || userIsCoordinator || userIsAdmin)"
                    id="{{'customSearch_'+field.customFieldDefinitionId+'Close'}}"
                    class="fa fa-times" style="margin-right: 5px;"
                      ng-click="hideSearch('customSearch_'+field.customFieldDefinitionId)"></i>
@@ -198,7 +219,9 @@
                     </ul>
                   </div>
                 </fieldset>
-                <button ng-click="showSearch('customSearch_'+field.customFieldDefinitionId)" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{ 'Add' | translate }}</button>
+                <button ng-click="showSearch('customSearch_'+field.customFieldDefinitionId)"
+                        ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)">
+                  <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{ 'Add' | translate }}</button>
               </div>
             </ul>
           </div>
@@ -284,9 +307,10 @@
                     ng-if="contributionType && following && !isAnonymous">
               {{ ('Unfollow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
+            <!--STATUS VIEW AND CHANGE ELEMENT -->
             <div class="overlay_status" ng-if="contributionType">
               <span class="status_label">{{'Status' | translate}}</span>
-              <span class="status" ng-if="(userIsCreator || userIsCoordinator) && allowChangeStatus">
+              <span class="status" ng-if="proposal.status != 'PUBLISHED' && allowChangeStatus && (userIsAuthor || userIsCoordinator || userIsAdmin)">
                 <select name="currentStatus" id="currentStatus" ng-model="proposal.status"
                         ng-change="changeStatus(proposal.status, '{{proposal.status}}')">
                   <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
@@ -294,12 +318,9 @@
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
                 </select>
               </span>
-              <span class="status" ng-if="(userIsCreator || userIsCoordinator) && !allowChangeStatus && proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</span>
-              <span class="status" ng-if="(userIsCreator || userIsCoordinator) && !allowChangeStatus && proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</span>
-              <span class="status" ng-if="(userIsCreator || userIsCoordinator) && !allowChangeStatus && proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
-              <span class="status" ng-if="!userIsCreator && !userIsCoordinator && proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</span>
-              <span class="status" ng-if="!userIsCreator && !userIsCoordinator && proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</span>
-              <span class="status" ng-if="!userIsCreator && !userIsCoordinator && proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Draft' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'PUBLIC_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin)) ">{{'Public draft' | translate}}</span>
+              <span class="status" ng-if="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
             </div>
           </div>
         </div>
@@ -311,7 +332,7 @@
           <h2 ng-if="showBodyDescriptionTitle">
             {{'contribution.summary' | translate}}
             <i class="fa fa-edit smalledit" id="descriptionEditToggle"
-               ng-click="descriptionToggleEdit()" ng-if="(userIsAuthor || userIsCoordinator || userIsAdmin)">
+               ng-click="descriptionToggleEdit()" ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)">
             </i>
           </h2>
           <p class="contribution_description" ng-if="isDescriptionEdit && (userIsAuthor || userIsCoordinator || userIsAdmin)">
@@ -327,8 +348,12 @@
           </p>
           <p class="contribution_description"
              ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
-             ng-if="!isDescriptionEdit && showBodyDescription &&  (userIsAuthor || userIsCoordinator || userIsAdmin)"
+             ng-if="!isDescriptionEdit && showBodyDescription &&  ((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)"
              ng-click="descriptionToggleEdit()">
+          </p>
+          <p class="contribution_description"
+             ng-bind-html="trustedHtml((!showBodyDescriptionTitle ? editIconHTML + '&nbsp;&nbsp;&nbsp;': '') + proposal.text)"
+             ng-if="!isDescriptionEdit && showBodyDescription &&  ((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT'))) && !userIsCoordinator && !userIsAdmin">
           </p>
           <p class="contribution_description" ng-bind-html="trustedHtml(proposal.text)"
              ng-if="!isDescriptionEdit && showBodyDescription && (!userIsAuthor && !userIsCoordinator && !userIsAdmin)"></p>
@@ -347,10 +372,12 @@
         <div class="proposal-text">
           <h2 ng-if="showBodyProposalTitle">{{contributionType | titlecase | translate}}</h2>
           <p translate="contribution.body" ng-if="showProposalIntroInfo"></p>
-          <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator) && showBodyProposal"></p>
-          <p translate="contribution.body.replace" ng-if="proposal.extendedTextPad && (userIsAuthor || userIsCoordinator) && showProposalIntroInfo"></p>
+          <p translate="contribution.body.empty" ng-if="!proposal.extendedTextPad && ((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator) && showBodyProposal"></p>
+          <p translate="contribution.body.replace" ng-if="proposal.extendedTextPad && ((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator) && showProposalIntroInfo"></p>
           <!-- Add document buttons -->
-          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && (userIsAuthor || userIsCoordinator) && showBodyProposal">
+          <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && showBodyProposal
+                                                          && (userIsCoordinator || userIsAdmin
+                                                            || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
               <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
               <button class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
@@ -372,10 +399,10 @@
                  class="etherpad__wrapper">
               <div class="pad-html">
                 <iframe ng-if="userIsAuthor && etherpadReadWriteUrl" name="embed_readwrite"
-                        ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px">
+                        ng-src="{{etherpadReadWriteUrl}}" width="100%" height="600px" scrolling="0" frameborder="0">
                 </iframe>
                 <iframe id="etherpadHTML" ng-if="(!userIsAuthor && etherpadReadOnlyUrl) || !etherpadReadWriteUrl"
-                        width="100%" height="600px"></iframe>
+                        ng-src="{{etherpadReadOnlyUrl}}" width="100%" height="600px" scrolling="0" frameborder="0"></iframe>
               </div>
             </div>
           </div>
@@ -432,7 +459,7 @@
         <div id="media-carousel" class="carousel slide" data-ride="carousel" data-interval="false" ng-if="resources.pictures.length > 0 && showMediaCarousel">
             <div class="carousel-inner" role="listbox">
               <div class="item" ng-class="{active:$first}" ng-repeat="picture in resources.pictures">
-                <img src="{{picture.url}}">
+                <img ng-src="{{picture.url}}">
               </div>
             </div>
             <a class="left carousel-control" role="button" data-target="#media-carousel" data-slide="prev">
@@ -476,7 +503,7 @@
                ng-if="!campaignConfigs['appcivist.campaign.disable-proposal-discussions'] || campaignConfigs['appcivist.campaign.disable-proposal-discussions']==='false' || campaignConfigs['appcivist.campaign.disable-proposal-discussions']==='FALSE'">
         <div class="row comments-header">
           <div class="col-xs-4 text-left">
-            <strong>Comments ({{commentType == 'members' ? proposal.commentCount : proposal.forumCommentCount}})</strong>
+            <strong>{{'Comments'|translate}} ({{commentType == 'members' ? proposal.commentCount : proposal.forumCommentCount}})</strong>
           </div>
           <div class="col-xs-8 text-right">
             {{'View comments by'|translate}}:
@@ -523,7 +550,7 @@
           <p>{{ 'Contributing ideas' | translate }}</p>
         </div>
         <div class="modal-body">
-          <associated-contributions-form ng-if="!isAnonymous && (userIsAuthor || userIsCoordinator || userIsAdmin)"
+          <associated-contributions-form ng-if="!isAnonymous && (userIsCoordinator || userIsAdmin || userIsAuthor)"
                                          contribution-type="associatedContributionsType"
                                          space-id="proposal.resourceSpaceId"
                                          space="resources"
@@ -560,10 +587,12 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="documentsLabel">{{proposal.title}}</h3>
           <p>{{ 'Attachments' | translate }}</p>
-          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
                   ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
 
-          <button class="btn btn-default follow-contribution modal-button" ng-if="userIsAuthor && !openAddAttachment"
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
                   ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
@@ -583,7 +612,9 @@
                   ng-href="{{resource.url}}">
                 <span>{{resource.title ? resource.title : resource.name}}</span>
               </a>
-              <span class="number clickable" ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
+              <span class="number clickable"
+                    ng-if="((userIsAuthor && (proposal.status != 'DRAFT' && proposal.status != 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)"
+                    ng-click="deleteAttachment(resource)"><i class="fa fa-trash"></i>{{'Delete'|translate}}</span>
             </li>
           </ul>
         </div>
@@ -602,12 +633,21 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
           <h3 class="modal-title" id="mediaLabel">{{proposal.title}}</h3>
           <p>{{ 'Media' | translate }}</p>
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachment()">{{'Add a new file'|translate}}</button>
+
+          <button class="btn btn-default follow-contribution modal-button"
+                  ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin) && !openAddAttachment"
+                  ng-click="toggleOpenAddAttachmentByUrl()">{{'Add URL resource'|translate}}</button>
         </div>
         <div class="modal-body">
           <!--
             TODO: investigate why simply using the class dashboardModal does not work
             (or adding another class at the same level the noWorkingGroups in new-dashboard.scss)
           -->
+          <div ng-include="'/app/v2/partials/contribution/add-attachment-form.html'"></div>
+          <span class="attachment-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
           <div class="noContent" ng-if="!resources.media || resources.media.length === 0">
             <h4>{{ 'There are no multimedia resources in this proposal' | translate }}</h4>
           </div>

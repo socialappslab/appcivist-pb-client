@@ -344,6 +344,15 @@
             else this.proposal.status = this.statusBeforeUpdate;
           }
         );
+      } else if (this.proposal.status === "ARCHIVED") {
+        $translate("contribution.status.archived.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.archived.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
       }
     }
 

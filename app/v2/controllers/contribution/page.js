@@ -51,6 +51,7 @@
     $scope.loadReadOnlyEtherpadHTML = loadReadOnlyEtherpadHTML.bind($scope);
     $scope.embedPadGdoc = embedPadGdoc.bind($scope);
     $scope.embedPadPeerDoc = embedPadPeerDoc.bind($scope);
+    $scope.loadCampaign = loadCampaign().bind($scope);
     $scope.loadCampaignResources = loadCampaignResources.bind($scope);
     $scope.filterCustomFields = filterCustomFields.bind($scope);
     $scope.follow = follow.bind($scope);
@@ -223,19 +224,26 @@
       }
 
       $scope.etherpadLocale = Etherpad.getLocale();
-      loadCampaign();
-      loadAssemblyConfig();
-      $scope.loadCampaignResources();
       //$scope.loadProposal($scope);
+
       $scope.$watch('proposalID', loadProposal.bind(null, $scope));
       $scope.$watch('assemblyID', loadProposal.bind(null, $scope));
       $scope.$watch('assemblyID', function(n,o) {
+        $scope.loadCampaign();
+        $scope.loadAssemblyConfig();
+        $scope.loadCampaignResources();
         $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
       });
       $scope.$watch('campaignID', function(n,o,) {
+        $scope.loadCampaign();
+        $scope.loadAssemblyConfig();
+        $scope.loadCampaignResources();
         $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
       });
       $scope.$watch('proposalID', function(n,o) {
+        $scope.loadCampaign();
+        $scope.loadAssemblyConfig();
+        $scope.loadCampaignResources();
         $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
       });
       $scope.showActionMenu = true;
@@ -1019,7 +1027,6 @@
 
     function loadCampaign() {
       $scope.campaign = localStorageService.get('currentCampaign');
-
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();

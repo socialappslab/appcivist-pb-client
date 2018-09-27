@@ -833,7 +833,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
-    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub) {
+    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub, all=false) {
       if (contributionId) {
           return $resource(
             getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid',
@@ -848,19 +848,35 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             }
           )
       } else {
-        return $resource(
-          getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
-          {
-            sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
-            customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-            includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
-          },
-          {
-            'getText': {
-              transformResponse: function(data, headersGetter, status) { return { content: data } }
+        if (all) {
+          return $resource(
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
+            {
+              sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
+              customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all
+            },
+            {
+              'getText': {
+                transformResponse: function(data, headersGetter, status) { return { content: data } }
+              }
             }
-          }
-        )
+          );
+        } else {
+          return $resource(
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
+            {
+              sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
+              customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
+            },
+            {
+              'getText': {
+                transformResponse: function(data, headersGetter, status) { return { content: data } }
+              }
+            }
+          );
+        }
       }
     },
     /**

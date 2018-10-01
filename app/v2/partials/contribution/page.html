@@ -316,7 +316,7 @@
                   <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
                   <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</option>
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
-                  <option value="ARCHIVED" ng-selected="proposal.status == 'ARCHIVED'">{{ 'Archived' | translate }}</option>
+                  <option value="ARCHIVED" ng-selected="proposal.status == 'ARCHIVED'" ng-if="userIsCoordinator || userIsAdmin">{{ 'Archived' | translate }}</option>
                 </select>
               </span>
               <span class="status" ng-if="proposal.status == 'DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Draft' | translate }}</span>

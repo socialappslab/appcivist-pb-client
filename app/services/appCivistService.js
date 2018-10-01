@@ -1498,6 +1498,12 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           type='proposal';
         } else if (type === 'draftIdeas') {
           type='idea';
+        } else if (type === 'archivedProposals' || type === 'excludedProposals') {
+          console.log(filters);
+          type = 'proposal';
+        } else if (type === 'archivedIdeas' || type === 'excludedIdeas') {
+          console.log(filters);
+          type = 'idea';
         }
         if (filters.createdByOnly != null && filters.createdByOnly != undefined) {
           params.createdByOnly=filters.createdByOnly;

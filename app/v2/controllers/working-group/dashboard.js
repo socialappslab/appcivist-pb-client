@@ -282,6 +282,12 @@
         } else {
           $scope.showComments = true;
         }
+
+        if ($scope.campaignConfigs['appcivist.working-group.allow-non-members-to-post-proposals'] === 'TRUE') {
+          $scope.allowNonMembersProposals = true;
+        } else {
+          $scope.allowNonMembersProposals = false;
+        }
         loadWorkingGroup();
       }, function (error) {
         loadWorkingGroup();

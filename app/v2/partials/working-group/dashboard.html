@@ -79,13 +79,13 @@
       <div class="campaign__filters">
         <h2 class="heading--header no-padding col-xs-12 col-lg-5 col-md-5 col-sm-5">{{'Proposals' | translate}}</h2>
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-4"
-           ng-if="user != null && newProposalsEnabled && userIsMember"
+           ng-if="user != null && newProposalsEnabled && (userIsMember || allowNonMembersProposals)"
            ng-click="openModal('proposalFormModal')">
           <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
         </a>
 
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
-           ng-if="user != null && !userIsMember" disabled>
+           ng-if="user != null && !userIsMember && !allowNonMembersProposals" disabled>
           {{'Join the Group to create proposals' | translate}}
         </a>
 

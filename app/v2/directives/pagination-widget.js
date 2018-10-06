@@ -137,6 +137,13 @@
             filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
           }
 
+          if (filters.mode === 'archivedProposals' || filters.mode === 'archivedIdeas') {
+            filters.status = "ARCHIVED";
+          }
+          if (filters.mode === 'excludedProposals' || filters.mode === 'excludedIdeas') {
+            filters.status = "EXCLUDED";
+          }
+
           if (filters) {
             Space.doSearch(target, scope.isAnonymous, filters).then(
               data => {

@@ -47,6 +47,18 @@
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('sharedIdeas', $event)">{{ 'Shared ideas' | translate | titlecase}}</a>
       </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('archivedProposals', $event)">{{'Archived proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('archivedIdeas', $event)">{{ 'Archived ideas' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('excludedProposals', $event)">{{'Excluded proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('excludedIdeas', $event)">{{ 'Excluded ideas' | translate | titlecase}}</a>
+      </li>
     </ul>
   </div>
 

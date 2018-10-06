@@ -272,6 +272,27 @@
         filters.shared_with = user.userId;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
       }
+
+      if (filters.mode === 'archivedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "ARCHIVED";
+      }
+      if (filters.mode === 'archivedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "ARCHIVED";
+      }
+      if (filters.mode === 'excludedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "EXCLUDED";
+      }
+      if (filters.mode === 'excludedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "EXCLUDED";
+      }
       // if (this.dryRun === 'true') {
       //   this.generatedFilters = filters;
       // } else {

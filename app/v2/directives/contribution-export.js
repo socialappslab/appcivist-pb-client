@@ -133,16 +133,25 @@
         let sid = this.campaign.resourceSpaceId;
         let coid = this.mode != 'multiple' ? this.contribution.contributionId : false;
         let pub = false;
+        let all = false;
         if ($stateParams.cuuid) {
           sid = this.campaign.resurceSpaceUUID;
           coid = this.mode != 'multiple' ? this.contribution.uuid : false;
           pub = true;
         }
-        console.log(coid);
-        console.log(this.contributions);
+
+        all = coid ? false : true;
+        if (coid) console.log("Exporting contribution "+coid+"...");
+
+        if (this.contributions && this.contributions.length>0) {
+          console.log("Exporting contributions "+this.contributions+"...");
+        } else {
+          all = true;
+        }
+
         let rsp = Contributions.contributionInResouceSpaceExport(sid, coid, this.exportFormat, this.fields,
           this.customFields, this.contributions,
-          this.includeDoc, this.docExportFormat, pub)
+          this.includeDoc, this.docExportFormat, pub, all, this.type)
             .getText().$promise.then(
               returned => {
                 if (this.exportFormat==="CSV") {

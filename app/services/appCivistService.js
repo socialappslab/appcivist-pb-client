@@ -833,13 +833,15 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
-    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub, all=false) {
+    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields,
+                                                selectedContributions, includeDoc, docExportFormat, pub,
+                                                all=false, type="IDEA") {
       if (contributionId) {
           return $resource(
             getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid',
             {
               sid: spaceId, format: format, fields: fields, customFields: customFields, coid: contributionId, includeDoc: includeDoc,
-              docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
+              docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
             },
             {
               'getText': {
@@ -854,7 +856,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             {
               sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
               customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all, type: type
             },
             {
               'getText': {
@@ -868,7 +870,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             {
               sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
               customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
             },
             {
               'getText': {

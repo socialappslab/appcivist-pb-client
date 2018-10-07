@@ -380,9 +380,9 @@
           <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && showBodyProposal
                                                           && (userIsCoordinator || userIsAdmin
                                                             || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
-              <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
-              <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
-              <button class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
+              <button ng-if="etherpadIsEnabled" class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
+              <button ng-if="gdocIsEnabled" class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
+              <button ng-if="peerdocIsEnabled" class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
               <!--<button class="btn btn-default proposal-btn">Default</button>-->
           </div>
           <!-- Notice for non authors or non logged in visitors -->

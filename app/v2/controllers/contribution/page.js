@@ -1150,6 +1150,9 @@
       let hasKeywordsLimit = $scope.campaignConfigs['appcivist.campaign.keywords.limit'];
       let hasDescriptionLimit = $scope.campaignConfigs['appcivist.campaign.contribution-summary-word-limit'];
       let loadReadOnlyEtherpadByRevision = $scope.campaignConfigs['appcivist.campaign.etherpad-readonly-mode-last-published-edition'];
+      let etherpadIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.etherpad-editor-enabled'];
+      let gdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.gdoc-editor-enabled'];
+      let peerdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.peerdoc-editor-enabled'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1175,6 +1178,9 @@
       $scope.descriptionLimit = hasDescriptionLimit ? parseInt(hasDescriptionLimit) : false;
       $scope.loadReadOnlyEtherpadByRevision = loadReadOnlyEtherpadByRevision ? loadReadOnlyEtherpadByRevision : false;
       $scope.translateWordLimit = {wordLimit : $scope.descriptionLimit}
+      $scope.etherpadIsEnabled = etherpadIsEnabledConf ? etherpadIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
+      $scope.gdocIsEnabled = gdocIsEnabledConf ? gdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
+      $scope.peerdocIsEnabled = peerdocIsEnabledConf ? peerdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
     }
 
     function seeHistory() {

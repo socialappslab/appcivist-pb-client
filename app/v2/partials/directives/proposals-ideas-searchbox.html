@@ -50,7 +50,7 @@
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('archivedProposals', $event)">{{'Archived proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE) && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('archivedIdeas', $event)">{{ 'Archived ideas' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.excluded.view']==='TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS'">

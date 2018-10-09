@@ -6,7 +6,7 @@
     </div>
   </section>
   <span class="pagination-spinner" us-spinner="spinnerOptions" spinner-key="contributions-page"></span>
-  <section ng-if="filters.mode==='proposal'||filters.mode==='myProposals'||filters.mode==='sharedProposals'||filters.mode==='draftProposals'">
+  <section ng-if="filters.mode==='proposal'||filters.mode==='myProposals'||filters.mode==='sharedProposals'||filters.mode==='draftProposals'||filters.mode==='excludedProposals'||filters.mode==='archivedProposals'">
     <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
       <contribution-card class="card__proposal" dir-paginate="proposal in contributions | itemsPerPage: pageSize"
                          total-items="totalContributions" current-page="pagination.current" contribution="proposal"
@@ -22,7 +22,7 @@
       </p>
     </div>
   </section>
-  <section ng-if="filters.mode==='idea'||filters.mode==='myIdeas'||filters.mode==='sharedIdeas'||filters.mode==='draftIdeas'">
+  <section ng-if="filters.mode==='idea'||filters.mode==='myIdeas'||filters.mode==='sharedIdeas'||filters.mode==='draftIdeas'||filters.mode==='excludedIdeas'||filters.mode==='archivedIdeas'">
     <!--<div class="list__cards container__ideas" data-eq-pts="small: 768, medium: 1024, large: 1500">-->
     <div class="clearfix" data-eq-pts="small: 768, medium: 1024, large: 1500">
       <contribution-card class="card__proposal" show-idea-body="true" dir-paginate="idea in contributions | itemsPerPage: pageSize"

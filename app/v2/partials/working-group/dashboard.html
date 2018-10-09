@@ -4,7 +4,6 @@
     <header class="page__header" ng-style="coverStyle">
       <div class="row">
         <breadcrumb label="wg.name"></breadcrumb>
-        <a class="btn btn-join" ng-click="joinWg(wg.groupId)" ng-if="!userIsMember && !isAnonymous">{{'Join'|translate}}</a>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -64,10 +63,12 @@
               </a>
             </li>
           </ul>
+          <!--
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription" ng-if="!isAnonymous && !subscribed">Subscribe to Newsletter</button>
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterUnsubscribe" ng-if="!isAnonymous && subscribed">Unsubscribe to Newsletter</button>
 
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember && !isAnonymous">Subscribe to Newsletter</button>
+          -->
         </div>
       </div>
     </header>

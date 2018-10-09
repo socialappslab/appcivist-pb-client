@@ -29,34 +29,34 @@
       <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA') && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('idea', $event)">{{'Published Ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.mine']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.mine']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS' && isCoordinator">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.draft']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS' && isCoordinator">
         <a ng-click="searchMode('draftProposals', $event)">{{'Draft Proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA')) && isCoordinator">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.draft']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA')) && isCoordinator">
         <a ng-click="searchMode('draftIdeas', $event)">{{ 'Draft Ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.shared']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('sharedProposals', $event)">{{'Shared proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.shared']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('sharedIdeas', $event)">{{ 'Shared ideas' | translate | titlecase}}</a>
       </li>
-      <li ng-if="campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE'" class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('archivedProposals', $event)">{{'Archived proposals' | translate | titlecase}}</a>
       </li>
-      <li ng-if="campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE'" class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE) && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('archivedIdeas', $event)">{{ 'Archived ideas' | translate | titlecase}}</a>
       </li>
-      <li ng-if="campaignConfig['appcivist.campaign.filter.excluded.view']==='TRUE'" class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.excluded.view']==='TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('excludedProposals', $event)">{{'Excluded proposals' | translate | titlecase}}</a>
       </li>
-      <li ng-if="campaignConfig['appcivist.campaign.filter.excluded.view']==='TRUE'" class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.excluded.view']==='TRUE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('excludedIdeas', $event)">{{ 'Excluded ideas' | translate | titlecase}}</a>
       </li>
     </ul>

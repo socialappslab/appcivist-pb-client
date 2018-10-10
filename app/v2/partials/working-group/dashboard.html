@@ -4,7 +4,6 @@
     <header class="page__header" ng-style="coverStyle">
       <div class="row">
         <breadcrumb label="wg.name"></breadcrumb>
-        <a class="btn btn-join" ng-click="joinWg(wg.groupId)" ng-if="!userIsMember">{{'Join'|translate}}</a>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -64,10 +63,12 @@
               </a>
             </li>
           </ul>
+          <!--
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription" ng-if="!isAnonymous && !subscribed">Subscribe to Newsletter</button>
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterUnsubscribe" ng-if="!isAnonymous && subscribed">Unsubscribe to Newsletter</button>
 
-          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember">Subscribe to Newsletter</button>
+          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember && !isAnonymous">Subscribe to Newsletter</button>
+          -->
         </div>
       </div>
     </header>
@@ -87,11 +88,6 @@
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
            ng-if="user != null && !userIsMember && !allowNonMembersProposals" disabled>
           {{'Join the Group to create proposals' | translate}}
-        </a>
-
-        <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
-           ng-if="user === null" disabled>
-          {{'Login to join' | translate}}
         </a>
 
         <!--<a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"-->

@@ -60,6 +60,7 @@
     $scope.hideSearch = hideSearch.bind($scope);
     $scope.authorsChangeOnClick = authorsChangeOnClick.bind($scope);
     $scope.themesChangeOnClick = themesChangeOnClick.bind($scope);
+    $scope.wgsChangeOnClick = wgsChangeOnClick.bind($scope);
     $scope.keywordsChangeOnClick = keywordsChangeOnClick.bind($scope);
     $scope.loadAllThemes = loadAllThemes.bind($scope);
     $scope.selectTheme = selectTheme.bind($scope);
@@ -84,6 +85,7 @@
     $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
     $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
     $scope.enforceLimit = enforceLimit.bind($scope);
+    $scope.loadWorkingGroups = loadWorkingGroups.bind($scope);
 
     activate();
 
@@ -244,6 +246,10 @@
       $scope.keywordsList = [];
       $scope.keywordsSuggestionsVisible = false;
       $scope.keywordsLimitReached = false;
+      $scope.wgQuery = {query:""};
+      $scope.wgsList = [];
+      $scope.wgsSuggestionsVisible = false;
+      $scope.wgsLimit = null;
 
       $scope.customList = [];
       $scope.customQuery = "";
@@ -255,6 +261,9 @@
 
       $scope.allThemes = [];
       $scope.selectedTheme = null;
+
+      $scope.allWgs = [];
+      $scope.selectedWg = null;
 
       $scope.assemblyConfig = []
       $scope.ldap = false;
@@ -1107,6 +1116,10 @@
       );
     }
 
+    function loadWorkingGroups() {
+      $scope.allWgs = localStorageService.get('myWorkingGroups') || [];
+    }
+
     function deleteSelectedTheme() {
       let vm = this;
       let keywords = this.proposal.themes.filter(v => v.type == 'EMERGENT');
@@ -1153,6 +1166,8 @@
       let etherpadIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.etherpad-editor-enabled'];
       let gdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.gdoc-editor-enabled'];
       let peerdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.peerdoc-editor-enabled'];
+      let addWorkingGroupConf = $scope.campaignConfigs['appcivist.campaign.working-group-proposals'];
+      let workingGroupNumberLimit = $scope.campaignConfigs['appcivist.campaign.working-group-number-limit'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1181,6 +1196,8 @@
       $scope.etherpadIsEnabled = etherpadIsEnabledConf ? etherpadIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
       $scope.gdocIsEnabled = gdocIsEnabledConf ? gdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
       $scope.peerdocIsEnabled = peerdocIsEnabledConf ? peerdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
+      $scope.addWorkingGroup = addWorkingGroupConf ? addWorkingGroupConf.toLowerCase() === 'enabled' ? true : false : false;
+      $scope.wgsLimit = workingGroupNumberLimit ? parseInt(workingGroupNumberLimit) : 5;
     }
 
     function seeHistory() {
@@ -1257,6 +1274,18 @@
         }
       );
     }
+    
+    function wgsChangeOnClick() {
+      this.setAddContext('WGS');
+      this.wgsSuggestionsVisible = true;
+      let vm = this;
+      let list = localStorageService.get('myWorkingGroups') || [];
+      if ($scope.wgQuery && $scope.wgQuery.query === "") {
+        $scope.wgsList = list;
+      } else {
+        $scope.wgsList = $filter('filter')(list, queryWgs($scope.wgQuery.query));
+      }
+    }
 
     function customChangeOnClick(customid) {
       this.setAddContext('CUSTOM');
@@ -1295,6 +1324,8 @@
           <span style="margin-left: 15px;vertical-align:super">${(item.name === null || item.name === undefined || item.name === "" || item.name === " ") ? item.email : item.name}</span>`);
       } else if (this.currentAdd.context === 'CUSTOM') {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.value}</span>`);
+      } else if (this.currentAdd.context === 'WGS') {
+        return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.name}</span>`);
       } else {
         return $sce.trustAsHtml(`<span style="padding-top: 15px; display: inline-block;">${item.title}</span>`);
       }
@@ -1330,6 +1361,11 @@
         this.themesSuggestionsVisible = false;
         $('#themeSearch').hide();
         $('#themeSearchClose').hide();
+      } else if (this.currentAdd.context === 'WGS') {
+        this.addWgToProposal(item);
+        this.wgsSuggestionsVisible = false;
+        $('#wgSearch').hide();
+        $('#wgSearchClose').hide();
       } else if (this.currentAdd.context === 'CUSTOM') {
         this.addCustomValue(item, fieldDefinitionId);
         $('#customSearch'+'_'+fieldDefinitionId).hide();
@@ -1395,6 +1431,16 @@
           var lowerTitle = value.title.toLowerCase();
           var lowerQuery = query.toLowerCase();
           return lowerTitle.indexOf(lowerQuery) >= 0 && (value.type == 'EMERGENT' || value.type == 'OFFICIAL_PRE_DEFINED');
+        }
+      }
+    }
+    
+    function queryWgs(query) {
+      return function (value, index, array) {
+        if (value.name != null && value.name != "" && query != null && query != "") {
+          var lowerName = value.name.toLowerCase();
+          var lowerQuery = query.toLowerCase();
+          return lowerName.indexOf(lowerQuery) >= 0;
         }
       }
     }

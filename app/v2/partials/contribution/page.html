@@ -175,6 +175,53 @@
             </div>
           </ul>
 
+          <!-- WG/s -->
+          <ul class="row tags" id="field-wg">
+            <li class="title">{{(wgsLimit == 1 ? 'GROUP': 'Working Groups') | translate}}: </li>
+
+            <!-- DISPLAY THEMES AS ELEMENTS WHEN MORE THAN ONE IS ALLOWED -->
+            <li ng-repeat="wg in proposal.workingGroupAuthors | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index"
+                ng-if="wgsLimit > 1 || wgsLimit == -1
+                     || (wgsLimit == 1 && !userIsCoordinator && !userIsAdmin && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status === 'PUBLISHED')))">
+              <a style="cursor:default">
+                {{wg.name}}
+                <i ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteWg(wg)"></i>
+              </a>
+            </li>
+
+            <!-- EDIT THEME IN DROPDOWN WHEN ONLY ONE IS ALLOWED -->
+            <li ng-if="wgsLimit == 1 && !isAnonymous
+                        && (userIsCoordinator || userIsAdmin
+                            || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
+              <select class="header_select" name="wgsSelect" ng-options="wg as wg.name for wg in allWgs track by wg.groupId"
+                      ng-model="$parent.selectedWg" ng-change="selectWg()" ></select>
+              <i ng-if="userIsCoordinator || userIsAdmin || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT'))"
+                 class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"
+                 ng-click="deleteSelectedWg()" ng-if="selectedWg"></i>
+            </li>
+
+            <!-- EDIT THEME THROUGH BUTTON ADD WHEN MORE THANAN ONE IS ALLOWED -->
+            <div class="liveEdit smaller" ng-if="wgsLimit > 1 || wgsLimit == -1">
+              <input class="btn-sm" type="text" id="wgSearch" name="wgs" ng-model="wgQuery.query"
+                ng-click="wgsChangeOnClick()" ng-change="wgsChangeOnClick()" autocomplete="off">
+              <i ng-if="(userIsCoordinator || userIsAdmin || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))"
+                 id="wgSearchClose" class="fa fa-times" style="margin-right: 5px;" ng-click="hideSearch('wgSearch')"></i>
+              <fieldset class="tags" id="wgSearchTags">
+                <div class="autocomplete" ng-if="wgsSuggestionsVisible">
+                  <ul class="suggestion-list">
+                    <li ng-repeat="item in wgsList track by $index" ng-click="$parent.currentAddOnSelect(item)"
+                      class="suggestion-item" style="min-height: 50px;">
+                      <span ng-bind-html="$parent.currentAddGetText(item)"></span>
+                    </li>
+                  </ul>
+                </div>
+              </fieldset>
+              <button ng-click="showSearch('wgSearch')"
+                      ng-if="((userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin)">
+                <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
+            </div>
+          </ul>
+
           <!--HEADER CUSTOM FIELDS-->
           <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">
             <!-- TODO: CURRENT implementation only works for customFields of type MULTIPLE_CHOICE and limit 1-->

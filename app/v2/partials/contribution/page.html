@@ -307,6 +307,10 @@
                     ng-if="contributionType && following && !isAnonymous">
               {{ ('Unfollow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
+            <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#forkModal"
+                    ng-if="contributionType && !isAnonymous && proposal.status == 'PUBLISHED'">
+              {{ ('Fork ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
+            </button>
             <!--STATUS VIEW AND CHANGE ELEMENT -->
             <div class="overlay_status" ng-if="contributionType">
               <span class="status_label">{{'Status' | translate}}</span>
@@ -317,12 +321,14 @@
                   <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</option>
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
                   <option value="ARCHIVED" ng-selected="proposal.status == 'ARCHIVED'" ng-if="userIsCoordinator || userIsAdmin">{{ 'Archived' | translate }}</option>
+                  <option value="FORKED_PRIVATE_DRAFT" ng-selected="proposal.status == 'FORKED_PRIVATE_DRAFT'">{{'Forked Private Draft' | translate}}</option>
                 </select>
               </span>
               <span class="status" ng-if="proposal.status == 'DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Draft' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'PUBLIC_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin)) ">{{'Public draft' | translate}}</span>
               <span class="status" ng-if="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'ARCHIVED'">{{ 'Archived' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'FORKED_PRIVATE_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Forked Private Draft' | translate }}</span>
             </div>
           </div>
         </div>
@@ -781,6 +787,25 @@
         <div class="modal-footer">
           <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
           <button class="confirm-modal accept" data-dismiss="modal" ng-click="follow()">{{'Follow' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade dashboardModal" id="forkModal" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p> {{ ('Fork ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <p>{{ ('Would you like to fork this ' + (contributionType == 'PROPOSAL' ? 'proposal' : 'idea') + '?') | translate }}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="forkProposal()">{{'Fork' | translate}}</button>
         </div>
       </div>
     </div>

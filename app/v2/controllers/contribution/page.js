@@ -11,13 +11,13 @@
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications',
-    '$timeout', '$interval', 'LocaleService'
+    '$timeout', '$interval', 'LocaleService', '$state'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications,
-                                $timeout, $interval, LocaleService) {
+                                $timeout, $interval, LocaleService, $state) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -84,6 +84,7 @@
     $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
     $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
     $scope.enforceLimit = enforceLimit.bind($scope);
+    $scope.forkProposal = forkProposal.bind($scope);
 
     activate();
 
@@ -355,6 +356,8 @@
         );
       }
     }
+
+
 
     function updateStatusService() {
       angular.element('.required-field').removeClass('required-field');
@@ -2004,6 +2007,7 @@
     }
 
     function follow() {
+      console.log('me llamo');
       let sub = {
         spaceId: $scope.proposal.rsUUID,
         userId: $scope.user.userId,
@@ -2044,6 +2048,27 @@
           Notify.show("Error trying to unsubscribe. Please try again later.", "error")
         }
       );
+    }
+
+    function forkProposal() {
+
+      let rsp = Contributions.forkProposal($scope.assemblyID, $scope.campaignId, $scope.proposal.contributionId).update().$promise;
+
+      rsp.then(
+        rs => {
+
+          $state.go('v2.assembly.aid.campaign.contribution.coid', { aid: $scope.assemblyID, cid: $scope.campaignId, coid: rs.contributionId}, { reload: true });
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
+        },
+        error => {
+          Notify.show("Error trying to fork. Please try again later.", "error")
+        }
+      )
+
     }
 
     function checkIfFollowing(sid) {

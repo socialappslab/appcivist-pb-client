@@ -1468,5 +1468,9 @@
   "Pending approval": "Pending approval",
   "Role": "Role",
   "Invitation Status": "Invitation Status",
-  "Approval Status": "Approval Status"
+  "Approval Status": "Approval Status",
+  "Fork Proposal": "Fork Proposal",
+  "Would you like to fork this proposal?" : "Would you like to fork this proposal?",
+  "Fork": "Fork",
+  "Forked Private Draft": "Private Draft Amendment"
 }

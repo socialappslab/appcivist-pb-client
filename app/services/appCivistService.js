@@ -749,6 +749,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         'update': { method: 'PUT' }
       });
     },
+    forkProposal: function (assemblyId, campaignId, proposalId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/contribution', { aid: assemblyId, cid: campaignId, coid: proposalId }, {
+        'update': { method: 'POST' }
+      });
+    },
     excludeContribution: function (assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' }, {
         'update': { method: 'PUT' }

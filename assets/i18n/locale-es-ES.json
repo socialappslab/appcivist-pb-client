@@ -1472,5 +1472,11 @@
   "Would you like to fork this proposal?" : "Te gustaría fork esta propuesta?",
   "Fork": "Fork",
   "Forked Private Draft": "Private Draft Amendment",
+  "Merge Proposal": "Mezclar Propuesta",
+  "Would you like to merge this proposal?" : "Te gustaría mezclar esta propuesta?",
+  "Merge": "Mezclar",
+  "Merged Private Draft": "Amendment Mezclada Privada",
+  "Merged Public Draft": "Merged Public Amendment",
+  "Forked Published": "Published Dissensus Amendment"
   "Parent Proposal": "Propuesta Padre"
 }

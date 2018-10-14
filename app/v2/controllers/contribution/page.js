@@ -85,6 +85,7 @@
     $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
     $scope.enforceLimit = enforceLimit.bind($scope);
     $scope.forkProposal = forkProposal.bind($scope);
+    $scope.mergeProposal = mergeProposal.bind($scope);
 
     activate();
 
@@ -506,6 +507,11 @@
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
           $scope.userIsCreator = $scope.user ? $scope.user.userId == data.creator.userId : false;
+          if($scope.user && data.parent && Contributions.verifyAuthorship($scope.user, data.parent)) {
+            $scope.userIsParentAuthor = true;
+          } else {
+            $scope.userIsParentAuthor = false;
+          }
           $scope.contributionLabel = $scope.proposal.title;
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
@@ -624,6 +630,9 @@
           loadRelatedContributions();
           loadRelatedStats();
           loadResources();
+          console.log('PARENT AUTHOR ' + scope.userIsParentAuthor);
+          console.log('STATUS ' + scope.proposal.status.includes('FORKED'));
+          console.log('STATUS ' + scope.proposal.status);
         },
         function (error) {
           Notify.show('Error occured when trying to load contribution: ' + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -2053,9 +2062,7 @@
     }
 
     function forkProposal() {
-
       let rsp = Contributions.forkProposal($scope.assemblyID, $scope.campaignId, $scope.proposal.contributionId).update().$promise;
-
       rsp.then(
         rs => {
 
@@ -2072,6 +2079,28 @@
       )
 
     }
+
+    function mergeProposal() {
+      console.log($scope.proposal.contributionId);
+      console.log($scope.proposal.parent.contributionId);
+      let rsp = Contributions.mergeProposal($scope.assemblyID, $scope.proposal.contributionId, $scope.proposal.parent.contributionId).update().$promise;
+      rsp.then(
+        rs => {
+
+          $state.go('v2.assembly.aid.campaign.contribution.coid', { aid: $scope.assemblyID, cid: $scope.campaignId, coid: $scope.proposal.contributionId}, { reload: true });
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
+        },
+        error => {
+          Notify.show("Error trying to merge. Please try again later.", "error")
+        }
+      )
+
+    }
+
 
     function checkIfFollowing(sid) {
       if ($scope.user && $scope.user.userId) {

@@ -1469,9 +1469,15 @@
   "Role": "Role",
   "Invitation Status": "Invitation Status",
   "Approval Status": "Approval Status",
-  "Fork Proposal": "Fork Proposal",
-  "Would you like to fork this proposal?" : "Would you like to fork this proposal?",
-  "Fork": "Fork",
+  "Fork Proposal": "Amendment Proposal",
+  "Would you like to fork this proposal?" : "Would you like to amend this proposal?",
+  "Fork": "Amend",
   "Forked Private Draft": "Private Draft Amendment",
+  "Merge Proposal": "Merge Proposal",
+  "Would you like to merge this proposal?" : "Would you like to merge this proposal?",
+  "Merge": "Merge",
+  "Merged Private Draft": "Merged Private Amendment",
+  "Merged Public Draft": "Merged Public Amendment",
+  "Forked Published": "Published Dissensus Amendment"
   "Parent Proposal": "Parent Proposal"
 }

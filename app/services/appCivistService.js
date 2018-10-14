@@ -754,6 +754,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         'update': { method: 'POST' }
       });
     },
+    mergeProposal: function (assemblyId, proposalId, parentId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:pid/proposal/:cid', {aid: assemblyId, pid: parentId, cid: proposalId }, {
+        'update': { method: 'PUT' }
+      });
+    },
     excludeContribution: function (assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/status/:status', { aid: assemblyId, coid: contributionId, status: 'EXCLUDED' }, {
         'update': { method: 'PUT' }

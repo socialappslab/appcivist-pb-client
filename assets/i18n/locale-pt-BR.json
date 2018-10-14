@@ -1471,5 +1471,6 @@
   "Fork Proposal": "Emendar Proposta",
   "Would you like to fork this proposal?" : "Você gostaria de emendar esta proposta?",
   "Fork": "Emendar",
-  "Forked Private Draft": "Rascunho Privado de Emenda"
+  "Forked Private Draft": "Rascunho Privado de Emenda",
+  "Parent Proposal": "Rascunho Principal"
 }

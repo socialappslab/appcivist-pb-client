@@ -1471,5 +1471,6 @@
   "Fork Proposal": "Fork Proposal",
   "Would you like to fork this proposal?" : "Te gustaría fork esta propuesta?",
   "Fork": "Fork",
-  "Forked Private Draft": "Private Draft Amendment"
+  "Forked Private Draft": "Private Draft Amendment",
+  "Parent Proposal": "Propuesta Padre"
 }

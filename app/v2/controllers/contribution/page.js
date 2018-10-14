@@ -1165,7 +1165,9 @@
       let etherpadIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.etherpad-editor-enabled'];
       let gdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.gdoc-editor-enabled'];
       let peerdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.peerdoc-editor-enabled'];
+      let showContributionParent = $scope.campaignConfigs['appcivist.campaign.show-parent'];
 
+      $scope.showContributionParent  = showContributionParent ? showContributionParent.toLowerCase()  === 'false' ? false : true : true;
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;

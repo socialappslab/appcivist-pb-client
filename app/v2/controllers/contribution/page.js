@@ -86,6 +86,7 @@
     $scope.enforceLimit = enforceLimit.bind($scope);
     $scope.forkProposal = forkProposal.bind($scope);
     $scope.mergeProposal = mergeProposal.bind($scope);
+    $scope.goToParentOrChildren = goToParentOrChildren.bind($scope);
 
     activate();
 
@@ -492,9 +493,37 @@
       // )
     }
 
+    function loadChildren(scope, data) {
+
+      let mC = Contributions.contributionChildren(data.uuid, 'MERGES').query().$promise;
+      mC.then(
+        rs => {
+
+          $scope.mergeChildren = rs.length > 0 ? rs : null;
+        },
+        error => {
+          Notify.show("Error trying to fork. Please try again later.", "error")
+        }
+      );
+
+      let fC =  Contributions.contributionChildren(data.uuid, 'FORKS').query().$promise;
+      fC.then(
+        rs => {
+
+          $scope.forkedChildren = rs.length > 0 ? rs : null;
+        },
+        error => {
+          Notify.show("Error trying to fork. Please try again later.", "error")
+        }
+      );
+
+    }
+
     function loadProposal(scope) {
       let vm = this;
       var rsp;
+
+      $('.modal-backdrop.in').hide();
 
       if (scope.isAnonymous) {
         rsp = Contributions.getContributionByUUID(scope.proposalID).get();
@@ -513,6 +542,7 @@
             $scope.userIsParentAuthor = false;
           }
           $scope.contributionLabel = $scope.proposal.title;
+          loadChildren(scope, data);
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
           });
@@ -630,9 +660,6 @@
           loadRelatedContributions();
           loadRelatedStats();
           loadResources();
-          console.log('PARENT AUTHOR ' + scope.userIsParentAuthor);
-          console.log('STATUS ' + scope.proposal.status.includes('FORKED'));
-          console.log('STATUS ' + scope.proposal.status);
         },
         function (error) {
           Notify.show('Error occured when trying to load contribution: ' + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -2018,7 +2045,6 @@
     }
 
     function follow() {
-      console.log('me llamo');
       let sub = {
         spaceId: $scope.proposal.rsUUID,
         userId: $scope.user.userId,
@@ -2061,6 +2087,13 @@
       );
     }
 
+    function goToParentOrChildren(id) {
+
+      $state.go('v2.assembly.aid.campaign.contribution.coid', { aid: $scope.assemblyID, cid: $scope.campaignId, coid: id}, { reload: true });
+    }
+
+
+
     function forkProposal() {
       let rsp = Contributions.forkProposal($scope.assemblyID, $scope.campaignId, $scope.proposal.contributionId).update().$promise;
       rsp.then(
@@ -2081,8 +2114,7 @@
     }
 
     function mergeProposal() {
-      console.log($scope.proposal.contributionId);
-      console.log($scope.proposal.parent.contributionId);
+
       let rsp = Contributions.mergeProposal($scope.assemblyID, $scope.proposal.contributionId, $scope.proposal.parent.contributionId).update().$promise;
       rsp.then(
         rs => {

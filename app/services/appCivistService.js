@@ -726,6 +726,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         'delete': { method: 'DELETE' }
       });
     },
+    contributionChildren: function (contributionUUID, type) {
+
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/proposal?type=:type', { uuid: contributionUUID, type: type });
+
+      },
     contributionSoftRemoval: function (assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval', { aid: assemblyId, coid: contributionId }, {
         'update': { method: 'PUT' }

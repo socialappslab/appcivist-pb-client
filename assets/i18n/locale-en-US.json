@@ -1469,7 +1469,7 @@
   "Role": "Role",
   "Invitation Status": "Invitation Status",
   "Approval Status": "Approval Status",
-  "Fork Proposal": "Amendment Proposal",
+  "Fork Proposal": "Amend Proposal",
   "Would you like to fork this proposal?" : "Would you like to amend this proposal?",
   "Fork": "Amend",
   "Forked Private Draft": "Private Draft Amendment",
@@ -1478,6 +1478,14 @@
   "Merge": "Merge",
   "Merged Private Draft": "Merged Private Amendment",
   "Merged Public Draft": "Merged Public Amendment",
-  "Forked Published": "Published Dissensus Amendment"
-  "Parent Proposal": "Parent Proposal"
+  "Forked Published": "Published Dissensus Amendment",
+  "Forked Public Draft": "Public Draft Amendment",
+  "Parent Proposal": "Parent Proposal",
+  "Amendments Proposals": "Amendments Proposals",
+  "Amendments": "Amendments",
+  "FORKED_PRIVATE_DRAFT": "Private Draft Amendment",
+  "FORKED_PUBLIC_DRAFT": "Public Draft Amendment",
+  "FORKED_PUBLISHED": "Published Dissensus Amendment",
+  "MERGED_PRIVATE_DRAFT": "Merged Private Amendment",
+  "MERGED_PUBLIC_DRAFT": "Merged Public Amendment"
 }

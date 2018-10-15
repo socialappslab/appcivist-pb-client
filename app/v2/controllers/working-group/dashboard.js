@@ -480,6 +480,7 @@
 
     function submitMembers(assemblyId) {
       console.log(assemblyId);
+      $rootScope.startSpinner();
       var url = localStorageService.get('serverBaseUrl') + '/assembly/' + assemblyId + '/campaign/'+ $scope.campaignID +'/group/'+ $scope.groupID +'/member';
       var fd = new FormData();
       fd.append('file', $scope.membersFile);
@@ -493,6 +494,7 @@
         }
       }).then(
         response => {
+          $rootScope.stopSpinner();
           $translate('Members invited').then(function (successMsg) {
             Notify.show(successMsg, 'success');
           });
@@ -501,6 +503,7 @@
           angular.element('#addMembers button.close').trigger('click');
         },
         error => {
+          $rootScope.stopSpinner();
           Notify.show(error.statusMessage, "error");
         }
       )

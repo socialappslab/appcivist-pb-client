@@ -1577,6 +1577,42 @@
         }
       );
     }
+    
+    function addWgToProposal(theme) {
+      this.proposal.workingGroupAuthors = this.proposal.workingGroupAuthors || [];
+      if (this.wgsLimit > 1) {
+        if (this.proposal.workingGroupAuthors.length >= this.wgsLimit) {
+          Notify.show("Can't add more working groups", 'error');
+          return;
+        }
+      }
+      this.proposal.themes.push(theme);
+      let updateThemeId = false;
+      if (!theme.themeId) {
+        updateThemeId = true;
+      }
+      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
+        response => {
+          if (updateThemeId) {
+            console.log("Added theme didn't have ID. Updating...")
+            const result = response.filter(t => t.title === theme.title);
+            if (result && result.length > 0) {
+              theme.themeId = result[0].themeId;
+              theme.uuid = result[0].uuid;
+            }
+          }
+          $translate('Changed saved').then(
+           successMsg => {
+           Notify.show(successMsg, 'success');
+           });
+          //Notify.show('Theme added successfully', 'success')
+        },
+        error => {
+          this.deleteTheme(theme, true);
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
 
     function addCustomValue(item, definitionId) {
       let value = item.value;

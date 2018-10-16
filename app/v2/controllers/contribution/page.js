@@ -570,6 +570,7 @@
           }
 
           scope.selectedTheme = scope.proposal.themes ? scope.proposal.themes[0] : null;
+          scope.selectedWg = scope.workingGroupAuthors ? scope.workingGroupAuthors[0] : null;
 
           if (!scope.isAnonymous) {
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
@@ -1068,8 +1069,12 @@
       rsp.$promise.then(function (data) {
         $scope.campaignConfigs = data;
         $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] ? $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] : -1;
+        $scope.wgsLimit =  $scope.campaignConfigs['appcivist.campaign.working-group-number-limit'] ? $scope.campaignConfigs['appcivist.campaign.working-group-number-limit'] : 1;
         if ($scope.themesLimit == 1) {
           loadAllThemes();
+        }
+        if ($scope.wgsLimit == 1) {
+          loadWorkingGroups();
         }
         loadProposal($scope);
         loadBallotPaper();
@@ -1118,6 +1123,7 @@
 
     function loadWorkingGroups() {
       $scope.allWgs = localStorageService.get('myWorkingGroups') || [];
+      console.log($scope.allWgs);
     }
 
     function deleteSelectedTheme() {
@@ -1167,7 +1173,6 @@
       let gdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.gdoc-editor-enabled'];
       let peerdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.peerdoc-editor-enabled'];
       let addWorkingGroupConf = $scope.campaignConfigs['appcivist.campaign.working-group-proposals'];
-      let workingGroupNumberLimit = $scope.campaignConfigs['appcivist.campaign.working-group-number-limit'];
 
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1197,7 +1202,6 @@
       $scope.gdocIsEnabled = gdocIsEnabledConf ? gdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
       $scope.peerdocIsEnabled = peerdocIsEnabledConf ? peerdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
       $scope.addWorkingGroup = addWorkingGroupConf ? addWorkingGroupConf.toLowerCase() === 'enabled' ? true : false : false;
-      $scope.wgsLimit = workingGroupNumberLimit ? parseInt(workingGroupNumberLimit) : 5;
     }
 
     function seeHistory() {

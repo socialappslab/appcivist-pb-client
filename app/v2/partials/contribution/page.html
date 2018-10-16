@@ -180,7 +180,7 @@
             <li class="title">{{(wgsLimit == 1 ? 'GROUP': 'Working Groups') | translate}}: </li>
 
             <!-- DISPLAY THEMES AS ELEMENTS WHEN MORE THAN ONE IS ALLOWED -->
-            <li ng-repeat="wg in proposal.workingGroupAuthors | filter:{type:'OFFICIAL_PRE_DEFINED'} track by $index"
+            <li ng-repeat="wg in proposal.workingGroupAuthors track by $index"
                 ng-if="wgsLimit > 1 || wgsLimit == -1
                      || (wgsLimit == 1 && !userIsCoordinator && !userIsAdmin && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status === 'PUBLISHED')))">
               <a style="cursor:default">

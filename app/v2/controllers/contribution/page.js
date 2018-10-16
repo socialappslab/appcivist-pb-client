@@ -86,6 +86,8 @@
     $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
     $scope.enforceLimit = enforceLimit.bind($scope);
     $scope.loadWorkingGroups = loadWorkingGroups.bind($scope);
+    $scope.deleteSelectedWg = deleteSelectedWg.bind($scope);
+    $scope.selectWg = selectWg.bind($scope);
 
     activate();
 
@@ -570,7 +572,7 @@
           }
 
           scope.selectedTheme = scope.proposal.themes ? scope.proposal.themes[0] : null;
-          scope.selectedWg = scope.workingGroupAuthors ? scope.workingGroupAuthors[0] : null;
+          scope.selectedWg = data.workingGroupAuthors ? data.workingGroupAuthors[0] : null;
 
           if (!scope.isAnonymous) {
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
@@ -1145,6 +1147,20 @@
       );
     }
 
+    function deleteSelectedWg() {
+      let vm = this;
+      console.log(this.proposal);
+      Space.removeContributionFromResourceSpace($scope.assemblyID, this.proposal.contributionId, this.group.resourcesResourceSpaceId).then(
+        response => {
+          Notify.show("Proposal removed from working group", "success");
+          vm.selectedWg = null;
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', "error");
+        }
+      )
+    }
+
     function loadViewsConfig() {
       let showContributingIdeasConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.contributing-ideas'];
       let showHistoryConf = $scope.campaignConfigs['appcivist.campaign.contribution.toolbar.history'];
@@ -1717,6 +1733,17 @@
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
+    }
+
+    function selectWg() {
+      Space.addContributionToResourceSpace($scope.assemblyID, $scope.proposal.contributionId, $scope.selectedWg.resourcesResourceSpaceId).then(
+        response => {
+          Notify.show("Contribution added to working group");
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      )
     }
 
     function loadAuthors(query) {

@@ -193,7 +193,7 @@
             <li ng-if="wgsLimit == 1 && !isAnonymous
                         && (userIsCoordinator || userIsAdmin
                             || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
-              <select class="header_select" name="wgsSelect" ng-options="wg as wg.name for wg in allWgs track by wg.groupId"
+              <select class="header_select" name="wgsSelect" ng-options="wg as wg.name for wg in allWgs track by wg.resourcesResourceSpaceId"
                       ng-model="$parent.selectedWg" ng-change="selectWg()" ></select>
               <i ng-if="userIsCoordinator || userIsAdmin || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT'))"
                  class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"

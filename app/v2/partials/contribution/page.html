@@ -179,7 +179,7 @@
           <ul class="row tags" id="field-wg" ng-if="!isAnonymous">
             <li class="title">{{(wgsLimit == 1 ? 'GROUP': 'Working Groups') | translate}}: </li>
 
-            <!-- DISPLAY THEMES AS ELEMENTS WHEN MORE THAN ONE IS ALLOWED -->
+            <!-- DISPLAY WGS AS ELEMENTS WHEN MORE THAN ONE IS ALLOWED -->
             <li ng-repeat="wg in proposal.workingGroupAuthors track by $index"
                 ng-if="wgsLimit > 1 || wgsLimit == -1
                      || (wgsLimit == 1 && !userIsCoordinator && !userIsAdmin && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status === 'PUBLISHED')))">
@@ -189,7 +189,7 @@
               </a>
             </li>
 
-            <!-- EDIT THEME IN DROPDOWN WHEN ONLY ONE IS ALLOWED -->
+            <!-- EDIT WG IN DROPDOWN WHEN ONLY ONE IS ALLOWED -->
             <li ng-if="wgsLimit == 1 && !isAnonymous
                         && (userIsCoordinator || userIsAdmin
                             || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
@@ -200,7 +200,7 @@
                  ng-click="deleteSelectedWg()" ng-if="selectedWg"></i>
             </li>
 
-            <!-- EDIT THEME THROUGH BUTTON ADD WHEN MORE THANAN ONE IS ALLOWED -->
+            <!-- EDIT WG THROUGH BUTTON ADD WHEN MORE THANAN ONE IS ALLOWED -->
             <div class="liveEdit smaller" ng-if="wgsLimit > 1 || wgsLimit == -1">
               <input class="btn-sm" type="text" id="wgSearch" name="wgs" ng-model="wgQuery.query"
                 ng-click="wgsChangeOnClick()" ng-change="wgsChangeOnClick()" autocomplete="off">

@@ -88,6 +88,8 @@
     $scope.loadWorkingGroups = loadWorkingGroups.bind($scope);
     $scope.deleteSelectedWg = deleteSelectedWg.bind($scope);
     $scope.selectWg = selectWg.bind($scope);
+    $scope.addWgToProposal = addWgToProposal.bind($scope);
+    $scope.deleteWg = deleteWg.bind($scope);
 
     activate();
 
@@ -1593,8 +1595,23 @@
         }
       );
     }
+
+    function deleteWg(wg) {
+      console.log(wg);
+      let vm = this;
+      
+      Space.removeContributionFromResourceSpace($scope.assemblyID, this.proposal.contributionId, wg.resourcesResourceSpaceId).then(
+        response => {
+          _.remove(vm.proposal.workingGroupAuthors, { resourcesResourceSpaceId: wg.resourcesResourceSpaceId });
+          Notify.show("Contribution removed from working group");
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+        }
+      );
+    }
     
-    function addWgToProposal(theme) {
+    function addWgToProposal(wg) {
       this.proposal.workingGroupAuthors = this.proposal.workingGroupAuthors || [];
       if (this.wgsLimit > 1) {
         if (this.proposal.workingGroupAuthors.length >= this.wgsLimit) {
@@ -1602,29 +1619,12 @@
           return;
         }
       }
-      this.proposal.themes.push(theme);
-      let updateThemeId = false;
-      if (!theme.themeId) {
-        updateThemeId = true;
-      }
-      Contributions.addTheme(this.proposal.uuid, { themes: this.proposal.themes }).then(
+      Space.addContributionToResourceSpace(this.assemblyID, this.proposal.contributionId, wg.resourcesResourceSpaceId).then(
         response => {
-          if (updateThemeId) {
-            console.log("Added theme didn't have ID. Updating...")
-            const result = response.filter(t => t.title === theme.title);
-            if (result && result.length > 0) {
-              theme.themeId = result[0].themeId;
-              theme.uuid = result[0].uuid;
-            }
-          }
-          $translate('Changed saved').then(
-           successMsg => {
-           Notify.show(successMsg, 'success');
-           });
-          //Notify.show('Theme added successfully', 'success')
+          this.proposal.workingGroupAuthors.push(wg);
+          Notify.show("Contribution added to working group");
         },
         error => {
-          this.deleteTheme(theme, true);
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
         }
       );
@@ -1736,6 +1736,8 @@
     }
 
     function selectWg() {
+      console.log($scope.selectedWg);
+      console.log(this.selectedWg);
       Space.addContributionToResourceSpace($scope.assemblyID, $scope.proposal.contributionId, $scope.selectedWg.resourcesResourceSpaceId).then(
         response => {
           Notify.show("Contribution added to working group");

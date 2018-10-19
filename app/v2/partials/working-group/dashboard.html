@@ -50,7 +50,7 @@
       <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
         <div class="overlay new_overlay" style="display: inline-flex">
           <ul class="overlay_buttons">
-            <li class="overlay_button">
+            <li class="overlay_button" ng-if="hideAssignedIdeas">
               <a data-toggle="modal" data-target="#assignedIdeas">
                 <i class="fa fa-lightbulb-o fa-lg"></i><span>{{'Assigned ideas'|translate}}</span>
                 <span class="number" ng-if="resources.relatedContributions.length > 0">({{resources.relatedContributions.length}})</span>

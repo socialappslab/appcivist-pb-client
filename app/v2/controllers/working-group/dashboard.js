@@ -277,6 +277,12 @@
         $scope.campaignConfigs = data;
         $scope.campaign.configs = $scope.campaignConfigs;
 
+        if ($scope.campaignConfigs['appcivist.working-group.hide-assigned-ideas'] === 'TRUE') {
+          $scope.hideAssignedIdeas = true;
+        } else {
+          $scope.hideAssignedIdeas = false;
+        }
+
         if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
           $scope.showComments = false;
         } else {

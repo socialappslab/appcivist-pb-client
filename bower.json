@@ -39,7 +39,7 @@
     "lodash": "~4.16.4",
     "angular-inview": "^2.1.0",
     "ng-notify": "^0.8.0",
-    "angular-recaptcha": "^3.2.1",
+    "angular-recaptcha": "^4.1.5",
     "angularUtils-pagination": "angular-utils-pagination#^0.11.1",
     "github-fork-ribbon-css": "^0.2.0",
     "angularjs-slider": "^6.0.0",

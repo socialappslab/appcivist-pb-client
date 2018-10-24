@@ -1487,5 +1487,9 @@
   "FORKED_PUBLIC_DRAFT": "Public Draft Amendment",
   "FORKED_PUBLISHED": "Published Dissensus Amendment",
   "MERGED_PRIVATE_DRAFT": "Merged Private Amendment",
-  "MERGED_PUBLIC_DRAFT": "Merged Public Amendment"
+  "MERGED_PUBLIC_DRAFT": "Merged Public Amendment",
+  "Forked proposals": "Forked proposals",
+  "Forked ideas": "Forked ideas",
+  "Merged proposals": "Merged proposals",
+  "Merged ideas": "Merged ideas"
 }

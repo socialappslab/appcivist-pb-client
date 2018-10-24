@@ -1486,5 +1486,9 @@
   "FORKED_PUBLIC_DRAFT": "Rascunho Público de Emenda",
   "FORKED_PUBLISHED": "Emenda de Dissenso Publicada",
   "MERGED_PRIVATE_DRAFT": "Emenda Composta Privada",
-  "MERGED_PUBLIC_DRAFT": "Emenda Composta Privada"
+  "MERGED_PUBLIC_DRAFT": "Emenda Composta Privada",
+  "Forked proposals": "Propostas emendadas",
+  "Forked ideas": "Ideas emendadas",
+  "Merged proposals": "Propostas mescladas",
+  "Merged ideas": "Ideas mescladas"
 }

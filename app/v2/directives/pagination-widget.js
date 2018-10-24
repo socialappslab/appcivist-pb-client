@@ -143,6 +143,13 @@
           if (filters.mode === 'excludedProposals' || filters.mode === 'excludedIdeas') {
             filters.status = "EXCLUDED";
           }
+          
+          if (filters.mode === 'mergedProposals' || filters.mode === 'mergedIdeas') {
+            filters.status = "MERGED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT";
+          }
+          if (filters.mode === 'forkedProposals' || filters.mode === 'forkedIdeas') {
+            filters.status = "FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
+          }
 
           if (filters) {
             Space.doSearch(target, scope.isAnonymous, filters).then(

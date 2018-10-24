@@ -273,6 +273,28 @@
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
       }
 
+      if (filters.mode === 'mergedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "MERGED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT";
+      }
+      if (filters.mode === 'mergedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "MERGED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT";
+      }
+
+      if (filters.mode === 'forkedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
+      }
+      if (filters.mode === 'forkedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
+      }
+
       if (filters.mode === 'archivedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;

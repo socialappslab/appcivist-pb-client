@@ -89,7 +89,7 @@
 
     <div class="ribbon-wrapper">
       <div class="ribbon"
-           ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT' || contribution.status === 'PUBLIC_DRAFT' || contribution.status === 'PUBLISHED'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">{{contribution.status | titlecase | translate}}</div>
+           ng-class="{new: (contribution.status !== 'ARCHIVED' && contribution.status !== 'EXCLUDED'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">{{contribution.status | titlecase | translate}}</div>
     </div>
   </div>
 </div>

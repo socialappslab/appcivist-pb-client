@@ -398,8 +398,8 @@
       var aid = group.assemblyId;
       var gid = group.groupId;
       var res;
-
-      if (group.supportedMembership && group.supportedMembership != "OPEN") {
+      console.log(group);
+      if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
         if ($scope.isAnonymous || !$scope.userIsMember) {
           $scope.members = group.members
             .filter(function (m) {

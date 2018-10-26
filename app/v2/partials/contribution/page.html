@@ -344,7 +344,7 @@
 
             </div>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showParentModal"
-                    ng-if="contributionType && !isAnonymous && proposal.status.includes('FORKED') && showContributionParent">
+                    ng-if="contributionType && proposal.status.includes('FORKED')">
               {{ ('Parent ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showChildrenModal"

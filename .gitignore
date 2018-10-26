@@ -99,3 +99,5 @@ app/css/common.css
 
 .vscode
 deploy.sh
+
+app/env\.js

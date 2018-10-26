@@ -18,6 +18,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
+          './dist/scripts/env.js': ['./dist/scripts/env.js'],
           './dist/scripts/app.js': ['./dist/scripts/app.js'],
           './dist/scripts/ui.js': ['./dist/scripts/ui.js']
         }

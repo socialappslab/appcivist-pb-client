@@ -1516,10 +1516,14 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         } else if (type === 'draftIdeas') {
           type='idea';
         } else if (type === 'archivedProposals' || type === 'excludedProposals') {
-          console.log(filters);
           type = 'proposal';
         } else if (type === 'archivedIdeas' || type === 'excludedIdeas') {
-          console.log(filters);
+          type = 'idea';
+        } else if (type === 'mergedProposals' || type === 'forkedProposals') {
+          console.log(params);
+          type = 'proposal';
+        } else if (type === 'mergedIdeas' || type === 'forkedIdeas') {
+          console.log(params);
           type = 'idea';
         }
         if (filters.createdByOnly != null && filters.createdByOnly != undefined) {

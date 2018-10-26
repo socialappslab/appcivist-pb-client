@@ -133,6 +133,7 @@
       $scope.subscribeNewsletter = subscribeNewsletter.bind($scope);
       $scope.unsubscribeNewsletter = unsubscribeNewsletter.bind($scope);
       $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
+      $scope.createContribution = createContribution.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
@@ -277,6 +278,18 @@
         $scope.campaignConfigs = data;
         $scope.campaign.configs = $scope.campaignConfigs;
 
+        if ($scope.campaignConfigs['appcivist.campaign.use-proposal-form'] === 'TRUE') {
+          $scope.useProposalForm = true;
+        } else {
+          $scope.useProposalForm = false;
+        }
+
+        if ($scope.campaignConfigs['appcivist.working-group.hide-assigned-ideas'] === 'TRUE') {
+          $scope.hideAssignedIdeas = true;
+        } else {
+          $scope.hideAssignedIdeas = false;
+        }
+
         if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
           $scope.showComments = false;
         } else {
@@ -316,6 +329,7 @@
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
           $scope.workingGroupLabel = data.name;
+          console.log($scope.wg);
 
 
           // Prepare first WG's cover and color
@@ -392,8 +406,8 @@
       var aid = group.assemblyId;
       var gid = group.groupId;
       var res;
-
-      if (group.supportedMembership && group.supportedMembership != "OPEN") {
+      console.log(group);
+      if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
         if ($scope.isAnonymous || !$scope.userIsMember) {
           $scope.members = group.members
             .filter(function (m) {
@@ -741,6 +755,34 @@
           }
         );
       }
+    }
+
+    function createContribution(contributionType = 'PROPOSAL') {
+      let defaultTitle = $scope.campaignConfigs['appcivist.campaign.contribution.default-title'];
+      let payload = {};
+      payload.status = "DRAFT";
+      payload.title = defaultTitle ? defaultTitle : "Create your title";
+      payload.text = "";
+      payload.type = contributionType;
+      console.log(payload);
+      Pace.restart();
+      let rsp = Contributions.contributionInResourceSpace(this.wg.resourcesResourceSpaceId).save(payload).$promise.then(
+        contribution => {
+          Pace.stop();
+          Notify.show('Contribution saved', 'success');
+          console.log(contribution);
+          redirectToProposal(contribution);
+        },
+        error => {
+          $translate('error.creation.contribution')
+            .then(
+              errorMsg => {
+                let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                Notify.show(fullErrorMsg, 'error');
+              });
+
+        }
+      );
     }
   }
 }());

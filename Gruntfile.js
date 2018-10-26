@@ -46,6 +46,8 @@ module.exports = function(grunt) {
           cwd: "app/views",
           src: '**/*.haml',
           dest: 'public',
+
+
           ext: '.html'
         }]
       }
@@ -228,13 +230,19 @@ module.exports = function(grunt) {
           src: [
             '**/*',
           ]
+        }, {
+          cwd: './bower_components/raven-js/',
+          src: ['dist/**', 'dist/plugins/**'],
+          dest: './dist/scripts',
+          filter: 'isFile',
+          expand: true
         }]
       }
     },
 
     jsdoc: {
       dist: {
-        src: ['app/v2/**/*.js', 'app/app.js', 'app/services/**/*.js', 'README.md'],
+        src: ['app/v2/**/*.js', 'app/app.js', 'app/services/**/*.js', 'app/env.js', 'README.md'],
         options: {
           destination: 'docs',
           plugins: [
@@ -253,7 +261,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '.',
-          src: ['app/**/*.js', 'app/v2/components/**/*.js'],
+          src: ['app/env.js', 'app/**/*.js', 'app/v2/components/**/*.js'],
           dest: 'dist'
         }]
       }

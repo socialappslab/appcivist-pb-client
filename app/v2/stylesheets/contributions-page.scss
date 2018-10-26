@@ -46,6 +46,12 @@ section.content {
   }
 }
 
+@media screen and (max-width: 40em) {
+  .overlay_status span.status select {
+    width: 110px;
+  }
+}
+
 .contribution-select {
   display: none;
   &+label:before {

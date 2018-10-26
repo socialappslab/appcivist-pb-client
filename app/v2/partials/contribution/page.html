@@ -227,7 +227,7 @@
           </div>
         </div>
 
-        <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex">
+        <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex;">
           <ul class="overlay_buttons">
             <div class="contextual_wrapper">
               <li class="overlay_button action__contextual_menu" ng-mouseenter="cm.isHover = true">
@@ -321,15 +321,15 @@
               <span class="status" ng-if="proposal.status != 'PUBLISHED' && proposal.status != 'ARCHIVED' && allowChangeStatus && (userIsAuthor || userIsCoordinator || userIsAdmin)">
                 <select name="currentStatus" id="currentStatus" ng-model="proposal.status"
                         ng-change="changeStatus(proposal.status, '{{proposal.status}}')">
-                  <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
-                  <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</option>
-                  <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
+                  <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Draft' | translate }}</option>
+                  <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{'Public draft' | translate}}</option>
+                  <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'" ng-if="!proposal.status.includes('FORKED')">{{ 'Published' | translate }}</option>
                   <option value="ARCHIVED" ng-selected="proposal.status == 'ARCHIVED'" ng-if="userIsCoordinator || userIsAdmin">{{ 'Archived' | translate }}</option>
-                  <option value="FORKED_PRIVATE_DRAFT" ng-selected="proposal.status == 'FORKED_PRIVATE_DRAFT'">{{'Forked Private Draft' | translate}}</option>
-                  <option value="FORKED_PUBLIC_DRAFT" ng-selected="proposal.status == 'FORKED_PUBLIC_DRAFT'">{{'Forked Public Draft' | translate}}</option>
-                  <option value="MERGED_PRIVATE_DRAFT" ng-selected="proposal.status == 'MERGED_PRIVATE_DRAFT'">{{'Merged Private Draft' | translate}}</option>
-                  <option value="MERGED_PUBLIC_DRAFT" ng-selected="proposal.status == 'MERGED_PUBLIC_DRAFT'">{{'Merged Public Draft' | translate}}</option>
-                  <option value="FORKED_PUBLISHED" ng-selected="proposal.status == 'FORKED_PUBLISHED'">{{'Forked Published' | translate}}</option>
+                  <option value="MERGED_PRIVATE_DRAFT" ng-selected="proposal.status == 'MERGED_PRIVATE_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Published' | translate }}</option>
+                  <option value="MERGED_PUBLIC_DRAFT" ng-selected="proposal.status == 'MERGED_PUBLIC_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Published' | translate }}</option>
+                  <option value="FORKED_PRIVATE_DRAFT" ng-selected="proposal.status == 'FORKED_PRIVATE_DRAFT'" ng-if="proposal.status.includes('FORKED')">{{'Forked Private Draft' | translate}}</option>
+                  <option value="FORKED_PUBLIC_DRAFT" ng-selected="proposal.status == 'FORKED_PUBLIC_DRAFT'" ng-if="proposal.status.includes('FORKED')">{{'Forked Public Draft' | translate}}</option>
+                  <option value="FORKED_PUBLISHED" ng-selected="proposal.status == 'FORKED_PUBLISHED'" ng-if="proposal.status.includes('FORKED')">{{'Forked Published' | translate}}</option>
                 </select>
               </span>
               <span class="status" ng-if="proposal.status == 'DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Draft' | translate }}</span>
@@ -344,7 +344,7 @@
 
             </div>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showParentModal"
-                    ng-if="contributionType && !isAnonymous && proposal.status.includes('FORKED') && showContributionParent">
+                    ng-if="contributionType && proposal.status.includes('FORKED')">
               {{ ('Parent ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showChildrenModal"

@@ -1365,6 +1365,14 @@
   "contribution.status.public-draft.description": "Borrador Público significa que toda la asamblea puede ver y comentar, pero sólo los autores pueden editar.",
   "contribution.status.published.description": "Publicada significa que toda la asamblea puede ver y comentar pero nadie puede editar.",
   "contribution.status.archived.description": "Archived means that the propsal has been archived. Are you sure you want to change this status?",
+
+  "contribution.status.forked-private-draft.description": "Private Draft Amendment means that only authors can edit and comment. Are you sure you want to change this status?",
+  "contribution.status.merged-private-draft.description": "Accepted Private Amendment means that only authors can edit and comment. Are you sure you want to change this status?",
+  "contribution.status.forked-public-draft.description": "Public Draft Amendment means that the entire assembly can see and comment but only authors can edit.",
+  "contribution.status.merged-public-draft.description": "Accepted Public Amendment means that the entire assembly can see and comment but only authors can edit.",
+  "contribution.status.forked-published.description": "Published Dissensus Amendment means that the entire assembly can see and comment but no one else can edit.",
+
+
   "Archived": "Archived",
   "ARCHIVED": "ARCHIVED",
   "Save description": "Guardar resumen",
@@ -1482,8 +1490,17 @@
   "Amendments Proposals": "Amendments Proposals",
   "Amendments": "Amendments",
   "FORKED_PRIVATE_DRAFT": "Private Draft Amendment",
+  "Forked_private_draft": "Private Draft Amendment",
   "FORKED_PUBLIC_DRAFT": "Public Draft Amendment",
+  "Forked_public_draft": "Public Draft Amendment",
   "FORKED_PUBLISHED": "Published Dissensus Amendment",
+  "Forked_published": "Published Dissensus Amendment",
   "MERGED_PRIVATE_DRAFT": "Merged Private Amendment",
-  "MERGED_PUBLIC_DRAFT": "Merged Public Amendment"
+  "Merged_private_draft": "Merged Private Amendment",
+  "MERGED_PUBLIC_DRAFT": "Merged Public Amendment",
+  "Merged_public_draft": "Merged Public Amendment",
+  "Forked proposals": "Propuestas enmendadas",
+  "Forked ideas": "Ideas enmendadas",
+  "Merged proposals": "Propuestas mezcladas",
+  "Merged ideas": "Ideas mezcladas"
 }

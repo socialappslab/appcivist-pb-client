@@ -356,7 +356,62 @@
             else this.proposal.status = this.statusBeforeUpdate;
           }
         );
+      } else if (this.proposal.status === "FORKED_PRIVATE_DRAFT") {
+        $translate("contribution.status.forked-private-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-private-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "FORKED_PUBLIC_DRAFT") {
+        $translate("contribution.status.forked-public-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-public-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "FORKED_PUBLISHED") {
+        $translate("contribution.status.forked-published.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-published.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "FORKED_PUBLISHED") {
+        $translate("contribution.status.forked-published.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-published.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "MERGED_PRIVATE_DRAFT") {
+        $translate("contribution.status.merged-private-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.merged-private-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "MERGED_PUBLIC_DRAFT") {
+        $translate("contribution.status.merged-public-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.merged-public-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
       }
+
     }
 
 

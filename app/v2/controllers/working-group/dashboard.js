@@ -409,18 +409,20 @@
       console.log(group);
       if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
         if ($scope.isAnonymous || !$scope.userIsMember) {
-          $scope.members = group.members
-            .filter(function (m) {
-              return m.status === 'ACCEPTED';
-            });
-          $scope.memberRequests = group.members
-            .filter(function (m) {
-              return m.status === 'REQUESTED';
-            });
-          $scope.membersInvited = group.members
-            .filter(function (m) {
-              return m.status === 'INVITED';
-            });
+          if (group.members) {
+            $scope.members = group.members
+              .filter(function (m) {
+                return m.status === 'ACCEPTED';
+              });
+            $scope.memberRequests = group.members
+              .filter(function (m) {
+                return m.status === 'REQUESTED';
+              });
+            $scope.membersInvited = group.members
+              .filter(function (m) {
+                return m.status === 'INVITED';
+              });
+          }
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
           res.$promise.then(

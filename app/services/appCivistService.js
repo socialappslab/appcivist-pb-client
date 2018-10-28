@@ -726,6 +726,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         'delete': { method: 'DELETE' }
       });
     },
+    contributionChildren: function (contributionUUID, type) {
+
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/proposal?type=:type', { uuid: contributionUUID, type: type });
+
+      },
     contributionSoftRemoval: function (assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval', { aid: assemblyId, coid: contributionId }, {
         'update': { method: 'PUT' }
@@ -746,6 +751,16 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
      */
     publishProposal: function (assemblyId, groupId, proposalId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals/:pid/publish', { aid: assemblyId, pid: proposalId, gid: groupId }, {
+        'update': { method: 'PUT' }
+      });
+    },
+    forkProposal: function (assemblyId, campaignId, proposalId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/contribution', { aid: assemblyId, cid: campaignId, coid: proposalId }, {
+        'update': { method: 'POST' }
+      });
+    },
+    mergeProposal: function (assemblyId, proposalId, parentId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:pid/proposal/:cid', {aid: assemblyId, pid: parentId, cid: proposalId }, {
         'update': { method: 'PUT' }
       });
     },
@@ -1501,10 +1516,14 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
         } else if (type === 'draftIdeas') {
           type='idea';
         } else if (type === 'archivedProposals' || type === 'excludedProposals') {
-          console.log(filters);
           type = 'proposal';
         } else if (type === 'archivedIdeas' || type === 'excludedIdeas') {
-          console.log(filters);
+          type = 'idea';
+        } else if (type === 'mergedProposals' || type === 'forkedProposals') {
+          console.log(params);
+          type = 'proposal';
+        } else if (type === 'mergedIdeas' || type === 'forkedIdeas') {
+          console.log(params);
           type = 'idea';
         }
         if (filters.createdByOnly != null && filters.createdByOnly != undefined) {

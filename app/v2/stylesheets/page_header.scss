@@ -26,6 +26,8 @@
     }
     .contribution_toolbar {
       background-color: #ECECEC;
+      margin-top: 70px !important;
+      position: fixed;
       i { color: #036891; }
       .overlay_buttons {
         padding: 0.7rem 0;

@@ -244,7 +244,6 @@
         filters.createdByOnly = true;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
       }
-
       if (filters.mode === 'myIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
@@ -252,19 +251,16 @@
         filters.by_author = _user.userId;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
       }
-
       if (filters.mode === 'draftProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
         filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT";
       }
-
       if (filters.mode === 'draftIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
         filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT";
       }
-
       if (filters.mode === 'sharedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
@@ -272,7 +268,6 @@
         filters.shared_with = user.userId;
         filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
       }
-
       if (filters.mode === 'mergedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
@@ -283,7 +278,6 @@
         this.vm.canFilterByGroup = this.loadGroups;
         filters.status = "MERGED_PUBLIC_DRAFT";
       }
-
       if (filters.mode === 'forkedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
@@ -294,7 +288,6 @@
         this.vm.canFilterByGroup = this.loadGroups;
         filters.status = "FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
       }
-
       if (filters.mode === 'archivedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;

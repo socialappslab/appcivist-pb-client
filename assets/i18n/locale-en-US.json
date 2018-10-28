@@ -1504,5 +1504,8 @@
   "Forked proposals": "Amendments proposals",
   "Forked ideas": "Amendment ideas",
   "Merged proposals": "Accepted Amendment proposals",
-  "Merged ideas": "Accepted Amendment ideas"
+  "Merged ideas": "Accepted Amendment ideas",
+  "public_status": "public",
+  "draft_status": "draft",
+  "pagination.widget.no-data": "This space has still no {{type}} with status {{status}}."
 }

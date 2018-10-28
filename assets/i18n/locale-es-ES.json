@@ -1502,5 +1502,8 @@
   "Forked proposals": "Propuestas enmendadas",
   "Forked ideas": "Ideas enmendadas",
   "Merged proposals": "Propuestas mezcladas",
-  "Merged ideas": "Ideas mezcladas"
+  "Merged ideas": "Ideas mezcladas",
+  "public_status": "público",
+  "draft_status": "borrador",
+  "pagination.widget.no-data": "Todavía no hay una {{type}} con estado {{status}} en este espacio."
 }

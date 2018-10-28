@@ -21,9 +21,9 @@
     .module('appCivistApp')
     .directive('paginationWidget', paginationWidget);
 
-  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope', 'usSpinnerService', 'localStorageService'];
+  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope', 'usSpinnerService', 'localStorageService', '$translate'];
 
-  function paginationWidget($state, Contributions, Notify, Space, $rootScope, usSpinnerService, localStorageService) {
+  function paginationWidget($state, Contributions, Notify, Space, $rootScope, usSpinnerService, localStorageService, $translate) {
     var directive = {
       restrict: 'E',
       scope: {
@@ -54,6 +54,7 @@
         scope.startSpinner = startSpinner.bind(scope);
         scope.stopSpinner = stopSpinner.bind(scope);
         scope.inferrType = inferrType.bind(scope);
+        scope.prepareTranslations = prepareTranslations.bind(scope);
         scope.spinnerActive = true;
         scope.spinnerOptions = {
           radius:10,
@@ -147,6 +148,11 @@
             filters.status = "FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
           }
 
+          this.prepareTranslations(filters);
+          $rootScope.$on('$translateChangeSuccess', () => {
+            scope.prepareTranslations(filters)
+          });
+
           if (filters) {
             Space.doSearch(target, scope.isAnonymous, filters).then(
               data => {
@@ -157,6 +163,46 @@
                 scope.stopSpinner();
               });
           }
+        }
+
+        function prepareTranslations(filters) {
+          let contributionPrototype = {};
+
+          if (filters.mode && filters.mode.toLowerCase().includes("proposal")) {
+            contributionPrototype.type="proposal";
+            $translate(contributionPrototype.type).then(
+              translation => {
+                contributionPrototype.type = translation;
+              }
+            );
+          }
+
+          if (filters.status
+            && (filters.status.toLowerCase().includes("public")
+              || filters.status.toLowerCase().includes("published"))) {
+            contributionPrototype.status="public_status";
+            $translate(contributionPrototype.status).then(
+              translation => {
+                contributionPrototype.status = translation;
+              }
+            );
+          } else if (filters.status && filters.status && filters.status.toLowerCase().includes("draft")) {
+            contributionPrototype.status="draft_status";
+            $translate(contributionPrototype.status).then(
+              translation => {
+                contributionPrototype.status = translation;
+              }
+            );
+          } else {
+            contributionPrototype.status=filters.status ? filters.status : "public_status";
+            $translate(contributionPrototype.status).then(
+              translation => {
+                contributionPrototype.status = translation;
+              }
+            );
+          }
+
+          scope.contributionPrototype = contributionPrototype;
         }
 
         function paginationVisible(pag, visible) {

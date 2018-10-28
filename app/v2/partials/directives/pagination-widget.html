@@ -17,8 +17,7 @@
       </contribution-card>
       <!-- TODO: it is always problematic to break strings in translation, let's replace this by a single translation string -->
       <p ng-if="contributions.length === 0" class="card card__message">
-        {{ 'pagination.widget.no' | translate }} {{ (filters.mode == 'myProposals'||filters.mode == 'sharedProposals'||filters.mode == 'draftProposals' ? 'Proposals' : filters.mode == 'myIdeas'||filters.mode == 'sharedIdeas'||filters.mode == 'draftIdeas' ? 'Ideas' : filters.mode) | titlecase | translate }} {{ 'pagination.widget.description' |
-        translate}}
+        {{'pagination.widget.no-data' | translate : contributionPrototype }}
       </p>
     </div>
   </section>
@@ -33,7 +32,7 @@
                          ballot-tokens="ballotTokens" campaign-configs="campaignConfigs">
       </contribution-card>
       <p ng-if="contributions.length === 0" class="card card__message">
-        {{ 'pagination.widget.no' | translate }} {{ (filters.mode == 'myProposals'||filters.mode == 'sharedProposals'||filters.mode == 'draftProposals' ? 'Proposals' : filters.mode == 'myIdeas'||filters.mode == 'sharedIdeas'||filters.mode == 'draftIdeas' ? 'Ideas' : filters.mode) | titlecase | translate }} {{ 'pagination.widget.description' | translate}}
+        {{ 'pagination.widget.no-data' | translate : contributionPrototype }}
       </p>
     </div>
   </section>

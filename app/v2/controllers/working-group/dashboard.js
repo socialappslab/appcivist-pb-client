@@ -42,6 +42,7 @@
         sorting: $scope.sorting,
         pageSize: $scope.pageSize,
         mode: $scope.type
+        status: 'PUBLISHED, PUBLIC_DRAFT'
       };
       $scope.getFromFile = getFromFile.bind($scope);
       $scope.membersFile = null;

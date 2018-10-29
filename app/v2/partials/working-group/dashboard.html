@@ -264,26 +264,29 @@
       <div class="modal-body">
         <ul class="nav nav-pills" ng-if="isCoordinator || isWGCoordinator || userIsMember">
           <li class="active"><a data-toggle="tab" data-target="#approved">{{'Approved'|translate}}</a></li>
-          <li><a data-toggle="tab" data-target="#pending">{{'Pending approval'|translate}}</a></li>
+          <li ng-if="userIsMember"><a data-toggle="tab" data-target="#pending">{{'Pending approval'|translate}}</a></li>
         </ul>
         <div class="tab-content">
           <div id="approved" class="tab-pane fade in active">
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th ng-if="userIsMember">{{'Email Address'|translate}}</th>
+                  <th>{{'Name'|translate}}</th>
+                  <th ng-if="userIsMember">{{'Email'|translate}}</th>
                   <th ng-if="isCoordinator || isWGCoordinator">{{'Role'|translate}}</th>
+                  <th ng-if="userIsMember"></th>
                   <th ng-if="isCoordinator || isWGCoordinator"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="member in members.members">
-                  <td style="text-align:left"><member-card user="member.user"></member-card><div class="role-label">{{member.roles[0].name}}</div></td>
-                  <td ng-if="userIsMember">{{member.user.email}}</td>
+                  <td style="text-align:left">
+                    <member-card user="member.user"></member-card>
+                    <div class="role-label">{{member.roles[0].name}}</div>
+                  </td>
                   <td ng-if="userIsMember"><a href="mailto:{{member.user.email}}" target="_blank">{{member.user.email}}</a></td>
                   <td ng-if="isCoordinator || isWGCoordinator">
-                    <select>
+                    <select ng-click="updateRole(member)">
                       <option ng-selected="member.roles[0].name == 'COORDINATOR'">{{'Coordinator'|translate}}</option>
                       <option ng-selected="member.roles[0].name == 'MODERATOR'">{{'Moderator'|translate}}</option>
                       <option ng-selected="member.roles[0].name == 'MEMBER'">{{'Member'|translate}}</option>

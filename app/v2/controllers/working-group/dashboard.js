@@ -42,6 +42,7 @@
         sorting: $scope.sorting,
         pageSize: $scope.pageSize,
         mode: $scope.type
+        status: 'PUBLISHED, PUBLIC_DRAFT'
       };
       $scope.getFromFile = getFromFile.bind($scope);
       $scope.membersFile = null;
@@ -407,25 +408,40 @@
       var gid = group.groupId;
       var res;
       console.log(group);
+
+      const emailConcatenator = (acc, value) => {
+        if (acc) acc = acc.concat(",");
+        acc = acc.concat(value.user.email);
+        return acc;
+      };
+
       if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
         if ($scope.isAnonymous || !$scope.userIsMember) {
-          $scope.members = group.members
-            .filter(function (m) {
-              return m.status === 'ACCEPTED';
-            });
-          $scope.memberRequests = group.members
-            .filter(function (m) {
-              return m.status === 'REQUESTED';
-            });
-          $scope.membersInvited = group.members
-            .filter(function (m) {
-              return m.status === 'INVITED';
-            });
+          if (group.members) {
+            $scope.members = group.members
+              .filter(function (m) {
+                return m.status === 'ACCEPTED';
+              });
+            $scope.memberRequests = group.members
+              .filter(function (m) {
+                return m.status === 'REQUESTED';
+              });
+            $scope.membersInvited = group.members
+              .filter(function (m) {
+                return m.status === 'INVITED';
+              });
+            // concatenate member emails
+            if ($scope.members && $scope.members.members)
+              $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
+          }
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
           res.$promise.then(
             function (data) {
               $scope.members = data;
+              // concatenate member emails
+              if ($scope.members && $scope.members.members)
+                $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
             },
             function (error) {
               Notify.show(error.statusMessage, 'error');
@@ -648,13 +664,13 @@
       }
     }
     function redirectToProposal(contribution) {
-      this.closeModal('proposalFormModal');
+      $scope.closeModal('proposalFormModal');
 
       $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
         pid: contribution.contributionId,
-        aid: this.assemblyID,
-        cid: this.campaignID,
-        gid: this.groupID
+        aid: $scope.assemblyID,
+        cid: $scope.campaignID,
+        gid: $scope.groupID
       });
     }
 

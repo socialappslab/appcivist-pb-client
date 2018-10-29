@@ -407,6 +407,13 @@
       var gid = group.groupId;
       var res;
       console.log(group);
+
+      const emailConcatenator = (acc, value) => {
+        if (acc) acc = acc.concat(",");
+        acc = acc.concat(value.user.email);
+        return acc;
+      };
+
       if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
         if ($scope.isAnonymous || !$scope.userIsMember) {
           if (group.members) {
@@ -422,12 +429,18 @@
               .filter(function (m) {
                 return m.status === 'INVITED';
               });
+            // concatenate member emails
+            if ($scope.members && $scope.members.members)
+              $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
           }
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
           res.$promise.then(
             function (data) {
               $scope.members = data;
+              // concatenate member emails
+              if ($scope.members && $scope.members.members)
+                $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
             },
             function (error) {
               Notify.show(error.statusMessage, 'error');

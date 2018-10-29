@@ -252,8 +252,12 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
         <button class="btn btn-default btn-add-members" ng-if="isCoordinator || isWGCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
+        <a class="btn btn-default btn-add-members" ng-if="userIsMember"
+                href="mailto:{{memberEmails}}" target="_blank" style="margin-right: 10px;">
+          {{'header.menu.Send message'|translate}}
+        </a>
         <h3 class="modal-title" id="wgMembersLabel">{{wg.name}}</h3>
         <p>{{ 'Members' | translate }}</p>
       </div>
@@ -277,6 +281,7 @@
                 <tr ng-repeat="member in members.members">
                   <td style="text-align:left"><member-card user="member.user"></member-card><div class="role-label">{{member.roles[0].name}}</div></td>
                   <td ng-if="userIsMember">{{member.user.email}}</td>
+                  <td ng-if="userIsMember"><a href="mailto:{{member.user.email}}" target="_blank">{{member.user.email}}</a></td>
                   <td ng-if="isCoordinator || isWGCoordinator">
                     <select>
                       <option ng-selected="member.roles[0].name == 'COORDINATOR'">{{'Coordinator'|translate}}</option>
@@ -284,7 +289,12 @@
                       <option ng-selected="member.roles[0].name == 'MEMBER'">{{'Member'|translate}}</option>
                     </select>
                   </td>
-                  <td ng-if="isCoordinator || isWGCoordinator"><i class="fa fa-envelope-o fa-lg"></i> <i class="fa fa-trash-o fa-lg"></i></td>
+                  <td ng-if="userIsMember">
+                    <a href="mailto:{{member.user.email}}" target="_blank"><i class="fa fa-envelope-o fa-lg"></i></a>
+                  </td>
+                  <td ng-if="isCoordinator || isWGCoordinator">
+                    <i ng-if="isCoordinator || isWGCoordinator" class="fa fa-trash-o fa-lg" ng-click="deleteMembership(member)"></i>
+                  </td>
                 </tr>
               </tbody>
             </table>

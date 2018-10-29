@@ -148,6 +148,7 @@
             filters.status = "FORKED_PUBLIC_DRAFT";
           }
           if (filters.mode==='forkedProposalsPublished' || filters.mode === 'forkedIdeasPublished') {
+            filters.mode=== filters.mode==='forkedProposalsPublished'  ? 'proposal' : 'idea';
             filters.status = "FORKED_PUBLISHED"
           }
 

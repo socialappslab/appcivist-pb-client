@@ -281,12 +281,22 @@
       if (filters.mode === 'forkedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
+        filters.status = "FORKED_PUBLIC_DRAFT";
       }
       if (filters.mode === 'forkedIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
+        filters.status = "FORKED_PUBLIC_DRAFT";
+      }
+      if (filters.mode === 'forkedProposalsPublished') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PUBLISHED";
+      }
+      if (filters.mode === 'forkedIdeasPublished') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PUBLISHED"
       }
       if (filters.mode === 'archivedProposals') {
         filters.mode = 'proposal';

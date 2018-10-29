@@ -1519,11 +1519,9 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           type = 'proposal';
         } else if (type === 'archivedIdeas' || type === 'excludedIdeas') {
           type = 'idea';
-        } else if (type === 'mergedProposals' || type === 'forkedProposals') {
-          console.log(params);
+        } else if (type === 'mergedProposals' || type === 'forkedProposals' || 'forkedProposalsPublished') {
           type = 'proposal';
-        } else if (type === 'mergedIdeas' || type === 'forkedIdeas') {
-          console.log(params);
+        } else if (type === 'mergedIdeas' || type === 'forkedIdeas' || 'forkedIdeasPublished') {
           type = 'idea';
         }
         if (filters.createdByOnly != null && filters.createdByOnly != undefined) {

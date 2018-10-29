@@ -125,7 +125,7 @@
           if (filters.mode === 'myProposals' || filters.mode === 'myIdeas') {
             filters.by_author = localStorageService.get('user').userId;
             filters.createdByOnly = true;
-            filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, MERGED_PRIVATE_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT, MERGED_PUBLISHED, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED"; // if getting own contributions, bring all statuses
+            filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, MERGED_PRIVATE_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED"; // if getting own contributions, bring all statuses
           }
           if (filters.mode === 'draftProposals' || filters.mode === 'draftIdeas') {
             filters.status = "DRAFT, PUBLIC_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PRIVATE_DRAFT";
@@ -142,10 +142,14 @@
             filters.status = "EXCLUDED";
           }
           if (filters.mode === 'mergedProposals' || filters.mode === 'mergedIdeas') {
-            filters.status = "MERGED_PUBLIC_DRAFT, MERGED_PUBLISHED";
+            filters.status = "MERGED_PUBLIC_DRAFT";
           }
           if (filters.mode === 'forkedProposals' || filters.mode === 'forkedIdeas') {
-            filters.status = "FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED";
+            filters.status = "FORKED_PUBLIC_DRAFT";
+          }
+          if (filters.mode==='forkedProposalsPublished' || filters.mode === 'forkedIdeasPublished') {
+            filters.mode=== filters.mode==='forkedProposalsPublished'  ? 'proposal' : 'idea';
+            filters.status = "FORKED_PUBLISHED"
           }
 
           this.prepareTranslations(filters);

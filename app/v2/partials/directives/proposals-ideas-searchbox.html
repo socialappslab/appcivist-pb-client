@@ -50,8 +50,14 @@
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('forkedProposals', $event)">{{'Forked proposals' | translate | titlecase}}</a>
       </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedProposalsPublished')}" ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('forkedProposalsPublished', $event)">{{'Forked Published' | translate | titlecase}}</a>
+      </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedIdeas')}" ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('forkedIdeas', $event)">{{ 'Forked ideas' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedIdeasPublished')}" ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('forkedIdeasPublished', $event)">{{ 'Forked Published Idea' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'mergedProposals')}" ng-if="(campaignConfig['appcivist.campaign.filter.merged']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('mergedProposals', $event)">{{'Merged proposals' | translate | titlecase}}</a>

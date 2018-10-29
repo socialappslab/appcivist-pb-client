@@ -166,6 +166,8 @@
       $scope.videoCount = videoCount.bind($scope);
       $scope.createContribution = createContribution.bind($scope);
       $scope.validUrl = validUrl.bind($scope);
+      $scope.refreshWorkingGroupsMemberships = refreshWorkingGroupsMemberships.bind($scope);
+      $scope.getMyWorkingGroupsIds = getMyWorkingGroupsIds.bind($scope);
 
       // add attachment form
       $scope.submitAttachment = submitAttachment.bind($scope);
@@ -229,9 +231,47 @@
       rsp.$promise.then(
         response => {
           Notify.show("Request completed successfully. We'll get in contact soon.", "success");
+          refreshWorkingGroupsMemberships();
         },
         error => Notify.show(error.statusMessage, "error")
       )
+    }
+
+    function refreshWorkingGroupsMemberships() {
+      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
+      let vm = $scope;
+      rsp.then(
+        data => {
+          let groupMembershipsHash = {};
+          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+          let myWorkingGroups = membershipsInGroups.map(function (membership) {
+            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+            return membership.workingGroup;
+          });
+
+          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+          rsp.then(
+            groups => {
+              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+              localStorageService.set('otherWorkingGroups', other);
+              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+              vm.otherWorkingGroups = other;
+              console.log("MY NEW WORKING GROUPS");
+              console.log(mine.filter(g => g.isTopic === false));
+              console.log(vm.myWorkingGroups);
+            }
+          );
+        }
+      )
+    }
+
+    function getMyWorkingGroupsIds() {
+      const mine = localStorageService.get('myWorkingGroups');
+      return mine.map(function(wg) {
+        return wg.groupId
+      });
     }
 
     function loadAssembly() {

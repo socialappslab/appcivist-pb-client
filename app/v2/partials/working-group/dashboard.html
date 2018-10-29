@@ -101,12 +101,14 @@
         <!--</a>-->
       </div>
       <proposals-ideas-searchbox class="col-*-12"
+                                 search-handler="doSearch(filters)"
                                  load-themes="loadThemes(query)"
-                                 is-anonymous="isAnonymous || !userIsMember"
+                                 is-anonymous="isAnonymous"
                                  campaign-config="campaignConfigs"
                                  campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
-                                 current-component="currentComponet"
                                  filters="filters"
+                                 dry-run="false"
+                                 current-component="currentComponent"
                                  is-coordinator="isCoordinator"></proposals-ideas-searchbox>
 
       <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">

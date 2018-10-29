@@ -156,12 +156,12 @@
           <section class="comments__section">
             <div class="row comments-header">
               <div class="col-xs-4 text-left">
-                <strong>Comments ({{commentType == 'members' ? membersCommentCounter.value : publicCommentCounter.value}})</strong>
+                <strong>{{'Comments'|translate}} ({{commentType == 'members' ? membersCommentCounter.value : publicCommentCounter.value}})</strong>
               </div>
               <div class="col-xs-8 text-right">
                 {{'View comments by'|translate}}:
                 <select name="comment-types" ng-model="commentType">
-                  <option value="public">{{'Public'|translate}}</option>
+                  <option value="public">{{'Public Conversations'|translate}}</option>
                   <option value="members" ng-if="userIsMember">{{'Members only'|translate}}</option>
                 </select>
               </div>

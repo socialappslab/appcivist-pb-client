@@ -87,7 +87,7 @@
         console.log('Pagination-Widget:Link => BROADCASTED => dashboard:paginationWidgetListenersAreReady');
 
         function inferrType () {
-          return this.components[0].type;
+          return thisthis.components ? this.components[0].type : 'PROPOSAL';
         }
 
         function startSpinner () {

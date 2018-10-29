@@ -41,7 +41,7 @@
         // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
         sorting: $scope.sorting,
         pageSize: $scope.pageSize,
-        mode: $scope.type
+        mode: $scope.type,
         status: 'PUBLISHED, PUBLIC_DRAFT'
       };
       $scope.getFromFile = getFromFile.bind($scope);

@@ -258,9 +258,6 @@
               localStorageService.set('otherWorkingGroups', other);
               vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
               vm.otherWorkingGroups = other;
-              console.log("MY NEW WORKING GROUPS");
-              console.log(mine.filter(g => g.isTopic === false));
-              console.log(vm.myWorkingGroups);
             }
           );
         }

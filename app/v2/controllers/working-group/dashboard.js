@@ -660,13 +660,13 @@
       }
     }
     function redirectToProposal(contribution) {
-      this.closeModal('proposalFormModal');
+      $scope.closeModal('proposalFormModal');
 
       $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
         pid: contribution.contributionId,
-        aid: this.assemblyID,
-        cid: this.campaignID,
-        gid: this.groupID
+        aid: $scope.assemblyID,
+        cid: $scope.campaignID,
+        gid: $scope.groupID
       });
     }
 

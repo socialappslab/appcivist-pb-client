@@ -41,7 +41,7 @@
         // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
         sorting: $scope.sorting,
         pageSize: $scope.pageSize,
-        mode: $scope.type
+        mode: $scope.type,
         status: 'PUBLISHED, PUBLIC_DRAFT'
       };
       $scope.getFromFile = getFromFile.bind($scope);
@@ -135,6 +135,7 @@
       $scope.unsubscribeNewsletter = unsubscribeNewsletter.bind($scope);
       $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
       $scope.createContribution = createContribution.bind($scope);
+      $scope.refreshWorkingGroupsMemberships = refreshWorkingGroupsMemberships.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
@@ -156,11 +157,40 @@
         response => {
           $translate('JoinWg successfully').then(function (successMsg) {
             Notify.show(successMsg, 'success');
+            refreshWorkingGroupsMemberships()
             }
           );
           //Notify.show("Request completed successfully. We'll get in contact soon.", "success");
         },
         error => Notify.show(error.statusMessage, "error")
+      )
+    }
+
+    function refreshWorkingGroupsMemberships() {
+      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
+      let vm = $scope;
+      rsp.then(
+        data => {
+          let groupMembershipsHash = {};
+          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+          let myWorkingGroups = membershipsInGroups.map(function (membership) {
+            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+            return membership.workingGroup;
+          });
+
+          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+          rsp.then(
+            groups => {
+              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+              localStorageService.set('otherWorkingGroups', other);
+              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+              vm.otherWorkingGroups = other;
+              verifyMembership();
+            }
+          );
+        }
       )
     }
 
@@ -780,9 +810,11 @@
       payload.title = defaultTitle ? defaultTitle : "Create your title";
       payload.text = "";
       payload.type = contributionType;
+      payload.workingGroupAuthors = [];
+      payload.workingGroupAuthors[0] = this.wg;
       console.log(payload);
       Pace.restart();
-      let rsp = Contributions.contributionInResourceSpace(this.wg.resourcesResourceSpaceId).save(payload).$promise.then(
+      let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
         contribution => {
           Pace.stop();
           Notify.show('Contribution saved', 'success');

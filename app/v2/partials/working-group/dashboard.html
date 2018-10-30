@@ -86,7 +86,7 @@
         </a>
 
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
-           ng-if="user != null && !userIsMember && !allowNonMembersProposals && wg.profile.supportedMembership !== 'OPEN'" disabled>
+           ng-if="user != null && !userIsMember && !allowNonMembersProposals && wg.profile.supportedMembership !== 'OPEN'" ng-click="joinWg(wg.groupId)" disabled>
           {{'Join the Group to create proposals' | translate}}
         </a>
 

@@ -563,8 +563,8 @@
           angular.element('#addMembers button.close').trigger('click');
         },
         error => {
+          Notify.show(error.data.statusMessage, "error");
           $rootScope.stopSpinner();
-          Notify.show(error.statusMessage, "error");
         }
       )
     }

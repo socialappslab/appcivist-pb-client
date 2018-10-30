@@ -807,9 +807,11 @@
       payload.title = defaultTitle ? defaultTitle : "Create your title";
       payload.text = "";
       payload.type = contributionType;
+      payload.workingGroupAuthors = [];
+      payload.workingGroupAuthors[0] = this.wg;
       console.log(payload);
       Pace.restart();
-      let rsp = Contributions.contributionInResourceSpace(this.wg.resourcesResourceSpaceId).save(payload).$promise.then(
+      let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
         contribution => {
           Pace.stop();
           Notify.show('Contribution saved', 'success');

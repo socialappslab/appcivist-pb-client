@@ -454,8 +454,9 @@
      * Upload csv file.
      */
     function importContribution() {
-      Pace.start();
+      Pace.restart();
       var self = this;
+      self.errorMessage = "";
       var url = localStorageService.get('serverBaseUrl');
       url += '/assembly/{aid}/campaign/{cid}/contribution/import?type={type}&createThemes={createThemes}';
       url = url.replace('{aid}', this.assembly.assemblyId);
@@ -485,7 +486,8 @@
         },
         error => {
           Pace.stop();
-          Notify.show(error.statusMessage, 'error');
+          Notify.show(error.data.statusMessage, 'error');
+          self.errorMessage = error.data.statusMessage;
         }
         );
     }

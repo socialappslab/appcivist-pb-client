@@ -285,7 +285,7 @@
           <ul class="workingGroupList" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
             <li ng-repeat="wg in otherWorkingGroups">
               <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
-              <a class="btn btn-default" ng-click="joinWg(wg.groupId)"><i class="fa fa-sign-in fa-lg"></i> {{'Join'|translate}}</a>
+              <a class="btn btn-default" ng-click="joinWg(wg.groupId)" ng-if="getMyWorkingGroupsIds.indexOf(wg.groupId) !== -1"><i class="fa fa-sign-in fa-lg"></i> {{'Join'|translate}}</a>
             </li>
           </ul>
         </div>

@@ -468,6 +468,7 @@
       this.campaignConfigs = data;
       this.campaign.configs = this.campaignConfigs;
       let faqUrlConf = data['appcivist.campaign.faq-url'];
+      let allowArchivedConf = data ['appcivist.campaign.contribution.status.archived-enabled'];
       let requireGroupAuthorshipConf = data['appcivist.campaign.require-group-authorship'];
       let proposalDefaultTitleConf = data['appcivist.campaign.contribution.default-title'];
       let proposalDefaultDescriptionConf = data['appcivist.campaign.contribution.default-description'];
@@ -481,6 +482,7 @@
       let accessibilityUrlConf = data['appcivist.campaign.accessibility.url'];
 
       this.showAnalytics = showAnalyticsConf ? showAnalyticsConf.toLowerCase() === 'false' ? false : true : true;
+      this.allowArchived = allowArchivedConf ? allowArchivedConf.toLowerCase() !== 'false' : true;
       this.showMedia = showMediaConf ? showMediaConf.toLowerCase() === 'false' ? false : true : true;
       this.showDocuments = showDocumentsConf ? showDocumentsConf.toLowerCase() === 'false' ? false : true : true;
       this.showWorkingGroups = showWorkingGroupsConf ? showWorkingGroupsConf.toLowerCase() === 'false' ? false : true : true;
@@ -532,6 +534,7 @@
       this.campaignFaq = "#";
       Notify.show('Error while trying to fetch campaign config', 'error');
       this.afterLoadingCampaignConfigs();
+      this.allowArchived = true;
     }
 
     function afterLoadingCampaignConfigs() {

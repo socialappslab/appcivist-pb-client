@@ -324,9 +324,9 @@
                   <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Draft' | translate }}</option>
                   <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{'Public draft' | translate}}</option>
                   <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'" ng-if="!proposal.status.includes('FORKED')">{{ 'Published' | translate }}</option>
-                  <option value="ARCHIVED" ng-selected="proposal.status == 'ARCHIVED'" ng-if="userIsCoordinator || userIsAdmin">{{ 'Archived' | translate }}</option>
-                  <option value="MERGED_PRIVATE_DRAFT" ng-selected="proposal.status == 'MERGED_PRIVATE_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Published' | translate }}</option>
-                  <option value="MERGED_PUBLIC_DRAFT" ng-selected="proposal.status == 'MERGED_PUBLIC_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Published' | translate }}</option>
+                  <option value="ARCHIVED" ng-selected="proposal.status == 'ARCHIVED'" ng-if="(userIsCoordinator || userIsAdmin) && allowArchived">{{ 'Archived' | translate }}</option>
+                  <option value="MERGED_PRIVATE_DRAFT" ng-selected="proposal.status == 'MERGED_PRIVATE_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Merged Private Draft' | translate }}</option>
+                  <option value="MERGED_PUBLIC_DRAFT" ng-selected="proposal.status == 'MERGED_PUBLIC_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Merged Public Draft' | translate }}</option>
                   <option value="FORKED_PRIVATE_DRAFT" ng-selected="proposal.status == 'FORKED_PRIVATE_DRAFT'" ng-if="proposal.status.includes('FORKED')">{{'Forked Private Draft' | translate}}</option>
                   <option value="FORKED_PUBLIC_DRAFT" ng-selected="proposal.status == 'FORKED_PUBLIC_DRAFT'" ng-if="proposal.status.includes('FORKED')">{{'Forked Public Draft' | translate}}</option>
                   <option value="FORKED_PUBLISHED" ng-selected="proposal.status == 'FORKED_PUBLISHED'" ng-if="proposal.status.includes('FORKED')">{{'Forked Published' | translate}}</option>

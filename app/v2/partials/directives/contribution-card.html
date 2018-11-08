@@ -72,6 +72,7 @@
         </div>
         <div class="col-md-11 no-padding no-margin">
           <span ng-if="contribution.creator">{{contribution.creator.name}}</span>
+          <span ng-if="!contribution.creator">{{'ANONYMOUS' | translate}}</span>
         </div>
       </div>
       <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons" campaign="campaign"></contribution-feedback>
@@ -120,9 +121,8 @@
            </a>
         </h3>
         <div class="heading--category">
-          <span ng-repeat="author in authorList | limitTo:1 track by $index" class="{{contribution.cover ? 'white-text' : ''}}">
-            {{author.name}} <span ng-if="$index < (authorList.length - 1) || $index == 2 ">, </span>
-          </span>
+          <span ng-if="contribution.creator">{{contribution.creator.name}}</span>
+          <span ng-if="!contribution.creator">{{'ANONYMOUS' | translate}}</span>
         </div>
         <p class="{{contribution.cover ? 'white-text' : ''}}">{{'Created on' | translate}} {{formatDate(contribution.creation)}}</p>
       </div>

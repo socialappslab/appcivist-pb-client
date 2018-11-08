@@ -590,7 +590,7 @@
           loadCustomFields();
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
-          $scope.userIsCreator = $scope.user ? $scope.user.userId == data.creator.userId : false;
+          $scope.userIsCreator = $scope.user ? !data.creator ? false : $scope.user.userId == data.creator.userId : false;
           if($scope.user && data.parent && Contributions.verifyAuthorship($scope.user, data.parent)) {
             $scope.userIsParentAuthor = true;
           } else {

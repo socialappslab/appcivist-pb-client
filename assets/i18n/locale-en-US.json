@@ -1508,5 +1508,7 @@
   "public_status": "public",
   "draft_status": "draft",
   "pagination.widget.no-data": "This space has still no {{type}} with status {{status}}.",
-  "Dissensus Amendments": "Dissensus Amendments"
+  "Dissensus Amendments": "Dissensus Amendments",
+  "ANONYMOUS": "Anonymous"
+
 }

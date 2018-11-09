@@ -31,7 +31,8 @@ function MemberCard(localStorageService, AppCivistAuth, $state, $stateParams) {
     scope: {
       user: '=',
       actionBar: '=',
-      commentsSection: '='
+      commentsSection: '=',
+      commentDate: "="
     },
     templateUrl: '/app/v2/partials/directives/member-card.html',
     link: function postLink(scope, element, attrs) {
@@ -46,7 +47,9 @@ function MemberCard(localStorageService, AppCivistAuth, $state, $stateParams) {
       if(!scope.user){
         scope.currentUser = localStorageService.get('user');
       }
-
+      scope.formatDate = function(date) {
+        return moment(date, 'YYYY-MM-DD HH:mm').local().format('LLL');
+      };
       scope.signout = function() {
 		    var rsp = AppCivistAuth.signOut().save();
         rsp.$promise.then(redirect, redirect);

@@ -13,7 +13,7 @@
     <div class="fn" style="font-weight: 600;">
       {{(currentUser.name === undefined || currentUser.name === null || currentUser.name === "" || currentUser.name === " ") ? currentUser.userId : currentUser.name}}
       <span ng-if="commentsSection">
-        May 17, 2017
+        {{formatDate(commentDate)}}
       </span>
     </div>
     <div class="account__actions" ng-if="actionBar && !commentsSection">

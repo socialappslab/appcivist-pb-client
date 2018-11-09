@@ -1249,6 +1249,14 @@
       let peerdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.peerdoc-editor-enabled'];
       let showContributionParent = $scope.campaignConfigs['appcivist.campaign.show-parent'];
 
+      let showForkButton = $scope.campaignConfigs['appcivist.campaign.show-fork-button'];
+      let showPublishedStatus = $scope.campaignConfigs['appcivist.campaign.show-published-status'];
+      let showMergeStatus = $scope.campaignConfigs['appcivist.campaign.show-merge-status'];
+
+      $scope.showForkButton  = showForkButton ? showForkButton.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showPublishedStatus  = showPublishedStatus ? showPublishedStatus.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showMergeStatus  = showMergeStatus ? showMergeStatus.toLowerCase()  === 'false' ? false : true : true;
+
       $scope.showContributionParent  = showContributionParent ? showContributionParent.toLowerCase()  === 'false' ? false : true : true;
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;

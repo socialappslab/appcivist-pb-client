@@ -35,11 +35,11 @@
         <div class="row" style="margin-left: 0; margin-top: 1em">
           <div class="col-xs-7">
             <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
-            <member-card ng-if="discussion.authors[0]" user="discussion.authors[0]" comments-section="true"></member-card>
+            <member-card ng-if="discussion.authors[0]" user="discussion.authors[0]" comments-section="true" comment-date="discussion.creation"></member-card>
             <member-card ng-if="!discussion.authors[0] && discussion.nonMemberAuthor" user="discussion.nonMemberAuthor"
-              comments-section="true"></member-card>
+              comments-section="true" comment-date="discussion.creation"></member-card>
             <member-card ng-if="!discussion.authors[0] && !discussion.nonMemberAuthor" user="{'name':'None','email':'None'}"
-              comments-section="true"></member-card>
+              comments-section="true" comment-date="discussion.creation"></member-card>
           </div>
           <!--<div class="col-*-8">
             <p class="heading--header" style="float: left;">{{formatDate(discussion.creation)}}</p>
@@ -61,11 +61,11 @@
             <div class="row" style="margin-left: 0; margin-top: 1em">
                 <div class="col-xs-6">
                   <!--<member-card user="discussion.authors[0] || discussion.nonMemberAuthor" comments-section="true"></member-card>-->
-                  <member-card ng-if="comment.authors[0]" user="comment.authors[0]" comments-section="true"></member-card>
+                  <member-card ng-if="comment.authors[0]" user="comment.authors[0]" comments-section="true" comment-date="comment.creation"></member-card>
                   <member-card ng-if="!comment.authors[0] && comment.nonMemberAuthor" user="discussion.nonMemberAuthor"
-                    comments-section="true"></member-card>
+                    comments-section="true" comment-date="comment.creation"></member-card>
                   <member-card ng-if="!comment.authors[0] && !comment.nonMemberAuthor" user="{'name':'None','email':'None'}"
-                    comments-section="true"></member-card>
+                    comments-section="true" comment-date="comment.creation"></member-card>
                 </div>
                 <!--<div class="col-*-8">
                   <p class="heading--header" style="float: left;">{{formatDate(discussion.creation)}}</p>

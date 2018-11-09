@@ -32,7 +32,7 @@
     background-color: #434343;
     padding-bottom: 4rem;
     &:before { background-color: transparent; }
-    &.excluded {
+    &.excluded,&.archived {
       background-color: #949494;
     }
   }

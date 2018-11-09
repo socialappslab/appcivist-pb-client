@@ -242,35 +242,81 @@
         var user = localStorageService.get('user');
         filters.by_author = user.userId;
         filters.createdByOnly = true;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
       }
-
       if (filters.mode === 'myIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
         var _user = localStorageService.get('user');
         filters.by_author = _user.userId;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
       }
-
       if (filters.mode === 'draftProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "DRAFT, PUBLIC_DRAFT";
+        filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT";
       }
-
       if (filters.mode === 'draftIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
-        filters.status = "DRAFT, PUBLIC_DRAFT";
+        filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT";
       }
-
       if (filters.mode === 'sharedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
         var user = localStorageService.get('user');
         filters.shared_with = user.userId;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
+      }
+      if (filters.mode === 'mergedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "MERGED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT";
+      }
+      if (filters.mode === 'mergedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "MERGED_PUBLIC_DRAFT";
+      }
+      if (filters.mode === 'forkedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PUBLIC_DRAFT";
+      }
+      if (filters.mode === 'forkedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PUBLIC_DRAFT";
+      }
+      if (filters.mode === 'forkedProposalsPublished') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PUBLISHED";
+      }
+      if (filters.mode === 'forkedIdeasPublished') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "FORKED_PUBLISHED"
+      }
+      if (filters.mode === 'archivedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "ARCHIVED";
+      }
+      if (filters.mode === 'archivedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "ARCHIVED";
+      }
+      if (filters.mode === 'excludedProposals') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "EXCLUDED";
+      }
+      if (filters.mode === 'excludedIdeas') {
+        filters.mode = 'idea';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "EXCLUDED";
       }
       // if (this.dryRun === 'true') {
       //   this.generatedFilters = filters;

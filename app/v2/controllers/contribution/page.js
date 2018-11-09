@@ -11,13 +11,13 @@
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications',
-    '$timeout', '$interval', 'LocaleService', 'AppCivistAuth'
+    '$timeout', '$interval', 'LocaleService', 'AppCivistAuth', '$state'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications,
-                                $timeout, $interval, LocaleService, AppCivistAuth) {
+                                $timeout, $interval, LocaleService, AppCivistAuth, $state) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -84,6 +84,9 @@
     $scope.filterCreatorFromAuthors = filterCreatorFromAuthors.bind($scope);
     $scope.isCurrentAuthor = isCurrentAuthor.bind($scope);
     $scope.enforceLimit = enforceLimit.bind($scope);
+    $scope.forkProposal = forkProposal.bind($scope);
+    $scope.mergeProposal = mergeProposal.bind($scope);
+    $scope.goToParentOrChildren = goToParentOrChildren.bind($scope);
 
     activate();
 
@@ -235,6 +238,10 @@
       $scope.$watch('proposalID', function(n,o) {
         $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
       });
+      loadCampaign();
+      loadAssemblyConfig();
+      $scope.loadCampaignResources();
+
       $scope.showActionMenu = true;
       $scope.myObject = {};
       $scope.myObject.refreshMenu = function () {
@@ -386,8 +393,74 @@
             else this.proposal.status = this.statusBeforeUpdate;
           }
         );
+      } else if (this.proposal.status === "ARCHIVED") {
+        $translate("contribution.status.archived.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.archived.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "FORKED_PRIVATE_DRAFT") {
+        $translate("contribution.status.forked-private-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-private-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "FORKED_PUBLIC_DRAFT") {
+        $translate("contribution.status.forked-public-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-public-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "FORKED_PUBLISHED") {
+        $translate("contribution.status.forked-published.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-published.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "FORKED_PUBLISHED") {
+        $translate("contribution.status.forked-published.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.forked-published.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "MERGED_PRIVATE_DRAFT") {
+        $translate("contribution.status.merged-private-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.merged-private-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
+      } else if (this.proposal.status === "MERGED_PUBLIC_DRAFT") {
+        $translate("contribution.status.merged-public-draft.description").then(
+          translation => {
+            let customTranslation = this.campaignConfigs['contribution.status.merged-public-draft.description'];
+            let confirmation = window.confirm(customTranslation ? customTranslation : translation);
+            if (confirmation) this.updateStatusService();
+            else this.proposal.status = this.statusBeforeUpdate;
+          }
+        );
       }
+
     }
+
+
 
     function updateStatusService() {
       angular.element('.required-field').removeClass('required-field');
@@ -497,34 +570,62 @@
     };
 
     function loadReadOnlyEtherpadHTML() {
-      let rsp;
-      if ($scope.isAnonymous) {
-        rsp = Etherpad.getReadOnlyHtmlPublic(this.proposalID).get();
-      } else {
-        rsp = Etherpad.getReadOnlyHtml(this.assemblyID, this.campaignID, this.proposalID).get();
-      }
+      // let rsp;
+      // if ($scope.isAnonymous) {
+      //   rsp = Etherpad.getReadOnlyHtmlPublic(this.proposalID).get();
+      // } else {
+      //   rsp = Etherpad.getReadOnlyHtml(this.assemblyID, this.campaignID, this.proposalID).get();
+      // }
 
-      rsp.$promise.then(
-        data => {
-          $scope.padHTML = data;
-          angular.element(document).ready(function () {
-            $timeout(() => {
-              $scope.interval = $interval(() => {
-                let iframe = document.getElementById('etherpadHTML');
-                let iframedoc = iframe.contentDocument || iframe.contentWindow.document;
-                iframedoc.body.innerHTML = $scope.padHTML.text;
-                }, 2000);
-            }, 2000);
-          });
+      // rsp.$promise.then(
+      //   data => {
+      //     $scope.padHTML = data;
+      //     angular.element(document).ready(function () {
+      //       $timeout(() => {
+      //         $scope.interval = $interval(() => {
+      //           let iframe = document.getElementById('etherpadHTML');
+      //           let iframedoc = iframe || iframe.contentDocument || iframe.contentWindow.document;
+      //           if (iframedoc) iframedoc.body.innerHTML = $scope.padHTML.text;
+      //           }, 2000);
+      //       }, 2000);
+      //     });
+      //   },
+      //   error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
+      // )
+    }
+
+    function loadChildren(scope, data) {
+
+      let mC = Contributions.contributionChildren(data.uuid, 'MERGES').query().$promise;
+      mC.then(
+        rs => {
+
+          $scope.mergeChildren = rs.length > 0 ? rs : null;
         },
-        error => Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error')
-      )
+        error => {
+          Notify.show("Error trying to fork. Please try again later.", "error")
+        }
+      );
+
+      let fC =  Contributions.contributionChildren(data.uuid, 'FORKS').query().$promise;
+      fC.then(
+        rs => {
+
+          $scope.forkedChildren = rs.length > 0 ? rs : null;
+        },
+        error => {
+          Notify.show("Error trying to fork. Please try again later.", "error")
+        }
+      );
+
     }
 
     function loadProposal(scope) {
       if (!scope.proposalID || !scope.assemblyID) return;
       let vm = this;
       var rsp;
+
+      $('.modal-backdrop.in').hide();
 
       if (scope.isAnonymous) {
         rsp = Contributions.getContributionByUUID(scope.proposalID).get();
@@ -533,10 +634,17 @@
       }
       rsp.$promise.then(
         function (data) {
+          loadCustomFields();
           data.informalScore = Contributions.getInformalScore(data);
           $scope.proposal = data;
-          $scope.userIsCreator = $scope.user ? $scope.user.userId == data.creator.userId : false;
+          $scope.userIsCreator = $scope.user ? !data.creator ? false : $scope.user.userId == data.creator.userId : false;
+          if($scope.user && data.parent && Contributions.verifyAuthorship($scope.user, data.parent)) {
+            $scope.userIsParentAuthor = true;
+          } else {
+            $scope.userIsParentAuthor = false;
+          }
           $scope.contributionLabel = $scope.proposal.title;
+          loadChildren(scope, data);
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
           });
@@ -570,15 +678,17 @@
             $scope.extendedTextIsGdoc = data.extendedTextPad.resourceType === 'GDOC';
             $scope.extendedTextIsPeerDoc = data.extendedTextPad.resourceType === 'PEERDOC';
             if ($scope.extendedTextIsEtherpad) {
+              // show controls of etherpad if proposal is DRAFT or PUBLIC_DRAFT
+              let showControlsQParam = "&showControls=" + ($scope.proposal.status === 'DRAFT' || $scope.proposal.status === 'PUBLIC_DRAFT');
               $scope.etherpadReadOnlyUrl = $sce.trustAsResourceUrl(
-                Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url)
-                  + "&userName=" + $scope.userName + '&showControls=false&lang=' + $scope.etherpadLocale);
+                Etherpad.embedUrl(data.extendedTextPad.readOnlyPadId, data.publicRevision, data.extendedTextPad.url, $scope.loadReadOnlyEtherpadByRevision)
+                  + "&userName=" + $scope.userName + showControlsQParam + '&lang=' + $scope.etherpadLocale);
               $scope.loadReadOnlyEtherpadHTML();
             } else if ($scope.extendedTextIsGdoc) {
               $scope.gdocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url);
               $scope.gdocUrlMinimal = $sce.trustAsResourceUrl($scope.gdocUrl +"?rm=minimal");
             } else if ($scope.extendedTextIsPeerDoc) {
-              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true");
+              $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $timeout(() => {
                 $scope.interval = $interval(() => {
@@ -590,6 +700,8 @@
           } else {
             console.warn('Proposal with no PAD associated');
           }
+
+          scope.selectedTheme = scope.proposal.themes ? scope.proposal.themes[0] : null;
 
           if (!scope.isAnonymous) {
             var rsp = Campaigns.components($scope.assemblyID, $scope.campaignID);
@@ -641,12 +753,15 @@
             scope.loadValues(scope.proposal.resourceSpaceUUID, true);
           }
 
+          if (scope.keywordsLimit) {
+            if (scope.proposal.themes && scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == scope.keywordsLimit) {
+              scope.keywordsLimitReached = true;
+            }
+          }
+
           loadRelatedContributions();
           loadRelatedStats();
-          loadCampaign();
-          loadAssemblyConfig();
           loadResources();
-          $scope.loadCampaignResources();
         },
         function (error) {
           Notify.show('Error occured when trying to load contribution: ' + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -804,20 +919,22 @@
     function loadRelatedContributions() {
       $scope.proposal.rsUUID = $scope.proposal.resourceSpaceUUID;
       $scope.proposal.rsID = $scope.proposal.resourceSpaceId;
-      var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous);
+      var rsp = Space.getContributions($scope.proposal, 'IDEA', $scope.isAnonymous, null, false);
       rsp.then(
         function (data) {
           var related = [];
-          angular.forEach(data.list, function (r) {
-            if (r.contributionId === $scope.proposalID) {
-              return;
-            }
-            related.push(r);
-          });
+          if (data && data.list) {
+            angular.forEach(data.list, function (r) {
+              if (r.contributionId === $scope.proposalID) {
+                return;
+              }
+              related.push(r);
+            });
+          }
           $scope.resources.relatedContributions = related;
         },
         function (error) {
-          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          console.log("Error while trying to load: " + error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '');
         }
       );
     }
@@ -1010,7 +1127,6 @@
       if ($scope.campaign && $scope.campaign.campaignID === $scope.campaignID) {
         $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
         loadCampaignConfig();
-        loadCustomFields();
         checkIfFollowing($scope.campaign.rsID);
       } else {
         var res;
@@ -1026,7 +1142,6 @@
           // update current campaign reference
           localStorageService.set('currentCampaign', data);
           loadCampaignConfig();
-          loadCustomFields();
           checkIfFollowing($scope.campaign.rsID);
         }, function (error) {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1087,11 +1202,12 @@
         $scope.themesLimit = $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] ? $scope.campaignConfigs['appcivist.campaign.themes-number-limit'] : -1;
         if ($scope.themesLimit == 1) {
           loadAllThemes();
-          $scope.selectedTheme = $scope.proposal.themes ? $scope.proposal.themes[0] : null;
         }
+        loadProposal($scope);
         loadBallotPaper();
         loadViewsConfig();
       }, function (error) {
+        loadProposal($scope);
         loadBallotPaper();
         Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
       });
@@ -1174,7 +1290,21 @@
       let showInstructionsConf = $scope.campaignConfigs['appcivist.campaign.components.display-instructions'];
       let hasKeywordsLimit = $scope.campaignConfigs['appcivist.campaign.keywords.limit'];
       let hasDescriptionLimit = $scope.campaignConfigs['appcivist.campaign.contribution-summary-word-limit'];
+      let loadReadOnlyEtherpadByRevision = $scope.campaignConfigs['appcivist.campaign.etherpad-readonly-mode-last-published-edition'];
+      let etherpadIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.etherpad-editor-enabled'];
+      let gdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.gdoc-editor-enabled'];
+      let peerdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.peerdoc-editor-enabled'];
+      let showContributionParent = $scope.campaignConfigs['appcivist.campaign.show-parent'];
 
+      let showForkButton = $scope.campaignConfigs['appcivist.campaign.show-fork-button'];
+      let showPublishedStatus = $scope.campaignConfigs['appcivist.campaign.show-published-status'];
+      let showMergeStatus = $scope.campaignConfigs['appcivist.campaign.show-merge-status'];
+
+      $scope.showForkButton  = showForkButton ? showForkButton.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showPublishedStatus  = showPublishedStatus ? showPublishedStatus.toLowerCase()  === 'false' ? false : true : true;
+      $scope.showMergeStatus  = showMergeStatus ? showMergeStatus.toLowerCase()  === 'false' ? false : true : true;
+
+      $scope.showContributionParent  = showContributionParent ? showContributionParent.toLowerCase()  === 'false' ? false : true : true;
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showCommentCount = showCommentCountConf ? showCommentCountConf.toLowerCase()  === 'false' ? false : true : true;
@@ -1197,14 +1327,11 @@
       $scope.showInstructions = showInstructionsConf ? showInstructionsConf.toLowerCase() === 'false' ? false : true : true;
       $scope.keywordsLimit = hasKeywordsLimit ? hasKeywordsLimit : false;
       $scope.descriptionLimit = hasDescriptionLimit ? parseInt(hasDescriptionLimit) : false;
+      $scope.loadReadOnlyEtherpadByRevision = loadReadOnlyEtherpadByRevision ? loadReadOnlyEtherpadByRevision : false;
       $scope.translateWordLimit = {wordLimit : $scope.descriptionLimit}
-
-      if ($scope.keywordsLimit) {
-        if ($scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == $scope.keywordsLimit) {
-          $scope.keywordsLimitReached = true;
-        }
-      }
-
+      $scope.etherpadIsEnabled = etherpadIsEnabledConf ? etherpadIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
+      $scope.gdocIsEnabled = gdocIsEnabledConf ? gdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
+      $scope.peerdocIsEnabled = peerdocIsEnabledConf ? peerdocIsEnabledConf.toLowerCase() === 'false' ? false : true : true; // default is true
     }
 
     function seeHistory() {
@@ -1270,7 +1397,11 @@
       let rsp = Campaigns.themes(this.assemblyID, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
       rsp.then(
         themes => {
-          vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery.query));
+          if (vm.themeQuery && vm.themeQuery.query === "") {
+            vm.themesList = themes;
+          } else {
+            vm.themesList = $filter('filter')(themes, queryThemes(vm.themeQuery.query));
+          }
         },
         error => {
           Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
@@ -1807,9 +1938,14 @@
       let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
       rsp2.then(
         data => {
-          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback.length > 0))
+          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0))
           if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
-            this.userFeedbackArray = data.filter(f => ((f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT') && f.textualFeedback.length > 0))
+            this.userFeedbackArray = data.filter(
+              f => (
+                (f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT')
+                  && (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0)
+              )
+            )
           }
         },
         error => this.userFeedbackArray = []
@@ -1844,7 +1980,7 @@
       Etherpad.embedDocument($scope.assemblyID, $scope.campaignID, $scope.proposalID, 'peerdoc', payload).then(
         response => {
           $scope.newDocUrl = $sce.trustAsResourceUrl(response.path);
-          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"?embed=true");
+          $scope.writePeerDocUrl = $sce.trustAsResourceUrl(response.path+"&embed=true");
           $scope.proposal.extendedTextPad = {resourceType:"PEERDOC"}
         },
         error => {
@@ -1861,7 +1997,12 @@
     }
 
     function syncProposalWithPeerdoc() {
-      let rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId).get().$promise;
+      let rsp;
+      if ($scope.isAnonymous) {
+        rsp = Contributions.flatContributionInResourceSpace(null, $scope.proposal.uuid, true).get().$promise;
+      } else {
+        rsp = Contributions.flatContributionInResourceSpace($scope.campaign.resourceSpaceId, $scope.proposal.contributionId, false).get().$promise;
+      }
       rsp.then(
         contribution => {
           if (!$scope.isTitleEdit)
@@ -2059,6 +2200,53 @@
         }
       );
     }
+
+    function goToParentOrChildren(id) {
+
+      $state.go('v2.assembly.aid.campaign.contribution.coid', { aid: $scope.assemblyID, cid: $scope.campaignId, coid: id}, { reload: true });
+    }
+
+
+
+    function forkProposal() {
+      let rsp = Contributions.forkProposal($scope.assemblyID, $scope.campaignId, $scope.proposal.contributionId).update().$promise;
+      rsp.then(
+        rs => {
+
+          $state.go('v2.assembly.aid.campaign.contribution.coid', { aid: $scope.assemblyID, cid: $scope.campaignId, coid: rs.contributionId}, { reload: true });
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
+        },
+        error => {
+          Notify.show("Error trying to fork. Please try again later.", "error")
+        }
+      )
+
+    }
+
+    function mergeProposal() {
+
+      let rsp = Contributions.mergeProposal($scope.assemblyID, $scope.proposal.contributionId, $scope.proposal.parent.contributionId).update().$promise;
+      rsp.then(
+        rs => {
+
+          $state.go('v2.assembly.aid.campaign.contribution.coid', { aid: $scope.assemblyID, cid: $scope.campaignId, coid: $scope.proposal.contributionId}, { reload: true });
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
+        },
+        error => {
+          Notify.show("Error trying to merge. Please try again later.", "error")
+        }
+      )
+
+    }
+
 
     function checkIfFollowing(sid) {
       if ($scope.user && $scope.user.userId) {

@@ -23,29 +23,77 @@
       <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="currentComponent.type === 'IDEAS'">
         <a ng-click="searchMode('idea', $event)">{{'Ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: filters.mode === 'proposal'}" ng-if="currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__full_text" ng-class="{active: filters.mode === 'proposal'}"
+          ng-if="currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('proposal', $event)">{{'Published Proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}" ng-if="campaignContributionTypes.includes('IDEA') && currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}"
+          ng-if="campaignContributionTypes.includes('IDEA') && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('idea', $event)">{{'Published Ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.mine']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.mine']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS' && isCoordinator">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftProposals')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.draft']!=='HIDE' || campaignConfig['appcivist.working-group.hide-others-private-drafts'] !== 'TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS' && isCoordinator">
         <a ng-click="searchMode('draftProposals', $event)">{{'Draft Proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA')) && isCoordinator">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftIdeas')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.draft']!=='HIDE' || campaignConfig['appcivist.working-group.hide-others-private-drafts'] !== 'TRUE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA')) && isCoordinator">
         <a ng-click="searchMode('draftIdeas', $event)">{{ 'Draft Ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedProposals')}" ng-if="!isAnonymous && currentComponent.type !== 'IDEAS'">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedProposals')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.shared']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('sharedProposals', $event)">{{'Shared proposals' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedIdeas')}" ng-if="!isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedIdeas')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.shared']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('sharedIdeas', $event)">{{ 'Shared ideas' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedProposals')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('forkedProposals', $event)">{{'Forked proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedProposalsPublished')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('forkedProposalsPublished', $event)">{{'Forked Published' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedIdeas')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('forkedIdeas', $event)">{{ 'Forked ideas' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'forkedIdeasPublished')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('forkedIdeasPublished', $event)">{{ 'Forked Published Idea' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'mergedProposals')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.merged']!=='HIDE') && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('mergedProposals', $event)">{{'Merged proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'mergedIdeas')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.merged']!=='HIDE') && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('mergedIdeas', $event)">{{ 'Merged ideas' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedProposals')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE') && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('archivedProposals', $event)">{{'Archived proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedIdeas')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE') && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('archivedIdeas', $event)">{{ 'Archived ideas' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedProposals')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.excluded.view']==='TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
+        <a ng-click="searchMode('excludedProposals', $event)">{{'Excluded proposals' | translate | titlecase}}</a>
+      </li>
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'excludedIdeas')}"
+          ng-if="(campaignConfig['appcivist.campaign.filter.excluded.view']==='TRUE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
+        <a ng-click="searchMode('excludedIdeas', $event)">{{ 'Excluded ideas' | translate | titlecase}}</a>
       </li>
     </ul>
   </div>

@@ -8,7 +8,7 @@
  */
 
 (function () {
-  var dependencies = ['ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
+  var dependencies = ['ngRaven', 'ngRoute', 'ui.bootstrap', 'ngResource', 'ngMessages', 'LocalStorageModule', 'ngFileUpload',
     'angularMoment', 'angularSpinner', 'angularMultiSlider', 'ngmodel.format', 'pascalprecht.translate', 'duScroll',
     'tmh.dynamicLocale', 'ngclipboard', 'ui.router', 'angular-inview', 'ngNotify', 'vcRecaptcha',
     'angularUtils.directives.dirPagination', 'ErrorCatcher', 'rzModule', 'ui.tinymce', 'ngCookies', 'facebook',
@@ -16,8 +16,22 @@
   ];
   var appCivistApp = angular.module('appCivistApp', dependencies);
 
+
+  var env = {};
+
+  // Import variables if present (from env.js)
+  if(window){
+    Object.assign(env, window.__env);
+  }
+
+  Raven
+    .config(env.sentryConfig)
+    .addPlugin(Raven.Plugins.Angular)
+    .install();
+
   // TODO: add the right url for the mimove voting api
   var appcivist = {
+
     api: {
       voting: {
         production: "https://platform.appcivist.org/voting/api/v0",

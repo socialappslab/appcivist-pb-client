@@ -204,6 +204,8 @@
       $scope.videoCount = videoCount.bind($scope);
       $scope.createContribution = createContribution.bind($scope);
       $scope.validUrl = validUrl.bind($scope);
+      $scope.refreshWorkingGroupsMemberships = refreshWorkingGroupsMemberships.bind($scope);
+      $scope.getMyWorkingGroupsIds = getMyWorkingGroupsIds.bind($scope);
 
       // add attachment form
       $scope.submitAttachment = submitAttachment.bind($scope);
@@ -268,9 +270,44 @@
       rsp.$promise.then(
         response => {
           Notify.show("Request completed successfully. We'll get in contact soon.", "success");
+          refreshWorkingGroupsMemberships();
         },
         error => Notify.show(error.statusMessage, "error")
       )
+    }
+
+    function refreshWorkingGroupsMemberships() {
+      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
+      let vm = $scope;
+      rsp.then(
+        data => {
+          let groupMembershipsHash = {};
+          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+          let myWorkingGroups = membershipsInGroups.map(function (membership) {
+            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+            return membership.workingGroup;
+          });
+
+          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+          rsp.then(
+            groups => {
+              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+              localStorageService.set('otherWorkingGroups', other);
+              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+              vm.otherWorkingGroups = other;
+            }
+          );
+        }
+      )
+    }
+
+    function getMyWorkingGroupsIds() {
+      const mine = localStorageService.get('myWorkingGroups');
+      return mine.map(function(wg) {
+        return wg.groupId
+      });
     }
 
     function loadAssembly() {
@@ -472,27 +509,31 @@
     function afterLoadingCampaignConfigsSuccess(data) {
       this.campaignConfigs = data;
       this.campaign.configs = this.campaignConfigs;
-      let faqUrlConfig = data['appcivist.campaign.faq-url'];
-      this.requireGroupAuthorship = data['appcivist.campaign.require-group-authorship'] === 'true' ? true : false;
-      this.proposalDefaultTitle = data['appcivist.campaign.contribution.default-title'];
-      this.proposalDefaultDescription = data['appcivist.campaign.contribution.default-description'];
-      this.proposalDefaultTitle = this.proposalDefaultTitle ? this.proposalDefaultTitle : "Create your title"; // TODO translate
-      this.proposalDefaultDescription = this.proposalDefaultDescription ? this.proposalDefaultDescription : "Create a brief description"; // TODO translate
-      this.allowedContributionTypes = data['appcivist.campaign.contribution-types'];
-      this.themesExtendedDescription = data['appcivist.campaign.themes.extended-description-url'];
-
+      let faqUrlConf = data['appcivist.campaign.faq-url'];
+      let allowArchivedConf = data ['appcivist.campaign.contribution.status.archived-enabled'];
+      let requireGroupAuthorshipConf = data['appcivist.campaign.require-group-authorship'];
+      let proposalDefaultTitleConf = data['appcivist.campaign.contribution.default-title'];
+      let proposalDefaultDescriptionConf = data['appcivist.campaign.contribution.default-description'];
+      let allowedContributionTypesConf = data['appcivist.campaign.contribution-types'];
+      let themesExtendedDescriptionConf = data['appcivist.campaign.themes.extended-description-url'];
       let disableNewContributionsConf = data['appcivist.campaign.disable-new-contributions'];
       let showAnalyticsConf = data['appcivist.campaign.toolbar.analytics'];
       let showMediaConf = data['appcivist.campaign.toolbar.media'];
       let showDocumentsConf = data['appcivist.campaign.toolbar.documents'];
       let showWorkingGroupsConf = data['appcivist.campaign.toolbar.working-groups'];
+      let accessibilityUrlConf = data['appcivist.campaign.accessibility.url'];
 
       this.showAnalytics = showAnalyticsConf ? showAnalyticsConf.toLowerCase() === 'false' ? false : true : true;
+      this.allowArchived = allowArchivedConf ? allowArchivedConf.toLowerCase() !== 'false' : true;
       this.showMedia = showMediaConf ? showMediaConf.toLowerCase() === 'false' ? false : true : true;
       this.showDocuments = showDocumentsConf ? showDocumentsConf.toLowerCase() === 'false' ? false : true : true;
       this.showWorkingGroups = showWorkingGroupsConf ? showWorkingGroupsConf.toLowerCase() === 'false' ? false : true : true;
       this.disableNewContributions = disableNewContributionsConf ? disableNewContributionsConf.toLowerCase() === 'false' ? false : true : false;
-
+      this.requireGroupAuthorship = requireGroupAuthorshipConf ? requireGroupAuthorshipConf.toLowerCase() === 'true' ? true : false : false;
+      this.proposalDefaultTitle = proposalDefaultTitleConf ? proposalDefaultTitleConf : "Create your title"; // TODO translate
+      this.proposalDefaultDescription = proposalDefaultDescriptionConf ? proposalDefaultDescriptionConf : "Create a brief description"; // TODO translate
+      this.allowedContributionTypes = allowedContributionTypesConf ? allowedContributionTypesConf : "PROPOSAL, IDEA, COMMENT, DISCUSSION";
+      this.themesExtendedDescription = themesExtendedDescriptionConf ? themesExtendedDescriptionConf : null;
       if (this.allowedContributionTypes) {
         this.enableProposals = this.allowedContributionTypes.toLowerCase().includes("proposal");
         this.enableIdeas = this.allowedContributionTypes.toLowerCase().includes("idea");
@@ -502,10 +543,8 @@
         this.enableIdeas = true;
         this.enableComments = true;
       }
-
-      console.log(this.requireGroupAuthorship);
-      this.campaignFaq = faqUrlConfig ? faqUrlConfig : null;
-      this.accessibilityUrl = validUrl(data['appcivist.campaign.accessibility.url']);
+      this.campaignFaq = faqUrlConf ? faqUrlConf : null;
+      this.accessibilityUrl = validUrl(accessibilityUrlConf);
       this.afterLoadingCampaignConfigs();
     }
 
@@ -537,6 +576,7 @@
       this.campaignFaq = "#";
       Notify.show('Error while trying to fetch campaign config', 'error');
       this.afterLoadingCampaignConfigs();
+      this.allowArchived = true;
     }
 
     function afterLoadingCampaignConfigs() {
@@ -781,7 +821,7 @@
     }
 
     function loadDiscussions(campaign, isAnonymous) {
-      var res = Space.getContributions(campaign, 'DISCUSSION', isAnonymous);
+      var res = Space.getContributions(campaign, 'DISCUSSION', isAnonymous, null, false);
 
       res.then(
         function (response) {

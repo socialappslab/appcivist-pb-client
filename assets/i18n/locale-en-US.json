@@ -1510,6 +1510,7 @@
   "draft_status": "draft",
   "pagination.widget.no-data": "This space has still no {{type}} with status {{status}}.",
   "Dissensus Amendments": "Dissensus Amendments",
-  "ANONYMOUS": "Anonymous"
-
+  "ANONYMOUS": "Anonymous",
+  "NEW_CONTRIBUTION_FORK": "New Dissensus",
+  "NEW_CONTRIBUTION_MERGE": "New Amendment"
 }

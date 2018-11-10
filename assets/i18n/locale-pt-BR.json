@@ -1507,5 +1507,8 @@
   "pagination.widget.no-data": "Ainda não há uma {{type}} com estado {{status}} neste espaço.",
   "Dissensus Amendments": "Emendas de Disenso",
   "Forked Published Idea": "Emenda de Idea de Dissenso",
-  "ANONYMOUS": "Anônimo"
+  "ANONYMOUS": "Anônimo",
+  "NEW_CONTRIBUTION_FORK": "Novo Dissenso",
+  "NEW_CONTRIBUTION_MERGE": "Novo Emenda"
+
 }

@@ -548,6 +548,16 @@
       // )
     }
 
+    function loadMergeAuthors(scope, data) {
+      let mA = Contributions.contributionMergeAuthors(data.uuid).query().$promise;
+      mA.then(
+        rs => {
+
+          $scope.mergeAuthors = rs.length > 0 ? rs : null;
+        }
+      );
+    }
+
     function loadChildren(scope, data) {
 
       let mC = Contributions.contributionChildren(data.uuid, 'MERGES').query().$promise;
@@ -598,6 +608,7 @@
           }
           $scope.contributionLabel = $scope.proposal.title;
           loadChildren(scope, data);
+          loadMergeAuthors(scope, data);
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
           });

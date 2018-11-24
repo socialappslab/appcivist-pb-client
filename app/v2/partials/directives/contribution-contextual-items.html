@@ -13,7 +13,8 @@
   <li class="li-action-menu"><a ng-click="vm.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="vm.userIsWorkingGroupCoordinator && vm.isProposalIdeaStage"><a ng-click="vm.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
-  <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator && vm.notAssigned"><a href="" ng-click="vm.assignToWG()">{{'Assign to Working Group' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator">
+    <a ng-click="vm.openModal('wgEmbedModal')">{{'Assign to Working Group' | translate}}</a>
   <li class="li-action-menu" ng-if="(vm.userIsAssemblyCoordinator || vm.userIsWorkingGroupCoordinator)"><a ng-click="vm.softRemoval()">{{'Delete' | translate}}</a></li>
   <!--<li class="li-action-menu"><a ng-click="vm.subscribe()">{{'Subscribe' | translate}}</a></li>-->
   <li class="li-action-menu" ng-if="vm.userCanEdit && vm.isProposalIdeaStage && !vm.contribution.extendedTextPad.resourceType === 'PEERDOC'">
@@ -43,6 +44,7 @@
 <modal open-if="vm.modals.feedbackModal" close="vm.closeModal('feedbackModal')" title="Feedback Form" template-id="feedbackModal"></modal>
 <modal open-if="vm.modals.contributionEditModal" close="vm.closeModal('contributionEditModal')" title="Edit Form" template-id="contributionEditModal"></modal>
 <modal open-if="vm.modals.contributionExport" close="vm.closeModal('contributionExport')" title="Edit Form" template-id="contributionExport"></modal>
+<modal open-if="vm.modals.wgEmbedModal" close="vm.closeModal('wgEmbedModal')" title="Edit Form" template-id="wgEmbedModal"></modal>
 
 <script id="feedbackModal" type="text/ng-template">
   <contribution-feedback-form contribution="vm.contribution" on-success="vm.closeModal('feedbackModal')"></contribution-feedback-form>
@@ -58,4 +60,22 @@
 
 <script id="contributionModerationForm" type="text/ng-template">
   <contribution-moderation-form contribution="vm.contribution" context="vm.moderationContext" on-success="vm.moderationSuccess()"></contribution-moderation-form>
+</script>
+
+<script id="wgEmbedModal" type="text/ng-template">
+
+    <div class="modal-content">
+      <div class="modal-header" style="padding: 1%;">
+        <p> {{ 'Working Groups' | translate}}</p>
+      </div>
+      <div class="modal-body">
+        <ul class="workingGroupList" ng-if="vm.workingGroups">
+          <li ng-repeat="wg in vm.workingGroups" class="myWorkingGroup">
+            <span>{{wg.name}}</span>
+            <a class="btn btn-default" ng-click="vm.asignToWG(wg)" ng-if="!vm.isInWg(wg.groupId)"><i class="fa fa-sign-in fa-lg"></i> {{'Add'|translate}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
 </script>

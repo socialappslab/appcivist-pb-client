@@ -236,6 +236,16 @@
      */
     function doSearch() {
       var filters = _.cloneDeep(this.filters);
+      if (filters.mode === 'publicProposal') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "PUBLIC_DRAFT, PUBLISHED, FORKED_PUBLISHED";
+      }
+      if (filters.mode === 'publicAmendments') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "MERGED_PUBLIC_DRAFT";
+      }
       if (filters.mode === 'myProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;

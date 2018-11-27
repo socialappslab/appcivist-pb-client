@@ -316,7 +316,7 @@
               {{ ('Unfollow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#forkModal"
-                    ng-if="contributionType && !isAnonymous && showForkButton && (proposal.status == 'PUBLISHED' || proposal.status == 'FORKED_PUBLISHED')">
+                    ng-if="contributionType && !isAnonymous && showForkButton && (proposal.status == 'PUBLISHED')">
               {{ ('Fork ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#mergeModal"

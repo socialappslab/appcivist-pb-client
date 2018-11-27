@@ -457,7 +457,7 @@
           </div>
           <!-- PEERDOC -->
           <div class="text-center" style="margin-top: 2rem"
-               ng-if="proposal.extendedTextPad && proposal.extendedTextPad.resourceType==='PEERDOC' && (((proposal.status.includes('DRAFT') && !proposal.status.includes('PUBLIC')) && userIsAuthor || userIsCoordinator) || (proposal.status.includes('PUBLIC_DRAFT') && !isAnonymous) || proposal.status == 'PUBLISHED' || proposal.status == 'FORKED_PUBLISHED') && showBodyProposal">
+               ng-if="proposal.extendedTextPad && proposal.extendedTextPad.resourceType==='PEERDOC' && (((proposal.status.includes('DRAFT') && !proposal.status.includes('PUBLIC')) && userIsAuthor || userIsCoordinator) || (proposal.status.includes('PUBLIC_DRAFT') && !isAnonymous) || proposal.status == 'PUBLISHED' || proposal.status == 'FORKED_PUBLISHED' || proposal.status == 'ARCHIVED') && showBodyProposal">
             <div class="etherpad__wrapper">
               <iframe ng-if="(!userIsAuthor && peerDocUrl)" name="embed_readonly"
                 ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML"

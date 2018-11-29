@@ -239,7 +239,7 @@
       if (filters.mode === 'publicProposal') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "PUBLIC_DRAFT, PUBLISHED, FORKED_PUBLISHED";
+        filters.status = "PUBLIC_DRAFT,PUBLISHED,FORKED_PUBLISHED";
       }
       if (filters.mode === 'publicAmendments') {
         filters.mode = 'proposal';

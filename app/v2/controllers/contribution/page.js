@@ -285,6 +285,7 @@
       })
     }
 
+
     function toggleOpenAddAttachment () {
       $scope.openAddAttachment = !$scope.openAddAttachment;
     }

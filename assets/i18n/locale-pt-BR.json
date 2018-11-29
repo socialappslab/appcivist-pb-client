@@ -1483,7 +1483,7 @@
   "Would you like to merge this proposal?" : "Você gostaria de aceitar esta emenda?",
   "Merge": "Aceitar Emenda",
   "Merged Private Draft": "Emenda Composta Privada",
-  "Merged Public Draft": "Emenda Composta Privada",
+  "Merged Public Draft": "Emenda Composta Publica",
   "Forked Published": "Emenda de Dissenso",
   "Parent Proposal": "Proposta Mãe",
   "Amendments Proposals": "Emendas",
@@ -1512,7 +1512,7 @@
   "NEW_CONTRIBUTION_MERGE": "Novo Emenda",
   "View all": "Ver todos",
   "Amended by": "Emendado por",
-  "Public Proposals": "Propostas Públicas",
-  "Public Amendments": "Emendas Públicas"
+  "Public Proposals": "Propostas Publicas",
+  "Public Amendments": "Emendas Publicas"
 
 }

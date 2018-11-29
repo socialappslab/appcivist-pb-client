@@ -124,6 +124,9 @@
           if (filters.mode === 'proposal' || filters.mode === 'idea' ) {
             filters.status = "PUBLISHED,PUBLIC_DRAFT";
           }
+          if (filters.mode === 'publicProposal') {
+            filters.status = "PUBLIC_DRAFT,PUBLISHED,FORKED_PUBLISHED";
+          }
           if (filters.mode === 'myProposals' || filters.mode === 'myIdeas') {
             filters.by_author = localStorageService.get('user').userId;
             filters.createdByOnly = true;
@@ -143,9 +146,11 @@
           if (filters.mode === 'excludedProposals' || filters.mode === 'excludedIdeas') {
             filters.status = "EXCLUDED";
           }
-          if (filters.mode === 'mergedProposals' || filters.mode === 'mergedIdeas') {
-            filters.status = "MERGED_PUBLIC_DRAFT";
+
+          if (filters.mode === 'mergedProposals') {
+            filters.status = "MERGED_PRIVATE_DRAFT,MERGED_PUBLIC_DRAFT";
           }
+
           if (filters.mode === 'forkedProposals' || filters.mode === 'forkedIdeas') {
             filters.status = "FORKED_PUBLIC_DRAFT";
           }

@@ -654,6 +654,10 @@
             } else if ($scope.extendedTextIsPeerDoc) {
               $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
+              if($scope.isAnonymous) {
+                $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
+                $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
+              }
               $timeout(() => {
                 $scope.interval = $interval(() => {
                   $scope.syncProposalWithPeerdoc();

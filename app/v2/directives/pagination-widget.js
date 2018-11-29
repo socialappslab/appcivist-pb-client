@@ -122,10 +122,13 @@
             target.rsID = scope.space;
           }
           if (filters.mode === 'proposal' || filters.mode === 'idea' ) {
-            filters.status = "PUBLISHED,PUBLIC_DRAFT";
+            filters.status = "PUBLIC_DRAFT,PUBLISHED,FORKED_PUBLISHED";
           }
           if (filters.mode === 'publicProposal') {
             filters.status = "PUBLIC_DRAFT,PUBLISHED,FORKED_PUBLISHED";
+          }
+          if (filters.mode === 'publicAmendments') {
+            filters.status = "MERGED_PUBLIC_DRAFT";
           }
           if (filters.mode === 'myProposals' || filters.mode === 'myIdeas') {
             filters.by_author = localStorageService.get('user').userId;
@@ -212,6 +215,7 @@
               }
             );
           }
+
 
           scope.contributionPrototype = contributionPrototype;
         }

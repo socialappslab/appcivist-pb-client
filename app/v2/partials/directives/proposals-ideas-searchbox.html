@@ -25,7 +25,7 @@
       </li>
       <li class="search_mode__full_text" ng-class="{active: filters.mode === 'proposal'}"
           ng-if="currentComponent.type !== 'IDEAS'">
-        <a ng-click="searchMode('publicProposal', $event)">{{'Public Proposals' | translate | titlecase}}</a>
+        <a ng-click="searchMode('proposal', $event)">{{'Public Proposals' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__ideas" ng-class="{active: filters.mode === 'idea'}"
           ng-if="campaignContributionTypes.includes('IDEA') && currentComponent.type !== 'IDEAS'">
@@ -55,9 +55,9 @@
           ng-if="(campaignConfig['appcivist.campaign.filter.shared']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
         <a ng-click="searchMode('sharedIdeas', $event)">{{ 'Shared ideas' | translate | titlecase}}</a>
       </li>
-      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'publicAmendments')}"
+      <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'mergedProposals')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && currentComponent.type !== 'IDEAS'">
-        <a ng-click="searchMode('publicAmendments', $event)">{{'Public Amendments' | translate | titlecase}}</a>
+        <a ng-click="searchMode('mergedProposals', $event)">{{'Public Amendments' | translate | titlecase}}</a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedProposals')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.archived.view']==='TRUE') && currentComponent.type !== 'IDEAS'">

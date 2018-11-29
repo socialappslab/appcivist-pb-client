@@ -236,7 +236,7 @@
      */
     function doSearch() {
       var filters = _.cloneDeep(this.filters);
-      if (filters.mode === 'publicProposal') {
+      if (filters.mode === 'proposal') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
         filters.status = "PUBLIC_DRAFT,PUBLISHED,FORKED_PUBLISHED";
@@ -281,7 +281,7 @@
       if (filters.mode === 'mergedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "MERGED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT";
+        filters.status = "MERGED_PUBLIC_DRAFT";
       }
       if (filters.mode === 'mergedIdeas') {
         filters.mode = 'idea';
@@ -333,6 +333,7 @@
       // } else {
       //   this.searchHandler({ filters: filters });
       // }
+
       this.$emit('dashboard:fireDoSearch');
     }
 

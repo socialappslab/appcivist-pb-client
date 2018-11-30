@@ -1510,6 +1510,8 @@
   "accept-merge-document-confirmation-body" : "Revise los cambios que esta enmienda introduce a la propuesta original. Cuando esté listo, use el botón 'Confirmar enmienda' para incorporar estos cambios en la propuesta original. Use 'No confirmar' para volver a la vista del editor",
   "history-empty": "No hay cambios a la propuesta original",
   "Accept Merge": "Confirmar Enmienda",
-  "Not Accept Merge": "No Confirmar Enmienda"
+  "Not Accept Merge": "No Confirmar Enmienda",
+  "Amended": "Enmendada"
+
 
 }

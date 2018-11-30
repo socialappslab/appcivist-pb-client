@@ -43,8 +43,9 @@
       core: {
         production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/api",
-        local: "https://testplatform.appcivist.org/api",
+        //local: "https://testplatform.appcivist.org/api",
         // local: "http://localhost:9000/api",
+        local: "https://platform.appcivist.org/api",
         development: "https://devplatform.appcivist-dev.org/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api"
       }

@@ -77,37 +77,37 @@
           // 1. Use the contribution's cover as cover (cCover)
           // 2. Use contribution's WG cover as background, if one of the default SVGs
           // 3. Use contribution's WG color as footer background
-          if (scope.contribution.type === 'IDEA') {
+          // if (scope.contribution.type === 'IDEA') {
             if (cCover) {
               let bkg_url = 'url(\"'+cCover+'\")';
               scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
               scope.showOverlay = true;
             }
-            if (wgColor) {
-              scope.footerBackgroundStyle = { 'background-color': wgColor, 'background-position': 'center center', 'background-size': 'cover' };
-            }
-            if (wgCover && wgCoverIsSVG) {
-              let bkg_url = 'url(\"'+wgCover+'\")';
-              scope.footerBackgroundStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
-            }
-          }
+            // if (wgColor) {
+            //   scope.footerBackgroundStyle = { 'background-color': wgColor, 'background-position': 'center center', 'background-size': 'cover' };
+            // }
+            // if (wgCover && wgCoverIsSVG) {
+            //   let bkg_url = 'url(\"'+wgCover+'\")';
+            //   scope.footerBackgroundStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+            // }
+          // }
 
           // If contribution is not idea, use as cover the cover of the WG
-          if (scope.contribution.type!=='IDEA') {
-            if (wgCover) {
-              let bkg_url = 'url(\"'+wgCover+'\")';
-              scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
-              scope.showOverlay = true;
-            } else if (wgColor) {
-              let bkg_url = wgColor;
-              scope.coverPhotoStyle = { 'background-color': bkg_url };
-              scope.showOverlay = true;
-            } else if (cCover) {
-              let bkg_url = 'url(\"'+cCover+'\")';
-              scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
-              scope.showOverlay = true;
-            }
-          }
+          // if (scope.contribution.type!=='IDEA') {
+          //   if (wgCover) {
+          //     let bkg_url = 'url(\"'+wgCover+'\")';
+          //     scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+          //     scope.showOverlay = true;
+          //   } else if (wgColor) {
+          //     let bkg_url = wgColor;
+          //     scope.coverPhotoStyle = { 'background-color': bkg_url };
+          //     scope.showOverlay = true;
+          //   } else if (cCover) {
+          //     let bkg_url = 'url(\"'+cCover+'\")';
+          //     scope.coverPhotoStyle = { 'background-image': bkg_url, 'background-position': 'center center', 'background-size': 'cover' };
+          //     scope.showOverlay = true;
+          //   }
+          // }
 
           if (assembly) {
             scope.assemblyId = assembly.assemblyId;
@@ -157,6 +157,25 @@
               + (scope.notAssigned ? "" : "/group/"+scope.guuid)
               + "/contribution/" + scope.contribution.uuid;
           }
+
+          if (scope.contribution.status &&  scope.contribution.status.includes('ARCHIVED') ) {
+            scope.footerBackgroundColorStyle = 'archived';
+          } else if(scope.contribution.status
+              &&  scope.contribution.status.includes('FORK')
+                || scope.contribution.status.includes('MERGED') ){
+            scope.footerBackgroundColorStyle = 'forked';
+
+            if (scope.contribution.status === 'FORKED_PUBLISHED'){
+              scope.footerBackgroundColorStyle = 'forked-published';
+            }
+            if (scope.contribution.status.includes('DRAFT')) {
+              scope.footerBackgroundColorStyle = 'forked-draft';
+            }
+          } else if(scope.contribution.status
+            &&  scope.contribution.status.includes('DRAFT') ){
+            scope.footerBackgroundColorStyle = 'draft';
+          }
+
         }
 
 

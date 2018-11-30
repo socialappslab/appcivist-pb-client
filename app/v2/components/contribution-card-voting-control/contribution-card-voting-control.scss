@@ -49,5 +49,9 @@
   }
 }
 
-.card__proposal .card__body { padding-bottom: 0; }
+.card__proposal .card__body {
+  padding-bottom: 0;
+  padding-left:10px;
+  padding-right: 10px;
+}
 .card__idea .voting-control { margin: 0; }

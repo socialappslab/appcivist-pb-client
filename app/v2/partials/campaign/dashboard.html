@@ -154,7 +154,8 @@
                                    filters="filters"
                                    dry-run="false"
                                    current-component="currentComponent"
-                                   is-coordinator="isCoordinator"></proposals-ideas-searchbox>
+                                   is-coordinator="isCoordinator"
+                                   insights="insights"></proposals-ideas-searchbox>
 
         <div class="campaign_cards">
           <div ng-class="{'col-lg-8 col-md-12': commentsSectionExpanded}">
@@ -168,20 +169,6 @@
                   <span ng-if="commentsSectionExpanded && enableComments">
                     <a ng-click="toggleCommentsSection()">{{'Hide comments'|translate}}</a>
                   </span>
-                  <span ng-if="currentComponentType!=='IDEAS' && enableProposals">
-                    <strong>{{'Proposals' | translate}}:</strong>
-                    {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED+insights.contributions_total.contributions_per_type.PROPOSAL.PUBLIC_DRAFT || 0}}
-                    <small>({{'Publisheds' | translate}})</small>,
-                    {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}}
-                    <small>({{'Drafts' | translate}})</small>
-                  </span>
-                  <span ng-if="enableIdeas && enableProposals">&nbsp;&ndash;&nbsp;</span>
-                  <span ng-if="enableIdeas">
-                    <strong>{{'Ideas' | translate}}:</strong>
-                    {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED+insights.contributions_total.contributions_per_type.IDEA.PUBLIC_DRAFT || 0}}
-                    <small>({{'Publisheds' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}}
-                    <small>({{'Draft' | translate}})</small>
-                </span>
                 </div>
               </header>
               <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-if="showPagination">

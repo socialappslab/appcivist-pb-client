@@ -26,7 +26,8 @@
         currentComponent: '=',
         // currentComponent.type was not working in the watcher, so I added this variable to make sure it works
         filters: '=',
-        isCoordinator: '='
+        isCoordinator: '=',
+        insights: '='
 
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',

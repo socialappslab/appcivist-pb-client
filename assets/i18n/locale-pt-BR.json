@@ -1514,5 +1514,11 @@
   "Amended by": "Emendado por",
   "Public Proposals": "Propostas Públicas",
   "Public Amendments": "Emendas Públicas",
+  "accept-merge-document-confirmation-title": "Revisar alterações",
+  "accept-merge-document-confirmation-body" : "Revise as alterações que este emenda introduz na proposta original. Quando estiver pronto, use o botão 'Confirmar Emenda' para incorporar essas alterações na proposta original. Use 'Não confirmar' para voltar para a visualização do editor",
+  "history-empty": "Não há alterações na proposta original",
+  "Accept Merge": "Confirmar Emenda",
+  "Not Accept Merge": "No Confirmar",
   "Amended": "Enmendada"
+
 }

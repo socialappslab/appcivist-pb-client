@@ -1516,5 +1516,11 @@
   "View all": "View all",
   "Amended by": "Amended by",
   "Public Proposals": "Public Proposals",
-  "Public Amendments": "Public Amendments"
+  "Public Amendments": "Public Amendments",
+  "accept-merge-document-confirmation-title": "Review Changes",
+  "accept-merge-document-confirmation-body" : "Review changes that this amendment introduces to the original proposal. When ready, use the button 'Confirm Amendment' to incorporate these changes into the original proposal. Use 'Do not confirm' to go back to the editor view",
+  "history-empty": "There are no changes to the original proposal",
+  "Accept Merge": "Confirm Amendment",
+  "Not Accept Merge": "Do not Confirm Amendment"
+
 }

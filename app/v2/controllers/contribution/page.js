@@ -11,13 +11,13 @@
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications',
-    '$timeout', '$interval', 'LocaleService', '$state'
+    '$timeout', '$interval', 'LocaleService', '$state', '$location', '$anchorScroll'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications,
-                                $timeout, $interval, LocaleService, $state) {
+                                $timeout, $interval, LocaleService, $state, $location, $anchorScroll) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -87,11 +87,13 @@
     $scope.forkProposal = forkProposal.bind($scope);
     $scope.mergeProposal = mergeProposal.bind($scope);
     $scope.goToParentOrChildren = goToParentOrChildren.bind($scope);
+    $scope.changePeerdocUrl = changePeerdocUrl.bind($scope);
 
     activate();
 
     function activate() {
       ModalMixin.init($scope);
+      $scope.peerdocMergeView = false;
       $scope.updateFeedback = updateFeedback.bind($scope);
       $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
@@ -585,6 +587,20 @@
 
     }
 
+    function changePeerdocUrl(merge) {
+      let url = $scope.proposal.extendedTextPad.url+ "&embed=true";
+      if(merge) {
+        url = url.replace('document/', 'document/merge/');
+        $scope.peerdocMergeView = true;
+      } else {
+        url = url.replace('document/merge/', 'document/');
+        $scope.peerdocMergeView = false;
+      }
+      this.writePeerDocUrl = $sce.trustAsResourceUrl(url);
+      $location.hash('peerdoc');
+      $anchorScroll();
+    }
+
     function loadProposal(scope) {
       let vm = this;
       var rsp;
@@ -655,9 +671,17 @@
             } else if ($scope.extendedTextIsPeerDoc) {
               $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
+              if(data.status.includes('MERGED')) {
+                $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"&embed=true");
+                $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"&embed=true");
+              }
               if($scope.isAnonymous) {
                 $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
                 $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
+                if(data.status.includes('MERGED')) {
+                  $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"?embed=true&user=");
+                  $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"?embed=true&user=");
+                }
               }
               $timeout(() => {
                 $scope.interval = $interval(() => {

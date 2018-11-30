@@ -671,17 +671,10 @@
             } else if ($scope.extendedTextIsPeerDoc) {
               $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
-              if(data.status.includes('MERGED')) {
-                $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"&embed=true");
-                $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"&embed=true");
-              }
+
               if($scope.isAnonymous) {
                 $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
                 $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
-                if(data.status.includes('MERGED')) {
-                  $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"?embed=true&user=");
-                  $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url.replace('document/', 'document/merge/')+"?embed=true&user=");
-                }
               }
               $timeout(() => {
                 $scope.interval = $interval(() => {

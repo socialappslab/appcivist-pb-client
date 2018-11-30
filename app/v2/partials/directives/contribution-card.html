@@ -202,7 +202,7 @@
     <div class="card__footer {{footerBackgroundStyle ? 'card__header__with_background':''}} {{footerBackgroundColorStyle}}" ng-style="footerBackgroundStyle">
       <div class="row no-margin">
         {{contribution.status | translate}}
-        <span class="badge-light" ng-if="contribution.forks>0">{{'FORKED'|translate}}</span>
+        <span class="badge-light" ng-if="contribution.acceptedForks>0">{{'Amended'|translate}}</span>
       </div>
 
     </div>

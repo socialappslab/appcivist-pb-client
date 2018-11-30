@@ -1450,5 +1450,6 @@
   "Approval Status": "Approval Status",
   "public_status": "public",
   "draft_status": "draft",
-  "pagination.widget.no-data": "This space has still no {{type}} with status {{status}}."
+  "pagination.widget.no-data": "This space has still no {{type}} with status {{status}}.",
+  "Amended": "Amended"
 }

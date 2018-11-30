@@ -1498,5 +1498,6 @@
   "Merged ideas": "Accepted Amendment ideas",
   "public_status": "publique",
   "draft_status": "brouillon",
-  "pagination.widget.no-data": "Il n’y a plus de {{type}} avec statut {{status}} dans cet espace."
+  "pagination.widget.no-data": "Il n’y a plus de {{type}} avec statut {{status}} dans cet espace.",
+  "Amended": "Amended"
 }

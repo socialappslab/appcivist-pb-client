@@ -41,7 +41,7 @@
         mimove: "https://mimove-apps.paris.inria.fr/voting/api/v0"
       },
       core: {
-        production: "https://testplatform.appcivist.org/api",
+        production: "https://platform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/api",
         local: "https://testplatform.appcivist.org/api",
         // local: "http://localhost:9000/api",

@@ -544,7 +544,7 @@
           </div>
           <div class="col-xs-8 text-right">
             {{'View comments by'|translate}}:
-            <select name="comment-types" ng-model="commentType">
+            <select name="comment-types" ng-model="commentType" ng-change="changeCommentType(commentType)">
               <option value="public">{{'Public'|translate}}</option>
               <option value="members">{{'Members only'|translate}}</option>
             </select>

@@ -205,6 +205,7 @@
       $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
+      $scope.changeCommentType = changeCommentType.bind($scope);
       $scope.cm = {
         isHover: false
       };
@@ -285,6 +286,10 @@
       })
     }
 
+    function changeCommentType(newCommentType) {
+      this.commentType = newCommentType;
+      console.log("User is member = "+this.userIsMember);
+    }
 
     function toggleOpenAddAttachment () {
       $scope.openAddAttachment = !$scope.openAddAttachment;

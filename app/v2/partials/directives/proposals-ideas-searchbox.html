@@ -42,11 +42,17 @@
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myProposals')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.mine']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
-        <a ng-click="searchMode('myProposals', $event)">{{'My proposals' | translate | titlecase}}</a>
+        <a ng-click="searchMode('myProposals', $event)">
+          {{'My proposals' | translate | titlecase}}
+          ({{(insights.contributions_total.contributions_per_type.PROPOSAL.MINE || 0)}})
+        </a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'myIdeas')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.mine']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
-        <a ng-click="searchMode('myIdeas', $event)">{{ 'My Ideas' | translate | titlecase}}</a>
+        <a ng-click="searchMode('myIdeas', $event)">
+          {{ 'My Ideas' | translate | titlecase}}
+          ({{(insights.contributions_total.contributions_per_type.IDEA.MINE || 0)}})
+        </a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftProposals')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.draft']!=='HIDE' || campaignConfig['appcivist.working-group.hide-others-private-drafts'] !== 'TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS' && isCoordinator">
@@ -62,11 +68,17 @@
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedProposals')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.shared']!=='HIDE') && !isAnonymous && currentComponent.type !== 'IDEAS'">
-        <a ng-click="searchMode('sharedProposals', $event)">{{'Shared proposals' | translate | titlecase}}</a>
+        <a ng-click="searchMode('sharedProposals', $event)">
+          {{'Shared proposals' | translate | titlecase}}
+          ({{(insights.contributions_total.contributions_per_type.PROPOSAL.SHARED_WITH || 0)}})
+        </a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'sharedIdeas')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.shared']!=='HIDE') && !isAnonymous && (currentComponent.type === 'IDEAS' || campaignContributionTypes.includes('IDEA'))">
-        <a ng-click="searchMode('sharedIdeas', $event)">{{ 'Shared ideas' | translate | titlecase}}</a>
+        <a ng-click="searchMode('sharedIdeas', $event)">
+          {{ 'Shared ideas' | translate | titlecase}}
+          ({{(insights.contributions_total.contributions_per_type.IDEA.SHARED_WITH || 0)}})
+        </a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'mergedProposals')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && currentComponent.type !== 'IDEAS'">

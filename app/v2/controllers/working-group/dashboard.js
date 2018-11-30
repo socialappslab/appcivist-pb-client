@@ -397,7 +397,7 @@
             loadMembersCommentCount($scope.spaceID);
           }
 
-          Space.getSpaceBasicAnalytics(data.resourcesResourceSpaceUUID).then(
+          Space.getSpaceBasicAnalytics(data.resourcesResourceSpaceUUID, false, true, $scope.isAnonymous ? null : $scope.user.userId).then(
             data => {
               $scope.insights = data;
             }

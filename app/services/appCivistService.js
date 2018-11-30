@@ -1750,9 +1750,16 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
        * @method services.Space#getSpaceBasicAnalytics
        * @param {String} uuid- The campaign resource space UUID.
        */
-      getSpaceBasicAnalytics(uuid) {
+      getSpaceBasicAnalytics(uuid, includeThemes, includeUserInsights, userId) {
         var rsp;
-        rsp = $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/analytics', { uuid: uuid }).get();
+        rsp = $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/analytics',
+          {
+            uuid: uuid,
+            includeThemes: includeThemes,
+            includeUserInsights: includeUserInsights,
+            userId: userId
+          }
+          ).get();
 
         return rsp.$promise.then(
           data => data,

@@ -375,7 +375,7 @@
 
           loadPublicCommentCount($scope.forumSpaceID);
 
-          Space.getSpaceBasicAnalytics($scope.campaign.rsUUID).then(
+          Space.getSpaceBasicAnalytics($scope.campaign.rsUUID, false, true, $scope.isAnonymous ? null : $scope.user.userId).then(
             data => {
               $scope.insights = data;
             }

@@ -3,22 +3,28 @@
       <header class="page__header contributionHeader">
         <div class="row" style="margin-top: 60px">
           <breadcrumb label="proposal.title"></breadcrumb>
+
         </div>
         <div class="row title_block">
-          <h1 class="heading--title" ng-if="!isTitleEdit && userIsAuthor" ng-click="titleToggleEdit()">
+          <h1 class="heading--title" ng-if="!isTitleEdit && userIsAuthor" ng-click="titleToggleEdit()" style="margin-bottom: 0px;">
             {{proposal.title}}
             <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor && !extendedTextIsPeerDoc"></i>
           </h1>
-          <h1 class="heading--title" ng-if="!isTitleEdit && !userIsAuthor">{{proposal.title}}
+
+          <h1 class="heading--title" ng-if="!isTitleEdit && !userIsAuthor" style="margin-bottom: 0px;">{{proposal.title}}
             <i class="fa fa-edit smalledit" id="titleEditToggle" ng-click="titleToggleEdit()" ng-if="userIsAuthor && !extendedTextIsPeerDoc"></i>
           </h1>
           <div class="editableArea text-center" ng-if="isTitleEdit">
             <input ng-model="proposal.title" id="add_proposal__title" name="text" placeholder="{{'Title' | translate}}">
             <button class="btn btn-default btn-join" ng-click="titleToggleEdit()">{{'Cancel' | translate}}</button>
             <button class="btn btn-default btn-join" ng-click="saveTitle()">{{'Save title' | translate}}</button>
-          </div>
-        </div>
 
+          </div>
+
+        </div>
+        <div class="row">
+          <span class="badge badge-warning" ng-if="proposal.status.includes('FORK')" style="background-color: #FF8C2C;">Emenda</span>
+        </div>
         <div class="row attribution">
           <div style="min-height:40px;">
             <strong style="font-weight:bold">{{'Created by' | translate}}</strong>
@@ -307,14 +313,6 @@
             </li>
           </ul>
           <div class="float-wrapper">
-            <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#followModal"
-                    ng-if="contributionType && !following && !isAnonymous">
-              {{ ('Follow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
-            </button>
-            <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal"
-                    ng-if="contributionType && following && !isAnonymous">
-              {{ ('Unfollow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
-            </button>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#forkModal"
                     ng-if="contributionType && !isAnonymous && showForkButton && (proposal.status == 'PUBLISHED')">
               {{ ('Fork ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
@@ -369,6 +367,15 @@
                     ng-if="contributionType && (mergeChildren || forkedChildren)">
               {{ ('Amendments') | translate }}
             </button>
+            <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#followModal"
+                    ng-if="contributionType && !following && !isAnonymous">
+              {{ ('Follow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
+            </button>
+            <button class="btn btn-default follow-contribution" data-toggle="modal" data-target="#unfollowModal"
+                    ng-if="contributionType && following && !isAnonymous">
+              {{ ('Unfollow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
+            </button>
+
           </div>
         </div>
         <div style="clear:both"></div>
@@ -848,7 +855,7 @@
           <p>{{ ('Would you like to fork this ' + (contributionType == 'PROPOSAL' ? 'proposal' : 'idea') + '?') | translate }}</p>
         </div>
         <div class="modal-footer">
-          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No'|translate}}</button>
           <button class="confirm-modal accept" data-dismiss="modal" ng-click="forkProposal()">{{'Fork' | translate}}</button>
         </div>
       </div>
@@ -867,7 +874,7 @@
           <p>{{ ('Would you like to merge this ' + (contributionType == 'PROPOSAL' ? 'proposal' : 'idea') + '?') | translate }}</p>
         </div>
         <div class="modal-footer">
-          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No'|translate}}</button>
           <button class="confirm-modal accept" data-dismiss="modal" ng-click="mergeProposal()">{{'Merge' | translate}}</button>
         </div>
       </div>

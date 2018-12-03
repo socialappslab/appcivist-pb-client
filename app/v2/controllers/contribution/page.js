@@ -597,11 +597,9 @@
       if(merge) {
         url = url.replace('document/', 'document/merge/');
         $scope.peerdocMergeView = true;
-        this.writePeerDocUrl = $sce.trustAsResourceUrl(url);
+        this.peerdocMergeViewUrl = $sce.trustAsResourceUrl(url);
       } else {
-        url = url.replace('document/merge/', 'document/');
         $scope.peerdocMergeView = false;
-        $scope.writePeerDocUrl = '';
       }
 
       $location.hash('peerdoc');

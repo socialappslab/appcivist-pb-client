@@ -1370,8 +1370,8 @@
   "contribution.status.published.description": "Tem certeza de que deseja tornar o seu Rascunho em Proposta Publicada agora? Essa ação não poderá ser desfeita. Se esta proposta é compartilhada com outros, é essencial consultá-los para verificar se concordam. Publicada significa que toda a comunidade universitária pode ver e comentar mas ninguém pode mais editar. Uma vez publicada, a proposta passará automaticamente para a Assembleia Intercampi Editorial para ser incluida na próxima fase.",
   "contribution.status.forked-published.description": "Tem certeza de que deseja tornar o seu Rascunho de Emenda em Emenda de Dissenso Publicada agora? Essa ação não poderá ser desfeita. Se esta proposta é compartilhada com outros, é essencial consultá-los para verificar se concordam. Publicada significa que toda a comunidade universitária pode ver e comentar mas ninguém pode mais editar. Uma vez publicada, a proposta passará automaticamente para a Assembleia Intercampi Editorial para ser incluida na próxima fase.",
   "contribution.status.archived.description": "Archived means that the propsal has been archived. Are you sure you want to change this status?",
-  "Archived": "Archived",
-  "ARCHIVED": "ARCHIVED",
+  "Archived": "Arquivado",
+  "ARCHIVED": "ARQUIVADO",
   "Save description": "Salvar resumo",
   "Save title": "Salvar título",
   "Add Author": "Adicionar Autor",
@@ -1483,11 +1483,11 @@
   "Would you like to merge this proposal?" : "Você deseja aceitar esta emenda?",
   "Merge": "Aceitar Emenda",
   "Merged Private Draft": "Emenda Composta Privada",
-  "Merged Public Draft": "Emenda Composta Publica",
+  "Merged Public Draft": "Emenda Aceita Pública",
   "Forked Published": "Emenda de Dissenso",
   "Parent Proposal": "Ver Proposta Mãe",
   "Amendments Proposals": "Emendas",
-  "Amendments": "Emendas",
+  "Amendments": "Ver Emendas",
   "FORKED_PRIVATE_DRAFT": "Rascunho Privado de Emenda",
   "Forked_private_draft": "Rascunho Privado de Emenda",
   "FORKED_PUBLIC_DRAFT": "Rascunho Público de Emenda",
@@ -1519,6 +1519,6 @@
   "history-empty": "Não há alterações na proposta original",
   "Accept Merge": "Confirmar Emenda",
   "Not Accept Merge": "Não Confirmar",
-  "Amended": "Enmendada"
+  "Amended": "Emendada"
 
 }

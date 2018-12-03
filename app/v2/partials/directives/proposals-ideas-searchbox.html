@@ -84,7 +84,7 @@
           ng-if="(campaignConfig['appcivist.campaign.filter.forked']!=='HIDE') && currentComponent.type !== 'IDEAS'">
         <a ng-click="searchMode('mergedProposals', $event)">
           {{'Public Amendments' | translate}}
-          ({{(insights.contributions_total.contributions_per_type.PROPOSAL.MERGED_PUBLIC_DRAFT|| 0)+(insights.contributions_total.contributions_per_type.PROPOSAL.MERGED_PUBLISHED|| 0)}})
+          ({{(insights.contributions_total.contributions_per_type.PROPOSAL.MERGED_PUBLIC_DRAFT|| 0)+(insights.contributions_total.contributions_per_type.PROPOSAL.FORKED_PUBLIC_DRAFT|| 0)}})
         </a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'archivedProposals')}"

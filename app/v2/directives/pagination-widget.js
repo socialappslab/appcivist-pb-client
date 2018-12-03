@@ -151,7 +151,7 @@
           }
 
           if (filters.mode === 'mergedProposals') {
-            filters.status = "MERGED_PUBLIC_DRAFT";
+            filters.status = "MERGED_PUBLIC_DRAFT,FORKED_PUBLIC_DRAFT";
           }
 
           if (filters.mode === 'forkedProposals' || filters.mode === 'forkedIdeas') {

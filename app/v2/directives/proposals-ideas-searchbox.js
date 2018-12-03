@@ -282,7 +282,7 @@
       if (filters.mode === 'mergedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "MERGED_PUBLIC_DRAFT";
+        filters.status = "MERGED_PUBLIC_DRAFT,FORKED_PUBLIC_DRAFT";
       }
       if (filters.mode === 'mergedIdeas') {
         filters.mode = 'idea';

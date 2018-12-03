@@ -597,11 +597,13 @@
       if(merge) {
         url = url.replace('document/', 'document/merge/');
         $scope.peerdocMergeView = true;
+        this.writePeerDocUrl = $sce.trustAsResourceUrl(url);
       } else {
         url = url.replace('document/merge/', 'document/');
         $scope.peerdocMergeView = false;
+        $scope.writePeerDocUrl = '';
       }
-      this.writePeerDocUrl = $sce.trustAsResourceUrl(url);
+
       $location.hash('peerdoc');
       $anchorScroll();
     }
@@ -677,7 +679,7 @@
               $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
 
-              if($scope.isAnonymous) {
+              if($scope.isAnonymous && $scope.proposal.status !== 'PUBLISHED') {
                 $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
                 $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
               }

@@ -92,6 +92,7 @@
 
     function searchContributionsInSpace () {
       if (this.filters.searchText){
+        console.log(this.filters);
         this.startSpinner();
         Space.doSearch({rsID:this.campaignSpaceId}, false, this.filters).then(
           data => {

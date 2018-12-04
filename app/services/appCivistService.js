@@ -726,6 +726,11 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
         'delete': { method: 'DELETE' }
       });
     },
+    contributionChildren: function (contributionUUID, type) {
+
+      return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/proposal?type=:type', { uuid: contributionUUID, type: type });
+
+      },
     contributionSoftRemoval: function (assemblyId, contributionId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:coid/softremoval', { aid: assemblyId, coid: contributionId }, {
         'update': { method: 'PUT' }
@@ -746,6 +751,16 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
      */
     publishProposal: function (assemblyId, groupId, proposalId) {
       return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/group/:gid/proposals/:pid/publish', { aid: assemblyId, pid: proposalId, gid: groupId }, {
+        'update': { method: 'PUT' }
+      });
+    },
+    forkProposal: function (assemblyId, campaignId, proposalId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/campaign/:cid/contribution/:coid/contribution', { aid: assemblyId, cid: campaignId, coid: proposalId }, {
+        'update': { method: 'POST' }
+      });
+    },
+    mergeProposal: function (assemblyId, proposalId, parentId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/assembly/:aid/contribution/:pid/proposal/:cid', {aid: assemblyId, pid: parentId, cid: proposalId }, {
         'update': { method: 'PUT' }
       });
     },
@@ -833,13 +848,15 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     pinnedContributionInResourceSpaceByUUID: function (spaceUUId) {
       return $resource(getServerBaseUrl(localStorageService) + '/public/space/:uuid/contribution/public', { uuid: spaceUUId });
     },
-    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields, selectedContributions, includeDoc, docExportFormat, pub, all=false) {
+    contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields,
+                                                selectedContributions, includeDoc, docExportFormat, pub,
+                                                all=false, type="IDEA") {
       if (contributionId) {
           return $resource(
             getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid',
             {
               sid: spaceId, format: format, fields: fields, customFields: customFields, coid: contributionId, includeDoc: includeDoc,
-              docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
+              docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
             },
             {
               'getText': {
@@ -854,7 +871,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             {
               sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
               customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all, type: type
             },
             {
               'getText': {
@@ -868,7 +885,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             {
               sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
               customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat
+              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
             },
             {
               'getText': {
@@ -1498,6 +1515,14 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
           type='proposal';
         } else if (type === 'draftIdeas') {
           type='idea';
+        } else if (type === 'archivedProposals' || type === 'excludedProposals') {
+          type = 'proposal';
+        } else if (type === 'archivedIdeas' || type === 'excludedIdeas') {
+          type = 'idea';
+        } else if (type === 'mergedProposals' || type === 'forkedProposals' || 'forkedProposalsPublished') {
+          type = 'proposal';
+        } else if (type === 'mergedIdeas' || type === 'forkedIdeas' || 'forkedIdeasPublished') {
+          type = 'idea';
         }
         if (filters.createdByOnly != null && filters.createdByOnly != undefined) {
           params.createdByOnly=filters.createdByOnly;

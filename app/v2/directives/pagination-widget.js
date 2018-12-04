@@ -21,9 +21,9 @@
     .module('appCivistApp')
     .directive('paginationWidget', paginationWidget);
 
-  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope', 'usSpinnerService', 'localStorageService'];
+  paginationWidget.$inject = ['$state', 'Contributions', 'Notify', 'Space', '$rootScope', 'usSpinnerService', 'localStorageService', '$translate'];
 
-  function paginationWidget($state, Contributions, Notify, Space, $rootScope, usSpinnerService, localStorageService) {
+  function paginationWidget($state, Contributions, Notify, Space, $rootScope, usSpinnerService, localStorageService, $translate) {
     var directive = {
       restrict: 'E',
       scope: {
@@ -54,6 +54,7 @@
         scope.startSpinner = startSpinner.bind(scope);
         scope.stopSpinner = stopSpinner.bind(scope);
         scope.inferrType = inferrType.bind(scope);
+        scope.prepareTranslations = prepareTranslations.bind(scope);
         scope.spinnerActive = true;
         scope.spinnerOptions = {
           radius:10,
@@ -86,7 +87,7 @@
         console.log('Pagination-Widget:Link => BROADCASTED => dashboard:paginationWidgetListenersAreReady');
 
         function inferrType () {
-          return this.components[0].type;
+          return this.components ? this.components[0].type : 'PROPOSAL';
         }
 
         function startSpinner () {
@@ -120,22 +121,43 @@
           } else {
             target.rsID = scope.space;
           }
-
+          if (filters.mode === 'proposal' || filters.mode === 'idea' ) {
+            filters.status = "PUBLISHED,PUBLIC_DRAFT";
+          }
           if (filters.mode === 'myProposals' || filters.mode === 'myIdeas') {
             filters.by_author = localStorageService.get('user').userId;
             filters.createdByOnly = true;
-            filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
+            filters.status = "PUBLISHED,DRAFT,PUBLIC_DRAFT,INBALLOT,SELECTED,NEW,EXCLUDED,MERGED_PRIVATE_DRAFT,FORKED_PRIVATE_DRAFT,MERGED_PUBLIC_DRAFT,FORKED_PUBLIC_DRAFT,FORKED_PUBLISHED"; // if getting own contributions, bring all statuses
           }
-          
           if (filters.mode === 'draftProposals' || filters.mode === 'draftIdeas') {
-            filters.status = "DRAFT, PUBLIC_DRAFT";
+            filters.status = "DRAFT,PUBLIC_DRAFT,MERGED_PRIVATE_DRAFT,FORKED_PRIVATE_DRAFT";
           }
-
           if (filters.mode === 'sharedProposals' || filters.mode === 'sharedIdeas') {
             filters.excludeCreated = localStorageService.get('user').userId;
             filters.by_author = localStorageService.get('user').userId;
-            filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED"; // if getting own contributions, bring all statuses
+            filters.status = "PUBLISHED,DRAFT,PUBLIC_DRAFT,INBALLOT,SELECTED,NEW,EXCLUDED,MERGED_PRIVATE_DRAFT,FORKED_PRIVATE_DRAFT"; // if getting own contributions, bring all statuses
           }
+          if (filters.mode === 'archivedProposals' || filters.mode === 'archivedIdeas') {
+            filters.status = "ARCHIVED";
+          }
+          if (filters.mode === 'excludedProposals' || filters.mode === 'excludedIdeas') {
+            filters.status = "EXCLUDED";
+          }
+          if (filters.mode === 'mergedProposals' || filters.mode === 'mergedIdeas') {
+            filters.status = "MERGED_PUBLIC_DRAFT";
+          }
+          if (filters.mode === 'forkedProposals' || filters.mode === 'forkedIdeas') {
+            filters.status = "FORKED_PUBLIC_DRAFT";
+          }
+          if (filters.mode==='forkedProposalsPublished' || filters.mode === 'forkedIdeasPublished') {
+            filters.mode=== filters.mode==='forkedProposalsPublished'  ? 'proposal' : 'idea';
+            filters.status = "FORKED_PUBLISHED"
+          }
+
+          this.prepareTranslations(filters);
+          $rootScope.$on('$translateChangeSuccess', () => {
+            scope.prepareTranslations(filters)
+          });
 
           if (filters) {
             Space.doSearch(target, scope.isAnonymous, filters).then(
@@ -147,6 +169,46 @@
                 scope.stopSpinner();
               });
           }
+        }
+
+        function prepareTranslations(filters) {
+          let contributionPrototype = {};
+
+          if (filters.mode && filters.mode.toLowerCase().includes("proposal")) {
+            contributionPrototype.type="proposal";
+            $translate(contributionPrototype.type).then(
+              translation => {
+                contributionPrototype.type = translation;
+              }
+            );
+          }
+
+          if (filters.status
+            && (filters.status.toLowerCase().includes("public")
+              || filters.status.toLowerCase().includes("published"))) {
+            contributionPrototype.status="public_status";
+            $translate(contributionPrototype.status).then(
+              translation => {
+                contributionPrototype.status = translation;
+              }
+            );
+          } else if (filters.status && filters.status && filters.status.toLowerCase().includes("draft")) {
+            contributionPrototype.status="draft_status";
+            $translate(contributionPrototype.status).then(
+              translation => {
+                contributionPrototype.status = translation;
+              }
+            );
+          } else {
+            contributionPrototype.status=filters.status ? filters.status : "public_status";
+            $translate(contributionPrototype.status).then(
+              translation => {
+                contributionPrototype.status = translation;
+              }
+            );
+          }
+
+          scope.contributionPrototype = contributionPrototype;
         }
 
         function paginationVisible(pag, visible) {

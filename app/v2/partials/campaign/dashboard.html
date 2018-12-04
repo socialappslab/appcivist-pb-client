@@ -123,7 +123,7 @@
             {{filters.mode === 'idea' ? 'Ideas' : 'Proposals' | translate}}
           </h2>
           <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
-             ng-if="newIdeasEnabled"
+             ng-if="newIdeasEnabled && !requireGroupAuthorship"
              ng-click="openModal('ideaFormModal')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Idea' | translate}}
           </a>
@@ -135,12 +135,12 @@
           </a>
           -->
           <a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-3"
-             ng-if="newProposalsEnabled && !displayJoinWorkingGroup"
-             ng-click="requireGroupAuthorship ? openModal('proposalFormModal') : createContribution('PROPOSAL')">
+             ng-if="newProposalsEnabled && !displayJoinWorkingGroup && !requireGroupAuthorship"
+             ng-click="createContribution('PROPOSAL')">
             <i class="fa fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{'Add Proposal' | translate}}
           </a>
           <a class="primary__button right join__working_group"
-             ng-if="newProposalsEnabled && displayJoinWorkingGroup" data-toggle="modal" data-target="#workingGroups">
+             ng-if="newProposalsEnabled && displayJoinWorkingGroup && !requireGroupAuthorship" data-toggle="modal" data-target="#workingGroups">
             <i class="fa fa-users"></i>&nbsp;{{'Join a Working Group to create proposals' | translate}}
           </a>
         </div>
@@ -285,7 +285,7 @@
           <ul class="workingGroupList" ng-if="otherWorkingGroups && otherWorkingGroups.length > 0">
             <li ng-repeat="wg in otherWorkingGroups">
               <a class="workingGroupLink" ng-href="/#/v2/assembly/{{currentAssembly.assemblyId}}/campaign/{{campaignId}}/group/{{wg.groupId}}"><span>{{wg.name}}</span><!--<span class="number"><i class="fa fa-users"></i>32</span>--></a>
-              <a class="btn btn-default" ng-click="joinWg(wg.groupId)"><i class="fa fa-sign-in fa-lg"></i> {{'Join'|translate}}</a>
+              <a class="btn btn-default" ng-click="joinWg(wg.groupId)" ng-if="getMyWorkingGroupsIds.indexOf(wg.groupId) !== -1"><i class="fa fa-sign-in fa-lg"></i> {{'Join'|translate}}</a>
             </li>
           </ul>
         </div>

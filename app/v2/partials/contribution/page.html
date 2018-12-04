@@ -22,12 +22,14 @@
         <div class="row attribution">
           <div style="min-height:40px;">
             <strong style="font-weight:bold">{{'Created by' | translate}}</strong>
-            <div style="display:inline-block;margin-left:10px">
+            <div ng-if="proposal.creator" style="display:inline-block;margin-left:10px">
               <member-card user="proposal.creator"></member-card>
             </div>
+            <span ng-if="!proposal.creator">{{'ANONYMOUS' | translate}}</span>
           </div>
           <div style="min-height:40px;">
             <strong style="font-weight:bold;vertical-align:middle">{{'Shared with' | translate}}</strong>
+            <span ng-if="!proposal.authors && !proposal.nonMemberAuthors">{{'ANONYMOUS' | translate}}</span>
             <div ng-repeat="author in proposal.authors | filter: filterCreatorFromAuthors(proposal.creator.uuid)" style="display: inline-block; margin-left: 10px;">
               <member-card user="author"></member-card>
               <i ng-if="(isCurrentAuthor(author) && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')) || userIsCoordinator || userIsAdmin"
@@ -227,7 +229,7 @@
           </div>
         </div>
 
-        <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex">
+        <div class="overlay new_overlay new_overlay_top contribution_toolbar" style="display: inline-flex;">
           <ul class="overlay_buttons">
             <div class="contextual_wrapper">
               <li class="overlay_button action__contextual_menu" ng-mouseenter="cm.isHover = true">
@@ -307,21 +309,50 @@
                     ng-if="contributionType && following && !isAnonymous">
               {{ ('Unfollow ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
+            <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#forkModal"
+                    ng-if="contributionType && !isAnonymous && showForkButton && (proposal.status == 'PUBLISHED' || proposal.status == 'FORKED_PUBLISHED')">
+              {{ ('Fork ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
+            </button>
+            <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#mergeModal"
+                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED')">
+              {{ ('Merge ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
+            </button>
             <!--STATUS VIEW AND CHANGE ELEMENT -->
             <div class="overlay_status" ng-if="contributionType">
               <span class="status_label">{{'Status' | translate}}</span>
-              <span class="status" ng-if="proposal.status != 'PUBLISHED' && allowChangeStatus && (userIsAuthor || userIsCoordinator || userIsAdmin)">
+              <span class="status" ng-if="proposal.status != 'PUBLISHED' && proposal.status != 'ARCHIVED' && allowChangeStatus && (userIsAuthor || userIsCoordinator || userIsAdmin)">
                 <select name="currentStatus" id="currentStatus" ng-model="proposal.status"
                         ng-change="changeStatus(proposal.status, '{{proposal.status}}')">
-                  <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'">{{ 'Draft' | translate }}</option>
-                  <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'">{{'Public draft' | translate}}</option>
-                  <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</option>
+                  <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{ 'Draft' | translate }}</option>
+                  <option value="PUBLIC_DRAFT" ng-selected="proposal.status == 'PUBLIC_DRAFT'" ng-if="!proposal.status.includes('FORKED')">{{'Public draft' | translate}}</option>
+                  <option value="PUBLISHED" ng-selected="proposal.status == 'PUBLISHED'" ng-if="!proposal.status.includes('FORKED') && showPublishedStatus">{{ 'Published' | translate }}</option>
+                  <option value="ARCHIVED" ng-selected="proposal.status == 'ARCHIVED'" ng-if="(userIsCoordinator || userIsAdmin) && allowArchived">{{ 'Archived' | translate }}</option>
+                  <option value="MERGED_PRIVATE_DRAFT" ng-selected="proposal.status == 'MERGED_PRIVATE_DRAFT'" ng-if="!proposal.status.includes('FORKED') && showMergeStatus">{{ 'Merged Private Draft' | translate }}</option>
+                  <option value="MERGED_PUBLIC_DRAFT" ng-selected="proposal.status == 'MERGED_PUBLIC_DRAFT'" ng-if="!proposal.status.includes('FORKED') && showMergeStatus">{{ 'Merged Public Draft' | translate }}</option>
+                  <option value="FORKED_PRIVATE_DRAFT" ng-selected="proposal.status == 'FORKED_PRIVATE_DRAFT'" ng-if="proposal.status.includes('FORKED')">{{'Forked Private Draft' | translate}}</option>
+                  <option value="FORKED_PUBLIC_DRAFT" ng-selected="proposal.status == 'FORKED_PUBLIC_DRAFT'" ng-if="proposal.status.includes('FORKED')">{{'Forked Public Draft' | translate}}</option>
+                  <option value="FORKED_PUBLISHED" ng-selected="proposal.status == 'FORKED_PUBLISHED'" ng-if="proposal.status.includes('FORKED')">{{'Forked Published' | translate}}</option>
                 </select>
               </span>
               <span class="status" ng-if="proposal.status == 'DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Draft' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'PUBLIC_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin)) ">{{'Public draft' | translate}}</span>
+              <span class="status" ng-if="proposal.status == 'FORKED_PUBLIC_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin)) ">{{'Forked Public Draft' | translate}}</span>
               <span class="status" ng-if="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'ARCHIVED'">{{ 'Archived' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'FORKED_PRIVATE_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Forked Private Draft' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'MERGED_PRIVATE_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Merged Private Draft' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'MERGED_PUBLIC_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Merged Public Draft' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'FORKED_PUBLISHED' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Forked Published' | translate }}</span>
+
             </div>
+            <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showParentModal"
+                    ng-if="contributionType && proposal.status.includes('FORKED')">
+              {{ ('Parent ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
+            </button>
+            <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showChildrenModal"
+                    ng-if="contributionType && !isAnonymous && (userIsAuthor || userIsCoordinator) && (mergeChildren || forkedChildren)">
+              {{ ('Amendments') | translate }}
+            </button>
           </div>
         </div>
         <div style="clear:both"></div>
@@ -378,9 +409,9 @@
           <div class="text-center" style="margin-top: 2rem" ng-if="!proposal.extendedTextPad && showBodyProposal
                                                           && (userIsCoordinator || userIsAdmin
                                                             || (userIsAuthor && (proposal.status === 'DRAFT' || proposal.status === 'PUBLIC_DRAFT')))">
-              <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
-              <button class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
-              <button class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
+              <button ng-if="etherpadIsEnabled" class="btn btn-default proposal-btn" data-toggle="modal" data-target="#etherpadEmbedModal">Etherpad</button>
+              <button ng-if="gdocIsEnabled" class="btn btn-default proposal-btn" data-toggle="modal" data-target="#gdocEmbedModal">Google Docs</button>
+              <button ng-if="peerdocIsEnabled" class="btn btn-default proposal-btn" ng-click="embedPadPeerDoc()">PeerDoc</button>
               <!--<button class="btn btn-default proposal-btn">Default</button>-->
           </div>
           <!-- Notice for non authors or non logged in visitors -->
@@ -551,7 +582,7 @@
         </div>
         <div class="modal-body">
           <associated-contributions-form ng-if="!isAnonymous && (userIsCoordinator || userIsAdmin || userIsAuthor)"
-                                         contribution-type="associatedContributionsType"
+                                         contribution-type="'idea'"
                                          space-id="proposal.resourceSpaceId"
                                          space="resources"
                                          assembly-id="assemblyID"
@@ -779,6 +810,93 @@
         <div class="modal-footer">
           <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
           <button class="confirm-modal accept" data-dismiss="modal" ng-click="follow()">{{'Follow' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade dashboardModal" id="forkModal" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p> {{ ('Fork ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <p>{{ ('Would you like to fork this ' + (contributionType == 'PROPOSAL' ? 'proposal' : 'idea') + '?') | translate }}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="forkProposal()">{{'Fork' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade dashboardModal" id="mergeModal" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <p> {{ ('Merge ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}</p>
+        </div>
+        <div class="modal-body">
+          <p>{{ ('Would you like to merge this ' + (contributionType == 'PROPOSAL' ? 'proposal' : 'idea') + '?') | translate }}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'No, thank you'|translate}}</button>
+          <button class="confirm-modal accept" data-dismiss="modal" ng-click="mergeProposal()">{{'Merge' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade dashboardModal" id="showParentModal" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+          <p> {{ 'Parent ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'idea') | translate}}</p>
+        </div>
+        <div class="modal-body">
+        <a data-dismiss="modal" class="workingGroupLink confirm-modal dismiss" ng-click="goToParentOrChildren(proposal.parent.contributionId)">
+          <span> {{proposal.parent.title}}</span>
+        </a>
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'Close'|translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade dashboardModal" id="showChildrenModal" tabindex="-1"
+       role="dialog" aria-labelledby="newsletterSubscriptionLabel" ng-if="!isAnonymous">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close big" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+          <p> {{ 'Amendments ' + (contributionType == 'PROPOSAL' ? 'Proposals' : 'idea') | translate}}</p>
+        </div>
+        <div class="modal-body">
+          <div ng-if="mergeChildren">
+            <a data-dismiss="modal" ng-repeat="child in mergeChildren" class="workingGroupLink confirm-modal dismiss" ng-click="goToParentOrChildren(child.contributionId)">
+              <span> {{child.title + ' - ' + (child.status|translate)}}</span>
+            </a>
+            </div>
+          <div ng-if="forkedChildren">
+            <a data-dismiss="modal" ng-repeat="child in forkedChildren" class="workingGroupLink confirm-modal dismiss" ng-click="goToParentOrChildren(child.contributionId)">
+              <span> {{child.title + ' - ' + (child.status|translate)}}</span>
+            </a>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="confirm-modal dismiss" data-dismiss="modal">{{'Close'|translate}}</button>
         </div>
       </div>
     </div>

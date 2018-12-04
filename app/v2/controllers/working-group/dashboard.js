@@ -41,7 +41,8 @@
         // date_asc | date_desc | popularity | random | most_commented | most_commented_public | most_commented_members
         sorting: $scope.sorting,
         pageSize: $scope.pageSize,
-        mode: $scope.type
+        mode: $scope.type,
+        status: 'PUBLISHED, PUBLIC_DRAFT'
       };
       $scope.getFromFile = getFromFile.bind($scope);
       $scope.membersFile = null;
@@ -133,6 +134,8 @@
       $scope.subscribeNewsletter = subscribeNewsletter.bind($scope);
       $scope.unsubscribeNewsletter = unsubscribeNewsletter.bind($scope);
       $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
+      $scope.createContribution = createContribution.bind($scope);
+      $scope.refreshWorkingGroupsMemberships = refreshWorkingGroupsMemberships.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
@@ -154,11 +157,40 @@
         response => {
           $translate('JoinWg successfully').then(function (successMsg) {
             Notify.show(successMsg, 'success');
+            refreshWorkingGroupsMemberships()
             }
           );
           //Notify.show("Request completed successfully. We'll get in contact soon.", "success");
         },
         error => Notify.show(error.statusMessage, "error")
+      )
+    }
+
+    function refreshWorkingGroupsMemberships() {
+      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
+      let vm = $scope;
+      rsp.then(
+        data => {
+          let groupMembershipsHash = {};
+          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+          let myWorkingGroups = membershipsInGroups.map(function (membership) {
+            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+            return membership.workingGroup;
+          });
+
+          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+          rsp.then(
+            groups => {
+              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+              localStorageService.set('otherWorkingGroups', other);
+              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+              vm.otherWorkingGroups = other;
+              verifyMembership();
+            }
+          );
+        }
       )
     }
 
@@ -277,10 +309,28 @@
         $scope.campaignConfigs = data;
         $scope.campaign.configs = $scope.campaignConfigs;
 
+        if ($scope.campaignConfigs['appcivist.campaign.use-proposal-form'] === 'TRUE') {
+          $scope.useProposalForm = true;
+        } else {
+          $scope.useProposalForm = false;
+        }
+
+        if ($scope.campaignConfigs['appcivist.working-group.hide-assigned-ideas'] === 'TRUE') {
+          $scope.hideAssignedIdeas = true;
+        } else {
+          $scope.hideAssignedIdeas = false;
+        }
+
         if ($scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] && $scope.campaignConfigs['appcivist.campaign.disable-working-group-comments'] === 'TRUE') {
           $scope.showComments = false;
         } else {
           $scope.showComments = true;
+        }
+
+        if ($scope.campaignConfigs['appcivist.working-group.allow-non-members-to-post-proposals'] === 'TRUE') {
+          $scope.allowNonMembersProposals = true;
+        } else {
+          $scope.allowNonMembersProposals = false;
         }
         loadWorkingGroup();
       }, function (error) {
@@ -310,6 +360,7 @@
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
           $scope.workingGroupLabel = data.name;
+          console.log($scope.wg);
 
 
           // Prepare first WG's cover and color
@@ -386,26 +437,41 @@
       var aid = group.assemblyId;
       var gid = group.groupId;
       var res;
+      console.log(group);
 
-      if (group.supportedMembership && group.supportedMembership != "OPEN") {
+      const emailConcatenator = (acc, value) => {
+        if (acc) acc = acc.concat(",");
+        acc = acc.concat(value.user.email);
+        return acc;
+      };
+
+      if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
         if ($scope.isAnonymous || !$scope.userIsMember) {
-          $scope.members = group.members
-            .filter(function (m) {
-              return m.status === 'ACCEPTED';
-            });
-          $scope.memberRequests = group.members
-            .filter(function (m) {
-              return m.status === 'REQUESTED';
-            });
-          $scope.membersInvited = group.members
-            .filter(function (m) {
-              return m.status === 'INVITED';
-            });
+          if (group.members) {
+            $scope.members = group.members
+              .filter(function (m) {
+                return m.status === 'ACCEPTED';
+              });
+            $scope.memberRequests = group.members
+              .filter(function (m) {
+                return m.status === 'REQUESTED';
+              });
+            $scope.membersInvited = group.members
+              .filter(function (m) {
+                return m.status === 'INVITED';
+              });
+            // concatenate member emails
+            if ($scope.members && $scope.members.members)
+              $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
+          }
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
           res.$promise.then(
             function (data) {
               $scope.members = data;
+              // concatenate member emails
+              if ($scope.members && $scope.members.members)
+                $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
             },
             function (error) {
               Notify.show(error.statusMessage, 'error');
@@ -474,6 +540,7 @@
 
     function submitMembers(assemblyId) {
       console.log(assemblyId);
+      $rootScope.startSpinner();
       var url = localStorageService.get('serverBaseUrl') + '/assembly/' + assemblyId + '/campaign/'+ $scope.campaignID +'/group/'+ $scope.groupID +'/member';
       var fd = new FormData();
       fd.append('file', $scope.membersFile);
@@ -487,6 +554,7 @@
         }
       }).then(
         response => {
+          $rootScope.stopSpinner();
           $translate('Members invited').then(function (successMsg) {
             Notify.show(successMsg, 'success');
           });
@@ -495,7 +563,8 @@
           angular.element('#addMembers button.close').trigger('click');
         },
         error => {
-          Notify.show(error.statusMessage, "error");
+          Notify.show(error.data.statusMessage, "error");
+          $rootScope.stopSpinner();
         }
       )
     }
@@ -625,13 +694,13 @@
       }
     }
     function redirectToProposal(contribution) {
-      this.closeModal('proposalFormModal');
+      $scope.closeModal('proposalFormModal');
 
       $state.go('v2.assembly.aid.campaign.workingGroup.proposal.pid', {
         pid: contribution.contributionId,
-        aid: this.assemblyID,
-        cid: this.campaignID,
-        gid: this.groupID
+        aid: $scope.assemblyID,
+        cid: $scope.campaignID,
+        gid: $scope.groupID
       });
     }
 
@@ -732,6 +801,36 @@
           }
         );
       }
+    }
+
+    function createContribution(contributionType = 'PROPOSAL') {
+      let defaultTitle = $scope.campaignConfigs['appcivist.campaign.contribution.default-title'];
+      let payload = {};
+      payload.status = "DRAFT";
+      payload.title = defaultTitle ? defaultTitle : "Create your title";
+      payload.text = "";
+      payload.type = contributionType;
+      payload.workingGroupAuthors = [];
+      payload.workingGroupAuthors[0] = this.wg;
+      console.log(payload);
+      Pace.restart();
+      let rsp = Contributions.contributionInResourceSpace(this.campaign.resourceSpaceId).save(payload).$promise.then(
+        contribution => {
+          Pace.stop();
+          Notify.show('Contribution saved', 'success');
+          console.log(contribution);
+          redirectToProposal(contribution);
+        },
+        error => {
+          $translate('error.creation.contribution')
+            .then(
+              errorMsg => {
+                let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                Notify.show(fullErrorMsg, 'error');
+              });
+
+        }
+      );
     }
   }
 }());

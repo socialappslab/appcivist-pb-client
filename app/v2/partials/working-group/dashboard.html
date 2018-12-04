@@ -4,7 +4,6 @@
     <header class="page__header" ng-style="coverStyle">
       <div class="row">
         <breadcrumb label="wg.name"></breadcrumb>
-        <a class="btn btn-join" ng-click="joinWg(wg.groupId)" ng-if="!userIsMember">{{'Join'|translate}}</a>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -51,7 +50,7 @@
       <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
         <div class="overlay new_overlay" style="display: inline-flex">
           <ul class="overlay_buttons">
-            <li class="overlay_button">
+            <li class="overlay_button" ng-if="hideAssignedIdeas">
               <a data-toggle="modal" data-target="#assignedIdeas">
                 <i class="fa fa-lightbulb-o fa-lg"></i><span>{{'Assigned ideas'|translate}}</span>
                 <span class="number" ng-if="resources.relatedContributions.length > 0">({{resources.relatedContributions.length}})</span>
@@ -64,10 +63,12 @@
               </a>
             </li>
           </ul>
+          <!--
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscription" ng-if="!isAnonymous && !subscribed">Subscribe to Newsletter</button>
           <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterUnsubscribe" ng-if="!isAnonymous && subscribed">Unsubscribe to Newsletter</button>
 
-          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember">Subscribe to Newsletter</button>
+          <button class="btn btn-default subscribe-newsletter" data-toggle="modal" data-target="#newsletterSubscriptionNotLoggedIn" ng-if="!userIsMember && !isAnonymous">Subscribe to Newsletter</button>
+          -->
         </div>
       </div>
     </header>
@@ -79,19 +80,14 @@
       <div class="campaign__filters">
         <h2 class="heading--header no-padding col-xs-12 col-lg-5 col-md-5 col-sm-5">{{'Proposals' | translate}}</h2>
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-4"
-           ng-if="user != null && newProposalsEnabled && userIsMember"
-           ng-click="openModal('proposalFormModal')">
+           ng-if="user != null && newProposalsEnabled && (userIsMember || allowNonMembersProposals || wg.profile.supportedMembership === 'OPEN')"
+           ng-click="useProposalForm ? openModal('proposalFormModal') : createContribution('PROPOSAL')">
           <i class="fa fa-plus-square"></i>&nbsp;{{'Add Proposal' | translate}}
         </a>
 
         <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
-           ng-if="user != null && !userIsMember" disabled>
+           ng-if="user != null && !userIsMember && !allowNonMembersProposals && wg.profile.supportedMembership !== 'OPEN'" ng-click="joinWg(wg.groupId)" disabled>
           {{'Join the Group to create proposals' | translate}}
-        </a>
-
-        <a class="primary__button right proposals__add_new right col-xs-12 col-lg-3 col-md-3 col-sm-3"
-           ng-if="user === null" disabled>
-          {{'Login to join' | translate}}
         </a>
 
         <!--<a class="primary__button right proposals__add_new col-xs-12 col-lg-3 col-md-3 col-sm-4"-->
@@ -105,12 +101,14 @@
         <!--</a>-->
       </div>
       <proposals-ideas-searchbox class="col-*-12"
+                                 search-handler="doSearch(filters)"
                                  load-themes="loadThemes(query)"
-                                 is-anonymous="isAnonymous || !userIsMember"
+                                 is-anonymous="isAnonymous"
                                  campaign-config="campaignConfigs"
                                  campaign-contribution-types="{{ campaignConfigs['appcivist.campaign.contribution-types'] }}"
-                                 current-component="currentComponet"
                                  filters="filters"
+                                 dry-run="false"
+                                 current-component="currentComponent"
                                  is-coordinator="isCoordinator"></proposals-ideas-searchbox>
 
       <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
@@ -160,12 +158,12 @@
           <section class="comments__section">
             <div class="row comments-header">
               <div class="col-xs-4 text-left">
-                <strong>Comments ({{commentType == 'members' ? membersCommentCounter.value : publicCommentCounter.value}})</strong>
+                <strong>{{'Comments'|translate}} ({{commentType == 'members' ? membersCommentCounter.value : publicCommentCounter.value}})</strong>
               </div>
               <div class="col-xs-8 text-right">
                 {{'View comments by'|translate}}:
                 <select name="comment-types" ng-model="commentType">
-                  <option value="public">{{'Public'|translate}}</option>
+                  <option value="public">{{'Public Conversations'|translate}}</option>
                   <option value="members" ng-if="userIsMember">{{'Members only'|translate}}</option>
                 </select>
               </div>
@@ -256,39 +254,52 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close &times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
         <button class="btn btn-default btn-add-members" ng-if="isCoordinator || isWGCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
+        <a class="btn btn-default btn-add-members" ng-if="userIsMember"
+                href="mailto:{{memberEmails}}" target="_blank" style="margin-right: 10px;">
+          {{'header.menu.Send message'|translate}}
+        </a>
         <h3 class="modal-title" id="wgMembersLabel">{{wg.name}}</h3>
         <p>{{ 'Members' | translate }}</p>
       </div>
       <div class="modal-body">
-        <ul class="nav nav-pills" ng-if="isCoordinator">
+        <ul class="nav nav-pills" ng-if="isCoordinator || isWGCoordinator || userIsMember">
           <li class="active"><a data-toggle="tab" data-target="#approved">{{'Approved'|translate}}</a></li>
-          <li><a data-toggle="tab" data-target="#pending">{{'Pending approval'|translate}}</a></li>
+          <li ng-if="userIsMember"><a data-toggle="tab" data-target="#pending">{{'Pending approval'|translate}}</a></li>
         </ul>
         <div class="tab-content">
           <div id="approved" class="tab-pane fade in active">
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th ng-if="userIsMember">{{'Email Address'|translate}}</th>
-                  <th ng-if="isCoordinator">{{'Role'|translate}}</th>
-                  <th ng-if="isCoordinator"></th>
+                  <th>{{'Name'|translate}}</th>
+                  <th ng-if="userIsMember">{{'Email'|translate}}</th>
+                  <th ng-if="isCoordinator || isWGCoordinator">{{'Role'|translate}}</th>
+                  <th ng-if="userIsMember"></th>
+                  <th ng-if="isCoordinator || isWGCoordinator"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="member in members.members">
-                  <td style="text-align:left"><member-card user="member.user"></member-card></td>
-                  <td ng-if="userIsMember">{{member.user.email}}</td>
-                  <td ng-if="isCoordinator">
-                    <select>
+                  <td style="text-align:left">
+                    <member-card user="member.user"></member-card>
+                    <div class="role-label">{{member.roles[0].name}}</div>
+                  </td>
+                  <td ng-if="userIsMember"><a href="mailto:{{member.user.email}}" target="_blank">{{member.user.email}}</a></td>
+                  <td ng-if="isCoordinator || isWGCoordinator">
+                    <select ng-click="updateRole(member)">
                       <option ng-selected="member.roles[0].name == 'COORDINATOR'">{{'Coordinator'|translate}}</option>
                       <option ng-selected="member.roles[0].name == 'MODERATOR'">{{'Moderator'|translate}}</option>
                       <option ng-selected="member.roles[0].name == 'MEMBER'">{{'Member'|translate}}</option>
                     </select>
                   </td>
-                  <td ng-if="isCoordinator"><i class="fa fa-envelope-o fa-lg"></i> <i class="fa fa-trash-o fa-lg"></i></td>
+                  <td ng-if="userIsMember">
+                    <a href="mailto:{{member.user.email}}" target="_blank"><i class="fa fa-envelope-o fa-lg"></i></a>
+                  </td>
+                  <td ng-if="isCoordinator || isWGCoordinator">
+                    <i ng-if="isCoordinator || isWGCoordinator" class="fa fa-trash-o fa-lg" ng-click="deleteMembership(member)"></i>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -297,10 +308,10 @@
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>{{'Name'|translate}}</th>
+                  <th>{{'Name'|translate}} {{ memberRequests.length }}</th>
                   <th>{{'Email Address'|translate}}</th>
                   <th>{{'Invitation Status'|translate}}</th>
-                  <th>{{'Approval Status'|translate}}</th>
+                  <th ng-if="isCoordinator || isWGCoordinator">{{'Approval Status'|translate}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -308,7 +319,7 @@
                   <td>{{member.user.name}}</td>
                   <td>{{member.user.email}}</td>
                   <td>{{member.status}}</td>
-                  <td ng-if="member.status === 'REQUESTED'">
+                  <td ng-if="member.status === 'REQUESTED' && (isCoordinator || isWGCoordinator)">
                     <a class="btn btn-smaller btn-default" ng-click="updateStatus(member, 'accepted', $event)">Approve</a> <a class="btn btn-smaller btn-default" ng-click="updateStatus(member, 'rejected', $event)">Reject</a>
                   </td>
                 </tr>
@@ -316,10 +327,10 @@
                   <td>{{invitation.name}}</td>
                   <td>{{invitation.email}}</td>
                   <td>{{invitation.status}}</td>
-                  <td ng-if="invitation.status === 'INVITED'">
+                  <td ng-if="invitation.status === 'INVITED' && (isCoordinator || isWGCoordinator)">
                     <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(invitation)">Resend invitation</a>
                   </td>
-                  <td ng-if="invitation.status === 'REJECTED'">
+                  <td ng-if="invitation.status === 'REJECTED' && (isCoordinator || isWGCoordinator)">
                     Invitation rejected
                     <a class="btn btn-smaller resend btn-default" ng-click="resendInvitation(invitation)">Resend invitation</a>
                   </td>

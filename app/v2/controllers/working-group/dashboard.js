@@ -228,16 +228,18 @@
         rsp = Campaigns.campaignByUUID($state.params.cuuid).get();
       }
 
-      rsp.$promise.then(
-        campaign => {
-          $scope.campaign = campaign;
-          $scope.campaignID = $scope.campaign.campaignId ? $scope.campaign.campaignId : $scope.campaign.uuid;
-          $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
-          $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
-          localStorageService.set("currentCampaign",$scope.campaign);
-          $scope.onCampaignReady();
-        }
-      )
+      if (rsp!= null && rsp!= undefined) {
+        rsp.$promise.then(
+          campaign => {
+            $scope.campaign = campaign;
+            $scope.campaignID = $scope.campaign.campaignId ? $scope.campaign.campaignId : $scope.campaign.uuid;
+            $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
+            $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
+            localStorageService.set("currentCampaign",$scope.campaign);
+            $scope.onCampaignReady();
+          }
+        )
+      }
     }
 
     function onCampaignReady () {

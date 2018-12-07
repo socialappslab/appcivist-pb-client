@@ -87,7 +87,10 @@
     );
 
     function isInWg(id) {
-      return this.contribution.workingGroupAuthors.filter(wg => wg.groupId === id).length > 0;
+
+      let result = this.contribution && this.contribution.workingGroupAuthors
+        ? this.contribution.workingGroupAuthors.filter(wg => wg.groupId === id).length > 0 : false;
+      return result;
     }
 
     function init() {

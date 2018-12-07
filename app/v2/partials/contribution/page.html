@@ -346,7 +346,7 @@
               <span class="status" ng-if="proposal.status == 'PUBLISHED'">{{ 'Published' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'ARCHIVED'">{{ 'Archived' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'FORKED_PRIVATE_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Forked Private Draft' | translate }}</span>
-              <span class="status" ng-if="proposal.status == 'MERGED' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Merged Public Draft' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'MERGED'">{{ 'Merged Public Draft' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'FORKED_PUBLISHED' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Forked Published' | translate }}</span>
 
             </div>
@@ -475,7 +475,7 @@
           </div>
           <!-- PEERDOC -->
           <div class="text-center" style="margin-top: 2rem" id="peerdoc"
-               ng-if="proposal.extendedTextPad && proposal.extendedTextPad.resourceType==='PEERDOC' && (((proposal.status.includes('DRAFT') && !proposal.status.includes('PUBLIC')) && userIsAuthor || userIsCoordinator) || (proposal.status.includes('PUBLIC_DRAFT') && !isAnonymous) || proposal.status == 'PUBLISHED' || proposal.status == 'FORKED_PUBLISHED' || proposal.status == 'ARCHIVED') && showBodyProposal">
+               ng-if="proposal.extendedTextPad && proposal.extendedTextPad.resourceType==='PEERDOC' && (((proposal.status.includes('DRAFT') && !proposal.status.includes('PUBLIC')) && userIsAuthor || userIsCoordinator) || (proposal.status.includes('PUBLIC_DRAFT') && !isAnonymous) || proposal.status == 'PUBLISHED' || proposal.status == 'FORKED_PUBLISHED' || proposal.status == 'ARCHIVED' || proposal.status == 'MERGED') && showBodyProposal">
 
             <div ng-if="peerdocMergeView" class="text-justify" style="border: groove red;padding-bottom: 10px">
               <h3 class="modal-header" style="padding-top: 0">{{"accept-merge-document-confirmation-title" | translate}}</h3>

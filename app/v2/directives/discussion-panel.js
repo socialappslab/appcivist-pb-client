@@ -45,6 +45,7 @@
           if (scope.user) {
             var hasRol = Memberships.hasRol;
             var assembly = localStorageService.get('currentAssembly');
+            scope.campaign = localStorageService.get('currentCampaign');
             scope.assemblyId = assembly.assemblyId;
             var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
             var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');

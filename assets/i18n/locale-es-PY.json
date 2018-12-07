@@ -1491,6 +1491,8 @@
   "Merged_private_draft": "Merged Private Amendment",
   "MERGED_PUBLIC_DRAFT": "Merged Public Amendment",
   "Merged_public_draft": "Merged Public Amendment",
+  "MERGED": "Merged Public Amendment",
+  "Merged": "Merged Public Amendment",
   "Forked proposals": "Enmiendas",
   "Forked ideas": "Enmiendas de idea",
   "Merged proposals": "Enmiendas Aceptadas",

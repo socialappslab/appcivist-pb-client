@@ -253,14 +253,14 @@
         var user = localStorageService.get('user');
         filters.by_author = user.userId;
         filters.createdByOnly = true;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED, ARCHIVED"; // when asking for own proposals, bring everything
       }
       if (filters.mode === 'myIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
         var _user = localStorageService.get('user');
         filters.by_author = _user.userId;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED";
       }
       if (filters.mode === 'draftProposals') {
         filters.mode = 'proposal';
@@ -277,7 +277,7 @@
         this.vm.canFilterByGroup = this.loadGroups;
         var user = localStorageService.get('user');
         filters.shared_with = user.userId;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED, ARCHIVED";
       }
       if (filters.mode === 'mergedProposals') {
         filters.mode = 'proposal';

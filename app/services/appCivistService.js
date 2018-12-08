@@ -541,6 +541,9 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
         'delete': { method: 'DELETE' }
       });
     },
+    updateMembershipRole: function(newRole, membershipId) {
+
+    },
     reSendInvitation: function (invitationId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email', { iid: invitationId });
     },

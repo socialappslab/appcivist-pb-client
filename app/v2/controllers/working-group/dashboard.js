@@ -136,6 +136,7 @@
       $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
       $scope.createContribution = createContribution.bind($scope);
       $scope.refreshWorkingGroupsMemberships = refreshWorkingGroupsMemberships.bind($scope);
+      $scope.updateRole = updateRole.bind($scope);
       $scope.deleteMembership = deleteMembership.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
@@ -847,7 +848,12 @@
         }
       );
     }
-  }
+
+    function updateRole(member) {
+
+
+    }
+
     function deleteMembership(member) {
       var rsp = Memberships.deleteMembership(member.membershipId).delete();
 

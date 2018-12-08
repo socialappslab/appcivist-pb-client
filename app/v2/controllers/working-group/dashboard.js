@@ -912,7 +912,7 @@
             rsp.$promise.then(
               reponse => {
                 Notify.show('Member removed', 'success');
-                loadMembers($scope.group);
+                loadMembers($scope.wg);
               },
               error => {
                 let fullErrorMsg = error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";

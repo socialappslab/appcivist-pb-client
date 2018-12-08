@@ -136,6 +136,7 @@
       $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
       $scope.createContribution = createContribution.bind($scope);
       $scope.refreshWorkingGroupsMemberships = refreshWorkingGroupsMemberships.bind($scope);
+      $scope.deleteMembership = deleteMembership.bind($scope);
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
@@ -463,17 +464,29 @@
                 return m.status === 'INVITED';
               });
             // concatenate member emails
-            if ($scope.members && $scope.members.members)
-              $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
+            if ($scope.members) {
+              $scope.memberEmails = $scope.members.reduce(emailConcatenator,"");
+              for (var i = 0; i < $scope.members.length; i++) {
+                var m = $scope.members[i]
+                m['mostRelevantRole'] = Memberships.mostRelevantRole(m);
+              }
+            }
+
+
           }
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
           res.$promise.then(
             function (data) {
-              $scope.members = data;
-              // concatenate member emails
-              if ($scope.members && $scope.members.members)
-                $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
+              if (data && data.members) {
+                $scope.members = data.members;
+                // concatenate member emails
+                $scope.memberEmails = $scope.members.reduce(emailConcatenator,"");
+                for (var i = 0; i < $scope.members.length; i++) {
+                  var m = $scope.members[i]
+                  m['mostRelevantRole'] = Memberships.mostRelevantRole(m);
+                }
+              }
             },
             function (error) {
               Notify.show(error.statusMessage, 'error');
@@ -831,6 +844,20 @@
                 Notify.show(fullErrorMsg, 'error');
               });
 
+        }
+      );
+    }
+  }
+    function deleteMembership(member) {
+      var rsp = Memberships.deleteMembership(member.membershipId).delete();
+
+      rsp.$promise.then(
+        reponse => {
+          Notify.show('Member removed', 'success');
+        },
+        error => {
+          let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+          Notify.show(error, 'error');
         }
       );
     }

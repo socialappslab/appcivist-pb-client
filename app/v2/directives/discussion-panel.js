@@ -151,7 +151,7 @@
         d.rsID = d.resourceSpaceId;
         Space.getContributions(d, 'comment', (scope.isAnonymous), {}, false).then(
           function(comments) {
-            d.comments = comments.list;
+            d.comments = comments && comments.list ? comments.list : [];
           }
         );
       });

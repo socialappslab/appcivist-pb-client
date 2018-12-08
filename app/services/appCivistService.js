@@ -536,10 +536,14 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
         'update': { method: 'PUT' }
       });
     },
+    deleteMembership: function(membershipId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/:mid', { mid: membershipId}, {
+        'delete': { method: 'DELETE' }
+      });
+    },
     reSendInvitation: function (invitationId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email', { iid: invitationId });
     },
-
     hasRol: function (rols, rolName) {
       if (!rols) {
         return false;
@@ -555,17 +559,14 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
       }
       return false;
     },
-
     assemblyRols: function (aid) {
       var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
       return assemblyMembershipsHash ? assemblyMembershipsHash[aid] : null;
     },
-
     groupRols: function (gid) {
       var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
       return groupMembershipsHash ? groupMembershipsHash[gid] : null;
     },
-
     /**
      * Checks if current user has the given rol.
      *
@@ -581,7 +582,6 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
           return this.hasRol(this.groupRols(id), rol);
       }
     },
-
     /**
      * Check if current user is coordinator of the given assembly.
      *
@@ -590,7 +590,6 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
     isAssemblyCoordinator: function (aid) {
       return this.rolIn('assembly', aid, 'COORDINATOR');
     },
-
     /**
      * Check if current user is coordinator of the given working group.
      *
@@ -599,7 +598,6 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
     isWorkingGroupCoordinator: function (wgid) {
       return this.rolIn('group', wgid, 'COORDINATOR');
     },
-
     /**
      * Check if current user is member of the given assembly.
      *
@@ -609,7 +607,6 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
     isMember: function (target, id) {
       return this.rolIn(target, id, 'MEMBER');
     },
-
     /**
      * Check if current user has the general role ADMIN
      * @returns {boolean}
@@ -619,8 +616,39 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
       let roles = user ? user.roles : null;
       let adminRole = roles ? roles.filter(r => r.name==="ADMIN") : null;
       return !adminRole || adminRole.length===0 ? false : true;
+    },
+    /** Return most important role from the array of roles */
+    mostRelevantRole: function (member) {
+      let role = null;
+      if (member && member.roles) {
+        let roleHash = {
+          "ADMIN": 0,
+          "USER": 0,
+          "COORDINATOR": 0,
+          "MEMBER": 0,
+          "EXPERT": 0,
+          "FOLLOWER": 0,
+          "MODERATOR": 0
+        };
+        for (var i = 0; i < member.roles.length; i++) {
+          var r = member.roles[i]
+          roleHash[r.name] += 1;
+        }
+        if (roleHash["ADMIN"]>0) {
+          role = "ADMIN";
+        } else if (roleHash["COORDINATOR"]>0) {
+          role = "COORDINATOR";
+        } else if (roleHash["MODERATOR"]>0) {
+          role = "MODERATOR";
+        } else if (roleHash["EXPERT"]>0) {
+          role = "EXPERT";
+        } else if (roleHash["MEMBER"]>0) {
+          role = "MEMBER";
+        }
+      }
+      return role;
     }
-  };
+  }
 });
 
 /**

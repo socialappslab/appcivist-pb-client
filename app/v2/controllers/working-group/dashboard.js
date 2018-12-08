@@ -850,20 +850,73 @@
     }
 
     function updateRole(member) {
+      // update the role
+      // 1. Delete roles that do not match the name, except MEMBER (which should always stay)
+      if (member.roles) {
+        let userHasRole = Memberships.hasRol(member.roles,member.mostRelevantRole)
+        member.roles.forEach(function(role) {
+          console.log("Deleting role: "+role+" for member "+member.userId);
+          // If role is not MEMBER and it is NOT then one we are changing to
+          if (role.name !== "MEMBER" && role.name !== member.mostRelevantRole) {
+            let roleId = role.roleId;
+            var index = member.roles.indexOf(role);
+            if (index>-1) {
+              member.roles.splice(index,1);
+              var rsp = Memberships.deleteMembershipRole(member.membershipId, roleId).delete();
+              rsp.$promise.then(
+                response => {
+                  console.log("Deleted role "+role+" for member "+member.userId);
+                },
+                error => {
+                  let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                  Notify.show(fullErrorMsg, 'error');
+                }
+              );
+            }
+          }
+        });
 
+        // if User does not have the new selected role, add it
+        if (!userHasRole) {
+          var newRole = {
+            "roleId": 0,
+            "name": member.mostRelevantRole
+          };
+          var rsp = Memberships.addMembershipRole(member.membershipId).save(newRole);
 
+          rsp.$promise.then(
+            response => {
+              Notify.show('Membership updated', 'success');
+            },
+            error => {
+              let fullErrorMsg = error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+              Notify.show(fullErrorMsg, 'error');
+            }
+          );
+        } else {
+          Notify.show('Membership updated', 'success');
+        }
+
+      }
     }
 
     function deleteMembership(member) {
-      var rsp = Memberships.deleteMembership(member.membershipId).delete();
-
-      rsp.$promise.then(
-        reponse => {
-          Notify.show('Member removed', 'success');
-        },
-        error => {
-          let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
-          Notify.show(error, 'error');
+      $translate("Are you sure you want to proceed with this operation?").then(
+        translation => {
+          let confirmation = window.confirm(translation);
+          if (confirmation) {
+            var rsp = Memberships.deleteMembership(member.membershipId).delete();
+            rsp.$promise.then(
+              reponse => {
+                Notify.show('Member removed', 'success');
+                loadMembers($scope.group);
+              },
+              error => {
+                let fullErrorMsg = error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                Notify.show(fullErrorMsg, 'error');
+              }
+            );
+          }
         }
       );
     }

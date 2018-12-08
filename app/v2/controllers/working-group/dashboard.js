@@ -174,11 +174,11 @@
       rsp.then(
         data => {
           let groupMembershipsHash = {};
-          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
-          let myWorkingGroups = membershipsInGroups.map(function (membership) {
-            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
-            return membership.workingGroup;
-          });
+            let membershipsInGroups = $filter('filter')(data, {membershipType: 'GROUP'});
+            let myWorkingGroups = membershipsInGroups.map(function (membership) {
+              groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+              return membership.workingGroup;
+            });
           localStorageService.set('groupMembershipsHash', groupMembershipsHash);
           let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
           rsp.then(
@@ -189,7 +189,7 @@
               localStorageService.set('otherWorkingGroups', other);
               vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
               vm.otherWorkingGroups = other;
-              verifyMembership();
+           //   verifyMembership();
             }
           );
         }
@@ -205,12 +205,12 @@
       rsp.$promise.then(function (data) {
         $scope.assembly = data;
         $scope.assemblyLabel = $scope.assembly.name;
-        console.log($scope);
         verifyMembership();
       });
     }
 
     function verifyMembership() {
+      $scope.refreshWorkingGroupsMemberships();
       $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
       loadCampaign();
     }
@@ -364,7 +364,6 @@
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
           $scope.workingGroupLabel = data.name;
-          console.log($scope.wg);
 
 
           // Prepare first WG's cover and color
@@ -441,15 +440,14 @@
       var aid = group.assemblyId;
       var gid = group.groupId;
       var res;
-      console.log(group);
-
       const emailConcatenator = (acc, value) => {
         if (acc) acc = acc.concat(",");
         acc = acc.concat(value.user.email);
         return acc;
+
       };
 
-      if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
+      if (group.profile.supportedMembership) {
         if ($scope.isAnonymous || !$scope.userIsMember) {
           if (group.members) {
             $scope.members = group.members
@@ -474,11 +472,43 @@
             }
 
 
+          } else {
+            res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
+            res.$promise.then(
+              function (data) {
+                if (data && data.members) {
+                  $scope.members = data.members;
+                  // concatenate member emails
+                  $scope.memberEmails = $scope.members.reduce(emailConcatenator,"");
+                  for (var i = 0; i < $scope.members.length; i++) {
+                    var m = $scope.members[i]
+                    m['mostRelevantRole'] = Memberships.mostRelevantRole(m);
+                  }
+                }
+              },
+              function (error) {
+                Notify.show(error.statusMessage, 'error');
+              }
+            );
+            res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'REQUESTED').query();
+            res.$promise.then(
+              function (data) {
+                $scope.memberRequests = data;
+              }
+            );
+            res = Invitations.invitations('group', gid, 'INVITED').query();
+            res.$promise.then(
+              function (data) {
+                $scope.membersInvited = data;
+              }
+            );
           }
         } else {
           res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
           res.$promise.then(
             function (data) {
+              console.log('members aca');
+              console.log(data);
               if (data && data.members) {
                 $scope.members = data.members;
                 // concatenate member emails
@@ -507,6 +537,7 @@
           );
         }
       }
+      $scope.refreshWorkingGroupsMemberships();
     }
 
     function updateStatus(member, status) {

@@ -541,8 +541,15 @@ appCivistApp.factory('Memberships', function ($resource, localStorageService) {
         'delete': { method: 'DELETE' }
       });
     },
-    updateMembershipRole: function(newRole, membershipId) {
-
+    deleteMembershipRole: function(membershipId, roleId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/:mid/role/:rid', { mid: membershipId, rid: roleId}, {
+        'delete': { method: 'DELETE' }
+      });
+    },
+    addMembershipRole: function(membershipId) {
+      return $resource(getServerBaseUrl(localStorageService) + '/membership/:mid/role', { mid: membershipId}, {
+        'save': { method: 'POST' }
+      });
     },
     reSendInvitation: function (invitationId) {
       return $resource(getServerBaseUrl(localStorageService) + '/membership/invitation/:iid/email', { iid: invitationId });

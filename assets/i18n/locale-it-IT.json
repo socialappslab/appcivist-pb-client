@@ -1497,5 +1497,6 @@
   "public_status": "publico",
   "draft_status": "draft",
   "pagination.widget.no-data": "Il n’y a plus de {{type}} avec statut {{status}} dans cet espace.",
-  "Amended": "Amended"
+  "Amended": "Amended",
+  "Are you sure you want to proceed with this operation?": "Sei sicuro di voler procedere con questa operazione?"
 }

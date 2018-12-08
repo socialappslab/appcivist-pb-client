@@ -1451,5 +1451,6 @@
   "public_status": "public",
   "draft_status": "draft",
   "pagination.widget.no-data": "This space has still no {{type}} with status {{status}}.",
-  "Amended": "Amended"
+  "Amended": "Amended",
+  "Are you sure you want to proceed with this operation?": "Möchten Sie diesen Vorgang wirklich fortsetzen?"
 }

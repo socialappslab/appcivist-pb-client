@@ -301,15 +301,18 @@
                   <td ng-if="userIsMember"><a href="mailto:{{member.user.email}}" target="_blank">{{member.user.email}}</a></td>
                   <td ng-if="isCoordinator || isWGCoordinator">
                     <!--ToDo: change way in which role is shown-->
-                    <!--<select name="campaignSelect" ng-model="newWorkingGroup.campaign" ng-options="campaign as campaign.title for campaign in ongoingCampaigns">-->
-                    <!--<option value="">{{'Select a campaign for the Workging Group' | translate}}</option>-->
-                    <!--</select>-->
-
-                    <select ng-click="updateRole(member)">
-                      <option ng-selected="member.mostRelevantRole === 'COORDINATOR'">{{'Coordinator'|translate}}</option>
-                      <option ng-selected="member.mostRelevantRole === 'MODERATOR'">{{'Moderator'|translate}}</option>
-                      <option ng-selected="member.mostRelevantRole === 'MEMBER'">{{'Member'|translate}}</option>
+                    <select name="roleSelect"
+                            ng-model="member.mostRelevantRole"
+                            ng-options="role for role in ['COORDINATOR', 'MODERATOR', 'MEMBER']"
+                            ng-change="updateRole(member)">
+                      <!--<option value="">{{'Select a campaign for the Workging Group' | translate}}</option>-->
                     </select>
+
+                    <!--<select ng-click="updateRole(member)">-->
+                      <!--<option ng-selected="member.mostRelevantRole === 'COORDINATOR'">{{'Coordinator'|translate}}</option>-->
+                      <!--<option ng-selected="member.mostRelevantRole === 'MODERATOR'">{{'Moderator'|translate}}</option>-->
+                      <!--<option ng-selected="member.mostRelevantRole === 'MEMBER'">{{'Member'|translate}}</option>-->
+                    <!--</select>-->
                   </td>
                   <td ng-if="userIsMember">
                     <a href="mailto:{{member.user.email}}" target="_blank"><i class="fa fa-envelope-o fa-lg"></i></a>

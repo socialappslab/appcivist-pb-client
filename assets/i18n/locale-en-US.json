@@ -1524,5 +1524,6 @@
   "history-empty": "There are no changes to the original proposal",
   "Accept Merge": "Confirm Amendment",
   "Not Accept Merge": "Do not Confirm Amendment",
-  "Amended": "Amended"
+  "Amended": "Amended",
+  "Are you sure you want to proceed with this operation?": "Are you sure you want to proceed with this operation?"
 }

@@ -852,8 +852,9 @@
     function updateRole(member) {
       // update the role
       // 1. Delete roles that do not match the name, except MEMBER (which should always stay)
+      var userHasRole = false;
       if (member.roles) {
-        let userHasRole = Memberships.hasRol(member.roles,member.mostRelevantRole)
+        userHasRole = Memberships.hasRol(member.roles,member.mostRelevantRole)
         member.roles.forEach(function(role) {
           console.log("Deleting role: "+role+" for member "+member.userId);
           // If role is not MEMBER and it is NOT then one we are changing to
@@ -875,28 +876,30 @@
             }
           }
         });
+      }
 
-        // if User does not have the new selected role, add it
-        if (!userHasRole) {
-          var newRole = {
-            "roleId": 0,
-            "name": member.mostRelevantRole
-          };
-          var rsp = Memberships.addMembershipRole(member.membershipId).save(newRole);
+      // if User does not have the new selected role, add it
+      if (!userHasRole) {
+        var newRole = {
+          "roleId": 0,
+          "name": member.mostRelevantRole
+        };
+        var rsp = Memberships.addMembershipRole(member.membershipId).save(newRole);
 
-          rsp.$promise.then(
-            response => {
-              Notify.show('Membership updated', 'success');
-            },
-            error => {
-              let fullErrorMsg = error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
-              Notify.show(fullErrorMsg, 'error');
-            }
-          );
-        } else {
-          Notify.show('Membership updated', 'success');
-        }
-
+        rsp.$promise.then(
+          response => {
+            if (!member.roles)
+              member.roles = [];
+            member.roles = response.roles;
+            Notify.show('Membership updated', 'success');
+          },
+          error => {
+            let fullErrorMsg = error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+            Notify.show(fullErrorMsg, 'error');
+          }
+        );
+      } else {
+        Notify.show('Membership updated', 'success');
       }
     }
 

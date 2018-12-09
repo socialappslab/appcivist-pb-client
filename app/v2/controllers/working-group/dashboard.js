@@ -169,31 +169,33 @@
     }
 
     function refreshWorkingGroupsMemberships() {
-      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
-      let vm = $scope;
-      rsp.then(
-        data => {
-          let groupMembershipsHash = {};
+      if (!$scope.isAnonymous) {
+        let rsp = Memberships.membe rships($scope.user.userId).query().$promise;
+        let vm = $scope;
+        rsp.then(
+          data => {
+            let groupMembershipsHash = {};
             let membershipsInGroups = $filter('filter')(data, {membershipType: 'GROUP'});
             let myWorkingGroups = membershipsInGroups.map(function (membership) {
               groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
               return membership.workingGroup;
             });
-          localStorageService.set('groupMembershipsHash', groupMembershipsHash);
-          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
-          rsp.then(
-            groups => {
-              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
-              localStorageService.set('otherWorkingGroups', other);
-              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
-              vm.otherWorkingGroups = other;
+            localStorageService.set('groupMembershipsHash', groupMembershipsHash);
+            let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+            rsp.then(
+              groups => {
+                const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+                localStorageService.set('otherWorkingGroups', other);
+                vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+                vm.otherWorkingGroups = other;
            //   verifyMembership();
-            }
-          );
-        }
-      )
+              }
+            );
+          }
+        );
+      }
     }
 
     function loadAssembly() {
@@ -210,8 +212,10 @@
     }
 
     function verifyMembership() {
-      $scope.refreshWorkingGroupsMemberships();
-      $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
+      if (!$scope.isAnonymous)  {
+        $scope.refreshWorkingGroupsMemberships();
+        $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
+      }
       loadCampaign();
     }
 

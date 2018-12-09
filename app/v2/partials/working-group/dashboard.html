@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
+      <div id="wgPageToolbar" class='row no-margin attribution' style="padding-top: 1em; position: unset;">
         <div class="overlay new_overlay" style="display: inline-flex">
           <ul class="overlay_buttons">
             <li class="overlay_button" ng-if="hideAssignedIdeas">
@@ -56,7 +56,7 @@
                 <span class="number" ng-if="resources.relatedContributions.length > 0">({{resources.relatedContributions.length}})</span>
               </a>
             </li>
-            <li class="overlay_button" ng-if="!isAnonymous">
+            <li class="overlay_button" >
               <a data-toggle="modal" data-target="#wgMembers">
                 <i class="fa fa-users fa-lg"></i><span>{{'Members'|translate}}</span>
                 <span class="number" ng-if="members.length > 0">({{members.length}})</span>
@@ -281,7 +281,7 @@
           <li ng-if="userIsMember"><a data-toggle="tab" data-target="#pending">{{'Pending approval'|translate}}</a></li>
         </ul>
         <div class="tab-content">
-          <div id="approved" class="tab-pane fade in active">
+          <div ng-if="!isAnonymous" id="approved" class="tab-pane fade in active">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -324,7 +324,7 @@
               </tbody>
             </table>
           </div>
-          <div id="pending" class="tab-pane fade">
+          <div ng-if="!isAnonymous" id="pending" class="tab-pane fade">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -357,6 +357,11 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div ng-if="isAnonymous" id="anonymous" class="tab-pane fade in active">
+            <p class="card card__message ng-binding ng-scope">
+              {{'Only registered users can see the names of the members'|translate}}
+            </p>
           </div>
         </div>
       </div>

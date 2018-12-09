@@ -170,7 +170,7 @@
 
     function refreshWorkingGroupsMemberships() {
       if (!$scope.isAnonymous) {
-        let rsp = Memberships.membe rships($scope.user.userId).query().$promise;
+        let rsp = Memberships.memberships($scope.user.userId).query().$promise;
         let vm = $scope;
         rsp.then(
           data => {

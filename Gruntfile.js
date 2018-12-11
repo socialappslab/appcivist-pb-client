@@ -154,6 +154,12 @@ module.exports = function(grunt) {
           src: [
             '**/*',
           ]
+        },
+        { cwd: './bower_components/raven-js/',
+          src: ['dist/**', 'dist/plugins/**'],
+          dest: './dist/scripts',
+          filter: 'isFile',
+          expand: true
         }]
       },
       dist: {

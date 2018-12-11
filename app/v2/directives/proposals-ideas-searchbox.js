@@ -26,7 +26,8 @@
         currentComponent: '=',
         // currentComponent.type was not working in the watcher, so I added this variable to make sure it works
         filters: '=',
-        isCoordinator: '='
+        isCoordinator: '=',
+        insights: '='
 
       },
       templateUrl: '/app/v2/partials/directives/proposals-ideas-searchbox.html',
@@ -236,47 +237,57 @@
      */
     function doSearch() {
       var filters = _.cloneDeep(this.filters);
+      if (filters.mode === 'proposal') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "PUBLIC_DRAFT,PUBLISHED,FORKED_PUBLISHED";
+      }
+      if (filters.mode === 'publicAmendments') {
+        filters.mode = 'proposal';
+        this.vm.canFilterByGroup = this.loadGroups;
+        filters.status = "MERGED";
+      }
       if (filters.mode === 'myProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
         var user = localStorageService.get('user');
         filters.by_author = user.userId;
         filters.createdByOnly = true;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED, ARCHIVED"; // when asking for own proposals, bring everything
       }
       if (filters.mode === 'myIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
         var _user = localStorageService.get('user');
         filters.by_author = _user.userId;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED";
       }
       if (filters.mode === 'draftProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT";
+        filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT";
       }
       if (filters.mode === 'draftIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups && filters.mode != 'idea';
-        filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT";
+        filters.status = "DRAFT, PUBLIC_DRAFT, FORKED_PRIVATE_DRAFT";
       }
       if (filters.mode === 'sharedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
         var user = localStorageService.get('user');
         filters.shared_with = user.userId;
-        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, MERGED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED_PUBLIC_DRAFT"; // when asking for own proposals, bring everything
+        filters.status = "PUBLISHED, DRAFT, PUBLIC_DRAFT, INBALLOT, SELECTED, NEW, EXCLUDED, FORKED_PRIVATE_DRAFT, FORKED_PUBLIC_DRAFT, FORKED_PUBLISHED, MERGED, ARCHIVED";
       }
       if (filters.mode === 'mergedProposals') {
         filters.mode = 'proposal';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "MERGED_PRIVATE_DRAFT, MERGED_PUBLIC_DRAFT";
+        filters.status = "MERGED,FORKED_PUBLIC_DRAFT";
       }
       if (filters.mode === 'mergedIdeas') {
         filters.mode = 'idea';
         this.vm.canFilterByGroup = this.loadGroups;
-        filters.status = "MERGED_PUBLIC_DRAFT";
+        filters.status = "MERGED";
       }
       if (filters.mode === 'forkedProposals') {
         filters.mode = 'proposal';
@@ -323,6 +334,7 @@
       // } else {
       //   this.searchHandler({ filters: filters });
       // }
+
       this.$emit('dashboard:fireDoSearch');
     }
 

@@ -248,6 +248,7 @@
             groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
             return membership.workingGroup;
           });
+          localStorageService.set('groupMembershipsHash', groupMembershipsHash);
 
           let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
           rsp.then(
@@ -326,6 +327,7 @@
     }
 
     function verifyMembership(assembly) {
+      $scope.refreshWorkingGroupsMemberships();
       $scope.userIsMember = Memberships.rolIn('assembly', assembly.assemblyId, 'MEMBER');
     }
 
@@ -375,7 +377,7 @@
 
           loadPublicCommentCount($scope.forumSpaceID);
 
-          Space.getSpaceBasicAnalytics($scope.campaign.rsUUID).then(
+          Space.getSpaceBasicAnalytics($scope.campaign.rsUUID, false, true, $scope.isAnonymous ? null : $scope.user.userId).then(
             data => {
               $scope.insights = data;
             }

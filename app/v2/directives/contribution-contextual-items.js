@@ -32,18 +32,20 @@
 
   FormCtrl.$inject = [
     'Contributions', 'Campaigns', 'localStorageService', 'Memberships', '$window', 'Notify',
-    '$compile', 'Notifications', '$scope', '$translate'
+    '$compile', 'Notifications', '$scope', '$translate', 'WorkingGroups', 'Space'
   ];
 
   function FormCtrl(Contributions, Campaigns, localStorageService, Memberships, $window, Notify,
-    $compile, Notifications, $scope, $translate) {
+    $compile, Notifications, $scope, $translate, WorkingGroups, Space) {
 
     this.setupMembershipInfo = setupMembershipInfo.bind(this);
     this.setContributionType = setContributionType.bind(this);
     this.toggleContextualMenu = toggleContextualMenu.bind(this);
     this.verifyAuthorshipUser = verifyAuthorshipUser.bind(this);
     this.init = init.bind(this);
+    this.isInWg = isInWg.bind(this);
     this.refreshMenu = refreshMenu.bind(this);
+    this.asignToWG = asignToWG.bind(this);
     this.updateFeedback = updateFeedback.bind(this);
     this.softRemoval = softRemoval.bind(this);
     this.publish = publish.bind(this);
@@ -84,6 +86,13 @@
       }
     );
 
+    function isInWg(id) {
+
+      let result = this.contribution && this.contribution.workingGroupAuthors
+        ? this.contribution.workingGroupAuthors.filter(wg => wg.groupId === id).length > 0 : false;
+      return result;
+    }
+
     function init() {
       this.vm = {};
       this.cm = { isHover: false };
@@ -107,6 +116,10 @@
         this.groupId = workingGroupAuthorsLength ? this.contribution.workingGroupAuthors[0].groupId : 0;
         this.assemblyId = localStorageService.get('currentAssembly').assemblyId;
         this.campaignId = localStorageService.get('currentCampaign').campaignId;
+        this.workingGroups = WorkingGroups.workingGroupsInCampaign( this.assemblyId, this.campaignId).query();
+        this.workingGroups.$promise.then(
+          data => this.workingGroups = data
+        );
         this.setupMembershipInfo();
       }
 
@@ -119,6 +132,19 @@
     function refreshMenu() {
       this.showActionMenu = !this.showActionMenu;
     };
+
+
+    function asignToWG(spaceId) {
+      Space.addContributionToResourceSpace(this.assemblyId, this.contribution.contributionId, spaceId.resourcesResourceSpaceId, this.contribution).then(
+          (data) =>         $translate('Changed saved').then(
+            successMsg => {
+              Notify.show(successMsg, 'success');
+              $window.location.reload()
+            }
+          ),
+          (data) => Notify.show(data, 'error')
+      )
+    }
 
     // Feedback update
     function updateFeedback(value) {

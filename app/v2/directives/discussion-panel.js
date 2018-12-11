@@ -45,6 +45,7 @@
           if (scope.user) {
             var hasRol = Memberships.hasRol;
             var assembly = localStorageService.get('currentAssembly');
+            scope.campaign = localStorageService.get('currentCampaign');
             scope.assemblyId = assembly.assemblyId;
             var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
             var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
@@ -150,7 +151,7 @@
         d.rsID = d.resourceSpaceId;
         Space.getContributions(d, 'comment', (scope.isAnonymous), {}, false).then(
           function(comments) {
-            d.comments = comments.list;
+            d.comments = comments && comments.list ? comments.list : [];
           }
         );
       });

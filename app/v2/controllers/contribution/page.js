@@ -11,13 +11,13 @@
     '$scope', 'WorkingGroups', '$stateParams', 'Assemblies', 'Contributions', '$filter',
     'localStorageService', 'Memberships', 'Etherpad', 'Notify', '$rootScope', '$translate',
     'Space', '$http', 'FileUploader', '$sce', 'Campaigns', 'Voting', 'usSpinnerService', 'Notifications',
-    '$timeout', '$interval', 'LocaleService', '$state'
+    '$timeout', '$interval', 'LocaleService', '$state', '$location', '$anchorScroll'
   ];
 
   function ContributionPageCtrl($scope, WorkingGroups, $stateParams, Assemblies, Contributions,
     $filter, localStorageService, Memberships, Etherpad, Notify, $rootScope,
     $translate, Space, $http, FileUploader, $sce, Campaigns, Voting, usSpinnerService, Notifications,
-                                $timeout, $interval, LocaleService, $state) {
+                                $timeout, $interval, LocaleService, $state, $location, $anchorScroll) {
 
     $scope.setAddContext = setAddContext.bind($scope);
     $scope.loadThemes = loadThemes.bind($scope);
@@ -87,11 +87,13 @@
     $scope.forkProposal = forkProposal.bind($scope);
     $scope.mergeProposal = mergeProposal.bind($scope);
     $scope.goToParentOrChildren = goToParentOrChildren.bind($scope);
+    $scope.changePeerdocUrl = changePeerdocUrl.bind($scope);
 
     activate();
 
     function activate() {
       ModalMixin.init($scope);
+      $scope.peerdocMergeView = false;
       $scope.updateFeedback = updateFeedback.bind($scope);
       $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
@@ -205,6 +207,7 @@
       $scope.loadUserFeedback($scope.assemblyID, $scope.campaignID, $scope.proposalID);
       $scope.toggleIdeasSection = toggleIdeasSection.bind($scope);
       $scope.toggleCommentsSection = toggleCommentsSection.bind($scope);
+      $scope.changeCommentType = changeCommentType.bind($scope);
       $scope.cm = {
         isHover: false
       };
@@ -283,6 +286,11 @@
           $interval.cancel($scope.interval);
         }
       })
+    }
+
+    function changeCommentType(newCommentType) {
+      this.commentType = newCommentType;
+      console.log("User is member = "+this.userIsMember);
     }
 
     function toggleOpenAddAttachment () {
@@ -548,6 +556,16 @@
       // )
     }
 
+    function loadMergeAuthors(scope, data) {
+      let mA = Contributions.contributionMergeAuthors(data.uuid).query().$promise;
+      mA.then(
+        rs => {
+
+          $scope.mergeAuthors = rs.length > 0 ? rs : null;
+        }
+      );
+    }
+
     function loadChildren(scope, data) {
 
       let mC = Contributions.contributionChildren(data.uuid, 'MERGES').query().$promise;
@@ -574,6 +592,20 @@
 
     }
 
+    function changePeerdocUrl(merge) {
+      let url = $scope.proposal.extendedTextPad.url+ "&embed=true";
+      if(merge) {
+        url = url.replace('document/', 'document/merge/');
+        $scope.peerdocMergeView = true;
+        this.peerdocMergeViewUrl = $sce.trustAsResourceUrl(url);
+      } else {
+        $scope.peerdocMergeView = false;
+      }
+
+      $location.hash('peerdoc');
+      $anchorScroll();
+    }
+
     function loadProposal(scope) {
       let vm = this;
       var rsp;
@@ -598,6 +630,7 @@
           }
           $scope.contributionLabel = $scope.proposal.title;
           loadChildren(scope, data);
+          loadMergeAuthors(scope, data);
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
           });
@@ -643,6 +676,11 @@
             } else if ($scope.extendedTextIsPeerDoc) {
               $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
               $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"&embed=true");
+
+              if($scope.isAnonymous && $scope.proposal.status !== 'PUBLISHED') {
+                $scope.peerDocUrlMinimal = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
+                $scope.peerDocUrl = $sce.trustAsResourceUrl(data.extendedTextPad.url+"?embed=true&user=");
+              }
               $timeout(() => {
                 $scope.interval = $interval(() => {
                   $scope.syncProposalWithPeerdoc();

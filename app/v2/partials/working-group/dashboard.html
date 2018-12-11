@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div class='row no-margin attribution' style="padding-top: 1em; position: unset;">
+      <div id="wgPageToolbar" class='row no-margin attribution' style="padding-top: 1em; position: unset;">
         <div class="overlay new_overlay" style="display: inline-flex">
           <ul class="overlay_buttons">
             <li class="overlay_button" ng-if="hideAssignedIdeas">
@@ -56,7 +56,7 @@
                 <span class="number" ng-if="resources.relatedContributions.length > 0">({{resources.relatedContributions.length}})</span>
               </a>
             </li>
-            <li class="overlay_button">
+            <li class="overlay_button" >
               <a data-toggle="modal" data-target="#wgMembers">
                 <i class="fa fa-users fa-lg"></i><span>{{'Members'|translate}}</span>
                 <span class="number" ng-if="members.length > 0">({{members.length}})</span>
@@ -109,15 +109,14 @@
                                  filters="filters"
                                  dry-run="false"
                                  current-component="currentComponent"
-                                 is-coordinator="isCoordinator"></proposals-ideas-searchbox>
+                                 is-coordinator="isCoordinator"
+                                 insights="insights"></proposals-ideas-searchbox>
 
       <div class="campaign_cards" ng-class="{'show-ideas': commentsSectionExpanded || ideasSectionExpanded}">
         <div class="col-lg-8 col-md-12">
           <section class="list--proposals">
             <header class="proposals__header" style="padding-top: 1em; padding-bottom:1em; padding-left: 1.5em; padding-right: 1.5em;">
-              <div class="dash_insights">
-                <span ng-if="currentComponentType!=='IDEAS'"><strong>{{'Proposals' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.PROPOSAL.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0}} <small>({{'Drafts' | translate}})</small></span>&nbsp;&ndash;&nbsp;<span><strong>{{'Ideas' | translate}}:</strong> {{ insights.contributions_total.contributions_per_type.IDEA.PUBLISHED || 0}} <small>({{'Published' | translate}})</small>, {{ insights.contributions_total.contributions_per_type.IDEA.DRAFT || 0}} <small>({{'Draft' | translate}})</small></span>
-              </div>
+              <div class="dash_insights"></div>
             </header>
             <div data-eq-pts="small: 768, medium: 1024, large: 1500" ng-iff="showPagination">
               <pagination-widget
@@ -250,26 +249,39 @@
   </div>
 </div>
 
+<!-- Working Group Members Modal -->
 <div class="modal fade dashboardModal" id="wgMembers" tabindex="-1" role="dialog" aria-labelledby="wgMembersLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">{{'Close'|translate}} &times;</span></button>
-        <button class="btn btn-default btn-add-members" ng-if="isCoordinator || isWGCoordinator" data-toggle="modal" data-target="#addMembers">{{'Add new members'|translate}}</button>
-        <a class="btn btn-default btn-add-members" ng-if="userIsMember"
-                href="mailto:{{memberEmails}}" target="_blank" style="margin-right: 10px;">
+
+        <!-- Working Group Members Modal - Coordinator Actions -->
+        <button ng-if="isCoordinator || isWGCoordinator"
+                class="btn btn-default btn-add-members"
+                data-toggle="modal"
+                data-target="#addMembers">
+          {{'Add new members'|translate}}
+        </button>
+        <a class="btn btn-default btn-add-members"
+           ng-if="userIsMember"
+           href="mailto:{{memberEmails}}"
+           target="_blank" style="margin-right: 10px;">
           {{'header.menu.Send message'|translate}}
         </a>
         <h3 class="modal-title" id="wgMembersLabel">{{wg.name}}</h3>
         <p>{{ 'Members' | translate }}</p>
       </div>
       <div class="modal-body">
+
+        <!-- Working Group Members Modal - List of Members -->
+
         <ul class="nav nav-pills" ng-if="isCoordinator || isWGCoordinator || userIsMember">
           <li class="active"><a data-toggle="tab" data-target="#approved">{{'Approved'|translate}}</a></li>
           <li ng-if="userIsMember"><a data-toggle="tab" data-target="#pending">{{'Pending approval'|translate}}</a></li>
         </ul>
         <div class="tab-content">
-          <div id="approved" class="tab-pane fade in active">
+          <div ng-if="!isAnonymous" id="approved" class="tab-pane fade in active">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -281,18 +293,26 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="member in members.members">
+                <tr ng-repeat="member in members">
                   <td style="text-align:left">
                     <member-card user="member.user"></member-card>
-                    <div class="role-label">{{member.roles[0].name}}</div>
+                    <div ng-if="member.mostRelevantRole!=null" class="role-label">{{member.mostRelevantRole}}</div>
                   </td>
                   <td ng-if="userIsMember"><a href="mailto:{{member.user.email}}" target="_blank">{{member.user.email}}</a></td>
                   <td ng-if="isCoordinator || isWGCoordinator">
-                    <select ng-click="updateRole(member)">
-                      <option ng-selected="member.roles[0].name == 'COORDINATOR'">{{'Coordinator'|translate}}</option>
-                      <option ng-selected="member.roles[0].name == 'MODERATOR'">{{'Moderator'|translate}}</option>
-                      <option ng-selected="member.roles[0].name == 'MEMBER'">{{'Member'|translate}}</option>
+                    <!--ToDo: change way in which role is shown-->
+                    <select name="roleSelect"
+                            ng-model="member.mostRelevantRole"
+                            ng-options="role for role in ['COORDINATOR', 'MODERATOR', 'MEMBER']"
+                            ng-change="updateRole(member)">
+                      <!--<option value="">{{'Select a campaign for the Workging Group' | translate}}</option>-->
                     </select>
+
+                    <!--<select ng-click="updateRole(member)">-->
+                      <!--<option ng-selected="member.mostRelevantRole === 'COORDINATOR'">{{'Coordinator'|translate}}</option>-->
+                      <!--<option ng-selected="member.mostRelevantRole === 'MODERATOR'">{{'Moderator'|translate}}</option>-->
+                      <!--<option ng-selected="member.mostRelevantRole === 'MEMBER'">{{'Member'|translate}}</option>-->
+                    <!--</select>-->
                   </td>
                   <td ng-if="userIsMember">
                     <a href="mailto:{{member.user.email}}" target="_blank"><i class="fa fa-envelope-o fa-lg"></i></a>
@@ -304,7 +324,7 @@
               </tbody>
             </table>
           </div>
-          <div id="pending" class="tab-pane fade">
+          <div ng-if="!isAnonymous" id="pending" class="tab-pane fade">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -337,6 +357,11 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div ng-if="isAnonymous" id="anonymous" class="tab-pane fade in active">
+            <p class="card card__message ng-binding ng-scope">
+              {{'Only registered users can see the names of the members'|translate}}
+            </p>
           </div>
         </div>
       </div>

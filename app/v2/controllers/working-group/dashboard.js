@@ -136,6 +136,17 @@
       $scope.checkIfSubscribed = checkIfSubscribed.bind($scope);
       $scope.createContribution = createContribution.bind($scope);
       $scope.refreshWorkingGroupsMemberships = refreshWorkingGroupsMemberships.bind($scope);
+      $scope.updateRole = updateRole.bind($scope);
+      $scope.deleteMembership = deleteMembership.bind($scope);
+      $scope.updateMembershipRecord = updateMembershipRecord.bind($scope);
+      $scope.readMembersFromServer = readMembersFromServer.bind($scope);
+      $scope.emailConcatenator = (acc, value) => {
+        if (acc) acc = acc.concat(",");
+        acc = acc.concat(value.user.email);
+        return acc;
+
+      };
+
 
       $scope.$on('dashboard:fireDoSearch', function () {
         $rootScope.$broadcast('pagination:fireDoSearchFromGroup');
@@ -167,31 +178,34 @@
     }
 
     function refreshWorkingGroupsMemberships() {
-      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
-      let vm = $scope;
-      rsp.then(
-        data => {
-          let groupMembershipsHash = {};
-          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
-          let myWorkingGroups = membershipsInGroups.map(function (membership) {
-            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
-            return membership.workingGroup;
-          });
-
-          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
-          rsp.then(
-            groups => {
-              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
-              localStorageService.set('otherWorkingGroups', other);
-              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
-              vm.otherWorkingGroups = other;
-              verifyMembership();
-            }
-          );
-        }
-      )
+      if (!$scope.isAnonymous) {
+        let rsp = Memberships.memberships($scope.user.userId).query().$promise;
+        let vm = $scope;
+        rsp.then(
+          data => {
+            vm.readMembersFromServer('ACCEPTED', vm.assemblyID, vm.groupID);
+            let groupMembershipsHash = {};
+            let membershipsInGroups = $filter('filter')(data, {membershipType: 'GROUP'});
+            let myWorkingGroups = membershipsInGroups.map(function (membership) {
+              groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+              return membership.workingGroup;
+            });
+            localStorageService.set('groupMembershipsHash', groupMembershipsHash);
+            let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+            rsp.then(
+              groups => {
+                const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+                localStorageService.set('otherWorkingGroups', other);
+                vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+                vm.otherWorkingGroups = other;
+                vm.updateMembershipRecord();
+              }
+            );
+          }
+        );
+      }
     }
 
     function loadAssembly() {
@@ -203,14 +217,20 @@
       rsp.$promise.then(function (data) {
         $scope.assembly = data;
         $scope.assemblyLabel = $scope.assembly.name;
-        console.log($scope);
         verifyMembership();
       });
     }
 
     function verifyMembership() {
-      $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
+      if (!$scope.isAnonymous)  {
+        $scope.refreshWorkingGroupsMemberships();
+        $scope.updateMembershipRecord();
+      }
       loadCampaign();
+    }
+
+    function updateMembershipRecord() {
+      $scope.userIsMember = Memberships.isMember('group', $scope.groupID);
     }
 
     function loadCampaign() {
@@ -228,16 +248,18 @@
         rsp = Campaigns.campaignByUUID($state.params.cuuid).get();
       }
 
-      rsp.$promise.then(
-        campaign => {
-          $scope.campaign = campaign;
-          $scope.campaignID = $scope.campaign.campaignId ? $scope.campaign.campaignId : $scope.campaign.uuid;
-          $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
-          $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
-          localStorageService.set("currentCampaign",$scope.campaign);
-          $scope.onCampaignReady();
-        }
-      )
+      if (rsp!= null && rsp!= undefined) {
+        rsp.$promise.then(
+          campaign => {
+            $scope.campaign = campaign;
+            $scope.campaignID = $scope.campaign.campaignId ? $scope.campaign.campaignId : $scope.campaign.uuid;
+            $scope.campaign.rsID = $scope.campaign.resourceSpaceId;
+            $scope.campaign.rsUUID = $scope.campaign.resourceSpaceUUID;
+            localStorageService.set("currentCampaign",$scope.campaign);
+            $scope.onCampaignReady();
+          }
+        )
+      }
     }
 
     function onCampaignReady () {
@@ -360,7 +382,6 @@
           $scope.wg.frsUUID = data.forumResourceSpaceUUID;
           $scope.isTopicGroup = data.isTopic;
           $scope.workingGroupLabel = data.name;
-          console.log($scope.wg);
 
 
           // Prepare first WG's cover and color
@@ -397,7 +418,7 @@
             loadMembersCommentCount($scope.spaceID);
           }
 
-          Space.getSpaceBasicAnalytics(data.resourcesResourceSpaceUUID).then(
+          Space.getSpaceBasicAnalytics(data.resourcesResourceSpaceUUID, false, true, $scope.isAnonymous ? null : $scope.user.userId).then(
             data => {
               $scope.insights = data;
             }
@@ -437,15 +458,8 @@
       var aid = group.assemblyId;
       var gid = group.groupId;
       var res;
-      console.log(group);
 
-      const emailConcatenator = (acc, value) => {
-        if (acc) acc = acc.concat(",");
-        acc = acc.concat(value.user.email);
-        return acc;
-      };
-
-      if (group.profile.supportedMembership && group.profile.supportedMembership != "OPEN") {
+      if (group.profile.supportedMembership) {
         if ($scope.isAnonymous || !$scope.userIsMember) {
           if (group.members) {
             $scope.members = group.members
@@ -461,35 +475,117 @@
                 return m.status === 'INVITED';
               });
             // concatenate member emails
-            if ($scope.members && $scope.members.members)
-              $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
+            if ($scope.members) {
+              $scope.memberEmails = $scope.members.reduce($scope.emailConcatenator,"");
+              for (var i = 0; i < $scope.members.length; i++) {
+                var m = $scope.members[i]
+                m['mostRelevantRole'] = Memberships.mostRelevantRole(m);
+              }
+            }
+          } else {
+            $scope.readMembersFromServer('ACCEPTED', $scope.assemblyID, gid);
+            $scope.readMembersFromServer('REQUESTED', $scope.assemblyID, gid);
+            $scope.readMembersFromServer('INVITED', $scope.assemblyID, gid);
+            // res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
+            // res.$promise.then(
+            //   function (data) {
+            //     if (data && data.members) {
+            //       $scope.members = data.members;
+            //       // concatenate member emails
+            //       $scope.memberEmails = $scope.members.reduce(emailConcatenator,"");
+            //       for (var i = 0; i < $scope.members.length; i++) {
+            //         var m = $scope.members[i]
+            //         m['mostRelevantRole'] = Memberships.mostRelevantRole(m);
+            //       }
+            //     }
+            //   },
+            //   function (error) {
+            //     Notify.show(error.statusMessage, 'error');
+            //   }
+            // );
+            // res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'REQUESTED').query();
+            // res.$promise.then(
+            //   function (data) {
+            //     $scope.memberRequests = data;
+            //   }
+            // );
+            // res = Invitations.invitations('group', gid, 'INVITED').query();
+            // res.$promise.then(
+            //   function (data) {
+            //     $scope.membersInvited = data;
+            //   }
+            // );
           }
         } else {
-          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
-          res.$promise.then(
-            function (data) {
-              $scope.members = data;
-              // concatenate member emails
-              if ($scope.members && $scope.members.members)
-                $scope.memberEmails = $scope.members.members.reduce(emailConcatenator,"");
-            },
-            function (error) {
-              Notify.show(error.statusMessage, 'error');
-            }
-          );
-          res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'REQUESTED').query();
-          res.$promise.then(
-            function (data) {
-              $scope.memberRequests = data;
-            }
-          );
-          res = Invitations.invitations('group', gid, 'INVITED').query();
-          res.$promise.then(
-            function (data) {
+          $scope.readMembersFromServer('ACCEPTED', $scope.assemblyID, gid);
+          $scope.readMembersFromServer('REQUESTED', $scope.assemblyID, gid);
+          $scope.readMembersFromServer('INVITED', $scope.assemblyID, gid);
+          // res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'ACCEPTED').query();
+          // res.$promise.then(
+          //   function (data) {
+          //     console.log('members aca');
+          //     console.log(data);
+          //     if (data && data.members) {
+          //       $scope.members = data.members;
+          //       // concatenate member emails
+          //       $scope.memberEmails = $scope.members.reduce(emailConcatenator,"");
+          //       for (var i = 0; i < $scope.members.length; i++) {
+          //         var m = $scope.members[i]
+          //         m['mostRelevantRole'] = Memberships.mostRelevantRole(m);
+          //       }
+          //     }
+          //   },
+          //   function (error) {
+          //     Notify.show(error.statusMessage, 'error');
+          //   }
+          // );
+          // res = WorkingGroups.workingGroupMembers($scope.assemblyID, gid, 'REQUESTED').query();
+          // res.$promise.then(
+          //   function (data) {
+          //     $scope.memberRequests = data;
+          //   }
+          // );
+          // res = Invitations.invitations('group', gid, 'INVITED').query();
+          // res.$promise.then(
+          //   function (data) {
+          //     $scope.membersInvited = data;
+          //   }
+          // );
+        }
+      }
+      $scope.refreshWorkingGroupsMemberships();
+    }
+
+
+    function readMembersFromServer(status, aid, gid) {
+      if (status==='INVITED') {
+        let res = Invitations.invitations('group', gid, 'INVITED').query();
+        res.$promise.then(
+          function (data) {
+            if (data && data.members) {
               $scope.membersInvited = data;
             }
-          );
-        }
+          }
+        );
+      } else {
+        let res = WorkingGroups.workingGroupMembers(aid, gid, status).query();
+        res.$promise.then(
+          function (data) {
+            if (data && data.members) {
+              if (status==='ACCEPTED') {
+                $scope.members = data.members;
+                // concatenate member emails
+                $scope.memberEmails = $scope.members.reduce($scope.emailConcatenator,"");
+                for (var i = 0; i < $scope.members.length; i++) {
+                  var m = $scope.members[i]
+                  m['mostRelevantRole'] = Memberships.mostRelevantRole(m);
+                }
+              } else if (status === 'REQUESTED') {
+                $scope.memberRequests = data;
+              }
+            }
+          }
+        );
       }
     }
 
@@ -829,6 +925,81 @@
                 Notify.show(fullErrorMsg, 'error');
               });
 
+        }
+      );
+    }
+
+    function updateRole(member) {
+      // update the role
+      // 1. Delete roles that do not match the name, except MEMBER (which should always stay)
+      var userHasRole = false;
+      if (member.roles) {
+        userHasRole = Memberships.hasRol(member.roles,member.mostRelevantRole)
+        member.roles.forEach(function(role) {
+          console.log("Deleting role: "+role+" for member "+member.userId);
+          // If role is not MEMBER and it is NOT then one we are changing to
+          if (role.name !== "MEMBER" && role.name !== member.mostRelevantRole) {
+            let roleId = role.roleId;
+            var index = member.roles.indexOf(role);
+            if (index>-1) {
+              member.roles.splice(index,1);
+              var rsp = Memberships.deleteMembershipRole(member.membershipId, roleId).delete();
+              rsp.$promise.then(
+                response => {
+                  console.log("Deleted role "+role+" for member "+member.userId);
+                },
+                error => {
+                  let fullErrorMsg = errorMsg + error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                  Notify.show(fullErrorMsg, 'error');
+                }
+              );
+            }
+          }
+        });
+      }
+
+      // if User does not have the new selected role, add it
+      if (!userHasRole) {
+        var newRole = {
+          "roleId": 0,
+          "name": member.mostRelevantRole
+        };
+        var rsp = Memberships.addMembershipRole(member.membershipId).save(newRole);
+
+        rsp.$promise.then(
+          response => {
+            if (!member.roles)
+              member.roles = [];
+            member.roles = response.roles;
+            Notify.show('Membership updated', 'success');
+          },
+          error => {
+            let fullErrorMsg = error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+            Notify.show(fullErrorMsg, 'error');
+          }
+        );
+      } else {
+        Notify.show('Membership updated', 'success');
+      }
+    }
+
+    function deleteMembership(member) {
+      $translate("Are you sure you want to proceed with this operation?").then(
+        translation => {
+          let confirmation = window.confirm(translation);
+          if (confirmation) {
+            var rsp = Memberships.deleteMembership(member.membershipId).delete();
+            rsp.$promise.then(
+              reponse => {
+                Notify.show('Member removed', 'success');
+                loadMembers($scope.wg);
+              },
+              error => {
+                let fullErrorMsg = error.data ? error.data.statusMessage ? error.data.statusMessage : "[empty response]" : "[empty response]";
+                Notify.show(fullErrorMsg, 'error');
+              }
+            );
+          }
         }
       );
     }

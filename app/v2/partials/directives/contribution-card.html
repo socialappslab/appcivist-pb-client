@@ -1,102 +1,4 @@
-<!-- PROPOSAL CARD -->
-<div ng-if="isProposal">
-  <div class="card__wrapper">
-    <header class="card__header {{coverPhotoStyle ? 'card__header__with_background':''}}"
-            style="height: 192px;" ng-mouseenter="cm.isHover = false"
-            ng-style="coverPhotoStyle"
-            ng-class="{new: (contribution.status ==='NEW' || contribution.status === 'DRAFT'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">
-      <div class="card__heading_bookmark facebook-bookmark ideas" ng-if="source_url">
-        <a href="{{source_url}}" target="_blank">
-          <i class="fa fa-lg fa-facebook-square" ng-if="sourceIsFacebook"></i>
-          <i class="fa fa-lg fa-external-link-square" ng-if="!sourceIsFacebook"></i>
-        </a>
-      </div>
-      <div class="card__heading_bookmark" ng-if="contribution.pinned">
-        <i class="fa fa-bookmark"></i>
-      </div>
-      <p class="heading--category row">
-        <span ng-repeat="theme in contribution.themes | limitTo:3 track by $index" class="badge"
-              ng-class="{'badge-dark': theme.type==='OFFICIAL_PRE_DEFINED', 'badge-light': theme.type==='EMERGENT'}">
-          {{theme.title | limitTo: 57}}{{theme.title.length > 57 ? '...' : ''}}
-        </span>&nbsp;&nbsp;
-      </p>
-      <div class="title_block">
-        <h1 class="heading--headline">
-          <a ng-href="{{contributionUrl}}" style="display: block; width: 280px;word-wrap: break-word;">
-            {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
-          </a>
-        </h1>
-        <div class="card__heading_actions" style="z-index: 999">
-          <ul class="actions">
-            <li ng-if="isCoordinator" class="action__toggle_selection">
-              <input type="checkbox" id="checkbox_{{contribution.uuid}}" value="{{contribution.uuid}}" class="contribution-select" ng-model="selected" ng-click="toggleSelection(contribution.uuid)"><label for="checkbox_{{contribution.uuid}}"></label>
-            </li>
-            <li class="action__contextual_menu" ng-mouseenter="cm.isHover = true">
-              <a><i class="fa fa-cog"></i></a>
-            </li>
-          </ul>
-          <div ng-show="cm.isHover" class="contextual_menu" ng-class="{active: cm.isHover}" ng-mouseleave="cm.isHover = false" style="top: 1em; left: auto; right: 0px;">
-            <div class="content">
-              <contribution-contextual-items contribution="contribution" is-proposal-idea-stage="isProposalIdeaStage" is-hover="cm.isHover"
-                is-topic-group="isTopicGroup"></contribution-contextual-items>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="heading__working_group" ng-if="contribution.workingGroupAuthors && contribution.workingGroupAuthors.length > 0">
-        <div class="col-md-1 no-padding no-margin">
-          <!-- TODO: allow for the possibility in which a contribution is assigned to a WG but also is associated with a Topic-->
-          <img ng-if="group.profile.icon && !group.isTopic" ng-src="{{group.profile.icon}}" height="16" width="16" style="border-radius: 50%; max-width:100%; vertical-align: middle;">
-          <i ng-if="!group.profile.icon" class="fa" ng-class="{'fa-group': !group.isTopic, 'fa-tags': group.isTopic}"></i>
-          <i ng-if="group.profile.icon && group.isTopic" class="fa fa-tags"></i>
-        </div>
-        <div class="col-md-11 no-padding no-margin">
-          <a ng-if="isAnonymous" ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/group/{{group.uuid}}"
-             >
-          {{contribution.workingGroupAuthors[0].name}}
-          </a>
-        </div>
-        <a ng-if="!isAnonymous" ng-href="#/v2/assembly/100/group/202" class="clearfix" href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}"
-          style="display: block;">
-          <div class="col-md-11 no-padding no-margin">
-            {{contribution.workingGroupAuthors[0].name}}
-          </div>
-        </a>
-      </div>
-      <div class="heading__working_group" ng-if="!contribution.workingGroupAuthors || contribution.workingGroupAuthors.length === 0">
-        <div class="col-md-1 no-padding no-margin">
-          <!-- TODO: allow for the possibility in which a contribution is assigned to a WG but also is associated with a Topic-->
-          <img ng-if="contribution.creator && contribution.creator.profilePic" ng-src="{{contribution.creator.profilePic.url}}"
-               height="16" width="16" style="border-radius: 50%; max-width:100%; vertical-align: middle;">
-          <i ng-if="contribution.creator && !contribution.creator.profilePic" class="fa fa-user"></i>
-        </div>
-        <div class="col-md-11 no-padding no-margin">
-          <span ng-if="contribution.creator">{{contribution.creator.name}}</span>
-          <span ng-if="!contribution.creator">{{'ANONYMOUS' | translate}}</span>
-        </div>
-      </div>
-      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons" campaign="campaign"></contribution-feedback>
-    </header>
-
-    <div class="card__body" style="word-wrap:break-word;">
-      <div class="excerpt" style="height: auto;">
-        {{contribution.plainText ? contribution.plainText : ('contribution.summary.empty.non-author' | translate : contribution) | limitTo:152 }}
-        {{(contribution.plainText.length) > 152 ? '...' : '.' }}      </div>
-      <!-- Control types: distributed, plurality, range, ranked -->
-      <contribution-card-voting-control
-        type="distributed" ng-if="showVotingButtons && ballotPaper"
-        ballot-paper="ballotPaper" contribution="contribution" ballot-tokens="ballotTokens"></contribution-card-voting-control>
-    </div>
-
-    <div class="ribbon-wrapper">
-      <div class="ribbon"
-           ng-class="{new: (contribution.status !== 'ARCHIVED' && contribution.status !== 'EXCLUDED'), archived: contribution.status==='ARCHIVED', excluded: contribution.status==='EXCLUDED'}">{{contribution.status | titlecase | translate}}</div>
-    </div>
-  </div>
-</div>
-
-<!-- IDEA -->
-<div class="card__idea" ng-if="isIdea">
+<div class="card__idea">
   <div class="card__wrapper">
     <a ng-if="contribution.stats.flags && isCoordinator" class="github-fork-ribbon rigth-top" style="z-index: 1;" title="{{'Moderation pending' | translate}}"></a>
     <header class="card__header {{contribution.cover ? 'card__header__with_background' : ''}}"
@@ -120,7 +22,7 @@
              {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
            </a>
         </h3>
-        <div class="heading--category">
+        <div class="heading--category {{contribution.cover ? 'white-text' : ''}}">
           <span ng-if="contribution.creator">{{contribution.creator.name}}</span>
           <span ng-if="!contribution.creator">{{'ANONYMOUS' | translate}}</span>
         </div>
@@ -184,18 +86,31 @@
         {{(contribution.plainText.length) > 152 ? '...' : '.' }}
       </div>
     </div>
-    <contribution-card-themes themes="mergedThemes"></contribution-card-themes>
-    <!-- Control types: distributed, plurality, range, ranked -->
-    <div class="card__footer {{footerBackgroundStyle ? 'card__header__with_background':''}}" ng-style="footerBackgroundStyle">
-      <div class="row no-margin">{{contribution.workingGroupAuthors[0].name}}</div>
+
+    <div class="row no-margin group__link" ng-if="group">
+      <a ng-if="isAnonymous" ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/group/{{group.uuid}}">
+        {{group.name | limitTo: 30}}{{group.name.length>30 ? '...' : ''}}
+      </a>
+      <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}"
+         class="clearfix"
+         href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}"
+         style="display: block;">
+          {{group.name | limitTo: 30}}{{group.name.length>30 ? '...' : ''}}
+      </a>
     </div>
+
+    <contribution-card-themes themes="mergedThemes"></contribution-card-themes>
+
+    <div class="card__footer {{footerBackgroundStyle ? 'card__header__with_background':''}} {{footerBackgroundColorStyle}}" ng-style="footerBackgroundStyle">
+      <div class="row no-margin">
+        {{contribution.status | translate | uppercase}}
+        <span class="badge badge-light" ng-if="contribution.acceptedForks>0">{{'Amended'|translate}}</span>
+      </div>
+
+    </div>
+    <!-- Control types: distributed, plurality, range, ranked -->
     <contribution-card-voting-control
       type="distributed" ng-if="showVotingButtons && ballotPaper"
       ballot-paper="ballotPaper" contribution="contribution" ballot-tokens="ballotTokens"></contribution-card-voting-control>
   </div>
 </div>
-<!--&lt;!&ndash; IDEA &ndash;&gt;-->
-
-<!--<div class="contribution-detail-modal" style="display: none;">-->
-  <!--<contribution-detail-modal vex-instance="vexInstance" contribution="contribution" user="user"></contribution-detail-modal>-->
-<!--</div>-->

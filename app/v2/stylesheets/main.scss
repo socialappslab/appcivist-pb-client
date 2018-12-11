@@ -1065,6 +1065,8 @@ contribution-card {
       font-size: 0.9em;
       text-align: justify;
     }
+    padding-left:10px;
+    padding-right: 10px;
   }
 
   .card__themes {
@@ -1087,6 +1089,11 @@ contribution-card {
       white-space: nowrap;
       margin-top: 5px;
       margin-right: 5px;
+    }
+
+    .official {
+      background: #4A4A4A;
+      color: white;
     }
   }
 

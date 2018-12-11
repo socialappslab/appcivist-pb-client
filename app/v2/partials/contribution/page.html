@@ -117,7 +117,7 @@
                      || (themesLimit == 1 && !userIsCoordinator && !userIsAdmin && (isAnonymous || !userIsAuthor || (userIsAuthor && proposal.status.includes('PUBLISHED'))))">
               <a style="cursor:default">
                 {{theme.title}}
-                <i ng-if="((userIsAuthor && proposal.status.includes('DRAFT') && !proposal.status.includes('FORK')) || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>
+                <i ng-if="!proposal.status.includes('FORK') && ((userIsAuthor && proposal.status.includes('DRAFT')) || userIsCoordinator || userIsAdmin)" class="fa fa-trash" style="margin-left: 5px; cursor: pointer;" ng-click="$parent.deleteTheme(theme)"></i>
               </a>
             </li>
 
@@ -126,8 +126,8 @@
                         && (userIsCoordinator || userIsAdmin
                             || (userIsAuthor && proposal.status.includes('DRAFT') ))">
               <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId"
-                      ng-model="$parent.selectedTheme" ng-change="selectTheme()" ng-disabled="proposal.status.includes('FORK')"></select>
-              <i ng-if="userIsCoordinator || userIsAdmin || (userIsAuthor && proposal.status.includes('DRAFT') && !proposal.status.includes('FORK'))"
+                      ng-model="$parent.selectedTheme" ng-change="selectTheme()" ng-disabled="proposal.status.includes('FORK') && !(userIsCoordinator || userIsAdmin)"></select>
+              <i ng-if="!proposal.status.includes('FORK') && (userIsCoordinator || userIsAdmin || (userIsAuthor && proposal.status.includes('DRAFT'))"
                  class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"
                  ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
             </li>

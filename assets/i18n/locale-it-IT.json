@@ -1499,5 +1499,6 @@
   "pagination.widget.no-data": "Il n’y a plus de {{type}} avec statut {{status}} dans cet espace.",
   "Amended": "Amended",
   "Are you sure you want to proceed with this operation?": "Sei sicuro di voler procedere con questa operazione?",
-  "Only registered users can see the names of the members": "Solo gli utenti registrati possono vedere i nomi dei membri"
+  "Only registered users can see the names of the members": "Solo gli utenti registrati possono vedere i nomi dei membri",
+  "Public Ideas": "Idee Pubbliche"
 }

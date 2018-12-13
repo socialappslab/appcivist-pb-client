@@ -1453,5 +1453,6 @@
   "pagination.widget.no-data": "This space has still no {{type}} with status {{status}}.",
   "Amended": "Amended",
   "Are you sure you want to proceed with this operation?": "Möchten Sie diesen Vorgang wirklich fortsetzen?",
-  "Only registered users can see the names of the members": "Nur registrierte Benutzer können die Namen der Mitglieder sehen"
+  "Only registered users can see the names of the members": "Nur registrierte Benutzer können die Namen der Mitglieder sehen", 
+  "Public Ideas": "Public Ideas"
 }

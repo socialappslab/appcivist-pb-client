@@ -714,19 +714,6 @@
 
     function afterGroupsSuccess (data) {
       this.groups = data;
-      data.forEach(
-        function (group) {
-          let res = WorkingGroups.workingGroupProposals($scope.assemblyID, group.groupId).query();
-          res.$promise.then(
-            function (data2) {
-              group.proposalsCount = data2.length;
-            },
-            function (error) {
-              group.proposalsCount = 0;
-            }
-          );
-        }
-      );
       this.displayJoinWorkingGroup = this.checkJoinWGButtonVisibility(this.campaignConfigs);
 
       $scope.mostDataLoaded = true;

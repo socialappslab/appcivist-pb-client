@@ -328,7 +328,7 @@
             <!--STATUS VIEW AND CHANGE ELEMENT -->
             <div class="overlay_status" ng-if="contributionType">
               <span class="status_label">{{'Status' | translate}}</span>
-              <span class="status" ng-if="proposal.status != 'MERGED' && proposal.status != 'PUBLISHED' && proposal.status != 'ARCHIVED' && allowChangeStatus && (userIsAuthor || userIsCoordinator || userIsAdmin)">
+              <span class="status" ng-if="proposal.status != 'MERGED' && !proposal.status.includes('PUBLISHED') && proposal.status != 'ARCHIVED' && allowChangeStatus && (userIsAuthor || userIsCoordinator || userIsAdmin)">
                 <select name="currentStatus" id="currentStatus" ng-model="proposal.status"
                         ng-change="changeStatus(proposal.status, '{{proposal.status}}')">
                   <option value="DRAFT" ng-selected="proposal.status == 'DRAFT'" ng-if="!proposal.status.includes('FORKED') && !proposal.status.includes('MERGE')">{{ 'Draft' | translate }}</option>
@@ -347,7 +347,7 @@
               <span class="status" ng-if="proposal.status == 'ARCHIVED'">{{ 'Archived' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'FORKED_PRIVATE_DRAFT' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Forked Private Draft' | translate }}</span>
               <span class="status" ng-if="proposal.status == 'MERGED'">{{ 'Merged Public Draft' | translate }}</span>
-              <span class="status" ng-if="proposal.status == 'FORKED_PUBLISHED' && (!allowChangeStatus || (!userIsAuthor && !userIsCoordinator && !userIsAdmin))">{{ 'Forked Published' | translate }}</span>
+              <span class="status" ng-if="proposal.status == 'FORKED_PUBLISHED'">{{ 'Forked Published' | translate }}</span>
 
             </div>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#forkModal"
@@ -364,12 +364,12 @@
               {{ ('Amendments') | translate }}
             </button>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#mergeModal"
-                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && peerdocMergeView">
+                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') &&  peerdocMergeView">
               {{ ('Accept Merge') | translate }}
             </button>
 
             <button class="btn btn-default fork-contribution" ng-click="changePeerdocUrl(true)"
-                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && !peerdocMergeView">
+                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && !proposal.status.includes('PUBLISHED') && !peerdocMergeView">
               {{ ('Merge ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
             <button class="btn btn-default fork-contribution" ng-click="changePeerdocUrl(false)"

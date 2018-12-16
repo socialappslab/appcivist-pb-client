@@ -35,6 +35,7 @@
     api: {
       voting: {
         production: "https://platform.appcivist.org/voting/api/v0",
+        production_louisville: "https://louisvilleplatform.appcivist.org/voting/api/v0",
         testing: "https://testplatform.appcivist.org/voting/api/v0",
         development: "https://testplatform.appcivist.org/voting/api/v0",
         local: "http://localhost:5000/api/v0",
@@ -42,7 +43,8 @@
       },
       core: {
         production: "https://platform.appcivist.org/api",
-        testing: "https://testplatform.appcivist.org/api",
+        production_louisville: "https://louisvillepbplatform.appcivist.org/api",
+        testing: "https://platform.appcivist.org/api",
         //local: "https://testplatform.appcivist.org/api",
         // local: "http://localhost:9000/api",
         local: "https://platform.appcivist.org/api",
@@ -53,6 +55,7 @@
     ui: {
       forgotForms: {
         production: "https://pb.appcivist.org/#/v2/user/password/reset/",
+        production_louisville: "https://louisvillepb.appcivist.org/#/v2/user/password/reset/",
         testing: "https://testpb.appcivist.org/#/v2/user/password/reset/",
         local: "http://localhost:8000/#/v2/user/password/reset/",
         development: "https://testapp.appcivist.org/#/v2/user/password/reset/"
@@ -71,6 +74,7 @@
 
   var etherpad = {
     production: "https://etherpad.appcivist.org/",
+    production_louisville: "https://louisvilleetherpad.appcivist.org/",
     testing: "https://testetherpad.appcivist.org/",
     development: "https://testetherpad.appcivist.org/",
     local: "http://localhost:9001/",
@@ -1237,7 +1241,8 @@
     var possibleHosts = [
       "localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org",
       "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org",
-      "www.appcivist.org", "testapp.appcivist.org", "mimove-apps.paris.inria.fr"];
+      "www.appcivist.org", "testapp.appcivist.org", "mimove-apps.paris.inria.fr",
+        "louisvillepb.appcivist.org"];
     if (hostname === possibleHosts[0]) {
       return urls.local;
     } else if (hostname === possibleHosts[1] || hostname === possibleHosts[4] || hostname === possibleHosts[6] || hostname === possibleHosts[7]) {
@@ -1246,6 +1251,8 @@
       return urls.testing;
     } else if (hostname === possibleHosts[9]) {
       return urls.mimove;
+    } else if (hostname === possibleHosts[10]) {
+      return urls.production_louisville;
     } else {
       return urls.development;
     }

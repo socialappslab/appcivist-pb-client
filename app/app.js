@@ -55,7 +55,7 @@
     ui: {
       forgotForms: {
         production: "https://pb.appcivist.org/#/v2/user/password/reset/",
-        production_louisville: "https://louisvillepb.appcivist.org/#/v2/user/password/reset/",
+        production_louisville: "https://ourmoneyourvoice.appcivist.org/#/v2/user/password/reset/",
         testing: "https://testpb.appcivist.org/#/v2/user/password/reset/",
         local: "http://localhost:8000/#/v2/user/password/reset/",
         development: "https://testapp.appcivist.org/#/v2/user/password/reset/"
@@ -1242,7 +1242,7 @@
       "localhost", "pb.appcivist.org", "testpb.appcivist.org", "devpb.appcivist.org",
       "platform.appcivist.org", "testplatform.appcivist.org", "appcivist.org",
       "www.appcivist.org", "testapp.appcivist.org", "mimove-apps.paris.inria.fr",
-        "louisvillepb.appcivist.org"];
+        "ourmoneyourvoice.appcivist.org"];
     if (hostname === possibleHosts[0]) {
       return urls.local;
     } else if (hostname === possibleHosts[1] || hostname === possibleHosts[4] || hostname === possibleHosts[6] || hostname === possibleHosts[7]) {

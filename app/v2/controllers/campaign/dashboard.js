@@ -238,31 +238,33 @@
     }
 
     function refreshWorkingGroupsMemberships() {
-      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
-      let vm = $scope;
-      rsp.then(
-        data => {
-          let groupMembershipsHash = {};
-          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
-          let myWorkingGroups = membershipsInGroups.map(function (membership) {
-            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
-            return membership.workingGroup;
-          });
-          localStorageService.set('groupMembershipsHash', groupMembershipsHash);
+      if ($scope.user && $scope.user.userId) {
+        let rsp = Memberships.memberships($scope.user.userId).query().$promise;
+        let vm = $scope;
+        rsp.then(
+          data => {
+            let groupMembershipsHash = {};
+            let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+            let myWorkingGroups = membershipsInGroups.map(function (membership) {
+              groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+              return membership.workingGroup;
+            });
+            localStorageService.set('groupMembershipsHash', groupMembershipsHash);
 
-          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
-          rsp.then(
-            groups => {
-              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
-              localStorageService.set('otherWorkingGroups', other);
-              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
-              vm.otherWorkingGroups = other;
-            }
-          );
-        }
-      )
+            let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+            rsp.then(
+              groups => {
+                const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+                localStorageService.set('otherWorkingGroups', other);
+                vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+                vm.otherWorkingGroups = other;
+              }
+            );
+          }
+        );
+      }
     }
 
     function getMyWorkingGroupsIds() {
@@ -276,7 +278,9 @@
       $scope.assembly = localStorageService.get('currentAssembly');
       // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
       // get the assembly from backend
-      if (($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) || !$scope.assembly ){
+      if (($scope.assembly && $scope.assembly.assemblyId  && $scope.assembly.assemblyId !== $stateParams.aid)
+        || ($scope.assembly && !$scope.assembly.assemblyId && !$scope.assembly.uuid )
+        || !$scope.assembly){
         if ($scope.isAnonymous) {
           $scope.assemblyID = $stateParams.auuid;
           var assemblyRes = Assemblies.assemblyByUUID($scope.assemblyID).get();

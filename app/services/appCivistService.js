@@ -417,7 +417,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           return data;
         },
         function (error) {
-          Notify.show('Error loading contributions from server', 'error');
+          Notify.show('Error loading components of the timeline from the server. Contact the administrator.', 'error');
         }
       );
       return rsp.$promise;
@@ -447,7 +447,8 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           return data;
         },
         function (error) {
-          Notify.show('Error loading contributions from server', 'error');
+          // Notify.show('Error loading themes from server', 'error');
+          console.log("appCivistService.Campaign.themes: "+ JSON.stringify(error));
         }
       );
       return rsp.$promise;
@@ -1801,7 +1802,7 @@ appCivistApp.factory('Space', ['$resource', 'localStorageService', 'Contribution
 
         return rsp.$promise.then(
           data => data,
-          error => Notify.show('Error loading contributions from server', 'error')
+          error => Notify.show('Error loading analytics from server', 'error')
         )
       },
 

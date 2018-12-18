@@ -310,7 +310,8 @@
         rsp.$promise.then(function (assembly) {
           $scope.assembly = assembly;
         }, function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadAssemblyPublicProfile: "+error);
         });
       } else {
         var assemblyUUID = $scope.campaign ? $scope.campaign.assemblies ? $scope.campaign.assemblies[0] : null : null;
@@ -320,7 +321,8 @@
           rsp.$promise.then(function (assembly) {
             $scope.assembly = assembly;
           }, function (error) {
-            Notify.show(error.statusMessage, 'error');
+            // Notify.show(error.statusMessage, 'error');
+            console.log("loadAssemblyPublicProfile: "+error);
           });
         }
       }
@@ -389,7 +391,8 @@
               $scope.keywords = response.filter(r => r.type == 'EMERGENT');
             },
             error => {
-              Notify.show(error.statusMessage, 'error');
+              // Notify.show(error.statusMessage, 'error');
+              console.log("loadThemes: "+JSON.stringify(error));
             }
           );
 
@@ -534,7 +537,8 @@
       this.enableComments = true;
       this.requireGroupAuthorship = true;
       this.campaignFaq = "#";
-      Notify.show('Error while trying to fetch campaign config', 'error');
+      // Notify.show('Error while trying to fetch campaign config', 'error');
+      console.log("afterLoadingCampaignConfigsError: "+data);
       this.afterLoadingCampaignConfigs();
       this.allowArchived = true;
     }
@@ -749,7 +753,8 @@
           $scope.publicCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadPublicCommentCount: "+error)
         }
       );
     }
@@ -762,7 +767,8 @@
           $scope.membersCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadMembersCommentCount: "+error)
         }
       );
     }
@@ -780,7 +786,8 @@
           }
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadDiscussions: "+error)
         });
     }
 
@@ -821,7 +828,8 @@
           $scope.resources = resources;
         }
       }, function (error) {
-        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+        // Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+        console.log("loadCampaignResources: "+error)
       });
     }
 
@@ -879,7 +887,13 @@
       if (!$scope.campaign) {
         return;
       }
-      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
+      let rsp = Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
+      rsp.then(
+        data => {},
+        error => {
+          console.log("loadThemes: "+JSON.stringify(error));
+        }
+      )
     }
 
     function loadGroups(query) {

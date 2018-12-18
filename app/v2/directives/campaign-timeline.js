@@ -102,22 +102,27 @@
           } else {
             res = Campaigns.components(null, null, true, cid, null);
           }
-          res.then(function(data) {
-            var currentComponent = Campaigns.getCurrentComponent(data);
-            scope.currentDescription = currentComponent.description;
-            angular.forEach(data, function(c) {
-              c.cssClass = getComponentCssClass(currentComponent, c);
-            });
-            scope.components = data;
+          res.then(
+            function(data) {
+              var currentComponent = Campaigns.getCurrentComponent(data);
+              scope.currentDescription = currentComponent.description;
+              angular.forEach(data, function(c) {
+                c.cssClass = getComponentCssClass(currentComponent, c);
+              });
+              scope.components = data;
 
-            if (angular.isFunction(scope.onComponentsLoaded)) {
-              // TODO: the argument pass to the onComponentsLoaded is not visible in the callback
-              // added vmTimeline as a quick fix, but we should find a better way
-              scope.vmTimeline.components = data;
-              scope.vmTimeline.currentComponent = currentComponent;
-              scope.onComponentsLoaded({ components: data });
+              if (angular.isFunction(scope.onComponentsLoaded)) {
+                // TODO: the argument pass to the onComponentsLoaded is not visible in the callback
+                // added vmTimeline as a quick fix, but we should find a better way
+                scope.vmTimeline.components = data;
+                scope.vmTimeline.currentComponent = currentComponent;
+                scope.onComponentsLoaded({ components: data });
+              }
+            },
+            function (error) {
+              console.log("loadCampaignComponents: "+error);
             }
-          });
+          );
         }
 
         /**

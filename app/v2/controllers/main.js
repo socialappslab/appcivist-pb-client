@@ -100,6 +100,7 @@
       $scope.$on("SessionModal:setSessionModalIsSignIn",$scope.setSessionModalIsSignIn);
       $scope.$on("SessionModal:setSessionModalIsSignUp",$scope.setSessionModalIsSignUp);
       $scope.siteLogo = env.siteLogo;
+      console.log("Using siteLogo = "+$scope.siteLogo);
     }
 
     function setSessionModalIsSignIn () {

@@ -815,6 +815,7 @@
      * simply write down the route and if that's available, it will load everything needed.
      */
     if (landingURL !== null) {
+      console.log("Redirecting to site Landing Page: " + landingURL);
       $routeProvider
         .when('/', {
           // controller: 'MainCtrl',

@@ -825,7 +825,7 @@
           redirectTo: landingURL
         });
     } else {
-
+      console.log("No Landing Page configured: " + landingURL);
       $routeProvider
         .when('/', {
           // controller: 'MainCtrl',

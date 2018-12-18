@@ -238,31 +238,33 @@
     }
 
     function refreshWorkingGroupsMemberships() {
-      let rsp = Memberships.memberships($scope.user.userId).query().$promise;
-      let vm = $scope;
-      rsp.then(
-        data => {
-          let groupMembershipsHash = {};
-          let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
-          let myWorkingGroups = membershipsInGroups.map(function (membership) {
-            groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
-            return membership.workingGroup;
-          });
-          localStorageService.set('groupMembershipsHash', groupMembershipsHash);
+      if ($scope.user && $scope.user.userId) {
+        let rsp = Memberships.memberships($scope.user.userId).query().$promise;
+        let vm = $scope;
+        rsp.then(
+          data => {
+            let groupMembershipsHash = {};
+            let membershipsInGroups = $filter('filter')(data, { status: 'ACCEPTED', membershipType: 'GROUP' });
+            let myWorkingGroups = membershipsInGroups.map(function (membership) {
+              groupMembershipsHash[membership.workingGroup.groupId] = membership.roles;
+              return membership.workingGroup;
+            });
+            localStorageService.set('groupMembershipsHash', groupMembershipsHash);
 
-          let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
-          rsp.then(
-            groups => {
-              const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
-              localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
-              localStorageService.set('otherWorkingGroups', other);
-              vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
-              vm.otherWorkingGroups = other;
-            }
-          );
-        }
-      )
+            let rsp = WorkingGroups.workingGroupsInCampaign(vm.assemblyID, vm.campaignID).query().$promise;
+            rsp.then(
+              groups => {
+                const mine = groups.filter(g => _.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                const other = groups.filter(g => !_.find(membershipsInGroups, m => m.workingGroup.groupId === g.groupId));
+                localStorageService.set('myWorkingGroups', mine.filter(g => g.isTopic === false));
+                localStorageService.set('otherWorkingGroups', other);
+                vm.myWorkingGroups = mine.filter(g => g.isTopic === false);
+                vm.otherWorkingGroups = other;
+              }
+            );
+          }
+        );
+      }
     }
 
     function getMyWorkingGroupsIds() {
@@ -276,7 +278,9 @@
       $scope.assembly = localStorageService.get('currentAssembly');
       // TODO: if assembly.assemblyId != $stateParams.aid or assembly.uuid != $stateParams.auuid in case of anonymous
       // get the assembly from backend
-      if (($scope.assembly && $scope.assembly.assemblyId !== $stateParams.aid) || !$scope.assembly ){
+      if (($scope.assembly && $scope.assembly.assemblyId  && $scope.assembly.assemblyId !== $stateParams.aid)
+        || ($scope.assembly && !$scope.assembly.assemblyId && !$scope.assembly.uuid )
+        || !$scope.assembly){
         if ($scope.isAnonymous) {
           $scope.assemblyID = $stateParams.auuid;
           var assemblyRes = Assemblies.assemblyByUUID($scope.assemblyID).get();
@@ -310,7 +314,8 @@
         rsp.$promise.then(function (assembly) {
           $scope.assembly = assembly;
         }, function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadAssemblyPublicProfile: "+error);
         });
       } else {
         var assemblyUUID = $scope.campaign ? $scope.campaign.assemblies ? $scope.campaign.assemblies[0] : null : null;
@@ -320,7 +325,8 @@
           rsp.$promise.then(function (assembly) {
             $scope.assembly = assembly;
           }, function (error) {
-            Notify.show(error.statusMessage, 'error');
+            // Notify.show(error.statusMessage, 'error');
+            console.log("loadAssemblyPublicProfile: "+error);
           });
         }
       }
@@ -389,7 +395,8 @@
               $scope.keywords = response.filter(r => r.type == 'EMERGENT');
             },
             error => {
-              Notify.show(error.statusMessage, 'error');
+              // Notify.show(error.statusMessage, 'error');
+              console.log("loadThemes: "+JSON.stringify(error));
             }
           );
 
@@ -534,7 +541,8 @@
       this.enableComments = true;
       this.requireGroupAuthorship = true;
       this.campaignFaq = "#";
-      Notify.show('Error while trying to fetch campaign config', 'error');
+      // Notify.show('Error while trying to fetch campaign config', 'error');
+      console.log("afterLoadingCampaignConfigsError: "+data);
       this.afterLoadingCampaignConfigs();
       this.allowArchived = true;
     }
@@ -749,7 +757,8 @@
           $scope.publicCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadPublicCommentCount: "+error)
         }
       );
     }
@@ -762,7 +771,8 @@
           $scope.membersCommentCounter.value = data.counter;
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadMembersCommentCount: "+error)
         }
       );
     }
@@ -780,7 +790,8 @@
           }
         },
         function (error) {
-          Notify.show(error.statusMessage, 'error');
+          // Notify.show(error.statusMessage, 'error');
+          console.log("loadDiscussions: "+error)
         });
     }
 
@@ -821,7 +832,8 @@
           $scope.resources = resources;
         }
       }, function (error) {
-        Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+        // Notify.show('Error loading campaign resources from server: '+error.statusMessage, 'error');
+        console.log("loadCampaignResources: "+error)
       });
     }
 
@@ -879,7 +891,13 @@
       if (!$scope.campaign) {
         return;
       }
-      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
+      let rsp = Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
+      rsp.then(
+        data => {},
+        error => {
+          console.log("loadThemes: "+JSON.stringify(error));
+        }
+      )
     }
 
     function loadGroups(query) {

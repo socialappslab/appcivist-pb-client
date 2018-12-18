@@ -30,13 +30,25 @@
           name: "City of Vallejo",
           purpose: "Participatory Budgeting",
           location: "Vallejo, CA, USA",
-          url:"https://vallejopb.appcivist.org"}
-        ,
+          url:"https://vallejopb.appcivist.org"
+        },
         {
           name: "City of Dieppe",
           purpose: "Participatory Budgeting",
           location: "Dieppe, Canada",
           url:"https://dieppepb.appcivist.org"
+        },
+        {
+          name: "Our City Our voice",
+          purpose: "Participatory Budgeting",
+          location: "Louisville, KY",
+          url:"https://ourcityourvoice.appcivist.org"
+        },
+        {
+          name: "PPI Unifesp",
+          purpose: "Participatory Planning",
+          location: "Sao Paulo, Brazil",
+          url:"https://unifesp.appcivist.org"
         }
       ];
 

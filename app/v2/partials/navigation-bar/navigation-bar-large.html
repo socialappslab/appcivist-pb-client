@@ -10,7 +10,7 @@
         <div class="navbar-brand">
             <a href="#/v2/assembly/{{currentAssembly.assemblyId}}/home">
               <img ng-if="!siteLogo" src="/assets/images/logo-white.svg" class="logotype" alt="{{ 'appcivist' | translate}}"/>
-              <img ng-if="siteLogo" src="{{siteLogo}}" class="logotype" alt="{{ 'appcivist' | translate}}"/>
+              <img ng-if="siteLogo" ng-src="{{siteLogo}}" class="logotype" alt="{{ 'appcivist' | translate}}"/>
             </a>
             <a href="#/v2/assembly/{{currentAssembly.assemblyId}}/home" style="color: white">
               <strong style="vertical-align: super;">{{currentAssembly.name}}

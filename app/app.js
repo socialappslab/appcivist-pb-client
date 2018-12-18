@@ -43,7 +43,7 @@
       core: {
         production: "https://platform.appcivist.org/api",
         production_louisville: "https://louisvillepbplatform.appcivist.org/api",
-        testing: "https://platform.appcivist.org/api",
+        testing: "https://testplatform.appcivist.org/api",
         local: "https://testplatform.appcivist.org/api",
         // local: "http://localhost:9000/api",
         // local: "https://platform.appcivist.org/api",

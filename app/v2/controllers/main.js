@@ -15,6 +15,14 @@
     $rootScope, loginService, $translate, $state, $stateParams, WorkingGroups, Assemblies,
                     AppCivistAuth, Space, LocaleService) {
 
+
+    var env = {};
+
+    // Import variables if present (from env.js)
+    if(window){
+      Object.assign(env, window.__env);
+    }
+
     $scope.isCampaignActive = isCampaignActive.bind($scope);
     $scope.isGroupActive = isGroupActive.bind($scope);
     $scope.fetchGroups = fetchGroups.bind($scope);
@@ -91,7 +99,7 @@
       $scope.creationPatternsEnabled = false;
       $scope.$on("SessionModal:setSessionModalIsSignIn",$scope.setSessionModalIsSignIn);
       $scope.$on("SessionModal:setSessionModalIsSignUp",$scope.setSessionModalIsSignUp);
-      $scope.siteLogo = localStorageService.get("siteLogo");
+      $scope.siteLogo = env.siteLogo;
     }
 
     function setSessionModalIsSignIn () {

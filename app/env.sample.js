@@ -1,3 +1,14 @@
 window.__env = window.__env || {};
 window.__env.sentryConfig = 'https://SENTRY_SECRET@sentry.io/SENTRY_PROJECT_ID';
-
+window.__env.landing = 'v2/assembly/assemblee-belleville/home';
+window.__env.appcivist = {};
+window.__env.appcivist.api = {};
+window.__env.appcivist.ui = {};
+window.__env.appcivist.api.core = 'https://testplatform.appcivist.org/api';
+window.__env.appcivist.api.voting = 'https://testplatform.appcivist.org/voting/api/v0';
+window.__env.appcivist.ui.forgotForm = 'https://testpb.appcivist.org/#/v2/user/password/reset/';
+window.__env.external = {};
+window.__env.external.etherpad = {};
+window.__env.external.peerdoc = {};
+window.__env.etherpad.url = 'https://testetherpad.appcivist.org';
+window.__env.peerdoc.url = 'https://peerdoc.appcivist.org/';

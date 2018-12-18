@@ -29,7 +29,6 @@
     .addPlugin(Raven.Plugins.Angular)
     .install();
 
-  // TODO: add the right url for the mimove voting api
   var appcivist = {
 
     api: {
@@ -45,9 +44,9 @@
         production: "https://platform.appcivist.org/api",
         production_louisville: "https://louisvillepbplatform.appcivist.org/api",
         testing: "https://platform.appcivist.org/api",
-        //local: "https://testplatform.appcivist.org/api",
+        local: "https://testplatform.appcivist.org/api",
         // local: "http://localhost:9000/api",
-        local: "https://platform.appcivist.org/api",
+        // local: "https://platform.appcivist.org/api",
         development: "https://devplatform.appcivist-dev.org/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api"
       }
@@ -69,6 +68,9 @@
         alert("Voting API service is probably not running!")
       else
         alert(error.data.error);
+    },
+    landingPage: {
+      "url": env.landing
     }
   };
 
@@ -93,11 +95,23 @@
   };
 
   // By default, the backend servers are selected in base of the hostname (e.g., if localhost, development is choose)
-  var appCivistCoreBaseURL = selectProperURL(window.location.hostname, appcivist.api.core);
-  var votingApiUrl = selectProperURL(window.location.hostname, appcivist.api.voting);
-  var etherpadServerURL = selectProperURL(window.location.hostname, etherpad);
-  var appCivistForgotFormURL= selectProperURL(window.location.hostname, appcivist.ui.forgotForms);
-  var peerdocServerURL = selectProperURL(window.location.hostname, peerdoc);
+  // unless they are defined in the env.js variables
+  var appCivistCoreBaseURL =
+    env && env.appcivist && env.appcivist.api && env.appcivist.api.core
+      ? env.appcivist.api.core : selectProperURL(window.location.hostname, appcivist.api.core);
+  var votingApiUrl =
+    env && env.appcivist && env.appcivist.api && env.appcivist.api.voting
+      ? env.appcivist.api.voting : selectProperURL(window.location.hostname, appcivist.api.voting);
+  var etherpadServerURL =
+    env && env.external && env.external.etherpad && env.external.etherpad.url
+      ? env.external.etherpad.url : selectProperURL(window.location.hostname, etherpad);
+  var appCivistForgotFormURL =
+    env && env.appcivist && env.appcivist.ui && env.appcivist.ui.forgotForm
+      ? env.appcivist.ui.forgotForm : selectProperURL(window.location.hostname, appcivist.ui.forgotForms);
+  var peerdocServerURL =
+    env && env.external && env.external.peerdoc && env.external.peerdoc.url
+      ? env.external.peerdoc.url : selectProperURL(window.location.hostname, peerdoc);
+  var landingURL = appcivist.landingPage.url;
 
   var hideLogin = (window.location.hostname === "appcivist.org" ||
     window.location.hostname === "www.appcivist.org");
@@ -176,6 +190,9 @@
       '*://player.vimeo.com/**',
       '*://vallejopb.appcivist.org/**',
       '*://ctsfrance.appcivist.org/**',
+      '*://dieppepb.appcivist.org/**',
+      '*://ourcityourvoice.appcivist.org/**',,
+      '*://files.appcivist.org/**',
       '*://pb.appcivist.org/**',
       '*://www.facebook.com/**',
       '*://facebook.com/**',
@@ -183,7 +200,9 @@
       '*://testplatform.appcivist.org/**',
       '*://appcivist.org/**',
       '*://www.appcivist.org/**',
-      peerdocServerURL + '**'
+      peerdocServerURL + '**',
+      appCivistCoreBaseURL+'**',
+      votingApiUrl+'**'
     ]);
 
     /**
@@ -789,14 +808,27 @@
      * Main routes available in the APP. Each route has its onw controller, which allows the user to
      * simply write down the route and if that's available, it will load everything needed.
      */
-    $routeProvider
-      .when('/', {
-        // controller: 'MainCtrl',
-        // templateUrl: '/app/partials/main.html'
-        controller: 'v2.HomeCtrl',
-        templateUrl: 'app/v2/partials/home.html'
-      })
-      .when('/v1/home', {
+    if (landingURL !== null) {
+      $routeProvider
+        .when('/', {
+          // controller: 'MainCtrl',
+          // templateUrl: '/app/partials/main.html'
+          controller: 'v2.HomeCtrl',
+          templateUrl: 'app/v2/partials/home.html',
+          redirectTo: landingURL
+        });
+    } else {
+
+      $routeProvider
+        .when('/', {
+          // controller: 'MainCtrl',
+          // templateUrl: '/app/partials/main.html'
+          controller: 'v2.HomeCtrl',
+          templateUrl: 'app/v2/partials/home.html',
+        });
+    }
+
+    $routeProvider.when('/v1/home', {
         controller: 'HomeCtrl',
         templateUrl: 'app/partials/home/home.html',
         activetab: 'home'
@@ -976,6 +1008,7 @@
     localStorageService.set("etherpadServer", etherpadServerURL);
     localStorageService.set("hideLogin", hideLogin);
     localStorageService.set("forgotFormUrl", appCivistForgotFormURL);
+    localStorageService.set("landingURL", landingURL);
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       // redirect to login page if not logged in and trying to access a restricted page
 

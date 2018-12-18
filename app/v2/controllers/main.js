@@ -91,6 +91,7 @@
       $scope.creationPatternsEnabled = false;
       $scope.$on("SessionModal:setSessionModalIsSignIn",$scope.setSessionModalIsSignIn);
       $scope.$on("SessionModal:setSessionModalIsSignUp",$scope.setSessionModalIsSignUp);
+      $scope.siteLogo = localStorageService.get("siteLogo");
     }
 
     function setSessionModalIsSignIn () {

@@ -12,3 +12,4 @@ window.__env.external.etherpad = {};
 window.__env.external.peerdoc = {};
 window.__env.etherpad.url = 'https://testetherpad.appcivist.org';
 window.__env.peerdoc.url = 'https://peerdoc.appcivist.org/';
+window.__env.siteLogo = 'https://louisvillefiles.appcivist.org/uploads/c85d7e5d-4cf1-4519-b56f-be262896edb3CHE%20logo_horizontal_transparent_only_sign.png';

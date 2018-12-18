@@ -116,6 +116,11 @@
   var hideLogin = (window.location.hostname === "appcivist.org" ||
     window.location.hostname === "www.appcivist.org");
 
+  var siteLogo = null;
+  if (env.siteLogo) {
+    siteLogo = env.siteLogo;
+  }
+
   /**
    * AngularJS initial configurations:
    * - Routes
@@ -1010,6 +1015,7 @@
     localStorageService.set("hideLogin", hideLogin);
     localStorageService.set("forgotFormUrl", appCivistForgotFormURL);
     localStorageService.set("landingURL", landingURL);
+    localStorageService.set("siteLogo", siteLogo)
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
       // redirect to login page if not logged in and trying to access a restricted page
 

@@ -21,6 +21,7 @@
     // Import variables if present (from env.js)
     if(window){
       Object.assign(env, window.__env);
+      console.log("Using window.__env in main.js");
     }
 
     $scope.isCampaignActive = isCampaignActive.bind($scope);

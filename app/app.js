@@ -196,7 +196,7 @@
       '*://vallejopb.appcivist.org/**',
       '*://ctsfrance.appcivist.org/**',
       '*://dieppepb.appcivist.org/**',
-      '*://ourcityourvoice.appcivist.org/**',
+      '*://ourmoneyourvoice.appcivist.org/**',
       '*://unifesp.appcivist.org/**',
       '*://files.appcivist.org/**',
       '*://pb.appcivist.org/**',

@@ -39,10 +39,10 @@
           url:"https://dieppepb.appcivist.org"
         },
         {
-          name: "Our City Our voice",
+          name: "Our Money Our Voice",
           purpose: "Participatory Budgeting",
           location: "Louisville, KY",
-          url:"https://ourcityourvoice.appcivist.org"
+          url:"https://ourmoneyourvoice.appcivist.org"
         },
         {
           name: "PPI Unifesp",

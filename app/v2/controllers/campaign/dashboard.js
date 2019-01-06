@@ -370,6 +370,8 @@
             {
               'background-image': 'url(' + $scope.cover + ')',
               'background-position': 'center center',
+              'width': '120%',
+              'background-size': 'cover'
             }
             : {
               'background-image': 'url("../images/vallejo_header.jpg")',

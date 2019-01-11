@@ -23,8 +23,11 @@
 
         </div>
         <div class="row">
-          <span class="badge badge-warning" ng-if="proposal.status.includes('FORK') || proposal.status.includes('MERGED')" style="background-color: #FF8C2C;">Emenda</span>
+          <span class="badge badge-warning" ng-if="proposal.status.includes('FORK') || proposal.status.includes('MERGED')" style="background-color: #FF8C2C;">{{'Is Fork'|translate}}</span>
+          <span class="badge badge-warning" ng-if="forkedChildren" style="background-color: #00AC7F;">{{'Parent Proposal'|translate}}</span>
         </div>
+
+        <!--CREATOR AND SHARED WITH-->
         <div class="row attribution">
           <div style="min-height:40px;">
             <strong style="font-weight:bold">{{'Created by' | translate}}</strong>
@@ -39,7 +42,7 @@
               <member-card user="merge"></member-card> <strong data-toggle="modal" data-target="#mergeAuthorsModal" ng-if="mergeAuthors.length > 10" class="workingGroupLink" style="vertical-align: bottom; text-decoration: underline; font-size: smaller; cursor: pointer">{{'View all' | translate}}</strong>
             </div>
           </div>
-            <div style="min-height:40px;">
+          <div style="min-height:40px;">
             <strong style="font-weight:bold;vertical-align:middle">{{'Shared with' | translate}}</strong>
             <span ng-if="!proposal.authors && !proposal.nonMemberAuthors">{{'ANONYMOUS' | translate}}</span>
             <div ng-repeat="author in proposal.authors | filter: filterCreatorFromAuthors(proposal.creator.uuid)" style="display: inline-block; margin-left: 10px;">
@@ -92,6 +95,19 @@
               <div style="display:inline-block;position:relative;width:100px;"><span class="attachment-spinner" us-spinner="spinnerSmallOptions" spinner-key="authors-list"></span></div>
             </div>
           </div>
+
+          <!-- WORKING GROUPS -->
+          <div style="min-height:40px;" ng-if="proposal.workingGroupAuthors">
+            <strong ng-if="proposal.workingGroupAuthors.length === 1" style="font-weight:bold">{{'Working Group' | translate}}</strong>
+            <strong ng-if="proposal.workingGroupAuthors.length > 1" style="font-weight:bold">{{'Working Groups' | translate}}</strong>
+            <div ng-repeat="group in proposal.workingGroupAuthors track by $index" style="display:inline-block;margin-left:10px">
+              <a ng-href="#/v2/{{isAnonymous ? 'p/': ''}}assembly/{{assemblyID}}/campaign/{{campaignID}}/group/{{isAnonymous ? group.uuid : group.groupId}}">
+                {{group.name}}{{proposal.workingGroupAuthors.length > 1 ? ' | ' : ''}}
+              </a>
+            </div>
+            <span ng-if="!proposal.creator">{{'ANONYMOUS' | translate}}</span>
+          </div>
+
           <p class="small">
             <strong>{{'Created'|translate}}: </strong> {{proposal.creation.replace(' ', 'T').split(' ')[0]+'+00:00' | date : 'medium'}}
             <strong>{{'Last updated'|translate}}: </strong> {{proposal.lastUpdate.replace(' ', 'T').split(' ')[0]+'+00:00' | date : 'medium'}}
@@ -357,7 +373,7 @@
 
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showParentModal"
                     ng-if="contributionType && (proposal.status.includes('FORKED') || proposal.status.includes('MERGED'))">
-              {{ ('Parent ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
+              {{ ('View Parent ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
             <button class="btn btn-default fork-contribution" data-toggle="modal" data-target="#showChildrenModal"
                     ng-if="contributionType && (mergeChildren || forkedChildren)">

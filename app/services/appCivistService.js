@@ -417,7 +417,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           return data;
         },
         function (error) {
-          Notify.show('Error loading components of the timeline from the server. Contact the administrator.', 'error');
+          console.log('Error loading components of the timeline from the server. Contact the administrator.');
         }
       );
       return rsp.$promise;

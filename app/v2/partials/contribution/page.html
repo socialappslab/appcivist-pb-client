@@ -20,7 +20,6 @@
             <button class="btn btn-default btn-join" ng-click="saveTitle()">{{'Save title' | translate}}</button>
 
           </div>
-
         </div>
         <div class="row">
           <span class="badge badge-warning" ng-if="proposal.status.includes('FORK') || proposal.status.includes('MERGED')" style="background-color: #FF8C2C;">{{'Is Fork'|translate}}</span>
@@ -204,6 +203,34 @@
                       ng-if="((userIsAuthor && proposal.status.includes('DRAFT')) || userIsCoordinator || userIsAdmin) && !keywordsLimitReached"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{'Add' | translate}}</button>
             </div>
           </ul>
+
+          <div class="row attribution" ng-if="!hiddenFields || !hiddenFields.toLowerCase().includes('location')">
+            <strong>{{'Location'|translate}}: </strong>
+            <span ng-if="!isLocationEdit">{{proposal.location.placeName}}</span>
+            <i class="fa fa-edit smalledit" id="locationEditToggle" ng-click="locationToggleEdit()" ng-if="userIsAuthor"></i>
+
+            <div  class = "editableArea text-center"
+                  ng-if="isLocationEdit && ((userIsAuthor && proposal.status.includes('DRAFT')) || userIsCoordinator || userIsAdmin)">
+              <input type="text" ng-model="proposal.location.placeName"/>
+              <button class="btn btn-default btn-join" ng-click="locationToggleEdit()">{{'Cancel' | translate}}</button>
+              <button class="btn btn-default btn-join" ng-click="saveField('location',proposal.location.placeName)">{{'Save'|translate}}</button>
+            </div>
+          </div>
+
+          <div class="row attribution" ng-if="!hiddenFields || !hiddenFields.toLowerCase().includes('budget')">
+            <div>
+              <strong>{{'Budget'|translate}}: </strong>
+              <span ng-if="!isBudgetEdit">{{proposal.budget}}</span>
+              <i class="fa fa-edit smalledit" id="budgetEditToggle" ng-click="budgetToggleEdit()" ng-if="userIsAuthor"></i>
+
+              <div class = "editableArea text-center"
+                   ng-if="isBudgetEdit && ((userIsAuthor && proposal.status.includes('DRAFT')) || userIsCoordinator || userIsAdmin)">
+                <input type="text" ng-model="proposal.budget"/>
+                <button class="btn btn-default btn-join" ng-click="budgetToggleEdit()">{{'Cancel' | translate}}</button>
+                <button class="btn btn-default btn-join" ng-click="saveField('budget',proposal.budget)">{{'Save'|translate}}</button>
+              </div>
+            </div>
+          </div>
 
           <!--HEADER CUSTOM FIELDS-->
           <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">

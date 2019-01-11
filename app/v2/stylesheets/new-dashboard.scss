@@ -254,17 +254,25 @@ contribution-card .group__link {
   padding-left: 10px;
 }
 contribution-card .archived {
-  background-color: #696969;
+  background-color: $dark-grey;
 }
 contribution-card .forked {
-  background-color: #183348;
+  background-color: $darker-blue;
+}
+contribution-card .forked-private-draft {
+  background-color: $dark-blue;
+  color: $light-black;
 }
 contribution-card .forked-published {
-  background-color: #ff9632;
+  background-color: $strong-orange;
+}
+contribution-card .private-draft {
+  background-color: $light-green;
+  color: $light-black;
 }
 contribution-card .draft {
-  background-color: #219678;
+  background-color: $corporative-dark-green;
 }
 contribution-card .forked-draft {
-  background-color: #337ab7;
+  background-color: $medium-blue;
 }

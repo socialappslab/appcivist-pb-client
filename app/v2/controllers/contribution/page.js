@@ -69,6 +69,9 @@
     $scope.descriptionToggleEdit = descriptionToggleEdit.bind($scope);
     $scope.titleToggleEdit = titleToggleEdit.bind($scope);
     $scope.saveDescription = saveDescription.bind($scope);
+    $scope.locationToggleEdit = locationToggleEdit.bind($scope);
+    $scope.budgetToggleEdit = budgetToggleEdit.bind($scope);
+    $scope.saveField = saveField.bind($scope);
     $scope.saveTitle = saveTitle.bind($scope);
     $scope.getEditorOptions = getEditorOptions.bind($scope);
     $scope.addNonMemberAuthorToProposal = addNonMemberAuthorToProposal.bind($scope);
@@ -1286,7 +1289,7 @@
       let gdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.gdoc-editor-enabled'];
       let peerdocIsEnabledConf = $scope.campaignConfigs['appcivist.campaign.peerdoc-editor-enabled'];
       let showContributionParent = $scope.campaignConfigs['appcivist.campaign.show-parent'];
-
+      let hiddenFieldsConf = $scope.campaignConfigs['appcivist.campaign.contribution.hidden-fields'];
       let showForkButton = $scope.campaignConfigs['appcivist.campaign.show-fork-button'];
       let showPublishedStatus = $scope.campaignConfigs['appcivist.campaign.show-published-status'];
       let showMergeStatus = $scope.campaignConfigs['appcivist.campaign.show-merge-status'];
@@ -1294,7 +1297,7 @@
       $scope.showForkButton  = showForkButton ? showForkButton.toLowerCase()  === 'false' ? false : true : true;
       $scope.showPublishedStatus  = showPublishedStatus ? showPublishedStatus.toLowerCase()  === 'false' ? false : true : true;
       $scope.showMergeStatus  = showMergeStatus ? showMergeStatus.toLowerCase()  === 'false' ? false : true : true;
-
+      $scope.hiddenFields = hiddenFieldsConf;
       $scope.showContributionParent  = showContributionParent ? showContributionParent.toLowerCase()  === 'false' ? false : true : true;
       $scope.showContributingIdeas  = showContributingIdeasConf ? showContributingIdeasConf.toLowerCase()  === 'false' ? false : true : true;
       $scope.showHistory = showHistoryConf ? showHistoryConf.toLowerCase()  === 'false' ? false : true : true;
@@ -2282,6 +2285,86 @@
       }
     }
 
+    function locationToggleEdit() {
+      if (!this.isLocationEdit) {
+        this.isLocationEdit = true;
+        this.locationBackup = this.proposal.location;
+        $("#locationEditToggle").removeClass('fa-edit');
+        $("#locationEditToggle").addClass('fa-times-circle');
+      } else {
+        this.isLocationEdit = false;
+        this.proposal.location = this.locationBackup;
+        $("#locationEditToggle").addClass('fa-edit');
+        $("#locationEditToggle").removeClass('fa-times-circle');
+      }
+    }
+
+
+    function budgetToggleEdit() {
+      if (!this.isBudgetEdit) {
+        this.isBudgetEdit = true;
+        this.budgetBackup = this.proposal.text;
+        $("#budgetEditToggle").removeClass('fa-edit');
+        $("#budgetEditToggle").addClass('fa-times-circle');
+      } else {
+        this.isBudgetEdit = false;
+        this.proposal.budget = this.budgetBackup;
+        $("#budgetEditToggle").addClass('fa-edit');
+        $("#budgetEditToggle").removeClass('fa-times-circle');
+      }
+    }
+
+    function saveField(field, newValue) {
+      let vm = this;
+      let payload = _.cloneDeep($scope.proposal);
+      delete payload.lastUpdate;
+      delete payload.attachments;
+      if (payload.location) {
+        delete payload.location.additionInfo;
+        delete payload.location.geoJson;
+      }
+      payload.status = payload.status.toUpperCase();
+
+      if (field === 'location') {
+        if (!payload.location) {
+          payload.location = {placeName: newValue};
+          $scope.proposal.location = {placeName: newValue};
+        } else {
+          payload.location.placeName = newValue;
+          $scope.proposal.location.placeName  = newValue;
+        }
+      } else if (field === 'budget') {
+        payload.budget = newValue;
+        $scope.proposal.budget = newValue;
+      }
+      let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
+      rsp.then(
+        data => {
+          $translate('Changed was saved')
+            .then(
+              msg => {
+                Notify.show(msg, 'success');
+              });
+
+          if (field==='location')
+            vm.isLocationEdit = false;
+          else if (field === 'budget')
+            vm.isBudgetEdit = false;
+
+          $("#"+field+"EditToggle").addClass('fa-edit');
+          $("#"+field+"EditToggle").removeClass('fa-times-circle');
+        },
+        error => {
+          Notify.show(error.data ? error.data.statusMessage ? error.data.statusMessage : '' : '', 'error');
+          if (field==='location')
+            vm.isLocationEdit = true;
+          else if (field === 'budget')
+            vm.isBudgetEdit = true;
+        }
+      );
+
+    }
+
     function saveDescription() {
       let s = this.proposal.text.length > 0 ? this.proposal.text.split(/\s+/) : 0; // it splits the text on space/tab/enter
       if (s && s.length > 0) {
@@ -2297,6 +2380,10 @@
           let payload = _.cloneDeep($scope.proposal);
           delete payload.lastUpdate;
           delete payload.attachments;
+          if (payload.location) {
+            delete payload.location.additionInfo;
+            delete payload.location.geoJson;
+          }
           payload.status = payload.status.toUpperCase();
           let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
 
@@ -2359,6 +2446,10 @@
       let vm = this;
       let payload = _.cloneDeep($scope.proposal);
       payload.status = payload.status.toUpperCase();
+      if (payload.location) {
+        delete payload.location.additionInfo;
+        delete payload.location.geoJson;
+      }
       let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
 
       rsp.then(

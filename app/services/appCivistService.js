@@ -417,7 +417,7 @@ appCivistApp.factory('Campaigns', function ($resource, $sce, localStorageService
           return data;
         },
         function (error) {
-          Notify.show('Error loading components of the timeline from the server. Contact the administrator.', 'error');
+          console.log('Error loading components of the timeline from the server. Contact the administrator.');
         }
       );
       return rsp.$promise;
@@ -894,29 +894,29 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
     },
     contributionInResouceSpaceExport: function (spaceId, contributionId, format, fields, customFields,
                                                 selectedContributions, includeDoc, docExportFormat, pub,
-                                                all=false, type="IDEA") {
+                                                all=false, type="IDEA", filters={}) {
       if (contributionId) {
-          return $resource(
-            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid',
-            {
-              sid: spaceId, format: format, fields: fields, customFields: customFields, coid: contributionId, includeDoc: includeDoc,
-              docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
-            },
-            {
-              'getText': {
-                transformResponse: function(data, headersGetter, status) { return { content: data } }
-              }
+        filters = Object.assign(filters, {
+          sid: spaceId, format: format, fields: fields, customFields: customFields, coid: contributionId, includeDoc: includeDoc,
+          docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
+        });
+        return $resource(
+          getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid', filters,
+          {
+            'getText': {
+              transformResponse: function(data, headersGetter, status) { return { content: data } }
             }
-          )
+          }
+        );
       } else {
         if (all) {
-          return $resource(
-            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
-            {
+          filters = Object.assign(filters, {
               sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
               customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
               includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all, type: type
-            },
+          });
+          return $resource(
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution', filters,
             {
               'getText': {
                 transformResponse: function(data, headersGetter, status) { return { content: data } }
@@ -924,13 +924,13 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
             }
           );
         } else {
+          filters = Object.assign(filters, {
+            sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
+            customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
+            includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
+          });
           return $resource(
-            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution',
-            {
-              sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
-              customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
-            },
+            getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution', filters,
             {
               'getText': {
                 transformResponse: function(data, headersGetter, status) { return { content: data } }

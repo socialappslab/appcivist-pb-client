@@ -119,16 +119,21 @@
               &&  scope.contribution.status.includes('FORK')
                 || scope.contribution.status.includes('MERGED') ){
             scope.footerBackgroundColorStyle = 'forked';
-
             if (scope.contribution.status === 'FORKED_PUBLISHED'){
               scope.footerBackgroundColorStyle = 'forked-published';
             }
             if (scope.contribution.status.includes('DRAFT')) {
-              scope.footerBackgroundColorStyle = 'forked-draft';
+              scope.footerBackgroundColorStyle = 'forked-private-draft';
+              if (scope.contribution.status.includes('PUBLIC')) {
+                scope.footerBackgroundColorStyle = 'forked';
+              }
             }
           } else if(scope.contribution.status
             &&  scope.contribution.status.includes('DRAFT') ){
-            scope.footerBackgroundColorStyle = 'draft';
+            scope.footerBackgroundColorStyle = 'private-draft';
+            if (scope.contribution.status.includes('PUBLIC')) {
+              scope.footerBackgroundColorStyle = 'draft';
+            }
           }
 
         }

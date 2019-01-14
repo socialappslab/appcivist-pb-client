@@ -2442,7 +2442,7 @@ button#second-vote {
   margin-left: 2rem;
 }
 .wGroupForum .text-info {
-  color: #4A90E2;
+  color: #337ab7;
 }
 .wGroupForum .title-button {
   text-align: right;
@@ -2911,7 +2911,7 @@ i {
   padding: 5% 5% 5% 5%;
 }
 .section.second-section .main-title {
-  color: #4A90E2;
+  color: #337ab7;
   /* AppCivist lets users: */
   font-family: Lato-Regular;
   font-size: 32px;
@@ -2929,7 +2929,7 @@ i {
   padding: 5% 5% 5% 5%;
 }
 .section.third-section .main-title {
-  color: #4A90E2;
+  color: #337ab7;
   text-align: center;
   font-family: Lato-Regular;
   font-size: 32px;

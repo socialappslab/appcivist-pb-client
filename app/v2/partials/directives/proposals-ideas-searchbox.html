@@ -66,9 +66,11 @@
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftProposals')}"
           ng-if="(campaignConfig['appcivist.campaign.filter.draft']!=='HIDE' || campaignConfig['appcivist.working-group.hide-others-private-drafts'] !== 'TRUE') && !isAnonymous && currentComponent.type !== 'IDEAS' && isCoordinator">
         <a ng-click="searchMode('draftProposals', $event)">
-          {{'Draft Proposals' | translate | titlecase}}
-          ({{(insights.contributions_total.contributions_per_type.PROPOSAL.PRIVATE_DRAFT|| 0)
-            + (insights.contributions_total.contributions_per_type.PROPOSAL.FORKED_PRIVATE_DRAFT || 0) }})
+          {{'Draft Proposals' | translate}}
+          ({{(insights.contributions_total.contributions_per_type.PROPOSAL.PRIVATE_DRAFT || 0)
+            + (insights.contributions_total.contributions_per_type.PROPOSAL.FORKED_PRIVATE_DRAFT || 0)
+          + (insights.contributions_total.contributions_per_type.PROPOSAL.DRAFT || 0)
+          + (insights.contributions_total.contributions_per_type.PROPOSAL.PUBLIC_DRAFT || 0)}})
         </a>
       </li>
       <li class="search_mode__full_text" ng-class="{active: (filters.mode === 'draftIdeas')}"

@@ -320,6 +320,9 @@
         let ctx = id.replace('Search', '');
         eval('this.'+ctx+'sSuggestionsVisible = false');
       }
+      if (id==="authorSearch") {
+        this.authorQuery = "";
+      }
     }
 
     function changeStatus(newValue, oldValue) {

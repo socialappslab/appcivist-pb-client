@@ -306,8 +306,11 @@
     }
 
     function showSearch(id) {
-      $('#'+id).show();
-      $('#'+id+'Close').show();
+      $('#' + id).show();
+      $('#' + id + 'Close').show();
+      if (id === "authorSearch") this.authorSearchBoxVisible = true;
+      else if (id === "themeSearch") this.themesSearchBoxVisible = true;
+      else this.keywordsSearchBoxVisible = true;
     }
 
     function hideSearch(id) {
@@ -320,9 +323,11 @@
         let ctx = id.replace('Search', '');
         eval('this.'+ctx+'sSuggestionsVisible = false');
       }
-      if (id==="authorSearch") {
+      if (id === "authorSearch") {
+        this.authorSearchBoxVisible = false;
         this.authorQuery = "";
-      }
+      } else if (id === "themeSearch") this.themesSearchBoxVisible = false;
+      else this.keywordsSearchBoxVisible = false;
     }
 
     function changeStatus(newValue, oldValue) {
@@ -1473,11 +1478,13 @@
         this.authorsSuggestionsVisible = false;
         $("#authorSearch").hide();
         $('#authorSearchClose').hide();
+        this.authorSearchBoxVisible = false;
       } else if (this.currentAdd.context === 'THEMES') {
         this.addThemeToProposal(item);
         this.themesSuggestionsVisible = false;
         $('#themeSearch').hide();
         $('#themeSearchClose').hide();
+        this.themesSearchBoxVisible = false;
       } else if (this.currentAdd.context === 'CUSTOM') {
         this.addCustomValue(item, fieldDefinitionId);
         $('#customSearch'+'_'+fieldDefinitionId).hide();
@@ -1491,10 +1498,10 @@
             Notify.show(translated, 'error');
           });
         }
-
         this.keywordsSuggestionsVisible = false;
         $('#keywordSearch').hide();
         $('#keywordSearchClose').hide();
+        this.keywordsSearchBoxVisible = false;
         if (this.keywordsLimit) {
           if (this.proposal.themes.filter(t => t.type == 'EMERGENT').length == this.keywordsLimit) {
             $scope.keywordsLimitReached = true;

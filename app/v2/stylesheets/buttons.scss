@@ -20,6 +20,14 @@
     margin-top: -2px;
     margin-right: 4px;
   }
+  &.view-fork-contribution {
+    background-color: #FF8C2C;
+    text-transform: capitalize;
+    color: #dcedc8;
+    height: 2.4rem;
+    margin-top: -2px;
+    margin-right: 4px;
+  }
   &.unsubscribe-newsletter, &.unfollow-proposal, &.subscribe-newsletter, &.follow-contribution, &.proposal-btn, &.padGdoc, &.btn-join {
     border: none;
     color: white;

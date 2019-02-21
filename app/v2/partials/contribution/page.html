@@ -417,12 +417,12 @@
             </button>
 
             <button class="btn btn-default view-fork-contribution" ng-click="changePeerdocUrl(true, true)"
-                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && !proposal.status.includes('PUBLISHED') && !peerdocChangesView && !peerdocMergeView">
+                    ng-if="contributionType && !isAnonymous && proposal.status.includes('FORKED') && !peerdocChangesView && !peerdocMergeView">
               {{ ('See Changes') | translate }}
             </button>
 
             <button class="btn btn-default view-fork-contribution" ng-click="changePeerdocUrl(false, true)"
-                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && peerdocChangesView">
+                    ng-if="contributionType && !isAnonymous && proposal.status.includes('FORKED') && peerdocChangesView">
               {{ ('Close changes view') | translate }}
             </button>
 
@@ -531,7 +531,7 @@
           <div class="text-center" style="margin-top: 2rem" id="peerdoc"
                ng-if="proposal.extendedTextPad && proposal.extendedTextPad.resourceType==='PEERDOC' && (((proposal.status.includes('DRAFT') && !proposal.status.includes('PUBLIC')) && userIsAuthor || userIsCoordinator) || (proposal.status.includes('PUBLIC_DRAFT') && !isAnonymous) || proposal.status == 'PUBLISHED' || proposal.status == 'FORKED_PUBLISHED' || proposal.status == 'ARCHIVED' || proposal.status == 'MERGED') && showBodyProposal">
 
-            <div ng-if="peerdocMergeView  || peerdocChangesView" class="text-justify" style="border: groove red;padding-bottom: 10px">
+            <div ng-if="peerdocMergeView" class="text-justify" style="border: groove red;padding-bottom: 10px">
               <h3 class="modal-header" style="padding-top: 0">{{"accept-merge-document-confirmation-title" | translate}}</h3>
               <span class="modal-body">{{"accept-merge-document-confirmation-body" | translate}}</span>
             </div>

@@ -55,7 +55,7 @@
             <div class="row">
               <div class="col-xs-12">
                 <label for="profileUsername">{{'Username'|translate}}</label>
-                <input type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}"
+                <input ng-disabled="user.providers.includes('ldap')" type="text" class="form-control" id="profileUsername" placeholder="{{'Username' | translate}}"
                   ng-blur="blurReset()" ng-model="profile.username">
               </div>
             </div>

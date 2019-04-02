@@ -607,13 +607,15 @@
     function changePeerdocUrl(merge, view) {
       let url = $scope.proposal.extendedTextPad.url+ "&embed=true";
       if(merge) {
-        url = url.replace('document/', 'document/merge/');
+
         if (view) {
          $scope.peerdocChangesView = true;
           $scope.peerdocMergeView = false;
+          url = url.replace('document/', 'document/compare/');
         } else {
           $scope.peerdocMergeView = true;
           $scope.peerdocChangesView = false;
+          url = url.replace('document/', 'document/merge/');
         }
         this.peerdocMergeViewUrl = $sce.trustAsResourceUrl(url);
       } else {

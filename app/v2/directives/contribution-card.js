@@ -205,8 +205,9 @@
           }
         }
 
-        function formatDate(date) {
-          return moment(date, 'yyyy-MM-DD').format('YYYY/MM/DD');
+        function formatDate(date)
+        {
+          return date.split(' ')[0];
         }
 
         function mergeThemes(contribution) {

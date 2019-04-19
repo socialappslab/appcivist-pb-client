@@ -417,12 +417,12 @@
             </button>
 
             <button class="btn btn-default view-fork-contribution" ng-click="changePeerdocUrl(true, true)"
-                    ng-if="contributionType && !isAnonymous && proposal.status.includes('FORKED') && !peerdocChangesView && !peerdocMergeView">
+                    ng-if="contributionType && !isAnonymous && (proposal.status.includes('FORKED') || proposal.status == 'MERGED') && !peerdocChangesView && !peerdocMergeView">
               {{ ('See Changes') | translate }}
             </button>
 
             <button class="btn btn-default view-fork-contribution" ng-click="changePeerdocUrl(false, true)"
-                    ng-if="contributionType && !isAnonymous && proposal.status.includes('FORKED') && peerdocChangesView">
+                    ng-if="contributionType && !isAnonymous && (proposal.status.includes('FORKED') || proposal.status == 'MERGED') && peerdocChangesView">
               {{ ('Close changes view') | translate }}
             </button>
 

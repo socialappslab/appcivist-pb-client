@@ -39,7 +39,7 @@
           scope.ideaExcerptStyle = scope.showIdeaBody ? { height: '120px' } : { height: '110px' };
           scope.ideaHeaderStyle = scope.showIdeaBody ? { height: '100px' } : { height: '150px' };
           setContributionType(scope);
-          var assembly = localStorageService.get('currentAssembly');
+          let assembly = localStorageService.get('currentAssembly');
           scope.campaignId = $stateParams.cid ? parseInt($stateParams.cid) : 0;
           scope.formatDate = formatDate.bind(scope);
           scope.mergedThemes = mergeThemes(scope.contribution);
@@ -99,8 +99,9 @@
               + (scope.notAssigned ? "" : "/group/" + scope.groupId)
               + "/contribution/" + scope.contributionId;
           } else {
-            scope.auuid = $stateParams.auuid;
-            scope.cuuid = $stateParams.cuuid;
+            let assembly = localStorageService.get('currentAssembly');
+            scope.auuid = assembly.uuid ? assembly.uuid : $stateParams.auuid;
+            scope.cuuid = scope.campaign.uuid ? scope.campaign.uuid: $stateParams.cuuid;
             scope.groupId = scope.guuid = $stateParams.guuid ?
               $stateParams.guuid : workingGroupAuthorsLength ?
               scope.contribution.workingGroupAuthors[0].uuid : "";
@@ -110,6 +111,7 @@
               + "/campaign/" + scope.cuuid
               + (scope.notAssigned ? "" : "/group/"+scope.guuid)
               + "/contribution/" + scope.contribution.uuid;
+
           }
 
           // Configure style of card footer

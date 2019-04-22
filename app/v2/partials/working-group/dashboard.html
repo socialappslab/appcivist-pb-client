@@ -282,6 +282,7 @@
         </ul>
         <div class="tab-content">
           <div ng-if="!isAnonymous" id="approved" class="tab-pane fade in active">
+            <input ng-model="searchText" placeholder="{{'Search'|translate}}">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -293,7 +294,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="member in members">
+                <tr ng-repeat="member in members | filter:searchText">
                   <td style="text-align:left">
                     <member-card user="member.user"></member-card>
                     <div ng-if="member.mostRelevantRole!=null" class="role-label">{{member.mostRelevantRole}}</div>

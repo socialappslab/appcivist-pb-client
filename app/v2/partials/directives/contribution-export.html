@@ -27,12 +27,12 @@
       <div class="field__container">
         <label>
           <input id="includeDoc" name="document" type="checkbox" ng-model="vm.includeDoc" ng-click="vm.toggleExtendedDocFormat()"/>
-          {{ 'Include document (GDOC or Etherpad)' | translate }}
+          {{ 'Include document (GDOC or Etherpad or PeerDoc)' | translate }}
         </label>
         <label translate="export.extended.text.format.notice" translate-values="{ format: vm.docExportFormat }"></label>
       </div>
       <div ng-if="vm.showExtendedDocFormat" class="field__container">
-        <p class="intro bold">{{'Select a format to export the document' | translate}}</p>
+        <p class="intro bold">{{'Select a format to export the document (only for etherpad or GDOC)' | translate}}</p>
         <select id="docExportFormat" ng-model="vm.docExportFormat">
           <option value="TXT">TXT</option>
           <option value="PDF">PDF</option>

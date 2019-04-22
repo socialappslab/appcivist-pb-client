@@ -1314,8 +1314,8 @@
   "Export proposal": "Export this proposal",
   "Export": "Export",
   "Select a format to export the proposal": "Select a format to export the proposal",
-  "Include document (GDOC or Etherpad)": "Include document (GDOC or Etherpad)",
-  "Select a format to export the document": "Select a format to export the document",
+  "Include document (GDOC or Etherpad or PeerDoc)": "Include document (GDOC or Etherpad or PEERDOC)",
+  "Select a format to export the document (only for etherpad or GDOC)": "Select a format to export the document (only for etherpad or GDOC)",
   "Export proposals": "Export proposals",
   "export.email.notice": "For TXT, PDF, RTF and DOC formats, you will receive a link in your email to download the exported files.",
   "Export contribution": "Export this contribution",
@@ -1530,5 +1530,7 @@
   "Are you sure you want to proceed with this operation?": "Are you sure you want to proceed with this operation?",
   "Only registered users can see the names of the members": "Only registered users can see the names of members",
   "Public Ideas": "Public Ideas",
-  "Participatory Planning": "Participatory Planning"
+  "Participatory Planning": "Participatory Planning",
+  "See Changes": "See Changes",
+  "Close changes view": "Close changes view"
 }

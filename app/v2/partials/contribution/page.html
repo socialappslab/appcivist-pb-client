@@ -142,7 +142,7 @@
                             || (userIsAuthor && proposal.status.includes('DRAFT') ))">
               <select class="header_select" name="themesSelect" ng-options="theme as theme.title for theme in allThemes track by theme.themeId"
                       ng-model="$parent.selectedTheme" ng-change="selectTheme()" ng-disabled="proposal.status.includes('FORK') && !(userIsCoordinator || userIsAdmin)"></select>
-              <i ng-if="!proposal.status.includes('FORK') && (userIsCoordinator || userIsAdmin || (userIsAuthor && proposal.status.includes('DRAFT'))"
+              <i ng-if="!proposal.status.includes('FORK') && (userIsCoordinator || userIsAdmin || (userIsAuthor && proposal.status.includes('DRAFT')))"
                  class="fa fa-trash" style="margin-left: 5px; cursor:pointer;"
                  ng-click="deleteSelectedTheme()" ng-if="selectedTheme"></i>
             </li>
@@ -411,11 +411,22 @@
               {{ ('Accept Merge') | translate }}
             </button>
 
-            <button class="btn btn-default fork-contribution" ng-click="changePeerdocUrl(true)"
-                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && !proposal.status.includes('PUBLISHED') && !peerdocMergeView">
+            <button class="btn btn-default fork-contribution" ng-click="changePeerdocUrl(true, false)"
+                    ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && !proposal.status.includes('PUBLISHED') && !peerdocMergeView && !peerdocChangesView">
               {{ ('Merge ' + (contributionType == 'PROPOSAL' ? 'Proposal' : 'Idea')) | translate }}
             </button>
-            <button class="btn btn-default fork-contribution" ng-click="changePeerdocUrl(false)"
+
+            <button class="btn btn-default view-fork-contribution" ng-click="changePeerdocUrl(true, true)"
+                    ng-if="contributionType && !isAnonymous && (proposal.status.includes('FORKED') || proposal.status == 'MERGED') && !peerdocChangesView && !peerdocMergeView">
+              {{ ('See Changes') | translate }}
+            </button>
+
+            <button class="btn btn-default view-fork-contribution" ng-click="changePeerdocUrl(false, true)"
+                    ng-if="contributionType && !isAnonymous && (proposal.status.includes('FORKED') || proposal.status == 'MERGED') && peerdocChangesView">
+              {{ ('Close changes view') | translate }}
+            </button>
+
+            <button class="btn btn-default fork-contribution" ng-click="changePeerdocUrl(false, false)"
                     ng-if="contributionType && !isAnonymous &&  userIsParentAuthor && proposal.status.includes('FORKED') && peerdocMergeView">
               {{ ('Not Accept Merge') | translate }}
             </button>
@@ -525,15 +536,15 @@
               <span class="modal-body">{{"accept-merge-document-confirmation-body" | translate}}</span>
             </div>
               <div class="etherpad__wrapper">
-              <iframe ng-if="(!userIsAuthor && peerDocUrl  && !peerdocMergeView)" name="embed_readonly"
+              <iframe ng-if="(!userIsAuthor && peerDocUrl  && !peerdocMergeView && !peerdocChangesView)" name="embed_readonly"
                 ng-src="{{peerDocUrlMinimal}}" width="100%" height="600px" id="peerdocHTML"
                       style="width: 100%; border: 0;" frameborder="0" scrolling="no">
               </iframe>
-              <iframe ng-if="writePeerDocUrl && !peerdocMergeView" name="embed_readwrite"
+              <iframe ng-if="writePeerDocUrl && !peerdocMergeView && !peerdocChangesView" name="embed_readwrite"
                       ng-src="{{writePeerDocUrl}}"
                       width="100%" height="600px" style="width: 100%; border: 0;" frameborder="0" scrolling="no">
               </iframe>
-                <iframe ng-if="peerdocMergeView" name="embed_readwrite"
+                <iframe ng-if="peerdocMergeView  || peerdocChangesView" name="embed_readwrite"
                         ng-src="{{peerdocMergeViewUrl}}"
                         width="100%" height="600px" style="width: 100%; border: 0;" frameborder="0" scrolling="no">
                 </iframe>

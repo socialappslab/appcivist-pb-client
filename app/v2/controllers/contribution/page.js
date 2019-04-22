@@ -97,6 +97,7 @@
     function activate() {
       ModalMixin.init($scope);
       $scope.peerdocMergeView = false;
+      $scope.peerdocChangesView = false;
       $scope.updateFeedback = updateFeedback.bind($scope);
       $scope.submitAttachment = submitAttachment.bind($scope);
       $scope.submitAttachmentByUrl = submitAttachmentByUrl.bind($scope);
@@ -603,14 +604,23 @@
 
     }
 
-    function changePeerdocUrl(merge) {
+    function changePeerdocUrl(merge, view) {
       let url = $scope.proposal.extendedTextPad.url+ "&embed=true";
       if(merge) {
-        url = url.replace('document/', 'document/merge/');
-        $scope.peerdocMergeView = true;
+
+        if (view) {
+         $scope.peerdocChangesView = true;
+          $scope.peerdocMergeView = false;
+          url = url.replace('document/', 'document/compare/');
+        } else {
+          $scope.peerdocMergeView = true;
+          $scope.peerdocChangesView = false;
+          url = url.replace('document/', 'document/merge/');
+        }
         this.peerdocMergeViewUrl = $sce.trustAsResourceUrl(url);
       } else {
         $scope.peerdocMergeView = false;
+        $scope.peerdocChangesView = false;
       }
 
       $location.hash('peerdoc');

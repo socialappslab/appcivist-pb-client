@@ -898,7 +898,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       if (contributionId) {
         filters = Object.assign(filters, {
           sid: spaceId, format: format, fields: fields, customFields: customFields, coid: contributionId, includeDoc: includeDoc,
-          docExportFormat: docExportFormat, includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
+          docExportFormat: docExportFormat, includeExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
         });
         return $resource(
           getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution/:coid', filters,
@@ -913,7 +913,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
           filters = Object.assign(filters, {
               sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
               customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-              includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all, type: type
+              includeExtendedText: includeDoc, extendedTextFormat: docExportFormat, all: all, type: type
           });
           return $resource(
             getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution', filters,
@@ -927,7 +927,7 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
           filters = Object.assign(filters, {
             sid: spaceId, format: format, selectedContributions: selectedContributions, fields: fields,
             customFields: customFields, includeDoc: includeDoc, docExportFormat: docExportFormat,
-            includedExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
+            includeExtendedText: includeDoc, extendedTextFormat: docExportFormat, type: type
           });
           return $resource(
             getServerBaseUrl(localStorageService) + (pub ? '/public' : '') + '/space/:sid/contribution', filters,

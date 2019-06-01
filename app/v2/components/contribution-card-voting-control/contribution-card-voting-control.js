@@ -56,6 +56,7 @@
         this.candidates = this.ballot ? this.ballot.candidates : []; // candidates array, which holds the candidateId for each candidate
         this.votesIndex = this.voteRecord ? this.voteRecord.votesIndex : null; // map of [:candidateId] => pos. of vote in votes array
         if(!this.votesIndex) {
+          this.voteRecord = {};
           this.voteRecord.votesIndex = {};
           this.votesIndex = this.voteRecord.votesIndex; // map of [:candidateId] => pos. of vote in votes array
         }

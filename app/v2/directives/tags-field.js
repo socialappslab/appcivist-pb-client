@@ -114,7 +114,7 @@
       var self = this;
       var rsp = this.loadItems({ query: text });
 
-      if (angular.isFunction(rsp.then)) {
+      if (rsp && angular.isFunction(rsp.then)) {
         rsp.then(function(items) {
           self.items = items;
         });

@@ -4,11 +4,13 @@
     <header class="modal-header" ng-style="vm.coverPhotoStyle">
       <div class="file-field">
         <div class="add-button" ng-if="vm.isIdea">
-          <button class="btn add-button-item" type="button" ngf-select="vm.uploadFile($file, 'cover')" accept="*/*" ngf-max-size="{{vm.coverPhotoSize}}MB">
-            {{ 'Edit Cover Photo' |  translate}}
+          <button class="btn add-button-item" type="button" ngf-select="vm.uploadFile($file, 'cover')" accept="*/*"
+                  ngf-max-size="{{vm.coverPhotoSize}}MB">
+            {{ vm.contribution.cover.url ? 'Edit Cover Photo' : 'Add a Cover Photo' |  translate}}
           </button>
           <div class="image-capsule add-button-item" ng-if="vm.fileLoaded">
-            <img alt="{{vm.contribution.cover.name}}" ng-src="{{vm.contribution.cover.url}}" class="image-circle image-circle-selected">
+            <img alt="{{vm.contribution.cover.name}}"
+                 ng-src="{{vm.contribution.cover.url}}" class="image-circle image-circle-selected">
           </div>
         </div>
       </div>
@@ -86,7 +88,7 @@
         <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['location']">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro bold" for="location">{{'Location' | translate}}</p>
-            <input id="location" name="location" ng-model="vm.contribution.location.placeName" placeholder="{{'Location' | translate}}"
+            <input id="location" name="location" ng-model="vm.contribution.location.placeName" placeholder="{{'Location description' | translate}}"
                    ng-disabled="vm.disabled" ng-maxlength="50">
             <div ng-messages="contributionForm.location.$error" style="color:maroon" role="alert">
               <div ng-message="maxlength">{{'Value is too long' | translate}}, 50 {{'characters allowed' | translate}}</div>

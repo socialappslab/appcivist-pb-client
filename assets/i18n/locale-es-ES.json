@@ -1468,9 +1468,9 @@
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Email duplicado",
   "dashboard.random-sorting-message": "Si el filtro aleatorio fue seleccionado, la paginación será desactivada y el sistema presentará siempre un lista aleatoria de contribuciones cada vez que se presione o clique el filtro aleatorio. Para volver a habilitar la paginación, seleccione cualquiera de los otros filtros.",
-  "e.g., Facebook": "'p.ejem., Facebook'",
+  "e.g., Facebook": "'p.ejem., Facebook, Twitter, NextDoor, Nombre de evento presencial, etc.'",
   "Source URL": "URL de Origen",
-  "e.g., the link to a facebook post where this contribution was first posted": "p.ejem., el enlace al post en otra página donde se publicó la contribución por primera vez",
+  "e.g., the link to a facebook post where this contribution was first posted": "Enlace al sitio externo, como por ejemplo de un post en Facebook, donde se publicó la contribución por primera vez",
   "Approved": "Aprobado",
   "Pending approval": "Pendiente de aprobación",
   "Role": "Rol",
@@ -1503,7 +1503,6 @@
   "Merged_public_draft": "Merged Public Amendment",
   "MERGED": "Merged Public Amendment",
   "Merged": "Merged Public Amendment",
-
   "Forked proposals": "Enmiendas",
   "Forked ideas": "Enmiendas de idea",
   "Merged proposals": "Enmiendas Aceptadas",
@@ -1530,5 +1529,7 @@
   "Public Ideas": "Ideas Públicas",
   "Participatory Planning": "Planificación Participativa",
   "See Changes": "Ver Cambios",
-  "Close changes view": "Cerrar vista de cambios"
+  "Close changes view": "Cerrar vista de cambios",
+  "Add a Cover Photo": "Agregar foto de portada",
+  "Location description": "¿Dónde te gustaría implementar esto?"
 }

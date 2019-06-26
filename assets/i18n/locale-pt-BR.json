@@ -1099,7 +1099,7 @@
   "pagination.widget.empty.proposals": "Ops! Este espaço não contém propostas...",
   "pagination.widget.empty.search.ideas": "Ops! Nenhuma ideia corresponde a sua pesquisa...",
   "pagination.widget.empty.search.proposals": "Ops! Nenhuma proposta corresponde a sua pesquisa...",
-  "Edit Cover Photo": "Editar Foto da Capa",
+  "Edit Cover Photo": "Editar Foto da Tampa",
   "Not a valid email": "Email inválido",
   "Draft": "Rascunho privado",
   "DRAFT": "RASCUNHO PRIVADO",
@@ -1465,9 +1465,9 @@
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Email duplicado",
   "dashboard.random-sorting-message": "Se o filtro aleatório for selecionado, a paginação será desativada e o sistema retornará uma lista de itens aleatórios toda vez que você pressiona ou clica no filtro aleatório. Selecione qualquer dos outros filtros para ativar a paginação novamente.",
-  "e.g., Facebook": "e.g., Facebook",
+  "e.g., Facebook": "e.g., Facebook, Twitter, NextDoor, Name of offline event, etc.",
   "Source URL": "Source URL",
-  "e.g., the link to a facebook post where this contribution was first posted": "e.g., the link to a facebook post where this contribution was first posted",
+  "e.g., the link to a facebook post where this contribution was first posted": "e.g., the link to an external website, such as a facebook post or comment, where this contribution was first posted",
   "Approved": "Aprovado",
   "Pending approval": "Aprovação pendente",
   "Role": "Papel",
@@ -1529,5 +1529,7 @@
   "Public Ideas": "Ideais Públicas",
   "Participatory Planning": "Planejamento Participativo",
   "See Changes": "Ver Alterações",
-  "Close changes view": "Não Ver Alterações"
+  "Close changes view": "Não Ver Alterações",
+  "Add a Cover Photo": "Adicionar uma foto da tampa",
+  "Location description": "Onde você gostaria de ver isso implementado?"
 }

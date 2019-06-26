@@ -212,7 +212,7 @@
     </header>
     <div class="modal-body">
       <label class="label">{{'Themes' | translate}}</label>
-      <tags-field load-items="loadThemes({query: query})" options="themesOptions" selected="vm.selectedThemes"
+      <tags-field load-items="loadThemes({query: vm.query})" options="themesOptions" selected="vm.selectedThemes"
                   prefetch="true"></tags-field>
       <label class="label" ng-if="vm.canFilterByGroup">{{'Working Groups' | translate}}</label>
       <tags-field ng-if="vm.canFilterByGroup" load-items="loadGroups({query: query})" options="groupsOptions"

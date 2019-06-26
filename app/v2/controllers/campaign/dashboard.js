@@ -893,13 +893,7 @@
       if (!$scope.campaign) {
         return;
       }
-      let rsp = Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
-      rsp.then(
-        data => {},
-        error => {
-          console.log("loadThemes: "+JSON.stringify(error));
-        }
-      )
+      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
     }
 
     function loadGroups(query) {

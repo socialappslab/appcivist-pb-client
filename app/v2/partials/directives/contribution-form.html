@@ -96,7 +96,7 @@
         </div>
 
         <!-- Source -->
-        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['source'] && vm.userIsAssemblyCoordinator">
+        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['source']">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro bold" for="source">{{'Source' | translate}}</p>
             <input id="source" name="source" ng-model="vm.contribution.source" placeholder="{{'e.g., Facebook' | translate}}"
@@ -106,7 +106,7 @@
 
 
         <!-- Source URL -->
-        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['sourceUrl'] && vm.userIsAssemblyCoordinator">
+        <div class="field__container assign_proposal_to_users" ng-if="!vm.hiddenFieldsMap['sourceUrl']">
           <fieldset class="add_proposal__availble_themes">
             <p class="intro bold" for="source_url">{{'Source URL' | translate}}</p>
             <input id="source_url" name="source_url" ng-model="vm.contribution.sourceUrl" placeholder="e.g., the link to a facebook post where this contribution was first posted"

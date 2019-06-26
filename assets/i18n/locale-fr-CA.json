@@ -1460,9 +1460,9 @@
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Duplicated email",
   "dashboard.random-sorting-message": "Si le filtre aléatoire a été sélectionné, la pagination sera désactivée et le système présentera toujours une liste aléatoire de contributions chaque fois que le filtre aléatoire est appuyé ou cliqué. Pour réactiver la pagination, sélectionnez l'un des autres filtres.",
-  "e.g., Facebook": "e.g., Facebook",
+  "e.g., Facebook": "e.g., Facebook, Twitter, NextDoor, Name of offline event, etc.",
   "Source URL": "Source URL",
-  "e.g., the link to a facebook post where this contribution was first posted": "e.g., the link to a facebook post where this contribution was first posted",
+  "e.g., the link to a facebook post where this contribution was first posted": "e.g., the link to an external website, such as a facebook post or comment, where this contribution was first posted",
   "Approved": "Aprobado",
   "Pending approval": "Pendiente de aprobación",
   "Role": "Rol",
@@ -1505,5 +1505,7 @@
   "Are you sure you want to proceed with this operation?": "Êtes-vous sûr de vouloir procéder à cette opération?",
   "Only registered users can see the names of the members": "Seuls les utilisateurs enregistrés peuvent voir les noms des membres",
   "Public Ideas": "Idées Publiques",
-  "Participatory Planning": "Planification Participative"
+  "Participatory Planning": "Planification Participative",
+  "Add a Cover Photo": "Add a Cover Photo",
+  "Location description": "Where would you like to see this implemented?"
 }

@@ -101,3 +101,5 @@ app/css/common.css
 deploy.sh
 
 app/env\.js
+
+\.ruby-version

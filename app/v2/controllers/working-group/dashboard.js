@@ -766,10 +766,10 @@
     }
 
     function loadThemes(query) {
-      if (!this.wg) {
+      if (!this.campaign) {
         return;
       }
-      return this.wg.themes;
+      return Campaigns.themes(this.assemblyID, this.campaignID, this.isAnonymous, this.campaignID, {query: query});
     }
 
     function prependPinnedContributions(data) {

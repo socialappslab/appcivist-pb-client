@@ -15,11 +15,11 @@
           <a ng-if="isAnonymous"
               ng-href="{{contributionUrl}}"
               style="display: block; width: 280px;word-wrap: break-word;">
-             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+             {{title|limitTo:37}}{{(title.length) > 37 ? '...' : '.' }}
            </a>
            <a ng-if="!isAnonymous" ng-href="{{contributionUrl}}"
              style="display: block; width: 280px; word-wrap: break-word;">
-             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+             {{title|limitTo:37}}{{(title.length) > 37 ? '...' : '.' }}
            </a>
         </h3>
         <div class="heading--category {{contribution.cover ? 'white-text' : ''}}">

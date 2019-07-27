@@ -39,7 +39,8 @@
         showVotingButtons: '=',
         ballotPaper: '=',
         ballotTokens: '=',
-        selected: '='
+        selected: '=',
+        showSourceCode: '='
       },
       templateUrl: '/app/v2/partials/directives/pagination-widget.html',
       link: function(scope) {

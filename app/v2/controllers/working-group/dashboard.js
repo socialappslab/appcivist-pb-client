@@ -354,6 +354,9 @@
         } else {
           $scope.allowNonMembersProposals = false;
         }
+
+        $scope.showSourceCode = $scope.campaignConfigs['appcivist.campaign.contribution.source_code'];
+        $scope.showSourceCode = $scope.showSourceCode ? $scope.showSourceCode.toLowerCase() !== 'false' : false;
         loadWorkingGroup();
       }, function (error) {
         loadWorkingGroup();

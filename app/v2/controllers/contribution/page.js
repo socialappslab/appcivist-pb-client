@@ -1312,6 +1312,8 @@
       let showPublishedStatus = $scope.campaignConfigs['appcivist.campaign.show-published-status'];
       let showMergeStatus = $scope.campaignConfigs['appcivist.campaign.show-merge-status'];
 
+      $scope.showSourceCode = $scope.campaignConfigs['appcivist.campaign.contribution.source_code'];
+      $scope.showSourceCode = $scope.showSourceCode ? $scope.showSourceCode.toLowerCase() !== 'false' : false;
       $scope.showForkButton  = showForkButton ? showForkButton.toLowerCase()  === 'false' ? false : true : true;
       $scope.showPublishedStatus  = showPublishedStatus ? showPublishedStatus.toLowerCase()  === 'false' ? false : true : true;
       $scope.showMergeStatus  = showMergeStatus ? showMergeStatus.toLowerCase()  === 'false' ? false : true : true;

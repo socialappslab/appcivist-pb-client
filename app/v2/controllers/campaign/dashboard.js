@@ -492,7 +492,10 @@
       let showWorkingGroupsConf = data['appcivist.campaign.toolbar.working-groups'];
       let accessibilityUrlConf = data['appcivist.campaign.accessibility.url'];
 
+      let showSourceCodeOnTitle = data['appcivist.campaign.contribution.source_code'];
+
       this.showAnalytics = showAnalyticsConf ? showAnalyticsConf.toLowerCase() === 'false' ? false : true : true;
+      this.showSourceCodeOnTitle = showSourceCodeOnTitle ? showSourceCodeOnTitle.toLowerCase() !== 'false' : false;
       this.allowArchived = allowArchivedConf ? allowArchivedConf.toLowerCase() !== 'false' : true;
       this.showMedia = showMediaConf ? showMediaConf.toLowerCase() === 'false' ? false : true : true;
       this.showDocuments = showDocumentsConf ? showDocumentsConf.toLowerCase() === 'false' ? false : true : true;

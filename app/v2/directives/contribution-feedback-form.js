@@ -63,6 +63,7 @@
       }
       vm.campaign = localStorageService.get('currentCampaign');
       vm.hideFields(vm.campaign);
+      vm.allowFeedback();
 
       vm.sliderOptions = {
         floor: 0,
@@ -162,17 +163,8 @@
     }
 
     function loadTypes() {
-      var types = [];
-      if (!this.isAnonymous) {
-        types = [
-          { value: 'MEMBER', text: 'Member feedback' },
-          { value: 'WORKING_GROUP', text: 'Working group official feedback' }
-      ];
-      }
-
-      if (this.userIsCoordinator || this.isAnonymous) {
-        types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
-      }
+      let types = [];
+      types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
       this.types = types;
       this.selectedType = types[0];
     }
@@ -414,8 +406,8 @@
 
     /**
      * If the given campaign has appcivisti.campaign.feedback.hidden-fields, hide them.
-     * 
-     * @param {Object} campaign 
+     *
+     * @param {Object} campaign
      */
     function hideFields(campaign) {
       if (!campaign.configs) {

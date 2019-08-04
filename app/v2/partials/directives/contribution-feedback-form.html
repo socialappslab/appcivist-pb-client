@@ -4,35 +4,35 @@
       height: 39.5px;
       margin-bottom: 10px;
     }
-    
+
     .field-container>select,
     .field-container>input {
       height: 39.5px;
     }
-    
+
     button.button__modal_submit {
       width: 100%;
       height: 39.5px;
       margin-top: 20px !important;
     }
-    
+
     .rzslider .rz-tick-value {
       top: -35px;
     }
-    
+
     .rzslider .rz-pointer {
       background-color: #009877;
     }
-    
+
     .rzslider .rz-pointer.rz-active:after {
       background-color: #fff;
     }
-    
+
     .rzslider .rz-bar,
     .rzslider .rz-tick {
       background-color: #11493b;
     }
-    
+
     form>fieldset {
       margin-bottom: 20px;
     }
@@ -109,7 +109,7 @@
           </div>
         </fieldset>
 
-        <div class="field__container" ng-if="vm.campaignFields.length || vm.componentFields.length">
+        <div class="field__container" ng-if="(vm.campaignFields.length || vm.componentFields.length)">
           <fieldset>
             <p class="intro">{{'Custom information' | translate}}</p>
             <custom-field ng-repeat="field in vm.campaignFields | orderBy:'position'" definition="field" value="vm.values[field.customFieldDefinitionId]"></custom-field>
@@ -118,7 +118,8 @@
         </div>
       </form>
       <fieldset>
-        <button class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+        <button ng-show="((!vm.hiddenFieldsMap['password'] &&
+        vm.feedback.password) || vm.hiddenFieldsMap['password'])" class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
       </fieldset>
     </div>
   </div>

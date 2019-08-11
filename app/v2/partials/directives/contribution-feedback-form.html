@@ -41,15 +41,10 @@
     <header class="modal-header" style="padding: 2em;">{{'Feedback Form' | translate}}</header>
     <div class="modal-body">
       <form>
-        <fieldset ng-if="(vm.userIsCoordinator || vm.userIsWGCoordinator) && !vm.onlyFeedback && !vm.hiddenFieldsMap['type']">
-          <label for="status">{{'Type of feedback' | translate}}</label>
-          <div class="field-container col-lg-12">
-            <select name="type" class="col-lg-12" ng-model="vm.selectedType" ng-change="vm.selectType()" ng-options="type as type.text for type in vm.types">
-            </select>
-          </div>
-        </fieldset>
-        <fieldset ng-if="(vm.feedback.type==='TECHNICAL_ASSESSMENT') && !vm.hiddenFieldsMap['password']">
-          <label for="status">{{'Password for technical feedbacks' | translate}}</label>
+
+        <h3>{{'Technical feedback' | translate}}</h3>
+        <fieldset>
+          <label for="status">{{'Password for technical feedbacks' | translate}}*</label>
           <div class="field-container col-lg-12">
             <input type="text" name="password" class="col-lg-12" ng-model="vm.feedback.password"></input>
           </div>
@@ -102,10 +97,7 @@
         <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['status']">
           <label for="status">{{'Visibility of feedback' | translate}}</label>
           <div class="field-container col-lg-12">
-            <select name="status" ng-model="vm.feedback.status" class="col-lg-12">
-                  <option value="PRIVATE">{{'Private' | translate}}</option>
-                  <option value="PUBLIC">{{'Public' | translate}}</option>
-                </select>
+            <input type="text" for="status" disabled value="{{'Public' | translate}}"/>
           </div>
         </fieldset>
 
@@ -118,8 +110,8 @@
         </div>
       </form>
       <fieldset>
-        <button ng-show="((!vm.hiddenFieldsMap['password'] &&
-        vm.feedback.password) || vm.hiddenFieldsMap['password'])" class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+        <button ng-disabled="!((!vm.hiddenFieldsMap['password'] && vm.feedback.password) || vm.hiddenFieldsMap['password'])"
+                class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
       </fieldset>
     </div>
   </div>

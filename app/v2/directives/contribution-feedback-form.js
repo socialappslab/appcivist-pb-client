@@ -63,7 +63,7 @@
       }
       vm.campaign = localStorageService.get('currentCampaign');
       vm.hideFields(vm.campaign);
-      vm.allowFeedback();
+
 
       vm.sliderOptions = {
         floor: 0,
@@ -101,7 +101,7 @@
         benefit: 0,
         feasibility: 0,
         textualFeedback: '',
-        status: 'PRIVATE',
+        status: 'PUBLIC',
         type: 'MEMBER'
       };
 

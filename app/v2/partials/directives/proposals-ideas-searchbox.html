@@ -201,7 +201,11 @@
         <a href="">{{'Source Code' | translate}}</a>
         <i ng-if="sortingIs('source_code_desc')" class="fa fa-sort-down"></i>
         <i ng-if="sortingIs('source_code_asc')" class="fa fa-sort-up"></i>
-        <!--<i ng-if="!sortingIs('date_asc') && !sortingIs('date_desc')" class="fa fa-sort-up"></i>-->
+      </li>
+      <li class="sarch_mode__date" ng-click="setSorting('feedback_all_avg')" ng-class="{active: sortingIs('feedback_all_avg')}">
+        <a href="">{{'Feedback' | translate}}</a>
+        <i ng-if="sortingIs('feedback_all_avg_desc')" class="fa fa-sort-down"></i>
+        <i ng-if="sortingIs('feedback_all_avg_asc')" class="fa fa-sort-up"></i>
       </li>
       <li class="sarch_mode__popularity" ng-click="setSorting('random')" ng-class="{active: sortingIs('random')}">
         <a href="">{{'Random' | translate}}</a>

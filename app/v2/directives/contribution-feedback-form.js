@@ -22,11 +22,11 @@
 
   ContributionFeedbackFormCtrl.$inject = [
     'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader',
-    'RECAPTCHA_KEY', 'Captcha', 'Space', '$timeout'
+    'RECAPTCHA_KEY', 'Captcha', 'Space', '$timeout', '$translate'
   ];
 
   function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify,
-    $scope, FileUploader, RECAPTCHA_KEY, Captcha, Space, $timeout) {
+    $scope, FileUploader, RECAPTCHA_KEY, Captcha, Space, $timeout, $translate) {
     var vm = this;
     this.selectGroup = selectGroup.bind(this);
     this.loadGroups = loadGroups.bind(this);
@@ -48,6 +48,7 @@
     this.hiddenFieldsMap = {};
     this.recaptchaResponse = {};
     this.values = {};
+    this.successCallback = successCallback.bind(this);
 
     this.$onInit = function() {
       vm.isAnonymous = !vm.contribution.contributionId;
@@ -102,7 +103,7 @@
         feasibility: 0,
         textualFeedback: '',
         status: 'PUBLIC',
-        type: 'MEMBER'
+        type: 'TECHNICAL_ASSESSMENT'
       };
 
       if (this.isAnonymous) {
@@ -198,28 +199,27 @@
           if (!this.isAnonymous) {
             // currently, field values are for authenticated users only.
             this.saveFieldsValues(this.contribution.resourceSpaceId).then(
-              response => successCallback(newStats),
+              response => this.successCallback(newStats),
               error => Notify.show(error.statusMessage, 'error')
             );
           } else {
-            successCallback(newStats);
+            this.successCallback(newStats);
           }
         },
         function() {
           Notify.show('Error while updating user feedback', 'error');
         }
       );
+    }
 
-      function successCallback(newStats) {
-        vm.contribution.stats = newStats;
-        vm.onSuccess();
-        $translate('Changed saved').then(
-          successMsg => {
-             Notify.show(successMsg, 'success');
-          }
-        );
-        //Notify.show('Operation succeeded', 'success');
-      }
+    function successCallback(newStats) {
+      this.contribution.stats = newStats;
+      this.onSuccess();
+      $translate('Changed saved').then(
+        successMsg => {
+          Notify.show(successMsg, 'success');
+        }
+      );
     }
 
     function getEditorOptions() {

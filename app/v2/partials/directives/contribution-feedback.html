@@ -20,7 +20,7 @@
     <li class="downvote"  ng-if="showDownVote || showUpVote">
       {{contribution.informalScore}}
       <i class="fa" uib-tooltip="{{'Informal score' | translate}}"
-         ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
+         ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore <= 0}"></i>
     </li>
     <li class="downvote" ng-if="showCommentCount">
       {{contribution.totalComments}}<i class="fa fa-comments-o" uib-tooltip="{{'Total comments' | translate}}"></i>
@@ -44,10 +44,15 @@
       <i class="fa" ng-class="{'fa-thumbs-o-down': !userFeedback.down, 'fa-thumbs-down': userFeedback.down}"></i>
     </li>
     <li class="downvote" ng-if="contribution.informalScore != null && contribution.informalScore != undefined">
-      {{contribution.informalScore}}<i class="fa" ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore < 0 }"></i>
+      {{contribution.informalScore}}<i class="fa" ng-class="{'fa-long-arrow-up': contribution.informalScore > 0, 'fa-long-arrow-down': contribution.informalScore <= 0 }"></i>
     </li>
     <li class="downvote" ng-if="showCommentCount">
       {{contribution.totalComments}}<i class="fa fa-comments-o"></i>
+    </li>
+    <li class="downvote">
+      <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML"></i>
+      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility)/3}}
+
     </li>
   </ul>
 </div>

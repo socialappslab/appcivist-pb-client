@@ -1535,5 +1535,5 @@
   "Close changes view": "Cerrar vista de cambios",
   "Add a Cover Photo": "Agregar foto de portada",
   "Location description": "¿Dónde te gustaría implementar esto?",
-  "contribution.card.feedback-score.tooltip": "<div> <span>Beneficio Medio: {{averageBenefit}}</span><br><span>Necesidad Media: {{averageNeed}}</span><br><span>Factibilidad Media: {{averageFeasibility}}</span></div>"
+  "contribution.card.feedback-score.tooltip": "<div> <span>Benefício Médio: {{averageBenefit}}</span><br><span>Necessidade Média: {{averageNeed}}</span><br><span>Viabilidade Média: {{averageFeasibility}}</span></div>"
 }

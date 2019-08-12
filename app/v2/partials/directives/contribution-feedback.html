@@ -25,6 +25,10 @@
     <li class="downvote" ng-if="showCommentCount">
       {{contribution.totalComments}}<i class="fa fa-comments-o" uib-tooltip="{{'Total comments' | translate}}"></i>
     </li>
+    <li class="downvote">
+      <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML"></i>
+      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility)/3 | number : 2}}
+    </li>
     <li class="downvote" ng-click="showModerationForm('flag')">
       <i class="fa"
          ng-class="{'fa-flag-o': !userFeedback.flag, 'fa-flag': userFeedback.flag}"
@@ -51,8 +55,7 @@
     </li>
     <li class="downvote">
       <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML"></i>
-      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility)/3}}
-
+      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility)/3 | number : 2}}
     </li>
   </ul>
 </div>

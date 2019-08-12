@@ -8,10 +8,10 @@
     .directive('contributionFeedback', ContributionFeedback);
 
   ContributionFeedback.$inject = [
-    'Contributions', 'localStorageService', 'Memberships', '$compile', 'Notify', '$rootScope'
+    'Contributions', 'localStorageService', 'Memberships', '$compile', 'Notify', '$rootScope', '$translate'
   ];
 
-  function ContributionFeedback(Contributions, localStorageService, Memberships, $compile, Notify, $rootScope) {
+  function ContributionFeedback(Contributions, localStorageService, Memberships, $compile, Notify, $rootScope, $translate) {
     return {
       restrict: 'E',
       scope: {
@@ -33,6 +33,22 @@
         scope.moderationSuccess = moderationSuccess.bind(scope);
         scope.showModerationForm = showModerationForm.bind(scope);
         scope.checkCampaignConfigs = checkCampaignConfigs.bind(scope);
+
+        scope.feedbackStats = {};
+        scope.feedbackStats.averageBenefit = scope.contribution.stats ? scope.contribution.stats.averageBenefit : 0;
+        scope.feedbackStats.averageNeed = scope.contribution.stats ? scope.contribution.stats.averageNeed : 0;
+        scope.feedbackStats.averageFeasibility = scope.contribution.stats ? scope.contribution.stats.averageFeasibility: 0;
+
+          scope.feedbackScoreTooltipHTML = "<div class='heading--category'> " +
+            "<span>Average Benefit: "+ scope.feedbackStats.averageBenefit + "</span><br>"
+            +"<span>Average Need: " + scope.feedbackStats.averageNeed + "</span><br>"
+            +"<span>Average Feasibility: "+ scope.feedbackStats.averageFeasibility+ "</span></div><br>";
+
+        $translate("contribution.card.feedback-score.tooltip", scope.feedbackStats).then(
+          function (translation) {
+            scope.feedbackScoreTooltipHTML = translation;
+          }
+        );
         scope.loadUserFeedback = function (aid, cid, coid) {
           let rsp = Contributions.authUserFeedback(aid,cid,coid).get().$promise;
           rsp.then(

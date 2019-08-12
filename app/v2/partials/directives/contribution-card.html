@@ -27,11 +27,6 @@
           <span ng-if="!contribution.creator">{{'ANONYMOUS' | translate}}</span>
         </div>
         <p class="{{contribution.cover ? 'white-text' : ''}}">{{'Created on' | translate}} {{formatDate(contribution.creation)}}</p>
-        <div class="heading--category">
-          <span ng-if="contribution.aggregate_benefit">{{'Average Benefit' | translate}}: {{contribution.aggregate_benefit}}</span>
-          <span ng-if="contribution.aggregate_need">{{'Average Need' | translate}}: {{contribution.aggregate_need}}</span>
-          <span ng-if="contribution.aggregate_feasibility">{{'Average Feasibility' | translate}}: {{contribution.aggregate_feasibility}}</span>
-        </div>
       </div>
 
       <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons" campaign="campaign"></contribution-feedback>

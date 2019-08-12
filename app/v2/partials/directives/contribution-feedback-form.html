@@ -58,16 +58,6 @@
           <nonmember-author-form class="col-lg-12" on-change="vm.updateNonMember(author)" disabled="!vm.recaptchaResponseOK"></nonmember-author-form>
         </fieldset>
 
-
-        <fieldset ng-if="!vm.userIsMember && !vm.onlyFeedback">
-          <label for="group">{{'Select a Working Group that should receive this feedback' | translate}}</label>
-          <div class="field-container col-lg-12">
-            <select name="group" class="col-lg-12" ng-model="vm.selectedGroup" ng-change="vm.selectGroup()" ng-options="group as group.name for group in vm.groups">
-              <option value="">{{'Select a working group' | translate}}</option>
-            </select>
-          </div>
-        </fieldset>
-
         <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['need']">
           <label for="needScore">{{'Need score' | translate}}</label>
           <div class="field-container col-lg-12">

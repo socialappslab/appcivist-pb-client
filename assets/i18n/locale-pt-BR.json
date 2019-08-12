@@ -1534,5 +1534,6 @@
   "See Changes": "Ver Alterações",
   "Close changes view": "Não Ver Alterações",
   "Add a Cover Photo": "Adicionar uma foto da tampa",
-  "Location description": "Onde você gostaria de ver isso implementado?"
+  "Location description": "Onde você gostaria de ver isso implementado?",
+  "contribution.card.feedback-score.tooltip": "<div> <span>Benefício Médio: {{averageBenefit}}</span><br><span>Necessidade Média: {{averageNeed}}</span><br><span>Viabilidade Média: {{averageFeasibility}}</span></div>"
 }

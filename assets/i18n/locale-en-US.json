@@ -1537,5 +1537,6 @@
   "See Changes": "See Changes",
   "Close changes view": "Close changes view",
   "Add a Cover Photo": "Add a Cover Photo",
-  "Location description": "Where would you like to see this implemented?"
+  "Location description": "Where would you like to see this implemented?",
+  "contribution.card.feedback-score.tooltip": "<div> <span>Average Benefit: {{averageBenefit}}</span><br><span>Average Need: {{averageNeed}}</span><br><span>Average Feasibility: {{averageFeasibility}}</span></div>\n"
 }

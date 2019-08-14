@@ -355,6 +355,10 @@
                 {{proposal.informalScore}}
               <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
             </li>
+            <li class="downvote">
+              <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML" tooltip-placement="bottom"></i>
+              {{(proposal.stats.averageBenefit+proposal.stats.averageNeed+proposal.stats.averageFeasibility)/3 | number : 2}}
+            </li>
           </ul>
           <div class="float-wrapper">
 

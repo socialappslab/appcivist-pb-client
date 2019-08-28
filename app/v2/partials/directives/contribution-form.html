@@ -138,10 +138,11 @@
             <span ng-if="vm.isIdea">
               {{'contribution.form.add-authors.disclaimer' | translate }}
             </span>
-            <br>
+            <br><br>
             <span ng-if="vm.isIdea">
               {{'contribution.form.add-authors.note' | translate }}
             </span>
+            <br><br>
             <tags-field id="authors" load-items="vm.loadAuthors({query: query})" options="vm.authorsOptions" selected="vm.contribution.authors"
                         prefetch="true" disabled="vm.isAuthorsDisabled" can-add="true" field="item.name"></tags-field>
           </fieldset>

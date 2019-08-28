@@ -49,6 +49,7 @@
     this.recaptchaResponse = {};
     this.values = {};
     this.successCallback = successCallback.bind(this);
+    this.hidePasswordField = hidePasswordField.bind(this);
 
     this.$onInit = function() {
       vm.isAnonymous = !vm.contribution.contributionId;
@@ -420,6 +421,15 @@
       }
       hiddenFields = JSON.parse(hiddenFields[0]);
       hiddenFields.forEach(hf => this.hiddenFieldsMap[hf] = true);
+    }
+
+    function hidePasswordField () {
+      if (!this.campaign.configs) {
+        return;
+      }
+      let passwordConfigs = this.campaign.configs.filter(c => c.key === 'appcivist.campaign.extended-feedback-password').map(c => c.value);
+
+      return passwordConfigs.length < 1;
     }
 
     /**

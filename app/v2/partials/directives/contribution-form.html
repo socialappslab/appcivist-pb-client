@@ -138,6 +138,10 @@
             <span ng-if="vm.isIdea">
               {{'contribution.form.add-authors.disclaimer' | translate }}
             </span>
+            <br>
+            <span ng-if="vm.isIdea">
+              {{'contribution.form.add-authors.note' | translate }}
+            </span>
             <tags-field id="authors" load-items="vm.loadAuthors({query: query})" options="vm.authorsOptions" selected="vm.contribution.authors"
                         prefetch="true" disabled="vm.isAuthorsDisabled" can-add="true" field="item.name"></tags-field>
           </fieldset>
@@ -165,7 +169,7 @@
                 <uib-accordion-heading>
                   <i class="pull-right fa fa-trash" ng-click="$event.stopPropagation();$event.preventDefault();vm.deleteAuthor(author)"></i>
                   <h5 ng-if="!author.name">{{'Author Information' | translate}}</h5>
-                  <h5 ng-if="author.name">{{author.name}}<span ng-if="!author.email" style="color: darkred;">&nbsp;&nbsp;({{'Email is required'|translate}})</span></h5>
+                  <h5 ng-if="author.name">{{author.name}}<span ng-if="!author.email" style="color: darkred;">&nbsp;&nbsp;({{'Click here to add email and complete survey'|translate}})</span></h5>
                 </uib-accordion-heading>
                 <nonmember-author-form id="non-member-authors" author="author" form="contributionForm"
                                        is-member="!author.userId.includes('tmp')" creator-is-coordinator="vm.userIsAssemblyCoordinator">

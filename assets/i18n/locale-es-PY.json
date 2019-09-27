@@ -792,6 +792,9 @@
   "Feedback Form": "Formulario de Feedback",
   "Need score": "Necesita Puntuación",
   "Benefit": "Beneficio",
+  "Average Benefit": "Beneficio Promedio",
+  "Average Feasibility": "Factibilidad Promedio",
+  "Average Need": "Necesidad Promedio",
   "Feasibility": "Factibilidad",
   "Visibility of feedback": "Visualización de evaluación",
   "Private": "Privado",
@@ -1525,5 +1528,6 @@
   "See Changes": "Ver Cambios",
   "Close changes view": "Cerrar vista de cambios",
   "Add a Cover Photo": "Agregar foto de portada",
-  "Location description": "¿Dónde te gustaría implementar esto?"
+  "Location description": "¿Dónde te gustaría implementar esto?",
+  "contribution.card.feedback-score.tooltip": "<div> <span>Beneficio Medio: {{averageBenefit | number: 2}}</span><br><span>Necesidad Media: {{averageNeed | number: 2}}</span><br><span>Factibilidad Media: {{averageFeasibility | number: 2}}</span></div>"
 }

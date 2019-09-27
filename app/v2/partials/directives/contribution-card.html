@@ -13,13 +13,13 @@
         <h3 class="{{contribution.cover ? 'white-text' : ''}}">
           <!--<a ng-click="myObject.seeDetail()">{{contribution.title}}-->
           <a ng-if="isAnonymous"
-              ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/contribution/{{contribution.uuid}}"
+              ng-href="{{contributionUrl}}"
               style="display: block; width: 280px;word-wrap: break-word;">
-             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+             {{title|limitTo:37}}{{(title.length) > 37 ? '...' : '.' }}
            </a>
-           <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/contribution/{{contribution.contributionId}}"
+           <a ng-if="!isAnonymous" ng-href="{{contributionUrl}}"
              style="display: block; width: 280px; word-wrap: break-word;">
-             {{contribution.title|limitTo:37}}{{(contribution.title.length) > 37 ? '...' : '.' }}
+             {{title|limitTo:37}}{{(title.length) > 37 ? '...' : '.' }}
            </a>
         </h3>
         <div class="heading--category {{contribution.cover ? 'white-text' : ''}}">
@@ -88,12 +88,12 @@
     </div>
 
     <div class="row no-margin group__link" ng-if="group">
-      <a ng-if="isAnonymous" ng-href="#/v2/p/assembly/{{auuid}}/campaign/{{cuuid}}/group/{{group.uuid}}">
+      <a ng-if="isAnonymous" ng-href={{contributionUrl}}>
         {{group.name | limitTo: 30}}{{group.name.length>30 ? '...' : ''}}
       </a>
-      <a ng-if="!isAnonymous" ng-href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}"
+      <a ng-if="!isAnonymous" ng-href="{{contributionUrl}}"
          class="clearfix"
-         href="#/v2/assembly/{{assemblyId}}/campaign/{{campaignId}}/group/{{groupId}}"
+         href="{{contributionUrl}}"
          style="display: block;">
           {{group.name | limitTo: 30}}{{group.name.length>30 ? '...' : ''}}
       </a>

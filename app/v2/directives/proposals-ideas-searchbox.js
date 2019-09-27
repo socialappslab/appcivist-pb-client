@@ -200,6 +200,10 @@
         this.filters.sorting = this.filters.sorting === 'date_asc' ? 'date_desc' : 'date_asc';
       } else if (sort === 'popularity') {
         this.filters.sorting = this.filters.sorting === 'popularity_asc' ? 'popularity_desc' : 'popularity_asc';
+      } else if (sort === 'source_code') {
+        this.filters.sorting = this.filters.sorting === 'source_code_asc' ? 'source_code_desc' : 'source_code_asc';
+      } else if (sort === 'feedback_all_avg') {
+        this.filters.sorting = this.filters.sorting === 'feedback_all_avg_asc' ? 'feedback_all_avg_desc' : 'feedback_all_avg_asc';
       } else if (sort === 'most_commented') {
         this.filters.sorting = this.filters.sorting === 'most_commented_asc' ? 'most_commented_desc' : 'most_commented_asc';
       } else if (sort === 'most_commented_public') {
@@ -228,6 +232,10 @@
         return this.filters.sorting === 'most_commented_public_asc' || this.filters.sorting === 'most_commented_public_desc';
       } else if (sort === 'most_commented_members') {
         return this.filters.sorting === 'most_commented_members_asc' || this.filters.sorting === 'most_commented_members_desc';
+      } else if (sort === 'source_code') {
+        return this.filters.sorting === 'source_code_asc' || this.filters.sorting === 'source_code_desc';
+      } else if (sort === 'feedback_all_avg') {
+        return this.filters.sorting === 'feedback_all_avg_asc' || this.filters.sorting === 'feedback_all_avg_desc';
       }
       return this.filters.sorting === sort;
     }

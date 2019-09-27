@@ -23,6 +23,7 @@
         </div>
         <div class="row">
           <span class="badge badge-warning" ng-if="proposal.status.includes('FORK') || proposal.status.includes('MERGED')" style="background-color: #FF8C2C;">{{'Is Fork'|translate}}</span>
+          <span class="badge badge-warning" ng-if="showSourceCode && proposal.sourceCode" style="background-color: #FF8C2C;">{{proposal.sourceCode}}</span>
           <span class="badge badge-warning" ng-if="forkedChildren" style="background-color: #00AC7F;">{{'Parent Proposal'|translate}}</span>
         </div>
 
@@ -353,6 +354,10 @@
             <li class="score" ng-if="proposal.informalScore">
                 {{proposal.informalScore}}
               <i class="fa" ng-class="{'fa-arrow-up': proposal.informalScore > 0, 'fa-arrow-down': proposal.informalScore < 0}"></i>
+            </li>
+            <li class="downvote">
+              <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML" tooltip-placement="bottom"></i>
+              {{(proposal.stats.averageBenefit+proposal.stats.averageNeed+proposal.stats.averageFeasibility)/3 | number : 2}}
             </li>
           </ul>
           <div class="float-wrapper">

@@ -25,7 +25,8 @@
         isTopicGroup: '=',
         ballotPaper: '=',
         ballotTokens: '=',
-        selected: '='
+        selected: '=',
+        showSourceCode: '='
       },
       templateUrl: '/app/v2/partials/directives/contribution-card.html',
       link: function postLink(scope, element, attrs) {
@@ -33,6 +34,10 @@
         activate();
 
         function activate() {
+          scope.title = scope.contribution.title;
+          if(scope.showSourceCode && scope.contribution.sourceCode) {
+            scope.title = '[' + scope.contribution.sourceCode  + '] ' + scope.title;
+          }
           scope.showContextualMenu = false;
           scope.contribution.informalScore = Contributions.getInformalScore(scope.contribution);
           scope.toggleContextualMenu = toggleContextualMenu.bind(scope);

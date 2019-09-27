@@ -679,6 +679,23 @@
             $translate.use($scope.proposal.lang);
           }
 
+          $scope.feedbackStats = {};
+          $scope.feedbackStats.averageBenefit = $scope.proposal.stats ? $scope.proposal.stats.averageBenefit : 0;
+          $scope.feedbackStats.averageNeed = $scope.proposal.stats ? $scope.proposal.stats.averageNeed : 0;
+          $scope.feedbackStats.averageFeasibility = $scope.proposal.stats ? $scope.proposal.stats.averageFeasibility: 0;
+
+          $scope.feedbackScoreTooltipHTML = "<div class='heading--category'> " +
+            "<span>Average Benefit: "+ $scope.feedbackStats.averageBenefit + "</span><br>"
+            +"<span>Average Need: " + $scope.feedbackStats.averageNeed + "</span><br>"
+            +"<span>Average Feasibility: "+ $scope.feedbackStats.averageFeasibility+ "</span></div><br>";
+
+          $translate("contribution.card.feedback-score.tooltip", $scope.feedbackStats).then(
+            function (translation) {
+              $scope.feedbackScoreTooltipHTML = translation;
+            }
+          );
+
+
           if (data.extendedTextPad) {
             console.log("Document is "+data.extendedTextPad.resourceType);
             $scope.extendedTextIsEtherpad = data.extendedTextPad.resourceType === 'PAD';
@@ -1312,6 +1329,8 @@
       let showPublishedStatus = $scope.campaignConfigs['appcivist.campaign.show-published-status'];
       let showMergeStatus = $scope.campaignConfigs['appcivist.campaign.show-merge-status'];
 
+      $scope.showSourceCode = $scope.campaignConfigs['appcivist.campaign.contribution.source_code'];
+      $scope.showSourceCode = $scope.showSourceCode ? $scope.showSourceCode.toLowerCase() !== 'false' : false;
       $scope.showForkButton  = showForkButton ? showForkButton.toLowerCase()  === 'false' ? false : true : true;
       $scope.showPublishedStatus  = showPublishedStatus ? showPublishedStatus.toLowerCase()  === 'false' ? false : true : true;
       $scope.showMergeStatus  = showMergeStatus ? showMergeStatus.toLowerCase()  === 'false' ? false : true : true;

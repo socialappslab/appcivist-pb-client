@@ -1509,5 +1509,6 @@
   "Public Ideas": "Idee Pubbliche",
   "Participatory Planning": "Planificazione Partecipativa",
   "Add a Cover Photo": "Add a Cover Photo",
-  "Location description": "Where would you like to see this implemented?"
+  "Location description": "Where would you like to see this implemented?",
+  "contribution.card.feedback-score.tooltip": "<div> <span>Benefício Médio: {{averageBenefit | number: 2}}</span><br><span>Necessidade Média: {{averageNeed | number: 2}}</span><br><span>Viabilidade Média: {{averageFeasibility | number: 2}}</span></div>"
 }

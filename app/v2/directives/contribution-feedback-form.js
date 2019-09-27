@@ -22,11 +22,11 @@
 
   ContributionFeedbackFormCtrl.$inject = [
     'Contributions', 'localStorageService', 'Memberships', 'Notify', '$scope', 'FileUploader',
-    'RECAPTCHA_KEY', 'Captcha', 'Space', '$timeout'
+    'RECAPTCHA_KEY', 'Captcha', 'Space', '$timeout', '$translate'
   ];
 
   function ContributionFeedbackFormCtrl(Contributions, localStorageService, Memberships, Notify,
-    $scope, FileUploader, RECAPTCHA_KEY, Captcha, Space, $timeout) {
+    $scope, FileUploader, RECAPTCHA_KEY, Captcha, Space, $timeout, $translate) {
     var vm = this;
     this.selectGroup = selectGroup.bind(this);
     this.loadGroups = loadGroups.bind(this);
@@ -66,6 +66,7 @@
       vm.campaign = localStorageService.get('currentCampaign');
       vm.hideFields(vm.campaign);
 
+
       vm.sliderOptions = {
         floor: 0,
         ceil: 4,
@@ -102,8 +103,8 @@
         benefit: 0,
         feasibility: 0,
         textualFeedback: '',
-        status: 'PRIVATE',
-        type: 'MEMBER'
+        status: 'PUBLIC',
+        type: 'TECHNICAL_ASSESSMENT'
       };
 
       if (this.isAnonymous) {
@@ -164,17 +165,8 @@
     }
 
     function loadTypes() {
-      var types = [];
-      if (!this.isAnonymous) {
-        types = [
-          { value: 'MEMBER', text: 'Member feedback' },
-          { value: 'WORKING_GROUP', text: 'Working group official feedback' }
-      ];
-      }
-
-      if (this.userIsCoordinator || this.isAnonymous) {
-        types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
-      }
+      let types = [];
+      types.push({ value: 'TECHNICAL_ASSESSMENT', text: 'Technical feedback' });
       this.types = types;
       this.selectedType = types[0];
     }
@@ -208,28 +200,27 @@
           if (!this.isAnonymous) {
             // currently, field values are for authenticated users only.
             this.saveFieldsValues(this.contribution.resourceSpaceId).then(
-              response => successCallback(newStats),
+              response => this.successCallback(newStats),
               error => Notify.show(error.statusMessage, 'error')
             );
           } else {
-            successCallback(newStats);
+            this.successCallback(newStats);
           }
         },
         function() {
           Notify.show('Error while updating user feedback', 'error');
         }
       );
+    }
 
-      function successCallback(newStats) {
-        vm.contribution.stats = newStats;
-        vm.onSuccess();
-        $translate('Changed saved').then(
-          successMsg => {
-             Notify.show(successMsg, 'success');
-          }
-        );
-        //Notify.show('Operation succeeded', 'success');
-      }
+    function successCallback(newStats) {
+      this.contribution.stats = newStats;
+      this.onSuccess();
+      $translate('Changed saved').then(
+        successMsg => {
+          Notify.show(successMsg, 'success');
+        }
+      );
     }
 
     function getEditorOptions() {
@@ -416,8 +407,8 @@
 
     /**
      * If the given campaign has appcivisti.campaign.feedback.hidden-fields, hide them.
-     * 
-     * @param {Object} campaign 
+     *
+     * @param {Object} campaign
      */
     function hideFields(campaign) {
       if (!campaign.configs) {

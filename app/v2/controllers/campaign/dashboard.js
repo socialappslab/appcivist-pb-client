@@ -896,7 +896,11 @@
       if (!$scope.campaign) {
         return;
       }
-      return Campaigns.themes($scope.assemblyID, $scope.campaignID, $scope.isAnonymous, $scope.campaignID, {query: query});
+      let filters = {
+        query: query,
+        themeType: 'OFFICIAL_PRE_DEFINED'
+      };
+      return Campaigns.themes(this.assembly.assemblyId, this.campaign.campaignId, this.isAnonymous, this.campaign.uuid, filters);
     }
 
     function loadGroups(query) {

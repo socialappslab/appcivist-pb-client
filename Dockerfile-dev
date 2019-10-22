@@ -1,0 +1,8 @@
+FROM ruby:2.3
+MAINTAINER Cristhian Parra <cdparra@gmail.com>
+
+RUN gem update --system && gem install compass sass haml && apt-get update && apt-get install sudo && curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && apt-get install nodejs
+
+RUN npm i npm@latest -g && npm install grunt -g && npm install bower -g && npm install grunt-cli -g
+COPY docker_confs/deploy-dev.sh deploy.sh
+CMD bash deploy.sh

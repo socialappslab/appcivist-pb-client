@@ -37,9 +37,15 @@ Before running the App, you will need to do the following:
 	
 	```ssh
 	$ gem install sass
+    ```
+
+6. Install haml
+
+  ```ssh
+	$ gem install haml
   ```
 
-6. Update the API URLs in app.js to use your local/test/production APIs
+7. Update the API URLs in app.js to use your local/test/production APIs
 
 ## Run
 1. Get the code

@@ -770,6 +770,12 @@ appCivistApp.factory('Contributions', function ($resource, localStorageService, 
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/proposal?type=:type', { uuid: contributionUUID, type: type });
 
       },
+    contributionCheckFeedbackForm: function (assemblyUUID, userId) {
+      if(userId){
+        return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:aid/feedbackpermission?userId=:user', { aid: assemblyUUID, user: userId});
+      }
+      return $resource(getServerBaseUrl(localStorageService) + '/public/assembly/:aid/feedbackpermission', { aid: assemblyUUID});
+    },
     contributionMergeAuthors: function (contributionUUID, type) {
 
       return $resource(getServerBaseUrl(localStorageService) + '/contribution/:uuid/proposal/merge/authors ', { uuid: contributionUUID});

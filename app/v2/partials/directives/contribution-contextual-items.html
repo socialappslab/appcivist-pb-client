@@ -10,7 +10,7 @@
                   <!--&& (vm.contributionStatus === 'EXCLUDED' || vm.contributionStatus === 'NEW' || vm.contributionStatus === 'DRAFT'))">-->
      <!--<a ng-click="vm.publish()">{{'Publish' | translate}}</a>-->
   <!--</li>-->
-  <li class="li-action-menu"><a ng-click="vm.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
+  <li class="li-action-menu" ng-if="vm.showFeedbackForm"><a ng-click="vm.openModal('feedbackModal')">{{'Give Feedback' | translate}}</a></li>
   <li class="li-action-menu" ng-if="vm.userIsWorkingGroupCoordinator && vm.isProposalIdeaStage"><a ng-click="vm.exclude()">{{'Exclude' | translate}}</a></li>
   <!-- See history not implemented yet -->
   <li class="li-action-menu" ng-if="vm.userIsAssemblyCoordinator">

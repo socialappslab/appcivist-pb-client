@@ -127,6 +127,11 @@
       if (this.userFeedback === undefined || this.userFeedback === null) {
         this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false };
       }
+      this.showFeedbackForm = true;
+      Contributions.contributionCheckFeedbackForm(localStorageService.get('currentAssembly').uuid, this.user.userId).get().$promise.then(
+        show => this.showFeedbackForm = show.show,
+        error => Notify.show(error.statusMessage, 'error')
+      );
     }
 
     function refreshMenu() {
@@ -256,12 +261,11 @@
       var groupMembershipsHash = localStorageService.get('groupMembershipsHash');
       var assemblyMembershipsHash = localStorageService.get('assemblyMembershipsHash');
       var groupRoles = groupMembershipsHash[this.group ? this.group.groupId : this.group];
+
+
       this.userIsWorkingGroupCoordinator = groupRoles != undefined ? hasRol(groupRoles, "COORDINATOR") : false;
       var assemblyRoles = assemblyMembershipsHash[this.assemblyId];
       this.userIsAssemblyCoordinator = assemblyRoles != undefined ? hasRol(assemblyRoles, "COORDINATOR") : false;
-      console.log(this.userIsAssemblyCoordinator);
-      console.log(this.userIsWorkingGroupCoordinator);
-
       if (this.contribution.type === 'PROPOSAL') {
         this.userIsAuthor = this.verifyAuthorshipUser(this.contribution, this.user);
         this.userCanEdit = this.userIsAuthor || this.userIsAssemblyCoordinator || this.userIsWorkingGroupCoordinator;

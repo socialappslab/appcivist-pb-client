@@ -89,7 +89,6 @@
     $scope.enforceLimit = enforceLimit.bind($scope);
     $scope.forkProposal = forkProposal.bind($scope);
     $scope.mergeProposal = mergeProposal.bind($scope);
-    $scope.goToParentOrChildren = goToParentOrChildren.bind($scope);
     $scope.changePeerdocUrl = changePeerdocUrl.bind($scope);
 
     activate();
@@ -578,31 +577,6 @@
       );
     }
 
-    function loadChildren(scope, data) {
-
-      let mC = Contributions.contributionChildren(data.uuid, 'MERGES').query().$promise;
-      mC.then(
-        rs => {
-
-          $scope.mergeChildren = rs.length > 0 ? rs : null;
-        },
-        error => {
-          Notify.show("Error trying to fork. Please try again later.", "error")
-        }
-      );
-
-      let fC =  Contributions.contributionChildren(data.uuid, 'FORKS').query().$promise;
-      fC.then(
-        rs => {
-
-          $scope.forkedChildren = rs.length > 0 ? rs : null;
-        },
-        error => {
-          Notify.show("Error trying to fork. Please try again later.", "error")
-        }
-      );
-
-    }
 
     function changePeerdocUrl(merge, view) {
       let url = $scope.proposal.extendedTextPad.url+ "&embed=true";
@@ -650,7 +624,6 @@
             $scope.userIsParentAuthor = false;
           }
           $scope.contributionLabel = $scope.proposal.title;
-          loadChildren(scope, data);
           loadMergeAuthors(scope, data);
           $scope.$watch('$scope.proposal.title', function () {
             $scope.contributionLabel = $scope.proposal.title;
@@ -2230,10 +2203,6 @@
       );
     }
 
-    function goToParentOrChildren(id) {
-
-      $state.go('v2.assembly.aid.campaign.contribution.coid', { aid: $scope.assemblyID, cid: $scope.campaignId, coid: id}, { reload: true });
-    }
 
 
 

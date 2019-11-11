@@ -1473,7 +1473,7 @@
   "contribution.error.missing-required-fields": "To change the status into {{status}}, make sure to complete all the mandatory fields, marked in red.",
   "contribution.error.undefined-error": "The configured requirements to change status are asking for a field that is not available. Please, contact the coordinators of this campaign to let them know and have this issue solved. You can send an email to: {{email}}",
   "Duplicated email": "Duplicated email",
-  "dashboard.random-sorting-message": "If the random filter is selected, pagination is not used and the system will return a list of random items everytime you press or click on the random filter. Select any of the other filters to enable pagination again.",
+  "dashboard.random-sorting-message": "If the “RANDOM” filter is selected, PAGINATION IS DISABLED and the system will display the list of proposals randomly every time you click “Random.” To ENABLE PAGINATION, select any other filter. ",
   "e.g., Facebook": "Where did your idea come from?  Add it here if you want.  For example, Facebook, NextDoor, name of an offline event.",
   "Source URL": "Source URL",
   "e.g., the link to a facebook post where this contribution was first posted": "Do you have a link to the source of your idea?  Add it here.",

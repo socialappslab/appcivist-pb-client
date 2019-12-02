@@ -76,7 +76,7 @@
 
       $scope.pageSize = 12;
       $scope.showPagination = false;
-      $scope.sorting = "random";
+      $scope.sorting = "date_desc";
       $scope.filters = {
         searchText: '',
         themes: [],
@@ -565,8 +565,8 @@
       }
       switch (currentComponent.type) {
         case "IMPLEMENTATION": this.filters.sorting = 'popularity_desc'; break;
-        case "VOTING": this.filters.sorting = 'random'; break;
-        case "DELIBERATION": this.filters.sorting = 'random'; break;
+        case "VOTING": this.filters.sorting = 'date_desc'; break;
+        case "DELIBERATION": this.filters.sorting = 'date_desc'; break;
         case "IDEAS": this.filters.sorting = 'date_desc'; break;
         case "PROPOSALS": this.filters.sorting = 'date_desc'; break;
         default: this.filters.sorting = 'date_desc'; break;

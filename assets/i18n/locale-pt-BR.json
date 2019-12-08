@@ -279,6 +279,8 @@
   "future feature": "funcionalidade futura",
   "Gender": "Gênero",
   "Give Feedback": "Formulário de Avaliação",
+  "Jury Evaluations": "Avaliações do Júri",
+  "Sum of average scores for each category": "Soma da Pontuação Média de Cada Categoria",
   "Go to campaign!": "Vá para a campanha!",
   "GROUP": "Grupo de Trabalho",
   "Have no coordinators": "Não existem coordenadores",
@@ -865,6 +867,7 @@
   "Ups": "Positivos",
   "Downs": "Negativos",
   "Needs": "Necessidades",
+  "Need": "Necessidade",
   "Published": "Publicada",
   "Publisheds": "Publicadas",
   "Excluded": "Excluído",
@@ -1538,5 +1541,6 @@
   "Close changes view": "Não Ver Alterações",
   "Add a Cover Photo": "Adicionar uma foto da tampa",
   "Location description": "Onde você gostaria de ver isso implementado?",
+  "Only jurors can submit": "Somente jurados podem enviar",
   "contribution.card.feedback-score.tooltip": "<div> <span>Benefício Médio: {{averageBenefit | number: 2}}</span><br><span>Necessidade Média: {{averageNeed | number: 2}}</span><br><span>Viabilidade Média: {{averageFeasibility | number: 2}}</span></div>"
 }

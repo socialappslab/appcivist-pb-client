@@ -95,7 +95,9 @@
         </div>
       </form>
       <fieldset>
-        <button class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+        <button ng-if="vm.showFeedbackForm" class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
+        <button ng-if="!vm.showFeedbackForm" disabled 
+        style="background-color: grey;" class="button__modal_submit">{{'Only jurors can submit' | translate}}</button>
       </fieldset>
     </div>
   </div>

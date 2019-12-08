@@ -37,17 +37,17 @@
         production_louisville: "https://louisvilleplatform.appcivist.org/voting/api/v0",
         testing: "https://testplatform.appcivist.org/voting/api/v0",
         development: "https://testplatform.appcivist.org/voting/api/v0",
-        local: "http://localhost:5000/api/v0",
+        local: "https://testplatform.appcivist.org/voting/api/v0",
         mimove: "https://mimove-apps.paris.inria.fr/voting/api/v0"
       },
       core: {
         production: "https://platform.appcivist.org/api",
         production_louisville: "https://louisvillepbplatform.appcivist.org/api",
         testing: "https://testplatform.appcivist.org/api",
-        local: "https://testplatform.appcivist.org/api",
-        // local: "http://localhost:9000/api",
+         local: "https://testplatform.appcivist.org/api",
+       //  local: "http://localhost:9000/api",
         // local: "https://platform.appcivist.org/api",
-        development: "https://devplatform.appcivist-dev.org/api",
+        development: "https://test-platform.appcivist-dev.org/api",
         mimove: "https://mimove-apps.paris.inria.fr/platform/api"
       }
     },
@@ -57,7 +57,7 @@
         production_louisville: "https://ourmoneyourvoice.appcivist.org/#/v2/user/password/reset/",
         testing: "https://testpb.appcivist.org/#/v2/user/password/reset/",
         local: "http://localhost:8000/#/v2/user/password/reset/",
-        development: "https://testapp.appcivist.org/#/v2/user/password/reset/"
+        development: "https://testpb.appcivist.org/#/v2/user/password/reset/"
       }
     },
     handleError: function (error) {

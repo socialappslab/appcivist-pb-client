@@ -176,6 +176,7 @@
         } else {
           $scope.proposalID = 0;
         }
+
         $scope.campaignID = $stateParams.cid ? parseInt($stateParams.cid) : 0;
         $scope.user = localStorageService.get('user');
 
@@ -637,6 +638,7 @@
         rsp = Contributions.getContributionByUUID(scope.proposalID).get();
       } else {
         rsp = Contributions.contribution(scope.assemblyID, scope.proposalID).get();
+
       }
       rsp.$promise.then(
         function (data) {
@@ -781,6 +783,7 @@
             });
             scope.loadValues(scope.proposal.resourceSpaceUUID, true);
           }
+
 
           if (scope.keywordsLimit) {
             if (scope.proposal.themes && scope.proposal.themes.filter(t => t.type == 'EMERGENT').length == scope.keywordsLimit) {
@@ -1967,15 +1970,8 @@
       let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
       rsp2.then(
         data => {
-          this.userFeedbackArray = data.filter(f => (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0))
-          if (!$scope.userIsAuthor && !$scope.userIsAdmin) {
-            this.userFeedbackArray = data.filter(
-              f => (
-                (f.status == 'PUBLIC' || f.type == 'TECHNICAL_ASSESSMENT')
-                  && (f.textualFeedback != undefined && f.textualFeedback != null && f.textualFeedback.length > 0)
-              )
-            )
-          }
+          this.userFeedbackArray = data
+         
         },
         error => this.userFeedbackArray = []
       )

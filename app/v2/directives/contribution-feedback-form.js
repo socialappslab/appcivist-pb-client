@@ -55,6 +55,13 @@
       vm.isAnonymous = !vm.contribution.contributionId;
       vm.feedback = vm.loadEmptyFeedback();
       vm.recaptchaResponseOK = false;
+      vm.showFeedbackForm = !vm.isAnonymous;
+      if(!vm.isAnonymous) {
+        Contributions.contributionCheckFeedbackForm(localStorageService.get('currentAssembly').uuid, localStorageService.get('user').userId).get().$promise.then(
+          show => vm.showFeedbackForm = show.show,
+          error => Notify.show(error.statusMessage, 'error')
+        );
+      }
 
       vm.userIsMember = !vm.isAnonymous;
 

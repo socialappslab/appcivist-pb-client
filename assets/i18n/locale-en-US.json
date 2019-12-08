@@ -279,6 +279,8 @@
   "future feature": "future feature",
   "Gender": "Gender",
   "Give Feedback": "Give feedback",
+  "Sum of average scores for each category": "Sum of average scores for each category",
+  "Jury Evaluations": "Jury Feedbacks",
   "Go to campaign!": "Go to campaign!",
   "GROUP": "Working Group",
   "Have no coordinators": "Have no coordinators",
@@ -865,6 +867,7 @@
   "Ups": "Ups",
   "Downs": "Downs",
   "Needs": "Needs",
+  "Need": "Need",
   "Published": "Published",
   "Publisheds": "Published",
   "Excluded": "Excluded",
@@ -1540,5 +1543,6 @@
   "Close changes view": "Close changes view",
   "Add a Cover Photo": "Add a Cover Photo",
   "Location description": "Where would you like to see this implemented?",
+  "Only jurors can submit": "Only jurors can submit",
   "contribution.card.feedback-score.tooltip": "<div> <span>Average Benefit: {{averageBenefit | number: 2}}</span><br><span>Average Need: {{averageNeed | number: 2}}</span><br><span>Average Feasibility: {{averageFeasibility | number: 2}}</span></div>\n"
 }

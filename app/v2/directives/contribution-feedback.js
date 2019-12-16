@@ -40,9 +40,9 @@
         scope.feedbackStats.averageFeasibility = scope.contribution.stats ? scope.contribution.stats.averageFeasibility: 0;
 
           scope.feedbackScoreTooltipHTML = "<div class='heading--category'> " +
-            "<span>Average Benefit: "+ scope.feedbackStats.averageBenefit + "</span><br>"
-            +"<span>Average Need: " + scope.feedbackStats.averageNeed + "</span><br>"
-            +"<span>Average Feasibility: "+ scope.feedbackStats.averageFeasibility+ "</span></div><br>";
+            "<span>Average Need: "+ scope.feedbackStats.averageNeed + "</span><br>"
+            +"<span>Average Feasibility: " + scope.feedbackStats.averageFeasibility + "</span><br>"
+            +"<span>Average Benefit: "+ scope.feedbackStats.averageBenefit+ "</span></div><br>";
 
         $translate("contribution.card.feedback-score.tooltip", scope.feedbackStats).then(
           function (translation) {

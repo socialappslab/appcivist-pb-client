@@ -27,7 +27,7 @@
     </li>
     <li class="downvote">
       <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML"></i>
-      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility)/3 | number : 2}}
+      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility) | number : 2}}
     </li>
     <li class="downvote" ng-click="showModerationForm('flag')">
       <i class="fa"
@@ -55,7 +55,7 @@
     </li>
     <li class="downvote">
       <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML"></i>
-      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility)/3 | number : 2}}
+      {{(contribution.stats.averageBenefit+contribution.stats.averageNeed+contribution.stats.averageFeasibility) | number : 2}}
     </li>
   </ul>
 </div>

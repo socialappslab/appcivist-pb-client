@@ -1541,5 +1541,6 @@
   "Add a Cover Photo": "Agregar foto de portada",
   "Location description": "¿Dónde te gustaría implementar esto?",
   "Only jurors can submit": "Solo los jurados pueden enviar",
-  "contribution.card.feedback-score.tooltip": "<div> <span>Benefício Médio: {{averageBenefit}}</span><br><span>Necessidade Média: {{averageNeed}}</span><br><span>Viabilidade Média: {{averageFeasibility}}</span></div>"
+  "contribution.card.feedback-score.tooltip": "<div> <span>Average Need: {{averageNeed | number: 2}}</span><br><span>Average Feasibility: {{averageFeasibility | number: 2}}</span><br><span>Average Benefit: {{averageBenefit | number: 2}}</span></div>\n",
+  "Final Score": "Puntuación Final"
 }

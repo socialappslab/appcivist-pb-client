@@ -357,7 +357,7 @@
             </li>
             <li class="downvote">
               <i class="fa fa-bar-chart-o" uib-tooltip-html="feedbackScoreTooltipHTML" tooltip-placement="bottom"></i>
-              {{(proposal.stats.averageBenefit+proposal.stats.averageNeed+proposal.stats.averageFeasibility)/3 | number : 2}}
+              {{(proposal.stats.averageBenefit+proposal.stats.averageNeed+proposal.stats.averageFeasibility) | number : 2}}
             </li>
           </ul>
           <div class="float-wrapper">
@@ -824,31 +824,31 @@
         </div>
         <div class="modal-body">
           <div class="informal_score">
-            <h4>{{ 'Sum of average scores for each category' | translate}}</h3>
+            <h4>{{ 'Sum of average scores for each category' | translate}}</h4>
             <div class="informal_score stats2"  style="text-align: center;">
               <div style="margin-bottom: 1rem;">
                 <div class="col-xs-12">
-                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Need' | translate }}: {{needAvg}}</span>
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Need' | translate }}: {{needAvg | number : 2}}</span>
                 </div>
               </div>
               <div style="margin-bottom: 1rem;">
                 <div class="col-xs-12">
-                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Feasibility' | translate }}: {{feasibilityAvg}} </span>
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Feasibility' | translate }}: {{feasibilityAvg | number : 2}} </span>
                 </div>
               </div>
               <div style="margin-bottom: 1rem;">
                 <div class="col-xs-12">
-                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Benefit' | translate }}: {{benefictAvg}}</span>
+                  <span style="font-weight: bold; margin-right: 1rem;">{{ 'Benefit' | translate }}: {{benefictAvg | number : 2}}</span>
                 </div>
               </div>
               <div style="margin-bottom: 1rem;">
                   <div class="col-xs-12">
-              <splan style=" margin-right: 1rem;">Final Score: {{needAvg+feasibilityAvg+benefictAvg}}</span>
+              <span style=" margin-right: 1rem;">{{'Final Score' | translate }}: {{(needAvg+feasibilityAvg+benefictAvg) | number : 2}}</span>
                   </div>
               </div>
             </div>
           </div>
-          <h4 ng-if="userFeedbackArray">{{ 'Jury Evaluations' | translate }}</h3>
+          <h4 ng-if="userFeedbackArray">{{ 'Jury Evaluations' | translate }}</h4>
             <div class="feedback" ng-repeat="f in userFeedbackArray track by $index">
                 <div class="panel panel-default">
                   <div class="panel-heading">

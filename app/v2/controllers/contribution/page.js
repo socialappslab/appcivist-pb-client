@@ -43,6 +43,7 @@
     $scope.initializeBallotTokens = initializeBallotTokens.bind($scope);
     $scope.seeHistory = seeHistory.bind($scope);
     $scope.loadUserFeedback = loadUserFeedback.bind($scope);
+    $scope.getFeedbackAvg = getFeedbackAvg.bind($scope);
     $scope.toggleOpenAddAttachment = toggleOpenAddAttachment.bind($scope);
     $scope.toggleOpenAddAttachmentByUrl = toggleOpenAddAttachmentByUrl.bind($scope);
     $scope.sanitizeVideoResourceUrl = sanitizeVideoResourceUrl.bind($scope);
@@ -1967,14 +1968,37 @@
         data => this.userFeedback = data,
         error => this.userFeedback = { 'up': false, 'down': false, 'fav': false, 'flag': false }
       );
-      let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
-      rsp2.then(
-        data => {
-          this.userFeedbackArray = data
-         
-        },
-        error => this.userFeedbackArray = []
-      )
+      if (!$scope.isAnonymous) {
+        let rsp2 = Contributions.getUserFeedback(aid, cid, coid).query().$promise;
+        rsp2.then(
+          data => {
+            this.userFeedbackArray = data
+
+          },
+          error => this.userFeedbackArray = []
+        )
+      }
+    }
+
+    function getFeedbackAvg(type) {
+      let total = 0;
+      let count = 0;
+      this.userFeedbackArray.forEach(function (feedback) {
+        if(type === 'need' && feedback.need) {
+          total = total + feedback.need;
+          count = count + 1;
+        }
+        if(type === 'benefit' && feedback.benefit) {
+          total = total + feedback.benefit;
+          count = count + 1;
+        }
+        if(type === 'feasibility' && feedback.feasibility) {
+          total = total + feedback.feasibility;
+          count = count + 1;
+        }
+
+      });
+      return total/count;
     }
 
     function embedPadGdoc() {

@@ -29,7 +29,7 @@
         <p class="{{contribution.cover ? 'white-text' : ''}}">{{'Created on' | translate}} {{formatDate(contribution.creation)}}</p>
       </div>
 
-      <contribution-feedback contribution="contribution" view="card" ng-if="!showVotingButtons" campaign="campaign"></contribution-feedback>
+      <contribution-feedback contribution="contribution" view="card" campaign="campaign"></contribution-feedback>
 
       <!-- contextual -->
       <div class="title_block {{contribution.cover ? 'white-text' : ''}}">

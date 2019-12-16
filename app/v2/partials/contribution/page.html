@@ -873,15 +873,15 @@
                         </div>
                     <div class="col-md-12">
                       <span>{{ 'Need' | translate }}:</span>
-                      <span>{{f.need}}</span>
+                      <span>{{f.need || 0}}</span>
                     </div>
                     <div class="col-md-12">
                       <span>{{ 'Feasibility' | translate }}:</span>
-                      <span>{{f.feasibility}} </span>
+                      <span>{{f.feasibility || 0}} </span>
                     </div>
                     <div class="col-md-12">
                       <span>{{ 'Benefit' | translate }}:</span>
-                      <span>{{f.benefit}}</span>
+                      <span>{{f.benefit || 0 }}</span>
                     </div>
                   </div>
                   </div>

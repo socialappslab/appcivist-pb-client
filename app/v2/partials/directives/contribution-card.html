@@ -22,7 +22,7 @@
              {{title|limitTo:37}}{{(title.length) > 37 ? '...' : '.' }}
            </a>
         </h3>
-        <div class="heading--category {{contribution.cover ? 'white-text' : ''}}">
+        <div ng-if="isProposalIdeaStage" class="heading--category {{contribution.cover ? 'white-text' : ''}}">
           <span ng-if="contribution.creator">{{contribution.creator.name}}</span>
           <span ng-if="!contribution.creator">{{'ANONYMOUS' | translate}}</span>
         </div>

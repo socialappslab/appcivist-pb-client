@@ -28,6 +28,13 @@
         </div>
 
         <!--CREATOR AND SHARED WITH-->
+        <div class="row attribution" ng-if="!isProposalIdeaStage" style="margin-top: 10px; margin-botton:0">
+          <div style="min-height:40px;">
+            <span style="font-style: italic">{{'contribution.page.no.show.authors' | translate}}</span>
+          </div>
+        </div>
+
+
         <div class="row attribution" ng-if="isProposalIdeaStage">
           <div style="min-height:40px;">
             <strong style="font-weight:bold">{{'Created by' | translate}}</strong>
@@ -842,8 +849,8 @@
                 </div>
               </div>
               <div style="margin-bottom: 1rem;">
-                  <div class="col-xs-12">
-              <span style=" margin-right: 1rem;">{{'Final Score' | translate }}: {{(needAvg+feasibilityAvg+benefictAvg) | number : 2}}</span>
+                  <div class="col-xs-12" style="margin-top: 10px">
+              <span style="margin-top: 1rem; margin-right: 1rem; font-weight: bold;">{{'Final Score' | translate }}: {{(needAvg+feasibilityAvg+benefictAvg) | number : 2}}</span>
                   </div>
               </div>
             </div>
@@ -853,7 +860,7 @@
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h4 class="panel-title" style="margin-left: 1%; font-size: small; cursor: pointer;">
-                      <i data-toggle="collapse" href="#{{$index}}">
+                      <i data-toggle="collapse" href="#{{$index}}" style="cursor: pointer;">
                           {{ 'Feedback' | translate }} {{$index + 1}}
                       </i>
                     </h4>

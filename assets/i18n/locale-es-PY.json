@@ -1534,5 +1534,6 @@
   "Location description": "¿Dónde te gustaría implementar esto?",
   "Only jurors can submit": "Solo los jurados pueden enviar",
   "contribution.card.feedback-score.tooltip": "<div> <span>Average Need: {{averageNeed | number: 2}}</span><br><span>Average Feasibility: {{averageFeasibility | number: 2}}</span><br><span>Average Benefit: {{averageBenefit | number: 2}}</span></div>\n",
-  "Final Score": "Puntuación Final"
+  "Final Score": "Puntuación Final",
+  "contribution.page.no.show.authors": "Author names are not shown during the remaining phases of the selection process to avoid bias"
 }

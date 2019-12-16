@@ -1543,5 +1543,6 @@
   "Location description": "Onde você gostaria de ver isso implementado?",
   "Only jurors can submit": "Somente jurados podem enviar",
   "contribution.card.feedback-score.tooltip": "<div> <span>Necessidade Médio: {{averageNeed | number: 2}}</span><br><span>Viabilidade Média: {{averageFeasibility | number: 2}}</span><br><span>Benefício Médio: {{averageBenefit | number: 2}}</span></div>",
-  "Final Score": "Pontuação Final"
+  "Final Score": "Pontuação Final",
+  "contribution.page.no.show.authors": "Os nomes dos autores não são mostrados durante as demais fases do processo de seleção para evitar viés.",
 }

@@ -57,7 +57,7 @@
       vm.recaptchaResponseOK = false;
       vm.showFeedbackForm = !vm.isAnonymous;
       if(!vm.isAnonymous) {
-        Contributions.contributionCheckFeedbackForm(localStorageService.get('currentAssembly').uuid, localStorageService.get('user').userId).get().$promise.then(
+        Contributions.contributionCheckFeedbackForm(localStorageService.get('currentAssembly').uuid, vm.contribution.uuid, localStorageService.get('user').userId).get().$promise.then(
           show => vm.showFeedbackForm = show.show,
           error => Notify.show(error.statusMessage, 'error')
         );
@@ -295,16 +295,17 @@
      * Load the user's feedback if there is any.
      */
     function loadFeedback() {
-      if (this.feedback.workingGroupId) {
+      console.log('ESTOY ACA');
+      if (this.feedback && this.feedback.workingGroupId) {
         var rsp = Contributions.userFeedbackWithGroupId(this.assembly.assemblyId,
             this.feedback.workingGroupId, this.contribution.contributionId)
-          .query({ type: this.feedback.type }).$promise;
+          .query({ type: this.feedback.type });
       } else {
         var rsp = Contributions.userFeedbackNoCampaignId(this.assembly.assemblyId, this.contribution.contributionId)
-          .query({ type: this.feedback.type }).$promise;
+          .query({ type: this.feedback.type });
       }
       var vm = this;
-      rsp.then(
+      rsp.$promise.then(
         function(feedbacks) {
           if (feedbacks && feedbacks.length > 0) {
             vm.feedback = feedbacks[0];

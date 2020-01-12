@@ -53,17 +53,17 @@
           <nonmember-author-form class="col-lg-12" on-change="vm.updateNonMember(author)" disabled="!vm.recaptchaResponseOK"></nonmember-author-form>
         </fieldset>
 
-        <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['need']">
-          <label for="needScore">{{'Need score' | translate}}</label>
-          <div class="field-container col-lg-12">
-            <rzslider rz-slider-model="vm.feedback.need" rz-slider-options="vm.sliderOptions"></rzslider>
-          </div>
-        </fieldset>
-
         <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['benefit']">
           <label for="benefit">{{'Benefit' | translate}}</label>
           <div class="field-container col-lg-12">
             <rzslider rz-slider-model="vm.feedback.benefit" rz-slider-options="vm.sliderOptions"></rzslider>
+          </div>
+        </fieldset>
+
+        <fieldset ng-if="!vm.onlyFeedback && !vm.hiddenFieldsMap['need']">
+          <label for="needScore">{{'Need score' | translate}}</label>
+          <div class="field-container col-lg-12">
+            <rzslider rz-slider-model="vm.feedback.need" rz-slider-options="vm.sliderOptions"></rzslider>
           </div>
         </fieldset>
 
@@ -96,7 +96,7 @@
       </form>
       <fieldset>
         <button ng-if="vm.showFeedbackForm" class="button__modal_submit" ng-click="vm.submit()">{{'Submit' | translate}}</button>
-        <button ng-if="!vm.showFeedbackForm" disabled 
+        <button ng-if="!vm.showFeedbackForm" disabled
         style="background-color: grey;" class="button__modal_submit">{{'Only jurors can submit' | translate}}</button>
       </fieldset>
     </div>

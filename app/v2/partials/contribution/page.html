@@ -239,6 +239,12 @@
               </div>
             </div>
           </div>
+          <div ng-if="!isTitleEdit && userIsAuthor && !peerdocIsEnabled" class="row attribution">
+            <div>
+              <strong>{{'Use description as title'|translate}}:</strong>
+              <input id="title-check" type="checkbox" ng-model="useDescriptionAsTitle.value" ng-change="updateTitle()"/>
+            </div>
+          </div>
 
           <!--HEADER CUSTOM FIELDS-->
           <div class="custom-header-fields" ng-if="customHeaderFields.length > 0">

@@ -151,11 +151,14 @@
             {auuid: auuid, cuuid: cuuid},
             {reload: true});
         }
+        location.reload();
       } else  {
+//        $state.go("v2.public.assembly.auuid.home", {auuid: auuid}, {reload: 'v2.public.assembly.auuid.home'});
+        window.history.back();
+        let serverUrl = localStorageService.get('serverBaseUrl');
         localStorageService.clearAll();
-        $state.go("v2.public.assembly.auuid.home", {auuid: auuid}, {reload: true});
+        localStorageService.set('serverBaseUrl', serverUrl);
       }
-      location.reload();
     }
 
     function signout () {

@@ -72,6 +72,7 @@
     $scope.saveDescription = saveDescription.bind($scope);
     $scope.locationToggleEdit = locationToggleEdit.bind($scope);
     $scope.budgetToggleEdit = budgetToggleEdit.bind($scope);
+    $scope.updateTitle = updateTitle.bind($scope);
     $scope.saveField = saveField.bind($scope);
     $scope.saveTitle = saveTitle.bind($scope);
     $scope.getEditorOptions = getEditorOptions.bind($scope);
@@ -92,11 +93,13 @@
     $scope.mergeProposal = mergeProposal.bind($scope);
     $scope.goToParentOrChildren = goToParentOrChildren.bind($scope);
     $scope.changePeerdocUrl = changePeerdocUrl.bind($scope);
+    $scope.truncateString = truncateString.bind($scope);
 
     activate();
 
     function activate() {
       ModalMixin.init($scope);
+      $scope.useDescriptionAsTitle = {value: false};
       $scope.peerdocMergeView = false;
       $scope.peerdocChangesView = false;
       $scope.updateFeedback = updateFeedback.bind($scope);
@@ -2373,6 +2376,25 @@
       }
     }
 
+    function truncateString(str, num) {
+      // If the length of str is less than or equal to num
+      // just return str--don't truncate it.
+      if (str.length <= num) {
+        return str;
+      }
+      // Return str truncated with '...' concatenated to the end of str.
+      return str.slice(0, num) + '...';
+    }
+
+    function updateTitle() {
+      if (this.useDescriptionAsTitle.value) {
+        this.proposal.title = this.truncateString(this.proposal.text, 50)
+      } else {
+        this.proposal.title = 'Create a title';
+      }
+      this.saveTitle();
+    }
+
     function saveField(field, newValue) {
       let vm = this;
       let payload = _.cloneDeep($scope.proposal);
@@ -2444,6 +2466,10 @@
             delete payload.location.geoJson;
           }
           payload.status = payload.status.toUpperCase();
+          if(this.useDescriptionAsTitle.value) {
+            payload.title = this.truncateString(payload.text, 50);
+            this.proposal.title = payload.title;
+          }
           let rsp = Contributions.contribution($scope.assemblyID, $scope.proposal.contributionId).update(payload).$promise;
 
           rsp.then(

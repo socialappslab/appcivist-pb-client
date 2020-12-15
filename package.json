@@ -30,7 +30,7 @@
     "bootstrap-sass": "^3.4.1",
     "bower": "^1.8.8",
     "diff": ">=3.5.0",
-    "ecstatic": ">=3.3.2",
+    "ecstatic": ">=4.1.4",
     "express": "^4.16.4",
     "grunt": "^1.0.4",
     "grunt-contrib-clean": "^0.4.1",

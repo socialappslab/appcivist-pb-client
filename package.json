@@ -44,7 +44,7 @@
     "karma-chrome-launcher": "^0.1.12",
     "karma-jasmine": "^0.1.5",
     "protractor": "^7.0.0",
-    "set-value": ">=2.0.1",
+    "set-value": ">=4.0.1",
     "shelljs": "^0.2.6",
     "tmp": "^0.0.23"
   },

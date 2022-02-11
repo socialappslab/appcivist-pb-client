@@ -40,7 +40,7 @@
     "grunt-contrib-sass": "^0.9.2",
     "grunt-contrib-uglify": "^4.0.0",
     "http-server": "^0.12.3",
-    "karma": "^5.2.2",
+    "karma": "^6.3.14",
     "karma-chrome-launcher": "^0.1.12",
     "karma-jasmine": "^0.1.5",
     "protractor": "^7.0.0",
